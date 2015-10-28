@@ -10,7 +10,7 @@
              d:DesignHeight="311" d:DesignWidth="588">
     <DockPanel>
         
-        <Grid DockPanel.Dock="Top" Margin="5">
+        <Grid DockPanel.Dock="Top" Margin="5" Background="#EEEEEE">
             <Button Command="{Binding CommandAddNewLoginMessage}" Content="Neue LoginMessage erstellen" HorizontalAlignment="Left" Width="180px"/>
         </Grid>
 

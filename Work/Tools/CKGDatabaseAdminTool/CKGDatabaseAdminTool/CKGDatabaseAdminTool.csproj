@@ -63,6 +63,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Grid.v11.2.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2007Silver.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Themes.Office2007Silver.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2010Black.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Themes.Office2010Black.v11.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevXPressTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\DevExpressWPF\DevXPressTools.dll</HintPath>

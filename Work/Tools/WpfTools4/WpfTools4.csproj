@@ -326,6 +326,23 @@
   <ItemGroup>
     <Resource Include="Images\24x24\warning.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\git.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\message.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\app_copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\translate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\sap_check.png" />
+    <Resource Include="Images\32x32\sap_manage.png" />
+    <Resource Include="Images\32x32\sap_usages.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

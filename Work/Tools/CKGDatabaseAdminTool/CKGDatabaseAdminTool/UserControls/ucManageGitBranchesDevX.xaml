@@ -9,16 +9,17 @@
           xmlns:converters="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
           xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
           xmlns:ckgDatabaseAdminTool="clr-namespace:CKGDatabaseAdminTool"
+          xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
 
-    <Grid>
+    <Grid Background="#F1F1F1">
         <Grid.Resources>
             <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
 
             <DataTemplate x:Key="GitBranchDefaultEntwicklerCellTemplate" DataType="{x:Type models:GitBranchInfo}">
                 <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ckgDatabaseAdminTool:MainWindow}}}">
-                    <TextBlock Foreground="Blue" Background="Ivory" Padding="5" Text="{Binding Developer}" />
+                    <TextBlock Foreground="Blue" Padding="5" Text="{Binding Developer}" />
                 </StackPanel>
             </DataTemplate>
             <local:GitBranchEntwicklerCellTemplateSelector x:Key="GitBranchEntwicklerCellTemplateSelector" DefaultTemplate="{StaticResource GitBranchDefaultEntwicklerCellTemplate}" />
@@ -60,7 +61,8 @@
         </StackPanel>
 
         <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
-                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0">
+                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0"
+                         dx:ThemeManager.ThemeName="Office2007Silver">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />

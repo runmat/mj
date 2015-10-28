@@ -102,6 +102,13 @@
     <Image x:Shared="False" x:Key="image/32x32/note_delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/note_save" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/pdf" Source="pack://application:,,,/WpfTools4;component/Images/32x32/pdf.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/git" Source="pack://application:,,,/WpfTools4;component/Images/32x32/git.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/message" Source="pack://application:,,,/WpfTools4;component/Images/32x32/message.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/app_copy" Source="pack://application:,,,/WpfTools4;component/Images/32x32/app_copy.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/translate" Source="pack://application:,,,/WpfTools4;component/Images/32x32/translate.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_check" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_check.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_manage" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_manage.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_usages" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_usages.png" SnapsToDevicePixels="True" Width="32" Height="32" />
 
     <Image x:Shared="False" x:Key="image/48x48/excel_add" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_add.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/excel_delete" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_delete.png" SnapsToDevicePixels="True" Width="48" Height="48" />
