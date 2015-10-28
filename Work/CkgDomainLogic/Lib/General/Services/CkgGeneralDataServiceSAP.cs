@@ -184,13 +184,15 @@ namespace CkgDomainLogic.General.Services
             {
                 if (orgRef.Contains(','))
                 {
-                    var kunListe = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR.GetImportList(SAP);
+                    var kunListe = new List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR>();
 
                     var kundenNummern = orgRef.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var kundenNummer in kundenNummern)
                     {
                         kunListe.Add(new Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR { KUNNR = kundenNummer.ToSapKunnr() });
                     }
+
+                    SAP.ApplyImport(kunListe);
                 }
                 else
                 {

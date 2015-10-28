@@ -572,16 +572,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return ZulassungDataService.GetZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
-        public void LoadZulassungsAbmeldeArten(string kreis)
+        public void LoadZulassungsAbmeldeArten(string kreis = "", bool forShoppingCartSave = false)
         {
             PropertyCacheClear(this, m => m.ZulassungsAbmeldearten);
 
             if (Zulassung.Halter == null)
                 return;
 
-            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
+            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
 
-            ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, ModusSonderzulassung);
+            ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
 
             Zulassung.Zulassungsdaten.Versandzulassung = Zulassungsarten.Any(z => z.Belegtyp == "AV");
             Zulassung.Zulassungsdaten.ExpressversandMoeglich = Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich);

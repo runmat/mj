@@ -96,7 +96,10 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung)
         {
-            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR, I_KREISKZ", LogonContext.Organization.OrganizationReference2, kreis);
+            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", LogonContext.Organization.OrganizationReference2);
+
+            if (!String.IsNullOrEmpty(kreis))
+                SAP.SetImportParameter("I_KREISKZ", kreis);
 
             if (zulassungsartenAutomatischErmitteln)
                 SAP.SetImportParameter("I_MODUS", "A");

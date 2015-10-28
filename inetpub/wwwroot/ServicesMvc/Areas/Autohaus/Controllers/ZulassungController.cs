@@ -66,7 +66,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
-            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return View("Index", ViewModel);
         }
@@ -79,6 +79,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
+            ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
 
@@ -95,7 +96,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ShoppingCartLoadAndCacheItems();
 
-            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return View("Index", ViewModel);
         }
@@ -186,6 +187,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.SetParamAbmeldung("x");
             ViewModel.SetParamVersandzulassung("");
+            ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
 
@@ -202,7 +204,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ShoppingCartLoadAndCacheItems();
 
-            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return View("Index", ViewModel);
         }
@@ -897,6 +899,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             var warenkorb = ShoppingCartItems.Cast<Vorgang>().Where(item => item.IsSelected).ToListOrEmptyList();
 
+            ViewModel.LoadZulassungsAbmeldeArten(forShoppingCartSave: true);
             ViewModel.Save(warenkorb, saveDataToSap: true, saveFromShoppingCart: true);
 
             return PartialView("Partial/Receipt", ViewModel);

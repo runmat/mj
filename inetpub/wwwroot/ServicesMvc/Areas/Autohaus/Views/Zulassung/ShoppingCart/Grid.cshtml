@@ -7,8 +7,8 @@
 @Html.SpanAlert("ShoppingCartSubmitWaitHint")
 
 <div class="form-horizontal">
-    @Html.FormDropDownList("WarenkorbSelectedKunnr", (ViewBag.AllLogTables as List<Kunde>).ToSelectList(), new { @class = "m-wrap", onchange = "WarenkorbSelectedKunnrChanged()" })
-</div>  
+    @Html.FormDropDownList("WarenkorbSelectedKunnr", (TempData["KundenauswahlWarenkorb"] as List<Kunde>).ToSelectList(), new { @class = "m-wrap", onchange = "WarenkorbSelectedKunnrChanged()" }, labelText: Localize.ShowOrders)
+</div>
 
 @(Html.Telerik()
     .Grid<Vorgang>()
