@@ -77,6 +77,9 @@ namespace CkgDomainLogic.Autohaus.Services
             get { return PropertyCacheGet(() => LoadKunden().ToList()); }
         }
 
+        public bool WarenkorbNurEigeneAuftraege { get; private set; }
+        public List<Kunde> KundenauswahlWarenkorb { get; private set; }
+
         public List<Domaenenfestwert> Fahrzeugarten
         {
             get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); }
@@ -162,7 +165,7 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
-        public List<Vorgang> LoadVorgaengeForShoppingCart()
+        public List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern)
         {
             throw new NotImplementedException();
         }

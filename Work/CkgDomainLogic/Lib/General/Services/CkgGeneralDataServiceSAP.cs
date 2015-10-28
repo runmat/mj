@@ -184,14 +184,13 @@ namespace CkgDomainLogic.General.Services
             {
                 if (orgRef.Contains(','))
                 {
-                    var kunListe = new List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR>();
+                    var kunListe = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR.GetImportList(SAP);
+
                     var kundenNummern = orgRef.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var kundenNummer in kundenNummern)
                     {
-                        kunListe.Add(new Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR { KUNNR = kundenNummer });
+                        kunListe.Add(new Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR { KUNNR = kundenNummer.ToSapKunnr() });
                     }
-
-                    SAP.ApplyImport(kunListe);
                 }
                 else
                 {
@@ -305,7 +304,7 @@ namespace CkgDomainLogic.General.Services
         public bool GetBoolUserReferenceValueByReferenceType(ReferenzfeldtypBool referenceType)
         {
             if (LogonContext.Customer.Userreferenzfeld4 == referenceType.ToString())
-                return LogonContext.User.Reference4;
+                return LogonContext.User.Reference4.IsTrue();
 
             return false;
         }

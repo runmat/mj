@@ -21,7 +21,7 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string Reference3 { get; set; }
 
-        public bool Reference4 { get; set; }
+        public bool? Reference4 { get; set; }
 
         public string Title { get; set; }
 
