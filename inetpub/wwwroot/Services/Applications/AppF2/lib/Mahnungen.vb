@@ -32,6 +32,7 @@ Public Class Mahnungen
             Dim result = proxy.getExportTable("GT_MAHN")
 
             result.Columns.Add("AUGRU_TEXT", GetType(String))
+            result.Columns.Add("SORT", GetType(Integer))
 
             Dim abrufgruende = New Abrufgruende(m_objUser).Result
             If Not abrufgruende Is Nothing AndAlso abrufgruende.Rows.Count > 0 Then
@@ -43,8 +44,36 @@ Public Class Mahnungen
                             r("AUGRU_TEXT") = txt
                         End If
                     End If
+
+                    '' <TEST>
+                    If (Not r("TIDNR") Is Nothing And r("TIDNR") = "EL232695")
+                        r("ZZREFERENZ2") = "1"
+                        r("TIDNR") = "EL232695-1"
+                    End If
+                    If (Not r("TIDNR") Is Nothing And r("TIDNR") = "EL224406")
+                        r("ZZREFERENZ2") = "1"
+                        r("TIDNR") = "EL224406-1"
+                    End If
+                    If (Not r("TIDNR") Is Nothing And r("TIDNR") = "EL228171")
+                        r("ZZREFERENZ2") = "2"
+                        r("TIDNR") = "EL228171-2"
+                    End If
+                    '' </TEST>
+
+                    r("SORT") = 0
+                    If (Not r("ZZREFERENZ2") Is Nothing) Then
+                        If(r("ZZREFERENZ2") = "1")
+                            r("SORT") = 1
+                        End If
+                        If(r("ZZREFERENZ2") = "2")
+                            r("SORT") = 2
+                        End If
+                    End If
+
                 Next
             End If
+
+            result.DefaultView.Sort = "ZZREFERENZ2"
 
             result.AcceptChanges()
 
