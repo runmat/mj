@@ -3019,6 +3019,8 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContacts.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContactInfo.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSuche.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSucheForm.cshtml" />
     <Content Include="Views\Equi\Briefversand\Stueckliste.cshtml" />
