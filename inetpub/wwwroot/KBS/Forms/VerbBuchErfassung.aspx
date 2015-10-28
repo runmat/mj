@@ -46,68 +46,63 @@
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
-                                                <td class="firstLeft active" style="width: 172px; height: 38px;">
+                                                <td class="firstLeft active" style="width: 180px; height: 38px;">
                                                     <asp:Label ID="lblNameVerl" Text="Name des Verletzten:" runat="server"></asp:Label>
                                                 </td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtNameVerl" AutoPostBack="true" runat="server" Text="" 
                                                         Width="262px" MaxLength="80"></asp:TextBox>
                                                 </td>
-                                                <td style="height: 38px; width: 4%;" class="firstLeft active">
+                                                <td style="height: 38px; width: 40px;" class="firstLeft active">
                                                     &nbsp;
                                                 </td>
-                                                <td style="height: 38px; width: 315px;" class="firstLeft active">
+                                                <td style="height: 38px; width: 180px;" class="firstLeft active">
                                                     <asp:Label ID="lblDatumUnf" runat="server" Text="Datum des Unfalls"></asp:Label>
                                                 </td>
                                                 <td style="height: 38px">
-                                                    <asp:TextBox ID="txtDatUnfall" runat="server" AutoPostBack="true" Text="" 
-                                                        Width="80px" />
+                                                    <asp:TextBox ID="txtDatUnfall" runat="server" AutoPostBack="true" Text="" Width="80px" />
+                                                    <ajaxToolkit:CalendarExtender ID="CeTxtZeitUnfall" runat="server" TargetControlID="txtDatUnfall" Animated="True">
+                                                    </ajaxToolkit:CalendarExtender>
+                                                    <ajaxToolkit:MaskedEditExtender ID="MeTxtZeitUnfall" runat="server" TargetControlID="txtDatUnfall"
+                                                        MaskType="Date" Mask="99/99/9999" CultureName="de-DE">
+                                                    </ajaxToolkit:MaskedEditExtender>
                                                 </td>
-                                                <ajaxToolkit:CalendarExtender ID="CeTxtZeitUnfall" runat="server" TargetControlID="txtDatUnfall"
-                                                    Animated="True">
-                                                </ajaxToolkit:CalendarExtender>
-                                                <ajaxToolkit:MaskedEditExtender ID="MeTxtZeitUnfall" runat="server" TargetControlID="txtDatUnfall"
-                                                    MaskType="Date" Mask="99/99/9999" CultureName="de-DE">
-                                                </ajaxToolkit:MaskedEditExtender>
-                                                
-
                                             </tr>
                                             <tr>
-                                               <td style="height: 38px; width: 172px;" class="firstLeft active">
+                                                <td style="height: 38px; width: 180px;" class="firstLeft active">
                                                     &nbsp;</td> 
                                                 <td style="height: 38px">
                                                     &nbsp;</td>
-                                                <td class="firstLeft active" style="height: 38px; width: 4%;">
+                                                <td class="firstLeft active" style="height: 38px; width: 40px;">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" style="height: 38px; width: 315px;">
+                                                <td class="firstLeft active" style="height: 38px; width: 180px;">
                                                     Uhrzeit des Unfalls</td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtZeitUnfall" runat="server" AutoPostBack="true"
                                                         Width="50px" MaxLength="4"  />
                                                         &nbsp;&nbsp; Format: HHmm
-                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ControlToValidate="txtZeitUnfall" runat="server" ErrorMessage="Nur Zahlen eingeben" ValidationExpression="\d+"></asp:RegularExpressionValidator>
-                                                
-                                                
+                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ControlToValidate="txtZeitUnfall" runat="server" 
+                                                        ErrorMessage="Nur Zahlen eingeben" ValidationExpression="\d+"></asp:RegularExpressionValidator>
                                                 </td>
                                             </tr>
                                             <tr>
-                                               <td style="height: 38px">
+                                               <td style="height: 38px" colspan="5">
 
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td class="firstLeft active" style="width: 172px">
+                                                <td class="firstLeft active" style="width: 180px">
                                                     <asp:Label ID="lvlVerletzung" Text="Verletzung" runat="server"></asp:Label>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtVerletzung" TextMode="multiline" Columns="50" Rows="5" runat="server"
                                                         Width="262px" MaxLength="400" />
                                                 </td>
-                                                <td style="width: 4%">
+                                                <td style="width: 40px">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" style="width: 315px">
+                                                <td class="firstLeft active" style="width: 180px">
                                                     <asp:Label ID="lblHergang" Text="Hergang des Unfalls" runat="server"></asp:Label>
                                                 </td>
                                                 <td>
@@ -119,82 +114,76 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="firstLeft active" style="width: 172px">
+                                                <td class="firstLeft active" style="width: 180px">
                                                     <asp:Label ID="lblNameZeuge" Text="Name der Zeugen" runat="server"></asp:Label>
                                                 </td>
                                                 <td height="38px">
                                                     <asp:TextBox ID="txtNameZeug" runat="server" AutoPostBack="true" Text="" 
                                                         Width="262px" MaxLength="80"></asp:TextBox>
                                                 </td>
-                                                <td style="width: 4%">
+                                                <td style="width: 40px">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" style="width: 315px">
+                                                <td class="firstLeft active" style="width: 180px">
                                                     <asp:Label ID="lblOrt" Text="Ort des Unfalls" runat="server"></asp:Label>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtOrt" TextMode="SingleLine" runat="server"
                                                         Width="262px" MaxLength="160" />
                                                 </td>
-                                                <td style="width: 22%">
-                                                    &nbsp;
-                                                </td>
                                             </tr>
                                             <tr>
-                                                <td class="firstLeft active" style="width: 172px; height: 38px;">
+                                                <td class="firstLeft active" style="width: 180px; height: 38px;">
                                                     <asp:Label ID="lblNameVerl1" runat="server" Text="Name des Ersthelfers"></asp:Label>
                                                 </td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtNameErstHelf" runat="server" AutoPostBack="true" Text="" 
                                                         Width="262px" MaxLength="80"></asp:TextBox>
                                                 </td>
-                                                <td class="firstLeft active" style="height: 38px; width: 4%;">
+                                                <td class="firstLeft active" style="height: 38px; width: 40px;">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" style="width: 315px; height: 38px;">
-                                                    <asp:Label ID="lblDatHilfe" runat="server" Text="Datum des ersten Hilfe"></asp:Label>
+                                                <td class="firstLeft active" style="width: 180px; height: 38px;">
+                                                    <asp:Label ID="lblDatHilfe" runat="server" Text="Datum der ersten Hilfe"></asp:Label>
                                                 </td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtDatHilfe" runat="server" AutoPostBack="true" Text="" 
                                                         Width="80px"></asp:TextBox>
-                                                
-                                                <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDatHilfe"
-                                                    Animated="True">
-                                                </ajaxToolkit:CalendarExtender>
-                                                <ajaxToolkit:MaskedEditExtender ID="MaskedEditExtender1" runat="server" TargetControlID="txtDatHilfe"
-                                                    MaskType="Date" Mask="99/99/9999" CultureName="de-DE">
-                                                </ajaxToolkit:MaskedEditExtender>
-                                                
+                                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDatHilfe"
+                                                        Animated="True">
+                                                    </ajaxToolkit:CalendarExtender>
+                                                    <ajaxToolkit:MaskedEditExtender ID="MaskedEditExtender1" runat="server" TargetControlID="txtDatHilfe"
+                                                        MaskType="Date" Mask="99/99/9999" CultureName="de-DE">
+                                                    </ajaxToolkit:MaskedEditExtender>
                                                 </td>
                                             </tr>
-                                            
                                             <tr>
-                                               <td style="height: 38px; width: 172px;" class="firstLeft active">
+                                               <td style="height: 38px; width: 180px;" class="firstLeft active">
                                                     &nbsp;</td> 
                                                 <td style="height: 38px">
                                                     &nbsp;</td>
-                                                <td class="firstLeft active" style="height: 38px; width: 4%;">
+                                                <td class="firstLeft active" style="height: 38px; width: 40px;">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" style="height: 38px; width: 315px;">
+                                                <td class="firstLeft active" style="height: 38px; width: 180px;">
                                                     Uhrzeit der ersten Hilfe</td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtUhrHilfe" runat="server" AutoPostBack="true" Text="" 
                                                         Width="50px" MaxLength="4"/>
                                                     &nbsp;&nbsp; Format: HHmm
-                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" ControlToValidate="txtUhrHilfe" runat="server" ErrorMessage="Only Numbers allowed" ValidationExpression="\d+"></asp:RegularExpressionValidator>
-
+                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" ControlToValidate="txtUhrHilfe" runat="server" 
+                                                        ErrorMessage="Nur Zahlen eingeben" ValidationExpression="\d+"></asp:RegularExpressionValidator>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="firstLeft active" style="width: 172px">
+                                                <td class="firstLeft active" style="width: 180px">
                                                     <asp:Label ID="Label1" Text="Erste Hilfe Maßnahmen" runat="server"></asp:Label>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtErsteHilfe" TextMode="multiline" Columns="50" Rows="5" runat="server"
                                                         Width="262px" MaxLength="400" />
                                                 </td>
-                                                <td style="width: 4%">
+                                                <td colspan="3">
                                                     &nbsp;
                                                 </td>
                                             </tr>

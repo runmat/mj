@@ -111,7 +111,7 @@ Partial Public Class VerbBuchReport
         FilePath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Verbandbuch\" & sFilePath & ".pdf"
         Dim docFactory As New DocumentGeneration.WordDocumentFactory(mObjVerbandbuch.Entries, imageHt)
 
-        docFactory.CreateDocumentTableAndSend("Verbandbuch__KST__" & "5001__" & DateTime.Now().ToString(), Page, "\Vorlagen\Verbandbuch.doc", headTable)
+        docFactory.CreateDocumentTableAndSend("Verbandbuch__KST__" & mObjKasse.Lagerort & "__" & DateTime.Now().ToString(), Page, "\Vorlagen\Verbandbuch.doc", headTable)
 
 
     End Sub
