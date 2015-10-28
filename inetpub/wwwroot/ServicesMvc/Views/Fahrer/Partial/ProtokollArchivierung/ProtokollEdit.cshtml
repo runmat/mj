@@ -1,0 +1,91 @@
+﻿@model CkgDomainLogic.Fahrer.Models.ProtokollEditModel
+
+<style type="text/css">
+     .pdfContentStyle { width: 390px; height: 480px; padding: 0.5em; }
+</style>
+
+<div id="DivProtokollEdit" class="margin-top-20">
+    @using (Ajax.BeginForm("ProtokollEdit", "Fahrer", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivProtokollEdit", OnComplete = "AjaxFormProtokollEditComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormProtokollEdit" }))
+    {
+        @Html.FormValidationSummary()
+        
+        <div class="row-fluid"> 
+            <div class="span6">
+
+                <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle margin-left-5 margin-bottom-10"> 
+                    <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
+                </div>
+
+            </div>
+            <div class="span6">
+                
+                @Html.HiddenFor(m => m.Protokoll.KundenNr)
+                @Html.HiddenFor(m => m.Protokoll.IstSonstigerAuftrag)
+                @Html.HiddenFor(m => m.Protokoll.Fahrt)
+                @Html.HiddenFor(m => m.Protokoll.WunschLieferDatum)
+                @Html.HiddenFor(m => m.Protokoll.ProtokollArt)
+                @Html.HiddenFor(m => m.Protokoll.ProtokollArt2)
+                @Html.HiddenFor(m => m.Protokoll.OrtStart)
+                @Html.HiddenFor(m => m.Protokoll.OrtZiel)
+
+                @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
+                @Html.FormTextBlockFor(m => m.Protokoll.AuftragsNr, new { @class = "m-wrap" })
+
+                @Html.FormTextBoxFor(m => m.Protokoll.VIN, new { @class = "m-wrap", maxlength = "30" }, labelText: Localize.ChassisNo)
+
+                @Html.FormTextBoxFor(m => m.Protokoll.Kennzeichen, new { @class = "m-wrap", maxlength = "15" })
+
+                @Html.HiddenFor(m => m.Protokoll.Referenz)
+                @Html.FormTextBlockFor(m => m.Protokoll.Referenz, new { @class = "m-wrap" })
+
+                @Html.FormNewLine()
+                    
+                @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap small" })
+                @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap small" })
+                @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
+                @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap small" })
+                @Html.FormTextBoxFor(m => m.UebergabeUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
+                @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap xsmall" })
+                @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
+                    
+                @Html.FormNewLine()
+                    
+                @Html.FormDropDownListFor(m => m.QmCode, Model.QmCodeList.ToSelectList(true), new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.QmBemerkung, new { @class = "m-wrap", maxlength = "40" })
+
+                @Html.FormNewLine()
+                    
+                @Html.HiddenFor(m => m.MailAdressen)
+                @Html.FormTextBlockFor(m => m.MailAdressen, new { @class = "m-wrap" })
+
+            </div>
+        </div>
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormProtokollEditClose();">@Localize.Cancel</button>
+            <button type="button" class="btn red" onclick="DeleteProtokoll();"><i class="icon-remove"></i> @Localize.Delete</button>
+        </div>
+        
+        <script>
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function AjaxFormProtokollEditComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelIsValid) {
+            AjaxFormProtokollEditClose();
+            GridRefresh();
+        }  
+    }
+
+</script>
