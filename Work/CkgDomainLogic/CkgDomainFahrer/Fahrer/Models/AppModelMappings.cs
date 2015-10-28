@@ -70,6 +70,8 @@ namespace CkgDomainLogic.Fahrer.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
+                        d.KundenNr = s.KUNNR_AG;
+
                         d.AuftragsNr = s.VBELN;
                         d.WunschLieferDatum = s.VDATU;
 

@@ -10,9 +10,11 @@ using CkgDomainLogic.Fahrer.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrer.Contracts;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
 {
@@ -125,7 +127,31 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public byte[] GetAuftragsPdfBytes(string auftragsNr)
         {
-            return DataService.GetAuftragsPdfBytes(auftragsNr);
+            var pdfBytesList = new List<byte[]>();
+
+            var pdfBytesAuftrag = DataService.GetAuftragsPdfBytes(auftragsNr);
+
+            pdfBytesList.Add(pdfBytesAuftrag);
+
+            var auftrag = FahrerAuftraege.FirstOrDefault(a => a.AuftragsNr == auftragsNr);
+            if (auftrag != null)
+            {
+                var verzeichnis = Path.Combine(AppSettings.UploadFilePath, auftrag.KundenNr.ToSapKunnr(), auftragsNr.PadLeft(10, '0'), "vertraege");
+
+                if (Directory.Exists(verzeichnis))
+                {
+                    var dateien = Directory.GetFiles(verzeichnis);
+
+                    foreach (var datei in dateien)
+                    {
+                        var pdfBytes = File.ReadAllBytes(datei);
+
+                        pdfBytesList.Add(pdfBytes);
+                    }
+                }
+            }
+
+            return PdfDocumentFactory.MergePdfDocuments(pdfBytesList);
         }
 
         #endregion
