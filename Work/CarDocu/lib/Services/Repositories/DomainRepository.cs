@@ -461,7 +461,7 @@ namespace CarDocu.Services
                 zip.Comment = string.Format("ZIP-Datei erstellt von '{0}' auf Rechner '{1}'", DomainService.AppName, System.Net.Dns.GetHostName());
 
                 // lengthly atomar operation here...
-                progressBarOperation.Details = "Erstelle ZIP Datei ... bitte warten Sie einen Moment ...";
+                progressBarOperation.Details = "Erstelle ZIP Datei ... bitte warten ...";
                 zip.Save(tempFileName);
 
                 if (progressBarOperation.IsCancellationPending)
@@ -489,7 +489,7 @@ namespace CarDocu.Services
 
 
                 // another lengthly atomar operation here...
-                progressBarOperation.Details = "Datenbereinigung ... bitte warten Sie einen Moment ...";
+                progressBarOperation.Details = "Datenbereinigung ... bitte warten ...";
                 FileService.TryFileDelete(tempFileName);
                 FileService.TryDirectoryDelete(directoryToZip);
                 FileService.TryDirectoryDelete(UserSettingsDirectoryName);
@@ -541,7 +541,7 @@ namespace CarDocu.Services
 
             progressBarOperation.Current = 1;
             progressBarOperation.Total = totalCount;
-            progressBarOperation.Header = "Automatische Datenbereinigung ... bitte warten Sie einen Moment ...";
+            progressBarOperation.Header = "Automatische Datenbereinigung ... bitte warten ...";
             progressBarOperation.Details = "Lösche Dateien";
             progressBarOperation.ProgressInfoVisible = true;
             Thread.Sleep(500);

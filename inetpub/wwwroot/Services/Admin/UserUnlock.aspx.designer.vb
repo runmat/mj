@@ -365,6 +365,24 @@ Partial Public Class UserUnlock
     Protected WithEvents txtValidFrom As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''Tr2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Tr2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtValidTo-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtValidTo As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''trCustomerAdmin2-Steuerelement
     '''</summary>
     '''<remarks>
