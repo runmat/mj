@@ -32,6 +32,8 @@ namespace DocumentTools.Services
                 {
                     processedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
                     ImagingService.ScaleAndSaveImage(file, processedFile, img.PixelWidth > img.PixelHeight ? img.PixelWidth : img.PixelHeight);
+
+                    img.Dispose();
                     processedImage = XImage.FromFile(processedFile);
                 }
 
@@ -50,6 +52,8 @@ namespace DocumentTools.Services
                     processedImage.Dispose();
                     FileService.TryFileDelete(processedFile);
                 }
+                else
+                    img.Dispose();
 
                 imageCount++;
             }
