@@ -103,10 +103,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ucManageGitBranches.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\ucApplicationDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,9 +156,6 @@
     </Compile>
     <Compile Include="UserControls\ucCheckBapis.xaml.cs">
       <DependentUpon>ucCheckBapis.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ucManageGitBranches.xaml.cs">
-      <DependentUpon>ucManageGitBranches.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ucApplicationDetails.xaml.cs">
       <DependentUpon>ucApplicationDetails.xaml</DependentUpon>

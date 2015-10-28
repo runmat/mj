@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
 
-    <Grid Background="#EEEEEE">
+    <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="FontWeight" Value="Bold"/>

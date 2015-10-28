@@ -6,7 +6,7 @@
              xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
              mc:Ignorable="d">
 
-    <Grid Background="#EEEEEE" Margin="0,3">
+    <Grid Margin="0,3">
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="FontWeight" Value="Bold"/>

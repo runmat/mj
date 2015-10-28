@@ -8,7 +8,7 @@
              xmlns:dbModels="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
              mc:Ignorable="d" 
              d:DesignHeight="311" d:DesignWidth="588">
-    <DockPanel Background="#EEEEEE">
+    <DockPanel>
         
         <Grid DockPanel.Dock="Top" Margin="5">
             <Button Command="{Binding CommandAddNewLoginMessage}" Content="Neue LoginMessage erstellen" HorizontalAlignment="Left" Width="180px"/>

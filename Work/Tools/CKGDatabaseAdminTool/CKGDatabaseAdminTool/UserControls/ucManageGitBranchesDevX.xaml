@@ -12,12 +12,8 @@
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
 
-    <Grid Margin="5" Background="#EEEEEE">
+    <Grid>
         <Grid.Resources>
-            <Style TargetType="{x:Type DataGrid}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
-            </Style>
             <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
 
             <DataTemplate x:Key="GitBranchDefaultEntwicklerCellTemplate" DataType="{x:Type models:GitBranchInfo}">
@@ -29,7 +25,7 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="28px"/>
+            <RowDefinition Height="50px"/>
             <RowDefinition/>
             <RowDefinition Height="28px"/>
         </Grid.RowDefinitions>
@@ -39,25 +35,32 @@
             <ColumnDefinition Width="35px"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type RadioButton}">
-                    <Setter Property="Margin" Value="10,0"/>
-                </Style>
-            </StackPanel.Resources>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
 
-            <RadioButton Content="nur aktive" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktive}}"/>
-            <RadioButton Content="nur aktive mit Freigabe" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktiveMitFreigabe}}"/>
-            <RadioButton Content="nur abgeschlossene" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.abgeschlossene}}"/>
-            <RadioButton Content="alle" 
-                         IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
+            <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
+                <RadioButton Content="nur aktive" Style="{StaticResource CustomRadioButtonStyle}"
+                             IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktive}}"/>
+                <RadioButton Content="nur aktive mit Freigabe"  Style="{StaticResource CustomRadioButtonStyle}"
+                             IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.aktiveMitFreigabe}}"/>
+                <RadioButton Content="nur abgeschlossene"  Style="{StaticResource CustomRadioButtonStyle}"
+                             IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.abgeschlossene}}"/>
+                <RadioButton Content="alle"  Style="{StaticResource CustomRadioButtonStyle}"
+                             IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
+            </StackPanel>
+            <Button 
+                Style="{StaticResource HyperLinkSmallImage}" 
+                Margin="20,0,0,0" 
+                Command="{Binding CommandSaveGitBranchInfos}" 
+                Content="{StaticResource image/32x32/save}" ToolTip="Änderungen speichern" />
+            <Button 
+                Style="{StaticResource HyperLinkSmallImage}" 
+                Margin="20,0,0,0" 
+                Command="{Binding CommandCancelGitBranchInfos}" 
+                Content="{StaticResource image/32x32/delete}" ToolTip="Änderungen verwerfen" />
         </StackPanel>
 
         <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
-                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" >
+                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
@@ -76,8 +79,7 @@
             </dxg:GridControl.View>
         </dxg:GridControl>
 
-        <Button Grid.Row="2" Grid.Column="0" Width="200px" HorizontalAlignment="Right" Margin="10,2" Command="{Binding CommandCancelGitBranchInfos}" Content="Änderungen verwerfen"/>
-        <Button Grid.Row="2" Grid.Column="1" Width="200px" HorizontalAlignment="Left" Margin="10,2" Command="{Binding CommandSaveGitBranchInfos}" Content="Änderungen speichern"/>
+        
         <Button Grid.Row="2" Grid.Column="2" Width="25px" HorizontalAlignment="Right" Margin="5,2" Name="btnExportToExcel" Click="btnExportToExcel_OnClick" ToolTip="Excel-Export">
             <Image Source="/CKGDatabaseAdminTool;component/Images/excel_icon.png"/>
         </Button>

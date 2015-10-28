@@ -44,22 +44,22 @@
         <fl:Ribbon Name="Ribbon" DockPanel.Dock="Top" IsQuickAccessToolBarVisible="False">
             
             <fl:RibbonTabItem Header="Verwaltung" Name="TabVerwaltung">
-                
-                <fl:RibbonGroupBox Header="Login-Messages" HorizontalContentAlignment="Left">
+
+                <fl:RibbonGroupBox Header="Login-Messages" HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
+                <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiApplicationViewModel}" Size="Middle" Command="{Binding CommandReportBapiApplications}" Header="BAPI-Verwendung" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left">
+                <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="Feldübersetzungen" HorizontalContentAlignment="Left">
+                <fl:RibbonGroupBox Header="Feldübersetzungen" HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <fl:Button DataContext="{Binding FieldTranslationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
@@ -72,7 +72,7 @@
             
         </fl:Ribbon>
 
-        <Grid Name="Statusleiste" Height="24px" DockPanel.Dock="Bottom" Background="#EEEEEE">
+        <Grid Name="Statusleiste" Height="24px" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="100px" />
@@ -98,7 +98,7 @@
             </Button>
         </Grid>
         
-        <ContentControl Background="LightGray" Content="{Binding ActiveViewModel}" />   
+        <ContentControl Content="{Binding ActiveViewModel}" />   
 
     </DockPanel>
     

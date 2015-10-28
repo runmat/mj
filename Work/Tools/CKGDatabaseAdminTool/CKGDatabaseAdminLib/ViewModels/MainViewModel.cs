@@ -154,12 +154,15 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         private void InitViewModels()
         {
-            LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
-            ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
-            BapiApplicationViewModel = new BapiApplicationViewModel(this);
-            ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
-            FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
-            BapiCheckViewModel = new BapiCheckViewModel(this);
+            if (!UseDefaultStartupView)
+            {
+                LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
+                ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
+                BapiApplicationViewModel = new BapiApplicationViewModel(this);
+                ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
+                FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+                BapiCheckViewModel = new BapiCheckViewModel(this);
+            }
 
             // Git-Branch Verwaltung nur in DAD-Datenbanken
             if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))

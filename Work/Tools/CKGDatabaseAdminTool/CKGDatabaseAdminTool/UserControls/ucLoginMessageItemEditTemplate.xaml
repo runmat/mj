@@ -7,7 +7,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d">
 
-    <Grid Background="#EEEEEE" Margin="0,3">
+    <Grid Margin="0,3">
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="FontWeight" Value="Bold"/>
