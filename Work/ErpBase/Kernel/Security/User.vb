@@ -2853,7 +2853,7 @@ Namespace Kernel.Security
 
         End Sub
 
-        Public Function GetUserReferenceValueByReferenceType(ByVal referenceType As Referenzfeldtyp) As String
+        Public Function GetStringUserReferenceValueByReferenceType(ByVal referenceType As ReferenzfeldtypString) As String
             If Customer.ReferenceType1 = referenceType.ToString() Then
                 Return Reference
             End If
@@ -2867,6 +2867,15 @@ Namespace Kernel.Security
             End If
 
             Return ""
+
+        End Function
+
+        Public Function GetBoolUserReferenceValueByReferenceType(ByVal referenceType As ReferenzfeldtypBool) As Boolean
+            If Customer.ReferenceType4 = referenceType.ToString() Then
+                Return Reference4
+            End If
+
+            Return False
 
         End Function
 
