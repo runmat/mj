@@ -4,16 +4,17 @@ Imports CKG.Base.Kernel.Common.Common
 Imports System.Data.OleDb
 Imports System.Text.RegularExpressions
 Imports System.Drawing
+Imports WebTools.Services
 
 Partial Public Class AutUserUpload
-    Inherits System.Web.UI.Page
-
+    Inherits Page
 
 #Region "Declarations"
+
     Private m_User As User
     Private m_App As App
-    Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
-    Private Const ANZAHLEXCELSPALTEN As Integer = 12
+    Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
+    Private Const ANZAHLEXCELSPALTEN As Integer = 14
     Private Const PFLICHTFELDLEER As String = "Dieses Pflichtfeld hat keinen Eintrag."
 
     Private Enum UploadExcelColumns
@@ -22,20 +23,23 @@ Partial Public Class AutUserUpload
         LastName = 2
         Username = 3
         Reference = 4
-        Store = 5
-        TestUser = 6
-        Groupname = 7
-        Organization = 8
-        EMailAdress = 9
-        Telephone = 10
-        ValidFrom = 11
-        ID = 12
+        Reference2 = 5
+        Reference3 = 6
+        Store = 7
+        TestUser = 8
+        Groupname = 9
+        Organization = 10
+        EMailAdress = 11
+        Telephone = 12
+        ValidFrom = 13
+        ID = 14 'NICHT LÖSCHEN!!!
     End Enum
 
 #End Region
 
 #Region "Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         lblHead.Text = "Automatisierte Benutzeranlage"
         AdminAuth(Me, m_User, AdminLevel.Organization)
@@ -121,7 +125,6 @@ Partial Public Class AutUserUpload
         'Lade Datei
         Upload(upFile.PostedFile)
 
-
         If lblError.Text = String.Empty Then
             ddlFilterCustomer.Enabled = False
             Result.Visible = True
@@ -133,27 +136,16 @@ Partial Public Class AutUserUpload
 
     Protected Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkCreateExcel.Click
         Try
-            Dim control As New Control
-            Dim tblTranslations As New DataTable()
-            Dim AppURL As String
             Dim TempTable As DataTable = CType(Session("UploadTable"), DataTable).Clone
             Dim AusgabeTable As DataTable = CType(Session("UploadTable"), DataTable).Copy
-            Dim col2 As DataColumn
 
-            AppURL = Replace(Me.Request.Url.LocalPath, "/Portal", "..")
-            tblTranslations = CType(Me.Session(AppURL), DataTable)
+            Dim Found As Boolean
 
-
-            Dim FieldControl As DataControlField
-            Dim Found As Boolean = False
-
-
-            For Each col2 In TempTable.Columns
+            For Each col2 As DataColumn In TempTable.Columns
 
                 Found = False
 
-
-                For Each FieldControl In grvAusgabe.Columns
+                For Each FieldControl As DataControlField In grvAusgabe.Columns
 
                     If col2.ColumnName.ToUpper = FieldControl.SortExpression.ToUpper Then
                         Found = True
@@ -167,7 +159,7 @@ Partial Public Class AutUserUpload
 
                 Next
 
-                If Found = False Then
+                If Not Found Then
                     AusgabeTable.Columns.Remove(AusgabeTable.Columns(col2.ColumnName))
 
                 End If
@@ -178,18 +170,17 @@ Partial Public Class AutUserUpload
             If AusgabeTable.Columns.Count > 0 Then
                 Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, AusgabeTable, Me.Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, AusgabeTable, Page)
             Else
                 Err.Raise(-1, , "Fehler beim Erstellen der Excel-Datei.")
             End If
-
 
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Private Sub grvAusgabe_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles grvAusgabe.Sorting
+    Private Sub grvAusgabe_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles grvAusgabe.Sorting
         CheckGrid()
         FillGrid(grvAusgabe.PageIndex, e.SortExpression)
     End Sub
@@ -219,15 +210,13 @@ Partial Public Class AutUserUpload
     Protected Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
 
         Dim TempTable As DataTable = CType(Session("UploadTable"), DataTable)
-        Dim TempRow As DataRow
 
         Dim blnTestUser As Boolean
         Dim _User As User
-        Dim _customer As New Customer(CInt(ddlFilterCustomer.SelectedItem.Value), m_User.App.Connectionstring)
 
         lblError.Text = ""
 
-        For Each TempRow In TempTable.Rows
+        For Each TempRow As DataRow In TempTable.Rows
             'Wert "ja" unabhängig von Groß-/Kleinschreibung erfassen
             blnTestUser = False
             If TempRow(UploadExcelColumns.TestUser) IsNot Nothing Then
@@ -239,8 +228,8 @@ Partial Public Class AutUserUpload
             _User = New User(-1, _
                               TempRow(UploadExcelColumns.Username), _
                               TempRow(UploadExcelColumns.Reference), _
-                              "", _
-                              "", _
+                              TempRow(UploadExcelColumns.Reference2), _
+                              TempRow(UploadExcelColumns.Reference3), _
                               blnTestUser, _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _
@@ -257,11 +246,11 @@ Partial Public Class AutUserUpload
                               TempRow(UploadExcelColumns.Title), _
                               TempRow(UploadExcelColumns.Store), _
                               False, _
-                              IIf(TempRow(UploadExcelColumns.ValidFrom) Is System.DBNull.Value, String.Empty, TempRow(UploadExcelColumns.ValidFrom)))
+                              IIf(TempRow(UploadExcelColumns.ValidFrom) Is DBNull.Value, String.Empty, TempRow(UploadExcelColumns.ValidFrom)), _
+                              "")
 
-
-            _User.Email = TempRow(UploadExcelColumns.EMailAdress)
-            _User.Telephone = TempRow(UploadExcelColumns.Telephone)
+            _User.Email = TempRow(UploadExcelColumns.EMailAdress).ToString()
+            _User.Telephone = TempRow(UploadExcelColumns.Telephone).ToString()
             If chkRemoteLoginKey.Checked Then
                 _User.UrlRemoteLoginKey = HttpUtility.UrlEncode(Guid.NewGuid().ToString)
             End If
@@ -290,24 +279,16 @@ Partial Public Class AutUserUpload
 
             Dim intOrganizationID As Integer = GetOrganizationID(TempRow(UploadExcelColumns.Organization))
 
-            Dim blnSuccess As Boolean = False
-            Dim pword As String = ""
-            Dim LinkKey As String = ""
-
-
             If _User.Save() Then
-                blnSuccess = True
-
-                pword = _customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
-                blnSuccess = _User.ChangePassword("", pword, pword, m_User.UserName, True)
-
-
                 _User.SetLastLogin(Now)
                 _User.Organization.ReAssignUserToOrganization(m_User.UserName, -1, _User.UserID, intOrganizationID, False, m_User.App.Connectionstring)
 
                 'Linkschlüssel generieren
-                LinkKey = _customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
-                InsertIntoWebUserUpload(_User.UserID, pword, _User.UserName, LinkKey, chkKeineMailsSenden.Checked)
+                Dim confirmationToken As String = UserSecurityService.GenerateToken(_User.UserName)
+                _User.UpdateWebUserPasswordChangeRequestKey(confirmationToken)
+
+                'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
+                InsertIntoWebUserUpload(_User.UserID, HttpUtility.UrlEncode(confirmationToken), chkKeineMailsSenden.Checked, _User.ValidFrom)
 
             Else
                 lblError.Text = _User.ErrorMessage
@@ -345,6 +326,26 @@ Partial Public Class AutUserUpload
                     trRemoteLoginKey.Visible = False
                 End If
                 trKeineMailsSenden.Visible = True
+
+                Dim intCustomerID As Integer = CInt(ddlFilterCustomer.SelectedValue)
+                Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
+
+                ' Referenzfelder
+                If Not String.IsNullOrEmpty(_customer.ReferenceType1) Then
+                    lblRef1.Text = _customer.ReferenceType1Name
+                Else
+                    lblRef1.Text = ""
+                End If
+                If Not String.IsNullOrEmpty(_customer.ReferenceType2) Then
+                    lblRef2.Text = _customer.ReferenceType2Name
+                Else
+                    lblRef2.Text = ""
+                End If
+                If Not String.IsNullOrEmpty(_customer.ReferenceType3) Then
+                    lblRef3.Text = _customer.ReferenceType3Name
+                Else
+                    lblRef3.Text = ""
+                End If
             Else
                 trBenutzerFreigeben.Visible = False
                 trRemoteLoginKey.Visible = False
@@ -365,7 +366,6 @@ Partial Public Class AutUserUpload
         CheckGrid()
 
         Dim TempTable As DataTable = CType(Session("UploadTable"), DataTable)
-
 
         Dim ErrCount As Integer = TempTable.Select("Error = " & True).GetLength(0)
 
@@ -390,7 +390,6 @@ Partial Public Class AutUserUpload
 
         End If
 
-
         If lbtnFreigeben.Text.Contains("Freigeben") = True Then
             FreigabeWebUser()
             lblMessage.Text = "Die Benutzer wurden freigegeben."
@@ -402,11 +401,11 @@ Partial Public Class AutUserUpload
         End If
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
@@ -425,19 +424,15 @@ Partial Public Class AutUserUpload
     '----------------------------------------------------------------------
     Private Sub FillGrid(ByVal PageIndex As Int32, Optional ByVal Sort As String = "")
 
-
-        Dim UploadTable As New DataTable
         Dim Direction As String = String.Empty
 
         If IsNothing(Session("UploadTable")) = False Then
 
-            UploadTable = CType(Session("UploadTable"), DataTable)
+            Dim UploadTable As DataTable = CType(Session("UploadTable"), DataTable)
 
             If UploadTable.Rows.Count > 0 Then
 
-
                 grvAusgabe.Visible = True
-                Dim TempPageIndex As Int32 = PageIndex
 
                 If Sort.Trim(" "c).Length > 0 Then
                     PageIndex = 0
@@ -500,10 +495,7 @@ Partial Public Class AutUserUpload
             lblMessage.Visible = True
         End If
 
-
-
     End Sub
-
 
     Private Sub FillCustomer()
 
@@ -535,12 +527,12 @@ Partial Public Class AutUserUpload
 
     End Sub
 
-    Private Sub Upload(ByVal uFile As System.Web.HttpPostedFile)
+    Private Sub Upload(ByVal uFile As HttpPostedFile)
         Try
 
             Dim filepath As String = ConfigurationManager.AppSettings("UploadpathLocal")
             Dim filename As String
-            Dim info As System.IO.FileInfo
+            Dim info As IO.FileInfo
             Dim TempTable As New DataTable
             filename = m_User.UserName & "_" & Format(Now, "yyyyMMddhhmmss") & ".xls"
 
@@ -549,7 +541,7 @@ Partial Public Class AutUserUpload
             If Not (uFile Is Nothing) Then
                 uFile.SaveAs(ConfigurationManager.AppSettings("UploadpathLocal") & filename)
                 uFile = Nothing
-                info = New System.IO.FileInfo(filepath & filename)
+                info = New IO.FileInfo(filepath & filename)
                 If Not (info.Exists) Then
                     lblError.Text = "Fehler beim Speichern."
                     Exit Sub
@@ -588,14 +580,13 @@ Partial Public Class AutUserUpload
 
         Dim wBook As New Aspose.Cells.Workbook
 
-
         wBook.Open(filepath & filename, Aspose.Cells.FileFormatType.Excel2000)
 
         Dim wSheet As Aspose.Cells.Worksheet = wBook.Worksheets(0)
 
         'x wird hinzugefügt, da über OLEBD nur 8 Zeilen ausgelesen werden,
         'um den Datentyp zu bestimmen. Das führt zu Problemen.
-        For i As Integer = 0 To 10
+        For i As Integer = 0 To 13
             wSheet.Cells(1, i).PutValue("x" & wSheet.Cells(1, i).Value)
         Next
 
@@ -607,9 +598,7 @@ Partial Public Class AutUserUpload
         "Source=" & filepath & filename & ";Extended Properties=""Excel 8.0;HDR=Yes;IMEX=1"""
         Dim conn As New OleDbConnection(strConn)
 
-
         Dim da As New OleDbDataAdapter("Select * From [Tabelle1$]", conn)
-
 
         Dim dt As New DataTable
 
@@ -618,15 +607,13 @@ Partial Public Class AutUserUpload
         'x wieder entfernen 
         Dim Row As DataRow = dt.Rows(0)
 
-        For i As Integer = 0 To 10
+        For i As Integer = 0 To 13
             Row(i) = Mid(Row(i), 2)
         Next
 
         dt.AcceptChanges()
 
-
         Return dt
-
 
     End Function
 
@@ -635,7 +622,7 @@ Partial Public Class AutUserUpload
         Dim Column As New DataColumn
         Dim TempRow As DataRow
 
-        Column.DataType = System.Type.GetType("System.Int32")
+        Column.DataType = Type.GetType("System.Int32")
         Column.ColumnName = "ID"
 
         TempTable.Columns.Add(Column)
@@ -654,6 +641,23 @@ Partial Public Class AutUserUpload
                 blnShowPrefixField = True
             End If
 
+            ' Leerzeichen entfernen
+            If TempRow(UploadExcelColumns.Username) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Username) = TempRow(UploadExcelColumns.Username).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.Title) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Title) = TempRow(UploadExcelColumns.Title).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.Firstname) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Firstname) = TempRow(UploadExcelColumns.Firstname).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.LastName) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.LastName) = TempRow(UploadExcelColumns.LastName).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.EMailAdress) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.EMailAdress) = TempRow(UploadExcelColumns.EMailAdress).ToString().Replace(" ", "")
+            End If
+
             e += 1
         Next
 
@@ -670,18 +674,15 @@ Partial Public Class AutUserUpload
             i += 1
         Next
 
-
         Column = New DataColumn
 
-        Column.DataType = System.Type.GetType("System.Boolean")
+        Column.DataType = Type.GetType("System.Boolean")
         Column.ColumnName = "Error"
         Column.DefaultValue = False
 
         TempTable.Columns.Add(Column)
 
-
         TempTable.AcceptChanges()
-
 
         Session.Add("UploadTable", TempTable)
 
@@ -689,7 +690,6 @@ Partial Public Class AutUserUpload
         lbtnPruefen.Visible = True
         lblMessage.Text = "Bitte überprüfen Sie, ob die Daten in den richtigen Spalten stehen."
         FillGrid(0)
-
 
     End Sub
 
@@ -723,39 +723,28 @@ Partial Public Class AutUserUpload
 
             grvAusgabe.Enabled = False
 
-
         End If
 
         FillGrid(0)
 
     End Sub
 
-    Private Sub InsertIntoWebUserUpload(ByVal UserID As Integer, ByRef PWord As String, ByVal Username As String, ByVal LinkKey As String, Optional ByVal MailversandUnterdruecken As Boolean = False)
+    Private Sub InsertIntoWebUserUpload(ByVal UserID As Integer, ByVal LinkKey As String, ByVal MailversandUnterdruecken As Boolean, ByVal gueltigAb As String)
         Dim cmdInsert As SqlClient.SqlCommand
 
         Using cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
 
             If MailversandUnterdruecken Then
-                cmdInsert = New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,Password,RightUserLink,WrongUserLink,MailSend) Values(@UserID,@Password,@RightUserLink,@WrongUserLink,@MailSend)", cn)
+                cmdInsert = New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,RightUserLink,Gueltigkeitsdatum,MailSend) Values(@UserID,@RightUserLink,@Gueltigkeitsdatum,@MailSend)", cn)
             Else
-                cmdInsert = New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,Password,RightUserLink,WrongUserLink) Values(@UserID,@Password,@RightUserLink,@WrongUserLink)", cn)
+                cmdInsert = New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,RightUserLink,Gueltigkeitsdatum) Values(@UserID,@RightUserLink,@Gueltigkeitsdatum)", cn)
             End If
-
-            Dim RightUser As String
-            Dim WrongUser As String
-            Dim Crypto As New Crypt
-
-            RightUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Right", "sha1")
-            WrongUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Wrong", "sha1")
-
-            PWord = Crypto.psEncrypt(PWord)
 
             With cmdInsert.Parameters
                 .AddWithValue("@UserID", UserID)
-                .AddWithValue("@Password", PWord)
-                .AddWithValue("@RightUserLink", RightUser)
-                .AddWithValue("@WrongUserLink", WrongUser)
+                .AddWithValue("@RightUserLink", LinkKey)
+                .AddWithValue("@Gueltigkeitsdatum", gueltigAb)
                 If MailversandUnterdruecken Then
                     .AddWithValue("@MailSend", 1)
                 End If
@@ -790,7 +779,6 @@ Partial Public Class AutUserUpload
         cn.Dispose()
 
     End Sub
-
 
     Private Sub CheckGrid()
 
@@ -983,7 +971,7 @@ Partial Public Class AutUserUpload
             End If
 
             'Update in der Tabelle
-            RowSet = TempTable.Select("ID = " & GridRow.Cells(13).Text)
+            RowSet = TempTable.Select("ID = " & GridRow.Cells(UploadExcelColumns.ID + 1).Text)
 
             RowSet(0).BeginEdit()
 
@@ -996,7 +984,7 @@ Partial Public Class AutUserUpload
                             RowSet(0)(i) = txt.Text
                         Else
                             If txt.Text = String.Empty Then
-                                RowSet(0)(i) = System.DBNull.Value
+                                RowSet(0)(i) = DBNull.Value
                             Else
                                 RowSet(0)(i) = txt.Text
                             End If
@@ -1017,7 +1005,6 @@ Partial Public Class AutUserUpload
             Session("UploadTable") = TempTable
 
         Next
-
 
     End Sub
 
@@ -1045,16 +1032,12 @@ Partial Public Class AutUserUpload
                 End If
             End If
 
-
-
             'Vorname
             If Row(UploadExcelColumns.Firstname) Is DBNull.Value Then
                 FoundError = True
             ElseIf Trim(Row(UploadExcelColumns.Firstname)).Length = 0 Then
                 FoundError = True
             End If
-
-
 
             'Nachname
             If Row(UploadExcelColumns.LastName) Is DBNull.Value Then
@@ -1142,19 +1125,15 @@ Partial Public Class AutUserUpload
                 End If
             End If
 
-
-
             If FoundError = True Then
                 Row("Error") = CInt(True)
             End If
 
         Next
 
-
         TempTable.AcceptChanges()
 
         Session("UploadTable") = TempTable
-
 
     End Sub
 
@@ -1182,7 +1161,6 @@ Partial Public Class AutUserUpload
         cn.Close()
         cn.Dispose()
 
-
         Return ToolTipText
 
     End Function
@@ -1203,7 +1181,6 @@ Partial Public Class AutUserUpload
 
         cn.Close()
         cn.Dispose()
-
 
         Return ToolTipText
 
@@ -1269,7 +1246,6 @@ Partial Public Class AutUserUpload
         cmdCheckGroupExits.SelectCommand.Parameters.AddWithValue("@Groupname", Groupname)
         cmdCheckGroupExits.SelectCommand.Parameters.AddWithValue("@CustomerID", ddlFilterCustomer.SelectedValue)
 
-
         cmdCheckGroupExits.Fill(TempTable)
 
         cn.Close()
@@ -1312,7 +1288,6 @@ Partial Public Class AutUserUpload
         cmdCheckOrgExits.SelectCommand.Parameters.AddWithValue("@Organizationname", OrgName)
         cmdCheckOrgExits.SelectCommand.Parameters.AddWithValue("@CustomerID", ddlFilterCustomer.SelectedValue)
 
-
         cmdCheckOrgExits.Fill(TempTable)
 
         cn.Close()
@@ -1340,7 +1315,6 @@ Partial Public Class AutUserUpload
 
         lblError.Text = String.Empty
 
-
         SQL = " SELECT "
         SQL = SQL & "   COUNT(dbo.WebUser.UserID) AS AnzahlUser,"
         SQL = SQL & "   dbo.Customer.MaxUser"
@@ -1357,7 +1331,6 @@ Partial Public Class AutUserUpload
         cmdMaxUser = New SqlClient.SqlDataAdapter(SQL, cn)
         cmdMaxUser.SelectCommand.Parameters.AddWithValue("@CustomerID", ddlFilterCustomer.SelectedValue)
 
-
         cmdMaxUser.Fill(TempTable)
 
         cn.Close()
@@ -1372,8 +1345,6 @@ Partial Public Class AutUserUpload
         Else
             Return False
         End If
-
-
 
     End Function
 
@@ -1398,7 +1369,5 @@ Partial Public Class AutUserUpload
     End Function
 
 #End Region
-
-
 
 End Class
