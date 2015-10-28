@@ -211,13 +211,18 @@ namespace DocumentTools.Services
             xlsDoc.Workbook.Save(reportName + ".xls", FileFormatType.Excel2003, SaveType.OpenInExcel, HttpContext.Current.Response);
         }
 
-        public void CreateExcelDocumentAsPDFAndSendAsResponse(string reportName, DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle = true, bool landscapeOrientation = false)
+        public void CreateExcelDocumentAsPDFAndSendAsResponse(string reportName, DataTable data, bool useSmartMarker = false, string excelTemplatePath = null, int colOffSet = 0, int rowOffSet = 0, bool doAlternatingRowStyle = true, bool landscapeOrientation = false, bool fitToPageWidth = true)
         {
             var xlsDoc = CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet, doAlternatingRowStyle);
 
-            if (landscapeOrientation)
-                foreach (Worksheet sheet in xlsDoc.Workbook.Worksheets)
+            foreach (Worksheet sheet in xlsDoc.Workbook.Worksheets)
+            {
+                if (landscapeOrientation)
                     sheet.PageSetup.Orientation = PageOrientationType.Landscape;
+
+                if (fitToPageWidth)
+                    sheet.PageSetup.FitToPagesWide = 1;
+            }
 
             var ms = new MemoryStream();
             xlsDoc.Workbook.Save(ms, FileFormatType.AsposePdf);
