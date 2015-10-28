@@ -75,6 +75,7 @@ namespace DocumentTools.Services
 
                 xgr.DrawImage(img, 0, 0, img.Size.Width, img.Size.Height);
                 xgr.Dispose();
+                img.Dispose();
 
                 imageCount++;
             }
