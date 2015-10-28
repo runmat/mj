@@ -333,6 +333,7 @@ Partial Public Class UserUnlock
         txtLastName.Text = _User.LastName
         txtStore.Text = _User.Store
         txtValidFrom.Text = _User.ValidFrom
+        txtValidTo.Text = _User.ValidTo
         PasswordEditMode(Not _User.Customer.CustomerPasswordRules.DontSendEmail, m_User.HighestAdminLevel > AdminLevel.Organization)
 
         If _User.IsSuperiorTo(m_User) Then
@@ -396,6 +397,7 @@ Partial Public Class UserUnlock
         txtLastName.Text = String.Empty
         txtStore.Text = String.Empty
         txtValidFrom.Text = String.Empty
+        txtValidTo.Text = String.Empty
         LockEdit(False)
     End Sub
 
@@ -436,7 +438,8 @@ Partial Public Class UserUnlock
         txtStore.BackColor = System.Drawing.Color.FromName(strBackColor)
         txtValidFrom.Enabled = Not blnLock
         txtValidFrom.BackColor = System.Drawing.Color.FromName(strBackColor)
-
+        txtValidTo.Enabled = Not blnLock
+        txtValidTo.BackColor = System.Drawing.Color.FromName(strBackColor)
 
 
         'cbxAccountIsLockedOut.Enabled = True
@@ -650,6 +653,7 @@ Partial Public Class UserUnlock
                 txtLastName.Enabled = False
                 txtStore.Enabled = False
                 txtValidFrom.Enabled = False
+                txtValidTo.Enabled = False
                 cbxFirstLevelAdmin.Enabled = False
                 chk_Matrix1.Enabled = False
                 chkLoggedOn.Enabled = False
@@ -738,7 +742,8 @@ Partial Public Class UserUnlock
                                                   cbxApproved.Checked, _
                                                   txtStore.Text, _
                                                   chk_Matrix1.Checked, _
-                                                  txtValidFrom.Text)
+                                                  txtValidFrom.Text, _
+                                                  txtValidTo.Text)
             Else
                 _User = New User(CInt(txtUserID.Text), _
                                                   txtUserName.Text, _
@@ -761,7 +766,8 @@ Partial Public Class UserUnlock
                                                   ddlTitle.SelectedItem.Value, _
                                                   txtStore.Text, _
                                                   chk_Matrix1.Checked, _
-                                                  txtValidFrom.Text)
+                                                  txtValidFrom.Text, _
+                                                  txtValidTo.Text)
             End If
             If chkNewPasswort.Checked = True _
               OrElse txtPassword.Text <> String.Empty Then

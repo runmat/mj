@@ -1,0 +1,27 @@
+﻿@model CkgCommonViewModel
+
+<br/>
+<div class="row-fluid margin-top-20">
+    @foreach (var contact in Model.CustomerGroupContacts)
+    {
+        <div class="contact-blocks">
+            <table>
+                <tr>
+                    <td>
+                        @if (Model.ContactImageUrlAvailable(contact))
+                        {
+                            <div class="contact-img">
+                                <img src="@Model.GetContactImageUrl(contact)" alt=""/>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        <div class="contact-info">
+                            @Html.Partial("Partial/CustomerGroupContactInfo", contact)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>    
+    }
+</div>

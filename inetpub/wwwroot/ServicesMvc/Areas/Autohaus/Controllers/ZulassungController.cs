@@ -13,6 +13,7 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -439,7 +440,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult AuslieferAdressen()
         {
-            return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+            return PartialView("Partial/AuslieferAdressen", ViewModel.GetAuslieferAdressenModel());
         }
 
         [HttpPost]
@@ -449,45 +450,58 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        public ActionResult AuslieferAdressenForm(AuslieferAdressen model)
         {
-            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            var selectedPartnerRolle = Request["SelectedPartnerRolle"];
+            var selectedAddressId = Request["SelectedAddressId"];
+
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+
+            if (selectedPartnerRolle.IsNotNullOrEmpty() && selectedAddressId.IsNotNullOrEmpty())
             {
-                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
-                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+
+                var tmpAdresse = ViewModel.GetAuslieferadresse(selectedAddressId);
+
+                if (tmpAdresse == null)
                     return new EmptyResult();
 
                 ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+
+                switch (selectedPartnerRolle)
+                {
+                    case "Z7":
+                        model.AuslieferAdresseZ7.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+                        break;
+
+                    case "Z8":
+                        model.AuslieferAdresseZ8.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+                        break;
+
+                    case "Z9":
+                        model.AuslieferAdresseZ9.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+                        break;
+                }
+
+                ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.GetAuslieferAdressenModel()); 
             }
 
-            if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
-            {
-                ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
-                ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
-            }
+            ModelState.Clear();
 
-            if (ModelState.IsValid)
-                ViewModel.SetAuslieferAdresse(model);
+            ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+            model.Materialien = AuslieferAdresse.AlleMaterialien;
 
-            // Auslieferadressen sind optional
-            if (!model.HasData)
-                ModelState.Clear();
-
-            model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
-            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
-
-            ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
-            ModelState.SetModelValue("TmpSaveAddressOnly", false);
+            // Validierung
+            model.IsValid = ViewModel.ValidateAuslieferAdressenForm(ModelState.AddModelError, model);
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
-
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
