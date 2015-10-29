@@ -70,6 +70,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Themes.Office2010Black.v11.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.XtraEditors.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.2.Design">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.XtraEditors.v11.2.Design.dll</HintPath>
+    </Reference>
     <Reference Include="DevXPressTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\DevExpressWPF\DevXPressTools.dll</HintPath>
@@ -98,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ucGitBranchInfoItems.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

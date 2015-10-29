@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\Aspose.Cells.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Data.v11.2.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\..\GAC\EntityFramework.dll</HintPath>
     </Reference>

@@ -62,28 +62,29 @@
         </StackPanel>
 
         <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
-                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0"
+                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0" 
                          dx:ThemeManager.ThemeName="Office2007Silver">
             <dxg:GridControl.Resources>
-                <DataTemplate x:Key="GitBranchInfoItemsTemplate" DataType="{x:Type models:GitBranchInfoListItems}">
+                <DataTemplate x:Key="GitBranchInfoItemsTemplatePortalListe" DataType="{x:Type models:GitBranchInfoListItems}">
                     <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.PortalBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </DataTemplate>
-                <ControlTemplate x:Key="GitBranchInfoItemsEditTemplate">
-                    <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.PortalBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                </ControlTemplate>
+                <DataTemplate x:Key="GitBranchInfoItemsTemplateServerListe" DataType="{x:Type models:GitBranchInfoListItems}">
+                    <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.ServerBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                </DataTemplate>
             </dxg:GridControl.Resources>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
                 <dxg:GridColumn FieldName="PM" Width="30" />
-                <dxg:GridColumn FieldName="Anwendung" />
+                <dxg:GridColumn FieldName="Anwendung" Width="80" />
+                <dxg:GridColumn FieldName="Bemerkung" Width="Auto" />
 
-                <dxg:GridColumn FieldName="PortalBoolListe" Header="Portale" Width="150" 
-                                AllowEditing="True"
-                                CellTemplate="{StaticResource GitBranchInfoItemsTemplate}" 
-                                EditTemplate="{StaticResource GitBranchInfoItemsEditTemplate}" />
+                <dxg:GridColumn FieldName="PortalListe" Header="Portale" Width="160" AllowEditing="False"
+                                CellTemplate="{StaticResource GitBranchInfoItemsTemplatePortalListe}" />
 
-                <dxg:GridColumn FieldName="Bemerkung" AllowBestFit="True" BestFitMode="VisibleRows" />
+                <dxg:GridColumn FieldName="ServerListe" Header="Server" Width="150" AllowEditing="False"
+                                CellTemplate="{StaticResource GitBranchInfoItemsTemplateServerListe}" />
+
                 <dxg:GridColumn FieldName="ImTestSeit" Header="Test seit" Width="80" />
                 <dxg:GridColumn FieldName="FreigegebenDurch" Header="Freigabe von" Width="80" />
                 <dxg:GridColumn FieldName="ProduktivSeit" Header="Prod. seit" Width="80" />

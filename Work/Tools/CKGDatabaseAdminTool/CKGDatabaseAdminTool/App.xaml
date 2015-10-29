@@ -5,6 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles.xaml" />
+                
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Office2010/Silver.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Converters.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Images.xaml" />

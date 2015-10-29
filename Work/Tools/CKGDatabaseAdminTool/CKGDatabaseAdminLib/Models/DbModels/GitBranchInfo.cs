@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using System.Linq;
 using CKGDatabaseAdminLib.ViewModels;
+using DevExpress.XtraEditors.DXErrorProvider;
 using GeneralTools.Models;
 using GeneralTools.Services;
 
 namespace CKGDatabaseAdminLib.Models
 {
     [Table("GitBranchInfo")]
-    public class GitBranchInfo : DbModelBase
+    public class GitBranchInfo : DbModelBase, IDXDataErrorInfo
     {
         private int _id;
         [Key]
@@ -178,58 +180,74 @@ namespace CKGDatabaseAdminLib.Models
             }
         }
 
+        [GridExportIgnore]
         public string PortalListe { get; set; }
 
         private GitBranchInfoListItems _portalBoolListe;
 
-        [NotMapped]
+        [NotMapped, GridExportIgnore]
         public GitBranchInfoListItems PortalBoolListe
         {
             get
             {
-                if (PortalListe.IsNullOrEmpty())
-                    PortalBoolListe = new GitBranchInfoListItems
-                    {
-                        new GitBranchInfoListItem { Key = "Portal" },
-                        new GitBranchInfoListItem { Key = "Services" },
-                        new GitBranchInfoListItem { Key = "MVC" },
-                    };
+                if (_portalBoolListe != null)
+                    return _portalBoolListe;
 
-                _portalBoolListe = XmlService.XmlDeserializeFromString<GitBranchInfoListItems>(PortalListe);
+                if (PortalListe.IsNullOrEmpty())
+                    _portalBoolListe = new GitBranchInfoListItems
+                    {
+                        new GitBranchInfoListItem { Key = "MVC" },
+                        new GitBranchInfoListItem { Key = "Services" },
+                        new GitBranchInfoListItem { Key = "Portal" },
+                    };
+                else
+                    _portalBoolListe = XmlService.XmlDeserializeFromString<GitBranchInfoListItems>(XmlService.DecompressString(PortalListe));
+
                 _portalBoolListe.ForEach(e => e.OnChange = PortalBoolListeOnChange);
 
                 return _portalBoolListe;
-            }
-            set
-            {
-                if (_portalBoolListe == value)
-                    return;
-
-                _portalBoolListe = value;
-                PortalListe = XmlService.XmlSerializeToString(value);
-
-                //OnPropertyChanged("PortalBoolListe");
             }
         }
 
         public void PortalBoolListeOnChange(GitBranchInfoListItem listItem)
         {
-            
+            PortalListe = XmlService.CompressString(XmlService.XmlSerializeToString(PortalBoolListe));
+            OnPropertyChanged("Name");
         }
 
-        private string _serverListe;
+        [GridExportIgnore]
+        public string ServerListe { get; set; }
 
-        public string ServerListe
+        private GitBranchInfoListItems _serverBoolListe;
+
+        [NotMapped, GridExportIgnore]
+        public GitBranchInfoListItems ServerBoolListe
         {
-            get { return _serverListe; }
-            set
+            get
             {
-                if (_serverListe == value)
-                    return;
+                if (_serverBoolListe != null)
+                    return _serverBoolListe;
 
-                _serverListe = value;
-                OnPropertyChanged("ServerListe");
+                if (ServerListe.IsNullOrEmpty())
+                    _serverBoolListe = new GitBranchInfoListItems
+                    {
+                        new GitBranchInfoListItem { Key = "SGW" },
+                        new GitBranchInfoListItem { Key = "ON" },
+                        new GitBranchInfoListItem { Key = "Partner" },
+                    };
+                else
+                    _serverBoolListe = XmlService.XmlDeserializeFromString<GitBranchInfoListItems>(XmlService.DecompressString(ServerListe));
+
+                _serverBoolListe.ForEach(e => e.OnChange = ServerBoolListeOnChange);
+
+                return _serverBoolListe;
             }
+        }
+
+        public void ServerBoolListeOnChange(GitBranchInfoListItem listItem)
+        {
+            ServerListe = XmlService.CompressString(XmlService.XmlSerializeToString(ServerBoolListe));
+            OnPropertyChanged("Name");
         }
 
         [NotMapped]
@@ -246,8 +264,41 @@ namespace CKGDatabaseAdminLib.Models
                     Anwendung = "ServicesMvc";
             }
         }
-    }
 
+        public void GetPropertyError(string propertyName, ErrorInfo info)
+        {
+            switch (propertyName)
+            {
+                case "Name":
+                    ValidatePortalAndServer(info);
+                    break;
+            }
+        }
+
+        public void GetError(ErrorInfo info)
+        {
+            ValidatePortalAndServer(info);
+        }
+
+        private void ValidatePortalAndServer(ErrorInfo info)
+        {
+            var error = "";
+
+            if (PortalBoolListe.None(e => e.IsChecked))
+                error += "Bitte mindestens ein Portal angeben. ";
+
+            if (ServerBoolListe.None(e => e.IsChecked))
+                error += "Bitte mindestens einen Server angeben. ";
+
+            SetErrorInfo(info, error, ErrorType.Critical);
+        }
+
+        static void SetErrorInfo(ErrorInfo info, string errorText, ErrorType errorType)
+        {
+            info.ErrorText = errorText;
+            info.ErrorType = errorType;
+        }
+    }
 
     public class GitBranchInfoListItem : DbModelBase
     {
@@ -267,9 +318,9 @@ namespace CKGDatabaseAdminLib.Models
             }
         }
 
-        private string _isChecked;
+        private bool _isChecked;
 
-        public string IsChecked
+        public bool IsChecked
         {
             get { return _isChecked; }
             set
