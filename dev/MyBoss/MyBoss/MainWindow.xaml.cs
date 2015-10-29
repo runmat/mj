@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using WpfTools4.Services;
-using Point = System.Drawing.Point;
 
 namespace MyBoss
 {
@@ -25,7 +24,6 @@ namespace MyBoss
         {
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += _listener_OnKeyPressed;
-
             _listener.HookKeyboard();
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
@@ -38,31 +36,71 @@ namespace MyBoss
             Hide();
         }
 
-        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
+        bool _listener_OnKeyPressed(KeyPressedArgs e)
         {
-            TryCheckAction(e, ref _lastTicks1, Key.LeftCtrl, () =>
+            if (TryCheckCtrlAltKeyPressAction(e, Key.T, () =>
+                    {
+                        notifyIcon_Click(null, null);
+                        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "todo.txt"));
+                    }))
+                return true;
+
+            if (TryCheckCtrlAltKeyPressAction(e, Key.G, () =>
+                    {
+                        var pi = new ProcessStartInfo
+                        {
+                            FileName = @"C:\Program Files (x86)\Git\bin\sh.exe",
+                            Arguments = "--login -i",
+                            WorkingDirectory = @"c:\dev"
+                        };
+                        Process.Start(pi);
+                    }))
+                return false;
+
+            if (TryCheckCtrlAltKeyPressAction(e, Key.C, () =>
+                    {
+                        Clipboard.SetText("seE17igEl");
+                    }))
+                return false;
+
+            
+
+            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks1, Key.LeftAlt, () =>
             {
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
                 new FakeWindow("fake_wallpaper.png").Show();
             });
 
-            TryCheckAction(e, ref _lastTicks2, Key.LeftShift, () =>
+            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks2, Key.LeftShift, () =>
             {
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
                 new FakeWindow("fake_lockscreen.png").Show();
             });
 
-            TryCheckAction(e, ref _lastTicks3, Key.RightCtrl, () =>
+            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks3, Key.RightCtrl, () =>
             {
                 notifyIcon_Click(null, null);
             });
 
-            TryCheckAction(e, ref _lastTicks4, Key.RightShift, Close);
+            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks4, Key.RightShift, Close);
+
+            return false;
         }
 
-        static void TryCheckAction(KeyPressedArgs e, ref double lastTicks, Key key, Action action)
+        static bool TryCheckCtrlAltKeyPressAction(KeyPressedArgs e, Key key, Action action)
+        {
+            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt) && e.KeyPressed == key))
+                return false;
+
+            action();
+
+            Thread.Sleep(1000);
+            return true;
+        }
+
+        static void TryCheckDoubleTimeKeyPressAction(KeyPressedArgs e, ref double lastTicks, Key key, Action action)
         {
             if (e.KeyPressed != key)
             {
@@ -93,7 +131,7 @@ namespace MyBoss
             _t = new System.Windows.Forms.Timer
             {
                 Enabled = true,
-                Interval = 3000
+                Interval = 2000
             };
             _t.Tick += T_Tick;
         }

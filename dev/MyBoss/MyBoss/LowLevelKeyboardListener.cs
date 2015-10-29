@@ -26,7 +26,7 @@ namespace MyBoss
 
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        public event EventHandler<KeyPressedArgs> OnKeyPressed;
+        public Func<KeyPressedArgs, bool> OnKeyPressed;
 
         private readonly LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
@@ -62,7 +62,9 @@ namespace MyBoss
 
             var vkCode = Marshal.ReadInt32(lParam);
 
-            if (OnKeyPressed != null) { OnKeyPressed(this, new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
+            if (OnKeyPressed != null)
+                if (OnKeyPressed(new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(vkCode))))
+                    return (IntPtr)0;
 
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
