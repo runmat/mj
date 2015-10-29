@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="CKGDatabaseAdminTool.UserControls.ucGitBranchInfoItems"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
+             mc:Ignorable="d" d:DesignWidth="400">
+
+    <StackPanel Orientation="Horizontal">
+        <TextBlock Foreground="Red" Text="Test" Visibility="Collapsed" />
+        <TextBlock Foreground="Red" Text="{Binding DataContext}" />
+        <ItemsControl Style="{StaticResource ItemsControlHorizontal}" ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="models:GitBranchInfoListItem">
+                
+                    <CheckBox Content="{Binding Key}" IsChecked="{Binding IsChecked}" Margin="10,0,0,0" VerticalContentAlignment="Center" VerticalAlignment="Center" />
+                
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

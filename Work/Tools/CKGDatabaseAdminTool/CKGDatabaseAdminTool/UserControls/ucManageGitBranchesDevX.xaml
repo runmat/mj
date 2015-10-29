@@ -10,6 +10,7 @@
           xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
           xmlns:ckgDatabaseAdminTool="clr-namespace:CKGDatabaseAdminTool"
           xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+          xmlns:generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
 
@@ -63,11 +64,25 @@
         <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
                          Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0"
                          dx:ThemeManager.ThemeName="Office2007Silver">
+            <dxg:GridControl.Resources>
+                <DataTemplate x:Key="GitBranchInfoItemsTemplate" DataType="{x:Type models:GitBranchInfoListItems}">
+                    <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.PortalBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                </DataTemplate>
+                <ControlTemplate x:Key="GitBranchInfoItemsEditTemplate">
+                    <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.PortalBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                </ControlTemplate>
+            </dxg:GridControl.Resources>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
                 <dxg:GridColumn FieldName="PM" Width="30" />
                 <dxg:GridColumn FieldName="Anwendung" />
+
+                <dxg:GridColumn FieldName="PortalBoolListe" Header="Portale" Width="150" 
+                                AllowEditing="True"
+                                CellTemplate="{StaticResource GitBranchInfoItemsTemplate}" 
+                                EditTemplate="{StaticResource GitBranchInfoItemsEditTemplate}" />
+
                 <dxg:GridColumn FieldName="Bemerkung" AllowBestFit="True" BestFitMode="VisibleRows" />
                 <dxg:GridColumn FieldName="ImTestSeit" Header="Test seit" Width="80" />
                 <dxg:GridColumn FieldName="FreigegebenDurch" Header="Freigabe von" Width="80" />

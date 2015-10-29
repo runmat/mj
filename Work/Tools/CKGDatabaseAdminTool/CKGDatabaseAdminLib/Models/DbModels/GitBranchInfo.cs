@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Serialization;
 using CKGDatabaseAdminLib.ViewModels;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CKGDatabaseAdminLib.Models
 {
@@ -175,6 +178,60 @@ namespace CKGDatabaseAdminLib.Models
             }
         }
 
+        public string PortalListe { get; set; }
+
+        private GitBranchInfoListItems _portalBoolListe;
+
+        [NotMapped]
+        public GitBranchInfoListItems PortalBoolListe
+        {
+            get
+            {
+                if (PortalListe.IsNullOrEmpty())
+                    PortalBoolListe = new GitBranchInfoListItems
+                    {
+                        new GitBranchInfoListItem { Key = "Portal" },
+                        new GitBranchInfoListItem { Key = "Services" },
+                        new GitBranchInfoListItem { Key = "MVC" },
+                    };
+
+                _portalBoolListe = XmlService.XmlDeserializeFromString<GitBranchInfoListItems>(PortalListe);
+                _portalBoolListe.ForEach(e => e.OnChange = PortalBoolListeOnChange);
+
+                return _portalBoolListe;
+            }
+            set
+            {
+                if (_portalBoolListe == value)
+                    return;
+
+                _portalBoolListe = value;
+                PortalListe = XmlService.XmlSerializeToString(value);
+
+                //OnPropertyChanged("PortalBoolListe");
+            }
+        }
+
+        public void PortalBoolListeOnChange(GitBranchInfoListItem listItem)
+        {
+            
+        }
+
+        private string _serverListe;
+
+        public string ServerListe
+        {
+            get { return _serverListe; }
+            set
+            {
+                if (_serverListe == value)
+                    return;
+
+                _serverListe = value;
+                OnPropertyChanged("ServerListe");
+            }
+        }
+
         [NotMapped]
         public bool Erledigt { get { return (Deaktiviert || (ImMaster && ProduktivSeit.HasValue)); } }
 
@@ -189,5 +246,45 @@ namespace CKGDatabaseAdminLib.Models
                     Anwendung = "ServicesMvc";
             }
         }
+    }
+
+
+    public class GitBranchInfoListItem : DbModelBase
+    {
+        [XmlIgnore]
+        public Action<GitBranchInfoListItem> OnChange { get; set; }
+
+
+        private string _key;
+
+        public string Key
+        {
+            get { return _key; }
+            set
+            {
+                _key = value;
+                OnPropertyChanged("Key");
+            }
+        }
+
+        private string _isChecked;
+
+        public string IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged("IsChecked");
+
+                if (OnChange != null)
+                    OnChange(this);
+            }
+        }
+    }
+
+    public class GitBranchInfoListItems : List<GitBranchInfoListItem>
+    {
+        
     }
 }
