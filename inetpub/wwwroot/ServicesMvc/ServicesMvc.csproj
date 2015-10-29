@@ -422,6 +422,7 @@
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\switch-2.png" />
@@ -434,6 +435,7 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
+    <Content Include="Teamviewer-Support.zip" />
     <Content Include="Documents\Templates\UploadZb2Versand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1096,9 +1098,8 @@
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsDetails.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsCommandBar.cshtml" />
     <Content Include="Views\Fahrer\FotoUpload.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadNew.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadEdit.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadNew.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadEdit.cshtml" />
     <Content Include="Views\Fahrer\QmReport.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Results.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Filter.cshtml" />
@@ -2973,6 +2974,12 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadEdit.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollArchivierung.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\Grid.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\ProtokollEdit.cshtml" />
     <Content Include="Views\Finance\ReportVersendungen.cshtml" />
     <Content Include="Views\Finance\Versendungen\Grid.cshtml" />
     <Content Include="Views\Finance\Versendungen\Suche.cshtml" />
@@ -3027,6 +3034,9 @@
     <Content Include="Views\Verbandbuch\Report.cshtml" />
     <Content Include="Views\Verbandbuch\Partial\Grid.cshtml" />
     <Content Include="Views\Verbandbuch\Partial\FormErfassung.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContacts.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContactInfo.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPageHeader.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSuche.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSucheForm.cshtml" />
     <Content Include="Views\Equi\Briefversand\Stueckliste.cshtml" />

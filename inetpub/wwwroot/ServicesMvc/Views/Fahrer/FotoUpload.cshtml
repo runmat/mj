@@ -1,7 +1,7 @@
 ﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
 
 @Html.Partial("Partial/Common")
-@Html.Partial("Partial/FotoUpload/UploadScripts")
+@Html.Partial("Partial/Upload/UploadScripts")
 
 <style type="text/css">
     .form-horizontal .control-label { width: 70px; float: left;padding-top: 5px; text-align: left; }
@@ -16,8 +16,11 @@
 
 @Html.IeWarning(8)
 
+<div id="loading-hint" class="alert warning"><i class="icon-bell margin-right-10"></i> <span>@Localize.PleaseWait</span></div>
+
+
 <form action="#" class="form-horizontal">
-    @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrten.ToSelectList(), new { @class = "m-wrap xlarge" })
+    @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrtenForLoading.ToSelectList(), new { @class = "m-wrap xlarge" })
     
     @Html.SpanAlert("InfoMessage")
 </form>
@@ -31,10 +34,10 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1_1">
-                @Html.Partial("Partial/FotoUpload/UploadNew", Model)
+                @Html.Partial("Partial/Upload/FotoUpload/UploadNew", Model)
             </div>               
             <div class="tab-pane" id="tab_1_2">
-                @Html.Partial("Partial/FotoUpload/UploadEdit", Model)
+                @Html.Partial("Partial/Upload/FotoUpload/UploadEdit", Model)
             </div>               
         </div>
     </div>
@@ -44,14 +47,53 @@
 
     function FormPreparePrivate() {
         InitUploadControl();
-        InitDropDownList();
-    }
-    
-    function ShowHideAuftragsFotoDiv(cb) {
-        if (cb.val() == "-") $("#auftrags-fotos").fadeOut(300); else $("#auftrags-fotos").fadeIn(300); 
+        //InitDropDownList();
+        LoadFahrerAuftragsFahrten();
     }
 
-    function InitDropDownList() {
+    function LoadFahrerAuftragsFahrten() {
+
+        $(".control-group").hide();
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "LoadFahrerAuftragsFahrten",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                $("#loading-hint").hide();
+                $(".control-group").show();
+
+                if (result.errorMessage != "") {
+                    SpanAlertError("InfoMessage", result.errorMessage, 5000);
+                    return;
+                }
+
+                InitDropDownList(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+    }
+
+    function ShowHideAuftragsFotoDiv(cb) {
+        if (cb.val() == "-" || cb.val() == "@Localize.DropdownDefaultOptionPleaseChoose.ToJavascriptString()" || cb.val() == null)
+            $("#auftrags-fotos").fadeOut(300);
+        else
+            $("#auftrags-fotos").fadeIn(300);
+    }
+
+    function InitDropDownList(result) {
+
+        var fahrtKeys = result.fahrtKeys.split("~");
+        var fahrtNamen = result.fahrtNamen.split("~");
+        var i;
+        $("#SelectedFahrerAuftragsKey").empty();
+        for (i = 0; i < fahrtNamen.length; i++) {
+            $("#SelectedFahrerAuftragsKey").append($("<option></option>").val(fahrtKeys[i]).html(fahrtNamen[i]));
+        };
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
         
@@ -59,6 +101,9 @@
             var cb = $(this);
 
             ShowHideAuftragsFotoDiv(cb);
+
+            if (cb.val() == null)
+                return;
 
             ShowWaitHintUploadedTab();
 
@@ -88,8 +133,9 @@
     function OnTabUploadedImagesActivated() {
 
         ShowWaitHintUploadedTab();
-        
+
         $.ajax({
+            cache: false,
             type: "POST",
             url: "GetUploadedImageFilesPartial",
             data: {},
@@ -288,7 +334,7 @@
             });
         }).on('fileuploadfail', function (e, data) {
             $.each(data.files, function (index, file) {
-                var error = $('<span class="text-danger"/>').text('File upload failed.');
+                var error = $('<span class="text-danger"/>').text('Foto Upload fehlgeschlagen.');
                 $(data.context.children()[index])
                 .append('<br>')
                 .append(error);
