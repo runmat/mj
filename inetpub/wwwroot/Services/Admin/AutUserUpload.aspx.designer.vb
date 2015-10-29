@@ -203,6 +203,33 @@ Partial Public Class AutUserUpload
     Protected WithEvents Panel1 As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
+    '''lblRef1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblRef1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblRef2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblRef2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblRef3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblRef3 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''btnEmpty-Steuerelement
     '''</summary>
     '''<remarks>

@@ -499,6 +499,35 @@
                                                                     <td class="" valign="top" nowrap align="right">
                                                                         &nbsp;</td>
                                                                 </tr>
+
+                                                                <tr>
+                                                                    <td class="TaskTitle" colspan="8">
+                                                                        <asp:Label ID="Label4" runat="server">Treuhanddaten</asp:Label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="" valign="center" nowrap align="left" width="152">
+                                                                        <asp:Label ID="Label5" runat="server">Treuhandsperre:</asp:Label>
+                                                                    </td>
+                                                                    <td class="" valign="top" nowrap align="right">
+                                                                        <asp:CheckBox ID="cbTreuhandsperre" runat="server" Enabled="False" />
+                                                                    </td>
+                                                                    <td class="" valign="center" nowrap align="left">
+                                                                    </td>
+                                                                    <td class="" valign="center" nowrap align="left">
+                                                                        Treugeber:
+                                                                    </td>
+                                                                    <td class="" valign="top" nowrap align="right">
+                                                                        <asp:Label ID="lbTreugeber" runat="server"></asp:Label><br />
+                                                                    </td>
+                                                                    <td class="" valign="center" nowrap align="left">
+                                                                        &nbsp;
+                                                                    </td>
+                                                                    <td class="" valign="center" nowrap align="left">
+                                                                        &nbsp;</td>
+                                                                    <td class="" valign="top" nowrap align="right">
+                                                                        &nbsp;</td>
+                                                                </tr>
                                                             </table>
                                                         </td>
                                                     </tr>
@@ -750,31 +779,22 @@
 
 													<tr id="trZweit" runat="server" >
                                                         <td valign="top" align="left" width="760px">
-                                                            <table id="Table6" cellspacing="0" cellpadding="5" width="50%" bgcolor="white" border="0">
+                                                            <table id="Table6" cellspacing="0" cellpadding="5" width="760px" bgcolor="white" border="0"  style="width:100%">
                                                                 <tr>
-                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left">
+                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left" style="width:100px">
                                                                         <asp:Label ID="Label8" runat="server">Fahrgestellnummer</asp:Label>
                                                                         :</td>
-                                                                    <td class="StandardTableAlternate" valign="top" nowrap align="right">
+                                                                    <td class="StandardTableAlternate" valign="top" nowrap align="right" style="width:100px">
                                                                         <asp:Label ID="lblFahrgestellnummer" runat="server"></asp:Label>
                                                                     </td>
-                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left">
+                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left" style="width:20px">
                                                                         &nbsp;&nbsp;&nbsp;
                                                                     </td>
-                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left">
+                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left" style="width:100px">
                                                                         <asp:Label ID="Label10" runat="server" CssClass="StandardTableAlternate">Eingang Schlüssel</asp:Label>
                                                                         :</td>
-                                                                    <td class="StandardTableAlternate" valign="top" nowrap align="right">
+                                                                    <td class="StandardTableAlternate" valign="top" nowrap align="right" style="width:100px">
                                                                         <asp:Label ID="lblEingangSchluessel" runat="server"></asp:Label>
-                                                                    </td>
-                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left">
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                    </td>
-                                                                    <td class="style3" valign="center" nowrap align="left">
-                                                                        &nbsp;
-                                                                    </td>
-                                                                    <td valign="top" nowrap align="left">
-                                                                       &nbsp;
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -787,12 +807,6 @@
                                                                     <td class="TaskTitle" valign="center" nowrap align="left">
                                                                         &nbsp;</td>
                                                                     <td class="TaskTitle" valign="top" nowrap align="right">
-                                                                        &nbsp;</td>
-                                                                    <td class="TaskTitle" valign="center" nowrap align="left">
-                                                                        &nbsp;</td>
-                                                                    <td class="style3" valign="center" nowrap align="left">
-                                                                        &nbsp;</td>
-                                                                    <td class="" valign="top" nowrap align="right">
                                                                         &nbsp;</td>
                                                                 </tr>
                                                                 <tr>
@@ -812,13 +826,6 @@
                                                                     <td class="" valign="top" nowrap align="right">
                                                                         
                                                                     </td>
-                                                                    <td class="" valign="center" nowrap align="left">
-                                                                        &nbsp;
-                                                                    </td>
-                                                                    <td class="style3" valign="center" nowrap align="left">
-                                                                        &nbsp;</td>
-                                                                    <td class="" valign="top" nowrap align="right">
-                                                                        &nbsp;</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="StandardTableAlternate" valign="top" align="left" >
@@ -834,12 +841,6 @@
                                                                     <td class="StandardTableAlternate" valign="top" nowrap align="right">
                                                                         <br />
                                                                     </td>
-                                                                    <td class="StandardTableAlternate" valign="center" nowrap align="left">
-                                                                        &nbsp;</td>
-                                                                    <td class="style3" valign="center" nowrap align="left">
-                                                                        &nbsp;</td>
-                                                                    <td class="" valign="top" nowrap align="right">
-                                                                        &nbsp;</td>
                                                                 </tr>
                                                             </table>
                                                         </td>

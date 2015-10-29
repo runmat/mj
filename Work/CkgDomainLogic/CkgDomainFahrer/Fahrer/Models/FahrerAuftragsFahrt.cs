@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using CkgDomainLogic.Fahrer.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using GeneralTools.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrer.Models
 {
-    public class FahrerAuftragsFahrt
+    public class FahrerAuftragsFahrt : IFahrerAuftragsFahrt
     {
         [LocalizedDisplay(LocalizeConstants.OrderID)]
         public string AuftragsNr { get; set; }
@@ -16,11 +16,9 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string AuftragsNrFriendly { get { return AuftragsNr.NotNullOrEmpty().TrimStart('0'); } }
 
-        [SelectListKey]
         [GridHidden]
-        public string UniqueKey { get { return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), FahrtNr.NotNullOrEmpty()); } }
+        public string UniqueKey { get { return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty()); } }
 
-        [SelectListText]
         [GridHidden]
         public string AuftragsDetails
         {
@@ -29,14 +27,20 @@ namespace CkgDomainLogic.Fahrer.Models
                 if (AuftragsNr.IsNullOrEmpty())
                     return Localize.DropdownDefaultOptionPleaseChoose;
 
+                if (AuftragsNr == "-1")
+                    return Localize.PleaseWait;
+
                 return new List<string> 
-                    { AuftragsNrFriendly.FormatIfNotNull("#{this}"), FahrtNr.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, FahrzeugTyp }
+                    { AuftragsNrFriendly.FormatIfNotNull("#{this}"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, FahrzeugTyp }
                         .JoinIfNotNull(", ");
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
-        public string FahrtNr { get; set; }
+        public bool IstSonstigerAuftrag { get; set; }
+        public string ProtokollName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Tour)]
+        public string Fahrt { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
         public DateTime? WunschLieferDatum { get; set; }
