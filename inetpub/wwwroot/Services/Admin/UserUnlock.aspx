@@ -304,6 +304,14 @@
                                                                                 <asp:TextBox ID="txtValidFrom" runat="server" Width="160px" Height="20px" MaxLength="10"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
+                                                                        <tr id="Tr2" class="formquery" runat="server">
+                                                                            <td class="firstLeft active">
+                                                                                Gültig bis:
+                                                                            </td>
+                                                                            <td class="active">
+                                                                                <asp:TextBox ID="txtValidTo" runat="server" Width="160px" Height="20px" MaxLength="10"></asp:TextBox>
+                                                                            </td>
+                                                                        </tr>
                                                                         <tr class="formquery" id="trCustomerAdmin2" runat="server">
                                                                             <td class="firstLeft active">
                                                                                 Firmenadministrator:
