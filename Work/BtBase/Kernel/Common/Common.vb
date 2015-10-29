@@ -17,7 +17,7 @@ Namespace Kernel.Common
         Public Shared Sub GetAppIDFromQueryString(ByVal page As System.Web.UI.Page)
             If page.Request.QueryString("AppID") Is Nothing Then
 
-                page.Response.Redirect("/" & m_strAppKey & "/(" & page.Session.SessionID.ToString & ")/Start/Selection.aspx")
+                page.Response.Redirect("/" & m_strAppKey & "/(S(" & page.Session.SessionID.ToString & "))/Start/Selection.aspx")
             End If
             If page.Request.QueryString("AppID").Length > 0 Then
                 page.Session("AppID") = page.Request.QueryString("AppID").ToString
