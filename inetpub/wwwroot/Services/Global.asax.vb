@@ -40,11 +40,14 @@ Public Class Global_asax
             m_lngCurrentDate = CLng(Format(Now, "yyyyMMdd"))
             Try
 
-                Dim cmdlockUser As New SqlClient.SqlCommand("UPDATE WebUser SET AccountIsLockedOut=1, LastChangedBy='Inaktivität' WHERE AccountIsLockedOut=0 AND UserID IN (SELECT UserID From vwLastUserAccess2Lock)", conn)
-
                 conn.Open()
 
+                Dim cmdlockUser As New SqlClient.SqlCommand("UPDATE WebUser SET AccountIsLockedOut=1, LastChangedBy='Inaktivität' WHERE AccountIsLockedOut=0 AND UserID IN (SELECT UserID From vwLastUserAccess2Lock)", conn)
                 cmdlockUser.ExecuteNonQuery()
+
+                cmdlockUser.CommandText = "UPDATE WebUser SET AccountIsLockedOut=1, LastChangedBy='Laufzeitende' WHERE AccountIsLockedOut=0 AND ValidTo IS NOT NULL AND ValidTo < GETDATE()"
+                cmdlockUser.ExecuteNonQuery()
+
                 cmdlockUser.Dispose()
 
             Catch ex As Exception
