@@ -12,6 +12,10 @@
           xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
+    <UserControl.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding CommandSaveGitBranchInfos}" />
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding CommandKeyCtrlNpressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
+    </UserControl.InputBindings>
 
     <Grid Background="#F1F1F1">
         <Grid.Resources>
@@ -52,12 +56,12 @@
                 Style="{StaticResource HyperLinkSmallImage}" 
                 Margin="20,0,0,0" 
                 Click="GridControlCreateNewRow"
-                Content="{StaticResource image/32x32/note_add}" ToolTip="Neuen Git Branch anlegen" />
+                Content="{StaticResource image/32x32/note_add}" ToolTip="Neuen Git Branch anlegen (STRG + N)" />
             <Button 
                 Style="{StaticResource HyperLinkSmallImage}" 
                 Margin="20,0,0,0" 
                 Command="{Binding CommandSaveGitBranchInfos}" 
-                Content="{StaticResource image/32x32/save}" ToolTip="Änderungen speichern" />
+                Content="{StaticResource image/32x32/save}" ToolTip="Änderungen speichern (STRG + S)" />
             <Button 
                 Style="{StaticResource HyperLinkSmallImage}" 
                 Margin="20,0,0,0" 

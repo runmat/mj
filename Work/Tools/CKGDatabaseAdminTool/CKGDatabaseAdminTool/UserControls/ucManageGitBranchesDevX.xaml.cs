@@ -85,13 +85,6 @@ namespace CKGDatabaseAdminTool.UserControls
 
             if (view.IsEditing == false && e.Key == Key.Delete)
                 view.DeleteRow(view.FocusedRowHandle);
-
-            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                var gitBranchInfoViewModel = view.DataContext as GitBranchInfoViewModel;
-                if (gitBranchInfoViewModel != null)
-                    gitBranchInfoViewModel.SaveGitBranchInfos(null);
-            }
         }
 
         private void GridTableViewCellValueChanging(object sender, CellValueChangedEventArgs e)
@@ -105,6 +98,19 @@ namespace CKGDatabaseAdminTool.UserControls
         {
             ((TableView)Control.View).AddNewRow();
             ((TableView) Control.View).CommitEditing(true);
+        }
+
+        private ICommand _commandKeyCtrlNpressed;
+        public ICommand CommandKeyCtrlNpressed
+        {
+            get
+            {
+                return _commandKeyCtrlNpressed
+                    ?? (_commandKeyCtrlNpressed = new WpfTools4.Commands.DelegateCommand(e =>
+                    {
+                        GridControlCreateNewRow(null, null);
+                    }));
+            }
         }
     }
 
