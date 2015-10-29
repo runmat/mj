@@ -289,10 +289,10 @@ namespace CarDocu.Models
 
         public bool PdfPageCountIsValid { get; set; }
 
-        public bool CheckPdfPageCountIsValid(string documentTypeCode = null)
+        public bool CheckPdfPageCountIsValid(string documentTypeCode, int scanImagesCount)
         {
             if (documentTypeCode.IsNullOrEmpty())
-                documentTypeCode = SelectedDocumentType.Code;
+                return false;
 
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
@@ -303,7 +303,7 @@ namespace CarDocu.Models
             }
             else
             {
-                PdfPageCountIsValid = (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount);
+                PdfPageCountIsValid = (documentType.EnforceExactPageCount == 0 || scanImagesCount == 0 || documentType.EnforceExactPageCount == scanImagesCount);
                 PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
             }
 
@@ -377,14 +377,18 @@ namespace CarDocu.Models
             ScanDocumentTypeCodes.ForEach(
                 docTypeCode =>
                 {
-                    CheckPdfPageCountIsValid(docTypeCode);
+                    var scanImagesOfThisCode = ScanImages
+                                                .Where(image => image.ImageDocumentTypeCode == docTypeCode)
+                                                .OrderBy(i => i.Sort)
+                                                .Select(image => image.GetCachedImageFileName(false))
+                                                .ToListOrEmptyList();
 
-                    var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);
+                    CheckPdfPageCountIsValid(docTypeCode, scanImagesOfThisCode.Count);
 
-                    var scanImagesOfThisCode = ScanImages.Where(image => image.ImageDocumentTypeCode == docTypeCode).OrderBy(i => i.Sort).Select(image => image.GetCachedImageFileName(false));
+                    var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);    
 
                     var errorMessage = "";
-                    try { PdfDocumentFactory.CreatePdfFromImages(scanImagesOfThisCode, pdfFileName, false, true); }
+                    try { PdfDocumentFactory.ScanClientCreatePdfFromImages(scanImagesOfThisCode, pdfFileName); }
                     catch(Exception e) { errorMessage = e.Message; }
 
                     if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))

@@ -14,6 +14,7 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Zulassung.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -718,7 +719,36 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        public AuslieferAdresse SelectedAuslieferAdresse { get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); } }
+        public AuslieferAdresse SelectedAuslieferAdresse
+        {
+            get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
+        }
+
+        public AuslieferAdressen GetAuslieferAdressenModel()
+        {
+            var newModel = new AuslieferAdressen
+            {
+                AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
+                AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
+                AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
+                Materialien = AuslieferAdresse.AlleMaterialien
+            };
+
+            return newModel;
+        }
+        public AuslieferAdressen SetAuslieferAdressenModel(AuslieferAdressen model)
+        {
+
+            var newModel = new AuslieferAdressen
+            {
+                AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
+                AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
+                AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
+            };
+
+            return newModel;
+        }
+
 
         public void FilterAuslieferAdressen(string filterValue, string filterProperties)
         {
@@ -1066,7 +1096,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
                     singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
 
-                    singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    // singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+
+                    singleZulassung.AuslieferAdressen = Zulassung.AuslieferAdressen;
+
                     singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
                     singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
 
@@ -1196,26 +1229,64 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public void ValidateEtikettenlabelFields()
-        //{
-        //    Zulassung.Fahrzeugdaten.Farbe = "valid";
-        //    Zulassung.Fahrzeugdaten.FzgModell = "valid";
+        public bool ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
+        {
+            // AuslieferAdresseZ7
+            if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ7 = string.Format("{0} & ", Localize.CompleteAddressRequired);
+            }
+            if (model.AuslieferAdresseZ7.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ7.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ7 = model.ErrorMsgAdresseZ7.Substring(0, model.ErrorMsgAdresseZ7.Length -2);
 
-        //    if (FinList.Any(x => x.Farbe.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.Farbe = null;
+            // AuslieferAdresseZ8
+            if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ8 = string.Format("{0} & ", Localize.CompleteAddressRequired);
+            }
+            if (model.AuslieferAdresseZ8.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ8.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ8.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ8 = model.ErrorMsgAdresseZ8.Substring(0, model.ErrorMsgAdresseZ8.Length - 2);
 
-        //    if (FinList.Any(x => x.FzgModell.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.FzgModell = null;
+            // AuslieferAdresseZ9
+            if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ9 = string.Format("{0} & ", Localize.CompleteAddressRequired);
+            }
+            if (model.AuslieferAdresseZ9.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ9.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ9 = model.ErrorMsgAdresseZ9.Substring(0, model.ErrorMsgAdresseZ9.Length - 2);
 
-        //    //if (FinList.Any(x => x.Farbe.IsNullOrEmpty()) || FinList.Any(x => x.FzgModell.IsNullOrEmpty());)
-        //    //{
-            
-        //    // ModelState.AddModelError("SelectedGridAction", "Please select an option");
-        //    //    Zulassung.Fahrzeugdaten.Farbe
-        //    //}
-        //}
+
+            if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty() || model.ErrorMsgAdresseZ8.IsNotNullOrEmpty() ||
+                model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
+                return false;
+
+            return true;
+
+            //if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
+            //{
+            //    model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
+            //    isValid = false;
+            //}
+
+            //if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
+            //{
+            //    model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
+            //    isValid = false;
+            //}
+
+        }
+
     }
 }
