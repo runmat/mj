@@ -27,7 +27,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -40,6 +40,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="SapORM.Contracts">
       <HintPath>..\..\GAC\SapORM.Contracts.dll</HintPath>
     </Reference>
@@ -51,6 +52,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,11 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FahrerController.cs" />
+    <Compile Include="Fahrer\Contracts\IFahrerAuftragsFahrt.cs" />
     <Compile Include="Fahrer\Contracts\IFahrerDataService.cs" />
     <Compile Include="Fahrer\Models\AppModelMappings.cs" />
     <Compile Include="Fahrer\Models\FahrerAuftrag.cs" />
     <Compile Include="Fahrer\Models\FahrerTagBelegung.cs" />
     <Compile Include="Fahrer\Models\FahrerAuftragsFahrt.cs" />
+    <Compile Include="Fahrer\Models\FahrerAuftragsProtokoll.cs" />
+    <Compile Include="Fahrer\Models\ProtokollEditModel.cs" />
     <Compile Include="Fahrer\Models\QmFahrer.cs" />
     <Compile Include="Fahrer\Models\QmFleetMonitor.cs" />
     <Compile Include="Fahrer\Models\QmSelektor.cs" />

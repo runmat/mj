@@ -96,7 +96,8 @@ namespace SoapRuecklaeuferschnittstelle
                     // wenn Ruecklaeuferschnittstelle.Abholung.Abholauftrag.Datum_von 
                     if (Ruecklaeuferschnittstelle.Abholung.Abholauftrag.Datum_von.Date < DateTime.Now.Date)
                     {
-                        gtDat.WLIEFDAT_VON = RuecklaeuferschnittstelleUtils.DatumDateTimeToSap(DateTime.Now.Date.AddDays(2));
+                        var datumAbholauftrag = (Ruecklaeuferschnittstelle.Abholung.Abholauftrag.Eigenanlieferung ? DateTime.Now.Date : DateTime.Now.Date.AddDays(2));
+                        gtDat.WLIEFDAT_VON = RuecklaeuferschnittstelleUtils.DatumDateTimeToSap(datumAbholauftrag);
                         gtDat.WLIEFDAT_BIS = gtDat.WLIEFDAT_VON;
                     }
                     else
