@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.Xpf.Grid;
 using Microsoft.Win32;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using CKGDatabaseAdminLib.Models;
 using GeneralTools.Models;
 
@@ -28,6 +20,7 @@ namespace CKGDatabaseAdminTool.UserControls
         public ucManageGitBranchesDevX()
         {
             InitializeComponent();
+
             DataControlBase.AllowInfiniteGridSize = true;
             ((TableView)Control.View).AutoWidth = true;
         }
@@ -59,7 +52,6 @@ namespace CKGDatabaseAdminTool.UserControls
         private void Control_OnItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
         {
             ((TableView)Control.View).BestFitColumn(Control.Columns["Bemerkung"]);
-            ((TableView)Control.View).NewItemRowPosition = NewItemRowPosition.Top;
             Control.Columns[0].GroupIndex = 1;
 
             ((TableView)Control.View).ShowGroupedColumns = true;
@@ -95,7 +87,11 @@ namespace CKGDatabaseAdminTool.UserControls
                 view.DeleteRow(view.FocusedRowHandle);
 
             if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
-                (view.DataContext as GitBranchInfoViewModel).SaveGitBranchInfos(null);
+            {
+                var gitBranchInfoViewModel = view.DataContext as GitBranchInfoViewModel;
+                if (gitBranchInfoViewModel != null)
+                    gitBranchInfoViewModel.SaveGitBranchInfos(null);
+            }
         }
 
         private void GridTableViewCellValueChanging(object sender, CellValueChangedEventArgs e)
@@ -103,6 +99,12 @@ namespace CKGDatabaseAdminTool.UserControls
             var view = (TableView)sender;
 
             view.PostEditor();
+        }
+
+        private void GridControlCreateNewRow(object sender, RoutedEventArgs e)
+        {
+            ((TableView)Control.View).AddNewRow();
+            ((TableView) Control.View).CommitEditing(true);
         }
     }
 
@@ -113,10 +115,7 @@ namespace CKGDatabaseAdminTool.UserControls
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var cellData = (item as EditGridCellData);
-            if (MainViewModel.Instance.Developer.IsNullOrEmpty())
-                return base.SelectTemplate(item, container);
-
-            if (cellData == null || cellData.Value == null || MainViewModel.Instance.Developer.ToLower() == cellData.Value.ToString().NotNullOrEmpty().ToLower())
+            if (cellData == null || cellData.Value == null)
                 return DefaultTemplate;
 
             return base.SelectTemplate(item, container);

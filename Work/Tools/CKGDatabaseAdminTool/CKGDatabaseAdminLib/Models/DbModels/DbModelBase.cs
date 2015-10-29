@@ -11,5 +11,10 @@ namespace CKGDatabaseAdminLib.Models
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected virtual void SendPropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
+        }
     }
 }

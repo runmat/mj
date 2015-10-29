@@ -24,6 +24,8 @@ namespace CKGDatabaseAdminLib
 
         public DbSet<GitBranchInfo> GitBranchInfos { get; set; }
 
+        public DbSet<CkgEntwickler> CkgEntwickler { get; set; }
+
         public DbSet<Application> Applications { get; set; }
 
         public ObservableCollection<Application> ApplicationsInMenuOnly

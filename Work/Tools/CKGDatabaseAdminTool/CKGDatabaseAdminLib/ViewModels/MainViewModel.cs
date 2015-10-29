@@ -4,6 +4,9 @@ using System.Configuration;
 using WpfTools4.ViewModels;
 using System.Collections.ObjectModel;
 using System.Timers;
+using System.Linq;
+using CKGDatabaseAdminLib.Services;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib.ViewModels
 {
@@ -127,6 +130,23 @@ namespace CKGDatabaseAdminLib.ViewModels
             LoadDbConnections();
         }
 
+        void TryAutoRecognizeDeveloper()
+        {
+            if (Developer.IsNotNullOrEmpty())
+                return;
+
+            var vms012Conn = DbConnections.FirstOrDefault(db => db.ToLower().Contains("vms012"));
+            if (vms012Conn == null)
+                return;
+
+            var vms012DataService = new GitBranchInfoDataServiceSql(vms012Conn);
+            var developer = vms012DataService.CkgEntwickler.FirstOrDefault(e => e.UserName.ToLower() == Environment.UserName.ToLower());
+            if (developer == null)
+                return;
+
+            Developer = developer.ID;
+        }
+
         private void MessageDisplayTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             Nachricht = "";
@@ -150,6 +170,8 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             ActiveViewModel = null;
             InitViewModels();
+
+            TryAutoRecognizeDeveloper();
         }
 
         private void InitViewModels()

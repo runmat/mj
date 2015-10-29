@@ -10,7 +10,6 @@
           xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
           xmlns:ckgDatabaseAdminTool="clr-namespace:CKGDatabaseAdminTool"
           xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-          xmlns:generic="clr-namespace:System.Collections.Generic;assembly=mscorlib"
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
 
@@ -52,6 +51,11 @@
             <Button 
                 Style="{StaticResource HyperLinkSmallImage}" 
                 Margin="20,0,0,0" 
+                Click="GridControlCreateNewRow"
+                Content="{StaticResource image/32x32/note_add}" ToolTip="Neuen Git Branch anlegen" />
+            <Button 
+                Style="{StaticResource HyperLinkSmallImage}" 
+                Margin="20,0,0,0" 
                 Command="{Binding CommandSaveGitBranchInfos}" 
                 Content="{StaticResource image/32x32/save}" ToolTip="Änderungen speichern" />
             <Button 
@@ -75,15 +79,16 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
-                <dxg:GridColumn FieldName="PM" Width="30" />
-                <dxg:GridColumn FieldName="Anwendung" Width="80" />
-                <dxg:GridColumn FieldName="Bemerkung" Width="Auto" />
 
                 <dxg:GridColumn FieldName="PortalListe" Header="Portale" Width="160" AllowEditing="False"
                                 CellTemplate="{StaticResource GitBranchInfoItemsTemplatePortalListe}" />
 
                 <dxg:GridColumn FieldName="ServerListe" Header="Server" Width="150" AllowEditing="False"
                                 CellTemplate="{StaticResource GitBranchInfoItemsTemplateServerListe}" />
+
+                <dxg:GridColumn FieldName="PM" Width="30" />
+                <dxg:GridColumn FieldName="Anwendung" Width="80" />
+                <dxg:GridColumn FieldName="Bemerkung" Width="Auto" />
 
                 <dxg:GridColumn FieldName="ImTestSeit" Header="Test seit" Width="80" />
                 <dxg:GridColumn FieldName="FreigegebenDurch" Header="Freigabe von" Width="80" />
@@ -92,7 +97,7 @@
                 <dxg:GridColumn FieldName="Deaktiviert" Header="Deakt." UnboundType="Boolean" Width="50" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" 
+                <dxg:TableView AllowEditing="True" RowMinHeight="26" NewItemRowPosition="None" 
                                KeyUp="GridTableViewKeyUp" CellValueChanging="GridTableViewCellValueChanging" />
             </dxg:GridControl.View>
         </dxg:GridControl>

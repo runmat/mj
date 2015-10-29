@@ -1,9 +1,12 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using System.Linq;
+using System.Windows.Markup;
 using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.XtraEditors.DXErrorProvider;
 using GeneralTools.Models;
@@ -212,6 +215,7 @@ namespace CKGDatabaseAdminLib.Models
         public void PortalBoolListeOnChange(GitBranchInfoListItem listItem)
         {
             PortalListe = XmlService.CompressString(XmlService.XmlSerializeToString(PortalBoolListe));
+            FakeSwapName();
             OnPropertyChanged("Name");
         }
 
@@ -247,7 +251,15 @@ namespace CKGDatabaseAdminLib.Models
         public void ServerBoolListeOnChange(GitBranchInfoListItem listItem)
         {
             ServerListe = XmlService.CompressString(XmlService.XmlSerializeToString(ServerBoolListe));
+            FakeSwapName();
             OnPropertyChanged("Name");
+        }
+
+        void FakeSwapName()
+        {
+            var nameOrg = Name;
+            Name = "";
+            Name = nameOrg;
         }
 
         [NotMapped]

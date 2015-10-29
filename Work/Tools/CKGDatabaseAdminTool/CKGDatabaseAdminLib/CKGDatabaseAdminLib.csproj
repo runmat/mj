@@ -86,6 +86,7 @@
     <Compile Include="DbContext.cs" />
     <Compile Include="Models\Bapi2Report4CsvExport.cs" />
     <Compile Include="Models\BapiCheckAbweichung.cs" />
+    <Compile Include="Models\CkgEntwickler.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
     </Compile>
