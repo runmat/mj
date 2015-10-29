@@ -1609,6 +1609,15 @@ Partial Public Class CustomerManagement
 
     Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
 
+        Dim configSkipConfirmationKeyVal = "Admin_CustomerManagement_SkipSaveConfirmation"
+        Dim configSkipConfirmationKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(Function(r) r = configSkipConfirmationKeyVal)
+        If (Not configSkipConfirmationKey Is Nothing) Then
+            If (ConfigurationManager.AppSettings(configSkipConfirmationKeyVal).ToString.ToLower = "true") Then
+                lbtnConfirm_Click(Nothing, Nothing)
+                Return
+            End If
+        End If
+
         'Do SAP-Stuff here...
         Dim i_Kunnr As String = Right("0000000000" & txtKUNNR.Text, 10)
         Dim blnNoData As Boolean = False
@@ -1690,7 +1699,7 @@ Partial Public Class CustomerManagement
         End Try
     End Sub
 
-    Private Sub lbtnConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnConfirm.Click
+    Private Sub lbtnConfirm_Click(ByVal sender As Object, ByVal e2 As EventArgs) Handles lbtnConfirm.Click
         Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
 

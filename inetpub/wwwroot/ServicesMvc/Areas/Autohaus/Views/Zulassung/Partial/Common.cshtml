@@ -355,10 +355,10 @@
             return;
         }
 
-        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
         if (saveSuccessful == 'true') {
             SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#TmpSaveAddressSuccessful").val(false);
+            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
         }
     }
 
@@ -376,7 +376,7 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
-        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $('#SelectedAddressId').val(id);
         $("#AjaxFormAuslieferAdressen").submit();
     }
 
@@ -614,28 +614,28 @@
         tb.autocomplete("enable");
     }
 
-    function AjaxFormAdresseEmpty(formID, url) {
-        var form = $("#" + formID);
-        form.find(":input").each(function () {
-            switch (this.type) {
-                case 'password':
-                case 'select-multiple':
-                case 'text':
-                case 'textarea':
-                    $(this).val('');
-                    break;
-                case 'select-one':
-                    $(this).val('DE');
-                    break;
-                case 'checkbox':
-                case 'radio':
-                    this.checked = false;
-            }
-        });
+//    function AjaxFormAdresseEmpty(formID, url) {
+//        var form = $("#" + formID);
+//        form.find(":input").each(function () {
+//            switch (this.type) {
+//                case 'password':
+//                case 'select-multiple':
+//                case 'text':
+//                case 'textarea':
+//                    $(this).val('');
+//                    break;
+//                case 'select-one':
+//                    $(this).val('DE');
+//                    break;
+//                case 'checkbox':
+//                case 'radio':
+//                    this.checked = false;
+//            }
+//        });
 
-        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
-        return false;
-    }
+//        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
+//        return false;
+//    }
 
     function AjaxFormAdressenShowGrid(addressType) {
 
