@@ -6,7 +6,7 @@
 @if (Model.Mail.IsNotNullOrEmpty())
 {
     <br />
-    @Html.DisplayNameFor(m => m.Mail)<span>:</span> @Model.Mail.ToEmailWithoutAtSymbol()
+    <span>:</span> @Model.Mail
 }
 
 @if (Model.Telefon.IsNotNullOrEmpty())
