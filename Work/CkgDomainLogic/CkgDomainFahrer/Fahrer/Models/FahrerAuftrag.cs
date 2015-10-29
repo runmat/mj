@@ -6,6 +6,9 @@ namespace CkgDomainLogic.Fahrer.Models
 {
     public class FahrerAuftrag
     {
+        [GridHidden]
+        public string KundenNr { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Action)]
         [GridRawHtml]
         public string AuftragsCommand { get { return AuftragsCommandTemplate == null ? "-" : AuftragsCommandTemplate(this); } }
