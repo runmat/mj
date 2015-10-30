@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Models;
 
 namespace CkgDomainLogic.Autohaus.Models
@@ -358,6 +359,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Adresse.Name1 = s.NAME1;
                         d.Adresse.Name2 = s.NAME2;
                         d.Adresse.Strasse = s.STREET;
+                        AddressService.ApplyStreetAndHouseNo(d.Adresse);
                         d.Adresse.PLZ = s.PLZ;
                         d.Adresse.Ort = s.CITY1;
                         d.Bemerkung = s.BEMERKUNG;
@@ -510,7 +512,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZULBELN = s.BelegNr;
                             d.NAME1 = s.Adresse.Name1;
                             d.NAME2 = s.Adresse.Name2;
-                            d.STREET = s.Adresse.Strasse;
+                            d.STREET = s.Adresse.StrasseHausNr;
                             d.PLZ = s.Adresse.PLZ;
                             d.CITY1 = s.Adresse.Ort;
                             d.BEMERKUNG = s.Bemerkung;
