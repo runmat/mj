@@ -6,12 +6,12 @@
              xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
              mc:Ignorable="d" d:DesignWidth="400">
 
-    <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
+    <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
         <ItemsControl Style="{StaticResource ItemsControlHorizontal}" ItemsSource="{Binding}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="models:GitBranchInfoListItem">
-                
-                    <CheckBox Content="{Binding Key}" IsChecked="{Binding IsChecked}" Margin="10,0,0,0" Style="{StaticResource GitBranchInfoItemCheckBox}" />
+
+                    <CheckBox Content="{Binding Key}" IsChecked="{Binding IsChecked}" Margin="0,0,0,0"  />
                 
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
