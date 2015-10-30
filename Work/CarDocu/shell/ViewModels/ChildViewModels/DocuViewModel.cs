@@ -558,7 +558,7 @@ namespace CarDocu.ViewModels
             if (CheckImageHasNewValidBarcode(image))
             {
                 // altes Dokument abschließen
-                BatchFinishScanDocument(false);
+                BatchFinishScanDocument();
 
                 ScanDocument = ScanDocument.Clone();
                 ScanDocument.FinNumber = LastScannedBarcodeValue;                    
@@ -730,9 +730,7 @@ namespace CarDocu.ViewModels
             ScanComplete();
         }
 
-// ReSharper disable UnusedMember.Local
         void TestLoadMockImages(bool batchTest = false)
-// ReSharper restore UnusedMember.Local
         {
             var testDirectory = new DirectoryInfo(TempRootPath);
             var imageFiles = testDirectory.GetFiles("*.jpg", SearchOption.TopDirectoryOnly);
@@ -811,9 +809,7 @@ namespace CarDocu.ViewModels
             return true;
         }
 
-// ReSharper disable UnusedMember.Local
         static void TestScanComplete(ProgressBarOperation progressBarOperation)
-// ReSharper restore UnusedMember.Local
         {
             if (!progressBarOperation.TaskResult)
             {
@@ -824,9 +820,7 @@ namespace CarDocu.ViewModels
             Tools.Alert("Der Scantest wurde erfolgreich durchgeführt!");
         }
 
-// ReSharper disable UnusedMethodReturnValue.Local
         bool ScanComplete()
-// ReSharper restore UnusedMethodReturnValue.Local
         {
             ReloadScanDocumentTypes();
 
@@ -844,8 +838,10 @@ namespace CarDocu.ViewModels
             return true;
         }
 
-        void BatchFinishScanDocument(bool clearFin)
+        void BatchFinishScanDocument()
         {
+            ScanDocument.BatchScanned = true;
+
             if (ScanDocument.ScanImagesCount == 0)
                 return;
 
@@ -854,21 +850,10 @@ namespace CarDocu.ViewModels
             ScanDocumentSave(true);
             SendPropertyChanged("ScanDocument");
 
-            bool scanDocumentIsValid;
-            if (ScanDocument.ValidFinNumber)
-            {
-                scanDocumentIsValid = ScanDocument.PdfPageCountIsValid;
-            }
-            else
-            {
-                scanDocumentIsValid = false;
+            var scanDocumentIsValid = (ScanDocument.ValidFinNumber && ScanDocument.PdfPageCountIsValid);
 
-                ScanDocument.ScanImages.Clear();
-                if (clearFin)
-                    ScanDocument.FinNumber = "";
-
-                EnsureNewScanDocu();
-            }
+            ScanDocument.ScanImages.Clear();
+            ScanDocument.FinNumber = "";
 
             if (scanDocumentIsValid)
                 BatchSummary.ResultsGoodItems++;
@@ -880,16 +865,12 @@ namespace CarDocu.ViewModels
             UpdateUI();
         }
 
-        // ReSharper disable UnusedMethodReturnValue.Local
         bool BatchScanComplete()
-        // ReSharper restore UnusedMethodReturnValue.Local
         {
             ReloadScanDocumentTypes();
 
-            ScanDocument.BatchScanned = true;
-
             // altes Dokument abschließen
-            BatchFinishScanDocument(true);
+            BatchFinishScanDocument();
 
             GC.Collect();
 
