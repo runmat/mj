@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
@@ -62,29 +63,20 @@ namespace ServicesMvc
 {
     public static class IocConfig
     {
-        public static void CreateAndRegisterIocContainerToMvc()
+        public static void CreateAndRegisterIocContainerToMvc(IEnumerable<Assembly> assemblies)
         {
-            var container = CreateIocContainerAndRegisterTypes();
+            var container = CreateIocContainerAndRegisterTypes(assemblies);
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
 
-        public static IContainer CreateIocContainerAndRegisterTypes(ISapDataService sap = null)
+        public static IContainer CreateIocContainerAndRegisterTypes(IEnumerable<Assembly> assemblies, ISapDataService sap = null)
         {
             // IoC container starten
             var builder = new ContainerBuilder();
 
             // container soll die Controller ermitteln für die Runtime
-            builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            builder.RegisterControllers(Assembly.Load("CkgDomainLogic"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainCommon"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainCoc"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainFahrzeug"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainLeasing"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainArchive"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainFinance"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainInsurance"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainFahrer"));
-            builder.RegisterControllers(Assembly.Load("CkgDomainAutohaus"));
+            assemblies.ToListOrEmptyList().ForEach(asm => builder.RegisterControllers(asm));
+
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -98,7 +90,7 @@ namespace ServicesMvc
             var container = builder.Build();
             return container;
         }
-        
+
         public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
         {
             builder.Register(c => sap ?? S.AP).InstancePerLifetimeScope();
