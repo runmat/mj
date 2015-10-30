@@ -106,9 +106,9 @@
                                   Grid.Row="1" Grid.RowSpan="5"
                                   Opacity="0"
                                   Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
-                                  Fill="Green"
+                                  Fill="#7FB8FF"
                                   Stretch="Fill"
-                                  Stroke="Green" />
+                                  Stroke="#7FB8FF" />
 
                                 <Path Name="InderminateMark"
                                   Grid.Column="3"
@@ -150,7 +150,7 @@
                             <Setter TargetName="InnerBorder" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="MainBorder" Property="Background" Value="Green" />
+                            <Setter TargetName="MainBorder" Property="Background" Value="#7FB8FF" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="CheckMark" Property="Fill" Value="#cccccc" />
@@ -235,9 +235,9 @@
                                   Grid.Row="1" Grid.RowSpan="5"
                                   Opacity="0"
                                   Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
-                                  Fill="Green"
+                                  Fill="#7FB8FF"
                                   Stretch="Fill"
-                                  Stroke="Green" />
+                                  Stroke="#7FB8FF" />
 
                                 <Path Name="InderminateMark"
                                   Grid.Column="3"
@@ -322,4 +322,10 @@
     <DataTemplate x:Key="CheckBoxActiveTemplate">
         <dxe:CheckEdit x:Name="PART_Editor" Style="{StaticResource CheckEdit}" EditValue="{Binding Path=Value, Mode=TwoWay}" HorizontalAlignment="Center" />
     </DataTemplate>
+
+
+    <LinearGradientBrush x:Key="brEditItemTemplate" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#fffff6" Offset="0"/>
+        <GradientStop Color="#ffffee" Offset="1"/>
+    </LinearGradientBrush>
 </ResourceDictionary>

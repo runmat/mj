@@ -279,6 +279,9 @@
   <ItemGroup>
     <Resource Include="database.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\info.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)\bin\debug" "C:\inst\CKGDatabaseAdminTool" /E /Y</PostBuildEvent>

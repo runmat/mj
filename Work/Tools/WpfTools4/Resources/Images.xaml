@@ -70,11 +70,15 @@
 
     <Image x:Shared="False" x:Key="image/24x24/OK" Source="pack://application:,,,/WpfTools4;component/Images/24x24/OK.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/warning" Source="pack://application:,,,/WpfTools4;component/Images/24x24/warning.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/save" Source="pack://application:,,,/WpfTools4;component/Images/24x24/save.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/delete" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window2.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/cancel" Source="pack://application:,,,/WpfTools4;component/Images/24x24/cancel.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/apply" Source="pack://application:,,,/WpfTools4;component/Images/24x24/apply.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/edit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/edit.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/exit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/exit.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/close_window" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/close_window2" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window2.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/info" Source="pack://application:,,,/WpfTools4;component/Images/24x24/info.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/24x24/internet" Source="pack://application:,,,/WpfTools4;component/Images/24x24/internet.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/email" Source="pack://application:,,,/WpfTools4;component/Images/24x24/email.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/zip" Source="pack://application:,,,/WpfTools4;component/Images/24x24/zip.png" SnapsToDevicePixels="True" Width="24" Height="24" />

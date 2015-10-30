@@ -14,29 +14,21 @@
             <Button Command="{Binding CommandAddNewLoginMessage}" Content="Neue LoginMessage erstellen" HorizontalAlignment="Left" Width="180px"/>
         </Grid>
 
-        <ListBox Name="lbLoginMessages" ItemsSource="{Binding LoginMessages}" HorizontalContentAlignment="Stretch">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="Black" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type dbModels:LoginUserMessage}">
-                    <Grid>
-                        <Grid.Resources>
-                            <conv:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
-                            <conv:BooleanInverseConverter x:Key="BooleanInverseConverter" />
-                        </Grid.Resources>
-                        <uc:ucLoginMessageItemDisplayTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanInverseConverter}}"/>
-                        <uc:ucLoginMessageItemEditTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+            <ItemsControl Name="lbLoginMessages" ItemsSource="{Binding LoginMessages}" HorizontalContentAlignment="Stretch">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type dbModels:LoginUserMessage}">
+                        <Grid>
+                            <Grid.Resources>
+                                <conv:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
+                                <conv:BooleanInverseConverter x:Key="BooleanInverseConverter" />
+                            </Grid.Resources>
+                            <uc:ucLoginMessageItemDisplayTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanInverseConverter}}" />
+                            <uc:ucLoginMessageItemEditTemplate Visibility="{Binding EditMode, Converter={StaticResource BooleanVisibilityConverter}}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>
