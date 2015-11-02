@@ -100,10 +100,15 @@ namespace ServicesMvc
             var container = builder.Build();
             return container;
         }
-        
-        public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
+
+        public static void RegisterTelerikLocalizationAdapterServiceFactory()
         {
             DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());
+        }
+
+        public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
+        {
+            RegisterTelerikLocalizationAdapterServiceFactory();
 
             builder.Register(c => sap ?? S.AP).InstancePerLifetimeScope();
 

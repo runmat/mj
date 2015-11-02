@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Mvc;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
 {
@@ -9,16 +8,24 @@ namespace CkgDomainLogic.General.Services
     {
         public string One(string key)
         {
-            var defaultLocalizationService = (GeneralTools.Contracts.ILocalizationService)DependencyResolver.Current.GetService(typeof (GeneralTools.Contracts.ILocalizationService));
+            var defaultLocalizationService = DependencyResolver.Current.GetService(typeof (GeneralTools.Contracts.ILocalizationService)) as GeneralTools.Contracts.ILocalizationService;
+            if (defaultLocalizationService == null)
+                return key;
+
             return defaultLocalizationService.TranslateResourceKey("Telerik_" + key);
         }
 
         public IDictionary<string, string> All()
         {
-            return new Dictionary<string, string>();
+            var defaultLocalizationService = DependencyResolver.Current.GetService(typeof(GeneralTools.Contracts.ILocalizationService)) as GeneralTools.Contracts.ILocalizationService;
+            if (defaultLocalizationService == null)
+                return new Dictionary<string, string>();
+
+            var dict = defaultLocalizationService.GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey("Telerik_");
+            return dict;
         }
 
-        public bool IsDefault { get { return true; } }
+        public bool IsDefault { get { return false; } }
     }
 
     public class TelerikLocalizationAdapterServiceFactory : Telerik.Web.Mvc.Infrastructure.ILocalizationServiceFactory
