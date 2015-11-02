@@ -1,72 +1,153 @@
 ﻿@using CkgDomainLogic.DomainCommon.Models
-@model CkgDomainLogic.Autohaus.Models.AuslieferAdresse
+@model CkgDomainLogic.Zulassung.Models.AuslieferAdressen
 
-<div id="DivAuslieferAdressen" class="margin-top-20">
+@{
+    Model.Materialien = Model.Materialien;   
+}
+
+<div id="DivAuslieferAdressen" style="width:100%">
+
     @using (Ajax.BeginForm("AuslieferAdressenForm", "Zulassung", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivAuslieferAdressen", OnComplete = "AjaxFormAuslieferAdressenComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen" }))
+        new MvcAjaxOptions { UpdateTargetId = "DivAuslieferAdressen", OnComplete = "AjaxFormAuslieferAdressenComplete();" },
+        htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen"  }))
     {
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.ID)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.IsValid)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.KundenNr)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.Kennung)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.Typ)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.TmpSelectionKey)
-        @Html.HiddenFor(m => m.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-        @Html.HiddenFor(m => m.Adressdaten.Partnerrolle)
-        @Html.HiddenFor(m => m.TmpSaveAddressOnly)
-        @Html.HiddenFor(m => m.TmpSaveAddressSuccessful)
+        <input id="SelectedPartnerRolle" name="SelectedPartnerRolle" type="hidden" value="" />
+        <input id="SelectedAddressId" name="SelectedAddressId" type="hidden" value=""/>
         
         @Html.FormValidationSummary()
-        
-        @Html.SpanAlert("AuslieferAdressenMessage")
 
-        
-        @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList(), new { col = "left" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium", col = "right" })
-        
-        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @class = "m-wrap chosen", col = "left" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium", col = "right" })
-    
-        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50, col = "left" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium", col = "right" })
+        <div class="row-fluid">
+            <div id="AddressZ7" class="span4 div-auslieferadr">                
+                <div class="text-right margin-right-40 margin-bottom-10">
+                    <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z7');" class="btn white">@Localize.ChooseAddress1</a>
+                </div>
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.ID)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.IsValid)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.KundenNr)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Kennung)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Typ)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressSuccessful)
+                @Html.SpanAlert("AuslieferAdressenMessageZ7")
 
-        @Html.FormPlaceHolder(@<text>@Localize.RequiredWhenOtherIsSelected</text>, new { col = "left" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall", col = "right" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
+                @Html.FormDropDownListFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+                @Html.FormMultiSelectListFor(m => m.AuslieferAdresseZ7.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @id = "ZugeordneteMaterialienZ7", @class = "m-wrap chosen material" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Bemerkung, new { @class = "m-wrap medium", maxlength = 50 },
+                    postControlHtml: @<text>
+                                         <div>@Localize.RequiredWhenOtherIsSelected</div>
+                                      </text>)
+            </div>
 
-        @Html.FormPlaceHolder(null, new { col = "left" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium", col = "right" })
+            <div id="AddressZ8" class="span4 div-auslieferadr">
+                <div class="text-right margin-right-40 margin-bottom-10">
+                    <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z8');" class="btn white">@Localize.ChooseAddress2</a>
+                </div>
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.ID)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.IsValid)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.KundenNr)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Kennung)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Typ)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.TmpSelectionKey)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Partnerrolle)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressSuccessful)
+                @Html.SpanAlert("AuslieferAdressenMessageZ8")
 
-        @Html.FormPlaceHolder(null, new { col = "left" })
-        @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "right" },
-            postControlHtml: @<text><button type="button" class="btn green margin-left-20" onclick="SaveAuslieferAdresse();"><i class="icon-ok"></i> @Localize.SaveAddress</button></text>)
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
+                @Html.FormDropDownListFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+                @Html.FormMultiSelectListFor(m => m.AuslieferAdresseZ8.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @id = "ZugeordneteMaterialienZ8", @class = "m-wrap chosen material" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Bemerkung, new { @class = "m-wrap medium", maxlength = 50 },
+                    postControlHtml: @<text>
+                                         <div>@Localize.RequiredWhenOtherIsSelected</div>
+                                      </text>)
+            </div>
 
+            <div id="AddressZ9" class="span4 div-auslieferadr">
+                <div class="text-right margin-right-40 margin-bottom-10">
+                    <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z9');" class="btn white">@Localize.ChooseAddress3</a>
+                </div>
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.ID)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.IsValid)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.KundenNr)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Kennung)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Typ)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.TmpSelectionKey)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Partnerrolle)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressSuccessful)
+                @Html.SpanAlert("AuslieferAdressenMessageZ9")
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
+                @Html.FormDropDownListFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+                @Html.FormMultiSelectListFor(m => m.AuslieferAdresseZ9.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @id = "ZugeordneteMaterialienZ9", @class = "m-wrap chosen material" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Bemerkung, new { @class = "m-wrap medium", maxlength = 50 },
+                    postControlHtml: @<text>
+                                         <div>@Localize.RequiredWhenOtherIsSelected</div>
+                                      </text>)
+            </div>
+        </div>
 
-        @Html.FormRequiredFieldsSummary()
-        
-        <script type="text/javascript">      
-            _modelIsValid = @Model.IsValid.ToString().ToLower();
+        @*@Html.FormRequiredFieldsSummary()*@
 
-            function AjaxFormAuslieferAdressenInit() {
-                AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
-                AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen");
-            }
-            
-            DocumentReadyBind(AjaxFormAuslieferAdressenInit);
-            AjaxFormAuslieferAdressenInit();
+        <script type="text/javascript">
 
-            $(":radio[name='TmpSelectedPartnerrolle']").click(function() { SelectAuslieferAdresse($(this).val()); });
+            _modelIsValid = @Model.IsValid.ToString().ToLower();;        
 
-            function SelectAuslieferAdresse(partnerrolle) {
-                if ($("#Adressdaten_Partnerrolle").val() != partnerrolle) {
-                    $("#AjaxFormAuslieferAdressen").submit();
-                }
-            }
-            
-            function SaveAuslieferAdresse() {
-                $("#TmpSaveAddressOnly").val(true);
-                $("#AjaxFormAuslieferAdressen").submit();
-            }
+            $(function() {
+
+                SpanAlertError("AuslieferAdressenMessageZ7", "@Model.ErrorMsgAdresseZ7", 99999);
+                SpanAlertError("AuslieferAdressenMessageZ8", "@Model.ErrorMsgAdresseZ8", 99999);
+                SpanAlertError("AuslieferAdressenMessageZ9", "@Model.ErrorMsgAdresseZ9", 99999);
+
+                $("#ZugeordneteMaterialienZ7").chosen().change(function () {
+                    RemoveUsedMaterials();
+                    ShowHideFieldBemerkung("Z7");
+                });
+
+                $("#ZugeordneteMaterialienZ8").chosen().change(function () {            
+                    RemoveUsedMaterials();
+                    ShowHideFieldBemerkung("Z8");
+                });
+
+                $("#ZugeordneteMaterialienZ9").chosen().change(function () {
+                    RemoveUsedMaterials();
+                    ShowHideFieldBemerkung("Z9");
+                });
+
+                ShowHideFieldBemerkung("Z7");
+                ShowHideFieldBemerkung("Z8");
+                ShowHideFieldBemerkung("Z9");
+
+                RemoveUsedMaterials();
+
+                var newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ7_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ7_Adressdaten_Adresse_Land')";
+                $('#AuslieferAdresseZ7_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
+
+                newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ8_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ8_Adressdaten_Adresse_Land')";
+                $('#AuslieferAdresseZ8_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
+
+                newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ9_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ9_Adressdaten_Adresse_Land')";
+                $('#AuslieferAdresseZ9_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
+
+            });
+
         </script>
-    }
-</div>
+        }
+    </div>

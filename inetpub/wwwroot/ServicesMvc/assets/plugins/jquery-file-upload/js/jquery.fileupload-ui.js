@@ -470,22 +470,22 @@
             // maxNumberOfFiles before validation, so we check if
             // maxNumberOfFiles is below 0 (instead of below 1):
             if (this.options.maxNumberOfFiles < 0) {
-                return 'Maximum number of files exceeded';
+                return 'Maximale Anzahl an Dateien wurde ueberschritten';
             }
             // Files are accepted if either the file type or the file name
             // matches against the acceptFileTypes regular expression, as
             // only browsers with support for the File API report the type:
             if (!(this.options.acceptFileTypes.test(file.type) ||
                     this.options.acceptFileTypes.test(file.name))) {
-                return 'Filetype not allowed';
+                return 'Datei Typ ist nicht erlaubt';
             }
             if (this.options.maxFileSize &&
                     file.size > this.options.maxFileSize) {
-                return 'File is too big';
+                return 'Datei ist zu gross';
             }
             if (typeof file.size === 'number' &&
                     file.size < this.options.minFileSize) {
-                return 'File is too small';
+                return 'Datei ist zu klein';
             }
             return null;
         },
