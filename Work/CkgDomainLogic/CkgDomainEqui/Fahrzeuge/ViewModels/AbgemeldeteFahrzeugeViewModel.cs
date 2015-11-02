@@ -104,7 +104,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             //XmlService.XmlSerializeToFile(Fahrzeuge, Path.Combine(AppSettings.DataPath, @"Fahrzeuge.xml"));
         }
 
-        public new void LoadAbgemeldeteFahrzeuge2()
+        public void LoadAbgemeldeteFahrzeuge2()
         {
             Fahrzeuge = DataService.GetAbgemeldeteFahrzeuge2(AbgemeldeteFahrzeugeSelektor);
             DataMarkForRefresh();

@@ -11,7 +11,6 @@ using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Models;
-using CkgDomainLogic.Strafzettel.Models;
 using GeneralTools.Models;
 using System.IO;
 using GeneralTools.Services;
