@@ -65,6 +65,9 @@
     <Reference Include="itextsharp">
       <HintPath>..\..\GAC\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO">
+      <HintPath>..\..\GAC\LumenWorksCsvReader\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PdfSharp\PdfSharp.dll</HintPath>
@@ -95,6 +98,7 @@
     <Compile Include="Services\AbstractDocumentFactory.cs" />
     <Compile Include="Services\DataTableMailMergeSource.cs" />
     <Compile Include="Services\ExcelDocumentFactory.cs" />
+    <Compile Include="Services\CsvReader.cs" />
     <Compile Include="Services\PdfDocumentFactory.cs" />
     <Compile Include="Services\SpireXLS.cs" />
     <Compile Include="Services\SpreadsheetLightService.cs" />

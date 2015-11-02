@@ -80,7 +80,11 @@ namespace ServicesMvc.DataKonverter.Controllers
             // var tempFolder = ViewModel.GetUploadPathTemp(); //  HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
 
             // var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(@"C:\tmp\Testfile.xlsx", @"C:\tmp\Testfile.txt");
-            var convert = ViewModel.ConvertExcelToCsv("Testfile.xlsx", "Testfile.csv");
+            
+            var tmpDestFile = ViewModel.ConvertExcelToCsv("Testfile.xlsx", "Testfile.csv");
+
+            var test = ViewModel.DataKonverterDataService.GetSourceFile(tmpDestFile, true, ";");
+
             return View(ViewModel);
         }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -16,6 +17,7 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DataKonverter.Contracts;
 using CkgDomainLogic.Partner.Contracts;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -26,10 +28,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
     public class KroschkeDataKonverterViewModel : CkgBaseViewModel
     {
-
         [XmlIgnore, ScriptIgnore]
         public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
 
+        #region Wizard
         [XmlIgnore]
         public IDictionary<string, string> Steps
         {
@@ -54,19 +56,38 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             get { return string.Format("{0}", StepKeys[1]); }
         }
 
+        #endregion
+
         #region File converter
 
         public string ConvertExcelToCsv(string excelFilename, string csvFilename, string delimeter = ";")
         {
-            // var tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\CarDocu\\";
-            // var tmpFileName = Path.Combine(tempFolder, resourceName);
-
             var tempFolder = GetUploadPathTemp();
             var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
             var tmpDestFile = Path.Combine(tempFolder, csvFilename);
             var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);
 
-            return null;
+            //using (var sr = new StreamReader(tmpDestFile, Encoding.UTF8))
+            //{
+            //    // sw.WriteLine("頼もう");
+            //}
+
+            // var test = GetFileEncoding(tmpDestFile, Encoding.UTF8);
+
+            var test = CsvReaderFactory.ReadCsv(tmpDestFile, true);
+
+            var sb = new StringBuilder();
+            using (var sr = new StreamReader(tmpDestFile, Encoding.Default, true))
+            {
+                string line;
+                // Read and display lines from the file until the end of the file is reached.
+                while ((line = sr.ReadLine()) != null)
+                {
+                    sb.AppendLine(line);
+                }
+            }
+
+            return tmpDestFile;
         }
 
         public string GetUploadPathTemp()
@@ -74,9 +95,30 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
         }
 
+        protected byte[] GetCsvFileContent(string fileName)
+        {
+            var sb = new StringBuilder();
+            using (var sr = new StreamReader(fileName, Encoding.Default, true))
+            {
+                string line;
+                // Read and display lines from the file until the end of the file is reached.
+                while ((line = sr.ReadLine()) != null)
+                {
+                    sb.AppendLine(line);
+                }
+            }
+            var allines = sb.ToString();
+
+            var utf8 = new UTF8Encoding();
+
+            var preamble = utf8.GetPreamble();
+
+            var data = utf8.GetBytes(allines);
+
+            return data;
+        }
+
         #endregion
 
-
     }
-
 }
