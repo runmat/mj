@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -31,6 +32,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string HalterName {
             get
             {
+                if (String.IsNullOrEmpty(Halter))
+                    return Localize.DropdownDefaultOptionAll;
+
                 var selectedHalter = HalterForSelection.FirstOrDefault(h => h.KundenNr == Halter, null);
                 if (selectedHalter != null)
                     return selectedHalter.DisplayName;
@@ -47,6 +51,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
+                if (String.IsNullOrEmpty(Kaeufer))
+                    return Localize.DropdownDefaultOptionAll;
+
                 var selectedKaeufer = KaeuferForSelection.FirstOrDefault(h => h.KundenNr == Kaeufer, null);
                 if (selectedKaeufer != null)
                     return selectedKaeufer.DisplayName;

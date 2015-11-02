@@ -16,12 +16,12 @@
 
             @Html.HiddenFor(m => m.Halter)
             @Html.HiddenFor(m => m.Kaeufer)
-            @Html.FormTextBoxFor(m => m.HalterName, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" },
+            @Html.FormTextBoxFor(m => m.HalterName, new { @class = "m-wrap responsive-control-shrink-100", col = "left", @readonly = "readonly" },
                 postControlHtml: @<text>
                                      <a href="#" onclick="return AjaxFormAdressenShowGrid('Halter')" class="btn tooltips margin-left-5" data-original-title='@Localize.SelectCarOwnerAddress' data-placement='right'><i class="icon-search"></i></a>
-                                     <a href="#" onclick="GridKaeuferAdresseOnSelect('ALLE')" class="btn tooltips margin-left-5" data-original-title='@Localize.ResetSelection' data-placement='right'><i class="icon-remove"></i></a>
+                                     <a href="#" onclick="GridHalterAdresseOnSelect('ALLE')" class="btn tooltips margin-left-5" data-original-title='@Localize.ResetSelection' data-placement='right'><i class="icon-remove"></i></a>
                                   </text>)
-            @Html.FormTextBoxFor(m => m.KaeuferName, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" },
+            @Html.FormTextBoxFor(m => m.KaeuferName, new { @class = "m-wrap responsive-control-shrink-100", col = "right", @readonly = "readonly" },
                 postControlHtml: @<text>
                                      <a href="#" onclick="return AjaxFormAdressenShowGrid('Kaeufer')" class="btn tooltips margin-left-5" data-original-title='@Localize.SelectBuyerAddress' data-placement='right'><i class="icon-search"></i></a>
                                      <a href="#" onclick="GridKaeuferAdresseOnSelect('ALLE')" class="btn tooltips margin-left-5" data-original-title='@Localize.ResetSelection' data-placement='right'><i class="icon-remove"></i></a>
@@ -51,6 +51,8 @@
 
         <script type="text/javascript">
             _modelStateValid = @Model.IsValid.ToString().ToLower();
+            $("#TmpSelectionKey").val("");
+            $("#TmpSelectionType").val("");
         </script>
     }
 </div>

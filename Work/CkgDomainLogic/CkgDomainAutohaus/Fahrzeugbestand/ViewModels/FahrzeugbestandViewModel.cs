@@ -100,7 +100,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         private List<Adresse> GetPartnerAdressenForSelection(string partnerArt)
         {
             AdressenDataInit(partnerArt, LogonContext.KundenNr);
-            return Adressen.CopyAndInsertAtTop(new Adresse { Name1 = Localize.DropdownDefaultOptionAll });
+            return Adressen;
         }
 
         public void ValidateFinSearch(Action<string, string> addModelError)
