@@ -9,13 +9,15 @@ using CkgDomainLogic.DataKonverter.Contracts;
 using CkgDomainLogic.DataKonverter.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
+using CkgDomainLogic.General.Database.Models;
+using DocumentTools.Services;
 using GeneralTools.Contracts;
+using System.Data;
 
 namespace ServicesMvc.DataKonverter.Controllers
 {
     public class AdminController : CkgDomainController 
     {
-
         public override string DataContextKey { get { return GetDataContextKey<KroschkeDataKonverterViewModel>(); } }
 
         public KroschkeDataKonverterViewModel ViewModel
@@ -50,6 +52,35 @@ namespace ServicesMvc.DataKonverter.Controllers
         {
             // return View("Partial/Konfiguration");
             // return View("Test");
+            // var engine = new FileHelperEngine(typeof(Customer));
+//             var engine = new DocumentTools.Services. FileHelperEngine(typeof(Customer));
+            // var test = DocumentTools.Services.ExcelDocumentFactory
+            // var dataTable = ExcelDocumentFactory.ReadToDataTable(@"C:\tmp\Testfile.xlsx", true, "s", true);
+
+            // var dataTable = DocumentTools.Services.ExcelDocumentFactory.ReadToDataTable((@"C:\tmp\Testfile.xlsx", true, "s", true);
+            // var dataTable = DocumentTools.Services.ExcelDocumentFactory.ReadToDataTableWithFirstRowAsPropertyMapping<>(@"C:\tmp\Testfile.xlsx", "");
+
+            //var list = new ExcelDocumentFactory().ReadToDataTable(@"C:\tmp\Testfile.xlsx", "", CreateFromDataRowWithHeaderAndContentInSeparateColumns<FehlteilEtikett>).ToList();
+            //if (dataTable.Columns.Count == 0)
+            //    return new List<T>();
+            //var rowToStart = headerRowAvailable ? 0 : -1;
+            //return dataTable.AsEnumerable()
+            //            .Where(row => dataTable.Rows.IndexOf(row) > rowToStart)
+            //    // skip the first row, we asume it's the header row
+            //            .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row, commaSeparatedAutoPropertyNamesToIgnore));
+
+            // var asdf = DocumentTools.Services.
+
+            //var tmpFileName = Path.Combine(tempFolder, resourceName);
+            //var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(@"C:\tmp\Testfile.xlsx", @"C:\tmp\Testfile.txt");
+
+            // var tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            // tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\DataKonverter\\";
+
+            // var tempFolder = ViewModel.GetUploadPathTemp(); //  HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
+
+            // var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(@"C:\tmp\Testfile.xlsx", @"C:\tmp\Testfile.txt");
+            var convert = ViewModel.ConvertExcelToCsv("Testfile.xlsx", "Testfile.csv");
             return View(ViewModel);
         }
 

@@ -73,6 +73,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\SmartSoft.PdfLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Spire.XLS">
+      <HintPath>..\..\GAC\FreeSpire.XLS\NET2.0\Spire.XLS.dll</HintPath>
+    </Reference>
     <Reference Include="SpreadsheetLight">
       <HintPath>..\..\GAC\SpreadsheetLight\SpreadsheetLight.dll</HintPath>
     </Reference>
@@ -93,6 +96,7 @@
     <Compile Include="Services\DataTableMailMergeSource.cs" />
     <Compile Include="Services\ExcelDocumentFactory.cs" />
     <Compile Include="Services\PdfDocumentFactory.cs" />
+    <Compile Include="Services\SpireXLS.cs" />
     <Compile Include="Services\SpreadsheetLightService.cs" />
     <Compile Include="Services\WordDocumentFactory.cs" />
   </ItemGroup>

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -53,7 +54,29 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             get { return string.Format("{0}", StepKeys[1]); }
         }
 
-    }
+        #region File converter
 
+        public string ConvertExcelToCsv(string excelFilename, string csvFilename, string delimeter = ";")
+        {
+            // var tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\CarDocu\\";
+            // var tmpFileName = Path.Combine(tempFolder, resourceName);
+
+            var tempFolder = GetUploadPathTemp();
+            var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
+            var tmpDestFile = Path.Combine(tempFolder, csvFilename);
+            var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);
+
+            return null;
+        }
+
+        public string GetUploadPathTemp()
+        {
+            return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
+        }
+
+        #endregion
+
+
+    }
 
 }
