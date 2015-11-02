@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
-@model CkgDomainLogic.Fahrzeugbestand.Models.FahrzeugAkteBestandSelektor
+@model FahrzeugAkteBestandSelektor
 
 <div id="divFahrzeugAkteBestandSuche">
     @using (Ajax.BeginForm("LoadFahrzeugAkteBestand", "Fahrzeugbestand", null,
@@ -8,14 +8,25 @@
         <div class="form-horizontal">
             
             @Html.FormValidationSummary()
-            
-            @Html.HiddenFor(m => m.TmpEnforcePartnerDropdownRefresh)
+
+            @Html.HiddenFor(m => m.TmpSelectionKey)
+            @Html.HiddenFor(m => m.TmpSelectionType)
 
             @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
 
-            @Html.FormDropDownListFor(m => m.Halter, Model.HalterForSelection.ToSelectList(), new { @class = "m-wrap", col = "left" })
-            @Html.FormDropDownListFor(m => m.Kaeufer, Model.KaeuferForSelection.ToSelectList(), new { @class = "m-wrap", col = "right" })
-            
+            @Html.HiddenFor(m => m.Halter)
+            @Html.HiddenFor(m => m.Kaeufer)
+            @Html.FormTextBoxFor(m => m.HalterName, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" },
+                postControlHtml: @<text>
+                                     <a href="#" onclick="return AjaxFormAdressenShowGrid('Halter')" class="btn tooltips margin-left-5" data-original-title='@Localize.SelectCarOwnerAddress' data-placement='right'><i class="icon-search"></i></a>
+                                     <a href="#" onclick="GridKaeuferAdresseOnSelect('ALLE')" class="btn tooltips margin-left-5" data-original-title='@Localize.ResetSelection' data-placement='right'><i class="icon-remove"></i></a>
+                                  </text>)
+            @Html.FormTextBoxFor(m => m.KaeuferName, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" },
+                postControlHtml: @<text>
+                                     <a href="#" onclick="return AjaxFormAdressenShowGrid('Kaeufer')" class="btn tooltips margin-left-5" data-original-title='@Localize.SelectBuyerAddress' data-placement='right'><i class="icon-search"></i></a>
+                                     <a href="#" onclick="GridKaeuferAdresseOnSelect('ALLE')" class="btn tooltips margin-left-5" data-original-title='@Localize.ResetSelection' data-placement='right'><i class="icon-remove"></i></a>
+                                  </text>)
+
             @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })
                     
@@ -36,10 +47,10 @@
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
-        </div>  
-        
+        </div>
+
         <script type="text/javascript">
-            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _modelStateValid = @Model.IsValid.ToString().ToLower();
         </script>
     }
 </div>

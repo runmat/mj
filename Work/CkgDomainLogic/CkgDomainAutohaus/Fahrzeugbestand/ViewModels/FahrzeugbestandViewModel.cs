@@ -1,25 +1,17 @@
 ﻿// ReSharper disable ConvertIfStatementToNullCoalescingExpression
-// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.Fahrzeugbestand.Services;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Resources;
-using GeneralTools.Services;
+using System.Web.Script.Serialization;
 using SapORM.Contracts;
 using WebTools.Services;
 
@@ -111,10 +103,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             return Adressen.CopyAndInsertAtTop(new Adresse { Name1 = Localize.DropdownDefaultOptionAll });
         }
 
-        public void ValidateSearch(Action<string, string> addModelError)
-        {
-        }
-
         public void ValidateFinSearch(Action<string, string> addModelError)
         {
             if (FinSearchSelektor.FIN.IsNullOrEmpty())
@@ -182,7 +170,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         {
             FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
             allSelectionCount = FahrzeugeAkteBestand.Count(x => x.IsSelected);  
-            allCount = FahrzeugeAkteBestandFiltered.Count();
+            allCount = FahrzeugeAkteBestandFiltered.Count;
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
@@ -213,6 +201,30 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         public override Adresse GetItem(int id)
         {
             return Adressen.FirstOrDefault(c => c.KundenNr.ToSapKunnr() == id.ToString().ToSapKunnr());
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> HalterForSelectionFiltered
+        {
+            get { return PropertyCacheGet(() => HalterForSelection); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterHalterForSelection(string filterValue, string filterProperties)
+        {
+            HalterForSelectionFiltered = HalterForSelection.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> KaeuferForSelectionFiltered
+        {
+            get { return PropertyCacheGet(() => KaeuferForSelection); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterKaeuferForSelection(string filterValue, string filterProperties)
+        {
+            KaeuferForSelectionFiltered = KaeuferForSelection.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }

@@ -27,9 +27,33 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterName {
+            get
+            {
+                var selectedHalter = HalterForSelection.FirstOrDefault(h => h.KundenNr == Halter, null);
+                if (selectedHalter != null)
+                    return selectedHalter.DisplayName;
+
+                return Halter;
+            }
+        }
+
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Buyer)]
+        public string KaeuferName
+        {
+            get
+            {
+                var selectedKaeufer = KaeuferForSelection.FirstOrDefault(h => h.KundenNr == Kaeufer, null);
+                if (selectedKaeufer != null)
+                    return selectedKaeufer.DisplayName;
+
+                return Kaeufer;
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
         public string BriefbestandsInfo { get; set; }
@@ -71,6 +95,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         public List<Adresse> KaeuferForSelection { get { return GetViewModel().KaeuferForSelection; } }
 
-        public bool TmpEnforcePartnerDropdownRefresh { get; set; }
+        public string TmpSelectionKey { get; set; }
+
+        public string TmpSelectionType { get; set; }
+
+        public bool IsValid { get; set; }
     }
 }
