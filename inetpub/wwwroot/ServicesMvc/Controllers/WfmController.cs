@@ -134,6 +134,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult VersandOptionChanged(string versandOption)
+        {
+            ViewModel.VersandOptionChanged(versandOption);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
         public ActionResult CreateVersandAdresse()
         {
             var message = ViewModel.CreateVersandAdresse();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -238,6 +239,11 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         private string StornoAuftragCurrent { get; set; }
 
+        public void VersandOptionChanged(string versandOption)
+        {
+            VersandOption = GetVersandOption(versandOption).ID;
+        }
+
         public string CreateVersandAdresse()
         {
             var vorgangNr = StornoAuftragCurrent;
@@ -246,16 +252,24 @@ namespace CkgDomainLogic.WFM.ViewModels
             if (auftrag == null)
                 return Localize.OrderDoesNotExist;
 
-            if (VersandOption.IsNotNullOrEmpty())
-                VersandOption = "5530";
-
-            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag.FahrgestellNr, VersandAdresse, VersandOption);
+            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag.FahrgestellNr, VersandAdresse, GetVersandOption(VersandOption).MaterialCode);
             if (!message.IsNullOrEmpty())
                 return message;
 
             LoadAuftraege(null);
 
             return message;
+        }
+
+        private VersandOption GetVersandOption(string versandOption = null)
+        {
+            VersandOption vOption;
+            if (versandOption == null)
+                vOption = VersandOptionenList.FirstOrDefault();
+            else
+                vOption = VersandOptionenList.FirstOrDefault(v => v.ID.NotNullOrEmpty().TrimStart('0') == versandOption.NotNullOrEmpty().TrimStart('0'));
+
+            return vOption ?? VersandOptionenList.FirstOrDefault() ?? new VersandOption();
         }
 
         public string StornoAuftrag(string vorgangNr)
@@ -323,10 +337,21 @@ namespace CkgDomainLogic.WFM.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.ShippingOption)]
         public string VersandOption
         {
-            get { return PropertyCacheGet(() => ""); }
+            get { return PropertyCacheGet(() => GetVersandOption().ID); }
             set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<VersandOption> VersandOptionenList
+        {
+            get
+            {
+                return DataService.VersandOptionen.Where(vo => vo.IstEndgueltigerVersand).OrderBy(w => w.Name).ToList();
+            }
         }
 
         public Adresse VersandAdresse

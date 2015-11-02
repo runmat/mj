@@ -264,6 +264,19 @@
         return false;
     }
 
+    function VersandOptionChanged() {
+        
+        $.ajax(
+        {
+            type: "POST",
+            url: "VersandOptionChanged",
+            loadingShow: false,
+            data: { versandOption: $("#VersandOption").val() },
+            success: function () {
+            }
+        });
+    }
+
     function CreateVersandAdresse() {
         $.ajax(
         {

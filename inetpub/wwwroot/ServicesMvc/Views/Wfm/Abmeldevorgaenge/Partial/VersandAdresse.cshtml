@@ -13,4 +13,16 @@
     <a href="#" onclick="return AjaxFormAdresseEmpty('VersandAdresseAjaxForm', 'VersandadresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10 margin-right-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top">Formular leeren <i class="icon-remove"></i></a>
 </div>
 
+<div class="form-horizontal margin-top-20">
+    @Html.FormDropDownListFor(m => m.VersandOption, Model.VersandOptionenList.ToSelectList())
+</div>
+
+<script type="text/javascript">
+    $("#VersandOption").change(function() {
+
+        VersandOptionChanged();
+
+    })
+</script>
+
 @Html.Partial("Abmeldevorgaenge/Partial/VersandAdresseForm", @Model.VersandAdresse)
