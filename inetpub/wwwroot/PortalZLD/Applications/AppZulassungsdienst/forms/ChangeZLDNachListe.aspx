@@ -231,7 +231,8 @@
 													<asp:LinkButton ID="col_Preis" runat="server" CommandName="Sort" CommandArgument="Preis">col_Preis</asp:LinkButton>
                                                 </HeaderTemplate>
 												<ItemTemplate>
-												    <asp:TextBox ID="txtPreis"  CssClass="TextBoxNormal"  onKeyPress="return numbersonly(event, true)"   Width="45" Font-Size="8pt" runat="server" Text='<%# Eval("Preis", "{0:F}") %>'/>
+												    <asp:TextBox ID="txtPreis" CssClass="TextBoxNormal" onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" runat="server" 
+                                                        Text='<%# Eval("Preis", "{0:F}") %>' Enabled='<%# Eval("PositionsNr").ToString() != "10" || Eval("Belegart").ToString() != "OK" %>'/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding"   Width="52px" />
 												<ItemStyle CssClass="TablePadding"   Width="52px"  />
