@@ -26,8 +26,8 @@
                     </div>
                     <div id="Auftragsliste" runat="server" style="text-align: center; border-bottom: solid 1px #DFDFDF;
                         border-right: solid 1px #DFDFDF; border-left: solid 1px #DFDFDF;">   
-                        <telerik:RadGrid ID="rgGrid1" runat="server" AllowSorting="True" AllowPaging="True"
-                            AutoGenerateColumns="False" GridLines="None" Culture="de-DE" Skin="Default" PageSize="5">
+                        <telerik:RadGrid ID="rgGrid1" runat="server" AllowSorting="True" AllowPaging="False"
+                            AutoGenerateColumns="False" GridLines="None" Culture="de-DE" Skin="Default">
                             <ClientSettings AllowKeyboardNavigation="true" >
                                 <Scrolling ScrollHeight="400px" AllowScroll="True" UseStaticHeaders="True" />
                             </ClientSettings>
@@ -37,15 +37,12 @@
                                 <HeaderStyle ForeColor="#595959" />
                                 <ItemStyle HorizontalAlign="Left" />
                                 <AlternatingItemStyle HorizontalAlign="Left" />
-                                <SortExpressions>
-                                    <telerik:GridSortExpression FieldName="ERZEIT" SortOrder="Ascending"/>
-                                </SortExpressions>
                                 <Columns>
                                     <telerik:GridTemplateColumn HeaderText="Auswahl">
                                         <HeaderStyle Width="55px" />
                                         <ItemStyle HorizontalAlign="Center" />
                                         <ItemTemplate>
-                                            <asp:CheckBox runat="server" ID="chkAuswahl" Visible='<%# Eval("POSNR").ToString() = "10" %>' Checked='<%# Eval("Auswahl") %>' OnCheckedChanged="chkAuswahl_OnCheckedChanged" AutoPostBack="True"/>
+                                            <asp:CheckBox runat="server" ID="chkAuswahl" Visible='<%# Eval("POSNR").ToString() = "10" %>' Checked='<%# Eval("Auswahl") %>' />
                                         </ItemTemplate>
                                     </telerik:GridTemplateColumn>
                                     <telerik:GridBoundColumn DataField="PRAEG_ID" SortExpression="PRAEG_ID" Visible="False" >
@@ -77,7 +74,7 @@
                                     <telerik:GridTemplateColumn>
                                         <HeaderStyle Width="30px" />
                                         <ItemTemplate>
-                                            <asp:ImageButton ID="ImageButton1" runat="server" Width="16" Height="16" ImageUrl="~/Images/iconPDF.gif"
+                                            <asp:ImageButton runat="server" Width="16" Height="16" ImageUrl="~/Images/iconPDF.gif"
                                                 CommandName="showDocument" ToolTip="PDF herunterladen" Visible='<%# Eval("HasDocuments") AndAlso Eval("POSNR").ToString() = "10" %>' />
                                         </ItemTemplate>
                                     </telerik:GridTemplateColumn>
