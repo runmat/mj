@@ -8,12 +8,9 @@ using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Models;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Services;
 // ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Strafzettel.ViewModels

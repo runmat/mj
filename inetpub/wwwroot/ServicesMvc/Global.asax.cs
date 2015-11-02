@@ -183,6 +183,10 @@ namespace ServicesMvc
             var dataContext = SessionStore.GetCurrentDataContext();
             var logonContext = SessionStore.GetCurrentLogonContext();
 
+            if (exception.Message.NotNullOrEmpty().Contains("__browserLink/requestData"))
+                // ignore this error
+                return;
+
             this.HandleError();
 
             var logService = new LogService(string.Empty, string.Empty);
