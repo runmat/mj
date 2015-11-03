@@ -37,8 +37,11 @@ namespace CkgDomainLogic.General.ViewModels
 
         public virtual void Init(IAppSettings appSettings, ILogonContextDataService logonContext)
         {
-            this.AppSettings = appSettings;
-            this.LogonContext = logonContext;
+            if (appSettings != null)
+                this.AppSettings = appSettings;
+
+            if (logonContext != null)
+                this.LogonContext = logonContext;
 
             DashboardTryInitCurrentReportSelector();
         }

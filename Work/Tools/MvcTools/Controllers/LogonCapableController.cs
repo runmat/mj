@@ -126,6 +126,7 @@ namespace MvcTools.Controllers
 
             var rawUrl = Request.RawUrl;
             var loginUrl = LogonContext.GetLoginUrl(Server.UrlEncode(rawUrl));
+
             if (loginUrl.IsNullOrEmpty())
                 // a missing login url should signal success and avoid any redirection here:
                 // login is not necessary here:
