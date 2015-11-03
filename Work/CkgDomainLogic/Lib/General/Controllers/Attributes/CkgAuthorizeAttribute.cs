@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -14,18 +15,21 @@ namespace CkgDomainLogic.General.Controllers
             if (filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
                 return;
 
-            var requestUserName = filterContext.HttpContext.Request["un"];
-            var requestRemoteLoginID = filterContext.HttpContext.Request["ra"];
-            var requestRemoteLoginDateTime = filterContext.HttpContext.Request["rb"];
-            var requestRemoteLoginLogoutUrl = filterContext.HttpContext.Request["logouturl"];
-            var requestIsGet = (filterContext.HttpContext.Request.RequestType.NotNullOrEmpty().ToUpper() == "GET");
+            var request = filterContext.HttpContext.Request;
+            var server = filterContext.HttpContext.Server;
+
+            var requestUserName = request["un"];
+            var requestRemoteLoginID = request["ra"];
+            var requestRemoteLoginDateTime = request["rb"];
+            var requestRemoteLoginLogoutUrl = request["logouturl"];
+            var requestIsGet = (request.RequestType.NotNullOrEmpty().ToUpper() == "GET");
 
             // if MVC runs in embedded mode (iFrame), extract the session id of the surrounding web application
             // => user context might not be valid any more if the surrounding session has changed
             var requestSurroundingSessionId = "";
-            if (!string.IsNullOrEmpty(requestUserName) && filterContext.HttpContext.Request.UrlReferrer != null)
+            if (!string.IsNullOrEmpty(requestUserName) && request.UrlReferrer != null)
             {
-                var segments = filterContext.HttpContext.Request.UrlReferrer.Segments;
+                var segments = request.UrlReferrer.Segments;
 
                 if (segments != null && segments.Length > 2)
                 {
@@ -60,7 +64,7 @@ namespace CkgDomainLogic.General.Controllers
             }
 
             var logonAction = logonController.UrlGetLogonAction(requestUserName, requestRemoteLoginID, requestRemoteLoginDateTime, requestRemoteLoginLogoutUrl, requestSurroundingSessionId);
-            if (logonAction != null)
+            if (requestIsGet && logonAction != null)
                 filterContext.Result = logonAction;
         }
     }
