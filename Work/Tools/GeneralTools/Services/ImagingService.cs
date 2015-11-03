@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brushes = System.Drawing.Brushes;
@@ -332,7 +333,9 @@ namespace GeneralTools.Services
 
         public static void ScaleAndSaveImage(string sourceImageFileName, string destinationImageFileName, int dimensions)
         {
-            var bitmapSource = Image.FromFile(sourceImageFileName);
+            Image bitmapSource;
+            try { bitmapSource = Image.FromFile(sourceImageFileName); }
+            catch  { return; }
             var imgBytes = BytesFromImage(bitmapSource);
             var bitmapDestination = ImageFromBytes(ScaleImage(imgBytes, dimensions, dimensions));
 
