@@ -124,6 +124,7 @@ namespace CarDocu.Models
             {
                 _isBatchScanAllowed = value; 
                 SendPropertyChanged("IsBatchScanAllowed");
+                SendPropertyChanged("BarcodeNumericRangeVisible");
             }
         }
 
@@ -183,7 +184,17 @@ namespace CarDocu.Models
         public bool BarcodeAlphanumericAllowed
         {
             get { return _barcodeAlphanumericAllowed; }
-            set { _barcodeAlphanumericAllowed = value; SendPropertyChanged("BarcodeAlphanumericAllowed"); }
+            set
+            {
+                _barcodeAlphanumericAllowed = value;
+                SendPropertyChanged("BarcodeAlphanumericAllowed");
+                SendPropertyChanged("BarcodeNumericRangeVisible");
+            }
+        }
+        
+        public bool BarcodeNumericRangeVisible
+        {
+            get { return IsBatchScanAllowed && !BarcodeAlphanumericAllowed; }
         }
 
         private long _barcodeRangeStart = 1000000000009;
@@ -201,10 +212,65 @@ namespace CarDocu.Models
         public long BarcodeRangeEnd
         {
             get { return _barcodeRangeEnd; }
-            set 
+            set
             {
                 _barcodeRangeEnd = value;
                 SendPropertyChangedBarcodeEnd();
+            }
+        }
+
+        private long _enforceExactPageCount;
+        public long EnforceExactPageCount
+        {
+            get { return _enforceExactPageCount; }
+            set
+            {
+                _enforceExactPageCount = value;
+                SendPropertyChanged("EnforceExactPageCount");
+            }
+        }
+
+        private bool _deleteAndBackupFileAfterDelivery;
+
+        public bool DeleteAndBackupFileAfterDelivery
+        {
+            get { return _deleteAndBackupFileAfterDelivery; }
+            set
+            {
+                _deleteAndBackupFileAfterDelivery = value;
+                if (value && DomainService.Repository.GlobalSettings.BackupArchive.Path.IsNullOrEmpty())
+                {
+                    _deleteAndBackupFileAfterDelivery = false;
+                    Tools.Alert("Diese Option kann erst aktiviert werden, wenn unter den Domain Einstellungen ein Backup Pfad hinterlegt wurde!");
+                    return;
+                }
+                SendPropertyChanged("DeleteAndBackupFileAfterDelivery");
+            }
+        }
+
+        private string _externalCommandlineProgramPath;
+
+        public string ExternalCommandlineProgramPath
+        {
+            get { return _externalCommandlineProgramPath; }
+            set
+            {
+                _externalCommandlineProgramPath = value;
+                SendPropertyChanged("ExternalCommandlineProgramPath");
+            }
+        }
+
+        public bool UseExternalCommandline { get { return ExternalCommandlineProgramPath.IsNotNullOrEmpty(); } }
+
+        private string _externalCommandlineArguments;
+
+        public string ExternalCommandlineArguments
+        {
+            get { return _externalCommandlineArguments; }
+            set
+            {
+                _externalCommandlineArguments = value;
+                SendPropertyChanged("ExternalCommandlineArguments");
             }
         }
 
@@ -307,10 +373,6 @@ namespace CarDocu.Models
         [XmlIgnore]
         public DocumentTypeWebServiceFunction WebServiceFunctionObject { get { return WebServiceFunctions.First(i => i.ID == WebServiceFunction); } }
 
-        public string WebServiceFunctionName { get { return WebServiceFunctionObject.FunctionName; } }
-
-        public string WebServiceFunctionFriendlyName { get { return WebServiceFunctionObject.FriendlyName; } }
-
         [XmlIgnore]
         public bool WebServiceFunctionAvailable
         {
@@ -326,15 +388,19 @@ namespace CarDocu.Models
                            {
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "", FunctionName = "", FriendlyName = "(Keine Schnittstelle)"
+                                       ID = "", FriendlyName = "(Keine Schnittstelle)"
                                    },
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "CARDOCU", FunctionName = "ProcessArchivMeldung", FriendlyName = "CarDocu Strafzettel"
+                                       ID = "CARDOCU", FriendlyName = "CarDocu Strafzettel"
                                    },
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "VWL", FunctionName = "ProcessVwlKlaerfaelle", FriendlyName = "VW Leasing Klärfälle"
+                                       ID = "VWL", FriendlyName = "VW Leasing Klärfälle"
+                                   },
+                               new DocumentTypeWebServiceFunction
+                                   {
+                                       ID = "WKDA", FriendlyName = "WKDA Wiesbaden"
                                    },
                            };
             }

@@ -18,7 +18,7 @@ namespace GeneralTools.Services
             Queue.Enqueue(item);
         }
 
-        public virtual T Dequeue(int sleepMilliseconds = 3000)
+        public virtual T Dequeue(int sleepMilliseconds = 1000)
         {
             return Queue.Dequeue();
         }

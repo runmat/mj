@@ -23,6 +23,8 @@ namespace CarDocu.Models
 
         public string FinNumber { get; set; }
 
+        public string PdfErrorGuid { get; set; }
+
         public string StandortCode { get; set; }
 
         public string KundenNr { get; set; }
@@ -103,6 +105,8 @@ namespace CarDocu.Models
         [XmlIgnore]
         public ICommand EmailSendoutAgainCommand { get; private set; }
 
+        public bool BatchScanned { get; set; }
+
 
         #region Delivery
 
@@ -123,20 +127,50 @@ namespace CarDocu.Models
         public bool ArchiveMailDeliveryNeeded { get; set; }
 
         #endregion
-        
+
         #region Archive
 
+        public Archive GetDefaultArchive()
+        {
+            return DomainService.Repository.GlobalSettings.Archives.FirstOrDefault(a => a.ID == (ArchiveMailDeliveryNeeded ? "ELO" : "EASY"));
+        }
+
+        public Archive GetArchive()
+        {
+            if (ScanImages == null)
+                return GetDefaultArchive();
+
+            if (ScanImages.None())
+                XmlLoadScanImages();
+
+            var firstScanImage = ScanImages.FirstOrDefault(); 
+            return firstScanImage != null && firstScanImage.ImageDocumentType != null ? firstScanImage.ImageDocumentType.Archive : GetDefaultArchive();
+        }
+
+        public void EnsureDocumentType()
+        {
+            if (ValidDocumentType || ScanImages == null)
+                return;
+
+            if (ScanImages.None())
+                XmlLoadScanImages();
+
+            if (ScanImages.None())
+                return;
+
+            SelectedDocumentType = ScanImages.First().ImageDocumentType;
+        }
+
         [XmlIgnore]
-        public Archive Archive
+        public bool BackgroundDeliveryDisabled
         {
             get
             {
-                // ToDo: !!! Das Archiv aus den ScanImages nehmen statt fix "ELO" oder "EASY" hier (aber leider Exception in Ingolstadt sonst)
-                
-                //var firstScanImage = ScanImages.FirstOrDefault(); 
-                //return firstScanImage == null ? null : firstScanImage.ImageDocumentType.Archive;
+                var archive = GetArchive();
+                if (archive == null)
+                    return true;
 
-                return DomainService.Repository.GlobalSettings.Archives.FirstOrDefault(a => a.ID == (ArchiveMailDeliveryNeeded ? "ELO" : "EASY"));
+                return archive.BackgroundDeliveryDisabled;
             }
         }
 
@@ -237,8 +271,11 @@ namespace CarDocu.Models
 
         void CreateDebugHintTextFile()
         {
-            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), string.Format("{0}.txt", this.FinNumber))); }
-            catch { }
+            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), string.Format("{0}.txt", FinNumber))); }
+            catch
+            {
+                // ignored
+            }
         }
 
         public void XmlLoadScanImages()
@@ -249,6 +286,29 @@ namespace CarDocu.Models
         }
 
         public string PdfDirectoryName { get { return GetDocumentPdfDirectoryName(); } }
+
+        public bool PdfPageCountIsValid { get; set; }
+
+        public bool CheckPdfPageCountIsValid(string documentTypeCode, int scanImagesCount)
+        {
+            if (documentTypeCode.IsNullOrEmpty())
+                return false;
+
+            var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
+
+            if (!BatchScanned)
+            {
+                PdfPageCountIsValid = true;
+                PdfErrorGuid = (ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+            }
+            else
+            {
+                PdfPageCountIsValid = (documentType.EnforceExactPageCount == 0 || scanImagesCount == 0 || documentType.EnforceExactPageCount == scanImagesCount);
+                PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+            }
+
+            return PdfPageCountIsValid;
+        }
 
         public string PdfGetFileName(string documentTypeCode, string directoryName, string extension)
         {
@@ -262,6 +322,9 @@ namespace CarDocu.Models
                 pdfFinNumber = pdfFinNumber.Substring(6);
                 pdfFinNumber = string.Format("{0}{1}", pdfFinNumber.Substring(0, 8), pdfFinNumber.Substring(9));
             }
+
+            if (!PdfPageCountIsValid || !ValidFinNumber)
+                pdfFinNumber = string.Format("FEHLER_{0}", PdfErrorGuid);
 
             return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
         }
@@ -281,51 +344,59 @@ namespace CarDocu.Models
 
         public void PdfSaveScanImages()
         {
-            if (!ValidFinNumber)
-                return;
-
-            var extension = "pdf";
+            const string extension = "pdf";
             var directoryName = PdfDirectoryName;
             var oldFiles = Directory.GetFiles(directoryName, string.Format("{0}*.{1}", FinNumber, extension)).ToList();
-            foreach (var oldFile in oldFiles)
-            {
-                var saveAgain = true;
-                while (saveAgain)
+            if (FinNumber.IsNotNullOrEmpty())
+                foreach (var oldFile in oldFiles)
                 {
-                    try
+                    var saveAgain = true;
+                    while (saveAgain)
                     {
-                        saveAgain = false;
-                        if (File.Exists(oldFile))
-                            File.Delete(oldFile);
-                    }
-                    catch
-                    {
-                        saveAgain = Tools.Confirm(string.Format(
-                            "Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{0}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?",
-                                Path.GetFileName(oldFile)));
-                        if (!saveAgain)
-                            return;
+                        try
+                        {
+                            saveAgain = false;
+                            if (!File.Exists(oldFile))
+                                continue;
+
+                            var tempFileName = oldFile.ToUpper().Replace("." + extension.ToUpper(), "~1." + extension.ToUpper());
+                            File.Move(oldFile, tempFileName);
+                            File.Move(tempFileName, oldFile);
+                        }
+                        catch
+                        {
+                            saveAgain = Tools.Confirm(string.Format(
+                                "Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{0}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?",
+                                    Path.GetFileName(oldFile)));
+                            if (!saveAgain)
+                                return;
+                        }
                     }
                 }
-            }
 
             ScanDocumentTypeCodes.ForEach(
                 docTypeCode =>
+                {
+                    var scanImagesOfThisCode = ScanImages
+                                                .Where(image => image.ImageDocumentTypeCode == docTypeCode)
+                                                .OrderBy(i => i.Sort)
+                                                .Select(image => image.GetCachedImageFileName(false))
+                                                .ToListOrEmptyList();
+
+                    CheckPdfPageCountIsValid(docTypeCode, scanImagesOfThisCode.Count);
+
+                    var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);    
+
+                    var errorMessage = "";
+                    try { PdfDocumentFactory.ScanClientCreatePdfFromImages(scanImagesOfThisCode, pdfFileName); }
+                    catch(Exception e) { errorMessage = e.Message; }
+
+                    if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
                     {
-                        var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);
-
-                        var scanImagesOfThisCode = ScanImages.Where(image => image.ImageDocumentTypeCode == docTypeCode).OrderBy(i => i.Sort).Select(image => image.GetCachedImageFileName(false));
-
-                        var errorMessage = "";
-                        try { PdfDocumentFactory.CreatePdfFromImages(scanImagesOfThisCode, pdfFileName); }
-                        catch(Exception e) { errorMessage = e.Message; }
-
-                        if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
-                        {
-                            Tools.AlertError(string.Format("Beim Erstellen der PDF-Datei '{0}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{1}", 
-                                                Path.GetFileName(pdfFileName), errorMessage));
-                        }
-                    });
+                        Tools.AlertError(string.Format("Beim Erstellen der PDF-Datei '{0}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{1}", 
+                                            Path.GetFileName(pdfFileName), errorMessage));
+                    }
+                });
 
             PdfIsSynchronized = true;
         }
@@ -338,12 +409,12 @@ namespace CarDocu.Models
         {
             var newScanDoc = new ScanDocument
                 {
-                    KundenNr = this.KundenNr,
-                    StandortCode = this.StandortCode,
+                    KundenNr = KundenNr,
+                    StandortCode = StandortCode,
                     DocumentID = Guid.NewGuid().ToString(),
                     CreateDate = DateTime.Now,
                     CreateUser = DomainService.Repository.UserName,
-                    SelectedDocumentType =DomainService.Repository.GetImageDocumentType(DomainService.Repository.UserSettings.SelectedDocumentTypeCode),
+                    SelectedDocumentType = DomainService.Repository.GetImageDocumentType(DomainService.Repository.UserSettings.SelectedDocumentTypeCode),
                     FinNumber = ""
                 };
 

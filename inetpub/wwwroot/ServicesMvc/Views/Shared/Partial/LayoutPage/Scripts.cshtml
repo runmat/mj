@@ -319,7 +319,8 @@
     }
 
     function SpanAlertError(id, message, delay) {
-        SpanAlert(id + "Error", message, delay);
+        if (message.length > 0)
+            SpanAlert(id + "Error", message, delay);
     }
 
     function SpanAlertAjaxError(id, jqXhr) {
@@ -487,6 +488,33 @@
 
         //var plz = $("#" + postCodePropertyName);
         var plz = $("#" + form.attr("id") + " input[name$='" + postCodePropertyName + "']");
+        if (plz.val().length != 5)
+            return;
+
+        _insideAutoPostcodeCityMapping = true;
+        $.ajax({
+            type: "POST",
+            url: "GetAutoPostcodeCityMappings",
+            data: { plz: plz.val() },
+            success: function (result) {
+                AutoPostcodeCityMapping_InitAutoComplete(tbCity, result.items);
+                _insideAutoPostcodeCityMapping = false;
+            }
+        });
+    }
+
+    // Verwendet eindeutige Feldnamen für die Befüllung des Ortfeldes. Verwendung z.B. dort möglich, wo mehrere Ortfelder im selben Formular verwendet werden sollen.
+    // tbCity = zu füllendes DropDown-Objekt, postCodePropertyName = Id des PLZ-Feldes, countryPropertyName = Id des Länderfeldes
+    function AutoPostcodeCityMappingDirect_OnFocus(tbCity, postCodePropertyName, countryPropertyName) {
+
+        if (_insideAutoPostcodeCityMapping)
+            return;
+
+        var country = $('#' + countryPropertyName).val().toLowerCase();
+        if (country != "de")
+            return;
+
+        var plz = $("#" + postCodePropertyName);
         if (plz.val().length != 5)
             return;
 

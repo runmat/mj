@@ -6,6 +6,7 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WpfTools4.Commands;
 using WpfTools4.Services;
 using WpfTools4.ViewModels;
@@ -38,17 +39,17 @@ namespace CarDocu.ViewModels
             }
         }
 
-        private ObservableCollection<ScanDocument> _templatetems;
+        private ObservableCollection<ScanDocument> _templateItems;
         public ObservableCollection<ScanDocument> TemplateItems
         {
             get
             {
-                if (_templatetems != null)
-                    return _templatetems;
+                if (_templateItems != null)
+                    return _templateItems;
 
-                _templatetems = new ObservableCollection<ScanDocument>(DomainService.Repository.ScanTemplateRepository.ScanDocuments);
+                _templateItems = new ObservableCollection<ScanDocument>(DomainService.Repository.ScanTemplateRepository.ScanDocuments);
 
-                return _templatetems;
+                return _templateItems;
             }
         }
 
@@ -109,6 +110,8 @@ namespace CarDocu.ViewModels
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
 
         public ICommand ZipToArchiveCommand { get; private set; }
+        public ICommand AutoRecycleArchiveCommand { get; private set; }
+        
 
         #endregion
 
@@ -120,12 +123,28 @@ namespace CarDocu.ViewModels
             ScanDocuDeleteCommand = new DelegateCommand(e => ScanDocuDelete(), e => CanScanDocuDelete());
             ScanPdfFolderOpenCommand = new DelegateCommand(e => DomainService.Repository.ScanPdfFolderOpen());
             ZipToArchiveCommand = new DelegateCommand(e => ZipArchiveUserLogsAndScanDocuments());
+            AutoRecycleArchiveCommand = new DelegateCommand(e => AutoRecycleUserLogsAndScanDocuments());
 
             DomainService.Repository.ScanDocumentRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanDocumentRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
             
             DomainService.Repository.ScanTemplateRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanTemplateRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
+
+            TaskService.StartDelayedUiTask(1000, AutoRecycleUserLogsAndScanDocuments);
+        }
+
+        public static bool EnsureDomainPathExistsAndIsAvailable(string path, string pathDescription)
+        {
+            if (path.IsNullOrEmpty())
+            {
+                Tools.Alert("Hinweis:\r\n\r\nBitte hinterlegen Sie zuerst den Pfad " + pathDescription + " in den Domain Einstellungen.\r\n\r\n(Admin Rechte erforderlich)");
+                return false;
+            }
+            if (!FileService.PathExistsAndWriteEnabled(path, Tools.AlertCritical, " " + pathDescription + " "))
+                return false;
+
+            return true;
         }
 
         static void ZipArchiveUserLogsAndScanDocuments()
@@ -141,6 +160,12 @@ namespace CarDocu.ViewModels
                 Tools.Alert("Hinweis:\r\n\r\nEine ZIP-Archivierung ist nicht erforderlich, da seit der letzten Archivierung keine Scan-Dokumente erfasst wurden.");
                 return;
             }
+
+
+            // Validate ZIP Path
+            if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.ZipArchive.Path, "zur ZIP-Archivierung"))
+                return;
+
 
             if (!Tools.Confirm("Alle Scan-Dokumente aus dem Ablage-Archiv werden nun in das ZIP-Archiv verschoben.\r\n\r\nWeiter?"))
                 return;
@@ -158,9 +183,39 @@ namespace CarDocu.ViewModels
 
             Tools.Alert("Die ZIP-Archivierung wurde erfolgreich durchgeführt!\r\n\r\nHinweis: Die Anwendung wird nun neu gestartet!");
             DomainService.Repository.ScanDocumentRepository.ScanDocuments.RemoveAll(d => true);
+            DomainService.Repository.ScanDocumentRepositorySave();
             DomainService.Repository.UserSettingsSave();
             DomainService.Repository.LogItemFilesDelete();
             App.Restart();
+        }
+
+
+        void AutoRecycleUserLogsAndScanDocuments()
+        {
+            if (DomainService.Threads.IsBusy)
+                return;
+
+            if (DomainService.Repository.ScanDocumentRepository.ScanDocuments.None())
+                return;
+
+            ProgressBarOperation.Start(DomainService.Repository.AutoRecycleUserLogsAndScanDocuments, AutoRecycleUserLogsAndScanDocumentsComplete);
+        }
+
+        void AutoRecycleUserLogsAndScanDocumentsComplete(ProgressBarOperation progressBarOperation)
+        {
+            if (!progressBarOperation.TaskResult)
+            {
+                Tools.Alert("Die automatische Datenbereinigung wurde abgebrochen!");
+                return;
+            }
+
+            DomainService.Repository.ScanDocumentRepositorySave();
+            DomainService.Repository.ScanDocumentRepositoryLoad();
+
+            DomainService.Repository.UserSettingsSave();
+            DomainService.Repository.LogItemFilesDelete();
+
+            _scanItems = _templateItems = null;
         }
 
         void ScanDocuNew()
@@ -202,7 +257,7 @@ namespace CarDocu.ViewModels
         public void ReloadItems()
         {
             _scanItems = null;
-            _templatetems = null;
+            _templateItems = null;
         }
 
         public void RefreshSelectedItem(ScanDocument scanDocument)

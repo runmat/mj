@@ -26,9 +26,11 @@
     <OptionStrict>Off</OptionStrict>
     <RootNamespace>CKG.Portal</RootNamespace>
     <StartupObject>CKG.Portal.%28Keine%29</StartupObject>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <MyType>Windows</MyType>
-    <UpgradeBackupLocation>C:\dev\inetpub\wwwroot\Portal\Applications\AppAvis\Backup2\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SccProjectName>
     </SccProjectName>

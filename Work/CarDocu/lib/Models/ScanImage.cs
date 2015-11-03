@@ -37,20 +37,10 @@ namespace CarDocu.Models
         [XmlIgnore]
         public ScanDocument ParentDocument { get; set; }
 
-        //private ImageSource _imageSource; 
         [XmlIgnore]
         public ImageSource ImageSource 
         { 
-            get
-            {
-                //if (_imageSource != null) return _imageSource;
-
-                //_imageSource = GetChachedImageSource(true);
-
-                //return _imageSource;
-
-                return GetChachedImageSource(true);
-            }
+            get { return GetChachedImageSource(true); }
         }
 
         [XmlIgnore]
@@ -91,8 +81,6 @@ namespace CarDocu.Models
 
             bitmapThumb.Save(tempThumbFileName, ImageFormat);
             bitmapThumb.Dispose();
-
-            //_imageSource = null;
         }
 
         public void Rotate()

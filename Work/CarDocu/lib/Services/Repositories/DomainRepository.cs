@@ -190,6 +190,9 @@ namespace CarDocu.Services
             if (GlobalSettings.MergeAvailableAndFixedArchives())
                 GlobalSettingsSave();
 
+            GlobalSettings.PatchArchives();
+            GlobalSettingsSave();
+
             // Domain Locations (Standorte)
             if (!GlobalSettings.DomainLocations.Any())
             {
@@ -261,8 +264,10 @@ namespace CarDocu.Services
             ScanDocumentRepositorySave();
         }
 
-        public void QueueUnprocessedItems()
+        private void QueueUnprocessedItems()
         {
+            ScanDocumentsEnsureDocumentType();
+
             var sapUnprocessedEntities = GetUnprocessedSapItems().Select(s => new SapLogItem { DocumentID = s.DocumentID }).ToList();
             sapUnprocessedEntities.ForEach(item => DomainService.Threads.SapBackgroundTask.Enqueue(item));
 
@@ -273,6 +278,9 @@ namespace CarDocu.Services
         public void TryQueueNewItem(ScanDocument scanDocument)
         {
             if (scanDocument.IsTemplate)
+                return;
+
+            if (scanDocument.BackgroundDeliveryDisabled)
                 return;
 
             DomainService.Threads.SapBackgroundTask.Enqueue(new SapLogItem { DocumentID = scanDocument.DocumentID });
@@ -399,25 +407,35 @@ namespace CarDocu.Services
             return path;
         }
 
-        public IEnumerable<ScanDocument> GetUnprocessedSapItems()
+        private void ScanDocumentsEnsureDocumentType()
         {
-            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.SapDeliveryDate == null);
+            ScanDocumentRepository.ScanDocuments.ForEach(sd => sd.EnsureDocumentType());
         }
 
-        public IEnumerable<ScanDocument> GetUnprocessedSmtpItems()
+        private IEnumerable<ScanDocument> GetUnprocessedSapItems()
         {
-            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.ArchiveDeliveryDate == null); // && sd.ArchiveMailDeliveryNeeded);
+            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.SapDeliveryDate == null && !sd.BackgroundDeliveryDisabled);
+        }
+
+        private IEnumerable<ScanDocument> GetUnprocessedSmtpItems()
+        {
+            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.ArchiveDeliveryDate == null && !sd.BackgroundDeliveryDisabled); // && sd.ArchiveMailDeliveryNeeded);
         }
 
         public bool ZipArchiveUserLogsAndScanDocuments(ProgressBarOperation progressBarOperation)
         {
-            var directoryToZip = UserSettingsDirectoryName;
+            var directoryToZip = PdfDirectoryName;
+
+            var backupArchivePath = GlobalSettings.BackupArchive.Path;
             var zipArchivePath = GlobalSettings.ZipArchive.Path;
-            var zipFileName = Path.Combine(zipArchivePath, string.Format("{0}__{1}.zip", LogonUser.LoginID, DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss")));
+            var tempPath = GlobalSettings.TempPath;
+
+            var tempRawFileName = string.Format("{0}__{1}.zip", "CkgScanClient_PDF___", DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss"));
+            var tempFileName = Path.Combine(tempPath, tempRawFileName);
 
             var fileList = Directory.EnumerateFiles(directoryToZip, "*.*", SearchOption.AllDirectories).ToList();
 
-            progressBarOperation.Current = 0;
+            progressBarOperation.Current = 1;
             progressBarOperation.Total = fileList.Count;
             progressBarOperation.Header = "ZIP-Archivierung";
             progressBarOperation.Details = "Archiviere Datei";
@@ -431,7 +449,7 @@ namespace CarDocu.Services
                     if (progressBarOperation.IsCancellationPending)
                         return false;
 
-                    var e = zip.AddFile(filename);
+                    var e = zip.AddFile(filename, "PDF");
                     e.Comment = string.Format("Datei hinzugefügt von '{0}'", DomainService.AppName);
 
                     progressBarOperation.Current++;
@@ -443,19 +461,39 @@ namespace CarDocu.Services
                 zip.Comment = string.Format("ZIP-Datei erstellt von '{0}' auf Rechner '{1}'", DomainService.AppName, System.Net.Dns.GetHostName());
 
                 // lengthly atomar operation here...
-                progressBarOperation.Details = "Speichern ... bitte warten Sie einen Moment ...";
-                zip.Save(zipFileName);
+                progressBarOperation.Details = "Erstelle ZIP Datei ... bitte warten ...";
+                zip.Save(tempFileName);
 
                 if (progressBarOperation.IsCancellationPending)
                 {
-                    FileService.TryFileDelete(zipFileName);
+                    FileService.TryFileDelete(tempFileName);
                     return false;
                 }
 
+
+                // Copy ZIP file to ZIP folder:
+                var zipFileName = Path.Combine(zipArchivePath, tempRawFileName);
+                progressBarOperation.Details = "Kopiere ZIP Datei  ...";
+                FileService.TryFileCopy(tempFileName, zipFileName);
+                Thread.Sleep(1000);
+
+
+                if (backupArchivePath.IsNotNullOrEmpty() && FileService.PathExistsAndWriteEnabled(backupArchivePath))
+                {
+                    // Additionally create a backup of the ZIP file:
+                    var backupFileName = Path.Combine(backupArchivePath, tempRawFileName);
+                    progressBarOperation.Details = "Erstelle zusätzliches Backup von ZIP Datei  ...";
+                    FileService.TryFileCopy(tempFileName, backupFileName);
+                    Thread.Sleep(1000);
+                }
+
+
                 // another lengthly atomar operation here...
-                progressBarOperation.Details = "Datenbereinigung ... bitte warten Sie einen Moment ...";
+                progressBarOperation.Details = "Datenbereinigung ... bitte warten ...";
+                FileService.TryFileDelete(tempFileName);
                 FileService.TryDirectoryDelete(directoryToZip);
-                Thread.Sleep(2000);
+                FileService.TryDirectoryDelete(UserSettingsDirectoryName);
+                Thread.Sleep(1000);
 
                 if (progressBarOperation.IsCancellationPending)
                     return false;
@@ -467,6 +505,113 @@ namespace CarDocu.Services
             }
 
             return true;
+        }
+
+        static bool AutoRecycleIsDateObsolete(DateTime date)
+        {
+            const int deleteFilesOlderThanDays = 4;
+
+            return (date.AddDays(deleteFilesOlderThanDays) < DateTime.Now);
+        }
+
+        public bool AutoRecycleUserLogsAndScanDocuments(ProgressBarOperation progressBarOperation)
+        {
+            var pdfFileList = Directory.EnumerateFiles(PdfDirectoryName, "*.*", SearchOption.AllDirectories)
+                .Where(pdf =>
+                {
+                    var fileInfo = new FileInfo(pdf);
+                    return AutoRecycleIsDateObsolete(fileInfo.LastWriteTime);
+
+                }).ToList();
+
+            var validScanDocuments = ScanDocumentRepository.ScanDocuments
+                .Where(scanDoc =>
+                {
+                    if (scanDoc.ArchiveDeliveryDate == null)
+                        return false;
+
+                    return AutoRecycleIsDateObsolete(scanDoc.ArchiveDeliveryDate.GetValueOrDefault());
+
+                }).ToList().Copy();
+
+            var totalCount = pdfFileList.Count + validScanDocuments.Count;
+
+            if (totalCount == 0)
+                return true;
+
+            progressBarOperation.Current = 1;
+            progressBarOperation.Total = totalCount;
+            progressBarOperation.Header = "Automatische Datenbereinigung ... bitte warten ...";
+            progressBarOperation.Details = "Lösche Dateien";
+            progressBarOperation.ProgressInfoVisible = true;
+            Thread.Sleep(500);
+
+            try
+            {
+                foreach (var filename in pdfFileList)
+                {
+                    if (progressBarOperation.IsCancellationPending)
+                        return false;
+
+                    progressBarOperation.Details = string.Format("Lösche Datei '{0}'", filename);
+                    var pdfFileName = Path.Combine(PdfDirectoryName, filename);
+
+                    // PDF Datei löschen
+                    FileService.TryFileDelete(pdfFileName);
+
+                    progressBarOperation.Current++;
+                    Thread.Sleep(50);
+                }
+
+                if (progressBarOperation.IsCancellationPending)
+                    return false;
+
+                foreach (var scanDocument in validScanDocuments)
+                {
+                    if (progressBarOperation.IsCancellationPending)
+                        return false;
+
+                    var directoryInfo = new DirectoryInfo(scanDocument.GetDocumentPrivateDirectoryName());
+                    var directoryName = directoryInfo.Name;
+                    progressBarOperation.Details = string.Format("Lösche temporäres Verzeichnis '{0}'", directoryName);
+
+                    // ScanDocument aus Repository löschen  +  ScanDocument temp. Verzeichnis löschen
+                    var task = TaskService.StartLongRunningTask(() => ScanDocumentRepository.TryDeleteScanDocument(scanDocument));
+                    if (!task.Wait(10000))
+                        throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
+
+                    progressBarOperation.Current++;
+                    Thread.Sleep(50);
+                }
+
+                if (progressBarOperation.IsCancellationPending)
+                    return false;
+
+                progressBarOperation.Header = "Erfolg";
+                progressBarOperation.Details = "Die automatische Datenbereinigung wurde erfolgreich durchgeführt!";
+                Thread.Sleep(1500);
+            }
+            catch (Exception e)
+            {
+                Tools.AlertError("Fehler bei der automatischen Datenbereinigung, Details:\r\n\r\n" + e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ZipArchiveRecycle(ProgressBarOperation progressBarOperation)
+        {
+            progressBarOperation.Header = "Backup Ordner Bereinigung";
+            progressBarOperation.Details = "Backup Ordner wird bereinigt ... einen Moment bitte ...";
+            progressBarOperation.ProgressInfoVisible = false;
+            progressBarOperation.BusyCircleVisible = true;
+
+            var success = FileService.TryDirectoryDelete(GlobalSettings.BackupArchive.Path);
+            FileService.TryDirectoryCreate(GlobalSettings.BackupArchive.Path);
+            Thread.Sleep(1000);
+
+            return success;
         }
 
         public DocumentType GetImageDocumentType(string documentTypeCode)

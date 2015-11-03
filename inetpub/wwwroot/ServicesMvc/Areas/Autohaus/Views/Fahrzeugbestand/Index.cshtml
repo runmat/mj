@@ -129,6 +129,7 @@
         SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
+        setTimeout("HandleResponsiveControlWidths()", 500);
         scrollToTop();
 
         FormPrepareAjax();
@@ -297,7 +298,7 @@
                 //console.log(result.partnerKennung);
                 //console.log(result.partnerName);
                 var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
-                console.log(dropdownTextSpan);
+                //console.log(dropdownTextSpan);
                 dropdownTextSpan.html(result.partnerName);
                 var hiddenFieldName = "Halter";
                 if (result.partnerKennung.toLowerCase().substr(0, 1) == "k")
