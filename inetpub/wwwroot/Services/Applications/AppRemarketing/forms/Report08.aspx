@@ -202,8 +202,8 @@
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="Hereinnahmecenter" SortExpression="Hereinnahmecenter" >
-                                                        <HeaderStyle Width="100px" />
+                                                    <telerik:GridBoundColumn DataField="HC-Ort" SortExpression="HC-Ort" >
+                                                        <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="Eingangsdatum" SortExpression="Eingangsdatum" DataFormatString="{0:d}" >
@@ -214,7 +214,7 @@
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="Modell" SortExpression="Modell" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
