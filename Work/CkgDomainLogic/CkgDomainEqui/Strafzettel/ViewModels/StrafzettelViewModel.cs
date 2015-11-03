@@ -79,7 +79,7 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
         #region Dashboard functionality
 
         [DashboardItemsLoadMethod("StrafzettelAlleKunden")]
-        public ChartItemsPackage NameNotRelevant07()
+        public ChartItemsPackage NameNotRelevant01()
         {
             var selector = new StrafzettelSelektor
             {
@@ -87,7 +87,8 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
             };
             DashboardSessionSaveCurrentReportSelector(selector);
 
-            var items = DataService.GetStrafzettel(selector);
+            var items = DataService.GetStrafzettel(selector)
+                                    .OrderBy(s => s.EingangsDatum).ToListOrEmptyList();
 
 
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
@@ -97,6 +98,50 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
                     items,
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
                     xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                );
+        }
+
+        [DashboardItemsLoadMethod("StrafzettelNachKennzeichenPieDiesesJahr")]
+        public ChartItemsPackage NameNotRelevant02()
+        {
+            return StrafzettelNachKennzeichen(new DateRange(DateRangeType.CurrentYear, true));
+        }
+
+        [DashboardItemsLoadMethod("StrafzettelNachKennzeichenPieLetztesJahr")]
+        public ChartItemsPackage NameNotRelevant03()
+        {
+            return StrafzettelNachKennzeichen(new DateRange(DateRangeType.LastYear, true));
+        }
+
+        [DashboardItemsLoadMethod("StrafzettelNachKennzeichenPieJanuar2014")]
+        public ChartItemsPackage NameNotRelevant04()
+        {
+            return StrafzettelNachKennzeichen(new DateRange(new DateTime(2014, 01, 20), new DateTime(2014, 01, 21), true));
+        }
+
+        private ChartItemsPackage StrafzettelNachKennzeichen(DateRange dateRange)
+        {
+            var selector = new StrafzettelSelektor { EingangsDatumRange = dateRange };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            Func<StrafzettelModel, string> xAxisKeyModel = (groupKey =>
+            {
+                var kennzeichenLinks = groupKey.Kennzeichen.NotNullOrEmpty().Split('-')[0].ToUpper();
+                switch (kennzeichenLinks)
+                {
+                    case "HN":
+                        return "Heilbronn";
+                    case "IN":
+                        return "Ingolstadt";
+                }
+                return "Sonstige";
+            });
+
+            var items = DataService.GetStrafzettel(selector).OrderBy(xAxisKeyModel).ToList();
+
+            return ChartService.GetPieChartGroupedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyModel(xAxisKey)
                 );
         }
 
