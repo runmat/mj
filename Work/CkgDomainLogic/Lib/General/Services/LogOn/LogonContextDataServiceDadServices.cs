@@ -234,7 +234,7 @@ namespace CkgDomainLogic.General.Services
             loginModel.RedirectUrl = ReturnUrl;
             ReturnUrl = "";
 
-            dbContext.FailedLoginsResetAndSave(loginModel.UserName);
+            dbContext.FailedLoginsResetAndSave();
             LogonUser(loginModel.UserName);
         }
 
@@ -264,6 +264,20 @@ namespace CkgDomainLogic.General.Services
                 if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
                     addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
             }
+        }
+
+        public override bool CheckPasswordHistory(ChangePasswordModel model, int passwordMinHistoryEntries)
+        {
+            var dbContext = CreateDbContext(model.UserName);
+            if (dbContext.User != null)
+            {
+                var pwdHistory = dbContext.GetUserPwdHistory();
+                var pwdHistoryRelevant = pwdHistory.Take(Math.Min(passwordMinHistoryEntries, pwdHistory.Count));
+
+                return pwdHistoryRelevant.None(h => h.Password == SecurityService.EncryptPassword(model.Password));
+            }
+
+            return true;
         }
 
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
@@ -313,7 +327,7 @@ namespace CkgDomainLogic.General.Services
             if (dbContext.User == null)
                 return;
 
-            dbContext.StorePasswordToUser(userName, password);
+            dbContext.StorePasswordToUser(password, Customer.PasswordMinHistoryEntries);
         }
 
         public override void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
@@ -373,15 +387,6 @@ namespace CkgDomainLogic.General.Services
                 url);
         }
 
-        int KundenNrToInt()
-        {
-            int customerNo;
-            if (!Int32.TryParse(KundenNr, out customerNo))
-                return -1;
-
-            return customerNo;
-        }
-
         public override void DataContextPersist(object dataContext) 
         {
             CreateDbContext().DataContextPersist(dataContext);
@@ -401,8 +406,6 @@ namespace CkgDomainLogic.General.Services
         {
             return string.Format("/{0}/", subDomain.Trim().ToLower());
         }
-
-        public override string CustomerName { get { return base.CustomerName; } }
 
         public void Clear()
         {

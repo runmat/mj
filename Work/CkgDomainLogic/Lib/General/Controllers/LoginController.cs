@@ -69,6 +69,8 @@ namespace CkgDomainLogic.General.Controllers
             if (LogonContext.UserName.IsNullOrEmpty())
                 return new EmptyResult();
 
+            ViewModel.ResetChangePasswordModel();
+
             if (!ViewModel.CacheUserAndCustomerFromUserName(LogonContext.UserName))
                 return View("ChangePasswordError", ViewModel);
 
@@ -91,6 +93,9 @@ namespace CkgDomainLogic.General.Controllers
 
             if (ModelState.IsValid)
                 ViewModel.ValidatePasswordModelAgainstRules(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+                ViewModel.ValidatePasswordModelAgainstHistory(ModelState.AddModelError);
 
             if (ModelState.IsValid)
             {

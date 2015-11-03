@@ -66,6 +66,8 @@ namespace CkgDomainLogic.General.Contracts
 
         void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 
+        bool CheckPasswordHistory(ChangePasswordModel model, int passwordMinHistoryEntries);
+
         User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes);
 
         User TryGetUserFromUserName(string userName);

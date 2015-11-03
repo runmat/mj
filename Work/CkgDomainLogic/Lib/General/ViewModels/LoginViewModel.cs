@@ -90,6 +90,14 @@ namespace CkgDomainLogic.General.ViewModels
             return provider;
         }
 
+        public void ValidatePasswordModelAgainstHistory(Action<string, string> addModelError)
+        {
+            var passwordSecurityRuleDataProvider = GetPasswordSecurityRuleDataProvider(ChangePasswordModel.UserName);
+
+            if (!LogonContext.CheckPasswordHistory(ChangePasswordModel, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries))
+                addModelError("Password", string.Join("; ", string.Format(Localize.PasswordMinHistoryEntries, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries)));
+        }
+
         public bool CacheUserAndCustomerFromConfirmationToken(string confirmation)
         {
             var user = LogonContext.TryGetUserFromPasswordToken(confirmation, AppSettings.TokenExpirationMinutes);
@@ -160,6 +168,11 @@ namespace CkgDomainLogic.General.ViewModels
             {
                 addModelError(m => m.EmailForPasswordReset, Localize.EmailSentError);
             }
+        }
+
+        public void ResetChangePasswordModel()
+        {
+            PropertyCacheClear(this, m => m.ChangePasswordModel);
         }
     }
 }

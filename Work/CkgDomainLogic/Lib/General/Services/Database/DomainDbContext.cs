@@ -145,9 +145,9 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<WebUserInfo>("SELECT * FROM WebUserInfo WHERE ID_User = {0}", UserID).FirstOrDefault();
         }
 
-        public WebUserPwdHistory GetUserPwdHistory()
+        public List<WebUserPwdHistory> GetUserPwdHistory()
         {
-            return Database.SqlQuery<WebUserPwdHistory>("SELECT * FROM WebUserPwdHistory WHERE UserID = {0} ORDER BY DateOfChange DESC", UserID).FirstOrDefault();
+            return Database.SqlQuery<WebUserPwdHistory>("SELECT * FROM WebUserPwdHistory WHERE UserID = {0} ORDER BY DateOfChange DESC ", UserID).ToListOrEmptyList();
         }
 
         public List<string> GetAddressPostcodeCityMapping(string plz)
@@ -273,26 +273,36 @@ namespace CkgDomainLogic.General.Database.Services
             Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 1, LastChangedBy = {0} WHERE Username = {1}", UserName, userName);
         }
 
-        public void UnlockUserAndSave(string userName)
+        public void UnlockUserAndSave()
         {
-            Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 0, LastChangedBy = {0} WHERE Username = {1}", UserName, userName);
+            Database.ExecuteSqlCommand("UPDATE WebUser SET AccountIsLockedOut = 0, LastChangedBy = {0} WHERE UserID = {1}", UserName, UserID);
         }
 
-        public void FailedLoginsResetAndSave(string userName)
+        public void FailedLoginsResetAndSave()
         {
-            Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = 0 WHERE Username = {0}", userName);
+            Database.ExecuteSqlCommand("UPDATE WebUser SET FailedLogins = 0 WHERE UserID = {0}", UserID);
         }
 
-        public void StorePasswordToUser(string userName, string password)
+        public void StorePasswordToUser(string password, int passwordMinHistoryEntries)
         {
             if (User != null)
                 User.Password = password;
 
-            Database.ExecuteSqlCommand("UPDATE WebUser SET Password = {0} WHERE Username = {1}", password, userName);
-            Database.ExecuteSqlCommand("UPDATE WebUser SET LastPwdChange = getdate() WHERE Username = {0}", userName);
-            Database.ExecuteSqlCommand("insert into WebUserPwdHistory (UserID, Password, DateOfChange, InitialPwd) select wu.UserID, {0}, getdate(), 0 from WebUser wu where wu.Username = {1}", password, userName);
-            FailedLoginsResetAndSave(userName);
-            UnlockUserAndSave(userName);
+            Database.ExecuteSqlCommand("UPDATE WebUser SET Password = {0}, LastPwdChange = getdate() WHERE UserID = {1}", password, UserID);
+
+            Database.ExecuteSqlCommand("INSERT INTO WebUserPwdHistory (UserID, Password, DateOfChange, InitialPwd) VALUES ({0}, {1}, getdate(), 0)", UserID, password);
+
+            var pwdHistory = GetUserPwdHistory();
+            if (pwdHistory.Count > passwordMinHistoryEntries)
+            {
+                for (var i = passwordMinHistoryEntries; i < pwdHistory.Count; i++)
+                {
+                    Database.ExecuteSqlCommand("DELETE FROM WebUserPwdHistory WHERE ID = {0}", pwdHistory[i].ID);
+                }
+            }
+
+            FailedLoginsResetAndSave();
+            UnlockUserAndSave();
         }
 
         public void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
