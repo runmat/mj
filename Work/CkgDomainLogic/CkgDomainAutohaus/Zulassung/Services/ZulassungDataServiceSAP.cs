@@ -418,7 +418,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 var errstring = "";
                 var errList = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_ERROR.GetExportList(SAP);
                 if (errList.Any())
-                    errstring = string.Join(", ", errList.Select(e => String.Format("{0}: {1}", e.ZULBELN, e.MESSAGE)));
+                    errstring = string.Join(", ", errList.Select(e => String.Format("{0}: {1}", e.ZULBELN, (e.SUBRC == 114 ? Localize.RecordHasBeenEditedPleaseReload : e.MESSAGE))));
 
                 return string.Format("{0}{1}", SAP.ResultMessage.FormatSapSaveResultMessage(), errstring.FormatIfNotNull(" ({this})")); 
             }
