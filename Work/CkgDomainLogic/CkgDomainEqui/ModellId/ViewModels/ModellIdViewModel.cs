@@ -10,7 +10,6 @@ using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.FzgModelle.Contracts;
 using CkgDomainLogic.FzgModelle.Models;
-using CkgDomainLogic.FzgModelle.Models;
 using GeneralTools.Models;
 using System.IO;
 using GeneralTools.Services;
