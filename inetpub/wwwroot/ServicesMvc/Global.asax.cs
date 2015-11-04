@@ -88,6 +88,9 @@ namespace ServicesMvc
 
         protected void Application_BeginRequest()
         {
+            var context = HttpContext.Current;
+            var request = context.Request;
+            var url = request.Url;
         }
 
         protected void Application_AcquireRequestState()
