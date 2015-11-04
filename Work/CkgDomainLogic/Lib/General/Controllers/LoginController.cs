@@ -166,7 +166,11 @@ namespace CkgDomainLogic.General.Controllers
             var userEmail = "";
             if (ModelState.IsValid)
                 if (!model.ModePasswordReset)
-                    ViewModel.TryLogonUser(model, ModelState.AddModelError);
+                {
+                    ILogonContextDataService logonContext;
+                    ViewModel.TryLogonUser(model, ModelState.AddModelError, out logonContext);
+                    ViewModel.Init(null, logonContext);
+                }
                 else
                     userEmail = ViewModel.TryGetEmailAddressFromUsername(model, ModelState.AddModelError);
 
@@ -175,8 +179,10 @@ namespace CkgDomainLogic.General.Controllers
                 model.MaintenanceInfo = ViewModel.MaintenanceInfo;
 
                 if (!model.ModePasswordReset)
+                {
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
+                }
                 else
                 {
                     ViewModel.CheckIfPasswordResetAllowed(model, ModelState.AddModelError);
@@ -201,7 +207,7 @@ namespace CkgDomainLogic.General.Controllers
                         var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
                         if (userEmail.IsNotNullOrEmpty() && mailSendValid)
                             ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(),
-                                                                ModelState.AddModelError);
+                                ModelState.AddModelError);
 
                         if (ModelState.IsValid)
                         {

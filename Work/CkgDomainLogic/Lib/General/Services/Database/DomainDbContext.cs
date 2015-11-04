@@ -66,9 +66,20 @@ namespace CkgDomainLogic.General.Database.Services
         }
 
 
+        public DbSet<AccountingArea> AccountingAreas { get; set; }
+
         public Customer GetCustomer(int customerID)
         {
-            return Database.SqlQuery<Customer>("SELECT * FROM Customer WHERE CustomerID = {0}", customerID).FirstOrDefault();
+            var cust = Database.SqlQuery<Customer>("SELECT * FROM Customer WHERE CustomerID = {0}", customerID).FirstOrDefault();
+
+            if (cust != null)
+            {
+                var accArea = AccountingAreas.FirstOrDefault(a => a.Area == cust.AccountingArea);
+                if (accArea != null)
+                    cust.AccountingAreaName = accArea.Description;
+            }
+
+            return cust;
         }
 
         public List<Customer> GetAllCustomer()
