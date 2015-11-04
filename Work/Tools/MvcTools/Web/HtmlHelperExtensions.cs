@@ -181,6 +181,14 @@ namespace MvcTools.Web
             return MvcHtmlString.Empty;
         }
 
+        public static MvcHtmlString PartialConditional<TModel>(this HtmlHelper<TModel> htmlHelper, string partialViewName, object model, Func<bool> conditionalFunc)
+        {
+            if (conditionalFunc())
+                return htmlHelper.Partial(partialViewName, model);
+
+            return MvcHtmlString.Empty;
+        }
+
         public static IDictionary<string, object> MergeHtmlAttributes(this IDictionary<string, object> htmlAttributes, IEnumerable<KeyValuePair<string, object>> additionalHtmlAttributes)
         {
             if (additionalHtmlAttributes != null)
