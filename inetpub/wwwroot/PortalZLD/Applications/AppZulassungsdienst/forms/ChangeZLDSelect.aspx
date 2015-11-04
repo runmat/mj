@@ -132,6 +132,8 @@
                                                     <asp:RadioButton ID="rbAH" GroupName="Vorgang" runat="server" Text="Autohaus" />
 
                                                     <asp:RadioButton ID="rbAH_NZ" GroupName="Vorgang" runat="server" Text="Normal und Autohaus" />
+                                                    
+                                                    <asp:RadioButton ID="rbOK" GroupName="Vorgang" runat="server" Text="Online-Vorgänge Kroschke Homepage" />
                                                 </td>
                                             </tr> 
                                             <tr class="formquery" id="trFlieger" runat="server">

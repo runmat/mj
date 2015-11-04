@@ -59,6 +59,14 @@ namespace GeneralTools.Models
             IsSelected = isSelected;
         }
 
+        public DateRange(DateTime startDate, DateTime endDate, bool isSelected = false)
+        {
+            RangeType = DateRangeType.None;
+            StartDate = startDate;
+            EndDate = endDate;
+            IsSelected = isSelected;
+        }
+
         private void SetRangeType(DateRangeType dateRangeType)
         {
             _rangeType = dateRangeType;
