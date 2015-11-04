@@ -39,22 +39,4 @@ Partial Public Class Verbandbuch
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Auswahl As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''verbandbuchErf-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents verbandbuchErf As Global.System.Web.UI.WebControls.HyperLink
-
-    '''<summary>
-    '''verbandbuchRep-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents verbandbuchRep As Global.System.Web.UI.WebControls.HyperLink
 End Class

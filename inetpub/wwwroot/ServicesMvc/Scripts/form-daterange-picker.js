@@ -8,7 +8,7 @@ function FormDateRangePickerInit() {
     });
 }
 
-function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunction, onDateRangeChangeFunction, dateRangeGroupsToExclude) {
+function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunction, onDateRangeChangeFunction, dateRangeGroupsToExclude, culturedDateFormat) {
 
     var checkbox = $("input[name='" + dateRangeProperty + ".IsSelected']");
     var dateStartControl = $("input[name='" + dateRangeProperty + ".StartDate']");
@@ -17,9 +17,9 @@ function FormDateRangePickerPrepare(dateRangeProperty, onUseDateRangeChangeFunct
     var dateFormat = 'dd.MM.yy';
     var dateFormatExact = 'dd.MM.yyyy'; // ' hh:mm:ss';
 
-    if (dateStartControl.val().indexOf("/") != -1) {
-        dateFormat = 'M/d/yy';
-        dateFormatExact = 'M/d/yyyy'; // ' HH:mm:ss AM';
+    if (culturedDateFormat != null) {
+        dateFormat = culturedDateFormat.replace(/yyyy/g, 'yy');
+        dateFormatExact = culturedDateFormat;
     }
 
     var wrapperId = '#wrapper-date-range-' + dateRangeProperty;

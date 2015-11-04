@@ -38,6 +38,18 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
+        private static string ExtractReturnUrlFromUrlParam(string url)
+        {
+            const string returnUrlMask = "?returnurl=";
+            var index = url.NotNullOrEmpty().ToLower().IndexOf(returnUrlMask, StringComparison.Ordinal);
+            if (index > 0)
+            {
+                var retUrl = url.Substring(index + returnUrlMask.Length);
+                return retUrl;
+            }
+
+            return "";
+        }
 
         public override string GetLoginUrl(string urlEncodedReturnUrl)
         {
@@ -49,10 +61,14 @@ namespace CkgDomainLogic.General.Services
                 && !returnUrl.EndsWith("checklogontimeout")
                 )
                 ReturnUrl = urlEncodedReturnUrl;
-
-            if (   ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true" 
+             
+            var forceMvcLogin = Environment.MachineName.NotNullOrEmpty().ToUpper().StartsWith("AHW");
+            if (ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true"
                 ||
-                   ConfigurationManager.AppSettings["ForceResponsiveLayoutSubDomains"].NotNullOrEmpty().Split(',').Any(subDomain => returnUrl.Contains(GetSubDomainPath(subDomain.ToLower())) || returnUrl.EndsWith(subDomain.ToLower()))
+                ConfigurationManager.AppSettings["ForceResponsiveLayoutSubDomains"].NotNullOrEmpty()
+                    .Split(',')
+                    .Any(subDomain => returnUrl.Contains(GetSubDomainPath(subDomain.ToLower())) || returnUrl.EndsWith(subDomain.ToLower()))
+                || forceMvcLogin
                 )
                 return string.Format("/ServicesMvc/Login/Index?ReturnUrl={0}", urlEncodedReturnUrl);
 
@@ -232,6 +248,12 @@ namespace CkgDomainLogic.General.Services
             }
 
             loginModel.RedirectUrl = ReturnUrl;
+            if (ReturnUrl.IsNullOrEmpty() && HttpContext.Current != null && HttpContext.Current.Request.UrlReferrer != null)
+            {
+                var retUrl = ExtractReturnUrlFromUrlParam(HttpContext.Current.Request.UrlReferrer.ToString());
+                if (retUrl.IsNotNullOrEmpty())
+                    loginModel.RedirectUrl = retUrl;
+            }
             ReturnUrl = "";
 
             dbContext.FailedLoginsResetAndSave(loginModel.UserName);
