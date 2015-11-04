@@ -57,10 +57,6 @@
     <Reference Include="Aspose.Cells, Version=4.2.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
     <Reference Include="Aspose.Pdf, Version=3.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
     <Reference Include="Aspose.Words, Version=4.2.2.0, Culture=neutral, PublicKeyToken=716fcc553a201e56" />
-    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GAC\itextsharp.dll</HintPath>
-    </Reference>
     <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\NLog.dll</HintPath>
@@ -70,10 +66,6 @@
     </Reference>
     <Reference Include="SapORM.Services">
       <HintPath>..\..\..\Work\GAC\SapORM.Services.dll</HintPath>
-    </Reference>
-    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GAC\SmartSoft.PdfLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
@@ -137,6 +129,8 @@
     <Content Include="Forms\DownloadFile2.aspx" />
     <Content Include="Forms\BestaetigungZulassungen.aspx" />
     <Content Include="Forms\InventurSelection.aspx" />
+    <Content Include="Forms\VerbBuchReport.aspx" />
+    <Content Include="Forms\VerbBuchErfassung.aspx" />
     <Content Include="Forms\Verbandbuch.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche.aspx" />
@@ -446,6 +440,20 @@
       <DependentUpon>InventurSelection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Forms\VerbBuchReport.aspx.designer.vb">
+      <DependentUpon>VerbBuchReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VerbBuchReport.aspx.vb">
+      <DependentUpon>VerbBuchReport.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\VerbBuchErfassung.aspx.designer.vb">
+      <DependentUpon>VerbBuchErfassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VerbBuchErfassung.aspx.vb">
+      <DependentUpon>VerbBuchErfassung.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Forms\Verbandbuch.aspx.designer.vb">
       <DependentUpon>Verbandbuch.aspx</DependentUpon>
     </Compile>
@@ -568,6 +576,7 @@
     <Compile Include="Lib\KBS_BASE.vb" />
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\ClsVerbandbuch.vb" />
     <Compile Include="Lib\Online.vb" />
     <Compile Include="Lib\Zulassungen.vb" />
     <Compile Include="Lib\ZLD_Suche.vb" />
@@ -629,6 +638,11 @@
       <DependentUpon>KBS.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web References\de.kroschke.sgwt\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Zeiterfassung\PDFZeitnachweise.aspx.designer.vb">
       <DependentUpon>PDFZeitnachweise.aspx</DependentUpon>
     </Compile>
@@ -687,6 +701,7 @@
     <None Include="Docs\Lastschrift\Thueringen.pdf" />
     <None Include="Vorlagen\BestellungOhneKZGroesse.doc" />
     <None Include="Docs\Einzugsermächtigung_SEPA.pdf" />
+    <None Include="Vorlagen\Verbandbuch.doc" />
     <None Include="Vorlagen\Zeitübersicht.doc" />
     <None Include="Inventur.cd" />
     <None Include="Vorlagen\Bestellung.doc" />
@@ -788,6 +803,11 @@
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Web References\de.kroschke.sgwt\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\de.kroschke.sgwt\ServiceData.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -810,6 +830,10 @@
       <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
       <Name>SapORM.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\Tools\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
@@ -825,6 +849,25 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://sgwt.kroschke.de/HtmlToPdfService/ServiceData.asmx%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\de.kroschke.sgwt\</RelPath>
+      <UpdateFromURL>https://sgwt.kroschke.de/HtmlToPdfService/ServiceData.asmx%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>KBS_de_kroschke_sgwt_ServiceData</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

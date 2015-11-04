@@ -238,7 +238,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             EditMode = false;
 
-            var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
+            Dictionary<string, string> objectKeyDict;
+            try
+            {
+                objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
+            }
+            catch
+            {
+                return Localize.Carporterfassung_SaveErrorMultipleLicenseNumbers;
+            }
 
             var saveErg = "";
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge, ref saveErg);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Leasing.Contracts;
@@ -39,19 +37,17 @@ namespace CkgDomainLogic.Leasing.Services
             return AppModelMappings.Z_M_Unzugelassene_Fzge_Sixt_L_T_DATA_To_UnzugelFzg.Copy(sapList);
         }
 
-        public void SaveBriefLVNummern(List<UnzugelFzg> fzge)
+        public void SaveBriefLVNummern(List<UnzugelFzg> fzge, string bapiName = "Z_M_EINGABE_LVNUMMER_SIXTLEAS")
         {
-            string intStatus;
+            SAP.Init(bapiName);
 
-            Z_M_Eingabe_Lvnummer_Sixtleas.Init(SAP);
-
-            foreach (UnzugelFzg fzg in fzge)
+            foreach (var fzg in fzge)
             {
                 SAP.SetImportParameter("LF_EQUNR", fzg.Equipmentnummer);
                 SAP.SetImportParameter("LF_LIZNR", fzg.Leasingvertragsnummer);
                 SAP.SetImportParameter("LF_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-                intStatus = SAP.GetExportParameterWithExecute("LF_RETURN");
+                var intStatus = SAP.GetExportParameterWithExecute("LF_RETURN");
                 
                 switch (intStatus)
                 {
@@ -66,8 +62,6 @@ namespace CkgDomainLogic.Leasing.Services
                         break;
                 }
             }
-
         }
-
     }
 }

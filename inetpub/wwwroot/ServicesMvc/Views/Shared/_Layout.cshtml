@@ -1,5 +1,6 @@
 ﻿@using CkgDomainLogic.General.Contracts
 @using GeneralTools.Contracts
+@using GeneralTools.Models
 @{
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
     var appSettings = DependencyResolver.Current.GetService<IAppSettings>();

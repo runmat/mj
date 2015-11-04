@@ -52,7 +52,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             var translatedAppUrl = LogonContextHelper.ExtractUrlFromUserApp(userAppUrl);
             url = url.ToLower().SubstringTry(4);
-            return translatedAppUrl.ToLower().Contains(url);
+            return translatedAppUrl.ToLower() == url;
         }
 
         public void DashboardItemsSave(string commaSeparatedIds)

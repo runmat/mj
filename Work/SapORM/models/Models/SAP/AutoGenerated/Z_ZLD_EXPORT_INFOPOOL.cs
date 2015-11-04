@@ -77,6 +77,8 @@ namespace SapORM.Models
 
 			public string KREISKZ { get; set; }
 
+			public string KBANR { get; set; }
+
 			public static GT_EX_ZUSTLIEF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_EX_ZUSTLIEF
@@ -104,6 +106,7 @@ namespace SapORM.Models
 					KBETR = (decimal?)row["KBETR"],
 					KNUMH = (string)row["KNUMH"],
 					KREISKZ = (string)row["KREISKZ"],
+					KBANR = (string)row["KBANR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
