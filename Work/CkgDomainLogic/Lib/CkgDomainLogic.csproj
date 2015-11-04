@@ -126,6 +126,7 @@
     <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\AccountingArea.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
