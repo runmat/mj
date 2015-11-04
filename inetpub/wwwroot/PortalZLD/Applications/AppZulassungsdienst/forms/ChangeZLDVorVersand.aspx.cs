@@ -1331,9 +1331,9 @@ namespace AppZulassungsdienst.forms
 
                 foreach (DataRow dRow in tblData.Rows)
                 {
-                    var materialNr = dRow["Value"].ToString();
+                    var materialNr = dRow["Search"].ToString();
 
-                    if (materialNr != "0")
+                    if (!String.IsNullOrEmpty(materialNr) && materialNr != "0")
                     {
                         var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 

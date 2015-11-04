@@ -703,11 +703,8 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            // Wenn Seite in besonderem Modus aufgerufen, dann best. Felder sperren
-            if (objNacherf.SelAnnahmeAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
-            {
-                disableEingabefelder();
-            }
+            // ggf. best. Felder sperren (je nach Aufrufmodus etc.)
+            disableEingabefelder();
         }
 
         private DataTable CreatePosTable()
@@ -1842,7 +1839,7 @@ namespace AppZulassungsdienst.forms
 
             NewPosID += 10;
 
-            var materialNr = dRow["Value"].ToString();
+            var materialNr = dRow["Search"].ToString();
 
             var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
@@ -1874,7 +1871,7 @@ namespace AppZulassungsdienst.forms
             var NewPosID = 10;
             var NewUePosID = 10;
 
-            var materialNr = dRow["Value"].ToString();
+            var materialNr = dRow["Search"].ToString();
 
             var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
@@ -1986,9 +1983,9 @@ namespace AppZulassungsdienst.forms
             var i = 0;
             foreach (DataRow dRow in tblData.Rows)
             {
-                var materialNr = dRow["Value"].ToString();
+                var materialNr = dRow["Search"].ToString();
 
-                if (dRow["PosLoesch"].ToString() != "L" && materialNr != "0")
+                if (dRow["PosLoesch"].ToString() != "L" && !String.IsNullOrEmpty(materialNr) && materialNr != "0")
                 {
                     if (dlPositionen.Count > i)
                     {
@@ -2082,9 +2079,9 @@ namespace AppZulassungsdienst.forms
             var i = 0;
             foreach (DataRow dRow in tblData.Rows)
             {
-                var materialNr = dRow["Value"].ToString();
+                var materialNr = dRow["Search"].ToString();
 
-                if (dRow["PosLoesch"].ToString() != "L" && materialNr != "0")
+                if (dRow["PosLoesch"].ToString() != "L" && !String.IsNullOrEmpty(materialNr) && materialNr != "0")
                 {
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
@@ -2093,7 +2090,7 @@ namespace AppZulassungsdienst.forms
                         var dlPos = dlPositionen[i];
 
                         if (dlPos.MaterialNr != materialNr)
-                            return true;
+                                return true;
 
                         var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
 
@@ -2170,6 +2167,11 @@ namespace AppZulassungsdienst.forms
         protected bool proofGebMat(String Matnr)
         {
             return objCommon.proofGebMat(Matnr);
+        }
+
+        protected bool proofBlTypOKPreisEditable(String IDPos)
+        {
+            return (IDPos != "10" || objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK");
         }
 
         private void SaveBankAdressdaten()
