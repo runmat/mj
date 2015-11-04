@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -76,13 +80,15 @@ namespace CkgDomainLogic.Equi.Models
             {
                 string erg = "";
 
+                var bukrsName = (GetViewModel != null ? GetViewModel().LogonContext.Customer.AccountingAreaName : "DAD");
+
                 switch (AbcKennzeichen)
                 {
                     case "":
-                        erg = "DAD";
+                        erg = bukrsName;
                         break;
                     case "0":
-                        erg = "DAD";
+                        erg = bukrsName;
                         break;
                     case "1":
                         if ((Versanddatum == null) || (Versanddatum == DateTime.MinValue))
@@ -257,6 +263,9 @@ namespace CkgDomainLogic.Equi.Models
         public EquiHaendlerdaten Haendlerdaten { get; set; }
 
         public bool ShowHaendlerdaten { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<EquiHistorieViewModel> GetViewModel { get; set; }
 
         public string GetUebersichtSummaryString()
         {

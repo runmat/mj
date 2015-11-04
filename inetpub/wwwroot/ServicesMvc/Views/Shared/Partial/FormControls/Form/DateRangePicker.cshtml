@@ -1,4 +1,7 @@
-﻿@model MvcTools.Models.FormDateRangePickerModel 
+﻿@using System.Threading
+@model MvcTools.Models.FormDateRangePickerModel
+
+@{ var dateFormat = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern; }
 
 <div class="FormDateRangePickerWrapper">
     @Model.ControlHtmlStartDate
@@ -7,7 +10,7 @@
         <span>@Model.ControlHtml @Model.InlineDisplayNameHtml</span>
     </label>
     
-    <div id="wrapper-date-range-@Model.DateRangeProperty" class="FormDateRangePicker hide" data-init="FormDateRangePickerPrepare('@Model.DateRangeProperty', null, null, '@Model.DateRangeGroupsToExclude.JoinIfNotNull(",")')">
+    <div id="wrapper-date-range-@Model.DateRangeProperty" class="FormDateRangePicker hide" data-init="FormDateRangePickerPrepare('@Model.DateRangeProperty', null, null, '@Model.DateRangeGroupsToExclude.JoinIfNotNull(",")', '@dateFormat')">
         <span  id="rangePicker-date-range-@Model.DateRangeProperty" class="btn">
             &nbsp;<i class="icon-calendar"></i>
             &nbsp;<span class=""></span> 

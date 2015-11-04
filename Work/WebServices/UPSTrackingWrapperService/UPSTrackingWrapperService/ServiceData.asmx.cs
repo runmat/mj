@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Services;
+using System.Web.Services.Protocols;
 using UPSTrackingWrapperService.UPSTrack;
 
 namespace UPSTrackingWrapperService
@@ -22,9 +23,26 @@ namespace UPSTrackingWrapperService
 
                 return service.ProcessTrack(TrackRequest);
             }
-            catch (System.Web.Services.Protocols.SoapException soapEx)
+            catch (SoapException soapEx)
             {
-                throw new Exception(String.Format("UPS_ProcessTrack, Fehler: {0} -> {1}", soapEx.Message, soapEx.Detail.InnerText));
+                var errorMessage = soapEx.Detail.InnerXml;
+                var startTag = "<err:Description>";
+                var endTag = "</err:Description>";
+                var startPos = errorMessage.IndexOf(startTag);
+                errorMessage = errorMessage.Substring(startPos + startTag.Length);
+                errorMessage = errorMessage.Substring(0, errorMessage.IndexOf(endTag));
+
+                var dummyActivity = new ActivityType
+                {
+                    Status = new StatusType { Type = "E", Description = errorMessage }
+                };
+
+                var dummyShipment = new ShipmentType
+                {
+                    Package = new[] { new PackageType { TrackingNumber = TrackRequest.InquiryNumber, Activity = new [] { dummyActivity } } }
+                };
+
+                return new TrackResponse { Shipment = new [] { dummyShipment } };
             }
             catch (Exception ex)
             {
@@ -51,7 +69,7 @@ namespace UPSTrackingWrapperService
 
                 return service.ProcessTrack(req);
             }
-            catch (System.Web.Services.Protocols.SoapException soapEx)
+            catch (SoapException soapEx)
             {
                 throw new Exception(String.Format("UPS_ProcessTrackTest, Fehler: {0} -> {1}", soapEx.Message, soapEx.Detail.InnerText));
             }
