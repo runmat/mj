@@ -10,7 +10,8 @@
             
             @Html.FormValidationSummary()
 
-            @Html.FormMultiColumnModeInit(formMultiColumnMode)
+
+            @Html.FormMultiColumnModeStart(formMultiColumnMode)
 
             @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = formMultiColumnMode })
             @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = formMultiColumnMode })
@@ -23,6 +24,8 @@
 
             @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = formMultiColumnMode })
             @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = formMultiColumnMode })
+
+            @Html.FormMultiColumnModeEnd(formMultiColumnMode)
 
 
             @*@Html.FormRequiredFieldsSummary()*@

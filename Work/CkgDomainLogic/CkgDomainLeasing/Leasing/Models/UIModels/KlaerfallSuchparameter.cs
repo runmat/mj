@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Leasing.Models

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace GeneralTools.Services
+namespace CkgDomainLogic.General.Services
 {
     public class ApplicationConfiguration
     {

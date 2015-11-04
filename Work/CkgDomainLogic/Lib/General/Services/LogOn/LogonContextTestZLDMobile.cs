@@ -14,7 +14,7 @@ namespace CkgDomainLogic.General.Services
     /// </summary>
     public class LogonContextTestZLDMobile : LogonContextDataServiceBase, ILogonContextDataServiceZLDMobile
     {
-        public string CurrentGridColumns { get; set; }
+        public new string CurrentGridColumns { get; set; }
 
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return null; } }
 

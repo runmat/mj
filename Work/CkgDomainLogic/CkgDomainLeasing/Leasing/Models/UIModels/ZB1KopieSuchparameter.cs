@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Leasing.Models
