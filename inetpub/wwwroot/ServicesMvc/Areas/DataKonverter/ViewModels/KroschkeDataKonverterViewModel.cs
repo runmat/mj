@@ -22,6 +22,7 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
+using ServicesMvc.Areas.DataKonverter.Models;
 
 namespace CkgDomainLogic.DataKonverter.ViewModels
 {
@@ -30,6 +31,8 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
     {
         [XmlIgnore, ScriptIgnore]
         public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
+
+        public SourceFile SourceFile { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -60,32 +63,13 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #region File converter
 
-        public string ConvertExcelToCsv(string excelFilename, string csvFilename, string delimeter = ";")
+        public string ConvertExcelToCsv(string excelFilename, string csvFilename, char delimeter = ';')
         {
             var tempFolder = GetUploadPathTemp();
             var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
             var tmpDestFile = Path.Combine(tempFolder, csvFilename);
-            var convert = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);
 
-            //using (var sr = new StreamReader(tmpDestFile, Encoding.UTF8))
-            //{
-            //    // sw.WriteLine("頼もう");
-            //}
-
-            // var test = GetFileEncoding(tmpDestFile, Encoding.UTF8);
-
-            var test = CsvReaderFactory.ReadCsv(tmpDestFile, true);
-
-            var sb = new StringBuilder();
-            using (var sr = new StreamReader(tmpDestFile, Encoding.Default, true))
-            {
-                string line;
-                // Read and display lines from the file until the end of the file is reached.
-                while ((line = sr.ReadLine()) != null)
-                {
-                    sb.AppendLine(line);
-                }
-            }
+            var errorResult = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
 
             return tmpDestFile;
         }
@@ -95,30 +79,32 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
         }
 
-        protected byte[] GetCsvFileContent(string fileName)
-        {
-            var sb = new StringBuilder();
-            using (var sr = new StreamReader(fileName, Encoding.Default, true))
-            {
-                string line;
-                // Read and display lines from the file until the end of the file is reached.
-                while ((line = sr.ReadLine()) != null)
-                {
-                    sb.AppendLine(line);
-                }
-            }
-            var allines = sb.ToString();
-
-            var utf8 = new UTF8Encoding();
-
-            var preamble = utf8.GetPreamble();
-
-            var data = utf8.GetBytes(allines);
-
-            return data;
-        }
+        //protected byte[] GetCsvFileContent(string fileName)
+        //{
+        //    var sb = new StringBuilder();
+        //    using (var sr = new StreamReader(fileName, Encoding.Default, true))
+        //    {
+        //        string line;
+        //        // Read and display lines from the file until the end of the file is reached.
+        //        while ((line = sr.ReadLine()) != null)
+        //        {
+        //            sb.AppendLine(line);
+        //        }
+        //    }
+        //    var allines = sb.ToString();
+        //    var utf8 = new UTF8Encoding();
+        //    var preamble = utf8.GetPreamble();
+        //    var data = utf8.GetBytes(allines);
+        //    return data;
+        //}
 
         #endregion
+
+        //public string GetSourceFile(string csvFilename)
+        //{
+        //    var result = DataKonverterDataService.FillSourceFile(csvFilename, true);
+        //    return null;
+        //}
 
     }
 }

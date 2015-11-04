@@ -14,7 +14,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public bool FirstRowIsCaption { get; set; }
         public Encoding Encoding { get; set; }
         public List<Column> Columns { get; set; }
-        public int RowCount { get; set; }
+        public string Content { get; set; }
+        public int RowCount { get; set; }        
 
         public class Column
         {
@@ -22,7 +23,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             public string Caption { get; set; }
             public DataType DataType { get; set; }
             public bool IsUsed { get; set; }
-            public IEnumerable<string> Content { get; set; }
+            public List<string> Content { get; set; }
         }
 
         public enum DataType
@@ -30,7 +31,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             String = 1,
             DateTime = 2,
             Date = 3,
-            Double = 4
+            Double = 4,
+            Boolean = 5
         }
 
         
