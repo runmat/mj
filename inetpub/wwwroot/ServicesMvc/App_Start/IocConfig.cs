@@ -95,7 +95,7 @@ namespace ServicesMvc
 
         public static void RegisterTelerikLocalizationAdapterServiceFactory()
         {
-            DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());
+            //DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());
         }
 
         public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
