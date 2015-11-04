@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 using WebTools.Services;
 
@@ -125,7 +126,25 @@ namespace MvcTools.Controllers
                 return new EmptyResult();
 
             var rawUrl = Request.RawUrl;
+
+            if (LogonContext.UserName.IsNullOrEmpty())
+            {
+                var machineName = Environment.MachineName.ToUpper();
+                if (machineName.StartsWith("AHW")) // only available for machine names starting with "AHW"
+                {
+                    var autoLogonUser = GeneralConfiguration.GetConfigValue("Login", "AutoLogonUserName_" + machineName);
+                    if (autoLogonUser.IsNotNullOrEmpty())
+                    {
+                        // Auto Logon a User only for debug purposes 
+                        // and only available for machine names starting with "AHW"
+                        LogonContext.LogonUser(autoLogonUser);
+                        return Redirect(rawUrl);
+                    }
+                }
+            }
+
             var loginUrl = LogonContext.GetLoginUrl(Server.UrlEncode(rawUrl));
+
             if (loginUrl.IsNullOrEmpty())
                 // a missing login url should signal success and avoid any redirection here:
                 // login is not necessary here:

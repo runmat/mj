@@ -24,7 +24,7 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
                 ZanfReportViewModel.LoadZulassungsAnforderungen(model, ModelState);
 
-            return PartialView("ZanfReport/ZanfSuche", model);
+            return PersistablePartialView("ZanfReport/ZanfSuche", model);
         }
 
         [HttpPost]
