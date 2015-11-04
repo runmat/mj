@@ -126,6 +126,7 @@
     <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
+    <Compile Include="General\Services\Database\Models\AccountingArea.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="General\Services\CkgGeneralDataServiceTest.cs" />
     <Compile Include="General\Services\CkgGeneralDataService.cs" />
     <Compile Include="General\Services\DbContextExtensions.cs" />
+    <Compile Include="General\Services\Localization\TelerikLocalizationAdapterService.cs" />
     <Compile Include="General\Services\LogOn\LogonContextHelper.cs" />
     <Compile Include="General\Services\LogOn\LogonContextTestAutohaus.cs" />
     <Compile Include="General\Services\Persistance\PersistanceServiceSql.cs" />

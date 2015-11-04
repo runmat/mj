@@ -4368,3 +4368,12 @@ div#header div
     width: 20px !Important;
     height: 20px !Important;
 }
+
+.auto-redirect-link
+{
+    display: table-cell;
+    background-color: ivory;
+    color: #00a000;    
+    margin: 20px!important;
+    padding: 10px!important;
+}

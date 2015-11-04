@@ -25,6 +25,7 @@ namespace CkgDomainLogic.General.Database.Models
         public bool? AllowUrlRemoteLogin { get; set; }
 
         public int? AccountingArea { get; set; }
+        public string AccountingAreaName { get; set; }
 
         public string MvcSelectionUrl { get; set; }
 
