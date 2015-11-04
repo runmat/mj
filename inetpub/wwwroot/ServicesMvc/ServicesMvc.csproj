@@ -2741,7 +2741,6 @@
     <Content Include="Views\Finance\FehlendeSchluesseltuete\FehlendeSchluesseltueteSuche.cshtml" />
     <Content Include="Views\Finance\ReportFehlendeSchluesseltuete.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
-    <Content Include="Views\Test\Cerberus.cshtml" />
     <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
     <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
@@ -2991,6 +2990,7 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
+    <Content Include="Views\Test\ATest.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

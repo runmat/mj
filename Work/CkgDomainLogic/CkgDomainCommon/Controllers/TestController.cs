@@ -25,5 +25,12 @@ namespace ServicesMvc.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        [CkgApplication]
+        public ActionResult ATest()
+        {
+            return View();
+        }
     }
 }
