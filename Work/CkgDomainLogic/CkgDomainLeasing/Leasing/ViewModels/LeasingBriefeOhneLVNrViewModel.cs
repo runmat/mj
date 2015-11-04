@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Services;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Leasing.Contracts;
@@ -40,13 +37,9 @@ namespace CkgDomainLogic.Leasing.ViewModels
             get
             {
                 if (SubmitMode)
-                {
                     return UnzugelFzgeToSubmit;
-                }
-                else
-                {
-                    return UnzugelFzgeFiltered;
-                }
+
+                return UnzugelFzgeFiltered;
             }
         }
 
@@ -67,7 +60,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
         {
             if (liste != null)
             {
-                foreach (UnzugelFzg fzg in liste)
+                foreach (var fzg in liste)
                 {
                     UnzugelFzge.Find(f => f.Equipmentnummer == fzg.Equipmentnummer).Leasingvertragsnummer = fzg.Leasingvertragsnummer;
                 }
@@ -80,7 +73,9 @@ namespace CkgDomainLogic.Leasing.ViewModels
         {
             if ((UnzugelFzgeToSubmit != null) && (UnzugelFzgeToSubmit.Count > 0))
             {
-                DataService.SaveBriefLVNummern(UnzugelFzgeToSubmit);
+                var bapiName = ApplicationConfiguration.GetApplicationConfigValue("LvNrSpeicherBapi", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+
+                DataService.SaveBriefLVNummern(UnzugelFzgeToSubmit, bapiName);
                 if (!SendStatusMail())
                     state.AddModelError("", Localize.EmailSentError);
             }
@@ -109,7 +104,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         private bool SendStatusMail()
         {
-            bool erg = false;
+            var erg = false;
 
             try
             {
@@ -121,7 +116,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
                     var mailService = new SmtpMailService(AppSettings);
 
-                    string mailText = "Für nachfolgende(s) Fahrzeug(e) wurde(n) die LV-Nummern im Web erfasst:<br/>";
+                    var mailText = "Für nachfolgende(s) Fahrzeug(e) wurde(n) die LV-Nummern im Web erfasst:<br/>";
                     mailText += "<br/>";
                     foreach (var item in UnzugelFzgeToSubmit)
                     {

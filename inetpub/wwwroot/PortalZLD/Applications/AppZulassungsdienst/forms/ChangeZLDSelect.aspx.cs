@@ -195,17 +195,22 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                if (rbON.Checked)
+                if (rbOK.Checked)
+                {
+                    objNacherf.SelVorgang = "OK";
+                    objNacherf.SelStatus = "OK";
+                }
+                else if (rbON.Checked)
                 {
                     objNacherf.SelVorgang = "ON";
                     objNacherf.SelStatus = "ON,OA";
                 }
-                if (rbAH.Checked)
+                else if (rbAH.Checked)
                 {
                     objNacherf.SelVorgang = "A";
                     objNacherf.SelStatus = "AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge
                 }
-                if (rbAH_NZ.Checked)
+                else if (rbAH_NZ.Checked)
                 {
                     objNacherf.SelVorgang = "ANZ";
                     objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung
@@ -332,6 +337,7 @@ namespace AppZulassungsdienst.forms
             trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             trFlieger.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
             trNochNichtAbgesendete.Visible = objNacherf.SelAnnahmeAH;
+            rbOK.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
         }
 
         #endregion
