@@ -112,7 +112,6 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\DataContextCapableController.cs" />
     <Compile Include="Controllers\LayoutFlexibleController.cs" />
-    <Compile Include="Controllers\LogonCapableController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\EditableContentControlController.cs" />
     <Compile Include="Controls\HtmlHelperExtensions.cs" />

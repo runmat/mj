@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -15,7 +14,6 @@ using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Contracts;
-using MvcTools.Controllers;
 using MvcTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -23,7 +21,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider, IGridSettingsAdministrationProvider
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider, IGridSettingsAdministrationProvider, IConfigurationProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 
@@ -1002,5 +1000,15 @@ namespace CkgDomainLogic.General.Controllers
             return Json(new { message = message, isValid = isValid });
         }
         #endregion
+
+        public string GetConfigValue(string context, string keyName)
+        {
+            return GeneralConfiguration.GetConfigValue(context, keyName);
+        }
+
+        public string GetConfigValueForCurrentCustomer(string keyName)
+        {
+            return ApplicationConfiguration.GetApplicationConfigValue(keyName, "0", LogonContext.Customer.CustomerID);
+        }
     }
 }
