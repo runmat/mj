@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IAddressStreetHouseNo.cs" />
     <Compile Include="Contracts\IAppSettings.cs" />
+    <Compile Include="Contracts\IKeyValueStore.cs" />
     <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\ILocalizedDisplayAttribute.cs" />
     <Compile Include="Contracts\ILogonContext.cs" />

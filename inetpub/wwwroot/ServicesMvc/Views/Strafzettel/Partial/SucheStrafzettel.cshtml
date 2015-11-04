@@ -1,5 +1,6 @@
-﻿@using CkgDomainLogic.Strafzettel.Models
-@model StrafzettelSelektor
+﻿@model CkgDomainLogic.Strafzettel.Models.StrafzettelSelektor
+
+@{ const string formMultiColumnMode = "auto2"; }
 
 <div id="divStrafzettelSuche">
     @using (Ajax.BeginForm("LoadStrafzettel", "Strafzettel", null,
@@ -9,18 +10,19 @@
             
             @Html.FormValidationSummary()
 
+            @Html.FormMultiColumnModeInit(formMultiColumnMode)
 
-            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap small uppercase", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap small uppercase", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap small", col = formMultiColumnMode })
 
-            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = formMultiColumnMode })
 
-            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "right" })
-            
-            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap small", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap small", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap small", col = formMultiColumnMode })
 
 
             @*@Html.FormRequiredFieldsSummary()*@

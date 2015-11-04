@@ -10,7 +10,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace MvcTools.Web
 {
-    public static class SessionHelper
+    public static class SessionHelper 
     {
         private static HttpContext HttpContext
         {

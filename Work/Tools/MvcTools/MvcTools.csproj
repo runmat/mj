@@ -176,6 +176,7 @@
     <Compile Include="Web\ModelStateExtensions.cs" />
     <Compile Include="Web\MvcAjaxOptions.cs" />
     <Compile Include="Web\Json.cs" />
+    <Compile Include="Web\SessionBasedKeyValueStore.cs" />
     <Compile Include="Web\TelerikExtensionsUI.cs" />
     <Compile Include="Web\ModelBinders\DateTimeModelBinder.cs" />
     <Compile Include="Web\ModelBinders\DecimalModelBinder.cs" />

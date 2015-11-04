@@ -85,12 +85,12 @@ namespace PortalMvcTools.Web
             outerTag.Attributes.Add("class", cssClass);
             if (javascriptAction.IsNotNullOrEmpty())
                 outerTag.Attributes.Add("onclick", javascriptAction);
-            if (!string.IsNullOrEmpty(id))
+            if (!id.IsNullOrEmpty())
                 outerTag.Attributes.Add("id", id);
             if (hidden)
                 outerTag.Attributes.Add("style", "display:none;");
 
-            if (!string.IsNullOrEmpty(toolTip))
+            if (!toolTip.IsNullOrEmpty())
             {
                 var helpLayer = new TagBuilder("div");
                 helpLayer.AddCssClass("helplayer");
@@ -352,7 +352,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
                 PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
@@ -368,6 +368,13 @@ namespace PortalMvcTools.Web
             return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
         }
 
+        public static MvcHtmlString FormMultiColumnModeInit(this HtmlHelper html, string autoKey)
+        {
+            FormControlModel.AutoMultiColumnModeInit(autoKey);
+
+            return MvcHtmlString.Empty;
+        }
+
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
@@ -377,7 +384,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
@@ -417,7 +424,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
@@ -435,7 +442,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
@@ -489,7 +496,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = datePickerFor,
@@ -539,7 +546,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
@@ -576,7 +583,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.ListBoxFor(expression, selectList, controlHtmlAttributesDict),
@@ -610,7 +617,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = radioButtonsFor,
@@ -642,7 +649,7 @@ namespace PortalMvcTools.Web
             {
                 IsCheckBox = true,
                 LabelHidden = labelHidden,
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
@@ -715,7 +722,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(dateRangeExpression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(dateRangeExpression),
                 ControlHtml = innerHtml,

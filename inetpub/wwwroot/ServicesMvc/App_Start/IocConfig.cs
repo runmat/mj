@@ -111,6 +111,7 @@ namespace ServicesMvc
             builder.RegisterType<SmtpMailService>().As<IMailService>().InstancePerLifetimeScope();
             builder.RegisterType<WebSecurityService>().As<ISecurityService>().InstancePerLifetimeScope();
             builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerLifetimeScope();
+            builder.RegisterType<SessionBasedKeyValueStore>().As<IKeyValueStore<string>>().InstancePerLifetimeScope();
 
 
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTest) : typeof(LogonContextDataServiceDadServices));
