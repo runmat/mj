@@ -124,14 +124,13 @@ namespace MvcTools.Controllers
             if (Session == null)
                 return new EmptyResult();
 
-
             var rawUrl = Request.RawUrl;
 
-            var autoLogonUser = ConfigurationManager.AppSettings["AutoLogonUserName"].NotNullOrEmpty();
-            if (autoLogonUser.IsNotNullOrEmpty())
+            if (LogonContext.UserName.IsNullOrEmpty())
             {
+                var autoLogonUser = ConfigurationManager.AppSettings["AutoLogonUserName"].NotNullOrEmpty();
+                if (autoLogonUser.IsNotNullOrEmpty())
                 // Auto Logon User for debug purposes
-                if (LogonContext.UserName.IsNullOrEmpty())
                 {
                     LogonContext.LogonUser(autoLogonUser);
                     return Redirect(rawUrl);
