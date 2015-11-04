@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Xml;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
@@ -24,6 +25,8 @@ using GeneralTools.Services;
 using SapORM.Contracts;
 using ServicesMvc.Areas.DataKonverter.Models;
 
+using Newtonsoft.Json;
+
 namespace CkgDomainLogic.DataKonverter.ViewModels
 {
 
@@ -33,6 +36,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
 
         public SourceFile SourceFile { get; set; }
+        public DestinationObj DestinationFile { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -105,6 +109,39 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         //    var result = DataKonverterDataService.FillSourceFile(csvFilename, true);
         //    return null;
         //}
+
+        #region XML/XSD-Handling
+
+        public DestinationObj FillDestinationObj(string filename)
+        {
+            var folder = GetUploadPathTemp();
+            var filenameFull = Path.Combine(folder, filename);
+            string xmlContent;
+
+            using (var sr = new StreamReader(filenameFull))
+            {
+                xmlContent = sr.ReadToEnd();
+            }
+
+            var destinationObj = new DestinationObj
+            {
+                Filename = filename,
+                Json = XsdToJson(xmlContent)
+            };
+
+            return destinationObj;
+        }
+
+        private string XsdToJson(string xsd)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(xsd);
+            var json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
+
+            return json;
+        }
+
+        #endregion
 
     }
 }

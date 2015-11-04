@@ -903,6 +903,7 @@
     <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
     <Compile Include="Areas\DataKonverter\Contracts\IDataProcessor.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataItem.cs" />
+    <Compile Include="Areas\DataKonverter\Models\DestinationObj.cs" />
     <Compile Include="Areas\DataKonverter\Models\SourceFile.cs" />
     <Compile Include="Areas\DataKonverter\Services\DataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\ViewModels\KroschkeDataKonverterViewModel.cs" />

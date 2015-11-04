@@ -13,6 +13,7 @@ using CkgDomainLogic.General.Database.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using System.Data;
+using ServicesMvc.Areas.DataKonverter.Models;
 
 namespace ServicesMvc.DataKonverter.Controllers
 {
@@ -50,9 +51,13 @@ namespace ServicesMvc.DataKonverter.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            var destFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            var destFilename = "";
 
-            ViewModel.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(destFilename, true);
+            ViewModel.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
+
+            ViewModel.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn.xsd");
+
 
             return View(ViewModel);
         }
