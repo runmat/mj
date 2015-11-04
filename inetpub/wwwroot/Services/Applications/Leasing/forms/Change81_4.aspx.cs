@@ -356,11 +356,16 @@ namespace Leasing.forms
             if (String.IsNullOrEmpty(bapiName))
             {
                 AnfordernDefault();
-                
+ 
             }
+            else if (bapiName.ToUpper() == "Z_M_DEZDIENSTL_001")
+            {
+                 AnfordernDefault();
+            }
+
             else
             {
-                    AnfordernCustom();
+                AnfordernCustom(); 
             }
 
 
