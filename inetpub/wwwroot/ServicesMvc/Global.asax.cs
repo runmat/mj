@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Web;
@@ -20,6 +22,25 @@ namespace ServicesMvc
     public class MvcApplication : HttpApplication
     {
         public static MvcApplication Instance { get; private set; }
+
+        private IEnumerable<Assembly> _ckgAssemblies;
+        private IEnumerable<Assembly> CkgAssemblies { get { return (_ckgAssemblies ?? (_ckgAssemblies = GetCkgAssemblies())); } }
+
+        private IEnumerable<Assembly> GetCkgAssemblies()
+        {
+            yield return typeof(MvcApplication).Assembly;
+
+            yield return Assembly.Load("CkgDomainLogic");
+            yield return Assembly.Load("CkgDomainCommon");
+            yield return Assembly.Load("CkgDomainCoc");
+            yield return Assembly.Load("CkgDomainFahrzeug");
+            yield return Assembly.Load("CkgDomainLeasing");
+            yield return Assembly.Load("CkgDomainArchive");
+            yield return Assembly.Load("CkgDomainFinance");
+            yield return Assembly.Load("CkgDomainInsurance");
+            yield return Assembly.Load("CkgDomainFahrer");
+            yield return Assembly.Load("CkgDomainAutohaus");
+        }
 
         protected void Application_Start()
         {
@@ -52,7 +73,8 @@ namespace ServicesMvc
             //
             // Autofac / IoC Integration:
             //
-            IocConfig.CreateAndRegisterIocContainerToMvc();
+            IocConfig.CreateAndRegisterIocContainerToMvc(CkgAssemblies);
+            DashboardAppUrlService.RegisterAssemblies(CkgAssemblies);
 
             //
             // combine our appsettings in our web.config with a "parent" web.config (i. e. of a ASP.NET WebForms Application)
@@ -62,25 +84,13 @@ namespace ServicesMvc
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            //
-            // DB Tier to Middle Tier Model mapping validation:
-            // validate model mappings between our de-coupled SAP and Web Models
-            //
-            new CkgDomainLogic.General.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.CoC.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Fahrzeuge.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Strafzettel.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Leasing.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Uebfuehrg.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Zulassung.MobileErfassung.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.Finance.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Fahrer.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.Equi.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.DomainCommon.Models.AppModelMappings().ValidateAndRaiseError();
         }
 
         protected void Application_BeginRequest()
         {
+            var context = HttpContext.Current;
+            var request = context.Request;
+            var url = request.Url;
         }
 
         protected void Application_AcquireRequestState()
@@ -182,6 +192,10 @@ namespace ServicesMvc
             var exception = Server.GetLastError();
             var dataContext = SessionStore.GetCurrentDataContext();
             var logonContext = SessionStore.GetCurrentLogonContext();
+
+            if (exception.Message.NotNullOrEmpty().Contains("__browserLink/requestData"))
+                // ignore this error
+                return;
 
             this.HandleError();
 

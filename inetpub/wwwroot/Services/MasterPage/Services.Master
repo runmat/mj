@@ -10,7 +10,7 @@
     <meta http-equiv="Page-Enter" content="blendTrans(Duration=0)" />
     <meta http-equiv="Page-Exit" content="blendTrans(Duration=0)" />
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-      <link href="/Services/Styles/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
+      <link href="/Services/Styles/default.css?v=20150827" media="screen, projection" type="text/css" rel="stylesheet" />
    <%--<link href="/Services/Customize/default.css" media="screen, projection" type="text/css" rel="stylesheet" />
     --%>
 
