@@ -1,4 +1,5 @@
-﻿using GeneralTools.Contracts;
+﻿using System.Collections.Generic;
+using GeneralTools.Contracts;
 
 namespace GeneralTools.Services
 {
@@ -20,6 +21,11 @@ namespace GeneralTools.Services
         public string TranslateResourceKey(string resource)
         {
             return _translationFormatService.GetTranslation(resource);
+        }
+
+        public IDictionary<string, string> GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(string resourcePrefix)
+        {
+            return _translationFormatService.GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(resourcePrefix);
         }
 
         #endregion
