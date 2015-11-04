@@ -108,7 +108,7 @@ Public Class AuftraegeOnline
         Response.Redirect("../Selection.aspx")
     End Sub
 
-    Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
+    Protected Sub lbVersandlabel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbVersandlabel.Click
         lblError.Text = ""
 
         For Each row As GridDataItem In rgGrid1.Items
@@ -118,16 +118,16 @@ Public Class AuftraegeOnline
             End If
         Next
 
-        Dim pdfBytes As Byte() = mObjOnline.SendAuftraege()
+        Dim pdfBytes As Byte() = mObjOnline.VersandlabelGenerieren()
 
         Session("mObjOnline") = mObjOnline
 
         FillGrid()
 
         If mObjOnline.ErrorOccured Then
-            lblError.Text = "Es konnte nicht alle Aufträge erfolgreich gespeichert werden: " & mObjOnline.ErrorMessage
+            lblError.Text = "Beim Generieren der Versandlabel sind Fehler aufgetreten: " & mObjOnline.ErrorMessage
         Else
-            lblError.Text = "Aufträge erfolgreich gespeichert"
+            lblError.Text = "Versandlabel erfolgreich generiert"
         End If
 
         If pdfBytes IsNot Nothing Then
@@ -144,6 +144,29 @@ Public Class AuftraegeOnline
         Literal1.Text &= "                          window.open(""DownloadFile2.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & Environment.NewLine
         Literal1.Text &= "                          //-->" & Environment.NewLine
         Literal1.Text &= "                        </script>" & Environment.NewLine
+    End Sub
+
+    Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
+        lblError.Text = ""
+
+        For Each row As GridDataItem In rgGrid1.Items
+            If row("POSNR").Text = "10" Then
+                Dim cbx As CheckBox = CType(row.FindControl("chkAuswahl"), CheckBox)
+                mObjOnline.SetAuswahlAuftrag(row("PRAEG_ID").Text, cbx.Checked)
+            End If
+        Next
+
+        mObjOnline.AuftraegeAbschliessen()
+
+        Session("mObjOnline") = mObjOnline
+
+        FillGrid()
+
+        If mObjOnline.ErrorOccured Then
+            lblError.Text = "Es konnten nicht alle Aufträge erfolgreich abgeschlossen werden: " & mObjOnline.ErrorMessage
+        Else
+            lblError.Text = "Aufträge erfolgreich abgeschlossen"
+        End If
     End Sub
 
 End Class
