@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 using WebTools.Services;
 
@@ -128,12 +129,17 @@ namespace MvcTools.Controllers
 
             if (LogonContext.UserName.IsNullOrEmpty())
             {
-                var autoLogonUser = ConfigurationManager.AppSettings["AutoLogonUserName"].NotNullOrEmpty();
-                if (autoLogonUser.IsNotNullOrEmpty())
-                // Auto Logon User for debug purposes
+                var machineName = Environment.MachineName.ToUpper();
+                if (machineName.StartsWith("AHW")) // only available for machine names starting with "AHW"
                 {
-                    LogonContext.LogonUser(autoLogonUser);
-                    return Redirect(rawUrl);
+                    var autoLogonUser = GeneralConfiguration.GetConfigValue("Login", "AutoLogonUserName_" + machineName);
+                    if (autoLogonUser.IsNotNullOrEmpty())
+                    {
+                        // Auto Logon a User only for debug purposes 
+                        // and only available for machine names starting with "AHW"
+                        LogonContext.LogonUser(autoLogonUser);
+                        return Redirect(rawUrl);
+                    }
                 }
             }
 
