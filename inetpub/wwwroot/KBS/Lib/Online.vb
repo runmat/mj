@@ -131,7 +131,7 @@ Public Class Online
         Return Nothing
     End Function
 
-    Public Function SendAuftraege() As Byte()
+    Public Function VersandlabelGenerieren() As Byte()
         ClearErrorState()
 
         Try
@@ -146,8 +146,9 @@ Public Class Online
             Dim errors As New List(Of String)
 
             For Each selRow As DataRow In selRows
+                Dim praeg_id As String = selRow("PRAEG_ID").ToString()
 
-                S.AP.Init("Z_FIL_PRAEG_IMPORT_ERLKZ", "I_PRAEG_ID, I_WERKS", selRow("PRAEG_ID").ToString(), mWerk)
+                S.AP.Init("Z_FIL_PRAEG_IMPORT_ERLKZ", "I_PRAEG_ID, I_WERKS, I_MODUS", praeg_id, mWerk, "1")
 
                 S.AP.Execute()
 
@@ -162,17 +163,11 @@ Public Class Online
 
                     htmlString = Regex.Replace(htmlString, imgPattern, imgReplace)
 
-                    Dim delRows As DataRow() = mAuftraege.Select("PRAEG_ID = '" & selRow("PRAEG_ID").ToString() & "'")
-                    For Each delRow As DataRow In delRows
-                        mAuftraege.Rows.Remove(delRow)
-                    Next
-
                     filesByte.Add(ConvertHtmlToPdf(htmlString, 1.5F))
 
                 Else
-                    errors.Add(String.Format("{0}: {1}", selRow("PRAEG_ID").ToString(), S.AP.ResultMessage))
+                    errors.Add(String.Format("{0}: {1}", praeg_id, S.AP.ResultMessage))
                 End If
-
             Next
 
             If errors.Count > 0 Then
@@ -189,6 +184,49 @@ Public Class Online
             Return Nothing
         End Try
     End Function
+
+    Public Sub AuftraegeAbschliessen()
+        ClearErrorState()
+
+        Try
+            Dim selRows As DataRow() = mAuftraege.Select("Auswahl = True AND PosNr = '10'")
+
+            If selRows.Length = 0 Then
+                RaiseError("9999", "Keine Aufträge selektiert!")
+                Exit Sub
+            End If
+
+            Dim errors As New List(Of String)
+
+            For Each selRow As DataRow In selRows
+                Dim praeg_id As String = selRow("PRAEG_ID").ToString()
+
+                S.AP.Init("Z_FIL_PRAEG_IMPORT_ERLKZ", "I_PRAEG_ID, I_WERKS, I_MODUS", praeg_id, mWerk, "2")
+
+                S.AP.Execute()
+
+                If S.AP.ResultCode = 0 Then
+                    Dim delRows As DataRow() = mAuftraege.Select("PRAEG_ID = '" & praeg_id & "'")
+                    For Each delRow As DataRow In delRows
+                        mAuftraege.Rows.Remove(delRow)
+                    Next
+                    delRows = mFormulare.Select("PRAEG_ID = '" & praeg_id & "'")
+                    For Each delRow As DataRow In delRows
+                        mFormulare.Rows.Remove(delRow)
+                    Next
+                Else
+                    errors.Add(String.Format("{0}: {1}", praeg_id, S.AP.ResultMessage))
+                End If
+            Next
+
+            If errors.Count > 0 Then
+                RaiseError("9999", String.Join(", ", errors.ToArray()))
+            End If
+
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+        End Try
+    End Sub
 
     Private Function ConvertHtmlToPdf(ByVal html As String, Optional ByVal zoom As Single = 1) As Byte()
         Dim base64Html As String = Convert.ToBase64String(Encoding.Default.GetBytes(html))

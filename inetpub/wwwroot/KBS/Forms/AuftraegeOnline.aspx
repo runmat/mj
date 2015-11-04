@@ -85,10 +85,12 @@
                     <div id="dataFooter">
                         <asp:LinkButton ID="lbAlleDokumente" Text="alle Dokumente abrufen" Height="16px" Width="155px" runat="server"
                             CssClass="TablebuttonXLarge"></asp:LinkButton>
-                        <asp:LinkButton ID="lbAuswahlAlle" Text="alle auswählen" Height="16px" Width="128px" runat="server"
-                            CssClass="TablebuttonLarge"></asp:LinkButton>
-                        <asp:LinkButton ID="lbAbsenden" Text="Absenden" Height="16px" Width="78px" runat="server"
-                            CssClass="Tablebutton"></asp:LinkButton>
+                        <asp:LinkButton ID="lbAuswahlAlle" Text="alle auswählen" Height="16px" Width="155px" runat="server"
+                            CssClass="TablebuttonXLarge" style="margin-left: 5px"></asp:LinkButton>
+                        <asp:LinkButton ID="lbVersandlabel" Text="Versandlabel erzeugen" Height="16px" Width="155px" runat="server"
+                            CssClass="TablebuttonXLarge" style="margin-left: 5px"></asp:LinkButton>
+                        <asp:LinkButton ID="lbAbsenden" Text="Aufträge abschließen" Height="16px" Width="155px" runat="server"
+                            CssClass="TablebuttonXLarge" style="margin-left: 5px"></asp:LinkButton>
                     </div>
                 </div>
             </div>
