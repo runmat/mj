@@ -1,4 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Equi.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -32,20 +36,22 @@ namespace CkgDomainLogic.Equi.Models
 
         public string AbcKennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Status)]
-        public string Status
+        [LocalizedDisplay(LocalizeConstants.StorageLocation)]
+        public string Lagerort
         {
             get
             {
                 string erg = "";
 
+                var bukrsName = (GetViewModel != null ? GetViewModel().LogonContext.Customer.AccountingAreaName : "DAD");
+
                 switch (AbcKennzeichen)
                 {
                     case "":
-                        erg = "DAD";
+                        erg = bukrsName;
                         break;
                     case "0":
-                        erg = "DAD";
+                        erg = bukrsName;
                         break;
                     case "1":
                         if ((Versanddatum == null) || (Versanddatum == DateTime.MinValue))
@@ -75,5 +81,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.PartnerNo)]
         public string Partnernummer { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<EquiHistorieViewModel> GetViewModel { get; set; }
     }
 }

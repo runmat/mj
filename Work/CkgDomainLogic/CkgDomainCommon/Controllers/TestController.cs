@@ -1,16 +1,7 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System.Collections;
-using System.Linq;
-using System.Web.Mvc;
-using CkgDomainLogic.Charts.Contracts;
-using CkgDomainLogic.Charts.Models;
-using CkgDomainLogic.Charts.ViewModels;
-using CkgDomainLogic.DomainCommon.ViewModels;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
-using Telerik.Web.Mvc;
-// ReSharper restore RedundantUsingDirective
 
 namespace ServicesMvc.Controllers
 {
@@ -25,6 +16,19 @@ namespace ServicesMvc.Controllers
 
         [CkgApplication]
         public ActionResult Cerberus()
+        {
+            return View();
+        }
+
+        [CkgApplication]
+        public ActionResult Test()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [CkgApplication]
+        public ActionResult ATest()
         {
             return View();
         }
