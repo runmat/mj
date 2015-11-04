@@ -336,7 +336,7 @@ namespace CkgDomainLogic.General.Services
         {
         }
 
-        public virtual void StorePasswordToUser(string userName, string password)
+        public virtual void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
         }
 

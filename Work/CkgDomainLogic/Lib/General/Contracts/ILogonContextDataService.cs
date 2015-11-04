@@ -78,7 +78,7 @@ namespace CkgDomainLogic.General.Contracts
         List<Contact> TryGetGroupContacts();
 
         void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey);
-        void StorePasswordToUser(string userName, string password);
+        void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password);
 
         bool ValidatePassword(string password, User storedUser);
 

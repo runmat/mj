@@ -321,13 +321,13 @@ namespace CkgDomainLogic.General.Services
             return dbContext.GetGroupContacts(Customer.CustomerID, GroupName);
         }
 
-        public override void StorePasswordToUser(string userName, string password)
+        public override void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
             var dbContext = CreateDbContext(userName);
             if (dbContext.User == null)
                 return;
 
-            dbContext.StorePasswordToUser(password, Customer.PasswordMinHistoryEntries);
+            dbContext.StorePasswordToUser(password, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries);
         }
 
         public override void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)

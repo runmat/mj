@@ -63,37 +63,35 @@ namespace CkgDomainLogic.General.ViewModels
             LogonContext.CheckIfPasswordResetAllowed(loginModel, addModelError);
         }
 
-        public void ValidatePasswordModelAgainstRules(Action<string, string> addModelError)
+        public void ValidatePasswordModelAgainstRules(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, Action<string, string> addModelError)
         {
             List<string> localizedPasswordValidationErrorMessages;
             List<string> localizedPasswordRuleMessages;
-            ValidatePasswordAgainstRules(ChangePasswordModel.Password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
+            ValidatePasswordAgainstRules(passwordSecurityRuleDataProvider, ChangePasswordModel.Password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
             if (localizedPasswordValidationErrorMessages.Any())
                 addModelError("Password", string.Join("; ", localizedPasswordValidationErrorMessages));
         }
 
-        public void ValidatePasswordAgainstRules(string password, out List<string> localizedPasswordValidationErrorMessages, out List<string> localizedPasswordRuleMessages)
+        public void ValidatePasswordAgainstRules(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string password, out List<string> localizedPasswordValidationErrorMessages, out List<string> localizedPasswordRuleMessages)
         {
-            SecurityService.ValidatePassword(password, GetPasswordSecurityRuleDataProvider(ChangePasswordModel.UserName), LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
+            SecurityService.ValidatePassword(password, passwordSecurityRuleDataProvider, LocalizationService, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages, out _passwordRuleCount);
         }
 
-        private IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider(string userName)
+        public IPasswordSecurityRuleDataProvider GetPasswordSecurityRuleDataProvider(string userName = null)
         {
             var provider = LogonContext.Customer;
             if (provider != null)
                 return provider;
             
             var lc = LogonContext;
-            lc.LogonUser(userName);
+            lc.LogonUser((userName ?? ChangePasswordModel.UserName));
             provider = lc.Customer;
 
             return provider;
         }
 
-        public void ValidatePasswordModelAgainstHistory(Action<string, string> addModelError)
+        public void ValidatePasswordModelAgainstHistory(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, Action<string, string> addModelError)
         {
-            var passwordSecurityRuleDataProvider = GetPasswordSecurityRuleDataProvider(ChangePasswordModel.UserName);
-
             if (!LogonContext.CheckPasswordHistory(ChangePasswordModel, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries))
                 addModelError("Password", string.Join("; ", string.Format(Localize.PasswordMinHistoryEntries, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries)));
         }

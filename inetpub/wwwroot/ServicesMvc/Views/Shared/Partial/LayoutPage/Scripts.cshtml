@@ -549,8 +549,13 @@
                 if (result.logoutUrl != "") {
                     location.replace(result.logoutUrl);
                 } else {
-                    //location.replace('/ServicesMvc/');
-                    location.reload();
+                    var url = location.toString();
+
+                    if (url.indexOf("/Login/ChangePasswordLoggedOnInternal") > -1) {
+                        location.replace(url.replace("/Login/ChangePasswordLoggedOnInternal", "/DomainCommon/ChangePasswordLoggedOn"));
+                    } else {
+                        location.reload();
+                    }
                 }
             }
         });
@@ -570,7 +575,7 @@
     }
 
     function ChangePassword() {
-        location.replace('/ServicesMvc/Login/ChangePasswordLoggedOn');
+        location.replace('/ServicesMvc/DomainCommon/ChangePasswordLoggedOn');
     }
 
     function InitResponsiveControlWidthsAjax() {

@@ -297,7 +297,7 @@ namespace CkgDomainLogic.General.Services
             return new List<Contact>();
         }
 
-        public void StorePasswordToUser(string userName, string password)
+        public void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
         }
 
