@@ -126,10 +126,18 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var destinationObj = new DestinationObj
             {
                 Filename = filename,
-                Json = XsdToJson(xmlContent)
+                XmlRaw = xmlContent,
+                XmlDocument = StringToXmlDoc(xmlContent)
             };
 
             return destinationObj;
+        }
+
+        private XmlDocument StringToXmlDoc(string xml)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(xml);
+            return doc;
         }
 
         private string XsdToJson(string xsd)

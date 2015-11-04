@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml;
+using MvcTools.Web;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
@@ -10,7 +12,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Guid Guid { get { return Guid.NewGuid(); } }
         public string Filename { get; set; }
 
-        public string Json { get; set; }
+        public string XmlRaw { get; set; }
+        public XmlDocument XmlDocument { get; set; }
 
         public class Column
         {
