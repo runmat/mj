@@ -67,7 +67,7 @@ namespace CkgDomainLogic.ZldPartner.Services
             }
 
             if (!String.IsNullOrEmpty(suchparameter.Auswahl))
-                SAP.SetImportParameter("I_AUSWAHL", suchparameter.Kunde);
+                SAP.SetImportParameter("I_AUSWAHL", suchparameter.Auswahl);
 
             if (!String.IsNullOrEmpty(suchparameter.Kennzeichen))
                 SAP.SetImportParameter("I_ZZKENN", suchparameter.Kennzeichen);
