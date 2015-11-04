@@ -47,24 +47,6 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        public string ZulassungsartText
-        {
-            get
-            {
-                switch (Belegtyp)
-                {
-                    case "AN":
-                        return Localize.NewRegistration;
-                    case "AG":
-                        return Localize.UsedRegistration;
-                    case "AV":
-                        return (Zulassungsart.ZulassungAmFolgetagNichtMoeglich ? Localize.MailOrderRegistration72h : Localize.MailOrderRegistration48h);
-                    default:
-                        return "";
-                }
-            }
-        }
-
         public bool ZulassungsartAutomatischErmitteln { get; set; }
 
         // 20150528 MMA 
@@ -96,6 +78,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string ZulassungskreisBezeichnung { get; set; }
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.EvbNumber)]
         public string EvbNr { get; set; }
 

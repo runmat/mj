@@ -194,7 +194,7 @@
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
             new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
-                htmlAttributes: new { @class = "form-horizontal label-width-200", id = "AjaxFormZulassungsdaten" }))
+                htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormZulassungsdaten" }))
     {
         @Html.FormValidationSummary()
         @Html.HiddenFor(m => m.IsMassenzulassung)

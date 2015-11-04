@@ -18,7 +18,6 @@ using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -642,8 +641,7 @@ namespace ServicesMvc.Autohaus.Controllers
                     zulassungsstelleUrl = url,
                     Versandzulassung = ViewModel.Zulassung.Zulassungsdaten.Versandzulassung,
                     ExpressversandMoeglich = ViewModel.Zulassung.Zulassungsdaten.ExpressversandMoeglich,
-                    ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr,
-                    ZulassungsartText = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartText
+                    ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr
                 });
         }
 
@@ -655,9 +653,17 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return Json(new
             {
-                ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr,
-                ZulassungsartText = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartText
+                ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr
             });
+        }
+
+        [HttpPost]
+        public ActionResult CheckKennzeichenReserviert(bool kennzeichenReserviert)
+        {
+            ViewModel.Zulassung.Zulassungsdaten.KennzeichenReserviert = kennzeichenReserviert;
+
+            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+            return PartialView("Partial/ZulassungsdatenForm", ViewModel.Zulassung.Zulassungsdaten);
         }
 
         #endregion

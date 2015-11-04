@@ -1162,10 +1162,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             if (!ModusAbmeldung && Zulassungsarten.None())
+            {
+                SaveErrorMessage = Localize.NoRegistrationTypesFound;
                 return;
-
+            }
+                
             if (ModusAbmeldung && Abmeldearten.None())
+            {
+                SaveErrorMessage = Localize.NoDeregistrationTypesFound;
                 return;
+            }
+
+            if (saveDataToSap && zulassungen.Any(z => String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr)))
+            {
+                SaveErrorMessage = Localize.EvbMissing;
+                return;
+            }
 
             zulassungen.ForEach(z =>
             {

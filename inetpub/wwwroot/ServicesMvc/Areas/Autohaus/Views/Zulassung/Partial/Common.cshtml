@@ -4,6 +4,13 @@
     .form-wizard .progress {
         margin-bottom: 10px!important;
     }
+    
+    .reserve-button {
+        background-color: #9B9B9B !important;
+        color:#FFF;
+        padding-left: 44px;
+        padding-right: 44px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -405,23 +412,39 @@
     }
 
     function CheckKennzeichenReserviert() {
-        var wkz2 = $("#Wunschkennzeichen2");
-        var wkz3 = $("#Wunschkennzeichen3");
-        var resName = $("#ReservierungsName");
-        var resNr = $("#ReservierungsNr");
+        $.ajax(
+            {
+                type: "POST",
+                url: "CheckKennzeichenReserviert",
+                data: { kennzeichenReserviert: $("#KennzeichenReserviert").is(":checked") },
+                loadingShow: false,
+                success: function (result) {
+                    $("#DivZulassungsdaten").html(result);
+                }
+            });
 
-        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
-        if (kennzReserv) {
-            wkz2.attr('readonly', true);
-            wkz3.attr('readonly', true);
-            resName.attr('readonly', false);
-            resNr.attr('readonly', false);
-        } else {
-            wkz2.attr('readonly', false);
-            wkz3.attr('readonly', false);
-            resName.attr('readonly', true);
-            resNr.attr('readonly', true);
-        }
+        return false;
+
+//        var kennzLabel = $("#Kennzeichen").closest(".control-group").find(".control-label");
+//        var wkz2 = $("#Wunschkennzeichen2").closest(".control-group");
+//        var wkz3 = $("#Wunschkennzeichen3").closest(".control-group");
+//        var resName = $("#ReservierungsName").closest(".control-group");
+//        var resNr = $("#ReservierungsNr").closest(".control-group");
+
+//        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
+//        if (kennzReserv) {
+//            kennzLabel.innerHTML = '@Localize.LicenseNo';
+//            wkz2.hide();
+//            wkz3.hide();
+//            resName.show();
+//            resNr.show();
+//        } else {
+//            kennzLabel.innerHTML = '@Localize.PersonalisedLicenseNo';
+//            wkz2.show();
+//            wkz3.show();
+//            resName.hide();
+//            resNr.hide();
+//        }
     }
 
     function ZulassungskreisOnChange() {
@@ -445,23 +468,9 @@
                     if (typeof (result.Versandzulassung) !== "undefined") {
                         $("#Versandzulassung").val(result.Versandzulassung);
                         $("#ExpressversandMoeglich").val(result.ExpressversandMoeglich);
-
-                        if (result.Versandzulassung == true) {
-                            $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
-                        } else {
-                            $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
-                        }
-
-                        if (result.ExpressversandMoeglich == true) {
-                            $("#Expressversand").closest(".control-group").show();
-                        } else {
-                            $("#Expressversand").prop("checked", false);
-                            $("#Expressversand").closest(".control-group").hide();
-                        }
-                        $.uniform.update($("#Expressversand"));
-
                         $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
-                        $("#ZulassungsartText").text(result.ZulassungsartText);
+
+                        ApplyZulassungsart();
                     }
                 }
             });
@@ -478,7 +487,6 @@
                 loadingShow: false,
                 success: function (result) {
                     $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
-                    $("#ZulassungsartText").text(result.ZulassungsartText);
                 }
             });
 
@@ -486,25 +494,35 @@
     }
 
     function InitZulassungsdatenControls() {
-        if ($("#Versandzulassung").length) {
-            if ($("#Versandzulassung").val().toString().toLowerCase() == 'true') {
-                $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
-            } else {
-                $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
-            }
+        $("#EvbInfo").closest(".controls").css('margin-left', "0 !Important");
 
-            if ($("#ExpressversandMoeglich").val().toString().toLowerCase() == 'true') {
-                $("#Expressversand").closest(".control-group").show();
-            }
-            else {
-                $("#Expressversand").closest(".control-group").hide();
-            }
-            $.uniform.update($("#Expressversand"));
+        ApplyZulassungsart();
 
-            $("input[name=HaltereintragVorhanden]").change(function () {
-                UpdateZulassungsart();
-            });
+        $("input[name=HaltereintragVorhanden]").change(function () {
+            UpdateZulassungsart();
+        });
+
+        $("#divVersandzulassung").on('change', ':checkbox', function (e) {
+            UpdateZulassungsart();
+        });
+    }
+
+    function ApplyZulassungsart() {
+        if ($("#Versandzulassung").val().toString().toLowerCase() == 'true') {
+            $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+            $("#Expressversand").closest(".control-group").show();
+        } else {
+            $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
+            $("#Expressversand").closest(".control-group").hide();
         }
+
+        if ($("#ExpressversandMoeglich").val().toString().toLowerCase() == 'true') {
+            $("#Expressversand").closest("span").show();
+        }
+        else {
+            $("#Expressversand").closest("span").hide();
+        }
+        $.uniform.update($("#Expressversand"));
     }
 
     // MMA ITA8083

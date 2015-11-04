@@ -685,7 +685,12 @@ namespace PortalMvcTools.Web
             return html.FormCheckBoxListForInner(expressionArray.ToList(), new MvcHtmlString(labelText));
         }
 
-        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html, List<Expression<Func<TModel, bool>>> expressionList, MvcHtmlString labelText)
+        public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, string labelText, object controlHtmlAttributes, params Expression<Func<TModel, bool>>[] expressionArray)
+        {
+            return html.FormCheckBoxListForInner(expressionArray.ToList(), new MvcHtmlString(labelText), controlHtmlAttributes);
+        }
+
+        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html, List<Expression<Func<TModel, bool>>> expressionList, MvcHtmlString labelText, object controlHtmlAttributes = null)
         {
             var checkBoxesFor = MvcHtmlString.Empty.Concat(expressionList.Select(expression => html.FormCheckBoxForInner(expression)).ToArray());
 
@@ -700,6 +705,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = checkBoxesFor,
                 ValidationMessageHtml = validationMessageHtml,
                 IconCssClass = null,
+                ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
