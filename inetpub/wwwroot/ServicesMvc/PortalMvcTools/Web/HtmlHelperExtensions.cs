@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -360,7 +359,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static bool FormIsInvisible<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
@@ -396,7 +395,7 @@ namespace PortalMvcTools.Web
                 LabelHidden = labelHidden,
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormTextBox(this HtmlHelper html, string propertyName, object controlHtmlAttributes = null, string labelHtml = null)
@@ -451,7 +450,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormTemplateControl(this HtmlHelper html, string label, Func<object, HelperResult> templateControlHtml, object controlHtmlAttributes = null)
@@ -506,7 +505,7 @@ namespace PortalMvcTools.Web
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         #endregion
@@ -557,7 +556,7 @@ namespace PortalMvcTools.Web
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
 
@@ -594,7 +593,7 @@ namespace PortalMvcTools.Web
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         #endregion
@@ -626,7 +625,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         private static MvcHtmlString FormRadioButtonForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, SelectListItem item, string radioLabelCssClass = "radio")
@@ -660,7 +659,7 @@ namespace PortalMvcTools.Web
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, object>> labelExpression, params Expression<Func<TModel, bool>>[] expressionArray)
@@ -690,7 +689,7 @@ namespace PortalMvcTools.Web
                 IconCssClass = null,
             };
 
-            return html.FormLeftLabelControlConditional(model);
+            return html.FormLeftLabelControl(model);
         }
 
         private static MvcHtmlString FormCheckBoxForInner<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, string checkBoxCssClass = "checkbox")
@@ -733,7 +732,7 @@ namespace PortalMvcTools.Web
             return html.FormLeftLabelControlConditional(dateRangeExpression, model);
         }
 
-        private static MvcHtmlString FormLeftLabelControlConditional<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, object>> expression, FormControlModel model)
+        private static MvcHtmlString FormLeftLabelControlConditional<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, FormControlModel model)
         {
             return html.PartialConditional("Partial/FormControls/Form/LeftLabelControl", model, () => true);
         }
