@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -14,6 +15,7 @@ using MvcTools.Web;
 using System.Web.Mvc.Ajax;
 using PortalMvcTools.Models;
 using CkgDomainLogic.General.Contracts;
+using GeneralTools.Contracts;
 
 namespace PortalMvcTools.Web
 {
@@ -211,6 +213,8 @@ namespace PortalMvcTools.Web
 
         #region Default Form Controls, Twitter Bootstrap
 
+        private const string PartialViewNameFormLeftLabelControl = "Partial/FormControls/Form/LeftLabelControl";
+
         # region Label
 
         public static MvcHtmlString FormLabel(this HtmlHelper html, string propertyName, string cssClass = null)
@@ -367,13 +371,6 @@ namespace PortalMvcTools.Web
             return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
         }
 
-        public static MvcHtmlString FormMultiColumnModeInit(this HtmlHelper html, string autoKey)
-        {
-            FormControlModel.AutoMultiColumnModeInit(autoKey);
-
-            return MvcHtmlString.Empty;
-        }
-
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
@@ -512,13 +509,20 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
-        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes)
         {
             var model = new FormControlModel
             {
                 PostControlHtml = controlHtml == null ? null : controlHtml.Invoke(null),
                 ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
+
+            return model;
+        }
+
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        {
+            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes);
 
             return html.FormLeftLabelControl(model);
         }
@@ -734,13 +738,56 @@ namespace PortalMvcTools.Web
 
         private static MvcHtmlString FormLeftLabelControlConditional<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, FormControlModel model)
         {
-            return html.PartialConditional("Partial/FormControls/Form/LeftLabelControl", model, () => true);
+            var modelType = typeof(TModel);
+
+            var mExpr = expression.Body as MemberExpression;
+            if (mExpr != null)
+                modelType = mExpr.Expression.Type;
+
+            var propertyName = expression.GetPropertyName();
+
+            var controller = (html.ViewContext.Controller as IConfigurationProvider);
+            if (controller == null || html.ViewContext.HttpContext.Request.Url == null)
+                return html.HiddenFor(expression);
+
+            var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+            const string strRegex = @"action=\""(?<url>.*?)\""";
+            var matches = Regex.Match(partialViewContext, strRegex);
+            if (matches.Groups.Count > 0)
+                partialViewContext = matches.Groups["url"].Value;
+            else
+                partialViewContext = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+
+            var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewContext, modelType.Name, propertyName);
+            var fieldConfigValue = controller.GetConfigValueForCurrentCustomer(key).NotNullOrEmpty().ToLower();
+
+            var fieldIsHidden = (fieldConfigValue == "true");
+            if (fieldIsHidden)
+                return html.HiddenFor(expression);
+
+            return html.PartialConditional(PartialViewNameFormLeftLabelControl, model, () => true);
         }
 
         private static MvcHtmlString FormLeftLabelControl(this HtmlHelper html, FormControlModel model)
         {
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.Partial(PartialViewNameFormLeftLabelControl, model);
         }
+
+        public static MvcHtmlString FormMultiColumnModeStart(this HtmlHelper html, string autoKey)
+        {
+            new FormControlModel().AutoMultiColumnModeStart(autoKey);
+
+            return MvcHtmlString.Empty;
+        }
+
+        public static MvcHtmlString FormMultiColumnModeEnd(this HtmlHelper html, string autoKey)
+        {
+            while (!new FormControlModel().AutoMultiColumnModeEndReached(autoKey))
+                html.RenderPartial(PartialViewNameFormLeftLabelControl, GetFormPlaceHolderModel(null, null));
+
+            return MvcHtmlString.Empty;
+        }
+
 
         #endregion
 

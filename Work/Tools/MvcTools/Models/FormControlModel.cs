@@ -86,9 +86,14 @@ namespace MvcTools.Models
         /// </summary>
         public MvcHtmlString PerstistenceIndicatorHtml { get; set; }
 
-        public static void AutoMultiColumnModeInit(string autoKey)
+        public void AutoMultiColumnModeStart(string autoKey)
         {
-            new FormControlModel().KeyStringStore.SetValue(autoKey, "");
+            KeyStringStore.SetValue(autoKey, "");
+        }
+
+        public bool AutoMultiColumnModeEndReached(string autoKey)
+        {
+            return AutoMultiColumnModeTryGetAndIncrementValue(autoKey).ToString("F").ToLower().StartsWith("left");
         }
 
         FormMultiColumnMode AutoMultiColumnModeTryGetAndIncrementValue(string autoKey)
