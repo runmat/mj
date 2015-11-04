@@ -1,4 +1,6 @@
-﻿
+﻿Imports KBS.KBS_BASE
+
+
 Public Class Verbandbuch
     Inherits Page
 
@@ -6,19 +8,23 @@ Public Class Verbandbuch
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-        If Not Session("mKasse") Is Nothing Then
-            mObjKasse = Session("mKasse")
-        End If
 
-        verbandbuchErf.NavigateUrl = ConfigurationManager.AppSettings("VerbandbuchHostAdress") &
-                                        "Erfassung?vkbur=" & mObjKasse.Lagerort.ToString() &
-                                        "&ra=" & ConfigurationManager.AppSettings("VerbandbuchRemoteKey") &
-                                        "&rb=" & ConfigurationManager.AppSettings("VerbandbuchTimeStamp")
+        'SOBALD DIE KASSEN UPGEDATED WORDEN SIND :
+        'SERVICES MVC
+        'If Not Session("mKasse") Is Nothing Then
+        '    mObjKasse = Session("mKasse")
+        'End If
 
-        verbandbuchRep.NavigateUrl = ConfigurationManager.AppSettings("VerbandbuchHostAdress") &
-                                        "Report?vkbur=" & mObjKasse.Lagerort.ToString() &
-                                        "&ra=" & ConfigurationManager.AppSettings("VerbandbuchRemoteKey") &
-                                        "&rb=" & ConfigurationManager.AppSettings("VerbandbuchTimeStamp")
+        'verbandbuchErf.NavigateUrl = ConfigurationManager.AppSettings("VerbandbuchHostAdress") &
+        '                                "Erfassung?vkbur=" & mObjKasse.Lagerort.ToString() &
+        '                                "&ra=" & ConfigurationManager.AppSettings("VerbandbuchRemoteKey") &
+        '                                "&rb=" & ConfigurationManager.AppSettings("VerbandbuchTimeStamp")
+
+        'verbandbuchRep.NavigateUrl = ConfigurationManager.AppSettings("VerbandbuchHostAdress") &
+        '                                "Report?vkbur=" & mObjKasse.Lagerort.ToString() &
+        '                                "&ra=" & ConfigurationManager.AppSettings("VerbandbuchRemoteKey") &
+        '                                "&rb=" & ConfigurationManager.AppSettings("VerbandbuchTimeStamp")
+
 
 
     End Sub
@@ -27,5 +33,7 @@ Public Class Verbandbuch
         Session("ObjKVP") = Nothing
         Response.Redirect("../Selection.aspx")
     End Sub
+
+    
 
 End Class

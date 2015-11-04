@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using System.Linq;

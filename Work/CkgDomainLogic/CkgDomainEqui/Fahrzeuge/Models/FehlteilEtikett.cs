@@ -2,7 +2,6 @@
 using System.Linq;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
