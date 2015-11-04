@@ -252,7 +252,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             if (auftrag == null)
                 return Localize.OrderDoesNotExist;
 
-            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag.FahrgestellNr, VersandAdresse, GetVersandOption(VersandOption).MaterialCode);
+            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag, VersandAdresse, GetVersandOption(VersandOption).MaterialCode);
             if (!message.IsNullOrEmpty())
                 return message;
 

@@ -103,7 +103,7 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
-        public string CreateVersandAdresse(int vorgangNr, string fin, Adresse versandAdresse, string versandOption)
+        public string CreateVersandAdresse(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -118,7 +118,7 @@ namespace CkgDomainLogic.WFM.Services
                         SAP.SetImportParameter("I_ANF_DAT", DateTime.Today);
                         SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
 
-                        SAP.SetImportParameter("I_FAHRG", fin);
+                        SAP.SetImportParameter("I_FAHRG", auftrag.FahrgestellNr);
                         SAP.SetImportParameter("I_VERS_OPT", versandOption);
 
                         SAP.SetImportParameter("I_NAME1_ZS", versandAdresse.Name1);
@@ -128,6 +128,9 @@ namespace CkgDomainLogic.WFM.Services
                         SAP.SetImportParameter("I_POST_CODE1_ZS", versandAdresse.PLZ);
                         SAP.SetImportParameter("I_CITY1_ZS", versandAdresse.Ort);
                         SAP.SetImportParameter("I_COUNTRY_ZS", versandAdresse.Land);
+
+                        SAP.SetImportParameter("I_ZZKENN", auftrag.Kennzeichen);
+                        SAP.SetImportParameter("I_BELNR", auftrag.Verkaufsbeleg);
 
                         SAP.Execute();
                     }
