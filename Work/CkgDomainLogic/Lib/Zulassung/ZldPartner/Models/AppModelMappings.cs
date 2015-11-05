@@ -29,6 +29,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.Halter = s.ZH_NAME1;
                         d.Herkunft = s.HERK;
                         d.Kennzeichen = s.ZZKENN;
+                        d.Lieferant = s.LIFNR;
                         d.LieferDatum = s.EINDT.ToString("dd.MM.yyyy");
                         d.MaterialNr = s.MATNR;
                         d.MaterialText = s.MAKTX;
@@ -95,6 +96,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.GEB_RELEVANT = s.Gebuehrenrelevant.BoolToX();
                         d.HERK = s.Herkunft;
                         d.KREISKZ = s.ZulassungsKreis;
+                        d.LIFNR = s.Lieferant;
                         d.MAKTX = s.MaterialText;
                         d.MATNR = s.MaterialNr;
                         d.PP_STATUS = s.Status;

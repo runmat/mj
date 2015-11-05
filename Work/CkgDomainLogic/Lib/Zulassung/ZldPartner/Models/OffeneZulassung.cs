@@ -27,6 +27,9 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.Service)]
         public string MaterialText { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Supplier)]
+        public string Lieferant { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
         public string LieferDatum { get; set; }
 

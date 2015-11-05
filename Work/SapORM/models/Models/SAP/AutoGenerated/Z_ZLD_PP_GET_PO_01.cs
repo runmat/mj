@@ -35,6 +35,8 @@ namespace SapORM.Models
 
 			public string EBELP { get; set; }
 
+			public string LIFNR { get; set; }
+
 			public string MATNR { get; set; }
 
 			public string MAKTX { get; set; }
@@ -77,6 +79,7 @@ namespace SapORM.Models
 				{
 					EBELN = (string)row["EBELN"],
 					EBELP = (string)row["EBELP"],
+					LIFNR = (string)row["LIFNR"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
 					EINDT = (string.IsNullOrEmpty(row["EINDT"].ToString())) ? null : (DateTime?)row["EINDT"],
