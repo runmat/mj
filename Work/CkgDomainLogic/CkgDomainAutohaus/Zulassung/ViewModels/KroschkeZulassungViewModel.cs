@@ -590,11 +590,20 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
                 Zulassung.Zulassungsdaten.Expressversand = false;
 
-            if (Zulassung.Zulassungsdaten.Versandzulassung && String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr))
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr))
             {
-                var zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich);
-                if (zulArt != null)
-                    Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+                if (Zulassung.Zulassungsdaten.ModusAbmeldung)
+                {
+                    var abmArt = Abmeldearten.FirstOrDefault();
+                    if (abmArt != null)
+                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
+                }
+                else if (Zulassung.Zulassungsdaten.Versandzulassung)
+                {
+                    var zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich);
+                    if (zulArt != null)
+                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+                }
             }
         }
 
@@ -1100,8 +1109,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
                                 ModusSonderzulassung = ModusSonderzulassung,
-                                ZulassungsartMatNr =
-                                    (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
+                                ZulassungsartMatNr = null,
                                 Zulassungskreis = null,
                             },
                         Fahrzeugdaten = new Fahrzeugdaten
