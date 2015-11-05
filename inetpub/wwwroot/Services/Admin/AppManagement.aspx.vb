@@ -161,7 +161,8 @@ Partial Public Class AppManagement
         Else
             strAppID = ddlAppParent.SelectedItem.Value
         End If
-        Response.Redirect("/ServicesMvc/Common/GridAdmin/ReportSolution?un=" & CryptoMd5.EncryptToUrlEncoded(strAppID & "-" & m_User.UserName & "-" & DateTime.Now.Ticks.ToString()))
+        Dim url As String = "/ServicesMvc/Common/GridAdmin/ReportSolution?un=" & CryptoMd5.EncryptToUrlEncoded(strAppID & "-" & m_User.UserName & "-" & DateTime.Now.Ticks.ToString())
+        Response.Redirect(url)
     End Sub
 
     Private Sub lnkColumnTranslation_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkColumnTranslation.Click

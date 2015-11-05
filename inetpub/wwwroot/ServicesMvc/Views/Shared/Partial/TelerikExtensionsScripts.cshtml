@@ -41,6 +41,10 @@
                     try { GridPrepareFromSelectorPersistedState(grid.data("tGrid")); }
                     catch (e) { }
                 }
+
+                try {
+                    TryPrepareGridSettingsAdministration(grid);
+                } catch (e) { }
             }
 
             if (gridDataBoundFirstTime) {

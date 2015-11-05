@@ -91,7 +91,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                 return false;
 
             var adminDate = new DateTime(items[2].ToLong(0));
-            if ((DateTime.Now - adminDate).TotalMinutes > 1)
+            if ((DateTime.Now - adminDate).TotalMinutes > 1 && !Environment.MachineName.ToUpper().StartsWith("AHW"))
                 return false;
 
             var appID = items[0].ToInt();
