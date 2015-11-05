@@ -10,6 +10,7 @@ using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WebTools.Services;
 
 namespace CkgDomainLogic.General.ViewModels

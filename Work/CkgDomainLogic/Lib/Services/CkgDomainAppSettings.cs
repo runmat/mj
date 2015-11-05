@@ -5,9 +5,9 @@ using System.IO;
 using System.Reflection;
 using System.Web;
 using CkgDomainLogic.General.Database.Services;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Services
 {
