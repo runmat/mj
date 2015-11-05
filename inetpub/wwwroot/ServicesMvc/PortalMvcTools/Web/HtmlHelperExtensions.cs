@@ -750,15 +750,16 @@ namespace PortalMvcTools.Web
             if (controller == null || html.ViewContext.HttpContext.Request.Url == null)
                 return html.HiddenFor(expression);
 
-            var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
-            const string strRegex = @"action=\""(?<url>.*?)\""";
-            var matches = Regex.Match(partialViewContext, strRegex);
-            if (matches.Groups.Count > 0)
-                partialViewContext = matches.Groups["url"].Value;
-            else
-                partialViewContext = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+            //var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+            //const string strRegex = @"action=\""(?<url>.*?)\""";
+            //var matches = Regex.Match(partialViewContext, strRegex);
+            //if (matches.Groups.Count > 0)
+            //    partialViewContext = matches.Groups["url"].Value;
+            //else
+            //    partialViewContext = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+            //var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewContext, modelType.Name, propertyName);
+            var key = string.Format("HIDDEN: {0} - {1}", modelType.Name, propertyName);
 
-            var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewContext, modelType.Name, propertyName);
             var fieldConfigValue = controller.GetConfigValueForCurrentCustomer(key).NotNullOrEmpty().ToLower();
 
             var fieldIsHidden = (fieldConfigValue == "true");
