@@ -364,6 +364,7 @@ namespace Leasing.forms
                             else
                             {
                                 objDienstleistung.EVBNr = txtEVBNummer.Text;
+                                objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
                             }
                         }
                         else if (txtEVBNummer.Text.Length < 7 || !objDienstleistung.IsAlphaNumeric(txtEVBNummer.Text))

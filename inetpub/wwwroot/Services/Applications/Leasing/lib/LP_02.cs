@@ -689,11 +689,11 @@ namespace Leasing.lib
                         newRow["EVBBISDAT"] = EvbGueltigBis;
                     }
 
-
+                    newRow["ZULDAT"] = DurchfuehrungsDatum;
                     newRow["ZZBRIEF"] = row["NummerZB2"];
                     newRow["ZZREFNR"] = row["Leasingnummer"];
 
-                    newRow["WUNSCHKENNZ"] = Wunschkennzeichen;
+                    newRow["WUNSCHKENNZ"] = Kreis + Wunschkennzeichen;
                     newRow["VERSICHERUNG"] = Versicherungstraeger;
                     newRow["EQUNR"] = row["EQUNR"].ToString();
                     newRow["SFV_FZG"] = Bemerkung;
