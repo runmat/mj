@@ -3,6 +3,7 @@ using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
+using CkgDomainLogic.Fahrzeugbestand.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
@@ -55,6 +56,8 @@ namespace ServicesMvc.Controllers
         {
             CkgDomainLogic.Equi.Models.VersandOptionen.GetViewModel = GetViewModel<BriefversandViewModel>;
             FahrzeugAnforderung.GetViewModel = GetViewModel<EquiHistorieVermieterViewModel>;
+            EquiHistorie.GetViewModel = GetViewModel<EquiHistorieViewModel>;
+            EquiHistorieInfo.GetViewModel = GetViewModel<EquiHistorieViewModel>;
         }
 
         public ActionResult Index()

@@ -84,7 +84,7 @@ namespace ServicesMvc.Controllers
         public ActionResult Index()
         {
             if (LogonContext != null && LogonContext.Customer != null && LogonContext.Customer.MvcSelectionUrl.IsNotNullOrEmpty())
-                return RedirectPermanent(LogonContext.Customer.MvcSelectionUrl);
+                return Redirect(LogonContext.Customer.MvcSelectionUrl);
 
             return View(CkgCommonViewModel);
         }

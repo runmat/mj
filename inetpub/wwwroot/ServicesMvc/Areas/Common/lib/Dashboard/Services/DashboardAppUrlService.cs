@@ -1,29 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using Autofac;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
-using ServicesMvc;
 
 namespace CkgDomainLogic.General.Services
 {
     public class DashboardAppUrlService
     {
-        public static ChartItemsPackage InvokeViewModelForAppUrl(string appUrl, string key, IContainer iocContainer = null)
+        public static IEnumerable<Assembly> Assemblies { get; set; }
+
+        public static void RegisterAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            Assemblies = assemblies;
+        }
+
+        public static ChartItemsPackage InvokeViewModelForAppUrl(string appUrl, string key)
         {
             string area, controller, action;
             GetAppUrlParts(appUrl, out area, out controller, out action);
 
-            var servicesMvcAssembly = Assembly.GetAssembly(typeof (MvcApplication));
-
-            var controllerType = GetControllerType(area, controller, servicesMvcAssembly);
+            var controllerType = GetControllerType(area, controller);
             if (controllerType == null)
                 return null;
 
             var ctor = controllerType.GetConstructors().First();
-            var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p => GetInstanceOf(p.ParameterType, iocContainer)).ToArray());
+            var controllerObject = ctor.Invoke(ctor.GetParameters().Select(p => GetInstanceOf(p.ParameterType)).ToArray());
 
             var piDashboardProviderViewModel = controllerType.GetPropertyOfClassWithAttribute(typeof (DashboardProviderViewModelAttribute));
             if (piDashboardProviderViewModel == null)
@@ -48,20 +52,24 @@ namespace CkgDomainLogic.General.Services
             return data;
         }
 
-        private static object GetInstanceOf(Type type, IContainer iocContainer)
+        private static object GetInstanceOf(Type type)
         {
-            if (iocContainer != null)
-                // use custom resolver
-                return iocContainer.Resolve(type);
-
-            // use MVC resolver
             return DependencyResolver.Current.GetService(type);
         }
 
-        private static Type GetControllerType(string area, string controller, Assembly servicesMvcAssembly)
+        private static Type GetControllerType(string area, string controller)
         {
-            var controllerTypeName = string.Format("servicesmvc.{0}controllers.{1}controller", (area.IsNullOrEmpty() ? "" : area + "."), controller);
-            var controllerType = servicesMvcAssembly.GetType(controllerTypeName, throwOnError: false, ignoreCase: true);
+            if (Assemblies == null)
+                return null;
+
+            Type controllerType = null;
+            foreach (var assembly in Assemblies)
+            {
+                var controllerTypeName = string.Format("servicesmvc.{0}controllers.{1}controller", (area.IsNullOrEmpty() ? "" : area + "."), controller);
+                controllerType = assembly.GetType(controllerTypeName, throwOnError: false, ignoreCase: true);
+                if (controllerType != null)
+                    break;
+            }
 
             return controllerType;
         }
