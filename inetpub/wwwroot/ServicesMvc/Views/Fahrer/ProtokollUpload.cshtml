@@ -345,7 +345,7 @@
             dataType: 'json',
             autoUpload: false,
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 15000000, // 15 MB
+            maxFileSize: 1000000, // 5 MB
             // MJE obsolete: 
             //   (disable image resizing for Android and Opera,
             //    which actually support image resizing, but fail to
@@ -355,8 +355,8 @@
             disableImageResize: false,
             previewMaxWidth: 150,
             previewMaxHeight: 100,
-            imageMaxWidth: 800,
-            imageMaxHeight: 600,
+            imageMaxWidth: 2400,
+            imageMaxHeight: 1800,
             previewCrop: true
         }).on('fileuploadadd', function (e, data) {
             data.context = $('<div/>').appendTo('#files');

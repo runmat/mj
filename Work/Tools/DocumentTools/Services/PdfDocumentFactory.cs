@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -37,6 +40,20 @@ namespace DocumentTools.Services
                     processedImage = XImage.FromFile(processedFile);
                 }
 
+
+                // compressing image
+                var bm = (Bitmap)Image.FromFile(processedFile);
+                var codecs = ImageCodecInfo.GetImageEncoders();
+                ImageCodecInfo ici = null;
+                foreach (var codec in codecs.Where(codec => codec.MimeType == "image/jpeg"))
+                    ici = codec;
+                var ep = new EncoderParameters { Param = { [0] = new EncoderParameter(Encoder.Quality, (long) 60) } };
+                var compressedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-3" + Path.GetExtension(file));
+                bm.Save(compressedFile, ici, ep);
+                processedImage.Dispose();
+                processedImage = XImage.FromFile(compressedFile);
+
+
                 // resizing image if higher/wider then pdfpage.
                 if (cropToImageSize || pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.PixelWidth))
                     pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.PixelWidth);
@@ -54,6 +71,8 @@ namespace DocumentTools.Services
                 }
                 else
                     img.Dispose();
+
+                FileService.TryFileDelete(compressedFile);
 
                 imageCount++;
             }
