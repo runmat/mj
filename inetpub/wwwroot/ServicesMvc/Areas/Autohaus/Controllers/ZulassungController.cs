@@ -608,7 +608,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ModelState.Clear();
                 model.IsValid = false;
 
-                ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+                ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
                 return PartialView("Partial/ZulassungsdatenForm", model);
             }
 
@@ -619,7 +619,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             model.IsValid = ModelState.IsValid;
 
-            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 
@@ -673,7 +673,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Zulassung.Zulassungsdaten.KennzeichenReserviert = kennzeichenReserviert;
 
-            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
             return PartialView("Partial/ZulassungsdatenForm", ViewModel.Zulassung.Zulassungsdaten);
         }
 
