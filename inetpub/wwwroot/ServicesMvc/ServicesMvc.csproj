@@ -716,6 +716,7 @@
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\ActionFilters\HolBringServiceGlobalDataAttribute.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Abholung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
