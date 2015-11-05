@@ -412,39 +412,8 @@
     }
 
     function CheckKennzeichenReserviert() {
-        $.ajax(
-            {
-                type: "POST",
-                url: "CheckKennzeichenReserviert",
-                data: { kennzeichenReserviert: $("#KennzeichenReserviert").is(":checked") },
-                loadingShow: false,
-                success: function (result) {
-                    $("#DivZulassungsdaten").html(result);
-                }
-            });
-
-        return false;
-
-//        var kennzLabel = $("#Kennzeichen").closest(".control-group").find(".control-label");
-//        var wkz2 = $("#Wunschkennzeichen2").closest(".control-group");
-//        var wkz3 = $("#Wunschkennzeichen3").closest(".control-group");
-//        var resName = $("#ReservierungsName").closest(".control-group");
-//        var resNr = $("#ReservierungsNr").closest(".control-group");
-
-//        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
-//        if (kennzReserv) {
-//            kennzLabel.innerHTML = '@Localize.LicenseNo';
-//            wkz2.hide();
-//            wkz3.hide();
-//            resName.show();
-//            resNr.show();
-//        } else {
-//            kennzLabel.innerHTML = '@Localize.PersonalisedLicenseNo';
-//            wkz2.show();
-//            wkz3.show();
-//            resName.hide();
-//            resNr.hide();
-//        }
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormZulassungsdaten").submit();
     }
 
     function ZulassungskreisOnChange() {
@@ -483,7 +452,7 @@
             {
                 type: "POST",
                 url: "UpdateZulassungsart",
-                data: { haltereintragVorhanden: $("input[name=HaltereintragVorhanden]:checked").val(), expressversand: $("#Expressversand").is(":checked") },
+                data: { haltereintragVorhanden: $(":radio[name=HaltereintragVorhanden]:checked").val(), expressversand: $("#Expressversand").is(":checked") },
                 loadingShow: false,
                 success: function (result) {
                     $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
@@ -498,17 +467,24 @@
 
         ApplyZulassungsart();
 
-        $("input[name=HaltereintragVorhanden]").change(function () {
-            UpdateZulassungsart();
-        });
+        if ($(":radio[name=HaltereintragVorhanden]").length) {
+            $(":radio[name=HaltereintragVorhanden]").change(function () {
+                UpdateZulassungsart();
+            });
+        }
 
-        $("#divVersandzulassung").on('change', ':checkbox', function (e) {
-            UpdateZulassungsart();
-        });
+        if ($("#Expressversand").length) {
+            $("#Expressversand").change(function () {
+                UpdateZulassungsart();
+            });
+        }
     }
 
     function ApplyZulassungsart() {
-        if ($("#Versandzulassung").val().toString().toLowerCase() == 'true') {
+        var versZul = $("#Versandzulassung").val();
+        var exprVers = $("#ExpressversandMoeglich").val();
+
+        if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
             $("#Expressversand").closest(".control-group").show();
         } else {
@@ -516,7 +492,7 @@
             $("#Expressversand").closest(".control-group").hide();
         }
 
-        if ($("#ExpressversandMoeglich").val().toString().toLowerCase() == 'true') {
+        if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
             $("#Expressversand").closest("span").show();
         }
         else {

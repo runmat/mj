@@ -112,6 +112,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
+        [KennzeichenPartial]
         public string Wunschkennzeichen2
         {
             get { return _wunschkennzeichen2.NotNullOrEmpty().ToUpper(); }
@@ -119,6 +120,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
+        [KennzeichenPartial]
         public string Wunschkennzeichen3
         {
             get { return _wunschkennzeichen3.NotNullOrEmpty().ToUpper(); }
@@ -150,6 +152,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.ExtraChargeExpressShipping48h)]
         public bool Expressversand { get; set; }
+
+        public bool UiUpdateOnly { get; set; }
+
+        public bool IsValid { get; set; }
 
         public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 

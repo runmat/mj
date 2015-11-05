@@ -1,5 +1,4 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
-@using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 
 <style>
@@ -27,11 +26,9 @@
 </style>
 
 <script>
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    _modelIsValid = @Model.IsValid.ToString().ToLower();
     
     var _selectedItemsCount = 0;
-    
-    CheckKennzeichenReserviert();
     
     function SetEvb(fin, evb, tagObj) { 
         $.ajax({
@@ -186,9 +183,9 @@
         </text>
     }
 
-    CheckKennzeichenReserviert();
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
+    InitZulassungsdatenControls();
 </script>
 
 <div id="DivZulassungsdaten" class="margin-top-20">

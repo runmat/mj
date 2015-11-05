@@ -6,6 +6,8 @@
     var materialList = (List<Material>)ViewData["MaterialList"];
 }
 
+@Html.HiddenFor(m => m.UiUpdateOnly)
+
 @if (Model.IsMassenzulassung)
 {
     @Html.HiddenFor(m => m.HaltereintragVorhanden)
@@ -16,13 +18,7 @@
 
     @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
 
-    @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
-                                postControlHtml:
-                                    @<text> <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()"
-                                                class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5">
-                                                </i>@Localize.LoadDistrictFromOwnerAddress</a>
-                                            @Html.SpanAlert("kfzKreisHint")
-                                    </text>)
+    @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
 
     @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml: @<text><div class="alert" id="EvbInfo"></div></text>)
 
@@ -90,11 +86,11 @@ else
     }
     if (Model.KennzeichenReserviert)
     {
-        @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
+        @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
     }
     else
     {
-        @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
     }
 
     if (Model.ZulassungsartAutomatischErmitteln)
@@ -108,21 +104,13 @@ else
     }
     if (Model.KennzeichenReserviert)
     {
-        @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
+        @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
     }
     else
     {
-        @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
     }
 
     @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
     @Html.FormPlaceHolder(@<text><div class="alert" id="EvbInfo"></div></text>, new { col = "right" })
 }
-
-<script type="text/javascript">
-
-    $(function() {
-        InitZulassungsdatenControls();
-    });
-
-</script>

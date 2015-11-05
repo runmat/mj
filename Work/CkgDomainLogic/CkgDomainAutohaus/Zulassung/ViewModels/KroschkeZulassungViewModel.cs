@@ -927,7 +927,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
 
-        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
+        public void UpdateZulassungsdatenModel(Zulassungsdaten model)
         {
             var zulDat = Zulassung.Zulassungsdaten;
 
@@ -958,6 +958,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulDat.Kennzeichen = model.Kennzeichen;
             zulDat.Wunschkennzeichen2 = model.Wunschkennzeichen2;
             zulDat.Wunschkennzeichen3 = model.Wunschkennzeichen3;
+            zulDat.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
+        }
+
+        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
+        {
+            UpdateZulassungsdatenModel(model);
+
+            var zulDat = Zulassung.Zulassungsdaten;
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDat.ZulassungsartMatNr;
 
@@ -974,11 +982,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             
             // 20150602 MMA
-            Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
-
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
-            if (model.MindesthaltedauerDays != null && model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
-                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays((double)model.MindesthaltedauerDays);
+            if (zulDat.MindesthaltedauerDays != null && zulDat.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = zulDat.Zulassungsdatum.Value.AddDays((double)zulDat.MindesthaltedauerDays);
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
@@ -995,7 +1001,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
-                if (Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                if (zulDat.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
                     state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);

@@ -600,13 +600,24 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ZulassungsdatenForm(Zulassungsdaten model)
         {
+            if (model.UiUpdateOnly)
+            {
+                ViewModel.UpdateZulassungsdatenModel(model);
+                model.UiUpdateOnly = false;
+
+                ModelState.Clear();
+                model.IsValid = false;
+
+                ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+                return PartialView("Partial/ZulassungsdatenForm", model);
+            }
 
             ViewModel.ValidateZulassungsdatenForm(ModelState.AddModelError, model);
 
             if (ModelState.IsValid)
-            {
                 ViewModel.SetZulassungsdaten(model, ModelState);
-            }
+
+            model.IsValid = ModelState.IsValid;
 
             ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
             return PartialView("Partial/ZulassungsdatenForm", model);
