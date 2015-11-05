@@ -66,10 +66,10 @@ namespace MvcTools.Data
             foreach (DataRow rowSrc in dtSrc.Rows)
             {
                 var rowDst = dtDst.NewRow();
-                //rowDst.ItemArray = (object[])rowSrc.ItemArray.Clone();
                 foreach (DataColumn column in dtDst.Columns)
                 {
-                    rowDst[column.ColumnName] = rowSrc[column.ColumnName];
+                    if (dtSrc.Columns.Contains(column.ColumnName))
+                        rowDst[column.ColumnName] = rowSrc[column.ColumnName];
                 }
                 dtDst.Rows.Add(rowDst);
             }

@@ -49,12 +49,15 @@ namespace SapORM.Contracts
                 var rowDst = dtDst.NewRow();
                 foreach (DataColumn column in dtDst.Columns)
                 {
-                    var value = rowSrc[column.ColumnName];
+                    if (dtSrc.Columns.Contains(column.ColumnName))
+                    {
+                        var value = rowSrc[column.ColumnName];
 
-                    if (DBNull.Value.Equals(value) && column.DataType == typeof(string))
-                        value = string.Empty;
-                    
-                    rowDst[column.ColumnName] = value;
+                        if (DBNull.Value.Equals(value) && column.DataType == typeof(string))
+                            value = string.Empty;
+
+                        rowDst[column.ColumnName] = value;
+                    }
                 }
                 dtDst.Rows.Add(rowDst);
             }
