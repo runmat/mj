@@ -584,8 +584,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
 
-            Zulassung.Zulassungsdaten.Versandzulassung = Zulassungsarten.Any(z => z.Belegtyp == "AV");
-            Zulassung.Zulassungsdaten.ExpressversandMoeglich = Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich);
+            Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
+            Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich));
 
             if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
                 Zulassung.Zulassungsdaten.Expressversand = false;
@@ -617,26 +617,29 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void UpdateZulassungsart()
         {
-            Material zulArt = null;
-
-            if (Zulassung.Zulassungsdaten.Versandzulassung)
+            if (Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln)
             {
-                zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand);
-            }
-            else
-            {
-                if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J")
-                {
-                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AG");
-                }
-                else if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "N")
-                {
-                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AN");
-                }
-            }
+                Material zulArt = null;
 
-            if (zulArt != null)
-                Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+                if (Zulassung.Zulassungsdaten.Versandzulassung)
+                {
+                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand);
+                }
+                else
+                {
+                    if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J")
+                    {
+                        zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AG");
+                    }
+                    else if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "N")
+                    {
+                        zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AN");
+                    }
+                }
+
+                if (zulArt != null)
+                    Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+            }
         }
 
         #endregion
