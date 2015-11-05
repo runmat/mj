@@ -790,11 +790,7 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -821,7 +817,6 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
@@ -2928,7 +2923,6 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\GridSettingsAdministration.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\Common.cshtml" />
     <Content Include="Views\Batcherfassung\Verwaltung.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\Common.cshtml" />
@@ -2959,7 +2953,6 @@
     <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\ReportGeneratorSettings.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
