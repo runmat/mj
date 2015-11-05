@@ -11,6 +11,19 @@
         padding-left: 44px;
         padding-right: 44px;
     }
+    
+    .controls.no-left-margin {
+        margin-left: 0 !Important;
+    }
+    
+    #divWkzLink .btn {
+        padding-left: 44px;
+        padding-right: 44px;
+    }
+    
+    #EvbInfo {
+        width: 430px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -463,7 +476,7 @@
     }
 
     function InitZulassungsdatenControls() {
-        $("#EvbInfo").closest(".controls").css('margin-left', "0 !Important");
+        $("#EvbInfo").closest(".controls").addClass("no-left-margin");
 
         ApplyZulassungsart();
 
