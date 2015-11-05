@@ -34,7 +34,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string Check48hExpress(Vorgang zulassung);
 
-        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
 
         List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern);
 

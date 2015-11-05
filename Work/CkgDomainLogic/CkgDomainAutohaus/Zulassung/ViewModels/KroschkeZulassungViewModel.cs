@@ -1167,21 +1167,21 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
-            if (!ModusAbmeldung && Zulassungsarten.None())
+            if (zulassungen.Any(z => !z.Zulassungsdaten.ModusAbmeldung) && Zulassungsarten.None())
             {
                 SaveErrorMessage = Localize.NoRegistrationTypesFound;
                 return;
             }
-                
-            if (ModusAbmeldung && Abmeldearten.None())
+
+            if (zulassungen.Any(z => z.Zulassungsdaten.ModusAbmeldung) && Abmeldearten.None())
             {
                 SaveErrorMessage = Localize.NoDeregistrationTypesFound;
                 return;
             }
 
-            if (saveDataToSap && zulassungen.Any(z => String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr)))
+            if (saveDataToSap && zulassungen.Any(z => !z.Zulassungsdaten.ModusAbmeldung && String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr)))
             {
-                SaveErrorMessage = Localize.EvbMissing;
+                SaveErrorMessage = Localize.EvbNumberRequired;
                 return;
             }
 
@@ -1259,7 +1259,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
             
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

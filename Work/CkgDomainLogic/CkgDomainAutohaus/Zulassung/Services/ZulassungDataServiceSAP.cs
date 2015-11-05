@@ -282,7 +282,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             try
             {
@@ -367,7 +367,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
                         });
 
-                    if (modusVersandzulassung)
+                    if (vorgang.Zulassungsdaten.ModusVersandzulassung)
                     {
                         vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
                         // adressen.Add(vorgang.VersandAdresse);
