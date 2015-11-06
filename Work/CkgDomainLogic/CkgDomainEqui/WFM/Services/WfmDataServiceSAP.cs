@@ -118,7 +118,8 @@ namespace CkgDomainLogic.WFM.Services
                         SAP.SetImportParameter("I_ANF_DAT", DateTime.Today);
                         SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
 
-                        SAP.SetImportParameter("I_FAHRG", auftrag.FahrgestellNr);
+                        var fin = auftrag.FahrgestellNr.NotNullOrEmpty().ToUpper().Contains("FAHRZEUG NICHT") ? null : auftrag.FahrgestellNr;
+                        SAP.SetImportParameter("I_FAHRG", fin);
                         SAP.SetImportParameter("I_VERS_OPT", versandOption);
 
                         SAP.SetImportParameter("I_NAME1_ZS", versandAdresse.Name1);
