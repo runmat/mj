@@ -47,7 +47,7 @@ namespace DocumentTools.Services
                 ImageCodecInfo ici = null;
                 foreach (var codec in codecs.Where(codec => codec.MimeType == "image/jpeg"))
                     ici = codec;
-                var ep = new EncoderParameters { Param = { [0] = new EncoderParameter(Encoder.Quality, (long) 60) } };
+                var ep = new EncoderParameters { Param = new [] { new EncoderParameter(Encoder.Quality, (long)60) } };
                 var compressedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-3" + Path.GetExtension(file));
                 bm.Save(compressedFile, ici, ep);
                 processedImage.Dispose();
