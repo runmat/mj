@@ -1106,6 +1106,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         VkOrg = LogonContext.Customer.AccountingArea.ToString(),
                         VkBur = LogonContext.Organization.OrganizationReference2,
                         Vorerfasser = LogonContext.UserName,
+                        WebGroupId = LogonContext.Group.GroupID.ToString(),
+                        WebUserId = LogonContext.UserID,
                         VorgangsStatus = "1",
                         Zulassungsdaten = new Zulassungsdaten
                             {
@@ -1199,8 +1201,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulassungen.ForEach(z =>
             {
                     z.Aenderer = LogonContext.UserName;
-                    z.WebGroupId = LogonContext.Group.GroupID.ToString();
-                    z.WebUserId = LogonContext.UserID;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
                     {
                         z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
