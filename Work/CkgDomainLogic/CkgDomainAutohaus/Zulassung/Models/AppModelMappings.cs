@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Models;
 
 namespace CkgDomainLogic.Autohaus.Models
@@ -278,6 +279,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.VkOrg = s.VKORG;
                         d.VkBur = s.VKBUR;
                         d.Vorerfasser = s.VE_ERNAM;
+                        d.Aenderer = s.VE_AENAM;
+                        d.ErfassungsDatum = s.VE_ERDAT;
+                        d.ErfassungsZeit = s.VE_ERZEIT;
                         d.VorgangsStatus = s.BEB_STATUS;
 
                         // Rechnungsdaten
@@ -304,6 +308,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         // Zulassung
                         d.Zulassungsdaten.ModusAbmeldung = (s.BEAUFTRAGUNGSART == "ABMELDUNG" || s.BEAUFTRAGUNGSART == "MASSENABMELDUNG");
                         d.Zulassungsdaten.ModusVersandzulassung = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNG");
+                        d.Zulassungsdaten.ModusSonderzulassung = (s.BEAUFTRAGUNGSART == "SONDERZULASSUNG");
 
                         d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
                         d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;
@@ -358,6 +363,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Adresse.Name1 = s.NAME1;
                         d.Adresse.Name2 = s.NAME2;
                         d.Adresse.Strasse = s.STREET;
+                        AddressService.ApplyStreetAndHouseNo(d.Adresse);
                         d.Adresse.PLZ = s.PLZ;
                         d.Adresse.Ort = s.CITY1;
                         d.Bemerkung = s.BEMERKUNG;
@@ -423,6 +429,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
                             d.VE_ERNAM = s.Vorerfasser;
+                            d.VE_AENAM = s.Aenderer;
+                            d.VE_ERDAT = s.ErfassungsDatum;
+                            d.VE_ERZEIT = s.ErfassungsZeit;
                             d.BEB_STATUS = s.VorgangsStatus;
 
                             // Rechnungsdaten
@@ -510,7 +519,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZULBELN = s.BelegNr;
                             d.NAME1 = s.Adresse.Name1;
                             d.NAME2 = s.Adresse.Name2;
-                            d.STREET = s.Adresse.Strasse;
+                            d.STREET = s.Adresse.StrasseHausNr;
                             d.PLZ = s.Adresse.PLZ;
                             d.CITY1 = s.Adresse.Ort;
                             d.BEMERKUNG = s.Bemerkung;
