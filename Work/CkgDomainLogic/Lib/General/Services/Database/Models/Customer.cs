@@ -25,6 +25,7 @@ namespace CkgDomainLogic.General.Database.Models
         public bool? AllowUrlRemoteLogin { get; set; }
 
         public int? AccountingArea { get; set; }
+        public string AccountingAreaName { get; set; }
 
         public string MvcSelectionUrl { get; set; }
 
@@ -36,6 +37,7 @@ namespace CkgDomainLogic.General.Database.Models
         public string Userreferenzfeld1 { get; set; }
         public string Userreferenzfeld2 { get; set; }
         public string Userreferenzfeld3 { get; set; }
+        public string Userreferenzfeld4 { get; set; }
 
         #region Password Settings
 

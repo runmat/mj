@@ -138,7 +138,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
 
             Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
             Func<IGrouping<int, ZulassungsReportModel>, int> aggregate = (g => (int)g.Sum(item => item.Preis.GetValueOrDefault()));
 
@@ -164,7 +164,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
 
             Func<ZulassungsReportModel, string> stackedKey = (item => item.KundenNr.Trim('0'));
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
@@ -207,7 +207,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var items = GetAllItems(selector, null);
 
 
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
             return ChartService.GetPieChartGroupedItemsWithLabels(
@@ -277,7 +277,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var items = GetAllItems(selector, null);
 
 
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(

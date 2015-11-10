@@ -34,12 +34,13 @@
 
         $("#divGrid").slideDown();
         $("#divHistorie").html('');
+        setTimeout("LoadingHide()", 1000);
     }
 
     function OnDataBound_GridStrafzettel() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
-        LoadingHide();
+        setTimeout("LoadingHide()", 1000);
     }
 
     function OnColumnShowHide_GridStrafzettel() {

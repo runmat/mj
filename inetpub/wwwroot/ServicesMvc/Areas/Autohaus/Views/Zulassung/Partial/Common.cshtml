@@ -4,6 +4,26 @@
     .form-wizard .progress {
         margin-bottom: 10px!important;
     }
+    
+    .reserve-button {
+        background-color: #9B9B9B !important;
+        color:#FFF;
+        padding-left: 44px;
+        padding-right: 44px;
+    }
+    
+    .controls.no-left-margin {
+        margin-left: 0 !Important;
+    }
+    
+    #divWkzLink .btn {
+        padding-left: 44px;
+        padding-right: 44px;
+    }
+    
+    #EvbInfo {
+        width: 430px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -62,6 +82,9 @@
             var prevStepName = FormWizard.GetStepKey(step);
             if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
                 FormWizard.ButtonPrevInvoke();
+            }
+            else if (prevStepName == "Zulassungsdaten") {
+                InitZulassungsdatenControls();
             }
 
             window.scrollTo(0, 0);
@@ -185,9 +208,21 @@
     }
 
     function ShoppingCartSubmitFinished(result) {
+        LoadingHide();
         $(".form-wizard").html(result);
         ShoppingCartHide();
-        LoadingHide();
+    }
+
+    function WarenkorbSelectedKunnrChanged() {
+        $.ajax({
+            type: "POST",
+            url: "WarenkorbSelectedKunnrChanged",
+            data: { kunnr: $("#WarenkorbSelectedKunnr").val() },
+            loadingShow: true,
+            success: function (result) {
+                GetGrid("GridShoppingCart").ajaxRequest();
+            }
+        });
     }
 
     // Rechnungsdaten
@@ -390,23 +425,8 @@
     }
 
     function CheckKennzeichenReserviert() {
-        var wkz2 = $("#Wunschkennzeichen2");
-        var wkz3 = $("#Wunschkennzeichen3");
-        var resName = $("#ReservierungsName");
-        var resNr = $("#ReservierungsNr");
-
-        var kennzReserv = $("#KennzeichenReserviert").is(":checked");
-        if (kennzReserv) {
-            wkz2.attr('readonly', true);
-            wkz3.attr('readonly', true);
-            resName.attr('readonly', false);
-            resNr.attr('readonly', false);
-        } else {
-            wkz2.attr('readonly', false);
-            wkz3.attr('readonly', false);
-            resName.attr('readonly', true);
-            resNr.attr('readonly', true);
-        }
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormZulassungsdaten").submit();
     }
 
     function ZulassungskreisOnChange() {
@@ -426,10 +446,72 @@
                     // MMA ITA8083
                     $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);
                     ShowHideWunschkennzeichenUrl();
+
+                    if (typeof (result.Versandzulassung) !== "undefined") {
+                        $("#Versandzulassung").val(result.Versandzulassung);
+                        $("#ExpressversandMoeglich").val(result.ExpressversandMoeglich);
+                        $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
+
+                        ApplyZulassungsart();
+                    }
                 }
             });
 
         return false;
+    }
+
+    function UpdateZulassungsart() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "UpdateZulassungsart",
+                data: { haltereintragVorhanden: $(":radio[name=HaltereintragVorhanden]:checked").val(), expressversand: $("#Expressversand").is(":checked") },
+                loadingShow: false,
+                success: function (result) {
+                    $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
+                }
+            });
+
+        return false;
+    }
+
+    function InitZulassungsdatenControls() {
+        $("#EvbInfo").closest(".controls").addClass("no-left-margin");
+
+        ApplyZulassungsart();
+
+        if ($(":radio[name=HaltereintragVorhanden]").length) {
+            $(":radio[name=HaltereintragVorhanden]").change(function () {
+                UpdateZulassungsart();
+            });
+        }
+
+        if ($("#Expressversand").length) {
+            $("#Expressversand").change(function () {
+                UpdateZulassungsart();
+            });
+        }
+    }
+
+    function ApplyZulassungsart() {
+        var versZul = $("#Versandzulassung").val();
+        var exprVers = $("#ExpressversandMoeglich").val();
+
+        if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
+            $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+            $("#Expressversand").closest(".control-group").show();
+        } else {
+            $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
+            $("#Expressversand").closest(".control-group").hide();
+        }
+
+        if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
+            $("#Expressversand").closest("span").show();
+        }
+        else {
+            $("#Expressversand").closest("span").hide();
+        }
+        $.uniform.update($("#Expressversand"));
     }
 
     // MMA ITA8083

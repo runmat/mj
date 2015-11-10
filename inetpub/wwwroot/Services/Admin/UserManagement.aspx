@@ -246,7 +246,7 @@
                                 <telerik:RadAjaxLoadingPanel ID="RadAjaxLoadingPanel1" runat="server" />
                                 <telerik:RadGrid ID="rgSearchResult" AutoGenerateColumns="False" runat="server" GridLines="None"
                                     Width="905px" Height="550px" Culture="de-DE" EnableHeaderContextMenu="True" CellSpacing="0"
-                                    ClientSettings-AllowColumnsReorder="false" VirtualItemCount="2" AllowPaging="True"
+                                    ClientSettings-AllowColumnsReorder="false" VirtualItemCount="2" AllowPaging="True" 
                                     AllowSorting="True" CellPadding="0" EnableAjaxSkinRendering="False" GroupingEnabled="False">
                                     <ExportSettings HideStructureColumns="false" IgnorePaging="true" OpenInNewWindow="true"
                                         ExportOnlyData="true" FileName="BenutzerExport">
@@ -525,6 +525,14 @@
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:TextBox ID="txtReference3" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="trReference4" runat="server" class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    <asp:Label ID="lblReferenceType4" runat="server" Font-Bold="True" />
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span><asp:CheckBox ID="cbxReference4" runat="server"></asp:CheckBox></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery" id="trMail" runat="server">
@@ -918,8 +926,22 @@
             CheckCollapseExpandStatus();
         }
 
+        function PrepareUserSearchResultsAutomaticLoad() {
+            if ($("#<%= Result.ClientID %>").css("display") == "none")
+                return;
+
+            if ($(".rgRow").length != 1)
+                return;
+
+            $("#<%= Result.ClientID %>").html("<div class='auto-redirect-link'>Sie werden automatisch weitergeleitet ...</div>");
+
+            __doPostBack('ctl00$ContentPlaceHolder1$rgSearchResult$ctl00$ctl04$lbUserName', '');
+        }
+
         $(function () {
             CheckCollapseExpandStatus();
+
+            PrepareUserSearchResultsAutomaticLoad();
         }); 
         
     </script>
