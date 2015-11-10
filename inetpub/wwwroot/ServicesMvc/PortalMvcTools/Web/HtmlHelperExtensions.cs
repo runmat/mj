@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -345,13 +344,14 @@ namespace PortalMvcTools.Web
             return controlHtmlAttributesDict;
         }
 
-        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
+        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
+                LabelHidden = labelHidden,
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
                 PerstistenceIndicatorHtml = MvcHtmlString.Empty,
@@ -553,6 +553,25 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
+        public static MvcHtmlString FormDropDownList<TModel>(this HtmlHelper<TModel> html, string propertyName, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
+        {
+            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, propertyName, "dropdown");
+
+            var model = new FormControlModel
+            {
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayName(propertyName) : new MvcHtmlString(labelText)),
+                RequiredIndicatorHtml = html.RequiredIndicator(propertyName),
+                PerstistenceIndicatorHtml = html.PersistenceIndicator(propertyName),
+                ControlHtml = html.DropDownList(propertyName, selectList, controlHtmlAttributesDict),
+                ValidationMessageHtml = html.ValidationMessage(propertyName),
+                IconCssClass = "",
+                ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+            };
+
+            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+        }
 
         public static MvcHtmlString FormMultiSelectListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, 
                                                                 object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
@@ -666,7 +685,12 @@ namespace PortalMvcTools.Web
             return html.FormCheckBoxListForInner(expressionArray.ToList(), new MvcHtmlString(labelText));
         }
 
-        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html, List<Expression<Func<TModel, bool>>> expressionList, MvcHtmlString labelText)
+        public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, string labelText, object controlHtmlAttributes, params Expression<Func<TModel, bool>>[] expressionArray)
+        {
+            return html.FormCheckBoxListForInner(expressionArray.ToList(), new MvcHtmlString(labelText), controlHtmlAttributes);
+        }
+
+        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html, List<Expression<Func<TModel, bool>>> expressionList, MvcHtmlString labelText, object controlHtmlAttributes = null)
         {
             var checkBoxesFor = MvcHtmlString.Empty.Concat(expressionList.Select(expression => html.FormCheckBoxForInner(expression)).ToArray());
 
@@ -681,6 +705,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = checkBoxesFor,
                 ValidationMessageHtml = validationMessageHtml,
                 IconCssClass = null,
+                ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);

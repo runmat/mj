@@ -271,6 +271,10 @@
     <Content Include="Documents\Templates\Bestellung.doc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAbmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -716,6 +720,7 @@
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\ActionFilters\HolBringServiceGlobalDataAttribute.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Abholung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
@@ -2606,7 +2611,6 @@
     <Content Include="Areas\Autohaus\Views\Partner\Pflege.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
