@@ -1,26 +1,15 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
-using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Resources;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using WebTools.Services;
 
