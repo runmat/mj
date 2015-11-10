@@ -1,5 +1,4 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
-@using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 
 <style>
@@ -27,11 +26,9 @@
 </style>
 
 <script>
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    _modelIsValid = @Model.IsValid.ToString().ToLower();
     
     var _selectedItemsCount = 0;
-    
-    CheckKennzeichenReserviert();
     
     function SetEvb(fin, evb, tagObj) { 
         $.ajax({
@@ -186,7 +183,6 @@
         </text>
     }
 
-    CheckKennzeichenReserviert();
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 </script>
@@ -194,15 +190,19 @@
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
             new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
-                htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormZulassungsdaten" }))
+                htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormZulassungsdaten" }))
     {
         @Html.FormValidationSummary()
         @Html.HiddenFor(m => m.IsMassenzulassung)
         @Html.HiddenFor(m => m.IsMassenabmeldung)
         @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ModusVersandzulassung)
+        @Html.HiddenFor(m => m.ModusSonderzulassung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
         @Html.HiddenFor(m => m.WunschkennzeichenReservierenUrl) 
+        @Html.HiddenFor(m => m.ZulassungsartAutomatischErmitteln) 
+        @Html.HiddenFor(m => m.Versandzulassung) 
+        @Html.HiddenFor(m => m.ExpressversandMoeglich) 
 
         if (Model.ModusAbmeldung)
         {

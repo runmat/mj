@@ -679,7 +679,7 @@ Imports GeneralTools.Models
                 End If
 
                 'Auswahl für ZZREFERENZ1 ggf. übersteuern, wenn im User entsprechend konfiguriert
-                Dim strRef1 As String = m_objUser.GetUserReferenceValueByReferenceType(Referenzfeldtyp.ZZREFERENZ1)
+                Dim strRef1 As String = m_objUser.GetStringUserReferenceValueByReferenceType(ReferenzfeldtypString.ZZREFERENZ1)
                 If Not String.IsNullOrEmpty(strRef1) Then
                     For Each dRow As DataRow In sapTable.Rows
                         dRow("ZZREFERENZ1") = strRef1

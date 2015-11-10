@@ -18,7 +18,10 @@
 
         @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
         @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
+                             postControlHtml: @<text>
+                                             @Html.TextBoxFor(m => m.HausNr, new { @class = "m-wrap xsmall margin-left-20" })
+                                          </text>)
 
         @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
         @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
