@@ -2,4 +2,4 @@
 @model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <h4>@Model.ApplicationTitle</h4> 
-@Html.Partial("Partial/ZulassungsdatenForm", @Model.Zulassung.Zulassungsdaten, new ViewDataDictionary { { "MaterialList", Model.Zulassungsarten } })
+@Html.Partial("Partial/ZulassungsdatenForm", @Model.Zulassung.Zulassungsdaten, new ViewDataDictionary { { "MaterialList", (Model.ModusAbmeldung ? Model.Abmeldearten : Model.Zulassungsarten) } })
