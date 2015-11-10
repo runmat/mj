@@ -1192,9 +1192,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return;
             }
 
-            if (saveDataToSap && zulassungen.Any(z => !z.Zulassungsdaten.ModusAbmeldung && String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr)))
+            var zulOhneEvb = zulassungen.Where(z => !z.Zulassungsdaten.ModusAbmeldung && String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));
+            if (saveDataToSap && zulOhneEvb.Any())
             {
-                SaveErrorMessage = Localize.EvbNumberRequired;
+                SaveErrorMessage = String.Join(", ", zulOhneEvb.Select(z => String.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
                 return;
             }
 

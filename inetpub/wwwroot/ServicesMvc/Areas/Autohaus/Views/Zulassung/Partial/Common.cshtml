@@ -208,9 +208,9 @@
     }
 
     function ShoppingCartSubmitFinished(result) {
+        LoadingHide();
         $(".form-wizard").html(result);
         ShoppingCartHide();
-        LoadingHide();
     }
 
     function WarenkorbSelectedKunnrChanged() {

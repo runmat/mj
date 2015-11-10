@@ -65,6 +65,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr {get { return Fahrzeugdaten.FahrgestellNr; } }
 
+        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
+        public string EvbNr { get { return Zulassungsdaten.EvbNr; } }
+
         public Adressdaten Halter { get; set; }
 
         public BankAdressdaten ZahlerKfzSteuer { get; set; }

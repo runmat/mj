@@ -32,6 +32,7 @@
             columns.XBound(c => c.HalterName);
             columns.XBound(c => c.Zulassungsdatum).Format("{0:dd.MM.yyyy}");
             columns.XBound(c => c.Abmeldedatum).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.EvbNr);
             columns.XBound(c => c.Vorerfasser);
         })
     .XAutoColumnConfiguration()
