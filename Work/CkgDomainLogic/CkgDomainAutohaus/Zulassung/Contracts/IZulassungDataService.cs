@@ -10,11 +10,11 @@ namespace CkgDomainLogic.Autohaus.Contracts
     {
         List<Kunde> Kunden { get; }
 
+        bool WarenkorbNurEigeneAuftraege { get; }
+
+        List<Kunde> KundenauswahlWarenkorb { get; }
+
         List<Domaenenfestwert> Fahrzeugarten { get; }
-
-        List<Material> Zulassungsarten { get; }
-
-        List<Material> Abmeldearten { get; }
 
         List<Zusatzdienstleistung> Zusatzdienstleistungen { get; }
 
@@ -34,13 +34,15 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string Check48hExpress(Vorgang zulassung);
 
-        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart);
 
-        List<Vorgang> LoadVorgaengeForShoppingCart();
+        List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern);
 
         string DeleteVorgangFromShoppingCart(string belegNr);
 
         List<Domaenenfestwert> GetFahrzeugfarben { get; }
+
+        List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung);
 
         #region Zulassungs Report
 

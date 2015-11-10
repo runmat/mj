@@ -23,7 +23,7 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
-                if (KundenNr.IsNullOrEmpty())
+                if (KundenNr.IsNullOrEmpty() || KundenNr == "*")
                     return Adresse.Name1;
 
                 return String.Format("{0}{1}{2} ~ {3}",

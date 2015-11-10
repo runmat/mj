@@ -13,7 +13,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class Fahrzeugdaten : IValidatableObject
+    public class Fahrzeugdaten// : IValidatableObject
     {
         private string _kostenstelle;
         private string _bestellNr;
@@ -78,14 +78,14 @@ namespace CkgDomainLogic.Autohaus.Models
         public string VerkaeuferKuerzel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
-        [RequiredConditional]
+        //[RequiredConditional]
         public string Kostenstelle
         {
             get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
             set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
         }
 
-        public bool KostenstelleVisible { get { return  GetZulassungViewModel().FahrzeugdatenKostenstelleIsVisible; } }
+        //public bool KostenstelleVisible { get { return  GetZulassungViewModel().FahrzeugdatenKostenstelleIsVisible; } }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
@@ -108,10 +108,10 @@ namespace CkgDomainLogic.Autohaus.Models
             return s;
         }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (KostenstelleVisible && Kostenstelle.IsNullOrEmpty())
-                yield return new ValidationResult(Localize.CostcenterRequired, new[] { "Kostenstelle" });
-        }
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    if (KostenstelleVisible && Kostenstelle.IsNullOrEmpty())
+        //        yield return new ValidationResult(Localize.CostcenterRequired, new[] { "Kostenstelle" });
+        //}
     }
 }
