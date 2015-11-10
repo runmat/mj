@@ -3,12 +3,10 @@ using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using CkgDomainLogic.Partner.ViewModels;
 using GeneralTools.Contracts;
-using GeneralTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers

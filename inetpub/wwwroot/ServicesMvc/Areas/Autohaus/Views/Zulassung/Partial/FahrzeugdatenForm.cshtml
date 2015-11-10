@@ -196,11 +196,11 @@
 
             @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
         
-            @Html.HiddenFor(m => m.KostenstelleVisible)
+            @*@Html.HiddenFor(m => m.KostenstelleVisible)
             if (Model.KostenstelleVisible)
-            {
+            {*@
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
-            }
+            //}
             
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
@@ -217,11 +217,11 @@
             @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
             @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
 
-            @Html.HiddenFor(m => m.KostenstelleVisible)
+            @*@Html.HiddenFor(m => m.KostenstelleVisible)
             if (Model.KostenstelleVisible)
-            {
+            {*@
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-            }
+            //}
             
             @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
             <div id="ValidationMsgHasEtikett"></div>
