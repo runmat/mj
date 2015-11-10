@@ -645,6 +645,13 @@
                     if (e.is("span"))
                         eWidth += 12;
 
+                    if (e.hasClass("responsive-control-shrink-50"))
+                        eWidth -= 50;
+                    else if (e.hasClass("responsive-control-shrink-75"))
+                        eWidth -= 75;
+                    else if (e.hasClass("responsive-control-shrink-100"))
+                        eWidth -= 100;
+
                     e.css("width", eWidth);
 
                     e.find(".chzn-drop").css("width", eWidth - 3);

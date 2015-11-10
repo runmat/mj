@@ -28,7 +28,10 @@
 
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium" })
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
-                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
+                            postControlHtml: @<text>
+                                                 @Html.TextBoxFor(m => m.Adressdaten.Adresse.HausNr, new { @class = "m-wrap xsmall margin-left-20" })
+                                              </text>)
 
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
