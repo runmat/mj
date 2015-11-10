@@ -1,7 +1,7 @@
 ﻿
 namespace GeneralTools.Models
 {
-    public enum Referenzfeldtyp
+    public enum ReferenzfeldtypString
     {
         ARCHIVREF,
         BKRS_VKBUR,
@@ -13,5 +13,10 @@ namespace GeneralTools.Models
         RDZ,
         ZZREFERENZ1,
         ZZREFERENZ2
+    }
+
+    public enum ReferenzfeldtypBool
+    {
+        AH_WK_NUR_EIGENE
     }
 }

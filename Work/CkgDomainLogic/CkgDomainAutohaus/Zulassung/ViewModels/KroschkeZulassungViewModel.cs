@@ -62,6 +62,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusVersandzulassung { get; set; }
 
+        public bool ModusSonderzulassung { get; set; }
+
         [XmlIgnore]
         public string ApplicationTitle
         {
@@ -75,6 +77,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (ModusVersandzulassung)
                     return Localize.MailOrderRegistration;
+
+                if (ModusSonderzulassung)
+                    return Localize.SpecialRegistration;
 
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
@@ -135,10 +140,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
-        public bool FahrzeugdatenKostenstelleIsVisible
-        {
-            get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
-        }
+        //public bool FahrzeugdatenKostenstelleIsVisible
+        //{
+        //    get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
+        //}
 
         public void SetParamFahrzeugAkte(string fin)
         {
@@ -172,6 +177,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamVersandzulassung(string versandzulassung)
         {
             ModusVersandzulassung = versandzulassung.IsNotNullOrEmpty();
+        }
+
+        public void SetParamSonderzulassung(string sonderzulassung)
+        {
+            ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
         }
  
  
@@ -214,7 +224,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
             allSelectionCount = FinList.Count(c => c.IsSelected);
-            allCount = FinListFiltered.Count();
+            allCount = FinListFiltered.Count;
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
@@ -453,9 +463,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 adr = HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
-
             return adr;
         }
 
@@ -501,6 +508,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 zulassungsKreis = Zulassung.Zulassungsdaten.Zulassungskreis;
             }
+
+            LoadZulassungsAbmeldeArten(zulassungsKreis);
+            UpdateZulassungsart();
 
             // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
@@ -560,6 +570,75 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return ZulassungDataService.GetZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
+        public void LoadZulassungsAbmeldeArten(string kreis = "", bool forShoppingCartSave = false)
+        {
+            PropertyCacheClear(this, m => m.ZulassungsAbmeldearten);
+
+            if (Zulassung.Halter == null)
+                return;
+
+            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
+
+            ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
+
+            Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
+            Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich));
+
+            if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
+                Zulassung.Zulassungsdaten.Expressversand = false;
+
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr))
+            {
+                if (Zulassung.Zulassungsdaten.ModusAbmeldung)
+                {
+                    var abmArt = Abmeldearten.FirstOrDefault();
+                    if (abmArt != null)
+                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
+                }
+                else if (Zulassung.Zulassungsdaten.Versandzulassung)
+                {
+                    var zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich);
+                    if (zulArt != null)
+                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+                }
+            }
+        }
+
+        public void UpdateZulassungsart(string haltereintragVorhanden, bool expressversand)
+        {
+            Zulassung.Zulassungsdaten.HaltereintragVorhanden = haltereintragVorhanden;
+            Zulassung.Zulassungsdaten.Expressversand = expressversand;
+
+            UpdateZulassungsart();
+        }
+
+        public void UpdateZulassungsart()
+        {
+            if (Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln)
+            {
+                Material zulArt = null;
+
+                if (Zulassung.Zulassungsdaten.Versandzulassung)
+                {
+                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand);
+                }
+                else
+                {
+                    if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J")
+                    {
+                        zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AG");
+                    }
+                    else if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "N")
+                    {
+                        zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AN");
+                    }
+                }
+
+                if (zulArt != null)
+                    Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+            }
+        }
+
         #endregion
 
 
@@ -608,9 +687,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 adr = ZahlerKfzSteuerAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
             else
                 adr = ZahlerKfzSteuerAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
-
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
 
             return adr;
         }
@@ -784,9 +860,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 adr = AuslieferAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
-
             return adr;
         }
 
@@ -842,15 +915,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten.Where(z => !ModusVersandzulassung || z.IstVersand).ToList()); } }
+        public List<Material> ZulassungsAbmeldearten
+        {
+            get { return PropertyCacheGet(() => new List<Material>()); }
+            private set { PropertyCacheSet(value); }
+        }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
+        public List<Material> Zulassungsarten { get { return ZulassungsAbmeldearten.Where(z => !z.IstAbmeldung).ToList(); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Material> Abmeldearten { get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList(); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
 
-        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
+        public void UpdateZulassungsdatenModel(Zulassungsdaten model)
         {
             var zulDat = Zulassung.Zulassungsdaten;
 
@@ -860,7 +940,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulDat.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             zulDat.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             zulDat.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
-
+            zulDat.Versandzulassung = model.Versandzulassung;
+            zulDat.ExpressversandMoeglich = model.ExpressversandMoeglich;
+            zulDat.HaltereintragVorhanden = model.HaltereintragVorhanden;
+            zulDat.Expressversand = model.Expressversand;
             zulDat.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             zulDat.KennzeichenReserviert = model.KennzeichenReserviert;
 
@@ -878,6 +961,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulDat.Kennzeichen = model.Kennzeichen;
             zulDat.Wunschkennzeichen2 = model.Wunschkennzeichen2;
             zulDat.Wunschkennzeichen3 = model.Wunschkennzeichen3;
+            zulDat.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
+        }
+
+        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
+        {
+            UpdateZulassungsdatenModel(model);
+
+            var zulDat = Zulassung.Zulassungsdaten;
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDat.ZulassungsartMatNr;
 
@@ -894,14 +985,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             
             // 20150602 MMA
-            Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
-
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
-            if (model.MindesthaltedauerDays != null && model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
-                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays((double)model.MindesthaltedauerDays);
+            if (zulDat.MindesthaltedauerDays != null && zulDat.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = zulDat.Zulassungsdatum.Value.AddDays((double)zulDat.MindesthaltedauerDays);
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
-
 
             if (ModusVersandzulassung || zulDat.Zulassungsart.Auf48hVersandPruefen)
             {
@@ -916,8 +1004,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
-                if (Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
-                    state.AddModelError("", Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture);
+                if (zulDat.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                    state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);
             }
@@ -1009,13 +1097,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         VkOrg = LogonContext.Customer.AccountingArea.ToString(),
                         VkBur = LogonContext.Organization.OrganizationReference2,
                         Vorerfasser = LogonContext.UserName,
+                        WebGroupId = LogonContext.Group.GroupID.ToString(),
+                        WebUserId = LogonContext.UserID,
                         VorgangsStatus = "1",
                         Zulassungsdaten = new Zulassungsdaten
                             {
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
-                                ZulassungsartMatNr =
-                                    (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
+                                ModusSonderzulassung = ModusSonderzulassung,
+                                ZulassungsartMatNr = null,
                                 Zulassungskreis = null,
                             },
                         Fahrzeugdaten = new Fahrzeugdaten
@@ -1028,6 +1118,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
+                ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
+
+                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
+                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
+
+                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
@@ -1039,17 +1135,30 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             InitZulassung(Zulassung);
 
+            InitKundenauswahlWarenkorb();
+            
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
             PartnerDataService.MarkForRefreshAdressen();
 
-            PropertyCacheClear(this, m => m.Zulassungsarten);
-            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
+        }
+
+        private void InitKundenauswahlWarenkorb()
+        {
+            WarenkorbSelectedKunnr = "";
+
+            KundenauswahlWarenkorb = new List<Kunde>().Concat(new List<Kunde> { new Kunde("", Localize.Mine) }).ToList();
+
+            if (!WarenkorbNurEigeneAuftraege)
+            {
+                KundenauswahlWarenkorb.Add(new Kunde("*", Localize.All));
+                KundenauswahlWarenkorb.AddRange(ZulassungDataService.KundenauswahlWarenkorb);
+            }
         }
 
         private void InitZulassung(Vorgang zul)
@@ -1062,22 +1171,35 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
-            if (!ModusAbmeldung && Zulassungsarten.None())
+            if (zulassungen.Any(z => !z.Zulassungsdaten.ModusAbmeldung) && Zulassungsarten.None())
+            {
+                SaveErrorMessage = Localize.NoRegistrationTypesFound;
                 return;
+            }
 
-            if (ModusAbmeldung && Abmeldearten.None())
+            if (zulassungen.Any(z => z.Zulassungsdaten.ModusAbmeldung) && Abmeldearten.None())
+            {
+                SaveErrorMessage = Localize.NoDeregistrationTypesFound;
                 return;
+            }
+
+            var zulOhneEvb = zulassungen.Where(z => !z.Zulassungsdaten.ModusAbmeldung && String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));
+            if (saveDataToSap && zulOhneEvb.Any())
+            {
+                SaveErrorMessage = String.Join(", ", zulOhneEvb.Select(z => String.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
+                return;
+            }
 
             zulassungen.ForEach(z =>
-                {
-                    z.WebGroupId = LogonContext.Group.GroupID.ToString();
-                    z.WebUserId = LogonContext.UserID;
+            {
+                    z.Aenderer = LogonContext.UserName;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
                     {
                         z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
+                                              : ModusSonderzulassung ? "SONDERZULASSUNG"
                                               : "ZULASSUNG");
                     }
                 });
@@ -1140,7 +1262,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
             
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
@@ -1156,9 +1278,27 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Shopping Cart
 
+        public bool WarenkorbNurEigeneAuftraege { get { return ZulassungDataService.WarenkorbNurEigeneAuftraege; } }
+
+        [LocalizedDisplay(LocalizeConstants.ShowOrders)]
+        public string WarenkorbSelectedKunnr { get; set; }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Kunde> KundenauswahlWarenkorb { get; private set; }
+
         public IEnumerable<Vorgang> LoadZulassungenFromShoppingCart()
         {
-            var liste = ZulassungDataService.LoadVorgaengeForShoppingCart();
+            var kundenNummern = new List<string>();
+
+            if (!String.IsNullOrEmpty(WarenkorbSelectedKunnr))
+            {
+                if (WarenkorbSelectedKunnr == "*")
+                    KundenauswahlWarenkorb.ForEach(k => kundenNummern.Add(k.KundenNr));
+                else
+                    kundenNummern.Add(WarenkorbSelectedKunnr);
+            }
+
+            var liste = ZulassungDataService.LoadVorgaengeForShoppingCart(kundenNummern);
 
             liste.ForEach(InitZulassung);
 
