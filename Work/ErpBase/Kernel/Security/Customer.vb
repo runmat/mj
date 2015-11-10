@@ -54,9 +54,11 @@ Namespace Kernel.Security
         Private m_ReferenceType1 As String
         Private m_ReferenceType2 As String
         Private m_ReferenceType3 As String
+        Private m_ReferenceType4 As String
         Private m_ReferenceType1Name As String
         Private m_ReferenceType2Name As String
         Private m_ReferenceType3Name As String
+        Private m_ReferenceType4Name As String
 
 #End Region
 
@@ -115,6 +117,7 @@ Namespace Kernel.Security
                                ByVal strReferenzTyp1 As String, _
                                ByVal strReferenzTyp2 As String, _
                                ByVal strReferenzTyp3 As String, _
+                               ByVal strReferenzTyp4 As String, _
                                Optional ByVal intDaysUntilLock As Integer = 90, _
                                Optional ByVal intDaysUntilDelete As Integer = 9999, _
                                Optional ByVal strSDCustomerNumber As String = "", _
@@ -164,6 +167,7 @@ Namespace Kernel.Security
             m_ReferenceType1 = strReferenzTyp1
             m_ReferenceType2 = strReferenzTyp2
             m_ReferenceType3 = strReferenzTyp3
+            m_ReferenceType4 = strReferenzTyp4
             m_MvcSelectionUrl = strMvcSelectionUrl
             m_MvcSelectionType = strMvcSelectionType
         End Sub
@@ -538,6 +542,12 @@ Namespace Kernel.Security
             End Get
         End Property
 
+        Public ReadOnly Property ReferenceType4 As String
+            Get
+                Return m_ReferenceType4
+            End Get
+        End Property
+
         Public ReadOnly Property ReferenceType1Name As String
             Get
                 Return m_ReferenceType1Name
@@ -553,6 +563,12 @@ Namespace Kernel.Security
         Public ReadOnly Property ReferenceType3Name As String
             Get
                 Return m_ReferenceType3Name
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType4Name As String
+            Get
+                Return m_ReferenceType4Name
             End Get
         End Property
 
@@ -597,10 +613,12 @@ Namespace Kernel.Security
                         m_ReferenceType1 = dr("Userreferenzfeld1").ToString()
                         m_ReferenceType2 = dr("Userreferenzfeld2").ToString()
                         m_ReferenceType3 = dr("Userreferenzfeld3").ToString()
+                        m_ReferenceType4 = dr("Userreferenzfeld4").ToString()
                     Catch
                         m_ReferenceType1 = ""
                         m_ReferenceType2 = ""
                         m_ReferenceType3 = ""
+                        m_ReferenceType4 = ""
                     End Try
                     Try
                         m_MvcSelectionUrl = dr("MvcSelectionUrl").ToString
@@ -791,6 +809,12 @@ Namespace Kernel.Security
                     m_ReferenceType3Name = m_ReferenceType3
                 End If
             End If
+            If Not String.IsNullOrEmpty(m_ReferenceType4) Then
+                m_ReferenceType4Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType4 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType4Name) Then
+                    m_ReferenceType4Name = m_ReferenceType4
+                End If
+            End If
         End Sub
 
         Public Sub Delete(ByVal strConnectionString As String)
@@ -935,6 +959,7 @@ Namespace Kernel.Security
                                                "Userreferenzfeld1, " & _
                                                "Userreferenzfeld2, " & _
                                                "Userreferenzfeld3, " & _
+                                               "Userreferenzfeld4, " & _
                                                "MvcSelectionUrl, " & _
                                                "MvcSelectionType)" & _
                           "VALUES(@Customername, " & _
@@ -986,6 +1011,7 @@ Namespace Kernel.Security
                                  "@Userreferenzfeld1, " & _
                                  "@Userreferenzfeld2, " & _
                                  "@Userreferenzfeld3, " & _
+                                 "@Userreferenzfeld4, " & _
                                  "@MvcSelectionUrl, " & _
                                  "@MvcSelectionType); " & _
                           "SELECT SCOPE_IDENTITY()"
@@ -1041,6 +1067,7 @@ Namespace Kernel.Security
                                               "Userreferenzfeld1=@Userreferenzfeld1, " & _
                                               "Userreferenzfeld2=@Userreferenzfeld2, " & _
                                               "Userreferenzfeld3=@Userreferenzfeld3, " & _
+                                              "Userreferenzfeld4=@Userreferenzfeld4, " & _
                                               "MvcSelectionUrl=@MvcSelectionUrl, " & _
                                               "MvcSelectionType=@MvcSelectionType " & _
                                           "WHERE CustomerID=@CustomerID"
@@ -1137,6 +1164,7 @@ Namespace Kernel.Security
                     .AddWithValue("@Userreferenzfeld1", m_ReferenceType1)
                     .AddWithValue("@Userreferenzfeld2", m_ReferenceType2)
                     .AddWithValue("@Userreferenzfeld3", m_ReferenceType3)
+                    .AddWithValue("@Userreferenzfeld4", m_ReferenceType4)
                     .AddWithValue("@MvcSelectionUrl", m_MvcSelectionUrl)
                     .AddWithValue("@MvcSelectionType", m_MvcSelectionType)
 

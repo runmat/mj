@@ -473,6 +473,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents ddlReferenzTyp3 As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''ddlReferenzTyp4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlReferenzTyp4 As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
     '''EditCAddress-Steuerelement
     '''</summary>
     '''<remarks>
