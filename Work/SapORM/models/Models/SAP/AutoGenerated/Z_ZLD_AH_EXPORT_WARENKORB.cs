@@ -21,6 +21,120 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_EXPORT_WARENKORB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+		public partial class IT_AG : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KUNNR { get; set; }
+
+			public static IT_AG Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new IT_AG
+				{
+					KUNNR = (string)row["KUNNR"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<IT_AG> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<IT_AG> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<IT_AG> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(IT_AG).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<IT_AG> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<IT_AG> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<IT_AG> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<IT_AG>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_AH_EXPORT_WARENKORB", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<IT_AG> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<IT_AG>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<IT_AG> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<IT_AG>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<IT_AG> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<IT_AG>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_AH_EXPORT_WARENKORB", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<IT_AG> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<IT_AG>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class GT_BAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -179,6 +293,12 @@ namespace SapORM.Models
 
 			public Int32? HALTEDAUER { get; set; }
 
+			public DateTime? VE_ERDAT { get; set; }
+
+			public string VE_ERZEIT { get; set; }
+
+			public string VE_AENAM { get; set; }
+
 			public static GT_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK
@@ -257,6 +377,9 @@ namespace SapORM.Models
 					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
 					RES_NAME = (string)row["RES_NAME"],
 					HALTEDAUER = (string.IsNullOrEmpty(row["HALTEDAUER"].ToString())) ? null : (Int32?)Convert.ToInt32(row["HALTEDAUER"]),
+					VE_ERDAT = (string.IsNullOrEmpty(row["VE_ERDAT"].ToString())) ? null : (DateTime?)row["VE_ERDAT"],
+					VE_ERZEIT = (string)row["VE_ERZEIT"],
+					VE_AENAM = (string)row["VE_AENAM"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -762,6 +885,17 @@ namespace SapORM.Models
 
 	public static partial class DataTableExtensions
 	{
+
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_EXPORT_WARENKORB.IT_AG> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_ZLD_AH_EXPORT_WARENKORB.IT_AG> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK> list)
 		{
