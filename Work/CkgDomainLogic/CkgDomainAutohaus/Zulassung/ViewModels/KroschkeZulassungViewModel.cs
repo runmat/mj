@@ -463,9 +463,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 adr = HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
-
             return adr;
         }
 
@@ -691,9 +688,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 adr = ZahlerKfzSteuerAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
-
             return adr;
         }
 
@@ -865,9 +859,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 adr = AuslieferAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
             else
                 adr = AuslieferAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
-
-            if (adr != null)
-                adr.Strasse = adr.StrasseHausNr;
 
             return adr;
         }

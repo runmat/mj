@@ -9,7 +9,7 @@
 
     @using (Ajax.BeginForm("AuslieferAdressenForm", "Zulassung", null,
         new MvcAjaxOptions { UpdateTargetId = "DivAuslieferAdressen", OnComplete = "AjaxFormAuslieferAdressenComplete();" },
-        htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen"  }))
+        htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen" }))
     {
         <input id="SelectedPartnerRolle" name="SelectedPartnerRolle" type="hidden" value="" />
         <input id="SelectedAddressId" name="SelectedAddressId" type="hidden" value=""/>
@@ -35,7 +35,10 @@
 
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
-                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
+                        postControlHtml: @<text>
+                                             @Html.TextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.HausNr, new { @class = "m-wrap xsmall margin-left-20" })
+                                          </text>)
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
                 @Html.FormDropDownListFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
@@ -65,7 +68,10 @@
 
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
-                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
+                        postControlHtml: @<text>
+                                             @Html.TextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.HausNr, new { @class = "m-wrap xsmall margin-left-20" })
+                                          </text>)
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
                 @Html.FormDropDownListFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
@@ -95,7 +101,10 @@
 
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium " })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
-                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+                @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
+                        postControlHtml: @<text>
+                                             @Html.TextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.HausNr, new { @class = "m-wrap xsmall margin-left-20" })
+                                          </text>)
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
                 @Html.FormTextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
                 @Html.FormDropDownListFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
@@ -153,5 +162,5 @@
             });
 
         </script>
-        }
+    }
     </div>
