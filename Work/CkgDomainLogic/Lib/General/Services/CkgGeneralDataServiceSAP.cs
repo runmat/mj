@@ -174,16 +174,41 @@ namespace CkgDomainLogic.General.Services
             SAP.GetLogonContext = () => LogonContext;
         }
 
-        private List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> GetSapKundenAusHierarchie()
+        protected List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> GetSapKundenAusHierarchie(bool filterByVkBur = true)
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference;
+            var orgRef = LogonContext.Organization.OrganizationReference;
 
-            SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
-            SAP.SetImportParameter("I_VKORG", ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString());
-            SAP.SetImportParameter("I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
+            if (!String.IsNullOrEmpty(orgRef))
+            {
+                if (orgRef.Contains(','))
+                {
+                    var kunListe = new List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR>();
+
+                    var kundenNummern = orgRef.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var kundenNummer in kundenNummern)
+                    {
+                        kunListe.Add(new Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.IT_KUNNR { KUNNR = kundenNummer.ToSapKunnr() });
+                    }
+
+                    SAP.ApplyImport(kunListe);
+                }
+                else
+                {
+                    SAP.SetImportParameter("I_KUNNR", orgRef.ToSapKunnr());
+                }
+            }
+            else
+            {
+                SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            }
+
+            SAP.SetImportParameter("I_VKORG", LogonContext.Customer.AccountingArea.ToString());
             SAP.SetImportParameter("I_SPART", "01");
+
+            if (filterByVkBur)
+                SAP.SetImportParameter("I_VKBUR", LogonContext.Organization.OrganizationReference2);
 
             return Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP).OrderBy(k => k.NAME1).ToList();
         }
@@ -264,7 +289,7 @@ namespace CkgDomainLogic.General.Services
             return string.Format("Es ist ein Fehler aufgetreten, SAP-Fehler Meldung: {0}", sapError);
         }
 
-        public string GetUserReferenceValueByReferenceType(Referenzfeldtyp referenceType)
+        public string GetStringUserReferenceValueByReferenceType(ReferenzfeldtypString referenceType)
         {
             if (LogonContext.Customer.Userreferenzfeld1 == referenceType.ToString())
                 return LogonContext.User.Reference;
@@ -276,6 +301,14 @@ namespace CkgDomainLogic.General.Services
                 return LogonContext.User.Reference3;
 
             return "";
+        }
+
+        public bool GetBoolUserReferenceValueByReferenceType(ReferenzfeldtypBool referenceType)
+        {
+            if (LogonContext.Customer.Userreferenzfeld4 == referenceType.ToString())
+                return LogonContext.User.Reference4.IsTrue();
+
+            return false;
         }
 
         public string CheckFahrgestellnummer(string fin, string pruefziffer)

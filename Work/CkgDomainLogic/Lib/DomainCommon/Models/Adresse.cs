@@ -42,7 +42,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public string HausNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Street)]
+        [LocalizedDisplay(LocalizeConstants.StreetHouseNo)]
         [Required]
         public string StrasseHausNr { get { return AddressService.FormatStreetAndHouseNo(this); } }
 

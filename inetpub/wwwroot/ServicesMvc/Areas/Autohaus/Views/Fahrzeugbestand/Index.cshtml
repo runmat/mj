@@ -36,18 +36,6 @@
 
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
-
-        InitSearchFormOpenHandler();
-    }
-
-    function InitSearchFormOpenHandler() {
-        $("#FormSearchBox .portlet-title").click(function () {
-            if (!SearchFormIsCollapsed()) {
-                // enforce refresh of all partner dropdown contents
-                $("#TmpEnforcePartnerDropdownRefresh").val(true);
-                $("#FahrzeugAkteBestandSearchForm").submit();
-            }
-        });
     }
 
     function FormPreparePrivateAjax() {
@@ -57,11 +45,7 @@
     function TryShowFahrzeugAkteBestandGrid() {
         FormPreparePrivateAjax();
 
-        if ($("#TmpEnforcePartnerDropdownRefresh").val().toLowerCase() == "true") {
-            $("#TmpEnforcePartnerDropdownRefresh").val(false);
-            LoadingHide();
-            return;
-        }
+        $(".mfp-close").trigger("click");
 
         ShowFahrzeugAkteBestandGrid();
     }
@@ -323,9 +307,6 @@
         $("#divPartnerSelection").html(result);
         FormPreparePrivateAdressenPflege();
 
-        //$("#divGridEditStart").addClass("PartnerAddressSubGrid");
-        //$(".grid-column-overall-quick-filter-pick-start").parent().hide();
-
         $("#divFahrzeugDetails").slideUp();
         $("#divPartnerSelection").slideDown();
         scrollToTop();
@@ -375,4 +356,81 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    // HalterAdresse
+    function OnDataBound_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_HalterAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridHalterAdresseOnSelect(id) {
+        $("#TmpSelectionKey").val(id);
+        $("#TmpSelectionType").val("HALTER");
+        $("#FahrzeugAkteBestandSearchForm").submit();
+    }
+
+    // KaeuferAdresse
+    function OnDataBound_KaeuferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_KaeuferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_KaeuferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridKaeuferAdresseOnSelect(id) {
+        $("#TmpSelectionKey").val(id);
+        $("#TmpSelectionType").val("KAEUFER");
+        $("#FahrzeugAkteBestandSearchForm").submit();
+    }
+
+    // Adressen allgemein
+    function AjaxFormAdressenShowGrid(addressType) {
+        $.ajax(
+            {
+                type: "POST",
+                url: addressType + "AdressenShowGrid",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+                    $("#InnerAdressen").html(result);
+                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdressen") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
+                }
+            });
+
+        return false;
+    }
+
+    function OnComplete_AdressenAuswahlGrid() {
+        var grid = $(this);
+        setTimeout(function () {
+            var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
+            var newHeight = (gridHeight + 80) + 'px';
+            grid.closest('.t-window-content').animate({ height: newHeight }, 200);
+        }, 300);
+    }
+
 </script>
+
+<div id="InnerAdressen" class="white-popup mfp-hide">
+</div>

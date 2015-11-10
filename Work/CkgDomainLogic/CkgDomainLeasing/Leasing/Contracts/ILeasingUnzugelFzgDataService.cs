@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Leasing.Models;
 
@@ -11,6 +10,6 @@ namespace CkgDomainLogic.Leasing.Contracts
 
         void MarkForRefreshUnzugelFzge();
 
-        void SaveBriefLVNummern(List<UnzugelFzg> fzge);
+        void SaveBriefLVNummern(List<UnzugelFzg> fzge, string bapiName = "Z_M_EINGABE_LVNUMMER_SIXTLEAS");
     }
 }

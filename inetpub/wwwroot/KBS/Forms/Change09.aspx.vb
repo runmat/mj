@@ -1,6 +1,7 @@
 ﻿Imports KBS.KBS_BASE
 Imports System.IO
-Imports SmartSoft.PdfLibrary
+Imports DocumentTools.Services
+
 Partial Public Class Change09
     Inherits Page
 
@@ -256,7 +257,7 @@ Partial Public Class Change09
                 sPath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
             End If
             If filesByte.Count > 0 Then
-                File.WriteAllBytes(sPath, PdfMerger.MergeFiles(filesByte))
+                File.WriteAllBytes(sPath, PdfDocumentFactory.MergePdfDocuments(filesByte))
                 mObjInventur.Filepath = sPath
             End If
             Session("App_ContentType") = "Application/pdf"

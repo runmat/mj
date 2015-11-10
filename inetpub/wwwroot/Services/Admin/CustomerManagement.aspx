@@ -38,6 +38,7 @@
     <script src="../JScript/Jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <link href="../JScript/Jquery/MSDropdown/dd.css" rel="stylesheet" type="text/css" />
     <script src="../JScript/Jquery/MSDropdown/js/jquery.dd.js" type="text/javascript"></script>
+    <script src="../PageElements/SearchForm/Scripts/jquery-textbox-selection.js" type="text/javascript"></script>
     <div>
         <div id="site">
             <div id="content">
@@ -84,7 +85,7 @@
                                                 Firma:
                                             </td>
                                             <td class="firstLeft active" nowrap="nowrap" width="100%">
-                                                <asp:TextBox ID="txtFilterCustomerName" runat="server" CssClass="InputTextbox">*</asp:TextBox>
+                                                <asp:TextBox ID="txtFilterCustomerName" runat="server" CssClass="InputTextbox">**</asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr class="formquery">
@@ -136,7 +137,7 @@
                                                 <td align="left">
                                                     <asp:GridView ID="dgSearchResult" Width="1100px" runat="server" AutoGenerateColumns="False"
                                                         CellPadding="0" CellSpacing="0" GridLines="None" AlternatingRowStyle-BackColor="#DEE1E0"
-                                                        AllowSorting="true" AllowPaging="True" CssClass="GridView" PageSize="10">
+                                                        AllowSorting="true" AllowPaging="True" CssClass="GridView customer-grid" PageSize="10">
                                                         <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
                                                         <AlternatingRowStyle CssClass="GridTableAlternate"></AlternatingRowStyle>
                                                         <PagerSettings Visible="False" />
@@ -261,7 +262,7 @@
                                                                 </td>
                                                                 <td class="active">
                                                                     <span>
-                                                                        <asp:DropDownList ID="ddlMvcSelectionType" runat="server" />
+                                                                        <asp:DropDownList ID="ddlMvcSelectionType" runat="server" CssClass="selection-type-dropdown" />
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -270,7 +271,7 @@
                                                                     Selection URL (nur MVC):
                                                                 </td>
                                                                 <td class="active">
-                                                                    <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox selection-url-textbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery" id="trKundeSperr" runat="server">
@@ -331,6 +332,14 @@
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:DropDownList ID="ddlReferenzTyp3" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Referenz 4 (bool -> Checkbox):
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlReferenzTyp4" runat="server" />
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">
@@ -1506,4 +1515,68 @@
 
         </script>
     </telerik:RadScriptBlock>
+
+    <script type="text/javascript">
+
+            function EnableDisableSelectionUrlTextboxInner() {
+                if ($(".selection-type-dropdown").val() == "Url") {
+                    $(".selection-url-textbox").removeAttr("readonly");
+                }
+                else {
+                    $(".selection-url-textbox").attr("readonly", "readonly");
+                }
+            }
+
+            function EnableDisableSelectionUrlTextbox() {
+                EnableDisableSelectionUrlTextboxInner();
+
+                    $(".selection-type-dropdown").off("change").on("change",
+                    function () {
+
+                        if ($(this).val() == "Favorites")
+                            $(".selection-url-textbox").val("");
+
+                        if ($(this).val() == "Dashboard")
+                            $(".selection-url-textbox").val("Common/Dashboard/Index");
+
+                        EnableDisableSelectionUrlTextboxInner();
+                    }
+                );
+            }
+
+            function PrepareCustomerSearchTextbox() {
+                var searchCustomerTextbox = $("#<%= txtFilterCustomerName.ClientID %>");
+                if (typeof (searchCustomerTextbox) == "undefined" || searchCustomerTextbox == null)
+                    return;
+
+                searchCustomerTextbox.focus();
+                $("#<%= txtFilterCustomerName.ClientID %>").setCaretPos(2);
+            }
+
+            function PrepareCustomerSearchResultsAutomaticLoad() {
+                if ($("#<%= Result.ClientID %>").css("display") == "none")
+                    return;
+
+                if ($(".customer-grid tr").length != 2)
+                    return;
+
+                 $("#<%= Result.ClientID %>").html("<div class='auto-redirect-link'>Sie werden automatisch weitergeleitet ...</div>");
+
+                __doPostBack('ctl00$ContentPlaceHolder1$dgSearchResult', 'Edit$0')
+            }
+
+            function InitControls() {
+
+                PrepareCustomerSearchResultsAutomaticLoad();
+
+                EnableDisableSelectionUrlTextbox();
+
+                PrepareCustomerSearchTextbox();
+            }
+
+            $(function () {
+                InitControls();
+            });         
+
+    </script>
 </asp:Content>
