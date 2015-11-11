@@ -38,6 +38,8 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         public SourceFile SourceFile { get; set; }
         public DestinationObj DestinationFile { get; set; }
 
+        public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
+
         #region Wizard
         [XmlIgnore]
         public IDictionary<string, string> Steps
@@ -47,9 +49,9 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 return PropertyCacheGet(() => new Dictionary<string, string>
                 {
                     { "Prozessauswahl", "Prozessauswahl" },         // Localize.Vehicle
-                    { "Konfiguration", "Konfiguration" },
-                    { "Testimport", "Testimport" },
-                    { "Abschluss", Localize.Ready + "!" },
+                    { "Admin/Konfiguration", "Konfiguration" },
+                    { "Admin/Testimport", "Testimport" },
+                    { "Admin/Abschluss", Localize.Ready + "!" },
                 });
             }
         }
@@ -64,6 +66,18 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         }
 
         #endregion
+
+        public void DataInit()
+        {
+            #region Globale Properties, nutzbar in allen Partials
+
+            GlobalViewData = new GlobalViewData
+            {
+            };
+
+            #endregion
+        }
+
 
         #region File converter
 
@@ -145,10 +159,31 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var doc = new XmlDocument();
             doc.LoadXml(xsd);
             var json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
-
             return json;
         }
 
+        #endregion
+
+        #region Upload source file
+        public bool PdfUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
+        {
+            const string extension = ".pdf";
+
+            //Upload.UploadFileName = fileName;
+            var randomfilename = Guid.NewGuid().ToString();
+
+            var nameSaved = fileSaveAction(GetUploadPathTemp(), randomfilename, extension);
+
+            if (string.IsNullOrEmpty(nameSaved))
+                return false;
+
+            var tmpFilename = GetUploadPathTemp() + @"\" + nameSaved + extension;
+
+            var bytes = File.ReadAllBytes(tmpFilename);
+            //Overview.PdfUploaded = bytes;
+
+            return true;
+        }
         #endregion
 
     }

@@ -1,5 +1,6 @@
 ﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
 
+
 <style type="text/css">
     .form-wizard .progress {
         margin-bottom: 10px!important;
@@ -11,14 +12,8 @@
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
 
-    function KroschkeZulassungFormPreparePrivate() {
-        FormPreparePrivate();
-    }
-
     function FormPreparePrivate() {
         try { FormWizardInitPrivate(); } catch (e) { }
-        try { MultiSelectPreparePrivate(); } catch (e) { }
-        ShoppingCartMenuRefreshCount();
     };
 
     function FormPreparePrivateAjax() {
@@ -40,9 +35,8 @@
             FormWizard.tabClickDisabled = true;
         });
 
-        FormWizard.OnNext(function (step, maxSteps) {
+        FormWizard.OnNext(function (step, maxSteps) {            
             var stepName = FormWizard.GetStepKey(step - 1);
-
             try {
                 $("#AjaxForm" + stepName).submit();
                 window.scrollTo(0, 0);
@@ -64,12 +58,6 @@
             }
 
             window.scrollTo(0, 0);
-            return true;
-        });
-
-        FormWizard.OnCustom1(function (step, maxSteps) {
-            SaveZulassung();
-
             return true;
         });
 
@@ -110,117 +98,24 @@
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
 
-                if (nextTabKey.toLowerCase() == "receipt")
-                    ShoppingCartMenuRefreshCount();
             }
         });
     }
 
-    function SaveZulassung() {
-        var nextTabKey = FormWizard.GetNextTabKey();
-        $.ajax({
-            type: "POST",
-            url: "Save",
-            data: {},
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetNextTabHtmlAndMoveNext(result);
-                FormPreparePrivateAjax();
-
-                if (nextTabKey.toLowerCase() == "receipt")
-                    ShoppingCartMenuRefreshCount();
-            },
-            error: function (jqXhr, exception) {
-                alert(jqXhr.responseText);
-            }
-        });
-    }
-
-    function ShoppingCartSubmitFinished(result) {
-        $(".form-wizard").html(result);
-        ShoppingCartHide();
-        LoadingHide();
-    }
-
-    // Rechnungsdaten
-    function AjaxFormRechnungsdatenComplete() {
+    function AjaxFormProzessauswahlComplete() {
         FormPrepareAjax();
-
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
         }
     }
 
-    // HalterAdresse
-    function AjaxFormHalterAdresseComplete() {
+    function AjaxFormKonfigurationComplete() {
         FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
-        $(".mfp-close").trigger("click");
-    }
-
-    // ZahlerKfzSteuer
-    function AjaxFormZahlerKfzSteuerComplete() {
-        FormPrepareAjax();
-
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
-        $(".mfp-close").trigger("click");
-
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
         }
     }
 
-    // BankAdressdaten
-    function AjaxFormBankAdressdatenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
-    // AuslieferAdressen
-    function AjaxFormAuslieferAdressenComplete() {
-        FormPrepareAjax();
-
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
-        $(".mfp-close").trigger("click");
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-
-        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
-        if (saveSuccessful == 'true') {
-            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#TmpSaveAddressSuccessful").val(false);
-        }
-    }
-
-    // OptionenDienstleistungen
-    function AjaxFormOptionenDienstleistungenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
 </script>

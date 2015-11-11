@@ -2,72 +2,76 @@
 @using Newtonsoft.Json
 @model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
 
-<h4>Konfiguration</h4>
-
-<div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
-
-<button class="btn white" style="width: 250px;">
-    Datenquelle wählen
-    <i class="icon-download"></i>
-</button>
-
-<button class="btn white margin-left-10" onclick="ClearAll();">
-    Bereinigen
-    <i class="icon-remove"></i>
-</button>
-
-<button class="btn white" onclick="NewProcessor();">
-    Prozessor hinzufügen
-    <i class="halflings-icon  plus"></i>
-</button>
-
-<button class="btn white margin-left-10" onclick="Save();">
-    Save
-</button>
-<button class="btn white" onclick="Load();">
-    Load
-</button>
-
-<button class="btn white margin-left-10" onclick="ShowProcessors(false);">
-    Hide
-</button>
-<button class="btn white" onclick="ShowProcessors(true);">
-    Show
-</button>
-
-<button class="btn white margin-left-10" onclick="SetToPosition('source', 'Source7', 2);">
-    Move
-</button>
-
-<div id="processorTemplate" class="processor hidden">
-    <div class="title">
-        <div id="name" class="float-left" style="margin-top: -5px;margin-left:15px;">Prozessor</div>
-        <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
-    </div>
-    <div class="content" style="">
-        <select class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;">
-            <option value="add">Splitten</option>
-            <option value="replace">Zusammenfassen</option>
-        </select>
-        <input type="text" name="Para1" value="Separator" style="width: 60px; float: left; margin-bottom: 2px;"/>
-        <input type="text" name="Para2" value="Nummer" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
-
-        <span class="data datain float-left">in</span>
-        <span class="data dataout float-right">out</span>
-    </div>
-    <div id="tmpprozin" class="prozin"></div>
-    <div id="tmpprozout" class="prozout"></div>
-</div>
-
 <style>
-    
     .nodetitle {
-        font-size: 12px; margin-top: 2px; margin-bottom: -3px;background-color: #add8e6;padding-left: 4px;font-weight: bold;border: 1px solid gray;
+        font-size: 12px;margin-top: 2px;margin-bottom: -3px;background-color: #add8e6;padding-left: 4px;font-weight: bold;border: 1px solid gray;
     }
-    
 </style>
 
-<div id="DataKonverterContainer2">
+<div id="DivKonfiguration" class="margin-top-20">
+    <h4>Konfiguration</h4>
+
+    <div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
+
+    <button class="btn white margin-left-10" onclick="ClearAll();">
+        Bereinigen
+        <i class="icon-remove"></i>
+    </button>
+
+    <button class="btn white" onclick="NewProcessor();">
+        Prozessor hinzufügen
+        <i class="halflings-icon  plus"></i>
+    </button>
+
+    <button class="btn white margin-left-10" onclick="Save();">
+        Save
+    </button>
+    <button class="btn white" onclick="Load();">
+        Load
+    </button>
+
+    <button class="btn white margin-left-10" onclick="ShowProcessors(false);">
+        Hide
+    </button>
+    <button class="btn white" onclick="ShowProcessors(true);">
+        Show
+    </button>
+
+    <button class="btn white margin-left-10" onclick="SetToPosition('source', 'Source7', 2);">
+        Move
+    </button>
+
+    <div id="processorTemplate" class="processor hidden">
+        <div class="title">
+            <div id="name" class="float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
+            <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
+        </div>
+        <div class="content" style="">
+            <select class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;">
+                <option value="add">Splitten</option>
+                <option value="replace">Zusammenfassen</option>
+            </select>
+            <input type="text" name="Para1" value="Separator" style="width: 60px; float: left; margin-bottom: 2px;"/>
+            <input type="text" name="Para2" value="Nummer" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
+
+            <span class="data datain float-left">in</span>
+            <span class="data dataout float-right">out</span>
+        </div>
+        <div id="tmpprozin" class="prozin"></div>
+        <div id="tmpprozout" class="prozout"></div>
+    </div>
+
+    @*<div id="DivKonfiguration" class="margin-top-20">
+    @using (Ajax.BeginForm("Konfiguration", "Admin", null,
+        new MvcAjaxOptions { UpdateTargetId = "DivKonfiguration", OnComplete = "AjaxFormKonfigurationComplete();" },
+        htmlAttributes: new {@class = "form-horizontal", id = "AjaxFormKonfiguration"}))
+    {
+        @Html.FormValidationSummary()
+    }
+</div>*@
+
+    <div id="DataKonverterContainer2x" style="width: 650px;">
+        sdf
         <div id="source" style="padding: 0px;">
             @foreach (var item in Model.SourceFile.Columns)
             {
@@ -79,37 +83,39 @@
             }
         </div>
 
-    <div id="destination">
-        @{
-            var node = "";
-            foreach (XmlElement parent in Model.DestinationFile.XmlDocument.DocumentElement)
-            {
-            <div class="nodetitle">@parent.Name</div>
+        <div id="destination">
+            @{
+                var node = "";
+                foreach (XmlElement parent in Model.DestinationFile.XmlDocument.DocumentElement)
+                {
+                    <div class="nodetitle">@parent.Name</div>
                     foreach (XmlElement child in parent)
                     {
-            <div class="w ept" id="Dest-@parent.Name-@child.Name">
-                <div class="ep">
-                </div>
-                <div class="field">@child.Name</div>
-                <span class="data"></span>
-            </div>
+                        <div class="w ept" id="Dest-@parent.Name-@child.Name">
+                            <div class="ep">
+                            </div>
+                            <div class="field">@child.Name</div>
+                            <span class="data"></span>
+                        </div>
                         if (child.HasChildNodes)
                         {
                             <div class="nodetitle">@parent.Name > @child.Name</div>
                             foreach (XmlElement childchild in child)
-                                {
+                            {
                                 <div class="w ept" id="Dest-@parent.Name-@childchild.Name">
                                     <div class="ep">
                                     </div>
                                     <div class="field">@childchild.Name</div>
                                     <span class="data"></span>
                                 </div>
-                                }
+                            }
                         }
                     }
-                }                    
-        }
+                }
+            }
+        </div>
     </div>
+
 </div>
 
 <script>
@@ -143,7 +149,6 @@
     };
 
     jsPlumb.ready(function () {
-
         jsPlumb.importDefaults({
             Connector: ["Straight"], 
             Endpoint: ["Dot", { radius: 1}],
@@ -159,7 +164,7 @@
                     }
                 ]
             ],
-                    Container: $('#DataKonverterContainer2x')
+            Container: $('#DataKonverterContainer2x')
         });
 
         jsPlumb.Defaults.Container = $('#DataKonverterContainer2x');
@@ -188,6 +193,7 @@
         });
 
         jsPlumb.bind("connection", function (info) {
+
             var sourceId = info.sourceId;
             var sourceDiv = $('#' + sourceId);
             var sourceField = sourceDiv.find(".field").html();

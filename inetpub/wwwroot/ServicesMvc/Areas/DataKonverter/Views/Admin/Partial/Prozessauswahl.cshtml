@@ -1,3 +1,103 @@
-﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
+﻿@model ServicesMvc.Areas.DataKonverter.Models.SourceFile
 
-<h4>Prozessauswahl</h4> 
+<script>
+    
+    var firstRequest = '@Request["firstRequest"]';
+
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
+    $(function () {
+
+        $(window).resize(function () {
+        });
+
+        $('#processId').chosen();
+    });
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.txt') <= 0) {
+//            alert('@Localize.FileUploadOnlyPdfLegal');
+            alert("Nur folgende Formate sind möglich: txt, csv, xls, xlsx");
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+        
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        $('#UploadFileName').val(e.response.uploadFileName);
+        $('#Filename').val(e.response.uploadFileName);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved');
+    }
+
+    function RemovePdfFile() {
+        $('#UploadFileName').val("");
+    }
+
+</script>
+<div id="DivProzessauswahl" class="margin-top-20">
+    
+    <h4>Prozessauswahl</h4>
+
+    @using (Ajax.BeginForm("Prozessauswahl", "Admin", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivProzessauswahl", OnComplete = "AjaxFormProzessauswahlComplete();"},
+        htmlAttributes: new {@class = "form-horizontal", id = "AjaxFormProzessauswahl"}))
+    {
+        @Html.FormValidationSummary()
+
+        <div class="row-fluid">
+            <div class="span6">
+                <h3>Datenquelle</h3>
+                <div class="control-group">
+                    <div class="controls">
+                        @(Html.Telerik().Upload()
+                              .Name("fileUpload")
+                              .Localizable("de-DE")
+                              .Async(async => async
+                                  .Save("UploadStart", "Admin")
+                                  .SaveField("uploadFiles")
+                                  .AutoUpload(true))
+                              .Multiple(false)
+                              .ShowFileList(false)
+                              .ClientEvents(events => events
+                                  .OnUpload("UploadStart")
+                                  .OnSuccess("UploadFinished")
+                                  .OnError("UploadError")
+                              )
+                              )
+                    </div>
+                </div>
+
+                @Html.TextBoxFor(m => m.Filename)
+
+            </div>
+            <div class="span6">
+                <h3>Prozess</h3>
+                <select id="processId" name="processId" size="5">
+                    <option value="1">Zulassung</option>
+                    <option value="2">Abmeldung</option>
+                </select>
+            </div>
+        </div>
+    }
+</div>

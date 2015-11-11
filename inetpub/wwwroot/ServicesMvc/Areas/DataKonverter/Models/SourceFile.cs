@@ -15,7 +15,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Encoding Encoding { get; set; }
         public List<Column> Columns { get; set; }
         public string Content { get; set; }
-        public int RowCount { get; set; }        
+        public int RowCount { get; set; }
+        public string DateTransformation { get; set; }  
 
         public class Column
         {
