@@ -59,32 +59,55 @@
     <div id="tmpprozout" class="prozout"></div>
 </div>
 
-<div id="DataKonverterContainer2" style="width: 1500px; height: 500px; position: relative;">
-    <div id="source" style="padding: 0px;">
-        @foreach (var item in Model.SourceFile.Columns)
-        {
-         <div class="w" id="@item.Guid">
-            <div class="field">@item.Caption</div>
-            <span class="data">@item.Content[0]</span>
-            <div class="sp"></div>
+<style>
+    
+    .nodetitle {
+        font-size: 12px; margin-top: 2px; margin-bottom: -3px;background-color: #add8e6;padding-left: 4px;font-weight: bold;border: 1px solid gray;
+    }
+    
+</style>
+
+<div id="DataKonverterContainer2">
+        <div id="source" style="padding: 0px;">
+            @foreach (var item in Model.SourceFile.Columns)
+            {
+                <div class="w" id="@item.Guid">
+                    <div class="field">@item.Caption</div>
+                    <span class="data">@item.Content[0]</span>
+                    <div class="sp"></div>
+                </div>
+            }
         </div>
-        }
-    </div>
 
     <div id="destination">
         @{
+            var node = "";
             foreach (XmlElement parent in Model.DestinationFile.XmlDocument.DocumentElement)
             {
-                <div style="font-size: 12px; margin-top: 2px;margin-bottom: -3px;">@parent.Name</div>
-                foreach (XmlElement child in parent)
-                {
-                    <div class="w ept" id="Dest-@parent.Name-@child.Name">
-                        <div class="ep"></div>
-                        <div class="field">@child.Name</div>
-                        <span class="data"></span>
-                    </div>
-                }
-            }
+            <div class="nodetitle">@parent.Name</div>
+                    foreach (XmlElement child in parent)
+                    {
+            <div class="w ept" id="Dest-@parent.Name-@child.Name">
+                <div class="ep">
+                </div>
+                <div class="field">@child.Name</div>
+                <span class="data"></span>
+            </div>
+                        if (child.HasChildNodes)
+                        {
+                            <div class="nodetitle">@parent.Name > @child.Name</div>
+                            foreach (XmlElement childchild in child)
+                                {
+                                <div class="w ept" id="Dest-@parent.Name-@childchild.Name">
+                                    <div class="ep">
+                                    </div>
+                                    <div class="field">@childchild.Name</div>
+                                    <span class="data"></span>
+                                </div>
+                                }
+                        }
+                    }
+                }                    
         }
     </div>
 </div>
@@ -136,10 +159,10 @@
                     }
                 ]
             ],
-                    Container: $('#DataKonverterContainer2')
+                    Container: $('#DataKonverterContainer2x')
         });
 
-                jsPlumb.Defaults.Container = $('#DataKonverterContainer2');
+        jsPlumb.Defaults.Container = $('#DataKonverterContainer2x');
 
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);
