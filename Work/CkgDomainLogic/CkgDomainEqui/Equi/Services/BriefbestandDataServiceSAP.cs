@@ -68,7 +68,7 @@ namespace CkgDomainLogic.Equi.Services
             if (mitTempVers)
                 SAP.SetImportParameter("I_TEMPVERS", "X");
 
-            var ref1 = GetUserReferenceValueByReferenceType(Referenzfeldtyp.ZZREFERENZ1);
+            var ref1 = GetStringUserReferenceValueByReferenceType(ReferenzfeldtypString.ZZREFERENZ1);
             if (!String.IsNullOrEmpty(ref1))
                 SAP.SetImportParameter("I_ZZREFERENZ1", ref1);
 

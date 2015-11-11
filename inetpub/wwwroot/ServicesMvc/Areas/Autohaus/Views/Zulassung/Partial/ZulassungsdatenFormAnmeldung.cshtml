@@ -5,17 +5,86 @@
 @{
     var materialList = (List<Material>)ViewData["MaterialList"];
 }
-@Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
-@Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
-@Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
-@Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
-                                postControlHtml: 
-                                    @<text> <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()"
-                                                class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5">
-                                                </i>@Localize.LoadDistrictFromOwnerAddress</a>
-                                            @Html.SpanAlert("kfzKreisHint")
-                                    </text>)
-@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml: @<text><div class="alert" id="EvbInfo"></div></text>)
+
+@Html.HiddenFor(m => m.UiUpdateOnly)
+
+@if (Model.IsMassenzulassung)
+{
+    @Html.HiddenFor(m => m.HaltereintragVorhanden)
+    @Html.HiddenFor(m => m.Expressversand)
+    
+    @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
+    @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
+
+    @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+
+    @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
+}
+else
+{
+    if (Model.ZulassungsartAutomatischErmitteln)
+    {
+        @Html.HiddenFor(m => m.ZulassungsartMatNr)
+        @Html.HiddenFor(m => m.MindesthaltedauerDays)
+    }
+    else
+    {
+        @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
+        @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
+    }
+
+    @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small", col = "left" })
+    @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" },
+                        postControlHtml:
+                            @<text>
+                                <span id="divWkzLink">
+                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn button-prev margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
+                                </span>
+                            </text>)
+
+    @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();", col = "left" })
+    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo))
+
+    if (Model.ZulassungsartAutomatischErmitteln)
+    {
+        @Html.FormRadioButtonListFor(m => m.HaltereintragVorhanden, Zulassungsdaten.HaltereintragVorhandenOptions.ToSelectList(), new { @class = "m-wrap", col = "left" })
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.HaltereintragVorhanden)
+        @Html.FormPlaceHolder(null, new { col = "left" })
+    }
+    if (Model.KennzeichenReserviert)
+    {
+        @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
+    }
+    else
+    {
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
+    }
+
+    if (Model.ZulassungsartAutomatischErmitteln)
+    {
+        @Html.FormCheckBoxListFor(Localize.MailOrderRegistration72h, new { @class = "m-wrap", col = "left" }, m => m.Expressversand)
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.Expressversand)
+        @Html.FormPlaceHolder(null, new { col = "left" }) 
+    }
+    if (Model.KennzeichenReserviert)
+    {
+        @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
+    }
+    else
+    {
+        @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "right" })
+    }
+}
+
+@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
+@Html.FormPlaceHolder(@<text><div class="alert" id="EvbInfo"></div></text>, new { col = "right" })
+
 @if (Model.IsMassenzulassung)
 {
     using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
@@ -36,7 +105,7 @@
                     columns.XBound(c => c.ResKennz).ClientTemplate("<input id='ResKennz_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz blockrk blockdisabled' data-fieldname='ResKennz' value='<#= data.ResKennz #>' />");
                     columns.XBound(c => c.ReservationNr).ClientTemplate("<input id='ReservationNr_<#= data.FIN #>' type='text' class='inputwidth editkennz blockrk blockdisabled' data-fieldname='ReservationNr' value='<#= data.ReservationNr #>' />");
                     columns.XBound(c => c.ReservationName).ClientTemplate("<input id='ReservationName_<#= data.FIN #>' type='text' class='inputwidth editkennz blockrk blockdisabled' data-fieldname='ReservationName' value='<#= data.ReservationName #>' />");
-                    
+
                     columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                 })
                 .XAutoColumnConfiguration()
@@ -46,20 +115,13 @@
         )
     }
 }
-else
-{
-    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" },
-                        postControlHtml: 
-                            @<text>
-                                <span id="divWkzLink">
-                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn white mini margin-bottom-10"><i class="icon-shopping-cart margin-right-5"></i> @Localize.AssignKennzeichen</a>
-                                </span>
-                            </text>)
-    @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
 
-    @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-    @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
+<script type="text/javascript">
+    
+    $(function () {
+        setTimeout(function () {
+            InitZulassungsdatenControls();
+        }, 500);
+    });
 
-    @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-    @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
-}
+</script>

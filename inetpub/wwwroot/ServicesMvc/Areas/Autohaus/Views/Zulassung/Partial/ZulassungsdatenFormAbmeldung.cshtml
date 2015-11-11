@@ -8,11 +8,12 @@
     }
 </script>
 
+@Html.HiddenFor(m => m.ZulassungsartMatNr)
+@Html.HiddenFor(m => m.Zulassungskreis)
+
 @if (Model.IsMassenabmeldung)
 {
-    @Html.HiddenFor(m => m.ZulassungsartMatNr)
     @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
-    @Html.HiddenFor(m => m.Zulassungskreis)
 
     using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
     {
@@ -35,15 +36,11 @@
                 .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
         )
     }
-
 }
 else
 {
-    @Html.HiddenFor(m => m.ZulassungsartMatNr)
-    @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
-    @Html.HiddenFor(m => m.Zulassungskreis)
+    @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small", col = "left" })
+    @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" })
 
-    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-    @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: Localize.LicenseNo)
 }
-

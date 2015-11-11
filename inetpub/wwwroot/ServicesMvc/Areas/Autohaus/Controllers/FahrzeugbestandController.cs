@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Linq;
 using System.Web.Mvc;
+using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Services;
+using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
@@ -51,24 +54,30 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.FahrzeugAkteBestandSelektor = model;
 
-            ViewModel.ValidateSearch(ModelState.AddModelError);
+            if (model.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                if (model.TmpSelectionType == "HALTER")
+                    model.Halter = (model.TmpSelectionKey == "ALLE" ? "" : model.TmpSelectionKey);
+                else
+                    model.Kaeufer = (model.TmpSelectionKey == "ALLE" ? "" : model.TmpSelectionKey);
+
+                ModelState.Clear();
+                model.IsValid = false;
+                return PartialView("Partial/FahrzeugAkteBestandSuche", model);
+            }
 
             if (ModelState.IsValid)
                 ViewModel.LoadFahrzeuge();
 
-            return PartialView("Partial/FahrzeugAkteBestandSuche", ViewModel.FahrzeugAkteBestandSelektor);
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView("Partial/FahrzeugAkteBestandSuche", model);
         }
 
 
         [HttpPost]
         public ActionResult FinSearchFormSubmit(FahrzeugAkteBestandSelektor model)
         {
-            if (model.TmpEnforcePartnerDropdownRefresh)
-            {
-                ViewModel.DataMarkForRefreshPartnerAdressen();
-                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", model);
-            }
-
             ViewModel.FinSearchSelektor = model;
             ViewModel.ValidateFinSearch(ModelState.AddModelError);
             if (!ModelState.IsValid)
@@ -118,7 +127,88 @@ namespace ServicesMvc.Autohaus.Controllers
                     handelsName = (model ?? new FahrzeugAkteBestand()).HandelsName
                 });
         }
-        
+
+        #region Halter
+
+        [GridAction]
+        public ActionResult HalterAdressenAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.HalterForSelectionFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterHalterAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterHalterForSelection(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult HalterAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshPartnerAdressen();
+
+            return PartialView("Partial/HalterAdressenAuswahlGrid");
+        }
+
+        public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.HalterForSelectionFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.CarOwner, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult HalterAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.HalterForSelectionFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.CarOwner, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Käufer
+
+        [GridAction]
+        public ActionResult KaeuferAdressenAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.KaeuferForSelectionFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterKaeuferAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterKaeuferForSelection(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult KaeuferAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshPartnerAdressen();
+
+            return PartialView("Partial/KaeuferAdressenAuswahlGrid");
+        }
+
+        public ActionResult KaeuferAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.KaeuferForSelectionFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Buyer, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult KaeuferAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.KaeuferForSelectionFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Buyer, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion   
 
         #region Grid
 

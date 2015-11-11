@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -48,9 +49,10 @@ namespace CkgDomainLogic.General.ViewModels
         public Customer TmpCustomer { get; set; }
 
 
-        public void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
+        public void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError, out ILogonContextDataService logonContext)
         {
             LogonContext.TryLogonUser(loginModel, addModelError);
+            logonContext = LogonContext;
         }
 
         public string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)

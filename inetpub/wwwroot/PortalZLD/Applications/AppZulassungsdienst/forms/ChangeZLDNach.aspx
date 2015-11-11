@@ -292,7 +292,8 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField  HeaderText="Preis">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtPreis" Width="55px" onKeyPress="return numbersonly(event, true)" Text='<%# Eval("Preis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server"/>
+                                                                    <asp:TextBox ID="txtPreis" Width="55px" onKeyPress="return numbersonly(event, true)" Text='<%# Eval("Preis", "{0:F}") %>' 
+                                                                        CssClass="TextBoxNormal" runat="server" Enabled='<%# proofBlTypOKPreisEditable(Eval("ID_POS").ToString()) %>'/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="TablePadding"/>
                                                                 <HeaderStyle BorderStyle="None" HorizontalAlign="Left" CssClass="GridDetail active"  BorderColor="#ffffff" BorderWidth="0px"/>
