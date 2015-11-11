@@ -202,10 +202,6 @@
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="HC-Ort" SortExpression="HC-Ort" >
-                                                        <HeaderStyle Width="140px" />
-                                                        <ItemStyle Wrap="false" />
-                                                    </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="Eingangsdatum" SortExpression="Eingangsdatum" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
@@ -213,9 +209,13 @@
                                                         <HeaderStyle Width="85px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="Modell" SortExpression="Modell" >
+                                                    <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
                                                         <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" UniqueName="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
