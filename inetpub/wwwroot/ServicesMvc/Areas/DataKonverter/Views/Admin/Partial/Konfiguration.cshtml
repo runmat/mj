@@ -8,12 +8,12 @@
     }
 </style>
 
-<div id="DivKonfiguration" class="margin-top-20">
+<div id="DivKonfiguration" class="margin-top-20" style="height: 550px;">
     <h4>Konfiguration</h4>
 
     <div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
 
-    <button class="btn white margin-left-10" onclick="ClearAll();">
+    <button class="btn white" onclick="ClearAll();">
         Bereinigen
         <i class="icon-remove"></i>
     </button>
@@ -71,7 +71,6 @@
 </div>*@
 
     <div id="DataKonverterContainer2x" style="width: 650px;">
-        sdf
         <div id="source" style="padding: 0px;">
             @foreach (var item in Model.SourceFile.Columns)
             {
@@ -299,11 +298,17 @@
     }
 
     function NewConnection(connectionId, source, dest) {
+        var test = $("#" + dest);
+
+        jsPlumb.makeSource($(".w"), startpointOptions);
+        jsPlumb.makeTarget($(".ept"), endpointOptions);
+
         jsPlumb.connect({
             source: source,
             target: dest
         });
-        jsPlumb.repaint(connectionId);
+        jsPlumb.revalidate();
+        jsPlumb.repaintEverything();
     }
 
     function Save() {
@@ -340,7 +345,7 @@
             if (item.ProcessorId !== "processorTemplate")
                 NewProcessor(item.ProcessorId, item.Title, item.Top, item.Left, item.Type);
         });
-
+                
         jsonConnections.forEach(function (item) {
             console.log(item.ConnectionId + " -> " + item.SourceId + " -> " + item.DestId);
             NewConnection(item.ConnectionId, item.SourceId, item.DestId);
@@ -367,7 +372,7 @@
             type: "POST",
             url: "Admin/LiveTransform",
             data: { input: input, func: func },
-            loadingShow: true,
+            loadingShow: false,
             success: function (result) {
                 
                 // Direkt an Zielfeld

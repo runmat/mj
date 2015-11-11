@@ -75,9 +75,13 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             {
             };
 
+            var csvFilename = ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            //var destFilename = "";
+            SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
+            DestinationFile = FillDestinationObj("KroschkeOn.xsd");
+
             #endregion
         }
-
 
         #region File converter
 
@@ -87,7 +91,8 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
             var tmpDestFile = Path.Combine(tempFolder, csvFilename);
 
-            var errorResult = DocumentTools.Services.SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
+            // var errorResult = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
+            tmpDestFile = @"C:\dev\inetpub\wwwroot\ServicesMvc\App_Data\FileUpload\Temp\Testfile3.csv";
 
             return tmpDestFile;
         }

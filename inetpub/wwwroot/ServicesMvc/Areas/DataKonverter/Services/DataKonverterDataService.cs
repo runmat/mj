@@ -35,14 +35,6 @@ namespace CkgDomainLogic.DataKonverter.Services
         {            
             var encoding = GetFileEncoding(filename, Encoding.UTF8);
 
-            var csvTable = new DataTable();
-            
-            //CsvReader csvObj;
-            //using (csvObj = CsvReaderFactory.GetCsvObj(filename, firstRowIsCaption, delimiter))
-            //{
-            //    //csvTable.Load(csvObj);
-            //}
-
             var csvObj = CsvReaderFactory.GetCsvObj(filename, firstRowIsCaption, delimiter);
 
             var fieldCount = csvObj.FieldCount;

@@ -52,12 +52,10 @@ namespace ServicesMvc.DataKonverter.Controllers
 
             ViewModel.DataInit();
 
-            var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
-            var destFilename = "";
-
-            ViewModel.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
-
-            ViewModel.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn.xsd");
+            //var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            //var destFilename = "";
+            //ViewModel.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
+            //ViewModel.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn.xsd");
 
             return View(ViewModel);
         }
