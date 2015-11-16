@@ -83,6 +83,8 @@ namespace SapORM.Models
 
 			public string CLIENTNAME { get; set; }
 
+			public string FORM_SPRAS { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -113,6 +115,7 @@ namespace SapORM.Models
 					BRIEF_SCHLUE_ADR = (string)row["BRIEF_SCHLUE_ADR"],
 					CLIENT_NR = (string)row["CLIENT_NR"],
 					CLIENTNAME = (string)row["CLIENTNAME"],
+					FORM_SPRAS = (string)row["FORM_SPRAS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
