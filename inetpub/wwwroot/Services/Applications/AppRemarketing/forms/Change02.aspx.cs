@@ -485,9 +485,7 @@ namespace AppRemarketing.forms
                 {
                     objSuche.Kennung = txtNummerDetail.Text.Trim();
 
-                    DataRow[] selRow = objSuche.Haendler.Table.Select("Debitor = '" + objSuche.Kennung + "'");
-
-                    m_report.Debitor = selRow[0]["Referenz"].ToString();
+                    m_report.Debitor = objSuche.Kennung;
 
                     DoSubmit();
                 }
