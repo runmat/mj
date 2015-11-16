@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CKG.Base.Kernel;
 using CKG.Base.Business;
 using CKG.Base.Common;
-using CKG.Base;
 using System.Data;
 
 namespace AppRemarketing.lib
 {
     public class FzgSperren : BankBase
     {
-       #region "Declaclarations"
+        #region "Declaclarations"
 
         String m_strFilename2;
         String m_strFahrgestellnummer;
+        String m_strDebitor;
         DataTable m_tblFahrzeuge;
         DataTable m_tblFehlerFahrzeuge;
         DataTable m_tblUpload;
@@ -24,7 +20,9 @@ namespace AppRemarketing.lib
         String mE_MESSAGE;
 
         #endregion
+
         #region "Properties"
+
         public String E_SUBRC
         {
             get { return mE_SUBRC; }
@@ -54,20 +52,27 @@ namespace AppRemarketing.lib
             get { return m_tblFehlerFahrzeuge; }
             set { m_tblFehlerFahrzeuge = value; }
         }
+
         public String Fahrgestellnummer
         {
             get { return m_strFahrgestellnummer; }
             set { m_strFahrgestellnummer = value; }
         }
 
+        public String Debitor
+        {
+            get { return m_strDebitor; }
+            set { m_strDebitor = value; }
+        }
+
         #endregion
+
         public FzgSperren(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
                                         : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
 	    {
             this.m_strFilename2 = strFilename;
 
 	    }
-
 
         public override void Change()
         {
@@ -78,6 +83,7 @@ namespace AppRemarketing.lib
         {
 
         }
+
         public void Show(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.FILL";
@@ -94,8 +100,13 @@ namespace AppRemarketing.lib
 
                 myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
 
-
-
+                // Selektion nach Händler/Debitor oder Upload-Tabelle/FIN-Liste
+                if (!String.IsNullOrEmpty(m_strDebitor))
+                {
+                    myProxy.setImportParameter("I_RDEALER", m_strDebitor);
+                }
+                else
+                {
                     DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
                     DataRow rowUpload = null;
                     foreach (DataRow rowUpload_loopVariable in m_tblUpload.Rows)
@@ -110,7 +121,7 @@ namespace AppRemarketing.lib
                         SapTable.Rows.Add(tmpSAPRow);
                         SapTable.AcceptChanges();
                     }
-
+                }
 
                 myProxy.callBapi();
 
@@ -197,6 +208,7 @@ namespace AppRemarketing.lib
             }
 
         }
+
         public void ShowAll(String strAppID, String strSessionID, System.Web.UI.Page page, String OhneHaendlerSperre)
         {
             m_strClassAndMethod = "FzgSperren.ShowAll";
@@ -316,6 +328,7 @@ namespace AppRemarketing.lib
             }
 
         }
+
         public void Sperren(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.Sperren";
@@ -378,6 +391,7 @@ namespace AppRemarketing.lib
             }
 
         }
+
         public void Entsperren(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.Sperren";
