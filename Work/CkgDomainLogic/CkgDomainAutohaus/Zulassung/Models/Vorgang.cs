@@ -30,6 +30,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "VERSANDZULASSUNG")
                     return "?versandzulassung=1";
 
+                if (BeauftragungsArt == "SONDERZULASSUNG")
+                    return "?sonderzulassung=1";
+
                 if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
@@ -43,6 +46,12 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string Vorerfasser { get; set; }
 
+        public string Aenderer { get; set; }
+
+        public DateTime? ErfassungsDatum { get; set; }
+
+        public string ErfassungsZeit { get; set; }
+
         public string VorgangsStatus { get; set; }
 
         public Rechnungsdaten Rechnungsdaten { get; set; }
@@ -55,6 +64,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr {get { return Fahrzeugdaten.FahrgestellNr; } }
+
+        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
+        public string EvbNr { get { return Zulassungsdaten.EvbNr; } }
 
         public Adressdaten Halter { get; set; }
 
@@ -165,6 +177,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (Zulassungsdaten.ModusVersandzulassung)
                     return Localize.OrderSummaryVehicleMailOrderRegistration;
+
+                if (Zulassungsdaten.ModusSonderzulassung)
+                    return Localize.OrderSummaryVehicleSpecialRegistration;
 
                 return Localize.OrderSummaryVehicleRegistration;
             }

@@ -271,6 +271,10 @@
     <Content Include="Documents\Templates\Bestellung.doc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAbmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -716,6 +720,7 @@
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\ActionFilters\HolBringServiceGlobalDataAttribute.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Abholung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
@@ -815,36 +820,7 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
-    <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugAuswahl.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahlPresets.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummary.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Receipt.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummaryReceipt.cshtml" />
-    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
-    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
-    <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Abholung.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Anlieferung.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
@@ -889,69 +865,16 @@
     <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Documents\Templates\UploadBriefversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\UploadFahrzeugdaten.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Documents\Templates\UploadFzgVoravisierungSonstigeHersteller.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Documents\Templates\UploadSchluesselversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Documents\Templates\UploadUnitnummern.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Documents\Templates\UploadSperrenVerschieben.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\UploadBriefversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\UploadFahrzeugdaten.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\UploadSchluesselversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <Content Include="Documents\Templates\UploadFzgVoravisierungSonstigeHersteller.xls" />
-    <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
-    <Content Include="Documents\Templates\UploadUnitnummern.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Documents\Templates\UploadSperrenVerschieben.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Documents\Templates\UploadBriefversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Documents\Templates\UploadSchluesselversand.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Images\fahrer\fahrer.psd" />
@@ -2688,7 +2611,6 @@
     <Content Include="Areas\Autohaus\Views\Partner\Pflege.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
@@ -2748,8 +2670,6 @@
     <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\GridMenu.cshtml" />
     <Content Include="Views\Test\Cerberus.cshtml" />
-    <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
-    <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieVermieterGrid.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieVermieterDetail.cshtml" />
     <Content Include="Views\Equi\FahrzeugHistorieVermieter.cshtml" />
@@ -2893,81 +2813,6 @@
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
     <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
-    <Content Include="Views\ModellId\Verwaltung.cshtml" />
-    <Content Include="Views\ModellId\Partial\Common.cshtml" />
-    <Content Include="Views\ModellId\Partial\Grid.cshtml" />
-    <Content Include="Views\ModellId\Partial\DetailsForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportFahrzeugzulaeufe.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Suche.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Grid.cshtml" />
-    <Content Include="Views\Finance\CarporteingaengeOhneEH\CarporteingaengeOhneEHGrid.cshtml" />
-    <Content Include="Views\Finance\CarporteingaengeOhneEH\CarporteingaengeOhneEHSuche.cshtml" />
-    <Content Include="Views\Finance\ReportCarporteingaengeOhneEH.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportTreuhandverwaltung.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\FileUpload.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\Receipt.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\ValidationGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungKundenAuswahl.cshtml" />
-    <Content Include="Views\Fahrzeuge\FahrzeugvoravisierungExcelUpload.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungReportsSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeKommentar.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\FileUpload.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\Receipt.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\ValidationGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\FahrzeugvoravisierungSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportDispositionsliste.cshtml" />
-    <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportZulaufEinsteuerung.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\GridSettingsAdministration.cshtml" />
-    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\Common.cshtml" />
-    <Content Include="Views\Batcherfassung\Verwaltung.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\Common.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\DetailsForm.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\GridBatcherfassung.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\Suche.cshtml" />
-    <Content Include="Views\Batcherfassung\ExcelUpload\FileUpload.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\GridUnitnumbers.cshtml" />
-    <Content Include="Views\Batcherfassung\Partial\DetailsFormReadOnly.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben\Grid.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben\SperrenForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben\VerschiebenForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben\TextErfassenForm.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\Partial\Grid.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\Partial\Common.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\Partial\Suche.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\ReportStatusbericht.cshtml" />
-    <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
-    <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateSearch.cshtml" />
-    <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateEdit.cshtml" />
-    <Content Include="Views\Shared\Partial\Summary\Summary.cshtml" />
-    <Content Include="Views\Shared\Partial\Summary\SummaryPdf.cshtml" />
-    <Content Include="Views\Shared\Partial\Summary\SummaryAsHeader.cshtml" />
-    <Content Include="Views\Shared\Partial\Summary\SummaryPdfBody.cshtml" />
-    <Content Include="Views\Logs\Errors.cshtml" />
-    <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
-    <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
-    <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\ReportGeneratorSettings.cshtml" />
-    <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
-    <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
-    <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
-    <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
@@ -2987,7 +2832,6 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
     <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresse.cshtml" />

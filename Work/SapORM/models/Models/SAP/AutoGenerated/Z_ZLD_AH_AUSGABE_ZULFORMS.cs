@@ -161,6 +161,30 @@ namespace SapORM.Models
 
 			public string BRIEFNR { get; set; }
 
+			public string WEBUSER_ID { get; set; }
+
+			public string WEBGOUP_ID { get; set; }
+
+			public string ETIKETT { get; set; }
+
+			public string FZGTYP { get; set; }
+
+			public string FARBE { get; set; }
+
+			public string APPID { get; set; }
+
+			public string BEAUFTRAGUNGSART { get; set; }
+
+			public string RES_NAME { get; set; }
+
+			public Int32? HALTEDAUER { get; set; }
+
+			public DateTime? VE_ERDAT { get; set; }
+
+			public string VE_ERZEIT { get; set; }
+
+			public string VE_AENAM { get; set; }
+
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK_IN
@@ -230,6 +254,18 @@ namespace SapORM.Models
 					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
 					ZZREFNR5 = (string)row["ZZREFNR5"],
 					BRIEFNR = (string)row["BRIEFNR"],
+					WEBUSER_ID = (string)row["WEBUSER_ID"],
+					WEBGOUP_ID = (string)row["WEBGOUP_ID"],
+					ETIKETT = (string)row["ETIKETT"],
+					FZGTYP = (string)row["FZGTYP"],
+					FARBE = (string)row["FARBE"],
+					APPID = (string)row["APPID"],
+					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
+					RES_NAME = (string)row["RES_NAME"],
+					HALTEDAUER = (string.IsNullOrEmpty(row["HALTEDAUER"].ToString())) ? null : (Int32?)Convert.ToInt32(row["HALTEDAUER"]),
+					VE_ERDAT = (string.IsNullOrEmpty(row["VE_ERDAT"].ToString())) ? null : (DateTime?)row["VE_ERDAT"],
+					VE_ERZEIT = (string)row["VE_ERZEIT"],
+					VE_AENAM = (string)row["VE_AENAM"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
