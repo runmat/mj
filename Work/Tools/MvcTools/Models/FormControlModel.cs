@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 
@@ -56,6 +57,11 @@ namespace MvcTools.Models
         /// optionally hide left positioned label 
         /// </summary>
         public bool LabelHidden { get; set; }
+
+        /// <summary>
+        /// optionally collapse whole control with all surrounding html templates
+        /// </summary>
+        public bool IsCollapsed { get; set; }
 
         private FormMultiColumnMode _columnMode = FormMultiColumnMode.None;
         public FormMultiColumnMode ColumnMode
@@ -134,8 +140,11 @@ namespace MvcTools.Models
             }
         }
 
-        private static FormMultiColumnMode IncrementMultiColumnMode(string autoKey, ref string storedValue)
+        private FormMultiColumnMode IncrementMultiColumnMode(string autoKey, ref string storedValue)
         {
+            if (IsCollapsed)
+                return GetMultiColumnMode(storedValue);
+
             FormMultiColumnMode nextValue;
 
             if (autoKey.EndsWith("3"))

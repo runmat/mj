@@ -350,12 +350,16 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),                LabelHidden = labelHidden,                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                LabelHidden = labelHidden,
+                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
                 PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
@@ -368,30 +372,6 @@ namespace PortalMvcTools.Web
         public static bool FormIsInvisible<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
         {
             return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
-        }
-
-        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
-        {
-            controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
-            controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
-            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
-            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
-
-            var model = new FormControlModel
-            {
-                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
-                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
-                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
-                ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
-                ValidationMessageHtml = html.ValidationMessageFor(expression),
-                IconCssClass = iconCssClass,
-                ControlHtmlAttributes = controlHtmlAttributesDict,
-                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
-                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
-                LabelHidden = labelHidden,
-            };
-
-            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormTextBox(this HtmlHelper html, string propertyName, object controlHtmlAttributes = null, string labelHtml = null)
@@ -433,6 +413,8 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
 
             var model = new FormControlModel
@@ -484,6 +466,8 @@ namespace PortalMvcTools.Web
 
         private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, Func<object, HelperResult> postControlHtml = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var formatString = "{0:d}";
             var datePickerFor = html.TextBoxFor(expression, formatString, controlHtmlAttributes)
                                     .Concat(new MvcHtmlString("<span class=\"add-on\"><i class=\"icon-calendar\"></i></span>"));
@@ -544,6 +528,8 @@ namespace PortalMvcTools.Web
 
         private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "dropdown");
 
             var model = new FormControlModel
@@ -598,6 +584,8 @@ namespace PortalMvcTools.Web
             object controlHtmlAttributes = null, string labelText = null, 
             Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var controlHtmlAttributesDict = controlHtmlAttributes.MergePropertiesStrictly(new { multiple = "multiple", @class = "hide" });
             controlHtmlAttributesDict.Add("data-placeholder", "..."); // because of the hyphen it is necessary to add this attribute here and not right above
             controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributesDict, expression.GetPropertyName(), "multiselect");
@@ -634,6 +622,8 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var radioButtonsFor = MvcHtmlString.Empty.Concat(selectList.Select(item => html.FormRadioButtonForInner(expression, item)).ToArray());
 
             var model = new FormControlModel
@@ -664,6 +654,8 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit(expression);
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
 
             var model = new FormControlModel
@@ -730,6 +722,8 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormDateRangePickerFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, DateRange>> dateRangeExpression, object controlHtmlAttributes = null, string[] dateRangeGroupsToExclude = null, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit(dateRangeExpression);
+
             var dateRangePropertyName = dateRangeExpression.GetPropertyName();
 
             var innerModel = new FormDateRangePickerModel
@@ -760,6 +754,48 @@ namespace PortalMvcTools.Web
             return html.FormLeftLabelControlConditional(dateRangeExpression, model);
         }
 
+        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
+        {
+            html.FormLeftLabelControlConditionalInit(expression);
+
+            controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
+            controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
+            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+
+            var model = new FormControlModel
+            {
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
+                ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
+                ValidationMessageHtml = html.ValidationMessageFor(expression),
+                IconCssClass = iconCssClass,
+                ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                LabelHidden = labelHidden,
+            };
+
+            return html.FormLeftLabelControlConditional(expression, model);
+        }
+
+        private static void FormLeftLabelControlConditionalInit<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+            const string strRegex = @"action=\""(?<url>.*?)\""";
+            var matches = Regex.Match(partialViewContext, strRegex);
+            string partialViewUrl;
+            if (matches.Groups.Count > 0)
+                partialViewUrl = matches.Groups["url"].Value;
+            else
+                partialViewUrl = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+
+            partialViewUrl = partialViewUrl.NotNullOrEmpty().ToLower();
+
+            SessionHelper.SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
+        }
+
         private static MvcHtmlString FormLeftLabelControlConditional<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, FormControlModel model)
         {
             var modelType = typeof(TModel);
@@ -774,23 +810,21 @@ namespace PortalMvcTools.Web
             if (controller == null || html.ViewContext.HttpContext.Request.Url == null)
                 return html.HiddenFor(expression);
 
-            //var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
-            //const string strRegex = @"action=\""(?<url>.*?)\""";
-            //var matches = Regex.Match(partialViewContext, strRegex);
-            //if (matches.Groups.Count > 0)
-            //    partialViewContext = matches.Groups["url"].Value;
-            //else
-            //    partialViewContext = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
-            //var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewContext, modelType.Name, propertyName);
-            var key = string.Format("HIDDEN: {0} - {1}", modelType.Name, propertyName);
+            var partialViewUrl = SessionHelper.GetSessionString("PartialViewUrlCurrent");
+            if (partialViewUrl == null)
+                return html.HiddenFor(expression);
+
+            var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewUrl, modelType.Name, propertyName);
+            //var key = string.Format("HIDDEN: {0} - {1}", modelType.Name, propertyName);
+
 
             var fieldConfigValue = controller.GetConfigValueForCurrentCustomer(key).NotNullOrEmpty().ToLower();
 
             var fieldIsHidden = (fieldConfigValue == "true");
             if (fieldIsHidden)
-                return html.HiddenFor(expression);
+                model.IsCollapsed = true;
 
-            return html.PartialConditional(PartialViewNameFormLeftLabelControl, model, () => true);
+            return html.Partial(PartialViewNameFormLeftLabelControl, model);
         }
 
         private static MvcHtmlString FormLeftLabelControl(this HtmlHelper html, FormControlModel model)

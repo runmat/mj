@@ -1,22 +1,25 @@
 ﻿@using MvcTools.Models
-@model FormControlModel 
+@model FormControlModel
 
+@{
+    var additionalClass = (Model.IsCollapsed ? " hide" : "");
+}
 
 @if (Model.ColumnMode != FormMultiColumnMode.None)
 {
-    if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Left3)
+    if (!Model.IsCollapsed && (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Left3))
     {
-        @Html.Raw("<div class=\"row-fluid\">")
+        @Html.Raw("<div class=\"row-fluid\">") 
     }
 
     if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Right)
     {
-        @Html.Raw("<div class=\"span6\">")
+        @Html.Raw("<div class=\"span6" + additionalClass + "\">")
     }
 
     if (Model.ColumnMode == FormMultiColumnMode.Left3 || Model.ColumnMode == FormMultiColumnMode.Middle3 || Model.ColumnMode == FormMultiColumnMode.Right3)
     {
-        @Html.Raw("<div class=\"span4\">")
+        @Html.Raw("<div class=\"span4" + additionalClass + "\">")
     }
 }
 
@@ -73,7 +76,7 @@
 {
     @Html.Raw("</div>")
 
-    if (Model.ColumnMode == FormMultiColumnMode.Right || Model.ColumnMode == FormMultiColumnMode.Right3)
+    if (!Model.IsCollapsed && (Model.ColumnMode == FormMultiColumnMode.Right || Model.ColumnMode == FormMultiColumnMode.Right3))
     {
         @Html.Raw("</div>")
     }
