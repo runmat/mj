@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
+using GeneralTools.Models;
 using Leasing.lib;
 
 namespace Leasing.forms
@@ -210,9 +211,11 @@ namespace Leasing.forms
                     trVersicherungstr.Visible = true;
                     trEvbNr.Visible = true;
                     txtKreis.Text = lblKreis.Text;
+                    lblKreis.Text = "";
                     lblKreis.Visible = true;
                     txtKreis.Visible = false;
                     trHinweis.Visible = false;
+                    btnZulkreis.Visible = true;
                     break;
                 case "572": // "Ummeldung ausserorts"
                     pnlHalter.Visible = true;
@@ -225,6 +228,7 @@ namespace Leasing.forms
                     txtKreis.Text = lblKreis.Text;
                     lblKreis.Visible = false;
                     txtKreis.Visible = true;
+                    btnZulkreis.Visible = false;
                     break;
                 case "1294": // "Umkennzeichnung"
                     pnlHalter.Visible = false;
@@ -237,6 +241,7 @@ namespace Leasing.forms
                     txtKreis.Text = lblKreis.Text;
                     lblKreis.Visible = true;
                     txtKreis.Visible = false;
+                    btnZulkreis.Visible = false;
                     break;
                 case "2037": // "Ersatzfahrzeugschein"
                 case "2076": // "Kennzeichen erneuern / Nachstempelung"
@@ -245,23 +250,27 @@ namespace Leasing.forms
                     trHinweis.Visible = true;
                     lblHinweis.Text = "Bitte Verlusterklärung / eidestattliche Versicherung im Original an DAD senden.";
                     txtKreis.Text = "";
+                    btnZulkreis.Visible = false;
                     break;
                 case "1380-1": // "Technischer Eintrag"
                     pnlSonstiges.Visible = true;
                     trHinweis.Visible = true;
                     lblHinweis.Text = "Bitte Gutachten im Original an DAD senden.";
                     txtKreis.Text = "";
+                    btnZulkreis.Visible = false;
                     break;
                 case "1380-2": // "Korrektur wegen Fehleintrag"
                     pnlSonstiges.Visible = true;
                     trHinweis.Visible = false;
                     txtKreis.Text = "";
+                    btnZulkreis.Visible = false;
                     break;
                 case "1380-3": // "Abmeldung"
                     pnlSonstiges.Visible = true;
                     trHinweis.Visible = true;
                     lblHinweis.Text = "Bitte ZB1 im Original und Kennzeichen an DAD senden.";
                     txtKreis.Text = "";
+                    btnZulkreis.Visible = false;
                     break;
                 case "1462": // "Wiederzulassung"
                     pnlEmpfaenger.Visible = true;
@@ -272,6 +281,7 @@ namespace Leasing.forms
                     trEvbNr.Visible = true;
                     trHinweis.Visible = false;
                     txtKreis.Text = "";
+                    btnZulkreis.Visible = false;
                     break;
                 case "kein":
                 default:
@@ -433,6 +443,35 @@ namespace Leasing.forms
 
             Session["objDienstleistung"] = objDienstleistung;
             Response.Redirect("Change81_4.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        protected void SucheZulassungskreis(object sender, EventArgs e)
+        {
+            lblKreis.Text = "";
+
+            if (txtHalterPLZ.Text.Length != 5)
+            {
+                lblError.Text = "Bitte geben Sie eine fünfstellige PLZ beim Halter ein.";
+                lblError.Visible = true;
+                return;
+            }
+
+            String zulassungskreis = objDienstleistung.KreisSuche(Session["AppID"].ToString(),
+                Session.SessionID, this, txtHalterPLZ.Text);
+
+            if (zulassungskreis.IsNullOrEmpty())
+            {
+                lblError.Text = "Der Zulassungskreis konnte nicht ermittelt werden.";
+                lblError.Visible = true;
+            }
+            else
+            {
+                objDienstleistung.Kreis = zulassungskreis;
+                lblKreis.Text = zulassungskreis;
+            }
+
+            Session["objDienstleistung"] = objDienstleistung;
+
         }
 
         protected void HalterLandChanged(object sender, EventArgs e)

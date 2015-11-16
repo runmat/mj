@@ -855,7 +855,7 @@ namespace Leasing.lib
             return !regexAlphaNum.IsMatch(str);
         }
 
-        public string KreisStva(String strAppID, String strSessionID, Page page, String plz)
+        public string KreisSuche(String strAppID, String strSessionID, Page page, String plz)
         {
             string kreiskennzeichen = "";
 
@@ -869,8 +869,7 @@ namespace Leasing.lib
 
                 myProxy.callBapi();
 
-                DataTable kreise;
-                kreise = myProxy.getExportTable("T_ZULST");
+                var kreise = myProxy.getExportTable("T_ZULST");
 
                 if (kreise.Rows.Count > 0)
                 {
