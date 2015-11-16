@@ -38,7 +38,10 @@ namespace MyBoss
             }
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftShift))
+            {
                 Close();
+                MainWindow.StartOutlook();
+            }
         }
     }
 }

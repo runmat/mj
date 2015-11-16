@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -34,6 +36,20 @@ namespace MyBoss
 
             _notifyIcon.Visible = true;
             Hide();
+        }
+
+        const string OutlookProcessFullName = "outlook";
+
+        static void KillOutlook()
+        {
+            var outlookProcess = Process.GetProcesses().FirstOrDefault(p => OutlookProcessFullName.Contains(p.ProcessName.ToLower()));
+            if (outlookProcess != null)
+                outlookProcess.Kill();
+        }
+
+        public static void StartOutlook()
+        {
+            Process.Start(OutlookProcessFullName + ".exe");
         }
 
         bool _listener_OnKeyPressed(KeyPressedArgs e)
@@ -74,6 +90,7 @@ namespace MyBoss
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks2, Key.LeftShift, () =>
             {
+                KillOutlook();
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
                 new FakeWindow("fake_lockscreen.png").Show();
