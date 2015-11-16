@@ -11,7 +11,7 @@ namespace CkgDomainLogic.Fahrer.Contracts
         [SelectListKey]
         string UniqueKey { get; }
 
-        string Fahrt { get; }
+        string Fahrt { get; set;  }
 
         [SelectListText]
         string AuftragsDetails { get; }

@@ -10,11 +10,16 @@ Partial Public Class Downloadfile2
         If Session("OnlinePdfBytes") IsNot Nothing Then
             Dim pdfBytes As Byte() = CType(Session("OnlinePdfBytes"), Byte())
 
+            Dim filename As String = "AuftraegeOnline.pdf"
+            If Session("OnlinePdfName") IsNot Nothing Then
+                filename = Session("OnlinePdfName").ToString()
+            End If
+
             Response.Clear()
             Response.ClearContent()
             Response.ClearHeaders()
             Response.ContentType = "application/pdf"
-            Response.AddHeader("Content-Disposition", "inline; filename=" + "AuftraegeOnline.pdf")
+            Response.AddHeader("Content-Disposition", "inline; filename=" + filename)
             Response.AddHeader("Expires", "0")
             Response.AddHeader("Pragma", "cache")
             Response.AddHeader("Cache-Control", "private")

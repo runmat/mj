@@ -84,25 +84,13 @@ namespace ServicesMvc
 
         protected void Session_Start(object sender, EventArgs e)
         {
-            //
-            // DB Tier to Middle Tier Model mapping validation:
-            // validate model mappings between our de-coupled SAP and Web Models
-            //
-            new CkgDomainLogic.General.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.CoC.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Fahrzeuge.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Strafzettel.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Leasing.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Uebfuehrg.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Zulassung.MobileErfassung.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.Finance.Models.AppModelMappings().ValidateAndRaiseError();
-            new CkgDomainLogic.Fahrer.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.Equi.Models.AppModelMappings().ValidateAndRaiseError();
-            //new CkgDomainLogic.DomainCommon.Models.AppModelMappings().ValidateAndRaiseError();
         }
 
         protected void Application_BeginRequest()
         {
+            var context = HttpContext.Current;
+            var request = context.Request;
+            var url = request.Url;
         }
 
         protected void Application_AcquireRequestState()
@@ -204,6 +192,10 @@ namespace ServicesMvc
             var exception = Server.GetLastError();
             var dataContext = SessionStore.GetCurrentDataContext();
             var logonContext = SessionStore.GetCurrentLogonContext();
+
+            if (exception.Message.NotNullOrEmpty().Contains("__browserLink/requestData"))
+                // ignore this error
+                return;
 
             this.HandleError();
 

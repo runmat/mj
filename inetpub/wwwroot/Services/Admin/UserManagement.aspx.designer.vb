@@ -788,6 +788,33 @@ Partial Public Class UserManagement
     Protected WithEvents txtReference3 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''trReference4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trReference4 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblReferenceType4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblReferenceType4 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cbxReference4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cbxReference4 As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
     '''trMail-Steuerelement
     '''</summary>
     '''<remarks>
@@ -849,6 +876,15 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents txtValidFrom As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtValidTo-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtValidTo As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''trCustomerAdmin0-Steuerelement

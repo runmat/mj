@@ -29,6 +29,7 @@ Namespace Kernel.Security
         Private m_strReference As String
         Private m_strReference2 As String
         Private m_strReference3 As String
+        Private m_blnReference4 As Boolean
         Private m_blnLoggedOn As Boolean
         Private m_blnMatrixfilled As Boolean
         Private m_blnPasswordExpired As Boolean = False
@@ -58,6 +59,7 @@ Namespace Kernel.Security
         Private m_title As String
         Private m_store As String
         Private m_ValidFrom As String
+        Private m_ValidTo As String
         Private m_strUrlRemoteLoginKey As String
 
         <NonSerialized()> Private m_blnEmployee As Boolean = False
@@ -106,6 +108,7 @@ Namespace Kernel.Security
                        ByVal strReference As String, _
                        ByVal strReference2 As String, _
                        ByVal strReference3 As String, _
+                       ByVal blnReference4 As Boolean, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -123,7 +126,8 @@ Namespace Kernel.Security
                        ByVal strTitle As String, _
                        ByVal strStore As String, _
                        ByVal blnMatrixfilled As Boolean, _
-                       ByVal strValidFrom As String)
+                       ByVal strValidFrom As String, _
+                       ByVal strValidTo As String)
 
             m_blnDoubleLoginTry = False
             m_intUserId = intUserId
@@ -131,6 +135,7 @@ Namespace Kernel.Security
             m_strReference = strReference
             m_strReference2 = strReference2
             m_strReference3 = strReference3
+            m_blnReference4 = blnReference4
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -155,6 +160,7 @@ Namespace Kernel.Security
             m_store = strStore
             m_blnMatrixfilled = blnMatrixfilled
             m_ValidFrom = strValidFrom
+            m_ValidTo = strValidTo
         End Sub
 
         Public Sub New( _
@@ -163,6 +169,7 @@ Namespace Kernel.Security
                        ByVal strReference As String, _
                        ByVal strReference2 As String, _
                        ByVal strReference3 As String, _
+                       ByVal blnReference4 As Boolean, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -177,7 +184,8 @@ Namespace Kernel.Security
                        ByVal blnApproved As Boolean, _
                        ByVal strStore As String, _
                        ByVal blnMatrixfilled As Boolean, _
-                       ByVal strValidFrom As String)
+                       ByVal strValidFrom As String, _
+                       ByVal strValidTo As String)
 
             m_blnDoubleLoginTry = False
             m_intUserId = intUserId
@@ -185,6 +193,7 @@ Namespace Kernel.Security
             m_strReference = strReference
             m_strReference2 = strReference2
             m_strReference3 = strReference3
+            m_blnReference4 = blnReference4
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -209,6 +218,7 @@ Namespace Kernel.Security
             m_store = strStore
             m_blnMatrixfilled = blnMatrixfilled
             m_ValidFrom = strValidFrom
+            m_ValidTo = strValidTo
         End Sub
 
 #End Region
@@ -445,6 +455,12 @@ Namespace Kernel.Security
             End Get
         End Property
 
+        Public ReadOnly Property Reference4() As Boolean
+            Get
+                Return m_blnReference4
+            End Get
+        End Property
+
         Public ReadOnly Property LoggedOn() As Boolean
             Get
                 Return m_blnLoggedOn
@@ -552,6 +568,15 @@ Namespace Kernel.Security
             Get
                 Return m_ValidFrom
             End Get
+        End Property
+
+        Public Property ValidTo() As String
+            Get
+                Return m_ValidTo
+            End Get
+            Set(value As String)
+                m_ValidTo = value
+            End Set
         End Property
 
         Public Property Telephone() As String
@@ -930,6 +955,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -947,6 +973,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username ", cn)
@@ -1089,6 +1116,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1106,6 +1134,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username " & _
@@ -1340,6 +1369,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1357,6 +1387,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username", cn)
@@ -1400,6 +1431,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1417,6 +1449,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE UserId = @UserId", cn)
@@ -1547,6 +1580,10 @@ Namespace Kernel.Security
                         If Not TypeOf drUser("Reference3") Is System.DBNull Then
                             m_strReference3 = CStr(drUser("Reference3"))
                         End If
+                        m_blnReference4 = False
+                        If Not TypeOf drUser("Reference4") Is System.DBNull Then
+                            m_blnReference4 = CBool(drUser("Reference4"))
+                        End If
                         m_blnLoggedOn = CBool(drUser("LoggedOn"))
                         If Not drUser("LastLogin") Is System.DBNull.Value Then
                             m_dtmLastLogin = CDate(drUser("LastLogin"))
@@ -1558,6 +1595,9 @@ Namespace Kernel.Security
                         m_title = drUser("Title").ToString
                         m_store = drUser("Store").ToString
                         m_ValidFrom = drUser("ValidFrom").ToString
+                        If Not String.IsNullOrEmpty(m_ValidFrom) Then m_ValidFrom = m_ValidFrom.Replace(" 00:00:00", "")
+                        m_ValidTo = drUser("ValidTo").ToString
+                        If Not String.IsNullOrEmpty(m_ValidTo) Then m_ValidTo = m_ValidTo.Replace(" 00:00:00", "")
                         m_strUrlRemoteLoginKey = drUser("UrlRemoteLoginKey").ToString
                         m_strCreatedBy = drUser("CreatedBy").ToString()
                         m_intQuestionID = -1
@@ -1999,7 +2039,7 @@ Namespace Kernel.Security
             End Try
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String) As Boolean
             Try
                 If Not m_customer.CustomerUsernameRules.DontSendEmail Then
 
@@ -2461,6 +2501,7 @@ Namespace Kernel.Security
                                                  "Reference, " & _
                                                  "Reference2, " & _
                                                  "Reference3, " & _
+                                                 "Reference4, " & _
                                                  "LoggedOn, " & _
                                                  "LastLogin, " & _
                                                  "ReadMessageCount, " & _
@@ -2474,6 +2515,7 @@ Namespace Kernel.Security
                                                  "Matrix," & _
                                                  "LastChangedBy," & _
                                                  "ValidFrom, " & _
+                                                 "ValidTo, " & _
                                                  "UrlRemoteLoginKey) " & _
                              "VALUES(@Username, " & _
                                     "'', " & _
@@ -2487,6 +2529,7 @@ Namespace Kernel.Security
                                     "@Reference, " & _
                                     "@Reference2, " & _
                                     "@Reference3, " & _
+                                    "@Reference4, " & _
                                     "@LoggedOn, " & _
                                     "GetDate(), " & _
                                     "@ReadMessageCount, " & _
@@ -2500,6 +2543,7 @@ Namespace Kernel.Security
                                     "@Matrix, " & _
                                     "@ChangeUser, " & _
                                     "@ValidFrom, " & _
+                                    "@ValidTo, " & _
                                     "@UrlRemoteLoginKey); " & _
                          "SELECT SCOPE_IDENTITY()"
                     Dim cmdCheckUserExits As New SqlClient.SqlCommand("SELECT COUNT(UserID) FROM WebUser WHERE Username=@Username", cn)
@@ -2534,6 +2578,7 @@ Namespace Kernel.Security
                                                  "Store, " & _
                                                  "Matrix, " & _
                                                  "ValidFrom, " & _
+                                                 "ValidTo, " & _
                                                  "UrlRemoteLoginKey) " & _
                              "VALUES(@Username, " & _
                                     "'', " & _
@@ -2554,6 +2599,7 @@ Namespace Kernel.Security
                                     "@Store, " & _
                                     "@Matrix, " & _
                                     "@ValidFrom, " & _
+                                    "@ValidTo, " & _
                                     "@UrlRemoteLoginKey); " & _
                            "SELECT SCOPE_IDENTITY()"
 
@@ -2576,6 +2622,7 @@ Namespace Kernel.Security
                         .AddWithValue("@Store", m_store)
                         .AddWithValue("@Matrix", m_blnMatrixfilled)
                         .AddWithValue("@ValidFrom", m_ValidFrom)
+                        .AddWithValue("@ValidTo", m_ValidTo)
                         .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                     End With
 
@@ -2595,6 +2642,7 @@ Namespace Kernel.Security
                                  "Reference=@Reference, " & _
                                  "Reference2=@Reference2, " & _
                                  "Reference3=@Reference3, " & _
+                                 "Reference4=@Reference4, " & _
                                  "LoggedOn=@LoggedOn, " & _
                                  "ReadMessageCount=@ReadMessageCount, " & _
                                  "Approved=@Approved, " & _
@@ -2605,6 +2653,7 @@ Namespace Kernel.Security
                                  "LastChangedBy=@ChangeUser, " & _
                                  "Matrix=@Matrix, " & _
                                  "ValidFrom=@ValidFrom, " & _
+                                 "ValidTo=@ValidTo, " & _
                                  "UrlRemoteLoginKey=@UrlRemoteLoginKey " & _
                              "WHERE UserID=@UserID"
 
@@ -2628,6 +2677,7 @@ Namespace Kernel.Security
                                  "Store=@Store, " & _
                                  "Matrix=@Matrix, " & _
                                  "ValidFrom=@ValidFrom, " & _
+                                 "ValidTo=@ValidTo, " & _
                                  "UrlRemoteLoginKey=@UrlRemoteLoginKey " & _
                              "WHERE UserHistoryID=@UserHistoryID"
 
@@ -2651,6 +2701,7 @@ Namespace Kernel.Security
                         .AddWithValue("@Store", m_store)
                         .AddWithValue("@Matrix", m_blnMatrixfilled)
                         .AddWithValue("@ValidFrom", IIf(m_ValidFrom = String.Empty, DBNull.Value, m_ValidFrom))
+                        .AddWithValue("@ValidTo", IIf(m_ValidTo = String.Empty, DBNull.Value, m_ValidTo))
                         .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                     End With
 
@@ -2675,6 +2726,7 @@ Namespace Kernel.Security
                     .AddWithValue("@Reference", m_strReference)
                     .AddWithValue("@Reference2", m_strReference2)
                     .AddWithValue("@Reference3", m_strReference3)
+                    .AddWithValue("@Reference4", m_blnReference4)
                     .AddWithValue("@LoggedOn", m_blnLoggedOn)
                     .AddWithValue("@ReadMessageCount", m_intReadMessageCount)
                     .AddWithValue("@Approved", m_approved)
@@ -2685,6 +2737,7 @@ Namespace Kernel.Security
                     .AddWithValue("@Matrix", m_blnMatrixfilled)
                     .AddWithValue("@ChangeUser", m_strCreatedBy)
                     .AddWithValue("@ValidFrom", IIf(m_ValidFrom = String.Empty, DBNull.Value, m_ValidFrom))
+                    .AddWithValue("@ValidTo", IIf(m_ValidTo = String.Empty, DBNull.Value, m_ValidTo))
                     .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                 End With
 
@@ -2830,7 +2883,7 @@ Namespace Kernel.Security
 
         End Sub
 
-        Public Function GetUserReferenceValueByReferenceType(ByVal referenceType As Referenzfeldtyp) As String
+        Public Function GetStringUserReferenceValueByReferenceType(ByVal referenceType As ReferenzfeldtypString) As String
             If Customer.ReferenceType1 = referenceType.ToString() Then
                 Return Reference
             End If
@@ -2844,6 +2897,15 @@ Namespace Kernel.Security
             End If
 
             Return ""
+
+        End Function
+
+        Public Function GetBoolUserReferenceValueByReferenceType(ByVal referenceType As ReferenzfeldtypBool) As Boolean
+            If Customer.ReferenceType4 = referenceType.ToString() Then
+                Return Reference4
+            End If
+
+            Return False
 
         End Function
 

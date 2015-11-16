@@ -74,7 +74,6 @@ namespace CkgDomainLogic.Fahrer.Models
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        [VIN]
         public string VIN { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Protokollart)]

@@ -24,7 +24,7 @@ Partial Public Class UserManagement
     Private m_Districts As DataTable
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         ' Hier Benutzercode zur Seiteninitialisierung einfügen
         m_User = GetUser(Me)
@@ -76,7 +76,7 @@ Partial Public Class UserManagement
     End Function
 
     Private Sub FillHierarchy()
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
             Dim _HierarchyList As New Kernel.HierarchyList(cn)
@@ -107,7 +107,7 @@ Partial Public Class UserManagement
 
     Private Sub FillForm()
 
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
             FillCustomer(cn) 'DropDowns fuer Customer fuellen
@@ -222,7 +222,7 @@ Partial Public Class UserManagement
         End Try
     End Sub
 
-    Private Sub FillGroups(ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillGroups(ByVal intCustomerID As Integer, ByVal cn As SqlConnection)
         Dim dtGroups As New Kernel.GroupList(intCustomerID, cn, m_User.Customer.AccountingArea)
         FillGroup(ddlGroups, False, dtGroups)
         FillGroup(ddlFilterGroup, True, dtGroups)
@@ -275,7 +275,7 @@ Partial Public Class UserManagement
         End With
     End Sub
 
-    Private Sub FillOrganizations(ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillOrganizations(ByVal intCustomerID As Integer, ByVal cn As SqlConnection)
         Dim dtOrganizations As New OrganizationList(intCustomerID, cn, m_User.Customer.AccountingArea)
         FillOrganization(ddlOrganizations, False, dtOrganizations)
         FillOrganization(ddlFilterOrganization, True, dtOrganizations)
@@ -302,7 +302,7 @@ Partial Public Class UserManagement
         End With
     End Sub
 
-    Private Sub FillCustomer(ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillCustomer(ByVal cn As SqlConnection)
         Dim dtCustomers As Kernel.CustomerList
         dtCustomers = New Kernel.CustomerList(m_User.Customer.AccountingArea, cn)
 
@@ -345,7 +345,7 @@ Partial Public Class UserManagement
 
         Dim dvUser As DataView
 
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         cn.Open()
 
         Dim intTemp As Integer
@@ -514,8 +514,11 @@ Partial Public Class UserManagement
             txtReference.Text = _User.Reference
             txtReference2.Text = _User.Reference2
             txtReference3.Text = _User.Reference3
+            cbxReference4.Checked = _User.Reference4
             txtMail.Text = _User.Email
             txtPhone.Text = _User.Telephone
+            txtValidFrom.Text = _User.ValidFrom
+            txtValidTo.Text = _User.ValidTo
             txtReadMessageCount.Text = _User.ReadMessageCount.ToString
             cbxTestUser.Checked = _User.IsTestUser
             chkLoggedOn.Checked = _User.LoggedOn
@@ -541,7 +544,7 @@ Partial Public Class UserManagement
             End If
             If _User.Groups.HasGroups Then
                 Dim intCustomerID As Integer = _User.Customer.CustomerId
-                Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+                Dim cn As New SqlConnection(m_User.App.Connectionstring)
                 cn.Open()
                 Dim dtGroups As New Kernel.GroupList(intCustomerID, cn, m_User.Customer.AccountingArea)
                 FillGroup(ddlGroups, False, dtGroups)
@@ -562,7 +565,7 @@ Partial Public Class UserManagement
             End If
             If IsNumeric(_User.Organization.OrganizationId) Then
                 Dim intCustomerID As Integer = _User.Customer.CustomerId
-                Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+                Dim cn As New SqlConnection(m_User.App.Connectionstring)
                 cn.Open()
                 Dim dtOrganizations As New OrganizationList(intCustomerID, cn, m_User.Customer.AccountingArea)
                 FillOrganization(ddlOrganizations, False, dtOrganizations)
@@ -667,11 +670,11 @@ Partial Public Class UserManagement
             If _User.Picture Then
                 btnRemove.Enabled = True
 
-                Dim info As System.IO.FileInfo
-                info = New System.IO.FileInfo(System.Configuration.ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg")
+                Dim info As IO.FileInfo
+                info = New IO.FileInfo(ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg")
                 If (info.Exists) Then
                     Image1.Visible = True
-                    Image1.ImageUrl = Replace(System.Configuration.ConfigurationManager.AppSettings("UploadPath"), "\", "/") & "responsible/" & txtUserID.Text & ".jpg"
+                    Image1.ImageUrl = Replace(ConfigurationManager.AppSettings("UploadPath"), "\", "/") & "responsible/" & txtUserID.Text & ".jpg"
                 End If
             End If
 
@@ -708,6 +711,7 @@ Partial Public Class UserManagement
         txtReference.Text = ""
         txtReference2.Text = ""
         txtReference3.Text = ""
+        cbxReference4.Checked = False
         txtPassword.Text = ""
         txtConfirmPassword.Text = ""
         txtFirstName.Text = ""
@@ -721,6 +725,7 @@ Partial Public Class UserManagement
         txtPhone.Text = ""
         txtReadMessageCount.Text = "0"
         txtValidFrom.Text = ""
+        txtValidTo.Text = ""
         lblLockedBy.Text = ""
         lblLockedBy.Visible = False
 
@@ -795,7 +800,7 @@ Partial Public Class UserManagement
         If blnLock Then
             strBackColor = "LightGray"
         End If
-        Dim backColor As System.Drawing.Color = System.Drawing.Color.FromName(strBackColor)
+        Dim backColor As Drawing.Color = Drawing.Color.FromName(strBackColor)
 
         txtReadMessageCount.Enabled = enabled
         txtReadMessageCount.BackColor = backColor
@@ -808,6 +813,7 @@ Partial Public Class UserManagement
         txtReference2.BackColor = backColor
         txtReference3.Enabled = enabled
         txtReference3.BackColor = backColor
+        cbxReference4.Enabled = enabled
         cbxTestUser.Enabled = enabled
         chkLoggedOn.Enabled = enabled
         chkNewPasswort.Enabled = enabled
@@ -1042,7 +1048,7 @@ Partial Public Class UserManagement
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "SetOldLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -1087,7 +1093,7 @@ Partial Public Class UserManagement
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "SetNewLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -1101,27 +1107,27 @@ Partial Public Class UserManagement
     Private Function CreateLogTableStructure() As DataTable
         Dim tblPar As New DataTable()
         With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Benutzername", System.Type.GetType("System.String"))
+            .Columns.Add("Status", Type.GetType("System.String"))
+            .Columns.Add("Benutzername", Type.GetType("System.String"))
 
-            .Columns.Add("Vorname", System.Type.GetType("System.String"))
-            .Columns.Add("Nachname", System.Type.GetType("System.String"))
+            .Columns.Add("Vorname", Type.GetType("System.String"))
+            .Columns.Add("Nachname", Type.GetType("System.String"))
 
-            .Columns.Add("Kunden- referenz", System.Type.GetType("System.String"))
-            .Columns.Add("Test", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firmen- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Gruppe", System.Type.GetType("System.String"))
-            .Columns.Add("Organisations- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Organisation", System.Type.GetType("System.String"))
-            .Columns.Add("letzte Kennwortänderung", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwort läuft nie ab", System.Type.GetType("System.Boolean"))
-            .Columns.Add("fehlgeschlagene Anmeldungen", System.Type.GetType("System.String"))
-            .Columns.Add("Konto gesperrt", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Angemeldet", System.Type.GetType("System.Boolean"))
-            .Columns.Add("neues Kennwort", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwortbestätigung", System.Type.GetType("System.String"))
-            .Columns.Add("ReadMessageCount", System.Type.GetType("System.Int32"))
+            .Columns.Add("Kunden- referenz", Type.GetType("System.String"))
+            .Columns.Add("Test", Type.GetType("System.Boolean"))
+            .Columns.Add("Firmen- Administrator", Type.GetType("System.Boolean"))
+            .Columns.Add("Firma", Type.GetType("System.String"))
+            .Columns.Add("Gruppe", Type.GetType("System.String"))
+            .Columns.Add("Organisations- Administrator", Type.GetType("System.Boolean"))
+            .Columns.Add("Organisation", Type.GetType("System.String"))
+            .Columns.Add("letzte Kennwortänderung", Type.GetType("System.String"))
+            .Columns.Add("Kennwort läuft nie ab", Type.GetType("System.Boolean"))
+            .Columns.Add("fehlgeschlagene Anmeldungen", Type.GetType("System.String"))
+            .Columns.Add("Konto gesperrt", Type.GetType("System.Boolean"))
+            .Columns.Add("Angemeldet", Type.GetType("System.Boolean"))
+            .Columns.Add("neues Kennwort", Type.GetType("System.String"))
+            .Columns.Add("Kennwortbestätigung", Type.GetType("System.String"))
+            .Columns.Add("ReadMessageCount", Type.GetType("System.Int32"))
         End With
         Return tblPar
     End Function
@@ -1401,13 +1407,13 @@ Partial Public Class UserManagement
     '-------
     Private Function GetHistoryInfos(ByVal objUser As User) As String
 
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
             If cn.State = ConnectionState.Closed Then
                 cn.Open()
             End If
-            Dim cmd As SqlClient.SqlCommand = New SqlClient.SqlCommand("SELECT LastChangedBy FROM AdminHistory_User " & _
+            Dim cmd As SqlClient.SqlCommand = New SqlCommand("SELECT LastChangedBy FROM AdminHistory_User " & _
                 "WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = @Username AND Action = 'Benutzer gesperrt')", cn)
 
             cmd.Parameters.AddWithValue("@Username", objUser.UserName)
@@ -1462,8 +1468,8 @@ Partial Public Class UserManagement
     End Sub
 
     Private Function Get_Applications(ByVal GroupId As Integer) As ArrayList
-        Dim Connection As New SqlClient.SqlConnection()
-        Dim Command As New SqlClient.SqlCommand()
+        Dim Connection As New SqlConnection()
+        Dim Command As New SqlCommand()
         Dim Applications As ArrayList = New ArrayList()
 
         Try
@@ -1478,7 +1484,7 @@ Partial Public Class UserManagement
             End With
 
             Connection.Open()
-            Dim DataReader As SqlClient.SqlDataReader
+            Dim DataReader As SqlDataReader
             DataReader = Command.ExecuteReader()
             Dim Application As Appl
             While DataReader.Read
@@ -1590,7 +1596,7 @@ Partial Public Class UserManagement
         'Ausdruck erstellen
         Dim needAND As Boolean = False
 
-        Dim res As New System.Text.StringBuilder()
+        Dim res As New StringBuilder()
         If Not kundennr Is Nothing Then
             If needAND Then res.Append(" AND ")
             res.Append(" KUNNR = '" + kundennr + "' ")
@@ -1742,7 +1748,7 @@ Partial Public Class UserManagement
     '--------
     'Es wurde ein anderer Distrikt als Vorbelegung ausgewählt
     '--------
-    Public Sub VorbelegungChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Sub VorbelegungChanged(ByVal sender As Object, ByVal e As EventArgs)
         Dim rdoButton As RadioButton = CType(sender, RadioButton)
         Dim Distrikt As String = rdoButton.Attributes("DistriktID")
 
@@ -1760,7 +1766,7 @@ Partial Public Class UserManagement
     'Wird aufgerufen, wenn die "Alle auswählen"-Checkbox geändert wird
     'Setzt alle Application-Checkboxes auf den gleichen Wert
     '--------
-    Public Sub AllesAuswaehlenChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Sub AllesAuswaehlenChanged(ByVal sender As Object, ByVal e As EventArgs)
         Dim CheckBox As CheckBox = CType(sender, CheckBox)
         Dim Distrikt As String = CheckBox.Attributes("DistriktID")
         'Ggf Schreibschutz beibehalten
@@ -1775,7 +1781,7 @@ Partial Public Class UserManagement
     '--------
     'Wird aufgerufen, wenn die Checkbox(Recht) geändert wird
     '--------
-    Public Sub RechtChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Sub RechtChanged(ByVal sender As Object, ByVal e As EventArgs)
         Dim CheckBox As CheckBox = CType(sender, CheckBox)
         If CheckBox.Checked = True Then
             chk_Matrix1.Checked = True
@@ -1833,7 +1839,7 @@ Partial Public Class UserManagement
 
 #End Region
 
-    Private Sub chk_Matrix1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Matrix1.CheckedChanged
+    Private Sub chk_Matrix1_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles chk_Matrix1.CheckedChanged
         If chk_Matrix1.Checked = False Then
             Matrix.Visible = True
             Session("Changed") = 1
@@ -1850,7 +1856,7 @@ Partial Public Class UserManagement
 
             If Not (upFile.PostedFile.FileName = String.Empty) Then
                 Dim fname As String = upFile.PostedFile.FileName
-                If (upFile.PostedFile.ContentLength > CType(System.Configuration.ConfigurationManager.AppSettings("MaxUploadSize"), Integer)) Then
+                If (upFile.PostedFile.ContentLength > CType(ConfigurationManager.AppSettings("MaxUploadSize"), Integer)) Then
                     lblError.Text = "Datei '" & Right(fname, fname.Length - fname.LastIndexOf("\") - 1).ToUpper & "' ist zu gross (>300 KB)."
                     Exit Sub
                 End If
@@ -1862,17 +1868,17 @@ Partial Public Class UserManagement
 
                 'upFile.PostedFile
                 If Not (upFile.PostedFile Is Nothing) Then
-                    Dim info As System.IO.FileInfo
-                    Dim uFile As System.Web.HttpPostedFile = upFile.PostedFile
+                    Dim info As IO.FileInfo
+                    Dim uFile As HttpPostedFile = upFile.PostedFile
 
-                    Dim fnameNew As String = System.Configuration.ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg"
-                    info = New System.IO.FileInfo(fnameNew)
+                    Dim fnameNew As String = ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg"
+                    info = New IO.FileInfo(fnameNew)
                     If (info.Exists) Then
-                        System.IO.File.Delete(fnameNew)
+                        IO.File.Delete(fnameNew)
                     End If
 
                     uFile.SaveAs(fnameNew)
-                    info = New System.IO.FileInfo(fnameNew)
+                    info = New IO.FileInfo(fnameNew)
                     If Not (info.Exists) Then
                         lblError.Text = "Fehler beim Speichern."
                     End If
@@ -1891,12 +1897,12 @@ Partial Public Class UserManagement
     Protected Sub btnRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemove.Click
         Try
 
-            Dim info As System.IO.FileInfo
+            Dim info As IO.FileInfo
 
-            Dim fnameNew As String = System.Configuration.ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg"
-            info = New System.IO.FileInfo(fnameNew)
+            Dim fnameNew As String = ConfigurationManager.AppSettings("UploadPathLocal") & "responsible\" & txtUserID.Text & ".jpg"
+            info = New IO.FileInfo(fnameNew)
             If (info.Exists) Then
-                System.IO.File.Delete(fnameNew)
+                IO.File.Delete(fnameNew)
             End If
 
             Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
@@ -1908,7 +1914,7 @@ Partial Public Class UserManagement
         End Try
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
 
         SetEndASPXAccess(Me)
 
@@ -1920,17 +1926,17 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEmpty.Click
+    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnEmpty.Click
         btnSuche_Click(sender, e)
     End Sub
 
 #Region " Events "
 
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
+    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
 
         Dim editNotApproved As Boolean = False
         lbtnDistrict.Visible = False
@@ -1957,7 +1963,7 @@ Partial Public Class UserManagement
         End If
     End Sub
 
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNew.Click
+    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNew.Click
 
         Session("UsernameStart") = Nothing
         Session("LockedOutStart") = Nothing
@@ -1996,7 +2002,7 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
+    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
         Dim tblLogParameter As DataTable
         Dim strPwd As String = String.Empty
         Dim blnEingabenOK As Boolean = True
@@ -2049,7 +2055,7 @@ Partial Public Class UserManagement
                 Dim intLoop As Integer
                 Dim dvForbiddenUserName As DataView
                 Dim dtForbiddenUserNameAll As Kernel.ForbiddenUserNameAllList
-                Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+                Dim cn As New SqlConnection(m_User.App.Connectionstring)
                 cn.Open()
 
                 dtForbiddenUserNameAll = New Kernel.ForbiddenUserNameAllList(cn)
@@ -2066,7 +2072,7 @@ Partial Public Class UserManagement
                 'bereits genutzte
                 Dim dvGivvenUserName As DataView
                 Dim dtGivvenUserNameAll As Kernel.GivvenUserNameAllList
-                Dim cnGivven As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+                Dim cnGivven As New SqlConnection(m_User.App.Connectionstring)
                 cnGivven.Open()
 
                 dtGivvenUserNameAll = New Kernel.GivvenUserNameAllList(cn)
@@ -2087,6 +2093,7 @@ Partial Public Class UserManagement
                                               IIf(trReference.Visible, txtReference.Text, ""), _
                                               IIf(trReference2.Visible, txtReference2.Text, ""), _
                                               IIf(trReference3.Visible, txtReference3.Text, ""), _
+                                              (trReference4.Visible AndAlso cbxReference4.Checked), _
                                               cbxTestUser.Checked, _
                                               CInt(ddlCustomer.SelectedItem.Value), _
                                               cbxCustomerAdmin.Checked, _
@@ -2103,7 +2110,8 @@ Partial Public Class UserManagement
                                               ddlTitle.SelectedItem.Value, _
                                               txtStore.Text, _
                                               chk_Matrix1.Checked, _
-                                              txtValidFrom.Text)
+                                              txtValidFrom.Text, _
+                                              txtValidTo.Text)
 
             _User.Email = txtMail.Text
             _User.Employee = chkEmployee.Checked
@@ -2178,6 +2186,13 @@ Partial Public Class UserManagement
                 End If
             End If
 
+            ' Falls Benutzer entsperrt wurde, Feld "gültig bis" zurücksetzen
+            If Not Session("LockedOutStart") Is Nothing Then
+                If _User.Approved And _User.AccountIsLockedOut = False And CBool(Session("LockedOutStart")) = True Then
+                    _User.ValidTo = ""
+                End If
+            End If
+
             'wenn alle Eingaben in Ordnung -> speichern
             If blnEingabenOK Then
                 Dim blnSuccess As Boolean = False
@@ -2201,22 +2216,22 @@ Partial Public Class UserManagement
                         blnSuccess = True
                     End If
 
-                _User.SetLastLogin(Now)
-                _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
-            Else
-                lblError.Text = _User.ErrorMessage
-            End If
-            tblLogParameter = SetNewLogParameters(_User)
-            Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
+                    _User.SetLastLogin(Now)
+                    _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
+                Else
+                    lblError.Text = _User.ErrorMessage
+                End If
+                tblLogParameter = SetNewLogParameters(_User)
+                Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
-            If blnSuccess Then
-                lblMessage.Text = "Die Änderungen wurden gespeichert."
-                Search(True, True, , True)
-                Dim errorMessage As String = ""
+                If blnSuccess Then
+                    lblMessage.Text = "Die Änderungen wurden gespeichert."
+                    Search(True, True, , True)
+                    Dim errorMessage As String = ""
 
-                ' Versand von neuen Benutzerdaten erst nach Freigabe, daher in lbtnApproved_Click
+                    ' Versand von neuen Benutzerdaten erst nach Freigabe, daher in lbtnApproved_Click
 
-                ' Ausnahme für Orgaadmins und Kundenadmins, die Benutzer anlegen ++++++++++++++++++
+                    ' Ausnahme für Orgaadmins und Kundenadmins, die Benutzer anlegen ++++++++++++++++++
                     If isNewUser And isApproved And Session("UsernameStart") Is Nothing Then
 
                         ' Neuanlage Benutzer (ohne Adminrechte) Authentifizierungs-Email versenden
@@ -2224,25 +2239,13 @@ Partial Public Class UserManagement
                             ' Wenn Passwort und Username per Mail dann Validierungsprozess
                             If Not _User.Customer.CustomerUsernameRules.DontSendEmail And Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
 
-                                Dim LinkKey As String = ""
-                                Dim RightKey As String = ""
-                                Dim WrongKey As String = ""
-
-                                'Linkschlüssel generieren
-                                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
-
-                                'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
-                                InsertIntoWebUserUpload(_User.UserID, strPwd, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
-
                                 'Mail versenden
-                                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
+                                If Not _User.SendUsernameMail(errorMessage) Then
                                     lblError.Text = errorMessage
-                                Else
-                                    'Status auf erfolgreich versandt setzen
-                                    _User.UpdateWebUserUploadMailSend(True)
                                 End If
 
                             Else
+
                                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
@@ -2251,6 +2254,7 @@ Partial Public Class UserManagement
                                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
                                     _User.SendUsernameMail(errorMessage, False)
                                 End If
+
                             End If
                         End If
 
@@ -2286,16 +2290,16 @@ Partial Public Class UserManagement
 
                     End If
 
-                If _customer.ShowDistrikte AndAlso Session("Changed") = 1 Then
+                    If _customer.ShowDistrikte AndAlso Session("Changed") = 1 Then
 
-                    ErmitteleRechteAusCheckBoxen(Matrix.Rows.GetEnumerator, m_Rights)
-                    Dim selectedDistrict As String = GetSelectedDistrict()
-                    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, True, False)
-                    SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, False, True)
-                    SetDistrictRights(m_Rights)
+                        ErmitteleRechteAusCheckBoxen(Matrix.Rows.GetEnumerator, m_Rights)
+                        Dim selectedDistrict As String = GetSelectedDistrict()
+                        SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, True, False)
+                        SetzeVorbelegswertFuerDistrikt(selectedDistrict, Session("UserID").ToString, _customer.KUNNR, False, True)
+                        SetDistrictRights(m_Rights)
 
+                    End If
                 End If
-            End If
             End If
 
         Catch ex As Exception
@@ -2310,7 +2314,7 @@ Partial Public Class UserManagement
         End Try
     End Sub
 
-    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
+    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
         Dim tblLogParameter As DataTable
         Try
 
@@ -2336,9 +2340,9 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Private Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
+    Private Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
         Dim intCustomerID As Integer = CInt(ddlFilterCustomer.SelectedItem.Value)
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         cn.Open()
         If intCustomerID > 0 Then
             ddlCustomer.SelectedItem.Selected = False
@@ -2369,7 +2373,7 @@ Partial Public Class UserManagement
         End If
     End Sub
 
-    Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlCustomer.SelectedIndexChanged
+    Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlCustomer.SelectedIndexChanged
         refill_Groups()
         initialize_ReferenceFields()
 
@@ -2378,7 +2382,7 @@ Partial Public Class UserManagement
 
     Private Sub refill_Groups()
         Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim cn As New SqlConnection(m_User.App.Connectionstring)
         cn.Open()
         Dim dtGroups As New Kernel.GroupList(intCustomerID, cn, m_User.Customer.AccountingArea, , True)
         FillGroup(ddlGroups, False, dtGroups)
@@ -2422,9 +2426,15 @@ Partial Public Class UserManagement
         Else
             trReference3.Visible = False
         End If
+        If Not String.IsNullOrEmpty(_customer.ReferenceType4) Then
+            trReference4.Visible = True
+            lblReferenceType4.Text = String.Format("{0}:", _customer.ReferenceType4Name)
+        Else
+            trReference4.Visible = False
+        End If
     End Sub
 
-    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
+    Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnSuche.Click
 
         If ihNotApprovedMode.Value = "0" Then
             'normale Suche
@@ -2436,7 +2446,7 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Private Sub lbtnApprove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnApprove.Click
+    Private Sub lbtnApprove_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnApprove.Click
         Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
         _User.Approve(m_User.UserName)
 
@@ -2447,34 +2457,14 @@ Partial Public Class UserManagement
             ' Wenn Passwort und Username per Mail dann Validierungsprozess
             If Not _User.Customer.CustomerUsernameRules.DontSendEmail And Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
 
-                Dim LinkKey As String = ""
-                Dim pword As String = ""
-                Dim RightKey As String = ""
-                Dim WrongKey As String = ""
-
-                'Linkschlüssel generieren
-                errorMessage = String.Empty
-                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
-                If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-
-                'Passwort generieren
-                errorMessage = String.Empty
-                pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
-                If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-
-                'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
-                InsertIntoWebUserUpload(_User.UserID, pword, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
-
                 'Mail versenden
                 errorMessage = String.Empty
-                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
+                If Not _User.SendUsernameMail(errorMessage) Then
                     lblError.Text &= errorMessage & "<br /><br />"
-                Else
-                    'Status auf erfolgreich versandt setzen
-                    _User.UpdateWebUserUploadMailSend(True)
                 End If
 
             Else
+
                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
@@ -2487,6 +2477,7 @@ Partial Public Class UserManagement
                     _User.SendUsernameMail(errorMessage, False)
                     If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
                 End If
+
             End If
 
         End If
@@ -2494,12 +2485,12 @@ Partial Public Class UserManagement
         lbtnNotApproved_Click(sender, e)
     End Sub
 
-    Private Sub lbtnNotApproved_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNotApproved.Click
+    Private Sub lbtnNotApproved_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNotApproved.Click
         SearchNotApprovedMode(True, False)
         btnSuche_Click(sender, e)
     End Sub
 
-    Private Sub cbxFirstLevelAdmin_CheckedChanged(sender As Object, e As System.EventArgs) Handles cbxFirstLevelAdmin.CheckedChanged
+    Private Sub cbxFirstLevelAdmin_CheckedChanged(sender As Object, e As EventArgs) Handles cbxFirstLevelAdmin.CheckedChanged
         If Not ddlCustomer.SelectedItem Is Nothing Then
             Dim intddlCustID As Integer = CInt(ddlCustomer.SelectedItem.Value)
             Dim _customer As New Customer(intddlCustID, m_User.App.Connectionstring)
@@ -2579,7 +2570,7 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Private Sub lbtnDistrict_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDistrict.Click
+    Private Sub lbtnDistrict_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDistrict.Click
         Try
             Page_LoadDistikte()
             Session("UserID") = txtUserID.Text
@@ -2648,38 +2639,6 @@ Partial Public Class UserManagement
         End If
     End Sub
 
-    Private Sub InsertIntoWebUserUpload(ByVal UserID As Integer, ByRef PWord As String, ByVal Username As String, ByVal LinkKey As String, ByRef RightKey As String, ByRef WrongKey As String, ByVal LoginLinkID As Integer)
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        cn.Open()
-
-        Dim cmdInsert As New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,Password,RightUserLink,WrongUserLink) Values(@UserID,@Password,@RightUserLink,@WrongUserLink)", cn)
-        Dim RightUser As String
-        Dim WrongUser As String
-
-        Dim Crypto As New Crypt
-
-
-        RightUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Right", "sha1")
-        WrongUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Wrong", "sha1")
-
-        PWord = Crypto.psEncrypt(PWord)
-
-        With cmdInsert.Parameters
-            .AddWithValue("@UserID", UserID)
-            .AddWithValue("@Password", PWord)
-            .AddWithValue("@RightUserLink", RightUser)
-            .AddWithValue("@WrongUserLink", WrongUser)
-            .AddWithValue("@LoginLinkID", LoginLinkID)
-        End With
-        cmdInsert.ExecuteNonQuery()
-
-        cn.Close()
-        cn.Dispose()
-
-        RightKey = RightUser
-        WrongKey = WrongUser
-    End Sub
-
     Protected Sub rgSearchResultSortCommand(sender As Object, e As GridSortCommandEventArgs) Handles rgSearchResult.SortCommand
 
         Dim blnIsInNotApprovedMode = (ihNotApprovedMode.Value = "1")
@@ -2687,7 +2646,7 @@ Partial Public Class UserManagement
 
     End Sub
 
-    Protected Sub rgSearchResult_ExcelMLExportRowCreated(sender As Object, e As GridExcelBuilder.GridExportExcelMLRowCreatedArgs) Handles rgSearchResult.ExcelMLExportRowCreated
+    Protected Sub rgSearchResult_ExcelMLExportRowCreated(sender As Object, e As GridExportExcelMLRowCreatedArgs) Handles rgSearchResult.ExcelMLExportRowCreated
 
         If e.RowType = GridExportExcelMLRowType.DataRow Then
 
@@ -2731,18 +2690,18 @@ Partial Public Class UserManagement
         End If
     End Sub
 
-    Protected Sub rgSearchResult_ExcelMLExportStylesCreated(sender As Object, e As GridExcelBuilder.GridExportExcelMLStyleCreatedArgs) Handles rgSearchResult.ExcelMLExportStylesCreated
+    Protected Sub rgSearchResult_ExcelMLExportStylesCreated(sender As Object, e As GridExportExcelMLStyleCreatedArgs) Handles rgSearchResult.ExcelMLExportStylesCreated
 
         'Add currency and percent styles
 
         Dim priceStyle As StyleElement = New StyleElement("priceItemStyle")
         priceStyle.NumberFormat.FormatType = NumberFormatType.Currency
-        priceStyle.FontStyle.Color = System.Drawing.Color.Red
+        priceStyle.FontStyle.Color = Drawing.Color.Red
         e.Styles.Add(priceStyle)
 
         Dim alternatingPriceStyle As StyleElement = New StyleElement("alternatingPriceItemStyle")
         alternatingPriceStyle.NumberFormat.FormatType = NumberFormatType.Currency
-        alternatingPriceStyle.FontStyle.Color = System.Drawing.Color.Red
+        alternatingPriceStyle.FontStyle.Color = Drawing.Color.Red
         e.Styles.Add(alternatingPriceStyle)
 
         Dim percentStyle As StyleElement = New StyleElement("percentItemStyle")
@@ -2761,20 +2720,20 @@ Partial Public Class UserManagement
             If style.Id = "headerStyle" Then
 
                 style.InteriorStyle.Pattern = InteriorPatternType.Solid
-                style.InteriorStyle.Color = System.Drawing.Color.Gray
+                style.InteriorStyle.Color = Drawing.Color.Gray
 
             End If
             If style.Id = "alternatingItemStyle" Or style.Id = "alternatingPriceItemStyle" Or style.Id = "alternatingPercentItemStyle" Or style.Id = "alternatingDateItemStyle" Then
 
                 style.InteriorStyle.Pattern = InteriorPatternType.Solid
-                style.InteriorStyle.Color = System.Drawing.Color.LightGray
+                style.InteriorStyle.Color = Drawing.Color.LightGray
 
             End If
 
             If style.Id.Contains("itemStyle") Or style.Id = "priceItemStyle" Or style.Id = "percentItemStyle" Or style.Id = "dateItemStyle" Then
 
                 style.InteriorStyle.Pattern = InteriorPatternType.Solid
-                style.InteriorStyle.Color = System.Drawing.Color.White
+                style.InteriorStyle.Color = Drawing.Color.White
 
             End If
         Next
@@ -2948,10 +2907,10 @@ Partial Public Class UserManagement
     Protected Sub lbtnMasterUser_Click(sender As Object, e As EventArgs) Handles lbtnMasterUser.Click
         Dim masterUser = FindMasterUser()
 
-        Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, txtReference2.Text, txtReference3.Text, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
+        Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, txtReference2.Text, txtReference3.Text, cbxReference4.Checked, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
                                    masterUser.IsCustomerAdmin, masterUser.PasswordNeverExpires, masterUser.AccountIsLockedOut,
                                    masterUser.FirstLevelAdmin, masterUser.LoggedOn, masterUser.Organization.OrganizationAdmin, m_User.App.Connectionstring, masterUser.ReadMessageCount,
-                                   m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom)
+                                   m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom, masterUser.ValidTo)
 
         Dim intGroupID = If(ddlGroups.Items.Count = 0, 0, CInt(ddlGroups.SelectedValue))
         If intGroupID > 0 Then
@@ -3004,9 +2963,9 @@ Partial Public Class UserManagement
         Dim connectionString = m_User.App.Connectionstring
 
         Try
-            Dim newUser = New User(-1, m_User.UserName & "Master1", m_User.Reference, m_User.Reference2, m_User.Reference3, m_User.IsTestUser, m_User.Customer.CustomerId, m_User.IsCustomerAdmin, _
+            Dim newUser = New User(-1, m_User.UserName & "Master1", m_User.Reference, m_User.Reference2, m_User.Reference3, m_User.Reference4, m_User.IsTestUser, m_User.Customer.CustomerId, m_User.IsCustomerAdmin, _
                                    m_User.PasswordNeverExpires, m_User.AccountIsLockedOut, m_User.FirstLevelAdmin, m_User.LoggedOn, m_User.Organization.OrganizationAdmin, _
-                                   connectionString, m_User.ReadMessageCount, m_User.UserName, m_User.Approved, m_User.Store, m_User.Matrixfilled, m_User.ValidFrom)
+                                   connectionString, m_User.ReadMessageCount, m_User.UserName, m_User.Approved, m_User.Store, m_User.Matrixfilled, m_User.ValidFrom, m_User.ValidTo)
             newUser.Groups.Add(New Group(m_User.Groups(0).GroupId, m_User.Groups(0).CustomerId))
             If newUser.Save() AndAlso newUser.UserID > 0 Then
                 Dim newUserId = newUser.UserID
@@ -3027,7 +2986,7 @@ Partial Public Class UserManagement
                 Return New User(newUserId, connectionString)
             End If
         Catch ex As Exception
-            System.Diagnostics.Trace.WriteLine(ex)
+            Diagnostics.Trace.WriteLine(ex)
         End Try
 
         Return Nothing

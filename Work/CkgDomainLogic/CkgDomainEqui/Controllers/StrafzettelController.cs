@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Globalization;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -9,6 +10,7 @@ using CkgDomainLogic.Strafzettel.ViewModels;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
+using Telerik.Web.Mvc.Infrastructure;
 
 namespace ServicesMvc.Controllers
 {
@@ -59,6 +61,9 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult StrafzettelAjaxBinding()
         {
+            var locFac = DI.Current.Resolve<ILocalizationServiceFactory>();
+            var locSrv = locFac.Create("", new CultureInfo("de-DE"));
+
             return View(new GridModel(ViewModel.StrafzettelFiltered));
         }
 

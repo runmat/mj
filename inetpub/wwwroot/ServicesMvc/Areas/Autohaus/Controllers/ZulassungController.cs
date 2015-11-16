@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -13,10 +14,10 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -50,10 +51,11 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
+            ViewModel.SetParamSonderzulassung(sonderzulassung);
 
             ViewModel.DataInit(zulassungFromShoppingCart);
 
@@ -63,6 +65,8 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartLoadAndCacheItems();
 
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
+
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return View("Index", ViewModel);
         }
@@ -75,6 +79,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
+            ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
 
@@ -90,16 +95,10 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ShoppingCartLoadAndCacheItems();
-            
+
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
+
             return View("Index", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult FahrzeugShowGrid()
-        {
-            ViewModel.DataMarkForRefreshHalterAdressen();
-
-            return PartialView("Partial/FahrzeugAuswahlGrid", ViewModel.FinList);
         }
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
@@ -188,6 +187,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.SetParamAbmeldung("x");
             ViewModel.SetParamVersandzulassung("");
+            ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
 
@@ -204,6 +204,8 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ShoppingCartLoadAndCacheItems();
 
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
+
             return View("Index", ViewModel);
         }
 
@@ -219,6 +221,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Versandzulassung(string fin, string halterNr)
         {
             return Index(fin, halterNr, versandzulassung: "1");
+        }
+
+        [CkgApplication]
+        public ActionResult Sonderzulassung(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, sonderzulassung: "1");
         }
 
         void InitModelStatics()
@@ -439,7 +447,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult AuslieferAdressen()
         {
-            return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+            return PartialView("Partial/AuslieferAdressen", ViewModel.GetAuslieferAdressenModel());
         }
 
         [HttpPost]
@@ -449,45 +457,58 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        public ActionResult AuslieferAdressenForm(AuslieferAdressen model)
         {
-            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            var selectedPartnerRolle = Request["SelectedPartnerRolle"];
+            var selectedAddressId = Request["SelectedAddressId"];
+
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+
+            if (selectedPartnerRolle.IsNotNullOrEmpty() && selectedAddressId.IsNotNullOrEmpty())
             {
-                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
-                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+
+                var tmpAdresse = ViewModel.GetAuslieferadresse(selectedAddressId);
+
+                if (tmpAdresse == null)
                     return new EmptyResult();
 
                 ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+
+                switch (selectedPartnerRolle)
+                {
+                    case "Z7":
+                        model.AuslieferAdresseZ7.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+                        break;
+
+                    case "Z8":
+                        model.AuslieferAdresseZ8.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+                        break;
+
+                    case "Z9":
+                        model.AuslieferAdresseZ9.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+                        break;
+                }
+
+                ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.GetAuslieferAdressenModel()); 
             }
 
-            if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
-            {
-                ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
-                ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
-            }
+            ModelState.Clear();
 
-            if (ModelState.IsValid)
-                ViewModel.SetAuslieferAdresse(model);
+            ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+            model.Materialien = AuslieferAdresse.AlleMaterialien;
 
-            // Auslieferadressen sind optional
-            if (!model.HasData)
-                ModelState.Clear();
-
-            model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
-            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
-
-            ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
-            ModelState.SetModelValue("TmpSaveAddressOnly", false);
+            // Validierung
+            model.IsValid = ViewModel.ValidateAuslieferAdressenForm(ModelState.AddModelError, model);
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
-
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
@@ -579,15 +600,26 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ZulassungsdatenForm(Zulassungsdaten model)
         {
+            if (model.UiUpdateOnly)
+            {
+                ViewModel.UpdateZulassungsdatenModel(model);
+                model.UiUpdateOnly = false;
+
+                ModelState.Clear();
+                model.IsValid = false;
+
+                ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
+                return PartialView("Partial/ZulassungsdatenForm", model);
+            }
 
             ViewModel.ValidateZulassungsdatenForm(ModelState.AddModelError, model);
 
             if (ModelState.IsValid)
-            {
                 ViewModel.SetZulassungsdaten(model, ModelState);
-            }
 
-            ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
+            model.IsValid = ModelState.IsValid;
+
+            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 
@@ -602,10 +634,14 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
+        [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
         public ActionResult GetKennzeichenLinkeSeite(string zulassungsKreis)
         {
             string zulassungsKennzeichen;
             ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
+
+            ViewModel.LoadZulassungsAbmeldeArten(zulassungsKreis);
+            ViewModel.UpdateZulassungsart();
 
             var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
@@ -613,8 +649,32 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new
                 {
                     kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen),
-                    zulassungsstelleUrl = url 
+                    zulassungsstelleUrl = url,
+                    Versandzulassung = ViewModel.Zulassung.Zulassungsdaten.Versandzulassung,
+                    ExpressversandMoeglich = ViewModel.Zulassung.Zulassungsdaten.ExpressversandMoeglich,
+                    ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr
                 });
+        }
+
+        [HttpPost]
+        [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
+        public ActionResult UpdateZulassungsart(string haltereintragVorhanden, bool expressversand)
+        {
+            ViewModel.UpdateZulassungsart(haltereintragVorhanden, expressversand);
+
+            return Json(new
+            {
+                ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr
+            });
+        }
+
+        [HttpPost]
+        public ActionResult CheckKennzeichenReserviert(bool kennzeichenReserviert)
+        {
+            ViewModel.Zulassung.Zulassungsdaten.KennzeichenReserviert = kennzeichenReserviert;
+
+            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
+            return PartialView("Partial/ZulassungsdatenForm", ViewModel.Zulassung.Zulassungsdaten);
         }
 
         #endregion
@@ -870,6 +930,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             var warenkorb = ShoppingCartItems.Cast<Vorgang>().Where(item => item.IsSelected).ToListOrEmptyList();
 
+            ViewModel.LoadZulassungsAbmeldeArten(forShoppingCartSave: true);
             ViewModel.Save(warenkorb, saveDataToSap: true, saveFromShoppingCart: true);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -879,6 +940,16 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult ZulassungFromShoppingCart(string id, string abmeldung = "", string versandzulassung = "")
         {
             return Index("", "", zulassungFromShoppingCart: "1");
+        }
+
+        [HttpPost]
+        public ActionResult WarenkorbSelectedKunnrChanged(string kunnr)
+        {
+            ViewModel.WarenkorbSelectedKunnr = kunnr;
+
+            ShoppingCartLoadAndCacheItems();
+
+            return new EmptyResult();
         }
 
         #endregion

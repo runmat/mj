@@ -128,6 +128,19 @@ namespace CkgDomainLogic.Fahrer.Services
             return AppModelMappings.Z_V_UEBERF_AUFTR_UPL_PROT_01_GT_OUT_to_FahrerAuftragsProtokoll.Copy(sapList);
 #endif
         }
+        
+        public IFahrerAuftragsFahrt LoadFahrerAuftragsEinzelProtokoll(string auftragsnr, string fahrtTyp)
+        {
+            EnforceValidUserReference();
+
+            Z_V_UEBERF_AUFTR_UPL_PROT_01.Init(SAP);
+            SAP.SetImportParameter("I_FAHRER", FahrerID);
+            SAP.SetImportParameter("I_VBELN", auftragsnr);
+            var sapList = Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT.GetExportListWithExecute(SAP);
+            sapList = sapList.Where(s => s.FAHRTNR.NotNullOrEmpty().ToUpper() == fahrtTyp.NotNullOrEmpty().ToUpper()).OrderBy(s => s.FAHRTNR).ToList();
+
+            return AppModelMappings.Z_V_UEBERF_AUFTR_UPL_PROT_01_GT_OUT_to_FahrerAuftragsProtokoll.Copy(sapList).FirstOrDefault();
+        }
 
         public string SetFahrerAuftragsStatus(string auftragsNr, string status)
         {

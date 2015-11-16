@@ -274,9 +274,9 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProtokollTryLoadSonstigenAuftrag(string auftragsnr)
+        public ActionResult ProtokollTryLoadSonstigenAuftrag(string auftragsnr, string fahrtTyp)
         {
-            var success = ViewModel.ProtokollTryLoadSonstigenAuftrag(auftragsnr);
+            var success = ViewModel.ProtokollTryLoadSonstigenAuftrag(auftragsnr, fahrtTyp);
 
             return Json(new { success });
         }

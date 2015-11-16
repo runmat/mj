@@ -177,6 +177,7 @@ Partial Public Class CustomerManagement
             ddlReferenzTyp1.SelectedValue = _Customer.ReferenceType1
             ddlReferenzTyp2.SelectedValue = _Customer.ReferenceType2
             ddlReferenzTyp3.SelectedValue = _Customer.ReferenceType3
+            ddlReferenzTyp4.SelectedValue = _Customer.ReferenceType4
             txtMvcSelectionUrl.Text = _Customer.MvcSelectionUrl
             'txtMvcSelectionType.Text = _Customer.MvcSelectionType
             ddlMvcSelectionType.SelectedValue = _Customer.MvcSelectionType
@@ -731,6 +732,7 @@ Partial Public Class CustomerManagement
         ddlReferenzTyp1.Enabled = Not blnLock
         ddlReferenzTyp2.Enabled = Not blnLock
         ddlReferenzTyp3.Enabled = Not blnLock
+        ddlReferenzTyp4.Enabled = Not blnLock
 
         ddlMvcSelectionType.Enabled = Not blnLock
         txtMvcSelectionUrl.Enabled = Not blnLock
@@ -1114,6 +1116,7 @@ Partial Public Class CustomerManagement
         ddlReferenzTyp1.Items.Add(New ListItem("", ""))
         ddlReferenzTyp2.Items.Add(New ListItem("", ""))
         ddlReferenzTyp3.Items.Add(New ListItem("", ""))
+        ddlReferenzTyp4.Items.Add(New ListItem("", ""))
 
         For Each row As DataRow In TempTable.Rows
             Dim strTyp As String = row("ReferenzTyp").ToString()
@@ -1121,10 +1124,15 @@ Partial Public Class CustomerManagement
             If String.IsNullOrEmpty(strName) Then
                 strName = strTyp
             End If
+            Dim blnCheckbox As Boolean = (Not IsDBNull(row("IstCheckbox")) AndAlso CBool(row("IstCheckbox")))
 
-            ddlReferenzTyp1.Items.Add(New ListItem(strName, strTyp))
-            ddlReferenzTyp2.Items.Add(New ListItem(strName, strTyp))
-            ddlReferenzTyp3.Items.Add(New ListItem(strName, strTyp))
+            If blnCheckbox Then
+                ddlReferenzTyp4.Items.Add(New ListItem(strName, strTyp))
+            Else
+                ddlReferenzTyp1.Items.Add(New ListItem(strName, strTyp))
+                ddlReferenzTyp2.Items.Add(New ListItem(strName, strTyp))
+                ddlReferenzTyp3.Items.Add(New ListItem(strName, strTyp))
+            End If
         Next
 
     End Sub
@@ -1556,6 +1564,7 @@ Partial Public Class CustomerManagement
         ddlReferenzTyp1.SelectedValue = ""
         ddlReferenzTyp2.SelectedValue = ""
         ddlReferenzTyp3.SelectedValue = ""
+        ddlReferenzTyp4.SelectedValue = ""
         txtMvcSelectionUrl.Text = String.Empty
         ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False
@@ -1599,6 +1608,15 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
+
+        Dim configSkipConfirmationKeyVal = "Admin_CustomerManagement_SkipSaveConfirmation"
+        Dim configSkipConfirmationKey = ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(Function(r) r = configSkipConfirmationKeyVal)
+        If (Not configSkipConfirmationKey Is Nothing) Then
+            If (ConfigurationManager.AppSettings(configSkipConfirmationKeyVal).ToString.ToLower = "true") Then
+                lbtnConfirm_Click(Nothing, Nothing)
+                Return
+            End If
+        End If
 
         'Do SAP-Stuff here...
         Dim i_Kunnr As String = Right("0000000000" & txtKUNNR.Text, 10)
@@ -1681,7 +1699,7 @@ Partial Public Class CustomerManagement
         End Try
     End Sub
 
-    Private Sub lbtnConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnConfirm.Click
+    Private Sub lbtnConfirm_Click(ByVal sender As Object, ByVal e2 As EventArgs) Handles lbtnConfirm.Click
         Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
 
@@ -1754,6 +1772,7 @@ Partial Public Class CustomerManagement
                                                 ddlReferenzTyp1.SelectedValue, _
                                                 ddlReferenzTyp2.SelectedValue, _
                                                 ddlReferenzTyp3.SelectedValue, _
+                                                ddlReferenzTyp4.SelectedValue, _
                                                 strSDCustomerNumber:=txtSDCustomerNumber.Text, _
                                                 strSDUserName:=txtSDUserName.Text, _
                                                 strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, _

@@ -114,7 +114,7 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
         }
 
         [DashboardItemsLoadMethod("StrafzettelNachKennzeichenPieJanuar2014")]
-        public ChartItemsPackage NameNotRelevant04()
+        public ChartItemsPackage NameNotRelevant04() 
         {
             return StrafzettelNachKennzeichen(new DateRange(new DateTime(2014, 01, 20), new DateTime(2014, 01, 21), true));
         }
@@ -134,7 +134,7 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
                     case "IN":
                         return "Ingolstadt";
                 }
-                return "Sonstige";
+                return "Sonstige"; 
             });
 
             var items = DataService.GetStrafzettel(selector).OrderBy(xAxisKeyModel).ToList();

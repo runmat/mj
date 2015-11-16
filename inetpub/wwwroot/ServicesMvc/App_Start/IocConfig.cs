@@ -60,6 +60,8 @@ using SapORM.Contracts;
 using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using Telerik.Web.Mvc.Infrastructure;
+using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
 
 namespace ServicesMvc
 {
@@ -94,8 +96,15 @@ namespace ServicesMvc
             return container;
         }
 
+        public static void RegisterTelerikLocalizationAdapterServiceFactory()
+        {
+            DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());
+        }
+
         public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
         {
+            RegisterTelerikLocalizationAdapterServiceFactory();
+
             builder.Register(c => sap ?? S.AP).InstancePerLifetimeScope();
 
             var appSettings = new CkgDomainAppSettings();

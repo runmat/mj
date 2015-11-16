@@ -473,6 +473,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents ddlReferenzTyp3 As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''ddlReferenzTyp4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlReferenzTyp4 As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
     '''EditCAddress-Steuerelement
     '''</summary>
     '''<remarks>
@@ -713,7 +722,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents rbUpdate As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents rbUpdate As UpdatePanel
 
     '''<summary>
     '''rbKeine-Steuerelement
@@ -758,7 +767,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel1 As UpdatePanel
 
     '''<summary>
     '''lblKundenadministrationInfo-Steuerelement
@@ -785,7 +794,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents UpdatePanel2 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel2 As UpdatePanel
 
     '''<summary>
     '''txtKundenadministrationBeschreibung-Steuerelement
@@ -812,7 +821,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents UpdatePanel3 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel3 As UpdatePanel
 
     '''<summary>
     '''lblKundenadministrationContact-Steuerelement
@@ -839,7 +848,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents UpdatePanel4 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel4 As UpdatePanel
 
     '''<summary>
     '''EditKundenadministrationContact-Steuerelement
@@ -1100,7 +1109,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents IPUpdate As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents IPUpdate As UpdatePanel
 
     '''<summary>
     '''LogoError-Steuerelement
