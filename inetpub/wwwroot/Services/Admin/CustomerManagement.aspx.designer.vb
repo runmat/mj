@@ -722,7 +722,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents rbUpdate As UpdatePanel
+    Protected WithEvents rbUpdate As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''rbKeine-Steuerelement
@@ -767,7 +767,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents UpdatePanel1 As UpdatePanel
+    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''lblKundenadministrationInfo-Steuerelement
@@ -794,7 +794,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents UpdatePanel2 As UpdatePanel
+    Protected WithEvents UpdatePanel2 As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''txtKundenadministrationBeschreibung-Steuerelement
@@ -821,7 +821,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents UpdatePanel3 As UpdatePanel
+    Protected WithEvents UpdatePanel3 As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''lblKundenadministrationContact-Steuerelement
@@ -848,7 +848,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents UpdatePanel4 As UpdatePanel
+    Protected WithEvents UpdatePanel4 As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''EditKundenadministrationContact-Steuerelement
@@ -1109,7 +1109,7 @@ Partial Public Class CustomerManagement
     '''Automatisch generiertes Feld
     '''Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
     '''</remarks>
-    Protected WithEvents IPUpdate As UpdatePanel
+    Protected WithEvents IPUpdate As Global.System.Web.UI.WebControls.WebParts.UpdatePanel
     
     '''<summary>
     '''LogoError-Steuerelement
