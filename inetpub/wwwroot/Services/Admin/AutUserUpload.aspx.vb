@@ -230,6 +230,7 @@ Partial Public Class AutUserUpload
                               TempRow(UploadExcelColumns.Reference), _
                               TempRow(UploadExcelColumns.Reference2), _
                               TempRow(UploadExcelColumns.Reference3), _
+                              False, _
                               blnTestUser, _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _
@@ -333,7 +334,7 @@ Partial Public Class AutUserUpload
                 ' Referenzfelder
                 If Not String.IsNullOrEmpty(_customer.ReferenceType1) Then
                     lblRef1.Text = _customer.ReferenceType1Name
-                Else
+            Else
                     lblRef1.Text = ""
                 End If
                 If Not String.IsNullOrEmpty(_customer.ReferenceType2) Then
