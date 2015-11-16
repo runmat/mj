@@ -206,7 +206,7 @@
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
+                                                    <telerik:GridBoundColumn DataField="HCORT" SortExpression="HCORT" >
                                                         <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
