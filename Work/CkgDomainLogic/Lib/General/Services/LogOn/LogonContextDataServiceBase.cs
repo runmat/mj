@@ -32,6 +32,8 @@ namespace CkgDomainLogic.General.Services
 
         // ReSharper disable LocalizableElement
 
+        public int CustomerID { get { return Customer == null ? 0 : Customer.CustomerID; } }
+
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 

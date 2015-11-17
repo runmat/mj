@@ -27,22 +27,22 @@ namespace MvcTools.Web
 
             // Auf die gecachten Resourcen zugreifen und die Übersetzung ermitteln
             if (localizedDisplayAttribute.Suffix == null)
-                result.DisplayName = TranslationFormatService.GetTranslation(localizedDisplayAttribute.DisplayName);    
+                result.DisplayName = TranslationService.GetTranslation(localizedDisplayAttribute.DisplayName);    
             else
-                result.DisplayName = string.Concat(TranslationFormatService.GetTranslation(localizedDisplayAttribute.DisplayName), " ", localizedDisplayAttribute.Suffix.ToString());    
+                result.DisplayName = string.Concat(TranslationService.GetTranslation(localizedDisplayAttribute.DisplayName), " ", localizedDisplayAttribute.Suffix.ToString());    
 
             if (string.IsNullOrEmpty(result.DisplayFormatString))
-                result.DisplayFormatString = TranslationFormatService.GetFormat(localizedDisplayAttribute.DisplayName);
+                result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.DisplayName);
 
             // Auf die gecachten Resourcen zugreifen und die Übersetzung und Format ermitteln
-            result.DisplayFormatString = TranslationFormatService.GetFormat(localizedDisplayAttribute.DisplayName);
+            result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.DisplayName);
 
             return result;
         }
 
-        private static ITranslationFormatService TranslationFormatService
+        private static ITranslationService TranslationService
         {
-            get { return DependencyResolver.Current.GetService<ITranslationFormatService>(); }
+            get { return DependencyResolver.Current.GetService<ITranslationService>(); }
         }
     }
 }

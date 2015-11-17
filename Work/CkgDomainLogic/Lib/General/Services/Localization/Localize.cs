@@ -12,19 +12,19 @@ namespace CkgDomainLogic.General.Services
     {
         public static string TranslateResourceKey(string resourceKey)
         {
-            return TranslationFormatService == null ? "" : TranslationFormatService.GetTranslation(resourceKey) ?? "";
+            return TranslationService == null ? "" : TranslationService.GetTranslation(resourceKey) ?? "";
         }
 
-        private static ITranslationFormatService TranslationFormatService
+        private static ITranslationService TranslationService
         {
             get
             {
-                return TranslationFormatServiceExplicit ??
-                       DependencyResolver.Current.GetService<ITranslationFormatService>();
+                return TranslationServiceExplicit ??
+                       DependencyResolver.Current.GetService<ITranslationService>();
             }
         }
 
-        public static ITranslationFormatService TranslationFormatServiceExplicit { get; set; }
+        public static ITranslationService TranslationServiceExplicit { get; set; }
 
 
         public static SelectList DefaultOptionConcat<T>(IEnumerable<T> listToConcat) where T : class, new()

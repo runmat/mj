@@ -107,7 +107,7 @@
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\Attributes\NoCache.cs" />
-    <Compile Include="Web\CustomModelValidatorProvider.cs" />
+    <Compile Include="Web\CustomRequiredFieldValidatorProvider.cs" />
     <Compile Include="Web\RazorViewWithWrapperMarkers.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Data\LinqSqlDataService.cs" />
     <Compile Include="Data\EfDataService.cs" />
     <Compile Include="Data\MvcRepository.cs" />
-    <Compile Include="Data\SessionDataHelper.cs" />
+    <Compile Include="Data\LogonContextProvider.cs" />
     <Compile Include="Data\XsdSchemaCreator.cs" />
     <Compile Include="Imaging\DbImageFileCacheService.cs" />
     <Compile Include="Imaging\Imaging.cs" />

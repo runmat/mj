@@ -2,11 +2,30 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows;
+using GeneralTools.Contracts;
 
 namespace GeneralTools.Services
 {
-    public class ApplicationConfiguration
+    public class ApplicationConfiguration : IApplicationConfigurationProvider, ICustomerConfigurationProvider
     {
+        public ILogonContextProvider LogonContextProvider { get; set; }
+
+        public string GetApplicationConfigVal(string keyName, string appID, int customerID = 0, int groupID = 0)
+        {
+            return GetApplicationConfigValue(keyName, appID, customerID, groupID);
+        }
+
+        public string GetCustomerConfigVal(string keyName, int customerId)
+        {
+            return GetApplicationConfigValue(keyName, "0", customerId);
+        }
+
+        public string GetCurrentCustomerConfigVal(string keyName)
+        {
+            return GetApplicationConfigValue(keyName, "0", LogonContextProvider.GetLogoncontext().CustomerID);
+        }
+
         public static string GetApplicationConfigValue(string keyName, string appID, int customerID = 0, int groupID = 0)
         {
             try

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.SessionState;
 using GeneralTools.Models;
 using Telerik.Web.Mvc.UI;
@@ -154,6 +156,36 @@ namespace MvcTools.Web
 
             var relativeUrl = HttpContext.Current.GetAppUrlCurrent();
             return string.Format("GridColumnsAutoPersist_{0}_{1}", relativeUrl, gridCurrentModelType.Name);
+        }
+
+        public static string GetPartialViewUrlCurrent()
+        {
+            return GetSessionString("PartialViewUrlCurrent");
+        }
+
+        public static void SetPartialViewUrlCurrent(HtmlHelper html = null)
+        {
+            var partialViewUrl = "";
+
+            if (html == null)
+            {
+                if (HttpContext.Current != null)
+                    partialViewUrl = HttpContext.Current.Request.Url.AbsolutePath;
+            }
+            else
+            { 
+                var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+                const string strRegex = @"action=\""(?<url>.*?)\""";
+                var matches = Regex.Match(partialViewContext, strRegex);
+                if (matches.Groups.Count > 0)
+                    partialViewUrl = matches.Groups["url"].Value;
+                else
+                    partialViewUrl = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+            }
+
+            partialViewUrl = partialViewUrl.NotNullOrEmpty().ToLower();
+
+            SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
         }
     }
 }

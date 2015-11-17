@@ -292,17 +292,17 @@ namespace Telerik.Web.Mvc.UI
             {
                 if (localizedDisplayAttribute.Suffix == null)
                 {
-                    column.Title(TranslationFormatService.GetTranslationKurz(localizedDisplayAttribute.ResourceID));    
+                    column.Title(TranslationService.GetTranslationKurz(localizedDisplayAttribute.ResourceID));    
                 }
                 else
                 {
                     var title =
-                        string.Concat(TranslationFormatService.GetTranslationKurz(localizedDisplayAttribute.ResourceID), " ", localizedDisplayAttribute.Suffix);
+                        string.Concat(TranslationService.GetTranslationKurz(localizedDisplayAttribute.ResourceID), " ", localizedDisplayAttribute.Suffix);
                     column.Title(title);    
                 }
                 
                 // Format aus Datenbank nur dann übernehmen wenn eines auch angegeben ist
-                var formatAusDb = TranslationFormatService.GetFormat(localizedDisplayAttribute.ResourceID);
+                var formatAusDb = TranslationService.GetFormat(localizedDisplayAttribute.ResourceID);
                 if (string.IsNullOrEmpty(formatAusDb) == false)
                     columnFormat = formatAusDb;    
             }
@@ -351,9 +351,9 @@ namespace Telerik.Web.Mvc.UI
         /// <summary>
         /// Ermittle die Instanz für die aktuelle http Request
         /// </summary>
-        public static ITranslationFormatService TranslationFormatService
+        public static ITranslationService TranslationService
         {
-            get { return DependencyResolver.Current.GetService<ITranslationFormatService>(); }
+            get { return DependencyResolver.Current.GetService<ITranslationService>(); }
         }
 
         #endregion

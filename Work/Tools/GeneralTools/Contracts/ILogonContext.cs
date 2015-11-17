@@ -2,6 +2,8 @@
 {
     public interface ILogonContext
     {
+        int CustomerID { get; }
+
         string KundenNr { get; set; }
 
         string GroupName { get; set; }

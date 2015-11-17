@@ -21,7 +21,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider, IGridSettingsAdministrationProvider, IConfigurationProvider
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider, IGridSettingsAdministrationProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 

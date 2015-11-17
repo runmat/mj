@@ -2,11 +2,17 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using GeneralTools.Contracts;
 
 namespace GeneralTools.Services
 {
-    public class GeneralConfiguration
+    public class GeneralConfiguration : IGeneralConfigurationProvider
     {
+        public string GetConfigVal(string context, string keyName)
+        {
+            return GetConfigValue(context, keyName);
+        }
+
         public static string GetConfigValue(string context, string keyName)
         {
             try
