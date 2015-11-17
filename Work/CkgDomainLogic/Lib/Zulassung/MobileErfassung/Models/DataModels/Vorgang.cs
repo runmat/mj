@@ -120,6 +120,21 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Reserviert")]
         public bool Reserviert { get; set; }
 
+        [Display(Name = "R/W")]
+        public string RWKennzeichen { get { return (Wunschkennzeichen ? "W" : (Reserviert ? "R" : "")); } }
+
+        [Display(Name = "Saisonkennzeichen")]
+        public bool Saisonkennzeichen { get; set; }
+
+        [Display(Name = "Saison von")]
+        public string SaisonVon { get; set; }
+
+        [Display(Name = "Saison bis")]
+        public string SaisonBis { get; set; }
+
+        [Display(Name = "Saison")]
+        public string Saison { get { return (Saisonkennzeichen ? string.Format("{0}-{1}", SaisonVon, SaisonBis) : ""); } }
+
         [Display(Name = "Nur ein Kennzeichen")]
         public bool NurEinKennzeichen { get; set; }
 
@@ -183,7 +198,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 
         public Vorgang()
         {
-            this.Positionen = new List<VorgangPosition>();
+            Positionen = new List<VorgangPosition>();
         }
     }
 }

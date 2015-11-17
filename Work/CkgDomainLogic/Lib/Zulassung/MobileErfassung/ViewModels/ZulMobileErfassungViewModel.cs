@@ -94,9 +94,19 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
             //ZLDMobileData.AemterMitVorgaengen = aemterMitVorgaengen;
             //ZLDMobileData.Vorgaenge = vorgaenge;
 
+            var wunschkennz = true;
+            var reskennz = false;
+            var saisonkennz = false;
+
             ZLDMobileData.Vorgaenge = new List<Vorgang>();
             for (var i = 0; i < 20; i++)
             {
+                wunschkennz = !wunschkennz;
+                reskennz = !reskennz;
+                saisonkennz = !saisonkennz;
+                var saisonVon = (i % 12) + 1;
+                var saisonBis = (saisonVon < 12 ? (saisonVon + 1) : saisonVon);
+
                 ZLDMobileData.Vorgaenge.Add(new Vorgang
                 {
                     Id = (12345600 + i).ToString(),
@@ -109,8 +119,13 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
                     Referenz2 = "WWW123456789000" + i.ToString("D2"),
                     ZulDat = DateTime.Today,
                     Amt = "B",
-                    Kennzeichen = "B-RD1000" + i.ToString("D2"),
+                    Kennzeichen = "B-RD10" + i.ToString("D2"),
                     Status = "A",
+                    Wunschkennzeichen = wunschkennz,
+                    Reserviert = reskennz,
+                    Saisonkennzeichen = saisonkennz,
+                    SaisonVon = saisonVon.ToString("D2"),
+                    SaisonBis = saisonBis.ToString("D2"),
                     Infotext = "dgfgsgfdggsdf",
                     Bemerkung = "rtzrtztrzrtzrt",
                     Positionen = new List<VorgangPosition> { new VorgangPosition { KopfId = (12345600 + i).ToString(), PosNr = "10", DienstleistungId = "593", DienstleistungBez = "Neuzulassung", Gebuehr = 5, GebuehrenMaterial = "520" } }

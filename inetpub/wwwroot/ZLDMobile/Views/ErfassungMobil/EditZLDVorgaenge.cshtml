@@ -33,37 +33,43 @@
             <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
                 <thead>
                 <tr>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["Id"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["DienstleistungBez"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">Halter</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn120">@Model.PropertyDisplayNames["Kennzeichen"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["Gebuehr"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn110">@Model.PropertyDisplayNames["Status"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn130">@Model.PropertyDisplayNames["Zahlart"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["KennzeichenGroesse"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
+                        <div class="StaticHeaderTableColumnHeader TableColumn40">@Model.PropertyDisplayNames["RWKennzeichen"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow">
+                        <div class="StaticHeaderTableColumnHeader TableColumn60">@Model.PropertyDisplayNames["Saison"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["Bemerkung"]</div>
                     </th>
-                    <th class="TableGridCell">
+                    <th class="TableGridCellNarrow">
                         <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["VersandzulVkBur"]</div>
                     </th>
                 </tr>
@@ -189,6 +195,7 @@
             <col class="TableColumn80"/>
             <col class="TableColumnAuto"/>
             <col class="TableColumn110"/>
+            <col class="TableColumn40"/>
         </colgroup>
         <thead>
             <tr>

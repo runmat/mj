@@ -88,6 +88,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.Referenz1 = s.REFERENZ1;
                         d.Referenz2 = s.REFERENZ2;
                         d.Reserviert = s.RESERVKENN_JN.XToBool();
+                        d.SaisonBis = s.SAISON_END;
+                        d.SaisonVon = s.SAISON_BEG;
+                        d.Saisonkennzeichen = s.SAISON_KNZ.XToBool();
                         d.Status = s.BEB_STATUS;
                         d.TelefonNrDurchwahl = s.TEL_EXTENS;
                         d.TelefonNrVorwahl = s.TEL_NUMBER;
@@ -228,6 +231,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.REFERENZ2 = s.Referenz2;
                         d.RESERVKENN_JN = s.Reserviert.BoolToX();
                         d.RE_JN = s.ZahlartRE.BoolToX();
+                        d.SAISON_BEG = s.SaisonVon;
+                        d.SAISON_END = s.SaisonBis;
+                        d.SAISON_KNZ = s.Saisonkennzeichen.BoolToX();
                         d.TEL_EXTENS = s.TelefonNrDurchwahl;
                         d.TEL_NUMBER = s.TelefonNrVorwahl;
                         d.VE_ERNAM = s.VorerfasserUser;

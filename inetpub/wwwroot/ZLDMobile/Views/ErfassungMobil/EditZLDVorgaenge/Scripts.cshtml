@@ -322,6 +322,12 @@
                                     .append($('<td>').addClass("TableGridCell TableColumn80")
                                         .append($('<span>').addClass("Float-Right").text(vorg.KennzeichenAnzahl))
                                     )
+                                    .append($('<td>').addClass("TableGridCell TableColumn40")
+                                        .append($('<span>').text(vorg.RWKennzeichen))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell TableColumn60")
+                                        .append($('<span>').text(vorg.Saison))
+                                    )
                                     .append($('<td>').addClass("TableGridCell TableColumnAuto Min-Width-80")
                                         .append($('<span>').text(vorg.Bemerkung))
                                     )
@@ -606,6 +612,15 @@
                         )
                     )
                 )
+                .append($('<td>').addClass("TableGridCellNarrow")
+                    .append($('<div>').attr('id', "divLoesch" + naechsteNr)
+                        .append($('<a>Löschen</a>').attr('href', "#").addClass("ui-btn-right").attr('data-role', "button").attr('data-icon', "delete").attr('data-iconpos', "notext")
+                            .click(function () {
+                                RemoveVorgangPosition($(this));
+                            })
+                        )
+                    )
+                )
             );
 
         // Dienstleistungs-Dropdown füllen
@@ -634,9 +649,16 @@
         // UI-Refresh für eingebettete Controls
         RefreshNestedControlsUI("divDL" + naechsteNr);
         RefreshNestedControlsUI("divGebuehr" + naechsteNr);
+        RefreshNestedControlsUI("divLoesch" + naechsteNr);
 
         // UI-Refresh für Table
         RefreshTableUI("tblPopupPositionen");
+    }
+
+    // Löscht die gewählte Dienstleistungsposition
+    function RemoveVorgangPosition(loeschBtn) {
+        if (confirm("Wollen Sie diese Position wirklich löschen?") == true)
+            loeschBtn.closest('tr').remove();
     }
 
     // Übernimmt die im Popup-Fenster getätigten Änderungen zum gewählten Vorgang

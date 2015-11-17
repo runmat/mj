@@ -85,6 +85,12 @@ namespace SapORM.Models
 
 			public string VE_ERNAM { get; set; }
 
+			public string SAISON_KNZ { get; set; }
+
+			public string SAISON_BEG { get; set; }
+
+			public string SAISON_END { get; set; }
+
 			public static GT_VG_KOPF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_VG_KOPF
@@ -116,6 +122,9 @@ namespace SapORM.Models
 					TEL_NUMBER = (string)row["TEL_NUMBER"],
 					TEL_EXTENS = (string)row["TEL_EXTENS"],
 					VE_ERNAM = (string)row["VE_ERNAM"],
+					SAISON_KNZ = (string)row["SAISON_KNZ"],
+					SAISON_BEG = (string)row["SAISON_BEG"],
+					SAISON_END = (string)row["SAISON_END"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
