@@ -203,13 +203,13 @@
 
         jsPlumb.unbind("connection").bind("connection", function (info) {
 
-            var sourceId = info.sourceId;
-            var sourceDiv = $('#' + sourceId);
+            var idSource = info.sourceId;
+            var sourceDiv = $('#' + idSource);
             var sourceField = sourceDiv.find(".field").html();
             var sourceData = "";
 
-            var destId = info.targetId;
-            var destDiv = $('#' + destId);
+            var idDest = info.targetId;
+            var destDiv = $('#' + idDest);
 
             var connections = [];
             $.each(jsPlumb.getConnections(), function (idx, connection) {
@@ -222,28 +222,31 @@
 
             var source = info.source;
 
-            var processorIsSource = false;
-            var processorIsDest = false;
+            var sourceIsProcessor = false;
+            var destIsProcessor = false;
 
-            if (sourceId.substr(0, 7) == "prozout")
-                processorIsSource = true;
+            if (idSource.substr(0, 7) == "prozout")
+                sourceIsProcessor = true;
 
-            if (destId.substr(0, 4) != "Dest")
-                processorIsDest = true;
+            if (idDest.substr(0, 4) != "Dest")
+                destIsProcessor = true;
 
-            var newConnection = {
-                IdSource: sourceId,
-                IdDest: destId,
-                ProcessorIsSource: processorIsSource,
-                ProcessorIsDest: processorIsDest,
-                ValueSource: sourceField,
-                ValueDest: null
-                };
+//            var newConnection = {
+//                IdSource: sourceId,
+//                IdDest: destId,
+//                ProcessorIsSource: sourceIsProcessor,
+//                ProcessorIsDest: processorIsDest,
+//                ValueSource: sourceField,
+//                ValueDest: null
+//                };
 
+            alert(idSource + " -> " + sourceDiv + " -> " + idDest + " -> " + destDiv);
+            idDest = idDest.replace("prozin-", "");
             $.ajax({
                 type: "POST",
                 url: "Admin/NewConnection",
-                data: newConnection,
+                // data: newConnection,
+                data: { IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor },
                 loadingShow: false,
                 success: function (result) {
                     // alert("result: " + result.SourceIsProcessor);
@@ -341,7 +344,7 @@
             loadingShow: false,
             success: function (result) {
                 var processorId = result.NewGuid;
-                alert("processorId: " + processorId);
+                // alert("processorId: " + processorId);
 
                 var numItems = $('.processor').length;
                 var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
@@ -393,8 +396,6 @@
     }
 
     function NewConnection(connectionId, source, dest) {
-        var test = $("#" + dest);
-
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);
 

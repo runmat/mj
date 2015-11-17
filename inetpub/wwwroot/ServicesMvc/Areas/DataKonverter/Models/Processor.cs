@@ -24,6 +24,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Processor()
         {
             Guid =  Guid.NewGuid();
+            DataConnectionsIn = new List<DataConnection>();
+            DataConnectionsOut = new List<DataConnection>();
         }
     }
 }

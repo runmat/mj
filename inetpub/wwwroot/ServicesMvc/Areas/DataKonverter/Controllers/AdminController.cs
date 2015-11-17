@@ -122,9 +122,12 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
-        public JsonResult NewConnection(DataConnection dataConnection)
+        // public JsonResult NewConnection(DataConnection dataConnection)
+        // IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor:
+        public JsonResult NewConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
-            var result = ViewModel.DataMapper.AddConnection(dataConnection);
+            // var result = ViewModel.DataMapper.AddConnection(dataConnection);            
+            var result = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
 
             var processor = ViewModel.DataMapper.Processors.FirstOrDefault();
 

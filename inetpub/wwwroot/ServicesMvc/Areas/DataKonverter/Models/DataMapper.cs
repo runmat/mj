@@ -36,6 +36,42 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return dataConnection;
         }
 
+
+        public DataConnection AddConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
+        {
+
+            var newConnection = new DataConnection
+            {
+                GuidSource = new Guid(idSource),
+                GuidDest = new Guid(idDest),
+                SourceIsProcessor = sourceIsProcessor,
+                DestIsProcessor = destIsProcessor
+            };
+
+            // Prüfen, ob Verbindung bereits besteht...
+            if (DataConnections.Count(x => x.GuidSource == newConnection.GuidSource && x.GuidDest == newConnection.GuidDest) > 0)
+            {
+                return null;
+            }
+            
+            // Verbindung hinzufügen
+            DataConnections.Add(newConnection);
+
+            // Falls Destination ein Prozessor, dann die dortige Verbindungsliste entsprechend erweitern
+            if (destIsProcessor)
+            {
+                var destProcessor = Processors.FirstOrDefault(x => x.Guid == new Guid(idDest));
+
+                if (destProcessor != null && destProcessor.DataConnectionsIn.FirstOrDefault(x => x.GuidDest == destProcessor.Guid && x.GuidSource == newConnection.GuidSource) == null)
+                {
+                    // Neue Verbindung zur Liste hinzufügen
+                    destProcessor.DataConnectionsIn.Add(newConnection);                    
+                }
+            }
+
+            return newConnection;
+        }
+
         public DataConnection RemoveConnection(DataConnection dataConnection)
         {
             return dataConnection;
@@ -92,6 +128,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
             return null;
         }
-        
+
+
     }
 }
