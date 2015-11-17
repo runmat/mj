@@ -14,6 +14,24 @@ namespace MvcTools.Web
         {
             yield return new CustomRequiredFieldValidator(metadata, context);
         }
+
+        public static bool IsPropertyRequired(string modelTypeName, string propertyName)
+        {
+            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+            if (partialViewUrl == null)
+                return false;
+
+            var key = string.Format("REQUIRED: {0} - {1} - {2}", partialViewUrl, modelTypeName, propertyName);
+
+            var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+            if (customerConfigurationProvider == null)
+                return false;
+
+            var fieldConfigValue = customerConfigurationProvider.GetCurrentCustomerConfigVal(key).NotNullOrEmpty().ToLower();
+            var fieldIsRequired = (fieldConfigValue == "true");
+
+            return fieldIsRequired;
+        }
     }
 
     public class CustomRequiredFieldValidator : ModelValidator
@@ -29,25 +47,14 @@ namespace MvcTools.Web
             if (container == null)
                 yield break;
 
+            var translationService = DependencyResolver.Current.GetService<ITranslationService>();
+            if (translationService == null)
+                yield break; 
+
             var modelType = container.GetType();
             var propertyName = Metadata.PropertyName ?? Metadata.ModelType.Name;
 
-            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
-            if (partialViewUrl == null)
-                yield break;
-
-            var translationService = DependencyResolver.Current.GetService<ITranslationService>();
-            if (translationService == null)
-                yield break;
-
-            var key = string.Format("REQUIRED: {0} - {1} - {2}", partialViewUrl, modelType.Name, propertyName);
-
-            var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
-            if (customerConfigurationProvider == null)
-                yield break;
-
-            var fieldConfigValue = customerConfigurationProvider.GetCurrentCustomerConfigVal(key).NotNullOrEmpty().ToLower();
-            var fieldIsRequired = (fieldConfigValue == "true");
+            var fieldIsRequired = CustomRequiredFieldValidatorProvider.IsPropertyRequired(modelType.Name, propertyName);
 
             if (!fieldIsRequired)
                 yield break;
