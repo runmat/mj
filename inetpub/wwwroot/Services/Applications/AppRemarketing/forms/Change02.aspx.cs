@@ -483,26 +483,12 @@ namespace AppRemarketing.forms
 
                 if (objSuche.Haendler.Count == 1)
                 {
-                    objSuche.Kennung = txtNummerDetail.Text.Trim();
-
-                    m_report.Debitor = objSuche.Kennung;
-
-                    DoSubmit();
+                    objSuche.Kennung = txtNummerDetail.Text.Trim(); 
                 }
-                else if (objSuche.Haendler.Count == 0)
-                {
-                    Session["obj_SucheModus"] = "DropDown";
-                    Session["objNewHaendlerSuche"] = objSuche;
-                    trName1.Visible = true;
-                    trPLz.Visible = true;
-                    trOrt.Visible = true;
-                    trNummerDetail.Visible = true;
-                    trHaendlerAuswahl.Visible = true;
-                    trSelectionButton.Visible = true;
-                    lblError.Visible = true;
-                    objSuche.Haendler.RowFilter = "";
-                    lblError.Text = "Es wurden keine Ergebnisse gefunden, bitte versuchen Sie über die Detailsuche!";
-                }
+
+                m_report.Debitor = txtNummerDetail.Text.Trim();
+
+                DoSubmit();
             }
             catch (Exception ex)
             {
