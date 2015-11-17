@@ -165,6 +165,18 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.TimeOfRequest)]
         public string AnforderungsUhrzeit { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.TimeOfRequest)]
+        public string AnforderungsUhrzeitFormatted
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(AnforderungsUhrzeit) || AnforderungsUhrzeit.Length < 6)
+                    return AnforderungsUhrzeit;
+
+                return String.Format("{0}:{1}:{2}", AnforderungsUhrzeit.Substring(0, 2), AnforderungsUhrzeit.Substring(2, 2), AnforderungsUhrzeit.Substring(4, 2));
+            }
+        }
+
         [LocalizedDisplay(LocalizeConstants.StatusSecurity)]
         public string StatusSicherheit { get; set; }
 
