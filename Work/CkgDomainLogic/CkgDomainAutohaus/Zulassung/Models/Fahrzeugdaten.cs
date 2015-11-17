@@ -22,7 +22,6 @@ namespace CkgDomainLogic.Autohaus.Models
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
         public string AuftragsNr
         {
@@ -30,7 +29,6 @@ namespace CkgDomainLogic.Autohaus.Models
             set { _auftragsNr = value.NotNullOrEmpty().ToUpper(); }
         }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
@@ -87,7 +85,6 @@ namespace CkgDomainLogic.Autohaus.Models
 
         //public bool KostenstelleVisible { get { return  GetZulassungViewModel().FahrzeugdatenKostenstelleIsVisible; } }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
         public string BestellNr
         {
