@@ -2833,6 +2833,9 @@
     <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresse.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresseForm.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\ATest.cshtml" />
     <None Include="Web.config">
