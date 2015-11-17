@@ -540,6 +540,26 @@
     margin-left: 20px;
 }
 
+.Min-Width-80 {
+    min-width: 80px;
+}
+
+.Min-Width-90 {
+    min-width: 90px;
+}
+
+.Min-Width-100 {
+    min-width: 100px;
+}
+
+.Min-Width-110 {
+    min-width: 110px;
+}
+
+.Min-Width-130 {
+    min-width: 130px;
+}
+
 .Min-Width-275 {
     min-width: 275px;
 }
@@ -575,4 +595,30 @@
 
 .width-100percent {
     width: 100%;
+}
+
+div.StaticHeaderTableOuterContainer {
+    padding-top: 50px;
+    position: relative;
+}
+
+div.StaticHeaderTableHeaderRow {
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+div.StaticHeaderTableContainer {
+    overflow: auto;
+}
+
+table th div.StaticHeaderTableColumnHeader {
+    position: absolute;
+    top: 0;
+}
+
+.max-height-400 {
+    max-height: 400px;
 }

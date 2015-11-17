@@ -86,13 +86,44 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
         /// <returns></returns>
         public List<AmtVorgaenge> GetAemterVorgaenge()
         {
-            List<AmtVorgaenge> aemterMitVorgaengen;
-            List<Vorgang> vorgaenge;
+            //List<AmtVorgaenge> aemterMitVorgaengen;
+            //List<Vorgang> vorgaenge;
 
-            DataService.GetAemterMitVorgaengen(out aemterMitVorgaengen, out vorgaenge);
+            //DataService.GetAemterMitVorgaengen(out aemterMitVorgaengen, out vorgaenge);
 
-            ZLDMobileData.AemterMitVorgaengen = aemterMitVorgaengen;
-            ZLDMobileData.Vorgaenge = vorgaenge;
+            //ZLDMobileData.AemterMitVorgaengen = aemterMitVorgaengen;
+            //ZLDMobileData.Vorgaenge = vorgaenge;
+
+            ZLDMobileData.Vorgaenge = new List<Vorgang>();
+            for (var i = 0; i < 20; i++)
+            {
+                ZLDMobileData.Vorgaenge.Add(new Vorgang
+                {
+                    Id = (12345600 + i).ToString(),
+                    BlTyp = "NZ",
+                    VkOrg = "1010",
+                    VkBur = "4837",
+                    Kunnr = "471100",
+                    Kunname = "Dummykunde " + i.ToString(),
+                    Referenz1 = "Max Mustermann",
+                    Referenz2 = "WWW123456789000" + i.ToString("D2"),
+                    ZulDat = DateTime.Today,
+                    Amt = "B",
+                    Kennzeichen = "B-RD1000" + i.ToString("D2"),
+                    Status = "A",
+                    Infotext = "dgfgsgfdggsdf",
+                    Bemerkung = "rtzrtztrzrtzrt",
+                    Positionen = new List<VorgangPosition> { new VorgangPosition { KopfId = (12345600 + i).ToString(), PosNr = "10", DienstleistungId = "593", DienstleistungBez = "Neuzulassung", Gebuehr = 5, GebuehrenMaterial = "520" } }
+                });
+            }
+
+            ZLDMobileData.AemterMitVorgaengen = new List<AmtVorgaenge> { new AmtVorgaenge
+            {
+                KurzBez = "B",
+                Bezeichnung = "Berlin",
+                ZulDatText = "17.11.2015",
+                AnzVorgaenge = ZLDMobileData.Vorgaenge.Count
+            } };
 
             return ZLDMobileData.AemterMitVorgaengen;
         }

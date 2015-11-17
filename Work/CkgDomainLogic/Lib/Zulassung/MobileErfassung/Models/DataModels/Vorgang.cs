@@ -123,10 +123,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Nur ein Kennzeichen")]
         public bool NurEinKennzeichen { get; set; }
 
-        [Display(Name = "Kennz.-Größe")]
+        [Display(Name = "Kennz.- Größe")]
         public string KennzeichenGroesse { get; set; }
 
-        [Display(Name = "Kennz.-Anzahl")]
+        [Display(Name = "Kennz.- Anzahl")]
         public string KennzeichenAnzahl { get; set; }
 
         [Display(Name = "Bemerkung")]

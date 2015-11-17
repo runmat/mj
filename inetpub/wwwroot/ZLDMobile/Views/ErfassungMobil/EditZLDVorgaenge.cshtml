@@ -27,34 +27,52 @@
     <input type="search" name="suche" id="txtSuche" value="" placeholder="Suchen..." />
     <div class="VerticalSpacer5">&nbsp;</div>
 
-    <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
-        <colgroup>
-            <col class="TableColumn80"/>
-            <col />
-            <col />
-            <col class="TableColumn140"/>
-            <col class="TableColumn90"/>
-            <col class="TableColumn130"/>
-            <col class="TableColumn150"/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
-                <th class="TableGridCell">Referenz</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Kennzeichen"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenGroesse"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Bemerkung"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["VersandzulVkBur"]</th>
-            </tr>  
-        </thead>  
-        <tbody>
-        </tbody>
-    </table>
+    <div class="StaticHeaderTableOuterContainer">
+        <div class="StaticHeaderTableHeaderRow"></div>
+        <div class="StaticHeaderTableContainer max-height-400">
+            <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
+                <thead>
+                <tr>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["Id"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["DienstleistungBez"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">Halter</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn120">@Model.PropertyDisplayNames["Kennzeichen"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["Gebuehr"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn110">@Model.PropertyDisplayNames["Status"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn130">@Model.PropertyDisplayNames["Zahlart"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["KennzeichenGroesse"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumn80">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["Bemerkung"]</div>
+                    </th>
+                    <th class="TableGridCell">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">@Model.PropertyDisplayNames["VersandzulVkBur"]</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
     
     <table class="table-buttons-responsive table-stroke" data-role="table" data-mode="reflow">
         <thead hidden="hidden">
