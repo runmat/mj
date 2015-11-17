@@ -727,9 +727,15 @@
     <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
     <Compile Include="Areas\DataKonverter\Contracts\IDataProcessor.cs" />
+    <Compile Include="Areas\DataKonverter\Models\DataConnection.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataItem.cs" />
-    <Compile Include="Areas\DataKonverter\Models\DestinationObj.cs" />
+    <Compile Include="Areas\DataKonverter\Models\DestinationFile.cs" />
+    <Compile Include="Areas\DataKonverter\Models\Field.cs" />
+    <Compile Include="Areas\DataKonverter\Models\FieldType.cs" />
     <Compile Include="Areas\DataKonverter\Models\GlobalViewData.cs" />
+    <Compile Include="Areas\DataKonverter\Models\DataMapper.cs" />
+    <Compile Include="Areas\DataKonverter\Models\Operation.cs" />
+    <Compile Include="Areas\DataKonverter\Models\Processor.cs" />
     <Compile Include="Areas\DataKonverter\Models\SourceFile.cs" />
     <Compile Include="Areas\DataKonverter\Services\DataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\ViewModels\KroschkeDataKonverterViewModel.cs" />

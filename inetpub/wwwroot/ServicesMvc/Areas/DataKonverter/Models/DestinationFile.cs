@@ -7,9 +7,9 @@ using MvcTools.Web;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
-    public class DestinationObj
+    public class DestinationFile
     {
-        public Guid Guid { get { return Guid.NewGuid(); } }
+        public Guid Guid  { get; set; }
         public string Filename { get; set; }
 
         public string XmlRaw { get; set; }
@@ -30,6 +30,11 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             Date = 3,
             Double = 4,
             Boolean = 5
+        }
+
+        public DestinationFile()
+        {
+            Guid = Guid.NewGuid();
         }
 
     }

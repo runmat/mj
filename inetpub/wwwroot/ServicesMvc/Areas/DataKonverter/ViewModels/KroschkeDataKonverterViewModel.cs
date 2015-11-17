@@ -35,8 +35,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         [XmlIgnore, ScriptIgnore]
         public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
 
-        public SourceFile SourceFile { get; set; }
-        public DestinationObj DestinationFile { get; set; }
+        public DataMapper DataMapper { get; set; }
+
+        // public SourceFile SourceFile { get; set; }
+        // public DestinationObj DestinationFile { get; set; }
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
 
@@ -71,14 +73,17 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         {
             #region Globale Properties, nutzbar in allen Partials
 
+            DataMapper = new DataMapper();
+
             GlobalViewData = new GlobalViewData
             {
+                
             };
 
             var csvFilename = ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
             //var destFilename = "";
-            SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
-            DestinationFile = FillDestinationObj("KroschkeOn.xsd");
+            DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
+            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn.xsd");
 
             #endregion
         }
@@ -131,7 +136,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #region XML/XSD-Handling
 
-        public DestinationObj FillDestinationObj(string filename)
+        public DestinationFile FillDestinationObj(string filename)
         {
             var folder = GetUploadPathTemp();
             var filenameFull = Path.Combine(folder, filename);
@@ -142,7 +147,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 xmlContent = sr.ReadToEnd();
             }
 
-            var destinationObj = new DestinationObj
+            var destinationObj = new DestinationFile
             {
                 Filename = filename,
                 XmlRaw = xmlContent,
@@ -189,6 +194,11 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
             return true;
         }
+        #endregion
+
+        #region ConnectionHandling
+
+
         #endregion
 
     }

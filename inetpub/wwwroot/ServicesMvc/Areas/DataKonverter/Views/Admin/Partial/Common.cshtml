@@ -50,12 +50,15 @@
         FormWizard.OnPrev(function (step, maxSteps) {
             var stepName = FormWizard.GetStepKey(step + 1);
 
-            FormWizardShowHideSaveButton(stepName == "Receipt", 500);
-
-            var prevStepName = FormWizard.GetStepKey(step);
-            if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
-                FormWizard.ButtonPrevInvoke();
+            if (stepName == 'Admin/Konfiguration') {
+                $('.processorobj').hide();
             }
+
+//          FormWizardShowHideSaveButton(stepName == "Receipt", 500);
+//          var prevStepName = FormWizard.GetStepKey(step);
+//          if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
+//              FormWizard.ButtonPrevInvoke();
+//            }
 
             window.scrollTo(0, 0);
             return true;

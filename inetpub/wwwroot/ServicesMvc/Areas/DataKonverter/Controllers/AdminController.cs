@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DataKonverter.Contracts;
@@ -60,34 +61,45 @@ namespace ServicesMvc.DataKonverter.Controllers
             return View(ViewModel);
         }
 
-        [CkgApplication]
         [HttpPost]
+        [CkgApplication]
         public ActionResult Prozessauswahl()
         {
-            return PartialView("Partial/Prozessauswahl", ViewModel.SourceFile);
+            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+            //    model = ViewModel.Auftraggeber;
+
+            return PartialView("Partial/Prozessauswahl", ViewModel.DataMapper.SourceFile);
         }
 
-        [CkgApplication]
         [HttpPost]
+        [CkgApplication]
         public ActionResult Konfiguration()
         {
+            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+            //    model = ViewModel.Auftraggeber;
+
             return PartialView("Partial/Konfiguration", ViewModel);
         }
 
-        [CkgApplication]
         [HttpPost]
+        [CkgApplication]
         public ActionResult Testimport()
         {
+            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+            //    model = ViewModel.Auftraggeber;
+
             return PartialView("Partial/Testimport", ViewModel);
         }
 
-        [CkgApplication]
         [HttpPost]
+        [CkgApplication]
         public ActionResult Abschluss()
         {
+            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+            //    model = ViewModel.Auftraggeber;
+
             return PartialView("Partial/Abschluss", ViewModel);
         }
-
 
         #region Ajax
 
@@ -101,6 +113,41 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        public JsonResult NewProcessor()
+        {
+            var processorGuid = ViewModel.DataMapper.AddProcessor();
+            return Json(new { NewGuid = processorGuid });
+        }
+
+        [HttpPost]
+        public JsonResult NewConnection(DataConnection dataConnection)
+        {
+            var result = ViewModel.DataMapper.AddConnection(dataConnection);
+
+            var processor = ViewModel.DataMapper.Processors.FirstOrDefault();
+
+            var result2 = ViewModel.DataMapper.GetProcessorResult(processor,1);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult RemoveConnection(DataConnection dataConnection)
+        {
+            var result = ViewModel.DataMapper.RemoveConnection(dataConnection);
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult GetConnections()
+        {
+            var result = ViewModel.DataMapper.GetConnections();
+
+            return Json(result);
+        }
 
         #region Upload
 
@@ -119,7 +166,7 @@ namespace ServicesMvc.DataKonverter.Controllers
             if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
-            ViewModel.SourceFile.Filename = file.FileName;
+            ViewModel.DataMapper.SourceFile.Filename = file.FileName;
 
             return Json(new
             {
@@ -133,11 +180,11 @@ namespace ServicesMvc.DataKonverter.Controllers
         //public ActionResult Upload(Upload model)
         public ActionResult Upload(SourceFile model)
         {
-            var sdf = ViewModel.SourceFile;
+            var sdf = ViewModel.DataMapper.SourceFile;
 
             if (Request["firstRequest"] == "ok")                // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
                 // model = ViewModel.Upload;
-                model = ViewModel.SourceFile;
+                model = ViewModel.DataMapper.SourceFile;
 
             if (ModelState.IsValid)
             {
@@ -148,7 +195,7 @@ namespace ServicesMvc.DataKonverter.Controllers
                 //}
 
                 //ViewModel.Upload = model;
-                ViewModel.SourceFile = model;
+                ViewModel.DataMapper.SourceFile = model;
             }
 
             // return PartialView("Partial/Upload", model);

@@ -13,6 +13,11 @@
 
     <div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
 
+    @*<select id="GlobalDtFormat" name="GlobalDtFormat" size="5" style="width: 120px !important;">
+        <option value="1">5. Januar 2015 -> 05.01.2015</option>
+        <option value="2">Abmeldung</option>
+    </select>*@
+
     <button class="btn white" onclick="ClearAll();">
         Bereinigen
         <i class="icon-remove"></i>
@@ -72,11 +77,11 @@
 
     <div id="DataKonverterContainer2x" style="width: 650px;">
         <div id="source" style="padding: 0px;">
-            @foreach (var item in Model.SourceFile.Columns)
+            @foreach (var item in Model.DataMapper.SourceFile.Fields)
             {
                 <div class="w" id="@item.Guid">
                     <div class="field">@item.Caption</div>
-                    <span class="data">@item.Content[0]</span>
+                    <span class="data">@item.Records[0]</span>
                     <div class="sp"></div>
                 </div>
             }
@@ -85,7 +90,7 @@
         <div id="destination">
             @{
                 var node = "";
-                foreach (XmlElement parent in Model.DestinationFile.XmlDocument.DocumentElement)
+                foreach (XmlElement parent in Model.DataMapper.DestinationFile.XmlDocument.DocumentElement)
                 {
                     <div class="nodetitle">@parent.Name</div>
                     foreach (XmlElement child in parent)
@@ -147,6 +152,11 @@
         allowLoopback: false
     };
 
+    $(function () {
+        $('.processorobj').show();
+        $('#GlobalDtFormat').chosen();
+    });
+
     jsPlumb.ready(function () {
         jsPlumb.importDefaults({
             Connector: ["Straight"], 
@@ -191,7 +201,7 @@
             jsPlumb.detach(c);
         });
 
-        jsPlumb.bind("connection", function (info) {
+        jsPlumb.unbind("connection").bind("connection", function (info) {
 
             var sourceId = info.sourceId;
             var sourceDiv = $('#' + sourceId);
@@ -211,36 +221,64 @@
             });
 
             var source = info.source;
-            
-            // Connection von ProzessorOut
-            if (sourceId.substr(0, 7) === "prozout") {
-                // Connection wurde vom ProzessorOut zum Zielfeld gezogen, also Ergebniswert 1:1 weiterleiten...
-                sourceData = sourceDiv.parent().find(".dataout").html();
 
-                // Connection from processor -> DestField
-                if (destId.substr(0, 4) === "Dest") {
-                    $('#' + destId).find(".data").html(sourceData);
-                }
-                // Connection from processor -> ProzessorIn
-                if (destId.substr(0, 6) === "prozin") {
-                    $('#' + destId).parent().find(".datain").html(sourceData);
+            var processorIsSource = false;
+            var processorIsDest = false;
 
-                    // Init transformation...
-                    // $('#' + destId).parent().find(".dataout").html("");
-                    LiveTransform(sourceData, "testfunction", destId);
-                }
+            if (sourceId.substr(0, 7) == "prozout")
+                processorIsSource = true;
 
-            }
-            else // Connection von SourceField
-            {
-                sourceData = sourceDiv.find(".data").html();
-                // $('#' + destId).find(".data").html(sourceData);
-                if (destId.substr(0, 4) === "Dest") {
-                    $('#' + destId).find(".data").html(sourceData);
-                } else {
-                    LiveTransform(sourceData, "testfunction", destId);
+            if (destId.substr(0, 4) != "Dest")
+                processorIsDest = true;
+
+            var newConnection = {
+                IdSource: sourceId,
+                IdDest: destId,
+                ProcessorIsSource: processorIsSource,
+                ProcessorIsDest: processorIsDest,
+                ValueSource: sourceField,
+                ValueDest: null
+                };
+
+            $.ajax({
+                type: "POST",
+                url: "Admin/NewConnection",
+                data: newConnection,
+                loadingShow: false,
+                success: function (result) {
+                    // alert("result: " + result.SourceIsProcessor);
                 }
-            }
+            });
+
+//            // Connection von ProzessorOut
+//            if (sourceId.substr(0, 7) === "prozout") {
+//                // Connection wurde vom ProzessorOut zum Zielfeld gezogen, also Ergebniswert 1:1 weiterleiten...
+//                sourceData = sourceDiv.parent().find(".dataout").html();
+
+//                // Connection from processor -> DestField
+//                if (destId.substr(0, 4) === "Dest") {
+//                    $('#' + destId).find(".data").html(sourceData);
+//                }
+//                // Connection from processor -> ProzessorIn
+//                if (destId.substr(0, 6) === "prozin") {
+//                    $('#' + destId).parent().find(".datain").html(sourceData);
+
+//                    // Init transformation...
+//                    // $('#' + destId).parent().find(".dataout").html("");
+//                    LiveTransform(sourceData, "testfunction", destId);
+//                }
+
+//            }
+//            else // Connection von SourceField
+//            {
+//                sourceData = sourceDiv.find(".data").html();
+//                // $('#' + destId).find(".data").html(sourceData);
+//                if (destId.substr(0, 4) === "Dest") {
+//                    $('#' + destId).find(".data").html(sourceData);
+//                } else {
+//                    LiveTransform(sourceData, "testfunction", destId);
+//                }
+//            }
 
         });
 
@@ -251,49 +289,106 @@
     }
 
     function NewProcessor(processorId, title, posTop, posLeft, type) {
-        var numItems = $('.processor').length;
-        var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
+//        var numItems = $('.processor').length;
+//        var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
 
-        if (processorId == undefined)
-            processorId = "processor-" + numItems;
+//        if (processorId == undefined)
+//            processorId = "processor-" + numItems;
 
-        if (title == undefined)
-            title = "Prozessor " + numItems;
+//        if (title == undefined)
+//            title = "Prozessor " + numItems;
 
-        clone.id = processorId;
-        document.body.appendChild(clone);
+//        clone.id = processorId;
+//        document.body.appendChild(clone);
 
-        var newProcessor = $("#" + processorId);
-        newProcessor.addClass("processorobj");
-        newProcessor.removeClass("hidden");
+//        var newProcessor = $("#" + processorId);
+//        newProcessor.addClass("processorobj");
+//        newProcessor.removeClass("hidden");
 
-        var top = newProcessor.position().top;
-        var left = newProcessor.position().left;
-        top = top + Math.floor((Math.random() * 30) + 1) + 300;
-        left = left + Math.floor((Math.random() * 30) + 1);
+//        var top = newProcessor.position().top;
+//        var left = newProcessor.position().left;
+//        top = top + Math.floor((Math.random() * 30) + 1) + 300;
+//        left = left + Math.floor((Math.random() * 30) + 1);
 
-        if (posTop != undefined)
-            top = posTop;
+//        if (posTop != undefined)
+//            top = posTop;
 
-        if (posLeft != undefined)
-            left = posLeft;
+//        if (posLeft != undefined)
+//            left = posLeft;
 
-        newProcessor.offset({ top: top, left: left });
+//        newProcessor.offset({ top: top, left: left });
 
-        $(newProcessor).find("#name").html(title);
-        var prozin = $(newProcessor).find("#tmpprozin");
-        var prozout = $(newProcessor).find("#tmpprozout");
+//        $(newProcessor).find("#name").html(title);
+//        var prozin = $(newProcessor).find("#tmpprozin");
+//        var prozout = $(newProcessor).find("#tmpprozout");
 
-        prozin.attr("id", "prozin-" + numItems);
-        prozout.attr("id", "prozout-" + numItems);
+//        prozin.attr("id", "prozin-" + numItems);
+//        prozout.attr("id", "prozout-" + numItems);
 
-        jsPlumb.makeTarget($("#prozin-" + numItems), endpointOptionsProzessor);
-        jsPlumb.makeSource($("#prozout-" + numItems), startpointOptions);
+//        jsPlumb.makeTarget($("#prozin-" + numItems), endpointOptionsProzessor);
+//        jsPlumb.makeSource($("#prozout-" + numItems), startpointOptions);
 
-        jsPlumb.draggable(clone);
+//        jsPlumb.draggable(clone);
 
-        $(newProcessor).find(".processorclose").click(function () {
-            jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
+//        $(newProcessor).find(".processorclose").click(function () {
+//            jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
+//        });
+
+        $.ajax({
+            type: "POST",
+            url: "Admin/NewProcessor",
+            // data: { Id: "Id", Name: "Name" },
+            loadingShow: false,
+            success: function (result) {
+                var processorId = result.NewGuid;
+                alert("processorId: " + processorId);
+
+                var numItems = $('.processor').length;
+                var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
+
+//                if (processorId == undefined)
+//                    processorId = "processor-" + numItems;
+
+                if (title == undefined)
+                    title = "Prozessor " + numItems;
+
+                clone.id = processorId;
+                document.body.appendChild(clone);
+
+                var newProcessor = $("#" + processorId);
+                newProcessor.addClass("processorobj");
+                newProcessor.removeClass("hidden");
+
+                var top = newProcessor.position().top;
+                var left = newProcessor.position().left;
+                top = top + Math.floor((Math.random() * 30) + 1) + 300;
+                left = left + Math.floor((Math.random() * 30) + 1);
+
+                if (posTop != undefined)
+                    top = posTop;
+
+                if (posLeft != undefined)
+                    left = posLeft;
+
+                newProcessor.offset({ top: top, left: left });
+
+                $(newProcessor).find("#name").html(title);
+                var prozin = $(newProcessor).find("#tmpprozin");
+                var prozout = $(newProcessor).find("#tmpprozout");
+
+                prozin.attr("id", "prozin-" + processorId);
+                prozout.attr("id", "prozout-" + processorId);
+
+                jsPlumb.makeTarget($("#prozin-" + processorId), endpointOptionsProzessor);
+                jsPlumb.makeSource($("#prozout-" + processorId), startpointOptions);
+
+                jsPlumb.draggable(clone);
+
+                $(newProcessor).find(".processorclose").click(function () {
+                    jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
+                });
+
+            }
         });
     }
 

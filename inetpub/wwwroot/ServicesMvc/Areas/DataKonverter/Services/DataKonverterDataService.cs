@@ -14,6 +14,7 @@ using Microsoft.VisualBasic.FileIO;
 using SapORM.Contracts;
 using ServicesMvc.Areas.DataKonverter.Models;
 using LumenWorks.Framework.IO.Csv;
+using FieldType = ServicesMvc.Areas.DataKonverter.Models.FieldType;
 
 namespace CkgDomainLogic.DataKonverter.Services
 {
@@ -39,7 +40,8 @@ namespace CkgDomainLogic.DataKonverter.Services
 
             var fieldCount = csvObj.FieldCount;
             var headers = csvObj.GetFieldHeaders();
-            var columns = new List<SourceFile.Column>();
+            // var columns = new List<SourceFile.Column>();
+            var fields = new List<Field>();
 
             // Falls keine Überschriften, Spaltennamen selbst erstellen..
             for (var i = 0; i < headers.Length; i++)
@@ -47,16 +49,16 @@ namespace CkgDomainLogic.DataKonverter.Services
                 if (!firstRowIsCaption) 
                     headers[i] = "Spalte" + i + 1;
 
-                var newColumn = new SourceFile.Column
+                var newField = new Field
                 {
                     Caption = headers[i],
-                    DataType = SourceFile.DataType.String,  // DefaultType
+                    FieldType = FieldType.String,  // DefaultType
                     IsUsed = true,
-                    Content = new List<string>()
+                    // Content = new List<string>()
 
                 };
 
-                columns.Add(newColumn);
+                fields.Add(newField);
             }
 
             // Daten jeder Column zuordnen...
@@ -66,7 +68,8 @@ namespace CkgDomainLogic.DataKonverter.Services
                 for (var j = 0; j < fieldCount; j++)
                 {
                     var value = csvObj[j];
-                    columns[j].Content.Add(value);
+                    // fields[j].Content.Add(value);
+                    fields[j].Records.Add(value);
                 }
             }
 
@@ -74,7 +77,7 @@ namespace CkgDomainLogic.DataKonverter.Services
             {
                 Filename = filename,
                 FirstRowIsCaption = firstRowIsCaption,
-                Columns = columns
+                Fields = fields
             };
 
             // csvTable.Load(csvObj);   // ist leer...
