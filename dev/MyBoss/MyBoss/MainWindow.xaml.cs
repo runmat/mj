@@ -54,6 +54,9 @@ namespace MyBoss
 
         bool _listener_OnKeyPressed(KeyPressedArgs e)
         {
+            if (LowLevelKeyboardListener.Disabled)
+                return false;
+
             if (TryCheckCtrlAltKeyPressAction(e, Key.T, () =>
                     {
                         notifyIcon_Click(null, null);
@@ -83,6 +86,7 @@ namespace MyBoss
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks1, Key.LeftAlt, () =>
             {
+                LowLevelKeyboardListener.Disabled = true;
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
                 new FakeWindow("fake_wallpaper.png").Show();
@@ -90,6 +94,7 @@ namespace MyBoss
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks2, Key.LeftShift, () =>
             {
+                LowLevelKeyboardListener.Disabled = true;
                 KillOutlook();
                 Tools.ShowDesktop();
                 Thread.Sleep(50);

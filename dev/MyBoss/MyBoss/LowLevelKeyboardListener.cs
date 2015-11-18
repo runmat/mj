@@ -11,6 +11,8 @@ namespace MyBoss
         private const int WmKeydown = 0x0100;
         private const int WmSyskeydown = 0x0104;
 
+        public static bool Disabled { get; set; }
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 

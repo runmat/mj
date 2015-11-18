@@ -33,12 +33,14 @@ namespace MyBoss
         {
             if (!_imageName.NotNullOrEmpty().ToLower().Contains("lockscreen"))
             {
+                LowLevelKeyboardListener.Disabled = false;
                 Close();
                 return;
             }
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftShift))
             {
+                LowLevelKeyboardListener.Disabled = false;
                 Close();
                 MainWindow.StartOutlook();
             }
