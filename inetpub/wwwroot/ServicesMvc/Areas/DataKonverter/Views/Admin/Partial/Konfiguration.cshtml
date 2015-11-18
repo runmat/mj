@@ -109,32 +109,48 @@
                     <div class="nodetitle">@parent.Name</div>
                     
                     foreach (XmlElement child in parent)
-                            {
-                                if (!child.HasChildNodes)
-                                {
-                           <div class="w ept" id="Dest-@parent.Name-@child.Name">
+                    {
+
+                        var tag = child.Attributes["id"];
+                        string id = null;
+                        if (tag != null)
+                        {
+                            id = child.Attributes["id"].Value;
+                            // Dest-@parent.Name-@child.Name
+                        }
+
+                        if (!child.HasChildNodes)
+                        {
+                           <div class="w ept" id="Dest-@id">
                             <div class="ep">
                             </div>
                             <div class="field">@child.Name</div>
                             <span class="data"></span>
                         </div> 
-                                }
+                        }
 
-                                if (child.HasChildNodes)
-                                {
+                        if (child.HasChildNodes)
+                        {
                             <div class="nodetitle">@parent.Name > @child.Name</div>
-                                    foreach (XmlElement childchild in child)
-                                    {
-                                <div class="w ept" id="Dest-@parent.Name-@childchild.Name">
+                            foreach (XmlElement childchild in child)
+                            {
+                                tag = child.Attributes["id"];
+                                id = null;
+                                if (tag != null)
+                                {
+                                    id = child.Attributes["id"].Value;
+                                    // Dest-@parent.Name-@childchild.Name
+                                }
+                                <div class="w ept" id="Dest-@id">
                                     <div class="ep">
                                     </div>
                                     <div class="field">@childchild.Name</div>
                                     <span class="data"></span>
                                 </div>
-                                    }
-                                }
                             }
                         }
+                    }
+                }
                 }
         </div>
     </div>

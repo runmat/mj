@@ -18,9 +18,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public DestinationFile()
         {
             Guid = Guid.NewGuid();
-
-            
         }
-
     }
 }
