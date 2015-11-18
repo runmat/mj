@@ -64,7 +64,7 @@ namespace ServicesMvc
             // Customized general validation messages
             DefaultModelBinder.ResourceClassKey = "ValidationMessages";
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(RequiredAttribute), typeof(LocalizedRequiredAttributeAdapter));
-            ModelValidatorProviders.Providers.Add(new CustomRequiredFieldValidatorProvider());
+            ModelValidatorProviders.Providers.Add(new CustomModelValidatorsProvider());
 
             //
             // views and controllers provided by external assemblies:

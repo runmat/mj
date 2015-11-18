@@ -141,9 +141,6 @@ namespace MvcTools.Models
 
         private FormMultiColumnMode IncrementMultiColumnMode(string autoKey, ref string storedValue)
         {
-            if (IsCollapsed)
-                return GetMultiColumnMode(storedValue);
-
             FormMultiColumnMode nextValue;
 
             if (autoKey.EndsWith("3"))
@@ -152,6 +149,9 @@ namespace MvcTools.Models
 
                 if (storedValue.IsNullOrEmpty())
                     storedValue = "left3";
+
+                if (IsCollapsed)
+                    return GetMultiColumnMode(storedValue);
 
                 switch (storedValue)
                 {
@@ -178,6 +178,9 @@ namespace MvcTools.Models
 
                 if (storedValue.IsNullOrEmpty())
                     storedValue = "left";
+
+                if (IsCollapsed)
+                    return GetMultiColumnMode(storedValue);
 
                 switch (storedValue)
                 {

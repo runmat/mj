@@ -69,12 +69,26 @@
     }
 
     function FormSettingsAdminMode_PartialViewReload(o) {
-        //alert(o.attr("class"));
+
         var form = o.closest("form");
-        var divNameToUpdate = form.attr("data-ajax-update");
-        var divToUpdate = $(divNameToUpdate);
 
+        $.ajax({
+            type: "POST",
+            url: "FormSettingsAdminModeSetWysiwygMode",
+            loadingShow: true,
+            success: function () {
 
+                form.attr("data-ajax-complete", "try { setTimeout(function(){ LoadingHide();}, 500); } catch (e) {} FormSettingsAdminMode_PartialViewOnComplete();");
+
+                form.submit();
+            }
+        });
+    }
+
+    function FormSettingsAdminMode_PartialViewOnComplete() {
+        
+        //alert("completed!");
+        FormPrepareAjax();
     }
 
 </script>

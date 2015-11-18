@@ -107,7 +107,7 @@
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\Attributes\NoCache.cs" />
-    <Compile Include="Web\CustomRequiredFieldValidatorProvider.cs" />
+    <Compile Include="Web\CustomModelValidatorsProvider.cs" />
     <Compile Include="Web\RazorViewWithWrapperMarkers.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
     <Compile Include="Controllers\ErrorController.cs" />

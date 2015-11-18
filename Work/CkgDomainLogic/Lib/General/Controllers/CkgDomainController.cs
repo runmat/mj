@@ -979,6 +979,31 @@ namespace CkgDomainLogic.General.Controllers
             PersistableSelectorItems = PersistanceGetObjects<IPersistableObject>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
 
+        public bool FormSettingsAdminModeWysiwygMode
+        {
+            get { return SessionHelper.GetSessionValue("FormSettingsAdminModeWysiwygMode", false); }
+            set { SessionHelper.SetSessionValue("FormSettingsAdminModeWysiwygMode", value); }
+        }
+
+        protected override PartialViewResult PartialView(string viewName, object model)
+        {
+            if (FormSettingsAdminModeWysiwygMode)
+                ModelState.Clear();
+
+            var viewHtml = base.PartialView(viewName, model);
+
+            FormSettingsAdminModeWysiwygMode = false;
+
+            return viewHtml;
+        }
+
+        public ActionResult FormSettingsAdminModeSetWysiwygMode()
+        {
+            FormSettingsAdminModeWysiwygMode = true;
+
+            return new EmptyResult();
+        }
+
         #endregion
 
         #endregion

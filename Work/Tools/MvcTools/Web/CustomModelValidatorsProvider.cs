@@ -8,10 +8,11 @@ using GeneralTools.Resources;
 
 namespace MvcTools.Web
 {
-    public class CustomRequiredFieldValidatorProvider : ModelValidatorProvider
+    public class CustomModelValidatorsProvider : ModelValidatorProvider
     {
         public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, ControllerContext context)
         {
+            yield return new FormAdminModeWysiwygFakeValidator(metadata, context);
             yield return new CustomRequiredFieldValidator(metadata, context);
         }
 
@@ -31,6 +32,26 @@ namespace MvcTools.Web
             var fieldIsRequired = (fieldConfigValue == "true");
 
             return fieldIsRequired;
+        }
+    }
+
+    public class FormAdminModeWysiwygFakeValidator : ModelValidator
+    {
+        public FormAdminModeWysiwygFakeValidator(ModelMetadata metadata, ControllerContext controllerContext) : base(metadata, controllerContext)
+        {
+        }
+
+        public override IEnumerable<ModelValidationResult> Validate(object container)
+        {
+            SessionHelper.SetPartialViewUrlCurrent();
+
+            if (SessionHelper.GetSessionValue("FormSettingsAdminModeWysiwygMode", false))
+                yield return new ModelValidationResult
+                {
+                    MemberName = null,
+                    Message = @"This is only a fake validation error message, " +
+                              @"to avoid a valid model state + prevent unnecessary querying of business data, if we are only in form admin wysiwyg mode"
+                };
         }
     }
 
@@ -54,7 +75,7 @@ namespace MvcTools.Web
             var modelType = container.GetType();
             var propertyName = Metadata.PropertyName ?? Metadata.ModelType.Name;
 
-            var fieldIsRequired = CustomRequiredFieldValidatorProvider.IsPropertyRequired(modelType.Name, propertyName);
+            var fieldIsRequired = CustomModelValidatorsProvider.IsPropertyRequired(modelType.Name, propertyName);
 
             if (!fieldIsRequired)
                 yield break;

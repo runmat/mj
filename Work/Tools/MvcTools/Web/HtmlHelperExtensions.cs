@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -86,7 +87,7 @@ namespace MvcTools.Web
                              metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(RequiredConditionalAttribute), false).Any();
 
                 if (!isRequired)
-                    isRequired = CustomRequiredFieldValidatorProvider.IsPropertyRequired(metadata.ContainerType.Name, metadata.PropertyName);
+                    isRequired = CustomModelValidatorsProvider.IsPropertyRequired(metadata.ContainerType.Name, metadata.PropertyName);
             }
 
             var asteriskTag = new TagBuilder("span") { InnerHtml = "&nbsp;" };
@@ -536,6 +537,5 @@ namespace MvcTools.Web
         }
 
         #endregion
-
     }
 }
