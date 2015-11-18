@@ -593,7 +593,7 @@ namespace AppZulassungsdienst.lib
                     if (checkResults.Any())
                     {
                         var item = checkResults.First();
-                        Ist48hZulassung = item.Z48H.XToBool();
+                        Ist48hZulassung = item.IST_48H.XToBool();
                         LieferUhrzeitBis = item.LIFUHRBIS;
                         AbwName1 = item.NAME1;
                         AbwName2 = item.NAME2;
