@@ -51,6 +51,12 @@
         columns.XBound(c => c.EndgueltigerVersand).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Anforderungsweg);
+        columns.XBound(c => c.HaendlerNr);
+        columns.XBound(c => c.HaendlerName);
+        columns.XBound(c => c.HaendlerOrt);
+        columns.XBound(c => c.AnforderungsUhrzeitFormatted);
+        columns.XBound(c => c.StatusSicherheit);
+        columns.XBound(c => c.MahnstufeSicherheit);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

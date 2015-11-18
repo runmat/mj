@@ -1,0 +1,41 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model Adresse
+
+<div id="DivVersandadresse" class="margin-top-20">
+    @using (Ajax.BeginForm("VersandAdresseForm", "Wfm", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivVersandadresse", OnComplete = "VersandAdresseAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "VersandAdresseAjaxForm" }))
+    {
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.Kennung)
+        @Html.HiddenFor(m => m.Typ)
+        @Html.HiddenFor(m => m.TmpSelectionKey)
+        @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium" })
+
+        @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green">@Localize.Save <i class="icon-remove"></i></button>
+            <button type="button" class="btn margin-left-10" onclick="CloseAuftragsVersandadresse();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @Model.IsValid.ToString().ToLower();
+
+            AjaxFormAdressePrepareAutoComplete($("#Name1"), "VersandadresseGetAutoCompleteItems");
+            AjaxFormAdressePrepareAutoCompleteReset("VersandAdresseAjaxForm");
+
+        </script>
+    }
+</div>

@@ -100,6 +100,10 @@
       <Project>{7FC30B76-8E4D-448B-B6E2-7EE0BE4D278C}</Project>
       <Name>CkgDomainInsurance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CkgDomainLogic\CkgDomainInternal\CkgDomainInternal.csproj">
+      <Project>{32D4DC60-D382-415A-B8C1-EA11A66FDC10}</Project>
+      <Name>CkgDomainInternal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CkgDomainLogic\CkgDomainLeasing\CkgDomainLeasing.csproj">
       <Project>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</Project>
       <Name>CkgDomainLeasing</Name>

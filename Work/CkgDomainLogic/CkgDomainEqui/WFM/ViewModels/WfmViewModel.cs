@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Contracts;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -21,6 +24,9 @@ namespace CkgDomainLogic.WFM.ViewModels
     {
         [XmlIgnore]
         public IWfmDataService DataService { get { return CacheGet<IWfmDataService>(); } }
+
+        [XmlIgnore]
+        public IAdressenDataService AdressenDataService { get { return CacheGet<IAdressenDataService>(); } }
 
         public WfmAuftragSelektor Selektor
         {
@@ -112,7 +118,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             Auftraege = DataService.GetAbmeldeauftraege(Selektor);
 
-            if (Auftraege.None())
+            if (Auftraege.None() && state != null)
                 state.AddModelError("", Localize.NoDataFound);
         }
 
@@ -231,20 +237,65 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         #region Übersicht/Storno
 
+        private string StornoAuftragCurrent { get; set; }
+
+        public void VersandOptionChanged(string versandOption)
+        {
+            VersandOption = GetVersandOption(versandOption).ID;
+        }
+
+        public string CreateVersandAdresse()
+        {
+            var vorgangNr = StornoAuftragCurrent;
+
+            var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
+            if (auftrag == null)
+                return Localize.OrderDoesNotExist;
+
+            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag, VersandAdresse, GetVersandOption(VersandOption).MaterialCode);
+            if (!message.IsNullOrEmpty())
+                return message;
+
+            LoadAuftraege(null);
+
+            return message;
+        }
+
+        private VersandOption GetVersandOption(string versandOption = null)
+        {
+            VersandOption vOption;
+            if (versandOption == null)
+                vOption = VersandOptionenList.FirstOrDefault();
+            else
+                vOption = VersandOptionenList.FirstOrDefault(v => v.ID.NotNullOrEmpty().TrimStart('0') == versandOption.NotNullOrEmpty().TrimStart('0'));
+
+            return vOption ?? VersandOptionenList.FirstOrDefault() ?? new VersandOption();
+        }
+
         public string StornoAuftrag(string vorgangNr)
         {
-            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
-            if (message.IsNullOrEmpty())
-            {
-                var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
-                if (auftrag != null)
-                {
-                    auftrag.StornoDatum = DateTime.Today;
-                    auftrag.AbmeldeStatusCode = "3";
-                }
+            if (vorgangNr.IsNotNullOrEmpty())
+                StornoAuftragCurrent = vorgangNr;
 
-                DataMarkForRefresh();
-            }
+            var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
+            if (auftrag == null)
+                return Localize.OrderDoesNotExist;
+
+            if (auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "2")
+                return Localize.CancellationNotPossible + ". " + Localize.OrderAlreadyDone;
+
+            if (auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "0" || auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "1")
+                if (auftrag.Zb1VorhandenDatum != null || auftrag.KennzeichenVornVorhandenDatum != null || auftrag.KennzeichenHintenVorhandenDatum != null)
+                    return "ENFORCE_DELIVERY_ADDRESS";
+
+            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
+            if (!message.IsNullOrEmpty())
+                return message;
+
+            auftrag.StornoDatum = DateTime.Today;
+            auftrag.AbmeldeStatusCode = "3";
+
+            LoadAuftraege(null);
 
             return message;
         }
@@ -261,6 +312,88 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             return message;
         }
+
+        #endregion
+
+
+        #region Versandadresse
+
+        [XmlIgnore]
+        public List<Adresse> VersandAdressen
+        {
+            get { return AdressenDataService.Adressen.Where(a => a.Kennung == "VERSANDADRESSE").ToListOrEmptyList(); }
+        }
+
+        [XmlIgnore]
+        public List<string> VersandAdressenAsAutoCompleteItems
+        {
+            get { return VersandAdressen.Select(a => a.GetAutoSelectString()).ToList(); }
+        }
+
+        [XmlIgnore]
+        public List<Adresse> VersandAdressenFiltered
+        {
+            get { return PropertyCacheGet(() => VersandAdressen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.ShippingOption)]
+        public string VersandOption
+        {
+            get { return PropertyCacheGet(() => GetVersandOption().ID); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<VersandOption> VersandOptionenList
+        {
+            get
+            {
+                return DataService.VersandOptionen.Where(vo => vo.IstEndgueltigerVersand).OrderBy(w => w.Name).ToList();
+            }
+        }
+
+        public Adresse VersandAdresse
+        {
+            get { return PropertyCacheGet(() => new Adresse {Land = "DE", Kennung = "VERSANDADRESSE"}); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public Adresse GetVersandAdresseFromKey(string key)
+        {
+            int id;
+            Adresse adr = null;
+            if (int.TryParse(key, out id))
+                adr = VersandAdressen.FirstOrDefault(v => v.ID == id);
+
+            if (adr == null)
+                adr = VersandAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+
+            if (adr != null)
+                if (adr.Land.IsNullOrEmpty())
+                    adr.Land = "DE";
+
+            return adr;
+        }
+
+        public void FilterVersandAdressen(string filterValue, string filterProperties)
+        {
+            VersandAdressenFiltered = VersandAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void DataMarkForRefreshVersandAdressenFiltered()
+        {
+            PropertyCacheClear(this, m => m.VersandAdressenFiltered);
+        }
+
+        public void PrepareVersandAdresse()
+        {
+            PropertyCacheClear(this, m => m.VersandAdresse);
+            PropertyCacheClear(this, m => m.VersandOption);
+            Adresse.Laender = AdressenDataService.Laender;
+        }
+
         #endregion
 
 
