@@ -327,10 +327,14 @@
 }
 
 .ui-header {
-    min-height: 80px;
+    height: 80px;
     background-image: url(../Images/LogoHeaderKroschke.jpg);
     background-repeat: no-repeat;
     background-position: top right;
+}
+
+.ui-footer {
+    height: 18px;
 }
 
 .IconButtonDeleteBig {
@@ -633,8 +637,4 @@ div.StaticHeaderTableContainer {
 table th div.StaticHeaderTableColumnHeader {
     position: absolute;
     top: 0;
-}
-
-.max-height-400 {
-    max-height: 400px;
 }
