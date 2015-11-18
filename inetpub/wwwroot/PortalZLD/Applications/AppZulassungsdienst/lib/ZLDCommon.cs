@@ -80,6 +80,7 @@ namespace AppZulassungsdienst.lib
         public string AbwStrasse { get; private set; }
         public string AbwPlz { get; private set; }
         public string AbwOrt { get; private set; }
+        public bool GenerellAbwLiefAdrVerwenden { get; private set; }
 
         #endregion
 
@@ -599,6 +600,7 @@ namespace AppZulassungsdienst.lib
                         AbwStrasse = item.STREET;
                         AbwPlz = item.POST_CODE1;
                         AbwOrt = item.CITY1;
+                        GenerellAbwLiefAdrVerwenden = item.ABW_ADR_GENERELL.XToBool();
                     }
                 }
             });
