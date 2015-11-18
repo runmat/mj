@@ -34,7 +34,12 @@
         }
         @if (formSettingsAdminMode && @Model.ControlHtml != null)
         {
-            <span><i class="icon-wrench" onclick="return FormSettingsAdminMode_PartialViewReload($(this));"></i></span>
+            <span>
+                <i class="icon-wrench" 
+                     data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" 
+                     onclick="return FormSettingsAdminMode_PartialViewReload($(this));">
+                </i>
+            </span>
         }
     </label>
 

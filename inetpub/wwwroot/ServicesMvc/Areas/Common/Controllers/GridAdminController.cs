@@ -138,25 +138,40 @@ namespace ServicesMvc.Common.Controllers
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }
-        
-#if __TEST
+
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Test()
+        public ActionResult TestStrafzettel()
         {
             TryUserLogoff();
 
             ViewModel.ReportSettings = new ReportSolution
-                {
-                    AdminIsAuthorized = true,
-                    AdminUserName = "JenzenM",
-                    AppID = 1805, // 1731
-                    AppFriendlyName = "Überführungs-Report"
-                };
+            {
+                AdminIsAuthorized = true,
+                AdminUserName = "JenzenM",
+                AppID = 1731,
+                AppFriendlyName = "Strafzettel-Report"
+            };
 
-            return View(ViewModel);
+            return View("Test", ViewModel);
         }
-#endif    
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult TestZulassung()
+        {
+            TryUserLogoff();
+
+            ViewModel.ReportSettings = new ReportSolution
+            {
+                AdminIsAuthorized = true,
+                AdminUserName = "JenzenM",
+                AppID = 1806,
+                AppFriendlyName = "Autohaus-Zulassung"
+            };
+
+            return View("Test", ViewModel);
+        }
 
     }
 }

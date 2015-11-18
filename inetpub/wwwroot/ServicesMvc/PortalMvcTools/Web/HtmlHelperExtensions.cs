@@ -229,6 +229,8 @@ namespace PortalMvcTools.Web
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -364,6 +366,8 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -406,6 +410,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.Partial("Partial/FormControls/Form/ControlWithPlaceholder", model);
@@ -426,6 +432,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -483,6 +491,8 @@ namespace PortalMvcTools.Web
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributes,
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -543,6 +553,8 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -601,6 +613,8 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -635,6 +649,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -671,6 +687,8 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
@@ -749,6 +767,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(dateRangeExpression),
                 IconCssClass = null,
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = dateRangeExpression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(dateRangeExpression, model);
@@ -775,6 +795,8 @@ namespace PortalMvcTools.Web
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
                 LabelHidden = labelHidden,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.FormLeftLabelControlConditional(expression, model);

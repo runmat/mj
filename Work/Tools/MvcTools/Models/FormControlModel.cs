@@ -10,6 +10,10 @@ namespace MvcTools.Models
 
     public class FormControlModel
     {
+        public string ModelTypeName { get; set; }
+
+        public string PropertyName { get; set; }
+
         public IKeyValueStore<string> KeyStringStore { get { return DependencyResolver.Current.GetService<IKeyValueStore<string>>(); } }
 
         /// <summary>

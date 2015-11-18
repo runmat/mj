@@ -978,4 +978,32 @@
         return s;
     }
 
+    function FormSettingsAdminMode_PartialViewReload(o) {
+
+        var form = o.closest("form");
+
+        $.ajax({
+            type: "POST",
+            url: "FormSettingsAdminModeSetWysiwygMode",
+            loadingShow: true,
+            data: 
+                { 
+                    modelTypeName: o.attr("data-model-type-name"), 
+                    propertyName: o.attr("data-property-name") 
+                },
+            success: function () {
+
+                form.attr("data-ajax-complete", "try { setTimeout(function(){ LoadingHide();}, 500); } catch (e) {} FormSettingsAdminMode_PartialViewOnComplete();");
+
+                form.submit();
+            }
+        });
+    }
+
+    function FormSettingsAdminMode_PartialViewOnComplete() {
+        
+        //alert("completed!");
+        FormPrepareAjax();
+    }
+
 </script>

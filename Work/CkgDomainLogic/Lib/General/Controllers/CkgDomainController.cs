@@ -713,13 +713,33 @@ namespace CkgDomainLogic.General.Controllers
             return Json(new { success = true });
         }
 
-        
+
 
         //
         // </Multi Selection>
         //
 
 
+        #endregion
+
+
+        #region EVB-Prüfung -> Rückgabe der Versicherung
+
+        [HttpPost]
+        public JsonResult GetEvbVersInfo(string evb)
+        {
+            if (evb.IsNullOrEmpty() || evb.Length < 2)
+                return null;
+
+            evb = evb.Substring(0, 2).ToUpper();
+
+            var viewModel = AdressenPflegeViewModel;
+            string message;
+            bool isValid;
+            viewModel.GetEvbInstantInfo(evb, out message, out isValid);
+
+            return Json(new { message = message, isValid = isValid });
+        }
         #endregion
 
 
@@ -979,6 +999,9 @@ namespace CkgDomainLogic.General.Controllers
             PersistableSelectorItems = PersistanceGetObjects<IPersistableObject>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
 
+        #endregion
+
+
         public bool FormSettingsAdminModeWysiwygMode
         {
             get { return SessionHelper.FormSettingsAdminModeWysiwygModeGet(); }
@@ -997,33 +1020,14 @@ namespace CkgDomainLogic.General.Controllers
             return viewHtml;
         }
 
-        public ActionResult FormSettingsAdminModeSetWysiwygMode()
+        public ActionResult FormSettingsAdminModeSetWysiwygMode(string modelTypeName, string propertyName)
         {
             FormSettingsAdminModeWysiwygMode = true;
 
             return new EmptyResult();
         }
 
-        #endregion
 
-        #endregion
-
-        #region EVB-Prüfung -> Rückgabe der Versicherung
-        [HttpPost]
-        public JsonResult GetEvbVersInfo(string evb)
-        {
-            if (evb.IsNullOrEmpty() || evb.Length < 2)
-                return null;
-
-            evb = evb.Substring(0, 2).ToUpper();
-
-            var viewModel = AdressenPflegeViewModel;
-            string message;
-            bool isValid;
-            viewModel.GetEvbInstantInfo(evb, out message, out isValid);
-
-            return Json(new { message = message, isValid = isValid });
-        }
         #endregion
 
         public string GetConfigValue(string context, string keyName)
