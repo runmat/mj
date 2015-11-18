@@ -23,7 +23,8 @@ namespace GeneralTools.Services
 
         public string GetCurrentCustomerConfigVal(string keyName)
         {
-            return GetApplicationConfigValue(keyName, "0", LogonContextProvider.GetLogoncontext().CustomerID);
+            var appID = LogonContextProvider.GetLogonContext().AppID;
+            return GetApplicationConfigValue(keyName, "0", LogonContextProvider.GetLogonContext().CustomerID);
         }
 
         public static string GetApplicationConfigValue(string keyName, string appID, int customerID = 0, int groupID = 0)

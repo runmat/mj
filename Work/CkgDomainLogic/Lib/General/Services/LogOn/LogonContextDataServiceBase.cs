@@ -34,6 +34,8 @@ namespace CkgDomainLogic.General.Services
 
         public int CustomerID { get { return Customer == null ? 0 : Customer.CustomerID; } }
 
+        public int AppID { get { return GetAppIdCurrent(); } }
+
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 

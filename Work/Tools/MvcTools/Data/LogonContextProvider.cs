@@ -8,7 +8,7 @@ namespace MvcTools.Data
 {
     public class LogonContextProvider : ILogonContextProvider
     {
-        public ILogonContext GetLogoncontext()
+        public ILogonContext GetLogonContext()
         {
             return GetSessionObject<ILogonContext>("LogonContext");
         }

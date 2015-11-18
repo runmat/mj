@@ -28,6 +28,8 @@ namespace CkgDomainLogic.General.Services
 
         public int CustomerID { get { return 0; } }
 
+        public int AppID { get { return 0; } }
+
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
         public string GroupName { get; set; }

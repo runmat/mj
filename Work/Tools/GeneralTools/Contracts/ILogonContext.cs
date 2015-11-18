@@ -4,6 +4,8 @@
     {
         int CustomerID { get; }
 
+        int AppID { get; }
+
         string KundenNr { get; set; }
 
         string GroupName { get; set; }

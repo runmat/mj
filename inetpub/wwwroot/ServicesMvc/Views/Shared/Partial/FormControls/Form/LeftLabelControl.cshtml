@@ -1,8 +1,10 @@
-﻿@using MvcTools.Models
+﻿@using MvcTools.Contracts
+@using MvcTools.Models
 @model FormControlModel
 
 @{
     var additionalClass = (Model.IsCollapsed ? " hide" : "");
+    var formSettingsAdminMode = ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
 }
 
 @if (Model.ColumnMode != FormMultiColumnMode.None)
@@ -29,6 +31,10 @@
         @if (!Model.LabelHidden)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+        }
+        @if (formSettingsAdminMode)
+        {
+            <span><i class="icon-wrench"></i></span>
         }
     </label>
 

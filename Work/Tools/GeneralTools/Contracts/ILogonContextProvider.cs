@@ -2,6 +2,6 @@
 {
     public interface ILogonContextProvider
     {
-        ILogonContext GetLogoncontext();
+        ILogonContext GetLogonContext();
     }
 }

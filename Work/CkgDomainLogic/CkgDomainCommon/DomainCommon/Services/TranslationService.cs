@@ -26,7 +26,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public TranslationService(ILogonContextProvider logonContextProvider)
         {
-            var logonContext = logonContextProvider.GetLogoncontext();
+            var logonContext = logonContextProvider.GetLogonContext();
             var customerId = 0;
             if (logonContext != null)
                 customerId = logonContext.KundenNr.ToInt(0);

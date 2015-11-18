@@ -759,6 +759,14 @@ namespace GeneralTools.Models
 
             return erg;
         }
+
+        public static TValue GetPropertyValueIfIs<TModel, TValue>(this object o, Expression<Func<TModel, TValue>> expression, TValue defaultValue = default (TValue))
+        {
+            if (!(o is TModel))
+                return defaultValue;
+
+            return expression.Compile().Invoke((TModel)o);
+        }
     }
 
     public static class TypeExtensions
