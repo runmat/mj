@@ -34,13 +34,10 @@ namespace CkgDomainLogic.DataKonverter.Services
         /// <returns></returns>
         public SourceFile FillSourceFile(string filename, bool firstRowIsCaption, char delimiter = ';')
         {            
-            var encoding = GetFileEncoding(filename, Encoding.UTF8);
-
             var csvObj = CsvReaderFactory.GetCsvObj(filename, firstRowIsCaption, delimiter);
 
             var fieldCount = csvObj.FieldCount;
             var headers = csvObj.GetFieldHeaders();
-            // var columns = new List<SourceFile.Column>();
             var fields = new List<Field>();
 
             // Falls keine Überschriften, Spaltennamen selbst erstellen..
@@ -111,16 +108,6 @@ namespace CkgDomainLogic.DataKonverter.Services
 
             // File.Delete(filename);
             return sourceFile;
-        }
-
-        protected Encoding GetFileEncoding(string csvFileName, Encoding defaultEncodingIfNoBom)
-        {
-            using (var reader = new StreamReader(csvFileName, defaultEncodingIfNoBom, true))
-            {
-                reader.Peek();
-                var encoding = reader.CurrentEncoding;
-                return encoding;
-            }
         }
 
         protected DataItem.DataType GetDataType(IEnumerable<string> values)

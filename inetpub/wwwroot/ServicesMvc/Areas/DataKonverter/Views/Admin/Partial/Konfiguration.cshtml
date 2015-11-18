@@ -81,7 +81,7 @@
             {
                 <div class="w" id="@item.Guid">
                     <div class="field">@item.Caption</div>
-                    <span class="data">@item.Records[0]</span>
+                    <div class="data">@item.Records[0]</div>
                     <div class="sp"></div>
                 </div>
             }
@@ -93,30 +93,35 @@
                 foreach (XmlElement parent in Model.DataMapper.DestinationFile.XmlDocument.DocumentElement)
                 {
                     <div class="nodetitle">@parent.Name</div>
+                    
                     foreach (XmlElement child in parent)
-                    {
-                        <div class="w ept" id="Dest-@parent.Name-@child.Name">
+                            {
+                                if (!child.HasChildNodes)
+                                {
+                           <div class="w ept" id="Dest-@parent.Name-@child.Name">
                             <div class="ep">
                             </div>
                             <div class="field">@child.Name</div>
                             <span class="data"></span>
-                        </div>
-                        if (child.HasChildNodes)
-                        {
+                        </div> 
+                                }
+
+                                if (child.HasChildNodes)
+                                {
                             <div class="nodetitle">@parent.Name > @child.Name</div>
-                            foreach (XmlElement childchild in child)
-                            {
+                                    foreach (XmlElement childchild in child)
+                                    {
                                 <div class="w ept" id="Dest-@parent.Name-@childchild.Name">
                                     <div class="ep">
                                     </div>
                                     <div class="field">@childchild.Name</div>
                                     <span class="data"></span>
                                 </div>
+                                    }
+                                }
                             }
                         }
-                    }
                 }
-            }
         </div>
     </div>
 
@@ -240,7 +245,7 @@
 //                ValueDest: null
 //                };
 
-            alert(idSource + " -> " + sourceDiv + " -> " + idDest + " -> " + destDiv);
+            // alert(idSource + " -> " + sourceDiv + " -> " + idDest + " -> " + destDiv);
             idDest = idDest.replace("prozin-", "");
             $.ajax({
                 type: "POST",
@@ -248,8 +253,17 @@
                 // data: newConnection,
                 data: { IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor },
                 loadingShow: false,
-                success: function (result) {
+                success: function (processors) {
                     // alert("result: " + result.SourceIsProcessor);
+                    for (var i = 0; i < processors.length; i++) {
+                        // console.log(x[i].id);
+                        // alert(processorList[i].Input + " -> " + processorList[i].Output);
+                        var processorId = processors[i].Guid;
+                        var valueIn = processors[i].Input;
+                        var valueOut = processors[i].Output;
+                        $('#' + processorId).find(".datain").html(valueIn);
+                        $('#' + processorId).find(".dataout").html(valueOut);
+                    }
                 }
             });
 

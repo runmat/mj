@@ -18,21 +18,15 @@ namespace DocumentTools.Services
 
         public static CsvReader GetCsvObj(string filename, bool firstRowIsCaption, char delimiter)
         {
-            var csv = new CsvReader(new StreamReader(filename), true, delimiter)
+            // var encoding = GetFileEncoding(filename, Encoding.UTF8);
+            var encoding = GetFileEncoding(filename, Encoding.Default);
+
+            // var csv = new CsvReader(new StreamReader(filename), true, delimiter)
+            var csv = new CsvReader(new StreamReader(filename, encoding), true, delimiter)
             {
                 DefaultHeaderName = "Spalte"
             };
             var headers = csv.GetFieldHeaders();
-
-            //var csvTable = new DataTable();
-            //using (var csvReader = new CsvReader(new StreamReader(filename), false, ';')
-            //{
-            //    DefaultHeaderName = "Spalte"            
-            //})
-            //{
-            //    csvTable.Load(csvReader);
-            //}
-            //var test = csvTable;
 
             return csv;
         }
@@ -69,6 +63,14 @@ namespace DocumentTools.Services
             return null;
         }
 
-
+        protected static Encoding GetFileEncoding(string csvFileName, Encoding defaultEncodingIfNoBom)
+        {
+            using (var reader = new StreamReader(csvFileName, defaultEncodingIfNoBom, true))
+            {
+                reader.Peek();
+                var encoding = reader.CurrentEncoding;
+                return encoding;
+            }
+        }
     }
 }

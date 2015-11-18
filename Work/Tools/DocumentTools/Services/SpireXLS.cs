@@ -18,14 +18,14 @@ namespace DocumentTools.Services
             {
                 workbook.LoadFromFile(excelFilename);
                 workbook.SaveToFile(csvFilename, delimeter.ToString());
+
+                return csvFilename;
             }
 
             //using (var workbook = new SpireXls.Workbook())
             //{
             //    workbook.SaveToFile(csvFilename, delimeter.ToString());
             //}
-
-            return null;
         }
     }
 }

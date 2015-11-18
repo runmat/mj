@@ -78,6 +78,16 @@ namespace ServicesMvc.DataKonverter.Controllers
             //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
             //    model = ViewModel.Auftraggeber;
 
+            // ##removeme##
+            if (ViewModel.DataMapper.SourceFile.Fields == null)
+            {
+                // var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+                var csvFilename = @"C:\\dev\\inetpub\\wwwroot\\ServicesMvc\\App_Data\\FileUpload\\Temp\\Testfile3.csv";
+                ViewModel.DataMapper.SourceFile.Filename = csvFilename;
+                ViewModel.DataMapper.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
+                ViewModel.DataMapper.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn2.xml");
+            }
+
             return PartialView("Partial/Konfiguration", ViewModel);
         }
 
@@ -126,14 +136,20 @@ namespace ServicesMvc.DataKonverter.Controllers
         // IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor:
         public JsonResult NewConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
+
+            ViewModel.DataMapper.RecordNo = 0;
+
             // var result = ViewModel.DataMapper.AddConnection(dataConnection);            
             var result = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
 
-            var processor = ViewModel.DataMapper.Processors.FirstOrDefault();
+            var processorList = new List<Processor>();
+            foreach (var processor in ViewModel.DataMapper.Processors)
+            {
+                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
+                processorList.Add(processorResult);
+            }
 
-            var result2 = ViewModel.DataMapper.GetProcessorResult(processor,1);
-
-            return Json(result);
+            return Json(processorList);
         }
 
         [HttpPost]
@@ -166,7 +182,7 @@ namespace ServicesMvc.DataKonverter.Controllers
             //if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
             //    return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
-            if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
+            if (!ViewModel.UploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
             ViewModel.DataMapper.SourceFile.Filename = file.FileName;

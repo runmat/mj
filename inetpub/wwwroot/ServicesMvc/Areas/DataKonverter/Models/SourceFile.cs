@@ -21,13 +21,11 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public SourceFile()
         {
             Guid = Guid.NewGuid();
-
             //    public Guid Guid { get { return Guid.NewGuid(); } }
             //    public string Caption { get; set; }
             //    public DataType DataType { get; set; }
             //    public bool IsUsed { get; set; }
             //    public List<string> Content { get; set; }
         }
-        
     }
 }

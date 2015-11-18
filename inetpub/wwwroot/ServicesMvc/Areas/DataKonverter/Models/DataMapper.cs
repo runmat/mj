@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
+using SapORM.Models;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
@@ -12,6 +14,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public DestinationFile DestinationFile { get; set; }
         public List<DataConnection> DataConnections { get; set; }
         public List<Processor> Processors { get; set; }
+        
+        public int RecordNo { get; set; }
 
         public DataMapper()
         {
@@ -36,7 +40,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return dataConnection;
         }
 
-
         public DataConnection AddConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
 
@@ -57,17 +60,19 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             // Verbindung hinzufügen
             DataConnections.Add(newConnection);
 
-            // Falls Destination ein Prozessor, dann die dortige Verbindungsliste entsprechend erweitern
-            if (destIsProcessor)
-            {
-                var destProcessor = Processors.FirstOrDefault(x => x.Guid == new Guid(idDest));
+            Debug.WriteLine(DataConnections);
 
-                if (destProcessor != null && destProcessor.DataConnectionsIn.FirstOrDefault(x => x.GuidDest == destProcessor.Guid && x.GuidSource == newConnection.GuidSource) == null)
-                {
-                    // Neue Verbindung zur Liste hinzufügen
-                    destProcessor.DataConnectionsIn.Add(newConnection);                    
-                }
-            }
+            //// Falls Destination ein Prozessor, dann die dortige Verbindungsliste entsprechend erweitern
+            //if (destIsProcessor)
+            //{
+            //    var destProcessor = Processors.FirstOrDefault(x => x.Guid == new Guid(idDest));
+
+            //    if (destProcessor != null && destProcessor.DataConnectionsIn.FirstOrDefault(x => x.GuidDest == destProcessor.Guid && x.GuidSource == newConnection.GuidSource) == null)
+            //    {
+            //        // Neue Verbindung zur Liste hinzufügen
+            //        destProcessor.DataConnectionsIn.Add(newConnection);                    
+            //    }
+            //}
 
             return newConnection;
         }
@@ -99,10 +104,10 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Processor GetProcessorResult(Processor processor, int recordNo)   // string fieldGuid, string origValue
         {
             // Alle eingehenden Connections ermitteln...
-            var connectionsIn = DataConnections.Where(x => x.GuidDest == processor.Guid);
+            var connectionsIn = DataConnections.Where(x => x.GuidDest == processor.Guid).ToList();
 
             // Alle ausgehenden Connections ermitteln...
-            var connectionsOut = DataConnections.Where(x => x.GuidSource == processor.Guid);
+            var connectionsOut = DataConnections.Where(x => x.GuidSource == processor.Guid).ToList();
 
             // Input-String ermitteln...
             var input = new StringBuilder();
@@ -118,7 +123,14 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 }
             }
 
-            return null;
+            processor.Input = input.ToString();
+            processor.DataConnectionsIn = connectionsIn;
+            processor.DataConnectionsOut = connectionsOut;
+            
+            // Operation durchführen...
+            processor.Output = "#" + input;
+
+            return processor;
         }
 
         public string GetFieldResult(string fieldGuid, string origValue)

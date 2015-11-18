@@ -8,24 +8,11 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using CkgDomainLogic.Autohaus.Contracts;
-using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DataKonverter.Contracts;
-using CkgDomainLogic.Partner.Contracts;
 using DocumentTools.Services;
-using GeneralTools.Models;
-using GeneralTools.Resources;
-using GeneralTools.Services;
-using SapORM.Contracts;
 using ServicesMvc.Areas.DataKonverter.Models;
-
-using Newtonsoft.Json;
 
 namespace CkgDomainLogic.DataKonverter.ViewModels
 {
@@ -79,11 +66,12 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             {
                 
             };
-
-            var csvFilename = ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            
+            //var csvFilename = ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
             //var destFilename = "";
-            DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
-            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn.xsd");
+            // DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
+
+            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn.xml");
 
             #endregion
         }
@@ -96,8 +84,8 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
             var tmpDestFile = Path.Combine(tempFolder, csvFilename);
 
-            // var errorResult = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
-            tmpDestFile = @"C:\dev\inetpub\wwwroot\ServicesMvc\App_Data\FileUpload\Temp\Testfile3.csv";
+            tmpDestFile = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
+            // tmpDestFile = @"C:\dev\inetpub\wwwroot\ServicesMvc\App_Data\FileUpload\Temp\Testfile3.csv";
 
             return tmpDestFile;
         }
@@ -175,11 +163,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         #endregion
 
         #region Upload source file
-        public bool PdfUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
+        public bool UploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
-            const string extension = ".pdf";
+            var extension = Path.GetExtension(fileName).ToLower(); 
 
-            //Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
 
             var nameSaved = fileSaveAction(GetUploadPathTemp(), randomfilename, extension);
@@ -187,10 +174,19 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var tmpFilename = GetUploadPathTemp() + @"\" + nameSaved + extension;
+            var tmpFilenameOrig = GetUploadPathTemp() + @"\" + nameSaved + extension;
+            var tmpFilenameCsv = GetUploadPathTemp() + @"\" + nameSaved + ".csv";
 
-            var bytes = File.ReadAllBytes(tmpFilename);
-            //Overview.PdfUploaded = bytes;
+            var bytes = File.ReadAllBytes(tmpFilenameOrig);
+            // Overview.PdfUploaded = bytes;
+
+            if (extension == ".xls" || extension == ".xlsx")
+            {
+                tmpFilenameCsv = ConvertExcelToCsv(tmpFilenameOrig, tmpFilenameCsv);
+                File.Delete(tmpFilenameOrig);
+            }
+
+            DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(tmpFilenameCsv, true);
 
             return true;
         }

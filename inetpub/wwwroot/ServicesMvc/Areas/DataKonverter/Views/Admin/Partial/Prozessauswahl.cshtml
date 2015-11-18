@@ -16,10 +16,11 @@
 
     function UploadStart(e) {
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
-        var fileName = e.files[0].name;
+        var filename = e.files[0].name;
 
-        if (fileName.toLowerCase().indexOf('.txt') <= 0) {
-//            alert('@Localize.FileUploadOnlyPdfLegal');
+        var fileExt = filename.split('.').pop().toLowerCase();
+
+        if (fileExt != "txt" && fileExt != "csv" && fileExt !="xls" && fileExt != "xlsx") {
             alert("Nur folgende Formate sind möglich: txt, csv, xls, xlsx");
             return false;
         }
