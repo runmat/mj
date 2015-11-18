@@ -545,9 +545,9 @@ namespace AppRemarketing.forms
             cmdSearch.Visible = true;
             lbSelektionZurueckSetzen.Visible = true;
             tblSuche.Visible = true;
-            trName1.Visible = true;
-            trPLz.Visible = true;
-            trOrt.Visible = true;
+            //trName1.Visible = true;
+            //trPLz.Visible = true;
+            //trOrt.Visible = true;
             trNummerDetail.Visible = true;
             trHaendlerAuswahl.Visible = true;
             trSelectionButton.Visible = true;

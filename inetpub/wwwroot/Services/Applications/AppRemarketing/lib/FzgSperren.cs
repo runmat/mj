@@ -105,7 +105,7 @@ namespace AppRemarketing.lib
                 {
                     myProxy.setImportParameter("I_RDEALER", m_strDebitor);
                 }
-                else
+                else if (m_tblUpload != null)
                 {
                     DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
                     DataRow rowUpload = null;
