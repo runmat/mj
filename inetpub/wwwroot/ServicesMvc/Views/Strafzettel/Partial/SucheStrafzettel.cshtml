@@ -68,4 +68,13 @@
         });
     }
 
+    function FormSettingsAdminMode_PartialViewReload(o) {
+        //alert(o.attr("class"));
+        var form = o.closest("form");
+        var divNameToUpdate = form.attr("data-ajax-update");
+        var divToUpdate = $(divNameToUpdate);
+
+
+    }
+
 </script>
