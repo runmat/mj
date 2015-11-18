@@ -263,7 +263,7 @@ namespace CkgDomainLogic.Autohaus.Services
             {
                 var item = checkResults.First();
 
-                zulassung.Ist48hZulassung = item.Z48H.XToBool();
+                zulassung.Ist48hZulassung = item.IST_48H.XToBool();
                 zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
 
                 // Abweichende Versandadresse?
