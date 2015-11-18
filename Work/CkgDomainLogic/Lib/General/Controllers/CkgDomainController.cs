@@ -981,8 +981,8 @@ namespace CkgDomainLogic.General.Controllers
 
         public bool FormSettingsAdminModeWysiwygMode
         {
-            get { return SessionHelper.GetSessionValue("FormSettingsAdminModeWysiwygMode", false); }
-            set { SessionHelper.SetSessionValue("FormSettingsAdminModeWysiwygMode", value); }
+            get { return SessionHelper.FormSettingsAdminModeWysiwygModeGet(); }
+            set { SessionHelper.FormSettingsAdminModeWysiwygModeSet(value); }
         }
 
         protected override PartialViewResult PartialView(string viewName, object model)

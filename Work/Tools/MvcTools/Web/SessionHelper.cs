@@ -159,6 +159,16 @@ namespace MvcTools.Web
             return string.Format("GridColumnsAutoPersist_{0}_{1}", relativeUrl, gridCurrentModelType.Name);
         }
 
+        public static void FormSettingsAdminModeWysiwygModeSet(bool set)
+        {
+            SetSessionValue("FormSettingsAdminModeWysiwygMode", set);
+        }
+
+        public static bool FormSettingsAdminModeWysiwygModeGet()
+        {
+            return GetSessionValue("FormSettingsAdminModeWysiwygMode", false);
+        }
+
         public static string GetPartialViewUrlCurrent()
         {
             return GetSessionString("PartialViewUrlCurrent");

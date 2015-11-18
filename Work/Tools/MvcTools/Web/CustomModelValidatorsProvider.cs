@@ -45,7 +45,7 @@ namespace MvcTools.Web
         {
             SessionHelper.SetPartialViewUrlCurrent();
 
-            if (SessionHelper.GetSessionValue("FormSettingsAdminModeWysiwygMode", false))
+            if (SessionHelper.FormSettingsAdminModeWysiwygModeGet())
                 yield return new ModelValidationResult
                 {
                     MemberName = null,
