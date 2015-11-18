@@ -18,6 +18,24 @@
         <option value="2">Abmeldung</option>
     </select>*@
 
+    <button class="btn white" onclick="GotoFirst();">
+        <<
+    </button>
+    <button class="btn white" onclick="Goto(-1);">
+        <
+    </button>
+
+    <button class="btn white" onclick="Goto(1);">
+        >
+    </button>
+    <button class="btn white" onclick="GotoLast();">
+        >>
+    </button>
+
+    <span id="RecordPosition" class="margin-left-15 badge margin-right-20">
+        @Model.DataMapper.RecordInfoText
+    </span>
+
     <button class="btn white" onclick="ClearAll();">
         Bereinigen
         <i class="icon-remove"></i>
@@ -56,11 +74,11 @@
                 <option value="add">Splitten</option>
                 <option value="replace">Zusammenfassen</option>
             </select>
-            <input type="text" name="Para1" value="Separator" style="width: 60px; float: left; margin-bottom: 2px;"/>
-            <input type="text" name="Para2" value="Nummer" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
-
-            <span class="data datain float-left">in</span>
-            <span class="data dataout float-right">out</span>
+            <input type="text" name="Para1" value="*#*" style="width: 60px; float: left; margin-bottom: 2px;"/>
+            <input type="text" name="Para2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
+            <br/> 
+            <div class="data datain" style="float: none;">in</div>
+            <div class="data dataout" style="float: none;">out</div>
         </div>
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
@@ -236,16 +254,6 @@
             if (idDest.substr(0, 4) != "Dest")
                 destIsProcessor = true;
 
-//            var newConnection = {
-//                IdSource: sourceId,
-//                IdDest: destId,
-//                ProcessorIsSource: sourceIsProcessor,
-//                ProcessorIsDest: processorIsDest,
-//                ValueSource: sourceField,
-//                ValueDest: null
-//                };
-
-            // alert(idSource + " -> " + sourceDiv + " -> " + idDest + " -> " + destDiv);
             idDest = idDest.replace("prozin-", "");
             $.ajax({
                 type: "POST",
@@ -267,36 +275,6 @@
                 }
             });
 
-//            // Connection von ProzessorOut
-//            if (sourceId.substr(0, 7) === "prozout") {
-//                // Connection wurde vom ProzessorOut zum Zielfeld gezogen, also Ergebniswert 1:1 weiterleiten...
-//                sourceData = sourceDiv.parent().find(".dataout").html();
-
-//                // Connection from processor -> DestField
-//                if (destId.substr(0, 4) === "Dest") {
-//                    $('#' + destId).find(".data").html(sourceData);
-//                }
-//                // Connection from processor -> ProzessorIn
-//                if (destId.substr(0, 6) === "prozin") {
-//                    $('#' + destId).parent().find(".datain").html(sourceData);
-
-//                    // Init transformation...
-//                    // $('#' + destId).parent().find(".dataout").html("");
-//                    LiveTransform(sourceData, "testfunction", destId);
-//                }
-
-//            }
-//            else // Connection von SourceField
-//            {
-//                sourceData = sourceDiv.find(".data").html();
-//                // $('#' + destId).find(".data").html(sourceData);
-//                if (destId.substr(0, 4) === "Dest") {
-//                    $('#' + destId).find(".data").html(sourceData);
-//                } else {
-//                    LiveTransform(sourceData, "testfunction", destId);
-//                }
-//            }
-
         });
 
     });
@@ -306,51 +284,6 @@
     }
 
     function NewProcessor(processorId, title, posTop, posLeft, type) {
-//        var numItems = $('.processor').length;
-//        var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
-
-//        if (processorId == undefined)
-//            processorId = "processor-" + numItems;
-
-//        if (title == undefined)
-//            title = "Prozessor " + numItems;
-
-//        clone.id = processorId;
-//        document.body.appendChild(clone);
-
-//        var newProcessor = $("#" + processorId);
-//        newProcessor.addClass("processorobj");
-//        newProcessor.removeClass("hidden");
-
-//        var top = newProcessor.position().top;
-//        var left = newProcessor.position().left;
-//        top = top + Math.floor((Math.random() * 30) + 1) + 300;
-//        left = left + Math.floor((Math.random() * 30) + 1);
-
-//        if (posTop != undefined)
-//            top = posTop;
-
-//        if (posLeft != undefined)
-//            left = posLeft;
-
-//        newProcessor.offset({ top: top, left: left });
-
-//        $(newProcessor).find("#name").html(title);
-//        var prozin = $(newProcessor).find("#tmpprozin");
-//        var prozout = $(newProcessor).find("#tmpprozout");
-
-//        prozin.attr("id", "prozin-" + numItems);
-//        prozout.attr("id", "prozout-" + numItems);
-
-//        jsPlumb.makeTarget($("#prozin-" + numItems), endpointOptionsProzessor);
-//        jsPlumb.makeSource($("#prozout-" + numItems), startpointOptions);
-
-//        jsPlumb.draggable(clone);
-
-//        $(newProcessor).find(".processorclose").click(function () {
-//            jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
-//        });
-
         $.ajax({
             type: "POST",
             url: "Admin/NewProcessor",
@@ -362,9 +295,6 @@
 
                 var numItems = $('.processor').length;
                 var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
-
-//                if (processorId == undefined)
-//                    processorId = "processor-" + numItems;
 
                 if (title == undefined)
                     title = "Prozessor " + numItems;
@@ -404,7 +334,6 @@
                 $(newProcessor).find(".processorclose").click(function () {
                     jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
                 });
-
             }
         });
     }
@@ -477,28 +406,28 @@
         });
     }
 
-    function LiveTransform(input, func, outputDivId) {
-        $.ajax({
-            type: "POST",
-            url: "Admin/LiveTransform",
-            data: { input: input, func: func },
-            loadingShow: false,
-            success: function (result) {
-                
-                // Direkt an Zielfeld
-                if (outputDivId.substr(0, 4) === "Dest") {
-                    $('#' + outputDivId).find(".data").html(result.Output);
-                }
+//    function LiveTransform(input, func, outputDivId) {
+//        $.ajax({
+//            type: "POST",
+//            url: "Admin/LiveTransform",
+//            data: { input: input, func: func },
+//            loadingShow: false,
+//            success: function (result) {
+//                
+//                // Direkt an Zielfeld
+//                if (outputDivId.substr(0, 4) === "Dest") {
+//                    $('#' + outputDivId).find(".data").html(result.Output);
+//                }
 
-                // An Prozessor
-                if (outputDivId.substr(0, 6) === "prozin") {
-                    $('#' + outputDivId).parent().find(".datain").html(input);
-                    $('#' + outputDivId).parent().find(".dataout").html(result.Output);
-                }
-                
-            }
-        });
-    }
+//                // An Prozessor
+//                if (outputDivId.substr(0, 6) === "prozin") {
+//                    $('#' + outputDivId).parent().find(".datain").html(input);
+//                    $('#' + outputDivId).parent().find(".dataout").html(result.Output);
+//                }
+//                
+//            }
+//        });
+//    }
     
     function ShowProcessors(value) {
         $(".processorobj").each(function (index) {
@@ -521,6 +450,10 @@
                 });
             }
         });
+    }
+
+    function Goto(value) {
+        
     }
 
 </script>

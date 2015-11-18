@@ -17,6 +17,16 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         
         public int RecordNo { get; set; }
 
+        public int RecordCount
+        {
+            get { return SourceFile.RowCount; }
+        }
+
+        public string RecordInfoText
+        {
+            get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
+        }
+
         public DataMapper()
         {
             SourceFile = new SourceFile();
@@ -122,7 +132,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     input.Append("*#*");    
                 }
             }
-
+            input = input.Remove(input.Length-3,3);
             processor.Input = input.ToString();
             processor.DataConnectionsIn = connectionsIn;
             processor.DataConnectionsOut = connectionsOut;

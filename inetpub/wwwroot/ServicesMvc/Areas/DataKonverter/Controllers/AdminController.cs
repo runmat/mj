@@ -88,6 +88,9 @@ namespace ServicesMvc.DataKonverter.Controllers
                 ViewModel.DataMapper.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn2.xml");
             }
 
+            var test = ViewModel.DataMapper.SourceFile.RowCount;
+            var test2 = ViewModel.DataMapper.RecordNo;
+
             return PartialView("Partial/Konfiguration", ViewModel);
         }
 
@@ -113,14 +116,14 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         #region Ajax
 
-        [HttpPost]
-        public JsonResult LiveTransform(string input, string func)
-        {
-            var output = "";
-            output = string.Format("#{0}", input);
+        //[HttpPost]
+        //public JsonResult LiveTransform(string input, string func)
+        //{
+        //    var output = "";
+        //    output = string.Format("#{0}", input);
 
-            return Json(new { Output = output });
-        }
+        //    return Json(new { Output = output });
+        //}
 
         #endregion
 
@@ -132,11 +135,8 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
-        // public JsonResult NewConnection(DataConnection dataConnection)
-        // IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor:
         public JsonResult NewConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
-
             ViewModel.DataMapper.RecordNo = 0;
 
             // var result = ViewModel.DataMapper.AddConnection(dataConnection);            

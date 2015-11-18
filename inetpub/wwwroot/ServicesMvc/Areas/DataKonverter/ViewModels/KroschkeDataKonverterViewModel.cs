@@ -71,7 +71,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             //var destFilename = "";
             // DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
 
-            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn.xml");
+            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn2.xml");
 
             #endregion
         }

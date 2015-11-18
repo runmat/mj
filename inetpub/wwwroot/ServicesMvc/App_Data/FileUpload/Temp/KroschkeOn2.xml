@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IMPORT>
+  <USER>
+    <User />
+    <Passwort />
+  </USER>
+  <Auftragskopf>
+    <AkteAnlegen />
+    <Zulassung />
+    <Ueberfuehrung />
+    <Abmeldung />
+  </Auftragskopf>
+  <Fahrzeug>
+    <VIN />
+    <Hersteller />
+    <Modell />
+    <Kilometerstand />
+    <Erstzulassung />
+  </Fahrzeug>
+  <Adressen>
+    <Halter>
+      <Name />
+      <Name2 />
+      <Strasse />
+      <Hausnummer />
+      <PLZ />
+      <Ort />
+      <Land />
+      <Ansprechpartner>
+        <Name />
+        <Mail />
+        <Telefon />
+      </Ansprechpartner>
+    </Halter>      
+    <Steuerzahler>
+      <Name />
+      <Name2 />
+      <Strasse />
+      <Hausnummer />
+      <PLZ />
+      <Ort />
+      <Land />
+      <Ansprechpartner>
+        <Name />
+        <Mail />
+        <Telefon />
+      </Ansprechpartner>
+    </Steuerzahler>      
+  </Adressen>
+  <Zulassung>
+    <TYP />
+    <DatumZul />
+    <EVB />
+    <Wunschkennzeichen>
+      <Wunsch1 />
+      <Wunsch2 />
+      <Wunsch3 />
+      <Reservierung />
+      <ReservierungsNummer />
+    </Wunschkennzeichen>
+    <ReferenzZul>
+      <ReferenzZul1 />
+      <ReferenzZul2 />
+      <ReferenzZul3 />
+    </ReferenzZul>
+    <BemerkungZul />
+    <Sonderdienstleistungen>
+      <FSP />
+      <Drittes_Kennzeichen />
+      <Express />
+    </Sonderdienstleistungen>
+  </Zulassung>
+  <Ueberfuehrung>
+    <TYP />
+    <DatumUeb />
+    <ReferenzUeb>
+      <ReferenzUeb1 />
+      <ReferenzUeb2 />
+      <ReferenzUeb3 />
+    </ReferenzUeb>
+    <BemerkungUeb />
+    <Fahrzeug_Fahrbereit />
+    <Bereifung />
+    <Fahrzeug_Zugelassen />
+  </Ueberfuehrung>
+  <Abmeldung>
+    <DatumAbm />
+    <ReferenzAbm>
+      <ReferenzAbm1 />
+      <ReferenzAbm2 />
+      <ReferenzAbm3 />
+    </ReferenzAbm>
+    <BemerkungAbm />
+  </Abmeldung>
+</IMPORT>

@@ -15,7 +15,15 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Encoding Encoding { get; set; }
         public List<Field> Fields { get; set; }
         public string Content { get; set; }
-        public int RowCount { get; set; }
+
+        public int RowCount
+        {
+            get
+            {
+                return Fields == null ? 0 : Fields[0].Records.Count;
+            }
+        }
+
         public string DateTransformation { get; set; }  
 
         public SourceFile()
