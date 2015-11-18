@@ -211,11 +211,10 @@ namespace Leasing.forms
                     trVersicherungstr.Visible = true;
                     trEvbNr.Visible = true;
                     txtKreis.Text = lblKreis.Text;
-                    lblKreis.Text = "";
                     lblKreis.Visible = true;
                     txtKreis.Visible = false;
                     trHinweis.Visible = false;
-                    btnZulkreis.Visible = true;
+                    btnZulkreis.Visible = false;
                     break;
                 case "572": // "Ummeldung ausserorts"
                     pnlHalter.Visible = true;
@@ -228,7 +227,7 @@ namespace Leasing.forms
                     txtKreis.Text = lblKreis.Text;
                     lblKreis.Visible = false;
                     txtKreis.Visible = true;
-                    btnZulkreis.Visible = false;
+                    btnZulkreis.Visible = true;
                     break;
                 case "1294": // "Umkennzeichnung"
                     pnlHalter.Visible = false;
@@ -447,7 +446,7 @@ namespace Leasing.forms
 
         protected void SucheZulassungskreis(object sender, EventArgs e)
         {
-            lblKreis.Text = "";
+            
 
             if (txtHalterPLZ.Text.Length != 5)
             {
@@ -467,7 +466,7 @@ namespace Leasing.forms
             else
             {
                 objDienstleistung.Kreis = zulassungskreis;
-                lblKreis.Text = zulassungskreis;
+                txtKreis.Text = zulassungskreis;
             }
 
             Session["objDienstleistung"] = objDienstleistung;
@@ -487,7 +486,7 @@ namespace Leasing.forms
         private void ApplyPLZFormat(DropDownList ddl, RegularExpressionValidator rev)
         {
             var row = objDienstleistung.LaenderPLZ.Select("Land1='" + ddl.SelectedValue + "'").FirstOrDefault();
-
+            
             if (row != null)
             {
                 int lnPlz;
