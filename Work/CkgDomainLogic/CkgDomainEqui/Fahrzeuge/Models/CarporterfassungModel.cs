@@ -61,6 +61,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CheckDigit)]
         public string FahrgestellNrPruefziffer { get; set; }
 
+        [Required]
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 
