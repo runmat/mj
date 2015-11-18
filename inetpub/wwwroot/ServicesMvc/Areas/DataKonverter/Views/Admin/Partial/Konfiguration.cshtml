@@ -32,36 +32,32 @@
         >>
     </button>
 
-    <span id="RecordPosition" class="margin-left-15 badge margin-right-20">
+    <span id="RecordPosition" class="margin-left-15 badge margin-right-30">
         @Model.DataMapper.RecordInfoText
     </span>
-
-    <button class="btn white" onclick="ClearAll();">
-        Bereinigen
-        <i class="icon-remove"></i>
-    </button>
-
+    
     <button class="btn white" onclick="NewProcessor();">
-        Prozessor hinzufügen
+        Neuer Prozessor
         <i class="halflings-icon  plus"></i>
     </button>
 
-    <button class="btn white margin-left-10" onclick="Save();">
+    <button class="btn white" onclick="ClearAll();">
+        Leeren
+        <i class="icon-remove"></i>
+    </button>
+
+    @*<button class="btn white margin-left-10" onclick="Save();">
         Save
     </button>
     <button class="btn white" onclick="Load();">
         Load
-    </button>
+    </button>*@
 
     <button class="btn white margin-left-10" onclick="ShowProcessors(false);">
         Hide
     </button>
     <button class="btn white" onclick="ShowProcessors(true);">
         Show
-    </button>
-
-    <button class="btn white margin-left-10" onclick="SetToPosition('source', 'Source7', 2);">
-        Move
     </button>
 
     <div id="processorTemplate" class="processor hidden">
@@ -76,9 +72,9 @@
             </select>
             <input type="text" name="Para1" value="*#*" style="width: 60px; float: left; margin-bottom: 2px;"/>
             <input type="text" name="Para2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
-            <br/> 
-            <div class="data datain" style="float: none;">in</div>
-            <div class="data dataout" style="float: none;">out</div>
+            <br style="clear: both;"/> 
+            <div class="data datain">in</div><br style="clear: both;"/> 
+            <div class="data dataout" >out</div>
         </div>
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
@@ -436,18 +432,6 @@
                 $(this).css("height", "85px");
             } else {
                 $(this).css("height", "14px");
-            }
-        });
-    }
-
-    function SetToPosition(rootDivId, divIdToMove, position) {        
-        $("#" + rootDivId + " .w").each(function (index) {
-            if (index + 1 === position && $(this).attr("id") !== divIdToMove) {  // Move, but not if sourceId has already target position
-                $('#' + divIdToMove).detach().insertBefore($(this));
-
-                $('#' + divIdToMove).animate({ backgroundColor: "blue" }, 200, function () {
-                    $('#' + divIdToMove).animate({ backgroundColor: "white" }, 200);
-                });
             }
         });
     }

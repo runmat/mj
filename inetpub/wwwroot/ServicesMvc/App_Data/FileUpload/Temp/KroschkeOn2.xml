@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <IMPORT>
   <USER>
-    <User />
-    <Passwort />
+    <User id="Username" />
+    <Passwort id="Passwort" />
   </USER>
   <Auftragskopf>
-    <AkteAnlegen />
-    <Zulassung />
-    <Ueberfuehrung />
-    <Abmeldung />
+    <AkteAnlegen id="TypeAkteAnlegen" />
+    <Zulassung id="TypeZulassung" />
+    <Ueberfuehrung id="TypeUeberfuehrung" />
+    <Abmeldung id="TypeAbmeldung" />
   </Auftragskopf>
   <Fahrzeug>
     <VIN />
