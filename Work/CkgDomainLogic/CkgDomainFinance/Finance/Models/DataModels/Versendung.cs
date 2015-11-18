@@ -152,5 +152,35 @@ namespace CkgDomainLogic.Finance.Models
 
         [LocalizedDisplay(LocalizeConstants.WayOfRequest)]
         public string Anforderungsweg { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DealerNo)]
+        public string HaendlerNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Dealer)]
+        public string HaendlerName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DealerCity)]
+        public string HaendlerOrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TimeOfRequest)]
+        public string AnforderungsUhrzeit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TimeOfRequest)]
+        public string AnforderungsUhrzeitFormatted
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(AnforderungsUhrzeit) || AnforderungsUhrzeit.Length < 6)
+                    return AnforderungsUhrzeit;
+
+                return String.Format("{0}:{1}:{2}", AnforderungsUhrzeit.Substring(0, 2), AnforderungsUhrzeit.Substring(2, 2), AnforderungsUhrzeit.Substring(4, 2));
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.StatusSecurity)]
+        public string StatusSicherheit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DunningLevelSecurity)]
+        public string MahnstufeSicherheit { get; set; }
     }
 }

@@ -485,6 +485,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_PRUEF_FIN_001").WriteOrmForExportTableStructures("I_FGNU, I_FGPZ", "TEST", "0");
 
+            //new FunctionReflector("Z_DPM_EXP_VERS_AUSWERTUNG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+
 
             //CoCTest();
             //TeslaTest();
