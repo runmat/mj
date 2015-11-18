@@ -91,7 +91,7 @@
     <Compile Include="Leasing\Models\DataModels\UeberfaelligeRuecksendung.cs" />
     <Compile Include="Leasing\Models\DataModels\NichtDurchfuehrbareZulassung.cs" />
     <Compile Include="Leasing\Models\DataModels\Sicherungsschein.cs" />
-    <Compile Include="Leasing\Models\DataModels\LeasingCargateDisplayModel.cs" />
+    <Compile Include="Leasing\Models\DataModels\CargateDisplayModel.cs" />
     <Compile Include="Leasing\Models\DataModels\UnzugelFzg.cs" />
     <Compile Include="Leasing\Models\DataModels\ZB1Kopie.cs" />
     <Compile Include="Leasing\Models\AppModelMappings.cs" />

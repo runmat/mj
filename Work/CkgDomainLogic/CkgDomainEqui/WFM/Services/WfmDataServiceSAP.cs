@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
@@ -102,6 +103,46 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
+        public string CreateVersandAdresse(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
+                    if (versandAdresse.Name1.IsNotNullOrEmpty())
+                    {
+                        SAP.Init("Z_DPM_INS_VERSDAT_ZCARPP_01");
+
+                        SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                        SAP.SetImportParameter("I_ANF_DAT", DateTime.Today);
+                        SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
+
+                        var fin = auftrag.FahrgestellNr.NotNullOrEmpty().ToUpper().Contains("FAHRZEUG NICHT") ? null : auftrag.FahrgestellNr;
+                        SAP.SetImportParameter("I_FAHRG", fin);
+                        SAP.SetImportParameter("I_VERS_OPT", versandOption);
+
+                        SAP.SetImportParameter("I_NAME1_ZS", versandAdresse.Name1);
+                        SAP.SetImportParameter("I_NAME2_ZS", versandAdresse.Name2);
+                        SAP.SetImportParameter("I_STREET_ZS", versandAdresse.Strasse);
+                        SAP.SetImportParameter("I_HOUSE_NUM1_ZS", versandAdresse.HausNr);
+                        SAP.SetImportParameter("I_POST_CODE1_ZS", versandAdresse.PLZ);
+                        SAP.SetImportParameter("I_CITY1_ZS", versandAdresse.Ort);
+                        SAP.SetImportParameter("I_COUNTRY_ZS", versandAdresse.Land);
+
+                        SAP.SetImportParameter("I_ZZKENN", auftrag.Kennzeichen);
+                        SAP.SetImportParameter("I_BELNR", auftrag.Verkaufsbeleg);
+
+                        SAP.Execute();
+                    }
+                },
+
+                // SAP custom error handling:
+                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.CancellationFailed + ",  SAP Error Code: " + SAP.ResultCode)));
+
+            return errorMessage;
+        }
+
         public string StornoAuftrag(int vorgangNr)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
@@ -110,6 +151,7 @@ namespace CkgDomainLogic.WFM.Services
                 () =>
                 {
                     Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
+
                     SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
                     SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr.ToString());
                     SAP.SetImportParameter("I_STORNODATUM", DateTime.Today);
@@ -122,7 +164,6 @@ namespace CkgDomainLogic.WFM.Services
 
             return errorMessage;
         }
-
 
         #endregion
 
