@@ -358,9 +358,9 @@
                                                 </HeaderTemplate>
 												<ItemTemplate>
 													<asp:Image runat="server" Visible='<%# (!String.IsNullOrEmpty(Eval("Bemerkung").ToString())) && Eval("PositionsNr").ToString() == "10" %>' 
-                                                        ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("Bemerkung") %>'/>
+                                                        ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("BemerkungShow") %>'/>
                                                     <asp:Image runat="server" Visible='<%# (bool?)Eval("Nachbearbeiten") == true && !String.IsNullOrEmpty(Eval("Infotext").ToString()) && Eval("PositionsNr").ToString() == "10" %>' 
-                                                        ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("Infotext") %>'/>
+                                                        ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("InfotextShow") %>'/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding"  Width="20px" />
 												<ItemStyle CssClass="TablePadding"   Width="20px" />
