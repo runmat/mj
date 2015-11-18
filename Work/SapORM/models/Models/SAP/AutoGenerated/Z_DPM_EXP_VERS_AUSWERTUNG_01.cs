@@ -131,6 +131,18 @@ namespace SapORM.Models
 
 			public string ANFORDERUNGSWEG { get; set; }
 
+			public string KUNNR_BEIM_AG { get; set; }
+
+			public string NAME { get; set; }
+
+			public string CITY1 { get; set; }
+
+			public string UZEIT_ANGEL { get; set; }
+
+			public string STATUS_SI { get; set; }
+
+			public string MAHNS_SI { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -185,6 +197,12 @@ namespace SapORM.Models
 					ENDG_VERS = (string.IsNullOrEmpty(row["ENDG_VERS"].ToString())) ? null : (DateTime?)row["ENDG_VERS"],
 					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
 					ANFORDERUNGSWEG = (string)row["ANFORDERUNGSWEG"],
+					KUNNR_BEIM_AG = (string)row["KUNNR_BEIM_AG"],
+					NAME = (string)row["NAME"],
+					CITY1 = (string)row["CITY1"],
+					UZEIT_ANGEL = (string)row["UZEIT_ANGEL"],
+					STATUS_SI = (string)row["STATUS_SI"],
+					MAHNS_SI = (string)row["MAHNS_SI"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

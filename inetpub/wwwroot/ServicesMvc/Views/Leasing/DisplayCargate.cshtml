@@ -2,22 +2,28 @@
 
 <h3 class="page-title">CarGate Anzeige <small></small></h3>
 
-<div class="SForm SQuickForm margin-left-10">
-    <form id="filterForm" action="#" class="form-horizontal">
-        
-    </form>
-</div>
+<style>
+    
+    .cargate-status-gelb {
+        background-color: yellow;
+    }
+    
+    .cargate-status-rot {
+        background-color: orangered;
+    }
+    
+    .cargate-status-grau {
+        background-color: lightgrey;
+    }
+    
+</style>
 
 @Html.Partial("Partial/DisplayCargateGrid")
 
 <script type="text/javascript">
 
     function FormPreparePrivate() {
-
-        // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridCargateAnzeige");
-
-
     };
 
     function GetGrid() {
@@ -25,7 +31,7 @@
     }
 
     function GridRefresh() {
-        //GetGrid().ajaxRequest();
+        GetGrid().ajaxRequest();
         GetGrid().pageTo(1);
     }
 
@@ -33,8 +39,115 @@
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
-        // move our grid filter form into grid's toolbar:
-//        GridAllColumnFilterApplyToGrid("GridCargateAnzeige");
+    }
+
+    function SetCellCargateStatusGrau(cellId) {
+        $(cellId).addClass("cargate-status-grau");
+    }
+
+    function SetCellCargateStatusGelb(cellId) {
+        $(cellId).addClass("cargate-status-gelb");
+    }
+
+    function SetCellCargateStatusRot(cellId) {
+        $(cellId).addClass("cargate-status-rot");
+    }
+
+    function OnRowDataBound_GridCargateAnzeige(e) {
+        var grid = GetGrid();
+        var row = e.row;
+        var item = e.dataItem;
+
+        for (var i = 0; i < grid.columns.length; i++) {
+            var column = grid.columns[i];
+            var cell = row.cells[i];
+
+            switch (column.member) {
+
+                case "VereinbarungRuecknahmeTermin":
+                    if (item.Dauer_WunschLieferDatum_VereinbarungRuecknahmeTermin == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_WunschLieferDatum_VereinbarungRuecknahmeTermin >= 4)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_WunschLieferDatum_VereinbarungRuecknahmeTermin >= 2)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "RuecknahmeFahrzeug":
+                    if (item.Dauer_VereinbarungRuecknahmeTermin_RuecknahmeFahrzeug == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_VereinbarungRuecknahmeTermin_RuecknahmeFahrzeug >= 3)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_VereinbarungRuecknahmeTermin_RuecknahmeFahrzeug >= 2)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "BereitstellungRuecknahmeProtokoll":
+                    if (item.Dauer_RuecknahmeFahrzeug_BereitstellungRuecknahmeProtokoll == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_RuecknahmeFahrzeug_BereitstellungRuecknahmeProtokoll >= 2)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_RuecknahmeFahrzeug_BereitstellungRuecknahmeProtokoll >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "UebergabeFahrzeug":
+                    if (item.Dauer_VereinbarungRuecknahmeTermin_UebergabeFahrzeug == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_VereinbarungRuecknahmeTermin_UebergabeFahrzeug >= 2)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_VereinbarungRuecknahmeTermin_UebergabeFahrzeug >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "BeauftragungGutachten":
+                    if (item.GutachtenErstellen == "X") {
+                        if (item.Dauer_UebergabeFahrzeug_BeauftragungGutachten == -1)
+                            SetCellCargateStatusGrau(cell);
+                        else if (item.Dauer_UebergabeFahrzeug_BeauftragungGutachten >= 2)
+                            SetCellCargateStatusRot(cell);
+                        else if (item.Dauer_UebergabeFahrzeug_BeauftragungGutachten >= 1)
+                            SetCellCargateStatusGelb(cell);
+                    }
+                    break;
+
+                case "BereitstellungUebergabeProtokoll":
+                    if (item.Dauer_RuecknahmeFahrzeug_BereitstellungUebergabeProtokoll == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_RuecknahmeFahrzeug_BereitstellungUebergabeProtokoll >= 2)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_RuecknahmeFahrzeug_BereitstellungUebergabeProtokoll >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "AbmeldungFahrzeug":
+                    if (item.Dauer_UebergabeFahrzeug_AbmeldungFahrzeug == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_UebergabeFahrzeug_AbmeldungFahrzeug >= 2)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_UebergabeFahrzeug_AbmeldungFahrzeug >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "BereitstellungFahrzeug":
+                    if (item.Dauer_UebergabeFahrzeug_BereitstellungFahrzeug == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_UebergabeFahrzeug_BereitstellungFahrzeug >= 2)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_UebergabeFahrzeug_BereitstellungFahrzeug >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+
+                case "BereitstellungGutachten":
+                    if (item.Dauer_BereitstellungFahrzeug_BereitstellungGutachten == -1)
+                        SetCellCargateStatusGrau(cell);
+                    else if (item.Dauer_BereitstellungFahrzeug_BereitstellungGutachten >= 3)
+                        SetCellCargateStatusRot(cell);
+                    else if (item.Dauer_BereitstellungFahrzeug_BereitstellungGutachten >= 1)
+                        SetCellCargateStatusGelb(cell);
+                    break;
+            }
+        }
     }
 
     function OnColumnShowHide_GridCargateAnzeige() {

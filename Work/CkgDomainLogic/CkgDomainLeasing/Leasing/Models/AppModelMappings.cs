@@ -198,6 +198,47 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_RUECKL_01.GT_OUT, CargateDisplayModel> Z_DPM_READ_RUECKL_01_GT_OUT_To_CargateDisplayModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_RUECKL_01.GT_OUT, CargateDisplayModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.VorgangsId = s.VORGANGS_ID;
+                        d.VertragsNrHla = s.VERTRAGSNR_HLA;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.Standort = s.STANDORT;
+                        d.Prozess = s.RUECKGAB_OPTION;
+                        d.BeauftragungRuecknahme = s.ERDAT;
+                        d.WunschLieferDatum = s.WLIEFDAT_VON;
+                        d.VereinbarungRuecknahmeTermin = s.BEST_ABH_TERMIN;
+                        d.RuecknahmeFahrzeug = s.IUG_DAT;
+                        d.BereitstellungRuecknahmeProtokoll = s.PROT_EING_O;
+                        d.UebergabeFahrzeug = s.FE_BLG;
+                        d.GutachtenErstellen = s.GUTA_ERSTELL_1;
+                        d.BeauftragungGutachten = s.DAT_GUTA_BEAUFTRAGT;
+                        d.BereitstellungUebergabeProtokoll = s.PROT_EING_D;
+                        d.AbmeldungFahrzeug = s.ABMELDEDATUM;
+                        d.BereitstellungFahrzeug = s.FB_GUTA;
+                        d.BereitstellungGutachten = s.DAT_GUTA_ERHALT;
+                        d.VerwertungsEntscheidung = s.VERW_ZULETZT_AKTUALISIERT;
+                        d.BereitstellungInserat = s.DAT_INSERAT;
+                        d.BeauftragungAufbereitung = s.EING_AUFBER_AUFTR;
+                        d.AufbereitungFertig = s.AUFBER_FERTIG;
+                        d.AusgangPlatz = s.FZG_BEREIT_BLG_SGS;
+                        d.ServiceLevel2_3 = s.SERVICE_LEVEL_2_3;
+                        d.ServiceLevel5_7 = s.SERVICE_LEVEL_5_7;
+                        d.ServiceLevel7_14 = s.SERVICE_LEVEL_7_14;
+                        d.ServiceLevel8_16 = s.SERVICE_LEVEL_8_16;
+                        d.ServiceLevel2_7 = s.SERVICE_LEVEL_2_7;
+                        d.ServiceLevel19_21 = s.SERVICE_LEVEL_19_21;
+                    }
+                ));
+            }
+        }
+
         #endregion
 
 

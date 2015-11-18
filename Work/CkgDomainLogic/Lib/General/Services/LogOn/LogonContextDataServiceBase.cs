@@ -306,6 +306,11 @@ namespace CkgDomainLogic.General.Services
 
         }
 
+        public virtual bool CheckPasswordHistory(ChangePasswordModel model, int passwordMinHistoryEntries)
+        {
+            return true;
+        }
+
         public virtual User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
         {
             return null;
@@ -335,7 +340,7 @@ namespace CkgDomainLogic.General.Services
         {
         }
 
-        public virtual void StorePasswordToUser(string userName, string password)
+        public virtual void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
         }
 
