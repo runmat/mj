@@ -18,6 +18,8 @@
             
             @Html.FormRadioButtonListFor(m => m.Versandart, VersendungenSuchparameter.Versandarten.ToSelectList())
 
+            @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", maxlength = 25 })
+
             <div class="space20"></div>
 
             <div class="form-actions">

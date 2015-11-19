@@ -61,9 +61,9 @@ namespace CkgDomainLogic.General.Services
                 && !returnUrl.EndsWith("checklogontimeout")
                 )
                 ReturnUrl = urlEncodedReturnUrl;
-             
+
             var forceMvcLogin = Environment.MachineName.NotNullOrEmpty().ToUpper().StartsWith("AHW");
-            if (ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true"
+            if (   ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true" 
                 ||
                 ConfigurationManager.AppSettings["ForceResponsiveLayoutSubDomains"].NotNullOrEmpty()
                     .Split(',')
@@ -256,7 +256,7 @@ namespace CkgDomainLogic.General.Services
             }
             ReturnUrl = "";
 
-            dbContext.FailedLoginsResetAndSave(loginModel.UserName);
+            dbContext.FailedLoginsResetAndSave();
             LogonUser(loginModel.UserName);
         }
 
@@ -286,6 +286,20 @@ namespace CkgDomainLogic.General.Services
                 if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
                     addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
             }
+        }
+
+        public override bool CheckPasswordHistory(ChangePasswordModel model, int passwordMinHistoryEntries)
+        {
+            var dbContext = CreateDbContext(model.UserName);
+            if (dbContext.User != null)
+            {
+                var pwdHistory = dbContext.GetUserPwdHistory();
+                var pwdHistoryRelevant = pwdHistory.Take(Math.Min(passwordMinHistoryEntries, pwdHistory.Count));
+
+                return pwdHistoryRelevant.None(h => h.Password == SecurityService.EncryptPassword(model.Password));
+            }
+
+            return true;
         }
 
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)
@@ -329,13 +343,13 @@ namespace CkgDomainLogic.General.Services
             return dbContext.GetGroupContacts(Customer.CustomerID, GroupName);
         }
 
-        public override void StorePasswordToUser(string userName, string password)
+        public override void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
             var dbContext = CreateDbContext(userName);
             if (dbContext.User == null)
                 return;
 
-            dbContext.StorePasswordToUser(userName, password);
+            dbContext.StorePasswordToUser(password, passwordSecurityRuleDataProvider.PasswordMinHistoryEntries);
         }
 
         public override void StorePasswordRequestKeyToUser(string userName, string passwordRequestKey)
@@ -395,15 +409,6 @@ namespace CkgDomainLogic.General.Services
                 url);
         }
 
-        int KundenNrToInt()
-        {
-            int customerNo;
-            if (!Int32.TryParse(KundenNr, out customerNo))
-                return -1;
-
-            return customerNo;
-        }
-
         public override void DataContextPersist(object dataContext) 
         {
             CreateDbContext().DataContextPersist(dataContext);
@@ -423,8 +428,6 @@ namespace CkgDomainLogic.General.Services
         {
             return string.Format("/{0}/", subDomain.Trim().ToLower());
         }
-
-        public override string CustomerName { get { return base.CustomerName; } }
 
         public void Clear()
         {
