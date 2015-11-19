@@ -1,4 +1,5 @@
-﻿@model CkgDomainLogic.Strafzettel.Models.StrafzettelSelektor
+﻿@using CkgDomainLogic.Strafzettel.Models
+@model StrafzettelSelektor
 
 @{ const string formMultiColumnMode = "auto"; }
 
@@ -24,6 +25,13 @@
 
             @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = formMultiColumnMode })
             @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = formMultiColumnMode })
+            
+            @Html.FormMultiSelectListFor(m => m.Standorte, StrafzettelSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = formMultiColumnMode })
+            @Html.FormCheckBoxFor(m => m.IstAusland, new { col = formMultiColumnMode }, labelHidden: true)
+
+            @Html.FormRadioButtonListFor(m => m.FahrzeugStatus, StrafzettelSelektor.FahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap", col = formMultiColumnMode })
+            @Html.FormDatePickerFor(m => m.RechnungsDatum, new { @class = "m-wrap small", col = formMultiColumnMode })
+
 
             @Html.FormMultiColumnModeEnd(formMultiColumnMode)
 
