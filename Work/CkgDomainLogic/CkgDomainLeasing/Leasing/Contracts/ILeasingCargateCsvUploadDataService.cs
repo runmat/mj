@@ -7,6 +7,6 @@ namespace CkgDomainLogic.Leasing.Contracts
     {
         void ValidateUploadCsv(List<LeasingCargateCsvUploadModel> uploadItems);
         bool SaveLeasingCargateCsvUpload(List<LeasingCargateCsvUploadModel> uploadItems);
-        List<LeasingCargateDisplayModel> GetCargateDisplayModel();
+        List<CargateDisplayModel> GetCargateDisplayModel();
     }
 }

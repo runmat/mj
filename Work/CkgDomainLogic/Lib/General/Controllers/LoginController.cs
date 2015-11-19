@@ -64,15 +64,17 @@ namespace CkgDomainLogic.General.Controllers
             return View(ViewModel);
         }
 
-        public ActionResult ChangePasswordLoggedOn()
+        public ActionResult ChangePasswordLoggedOnInternal()
         {
             if (LogonContext.UserName.IsNullOrEmpty())
                 return new EmptyResult();
 
+            ViewModel.ResetChangePasswordModel();
+
             if (!ViewModel.CacheUserAndCustomerFromUserName(LogonContext.UserName))
                 return View("ChangePasswordError", ViewModel);
 
-            return View(ViewModel);
+            return View("ChangePasswordLoggedOn", ViewModel);
         }
 
         [HttpPost]
@@ -89,15 +91,20 @@ namespace CkgDomainLogic.General.Controllers
                 }
             }
 
+            var passwordSecurityRuleDataProvider = ViewModel.GetPasswordSecurityRuleDataProvider(model.UserName);
+
             if (ModelState.IsValid)
-                ViewModel.ValidatePasswordModelAgainstRules(ModelState.AddModelError);
+                ViewModel.ValidatePasswordModelAgainstRules(passwordSecurityRuleDataProvider, ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+                ViewModel.ValidatePasswordModelAgainstHistory(passwordSecurityRuleDataProvider, ModelState.AddModelError);
 
             if (ModelState.IsValid)
             {
                 // change password successful!
                 var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
 
-                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
+                LogonContext.StorePasswordToUser(passwordSecurityRuleDataProvider, model.UserName, encryptedPassword);
                 if (LogonContext.User != null)
                     LogonContext.User.Password = encryptedPassword;
 
@@ -116,7 +123,9 @@ namespace CkgDomainLogic.General.Controllers
             List<string> localizedPasswordValidationErrorMessages;
             List<string> localizedPasswordRuleMessages;
 
-            ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
+            var passwordSecurityRuleDataProvider = ViewModel.GetPasswordSecurityRuleDataProvider();
+
+            ViewModel.ValidatePasswordAgainstRules(passwordSecurityRuleDataProvider, password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
 
             return Json(new
             {
