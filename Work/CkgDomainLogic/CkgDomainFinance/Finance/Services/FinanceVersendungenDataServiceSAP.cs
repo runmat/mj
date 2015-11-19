@@ -38,6 +38,9 @@ namespace CkgDomainLogic.Finance.Services
             if (suchparameter.Versandart != "ALLE")
                 SAP.SetImportParameter("I_VERSANDART", suchparameter.Versandart);
 
+            if (!string.IsNullOrEmpty(suchparameter.HaendlerNr))
+                SAP.SetImportParameter("I_KUNNR_BEIM_AG", suchparameter.HaendlerNr);
+
             SAP.Execute();
 
             versendungen = AppModelMappings.Z_DPM_EXP_VERS_AUSWERTUNG_01_GT_OUT_To_Versendung.Copy(Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT.GetExportList(SAP)).ToList();

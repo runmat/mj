@@ -274,6 +274,15 @@ namespace Leasing.forms {
         protected global::System.Web.UI.WebControls.TextBox txtWunschkennzeichen;
         
         /// <summary>
+        /// btnZulkreis-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton btnZulkreis;
+        
+        /// <summary>
         /// trReserviertAuf-Steuerelement
         /// </summary>
         /// <remarks>

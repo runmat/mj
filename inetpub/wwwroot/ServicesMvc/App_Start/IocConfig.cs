@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using CkgDomainInternal.Verbandbuch.Contracts;
+using CkgDomainInternal.Verbandbuch.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Services;
 using CkgDomainLogic.Charts.Contracts;
@@ -81,6 +83,7 @@ namespace ServicesMvc
             // container soll die Controller ermitteln für die Runtime
             assemblies.ToListOrEmptyList().ForEach(asm => builder.RegisterControllers(asm));
 
+            builder.RegisterControllers(Assembly.Load("CkgDomainInternal"));
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -230,6 +233,8 @@ namespace ServicesMvc
             builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZldPartnerZulassungenDataServiceSap>().As<IZldPartnerZulassungenDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

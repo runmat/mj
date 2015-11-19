@@ -52,6 +52,9 @@ namespace SapORM
 
             //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
 
+            new FunctionReflector("Z_VB_EXPORT_FAELLE").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_VB_IMPORT_FALL").WriteOrmForExportTableStructures();
+
             //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
 		    //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
             //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); 
@@ -485,6 +488,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_PRUEF_FIN_001").WriteOrmForExportTableStructures("I_FGNU, I_FGPZ", "TEST", "0");
 
+            //new FunctionReflector("Z_DPM_EXP_VERS_AUSWERTUNG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
             // CKG Partner-Portal
             //new FunctionReflector("Z_ZLD_PP_GET_PO_01").WriteOrmForExportTableStructures("I_LIFNR", "915032");
             //new FunctionReflector("Z_ZLD_PP_SAVE_PO_01").WriteOrmForExportTableStructures("I_MODUS", "S");
