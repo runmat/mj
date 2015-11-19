@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.WFM.Models;
 
@@ -14,6 +15,8 @@ namespace CkgDomainLogic.WFM.Contracts
 
         #region Übersicht/Storno
 
+        string CreateVersandAdresse(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption);
+            
         string StornoAuftrag(int vorgangNr);
 
         string SetOrderToKlaerfall(int vorgangNr, string remark);

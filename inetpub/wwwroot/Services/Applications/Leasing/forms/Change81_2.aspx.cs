@@ -18,7 +18,7 @@ namespace Leasing.forms
     {
         private User m_User;
         private App m_App;
-        private LP_02 objDienstleistung;
+        private Lp02 objDienstleistung;
         protected GridNavigation GridNavigation1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -37,7 +37,7 @@ namespace Leasing.forms
 
             if (Session["objDienstleistung"] == null)
             { Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]); }
-            else { objDienstleistung = (LP_02)Session["objDienstleistung"]; }
+            else { objDienstleistung = (Lp02)Session["objDienstleistung"]; }
 
             if (!IsPostBack)
             {
