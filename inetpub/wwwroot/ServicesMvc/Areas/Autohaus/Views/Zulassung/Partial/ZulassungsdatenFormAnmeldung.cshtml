@@ -34,11 +34,11 @@ else
     }
 
     @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small", col = "left" })
-    @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" },
+    @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenReserviert()", col = "right" },
                         postControlHtml:
                             @<text>
                                 <span id="divWkzLink">
-                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn button-prev margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
+                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn white margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
                                 </span>
                             </text>)
 
