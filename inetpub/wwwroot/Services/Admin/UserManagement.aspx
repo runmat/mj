@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="UserManagement.aspx.vb"
     Inherits="Admin.UserManagement" MasterPageFile="MasterPage/Admin.Master" %>
+<%@ Import Namespace="CKG.Base.Kernel.Security" %>
+<%@ Import Namespace="GeneralTools.Models" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
@@ -927,6 +929,10 @@
         }
 
         function PrepareUserSearchResultsAutomaticLoad() {
+            var redirect = <%= (DirectCast(Session("objUser"), User).Reference2.NotNullOrEmpty() = "AutoAdminRedirect").ToString().ToLower() %>;
+            if (!redirect) 
+                return;
+
             if ($("#<%= Result.ClientID %>").css("display") == "none")
                 return;
 

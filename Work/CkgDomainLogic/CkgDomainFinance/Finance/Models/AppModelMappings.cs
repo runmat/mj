@@ -377,6 +377,12 @@ namespace CkgDomainLogic.Finance.Models
                             destination.Versandgrund = source.VERS_GRUND;
                             destination.Vertragsart = source.ZVERT_ART;
                             destination.Zb2Nummer = source.ZBRIEF;
+                            destination.HaendlerNr = source.KUNNR_BEIM_AG;
+                            destination.HaendlerName = source.NAME;
+                            destination.HaendlerOrt = source.CITY1;
+                            destination.AnforderungsUhrzeit = source.UZEIT_ANGEL;
+                            destination.StatusSicherheit = source.STATUS_SI;
+                            destination.MahnstufeSicherheit = source.MAHNS_SI;
                         }));
             }
         }
