@@ -2,6 +2,8 @@
 @using GeneralTools.Contracts
 @using GeneralTools.Models
 @{
+    var gridSettingsAdminMode = SessionHelper.GetSessionValue("GridSettingsAdminMode", false);
+    var gridSettingsAdminModeChanged = SessionHelper.GetSessionValue("GridSettingsAdminModeChanged", false);
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
     var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
     var telerikStyleSheetTheme = logonContext.CurrentLayoutTheme.NotNullOr("Simple");
@@ -118,6 +120,16 @@
             <div class="span pull-right">
                 <a class="link teamviewer" href="~/Teamviewer-Support.zip" title="Download Teamviewer"><img src="~/Images/teamviewer-icon.png" /></a>
                 <span class="go-top"><i class="icon-angle-up"></i></span>
+                @if (Environment.MachineName.ToUpper().Contains("AHW460") && logonContext.UserName.ToLower().StartsWith("mje"))
+                {
+                    <a class="link" href="#" onclick="return GridSettingsAdminModeSet()"><i class="icon-wrench"></i></a>
+                     if (!gridSettingsAdminMode && !gridSettingsAdminModeChanged)
+                     {
+                         <script type="text/javascript">
+                             GridSettingsAdminModeSet(true); 
+                         </script>
+                     }
+                }
             </div>
         </div>
         <!-- END FOOTER -->

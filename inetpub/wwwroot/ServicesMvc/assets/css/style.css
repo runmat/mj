@@ -1033,6 +1033,13 @@ Footer
    margin-top: -10px;
    margin-right: 3px;
 }
+.footer .link i {
+   margin-left: 5px;
+   margin-top: 2px;
+   display: inline-block;
+   vertical-align: top;
+   text-decoration: none;
+}
 
 /********************
  GENERAL UI ELEMENTS 

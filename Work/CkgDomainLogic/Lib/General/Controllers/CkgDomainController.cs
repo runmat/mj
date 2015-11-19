@@ -42,7 +42,11 @@ namespace CkgDomainLogic.General.Controllers
         public bool GridSettingsAdminMode
         {
             get { return SessionHelper.GetSessionValue("GridSettingsAdminMode", false); }
-            set { SessionHelper.SetSessionValue("GridSettingsAdminMode", value); }
+            set
+            {
+                SessionHelper.SetSessionValue("GridSettingsAdminMode", value);
+                SessionHelper.SetSessionValue("GridSettingsAdminModeChanged", true);
+            }
         }
 
         protected GridSettings GridCurrentSettings
@@ -1023,6 +1027,13 @@ namespace CkgDomainLogic.General.Controllers
         public ActionResult FormSettingsAdminModeSetWysiwygMode(string modelTypeName, string propertyName)
         {
             FormSettingsAdminModeWysiwygMode = true;
+
+            return new EmptyResult();
+        }
+
+        public ActionResult GridSettingsAdminModeActivate(bool set)
+        {
+            GridSettingsAdminMode = set;
 
             return new EmptyResult();
         }

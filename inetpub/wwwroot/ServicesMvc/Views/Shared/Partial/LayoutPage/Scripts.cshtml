@@ -985,7 +985,7 @@
         $.ajax({
             type: "POST",
             url: "FormSettingsAdminModeSetWysiwygMode",
-            loadingShow: true,
+            loadingShow: false,
             data: 
                 { 
                     modelTypeName: o.attr("data-model-type-name"), 
@@ -998,12 +998,37 @@
                 form.submit();
             }
         });
+
+        return false;
     }
 
     function FormSettingsAdminMode_PartialViewOnComplete() {
         
         //alert("completed!");
         FormPrepareAjax();
+    }
+
+    function GridSettingsAdminModeSet(set) {
+        
+        var gridSettingsAdminMode = @SessionHelper.GetSessionValue("GridSettingsAdminMode", false).ToString().ToLower();
+        gridSettingsAdminMode = !gridSettingsAdminMode;
+        if (typeof(set) != 'undefined')
+            gridSettingsAdminMode = set;
+
+        $.ajax({
+            type: "POST",
+            url: "GridSettingsAdminModeActivate",
+            loadingShow: false,
+            data: 
+                { 
+                    set: gridSettingsAdminMode
+                },
+            success: function () {
+                location.reload();
+            }
+        });
+
+        return false;  
     }
 
 </script>
