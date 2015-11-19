@@ -196,6 +196,9 @@ namespace MvcTools.Web
 
             partialViewUrl = partialViewUrl.NotNullOrEmpty().ToLower();
 
+            if (partialViewUrl.Contains("/gridadmin"))
+                return;
+
             SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
         }
     }

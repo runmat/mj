@@ -3,14 +3,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using GeneralTools.Models;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 using ServicesMvc.DomainCommon.Models;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
 {
@@ -51,6 +56,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         
         public List<User> Users { get; set; }
 
+        public string ModelTypeName { get; set; }
+
+        public string PropertyName { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.FieldTranslationIsHidden)]
         public bool IsHidden { get; set; }
 
@@ -63,6 +72,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public bool DataInit(Type modelType, string columnMember)
         {
+            ModelTypeName = modelType.GetFullTypeName();
+            PropertyName = columnMember;
+
             var propertyInfo = modelType.GetProperty(columnMember);
             if (propertyInfo  == null)
                 return false;
@@ -83,16 +95,43 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (model.TmpDeleteCustomerTranslation)
             {
                 DataService.TranslatedResourceCustomerDelete(model.CurrentTranslatedResourceCustomer);
-                UpdateTimeStamp();
+                UpdateTranslationTimeStamp();
                 return;
             }
 
             DataService.TranslatedResourceUpdate(model.CurrentTranslatedResource);
             DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
-            UpdateTimeStamp();
+            UpdateTranslationTimeStamp();
+
+            if (Mode == GridAdminMode.FormControls)
+            {
+                var key = CreateConfigKey(model);
+
+                var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+                if (appConf != null)
+                {
+                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "REQUIRED"), model.IsRequired.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "HIDDEN"), model.IsHidden.ToString().ToLower());
+                }
+            }
         }
 
-        void UpdateTimeStamp()
+        string CreateConfigKey(GridAdminViewModel model)
+        {
+            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+            if (partialViewUrl == null)
+                return "";
+
+            var modelType = Type.GetType(ModelTypeName);
+            if (modelType == null)
+                return "";
+
+            var key = string.Format("[SELECTOR]: {0} - {1} - {2}", partialViewUrl, modelType.Name, PropertyName);
+
+            return key;
+        }
+
+        void UpdateTranslationTimeStamp()
         {
             DataService.TranslationsMarkForRefresh();
         }

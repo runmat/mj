@@ -118,7 +118,9 @@ namespace GeneralTools.Services
 
                 var cmdInsert = cnn.CreateCommand();
                 cmdInsert.CommandText = "if (not exists(select * from ApplicationConfig where " + SQLClause + ")) " +
-                                        "   insert into ApplicationConfig (AppID, ConfigKey, CustomerID, GroupID) select @AppID, @ConfigKey, @CustomerID, @GroupID";
+                                        "   insert into ApplicationConfig " +
+                                        "      (AppID, ConfigKey, CustomerID, GroupID, ConfigType) select " + 
+                                        "      @AppID, @ConfigKey, @CustomerID, @GroupID, 'string'";
                 cmdInsert.CommandType = CommandType.Text;
                 cmdInsert.Parameters.AddWithValue("@AppID", appID);
                 cmdInsert.Parameters.AddWithValue("@ConfigKey", keyName);

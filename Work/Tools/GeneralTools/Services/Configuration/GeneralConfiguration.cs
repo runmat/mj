@@ -56,7 +56,9 @@ namespace GeneralTools.Services
 
                 var cmdInsert = cnn.CreateCommand();
                 cmdInsert.CommandText = "if (not exists(select * from Config where " + SQLClause + ")) " +
-                                        "   insert into Config (Context, [Key]) select @Context, @Key";
+                                        "   insert into Config " +
+                                        "      (Context, [Key], Value) select " + 
+                                        "      @Context, @Key, ''";
                 cmdInsert.CommandType = CommandType.Text;
                 cmdInsert.Parameters.AddWithValue("@Context", context);
                 cmdInsert.Parameters.AddWithValue("@Key", keyName);

@@ -11,8 +11,10 @@
             
             @Html.HiddenFor(m => m.CurrentTranslatedResource.Resource)
             @Html.HiddenFor(m => m.TmpDeleteCustomerTranslation)
-            
-            
+            @Html.HiddenFor(m => m.ModelTypeName)
+            @Html.HiddenFor(m => m.PropertyName)
+
+
             <div class="divider">Default</div>
 
             @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de, new { @class = "m-wrap medium", col = "left" })

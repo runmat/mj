@@ -22,14 +22,17 @@
                 @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
             }
 
-
             @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
             @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
+
+
             @Html.FormValidationSummary()
 
 
             @Html.HiddenFor(m => m.CurrentTranslatedResource.Resource)
             @Html.HiddenFor(m => m.TmpDeleteCustomerTranslation)
+            @Html.HiddenFor(m => m.ModelTypeName)
+            @Html.HiddenFor(m => m.PropertyName)
 
 
             <div class="divider">Default</div>
