@@ -52,7 +52,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
           
-            new FunctionReflector("Z_VB_EXPORT_FAELLE").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_VB_EXPORT_FAELLE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_VB_IMPORT_FALL").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
