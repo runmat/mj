@@ -27,9 +27,8 @@ namespace CkgDomainLogic.Finance.Models
 
         public static string Versandarten { get { return string.Format("1,{0};2,{1};ALLE,{2}", Localize.Temporary, Localize.Final, Localize.All); } }
 
-        [ModelMappingCompareIgnore]
-        [GridHidden]
-        public bool IsValid { get; set; }
+        [LocalizedDisplay(LocalizeConstants.DealerNo)]
+        public string HaendlerNr { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

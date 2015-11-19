@@ -23,7 +23,7 @@ namespace Leasing.forms
     {
         private User m_User;
         private App m_App;
-        private LP_02 objDienstleistung;
+        private Lp02 objDienstleistung;
         protected GridNavigation GridNavigation1;
 
 
@@ -40,8 +40,8 @@ namespace Leasing.forms
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
 
             if (!IsPostBack || Session["objDienstleistung"] == null)
-                Session["objDienstleistung"] = new LP_02(ref m_User, m_App, "");
-            objDienstleistung = (LP_02)Session["objDienstleistung"];
+                Session["objDienstleistung"] = new Lp02(ref m_User, m_App, "");
+            objDienstleistung = (Lp02)Session["objDienstleistung"];
 
             if (!IsPostBack)
             {
