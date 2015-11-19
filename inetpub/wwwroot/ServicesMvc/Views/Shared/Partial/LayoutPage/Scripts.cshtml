@@ -978,8 +978,40 @@
         return s;
     }
 
-    function FormSettingsAdminMode_PartialViewReload(o) {
+    var _formSettingsAdminMode_CurrentItem = null;
+    var _modelStateFormControlsTranslationValid = false;
 
+    function FormSettingsAdminMode_EditFormControls(o) {
+        _formSettingsAdminMode_CurrentItem = o;
+
+        $.ajax({
+            type: "POST",
+            url: "/ServicesMvc/Common/GridAdmin/EditFormControls",
+            loadingShow: false,
+            data: 
+                { 
+                    modelTypeName: o.attr("data-model-type-name"), 
+                    propertyName: o.attr("data-property-name") 
+                },
+            success: function (result) {
+                $("#global-popup").html(result);
+
+                $.magnificPopup.open({
+                    items: { src: $("#global-popup") },
+                    type: 'inline',
+                    alignTop: true,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+
+        return false;
+    }
+
+    function FormSettingsAdminMode_PartialViewReload() {
+
+        var o = _formSettingsAdminMode_CurrentItem;
         var form = o.closest("form");
 
         $.ajax({
@@ -1029,6 +1061,38 @@
         });
 
         return false;  
+    }
+
+    function FormControlsTranslationsFormClosePopup() {
+        $(".mfp-close").trigger("click");
+    }
+
+    function FormControlsTranslationsFormPrepare() {
+    }
+
+    function FormControlsTranslationsCancel() {
+        FormControlsTranslationsFormClosePopup();
+        return false;
+    }
+
+    function FormControlsTranslationsComplete() {
+        $("#TmpDeleteCustomerTranslation").val(false);
+        FormPreparePrivateAjax();
+
+        if (!_modelStateFormControlsTranslationValid)
+            return;
+
+        FormControlsTranslationsFormClosePopup();
+        FormSettingsAdminMode_PartialViewReload();
+    }
+
+    function FormControlsTranslationsFormDeleteCustomerTranslation() {
+        if (!confirm("Diese kundenbezogene Übersetzung wirklich löschen?"))
+            return false;
+        
+        $("#TmpDeleteCustomerTranslation").val(true);
+        $("#FormControlsTranslationsForm").submit();
+        return false;
     }
 
 </script>

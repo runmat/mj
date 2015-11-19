@@ -1,7 +1,7 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.GridAdminViewModel
 
 <div id="divGridColumnTranslations" class="margin-bottom-10">
-    @using (Ajax.BeginForm("EditGridColumnTranslations", "GridAdmin", null,
+    @using (Ajax.BeginForm("EditGridColumnsTranslations", "GridAdmin", null,
         new MvcAjaxOptions("divGridColumnTranslations") { OnComplete = "GridColumnTranslationsComplete();" }, new { id = "GridColumnTranslationsForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
@@ -30,7 +30,7 @@
                 
                 @if (Model.CurrentTranslatedResourceCustomer.de.IsNotNullOrEmpty())
                 {
-                    <button onclick="return GridColumnTranslationsFormDeletCustomerTranslation()" class="btn mini red margin-left-10 tooltips" data-original-title="Diese kundenbezogene Übersetzung löschen!" data-placement="right">
+                    <button onclick="return GridColumnTranslationsFormDeleteCustomerTranslation()" class="btn mini red margin-left-10 tooltips" data-original-title="Diese kundenbezogene Übersetzung löschen!" data-placement="right">
                         <i class="icon-remove"></i> @Localize.Delete
                     </button>
                 }

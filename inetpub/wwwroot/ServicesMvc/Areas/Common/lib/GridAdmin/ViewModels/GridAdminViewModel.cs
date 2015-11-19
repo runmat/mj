@@ -2,22 +2,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using GeneralTools.Models;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 using ServicesMvc.DomainCommon.Models;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
 {
+    public enum GridAdminMode { GridColumns, FormControls  };
+
     public class GridAdminViewModel : CkgBaseViewModel
     {
+        public GridAdminMode Mode { get; set; }
+
         [XmlIgnore]
         public IGridAdminDataService DataService { get { return CacheGet<IGridAdminDataService>(); } }
 
@@ -73,13 +74,18 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (model.TmpDeleteCustomerTranslation)
             {
                 DataService.TranslatedResourceCustomerDelete(model.CurrentTranslatedResourceCustomer);
+                UpdateTimeStamp();
                 return;
             }
 
             DataService.TranslatedResourceUpdate(model.CurrentTranslatedResource);
-            
-            
             DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
+            UpdateTimeStamp();
+        }
+
+        void UpdateTimeStamp()
+        {
+            DataService.TranslationsMarkForRefresh();
         }
 
         public bool TrySetReportSettings(string un)

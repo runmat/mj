@@ -828,7 +828,7 @@ namespace PortalMvcTools.Web
             if (customerConfigurationProvider == null)
                 return html.HiddenFor(expression);
 
-            var fieldConfigValue = customerConfigurationProvider.GetCurrentCustomerConfigVal(key).NotNullOrEmpty().ToLower();
+            var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
 
             var fieldIsHidden = (fieldConfigValue == "true");
             if (fieldIsHidden)

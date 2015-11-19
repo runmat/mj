@@ -28,7 +28,7 @@ namespace MvcTools.Web
             if (customerConfigurationProvider == null)
                 return false;
 
-            var fieldConfigValue = customerConfigurationProvider.GetCurrentCustomerConfigVal(key).NotNullOrEmpty().ToLower();
+            var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
             var fieldIsRequired = (fieldConfigValue == "true");
 
             return fieldIsRequired;

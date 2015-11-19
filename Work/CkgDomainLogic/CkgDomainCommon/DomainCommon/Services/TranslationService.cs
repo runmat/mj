@@ -63,6 +63,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             return translatedResource.GetTranslation();
         }
+
         public IDictionary<string, string> GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(string resourcePrefix)
         {
             var translatedResources = (from translation in _resources where translation.Resource.StartsWith(resourcePrefix) select translation).ToListOrEmptyList();

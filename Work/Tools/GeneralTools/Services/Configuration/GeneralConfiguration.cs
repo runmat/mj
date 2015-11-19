@@ -13,6 +13,13 @@ namespace GeneralTools.Services
             return GetConfigValue(context, keyName);
         }
 
+        public void SetConfigVal(string context, string keyName, string value)
+        {
+            SetConfigValue(context, keyName, value);
+        }
+
+        private const string SQLClause = "Context = @Context AND [Key] = @Key";
+
         public static string GetConfigValue(string context, string keyName)
         {
             try
@@ -20,7 +27,7 @@ namespace GeneralTools.Services
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "SELECT value FROM Config " +
-                                  "WHERE Context = @Context AND [Key] = @Key";
+                                  "WHERE " + SQLClause;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Context", context);
                 cmd.Parameters.AddWithValue("@Key", keyName);
@@ -37,6 +44,39 @@ namespace GeneralTools.Services
             catch (Exception)
             {
                 return "";
+            }
+        }
+
+        public static void SetConfigValue(string context, string keyName, string value)
+        {
+            try
+            {
+                var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+                cnn.Open();
+
+                var cmdInsert = cnn.CreateCommand();
+                cmdInsert.CommandText = "if (not exists(select * from Config where " + SQLClause + ")) " +
+                                        "   insert into Config (Context, [Key]) select @Context, @Key";
+                cmdInsert.CommandType = CommandType.Text;
+                cmdInsert.Parameters.AddWithValue("@Context", context);
+                cmdInsert.Parameters.AddWithValue("@Key", keyName);
+                cmdInsert.ExecuteNonQuery();
+
+
+                var cmd = cnn.CreateCommand();
+                cmd.CommandText = "update Config " +
+                                  "set Value = @Value " +
+                                  "WHERE " + SQLClause;
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Context", context);
+                cmd.Parameters.AddWithValue("@Key", keyName);
+                cmd.Parameters.AddWithValue("@Value", value);
+                cmd.ExecuteNonQuery();
+
+                cnn.Close();
+            }
+            catch (Exception exception)
+            {
             }
         }
     }

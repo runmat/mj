@@ -33,8 +33,9 @@ namespace ServicesMvc.Common.Controllers
 
 
         [HttpPost]
-        public ActionResult Edit(string columnMember)
+        public ActionResult EditGridColumns(string columnMember)
         {
+            ViewModel.Mode = GridAdminMode.GridColumns;
             ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
             var gridCurrentModelType = (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
@@ -44,20 +45,49 @@ namespace ServicesMvc.Common.Controllers
             if (!ViewModel.DataInit(gridCurrentModelType, columnMember))
                 return new EmptyResult();
 
-            return PartialView("Partial/Edit", ViewModel);
+            return PartialView("Partial/EditGridColumns", ViewModel);
         }
 
         [HttpPost]
-        public ActionResult EditGridColumnTranslations(GridAdminViewModel model)
+        public ActionResult EditGridColumnsTranslations(GridAdminViewModel model)
         {
             if (!ModelState.IsValid)
-                return PartialView("Partial/Edit", model);
+                return PartialView("Partial/EditGridColumns", model);
 
             ViewModel.DataSave(model);
             if (model.TmpDeleteCustomerTranslation)
                 ModelState.Clear();
 
-            return PartialView("Partial/Edit", model);
+            return PartialView("Partial/EditGridColumns", model);
+        }
+
+        [HttpPost]
+        public ActionResult EditFormControls(string modelTypeName, string propertyName)
+        {
+            ViewModel.Mode = GridAdminMode.FormControls;
+            ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
+
+            var currentModelType = Type.GetType(modelTypeName);
+            if (currentModelType == null)
+                return new EmptyResult();
+
+            if (!ViewModel.DataInit(currentModelType, propertyName))
+                return new EmptyResult();
+
+            return PartialView("Partial/EditFormControls", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditFormControlsTranslations(GridAdminViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView("Partial/EditFormControls", model);
+
+            ViewModel.DataSave(model);
+            if (model.TmpDeleteCustomerTranslation)
+                ModelState.Clear();
+
+            return PartialView("Partial/EditFormControls", model);
         }
 
         [HttpPost]

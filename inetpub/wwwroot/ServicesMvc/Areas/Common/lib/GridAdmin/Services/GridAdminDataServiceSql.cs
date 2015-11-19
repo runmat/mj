@@ -1,15 +1,14 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
-using CkgDomainLogic.DomainCommon.Contracts;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
-using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
@@ -95,5 +94,10 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         #endregion
 
+
+        public void TranslationsMarkForRefresh()
+        {
+            GeneralConfiguration.SetConfigValue("Localization", "TimeOfLastResourceUpdate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+        }
     }
 }
