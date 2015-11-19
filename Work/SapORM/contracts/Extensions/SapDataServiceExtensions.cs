@@ -44,17 +44,26 @@ namespace SapORM.Contracts
         {
             var dtSrc = ToTable(list);
 
+            foreach (DataColumn colSrc in dtSrc.Columns)
+            {
+                if (!dtDst.Columns.Contains(colSrc.ColumnName))
+                    throw new Exception(String.Format("Column '{0}' not found in Table '{1}'", colSrc.ColumnName, dtDst.TableName));
+            }
+
             foreach (DataRow rowSrc in dtSrc.Rows)
             {
                 var rowDst = dtDst.NewRow();
                 foreach (DataColumn column in dtDst.Columns)
                 {
-                    var value = rowSrc[column.ColumnName];
+                    if (dtSrc.Columns.Contains(column.ColumnName))
+                    {
+                        var value = rowSrc[column.ColumnName];
 
-                    if (DBNull.Value.Equals(value) && column.DataType == typeof(string))
-                        value = string.Empty;
-                    
-                    rowDst[column.ColumnName] = value;
+                        if (DBNull.Value.Equals(value) && column.DataType == typeof(string))
+                            value = string.Empty;
+
+                        rowDst[column.ColumnName] = value;
+                    }
                 }
                 dtDst.Rows.Add(rowDst);
             }

@@ -1,13 +1,12 @@
 ﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
 <style type="text/css">
-    a.btn { color: #ffffff !Important; }
+    
 </style>
 
-<button type="button" id="btnBackToResult" class="btn red mini margin-left-10 hide" onclick="CloseAuftragsDetail();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
-
 <h5>
-    <i class="icon-tag"></i>
+    <button type="button" id="btnBackToResult" class="btn red mini margin-left-10 hide" onclick="CloseAuftragsDetail();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+    <i class="icon-tag margin-left-10"></i>
     <span class="margin-left-10 margin-right-5 bold">@Localize.CaseNoDeregistrationOrder</span> @Model.AktuellerAuftrag.VorgangsNrAbmeldeauftrag
     <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.AktuellerAuftrag.FahrgestellNr
     <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.AktuellerAuftrag.Kennzeichen

@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CustomerManagement.aspx.vb"
     Inherits="Admin.CustomerManagement" EnableEventValidation="false" MasterPageFile="MasterPage/Admin.Master" %>
+<%@ Import Namespace="CKG.Base.Kernel.Security" %>
+<%@ Import Namespace="GeneralTools.Models" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
@@ -1554,6 +1556,10 @@
             }
 
             function PrepareCustomerSearchResultsAutomaticLoad() {
+                var redirect = <%= (DirectCast(Session("objUser"), User).Reference2.NotNullOrEmpty() = "AutoAdminRedirect").ToString().ToLower() %>;
+                if (!redirect) 
+                    return;
+
                 if ($("#<%= Result.ClientID %>").css("display") == "none")
                     return;
 
