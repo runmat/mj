@@ -181,6 +181,8 @@
                                         <asp:TextBox ID="txtKreis" runat="server" TabIndex="13" Width="55px" />
                                         <asp:Label ID="lblKreis" runat="server" Visible="false" />&nbsp;-&nbsp;
                                         <asp:TextBox ID="txtWunschkennzeichen" runat="server" TabIndex="14" Width="78px" />
+                                        <asp:ImageButton ID="btnZulkreis" runat="server" Height="16px" ImageUrl="/Services/images/Lupe_16x16.gif"
+                                                    ToolTip="Zulassungskreis ermitteln" Width="16px" OnClick="SucheZulassungskreis" Visible="False" CausesValidation="False" />
                                     </td>
                                 </tr>
                                 <tr class="formquery" id="trReserviertAuf" runat="Server">
