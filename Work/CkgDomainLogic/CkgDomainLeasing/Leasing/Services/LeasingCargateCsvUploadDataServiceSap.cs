@@ -16,12 +16,11 @@ namespace CkgDomainLogic.Leasing.Services
         {
         }
 
-        public List<LeasingCargateDisplayModel> GetCargateDisplayModel()
+        public List<CargateDisplayModel> GetCargateDisplayModel()
         {
-            Z_DPM_READ_RUECKL_01.Init(SAP);
-            SAP.Execute();
-            var toReturn = Z_DPM_READ_RUECKL_01.GT_OUT.GetExportListWithInitExecute(SAP, "I_AG", "10048516".ToSapKunnr());
-            return ModelMapping.Copy<Z_DPM_READ_RUECKL_01.GT_OUT, LeasingCargateDisplayModel>(toReturn).ToList();
+            Z_DPM_READ_RUECKL_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            return AppModelMappings.Z_DPM_READ_RUECKL_01_GT_OUT_To_CargateDisplayModel.Copy(Z_DPM_READ_RUECKL_01.GT_OUT.GetExportListWithExecute(SAP)).ToList();
         }
 
         public void ValidateUploadCsv(List<LeasingCargateCsvUploadModel> uploadItems)

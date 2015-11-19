@@ -47,6 +47,22 @@ namespace SapORM
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
            
+            // 20150708 Hol- und Bringservice   Z_ZLD_AH_2015_HOLUNDBRING_PDF
+            // new FunctionReflector("Z_ZLD_AH_2015_HOLUNDBRING_PDF").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
+          
+            new FunctionReflector("Z_VB_EXPORT_FAELLE").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_VB_IMPORT_FALL").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
+            //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_SELECT").WriteOrmForExportTableStructures(); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UNIT_SELECT").WriteOrmForExportTableStructures("I_KUNNR_AG, I_BATCH_ID", new object[] { "0000219853", "1234" }); 
+            //new FunctionReflector("Z_M_EC_AVM_STATUS_EINSTEUERUNG").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;
+            //new FunctionReflector("Z_M_EC_AVM_NUR_BRIEF_VORH").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;
+            //new FunctionReflector("Z_M_EC_AVM_STATUS_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;  
             //new FunctionReflector("Z_DPM_LIST_POOLS_001").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ZZDAT_BER_VON, I_ZZDAT_BER_BIS", new object[] { "0000219853", "01.02.2015", "02.02.2015" }); 
             //new FunctionReflector("Z_DPM_READ_AUFTR_006").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;  
             //new FunctionReflector("Z_DPM_LIST_PDI_001").WriteOrmForExportTableStructures("I_KUNNR_AG", new object[] { "0000219853" }); ;  
@@ -463,6 +479,8 @@ namespace SapORM
             //new FunctionReflector("Z_WFM_SET_STATUS_UEBERM_01").WriteOrmForExportTableStructures("I_KUNNR", "10077452");
 
             //new FunctionReflector("Z_DPM_PRUEF_FIN_001").WriteOrmForExportTableStructures("I_FGNU, I_FGPZ", "TEST", "0");
+
+            //new FunctionReflector("Z_DPM_EXP_VERS_AUSWERTUNG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
 
 
             //CoCTest();

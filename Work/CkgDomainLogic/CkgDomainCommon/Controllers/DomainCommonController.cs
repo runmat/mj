@@ -112,5 +112,11 @@ namespace ServicesMvc.Controllers
         {
             return View();
         }
+
+        [CkgApplication]
+        public ActionResult ChangePasswordLoggedOn()
+        {
+            return RedirectToAction("ChangePasswordLoggedOnInternal", "Login");
+        }
     }
 }

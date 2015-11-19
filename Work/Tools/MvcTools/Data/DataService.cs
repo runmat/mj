@@ -63,13 +63,19 @@ namespace MvcTools.Data
         {
             var dtSrc = ToTable(list);
 
+            foreach (DataColumn colSrc in dtSrc.Columns)
+            {
+                if (!dtDst.Columns.Contains(colSrc.ColumnName))
+                    throw new Exception(String.Format("Column '{0}' not found in Table '{1}'", colSrc.ColumnName, dtDst.TableName));
+            }
+
             foreach (DataRow rowSrc in dtSrc.Rows)
             {
                 var rowDst = dtDst.NewRow();
-                //rowDst.ItemArray = (object[])rowSrc.ItemArray.Clone();
                 foreach (DataColumn column in dtDst.Columns)
                 {
-                    rowDst[column.ColumnName] = rowSrc[column.ColumnName];
+                    if (dtSrc.Columns.Contains(column.ColumnName))
+                        rowDst[column.ColumnName] = rowSrc[column.ColumnName];
                 }
                 dtDst.Rows.Add(rowDst);
             }
