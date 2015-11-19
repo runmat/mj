@@ -230,6 +230,11 @@ namespace CkgDomainLogic.General.Services
         {
         }
 
+        public bool CheckPasswordHistory(ChangePasswordModel model, int passwordMinHistoryEntries)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<string> GetAddressPostcodeCityMappings(string plz)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
@@ -263,7 +268,7 @@ namespace CkgDomainLogic.General.Services
         }
 
 
-        public void StorePasswordToUser(string userName, string password)
+        public void StorePasswordToUser(IPasswordSecurityRuleDataProvider passwordSecurityRuleDataProvider, string userName, string password)
         {
         }
 
