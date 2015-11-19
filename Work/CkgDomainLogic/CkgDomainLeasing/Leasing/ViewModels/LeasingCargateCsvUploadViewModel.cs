@@ -104,13 +104,13 @@ namespace CkgDomainLogic.Leasing.ViewModels
         }
 
         [XmlIgnore]
-        public List<LeasingCargateDisplayModel> LeasingCargateDisplayListItems
+        public List<CargateDisplayModel> LeasingCargateDisplayListItems
         {
             get { return PropertyCacheGet(() => DataService.GetCargateDisplayModel()); }
         }
 
         [XmlIgnore]
-        public List<LeasingCargateDisplayModel> LeasingCargateDisplayListItemsFiltered
+        public List<CargateDisplayModel> LeasingCargateDisplayListItemsFiltered
         {
             get { return PropertyCacheGet(() => LeasingCargateDisplayListItems); }
             private set { PropertyCacheSet(value); }

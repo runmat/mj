@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+<div class="alert warning"><i class="icon-bell margin-right-10 margin-bottom-10"></i> <span>ZBI und/oder Kennzeichen vorhanden, bitte geben Sie eine Versandadresse ein.</span></div>
+
+<h5>
+    <i class="icon-envelope margin-left-10"></i>
+    <span class="margin-left-10 margin-right-5 bold">Versandadresse:</span>
+</h5>
+
+<div class="form-actions">
+    <a href="#" onclick="return AjaxFormAdressenShowGrid('Versand')" class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Versandadresse über Ihren Adressenpool aus" data-placement="top">Versandadressen auswählen <i class="icon-chevron-right"></i></a>
+
+    <a href="#" onclick="return AjaxFormAdresseEmpty('VersandAdresseAjaxForm', 'VersandadresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10 margin-right-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top">Formular leeren <i class="icon-remove"></i></a>
+</div>
+
+<div class="form-horizontal margin-top-20">
+    @Html.FormDropDownListFor(m => m.VersandOption, Model.VersandOptionenList.ToSelectList(), new { @class = "m-wrap large" })
+</div>
+
+<script type="text/javascript">
+    $("#VersandOption").change(function() {
+
+        VersandOptionChanged();
+
+    })
+</script>
+
+@Html.Partial("Abmeldevorgaenge/Partial/VersandAdresseForm", @Model.VersandAdresse)
