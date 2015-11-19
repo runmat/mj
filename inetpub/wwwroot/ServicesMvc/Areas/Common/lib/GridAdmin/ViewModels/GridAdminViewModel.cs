@@ -9,6 +9,7 @@ using GeneralTools.Models;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Resources;
 using ServicesMvc.DomainCommon.Models;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
@@ -46,10 +47,18 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             }
         }
 
-
         public User CurrentUser { get; set; }
         
         public List<User> Users { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FieldTranslationIsHidden)]
+        public bool IsHidden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FieldTranslationIsRequired)]
+        public bool IsRequired { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FieldTranslationIsGlobal)]
+        public bool IsGlobal { get; set; }
 
 
         public bool DataInit(Type modelType, string columnMember)

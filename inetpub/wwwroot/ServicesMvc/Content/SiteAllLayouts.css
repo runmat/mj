@@ -1383,3 +1383,7 @@ div.span-alert-placeholder .alert {
 .m-wrap.tall {
     min-height: 30px;
 }
+
+#divFormControlsTranslations {
+    width: 800px;
+}

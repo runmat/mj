@@ -1,15 +1,30 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.GridAdminViewModel
 
+@{ var globalTranslationAllowed = (Model.CurrentTranslatedResource.Resource.ToLower().StartsWith("customizable"));}
+
 <div id="divFormControlsTranslations" class="margin-bottom-10">
     @using (Ajax.BeginForm("EditFormControlsTranslations", "GridAdmin", null,
         new MvcAjaxOptions("divFormControlsTranslations") { OnComplete = "FormControlsTranslationsComplete();" }, new { id = "FormControlsTranslationsForm" }))
     {
         <div class="form-horizontal" id="searchForm">
 
-            <h4>
+            <h4 class="margin-bottom-20">
                 <span>Translation-Key: <strong>@Model.CurrentTranslatedResource.Resource</strong></span>
             </h4>
 
+            <div class="divider">
+                Eigenschaften:
+            </div>
+
+            @if (globalTranslationAllowed)
+            {
+                @Html.FormCheckBoxFor(m => m.IsGlobal, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+
+
+            @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
+            @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
             @Html.FormValidationSummary()
 
 

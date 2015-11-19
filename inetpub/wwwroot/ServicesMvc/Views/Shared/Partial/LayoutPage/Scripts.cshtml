@@ -995,6 +995,7 @@
                 },
             success: function (result) {
                 $("#global-popup").html(result);
+                FormPrepareAjax();
 
                 $.magnificPopup.open({
                     items: { src: $("#global-popup") },

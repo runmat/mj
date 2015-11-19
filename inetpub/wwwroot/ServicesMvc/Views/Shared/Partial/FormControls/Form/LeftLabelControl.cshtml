@@ -32,7 +32,7 @@
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
         }
-        @if (formSettingsAdminMode && @Model.ControlHtml != null)
+        @if (formSettingsAdminMode && Model.ControlHtml != null && !Model.ModelTypeName.NotNullOrEmpty().ToLower().Contains("gridadminviewmodel"))
         {
             <span>
                 <i class="icon-wrench" 
