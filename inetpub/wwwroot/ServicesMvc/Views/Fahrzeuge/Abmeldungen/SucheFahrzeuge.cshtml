@@ -10,17 +10,21 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormMultiColumnModeStart("auto")
 
-            @Html.FormCheckBoxFor(m => m.NurKlaerfaelle, new { onchange = "ShowHideStatusMultiSelect()" })
-            @Html.FormMultiSelectListFor(m => m.FahrzeugStatusWerte, Model.AlleFahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap chosen" })
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "auto" })
 
-            @Html.FormDateRangePickerFor(m => m.AbmeldeDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.GueltigkeitsEndeDatum, new { col = "right" })
+            @Html.FormCheckBoxFor(m => m.NurKlaerfaelle, new { onchange = "ShowHideStatusMultiSelect()", col = "auto" })
+            @Html.FormMultiSelectListFor(m => m.FahrzeugStatusWerte, Model.AlleFahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap chosen", col = "auto" })
+
+            @Html.FormDateRangePickerFor(m => m.AbmeldeDatumRange, new { col = "auto" })
+            @Html.FormDateRangePickerFor(m => m.GueltigkeitsEndeDatum, new { col = "auto" })
             
-            @Html.FormTextBoxFor(m => m.Zielort, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Zielort, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap", col = "auto" })
+
+            @Html.FormMultiColumnModeEnd("auto")
 
 
             @*@Html.FormRequiredFieldsSummary()*@

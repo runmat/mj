@@ -561,6 +561,9 @@ namespace CkgDomainLogic.General.Database.Services
 
         public void TranslatedResourceUpdate(TranslatedResource r)
         {
+            if (r.de.IsNullOrEmpty() || r.en.IsNullOrEmpty())
+                return;
+
             Database.ExecuteSqlCommand(
                 " if not exists(select Resource from TranslatedResource where Resource = {0}) " +
                 "   insert into TranslatedResource (Resource, en, de) select {0}, {1}, {2}", r.Resource, r.en, r.de);

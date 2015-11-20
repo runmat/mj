@@ -16,6 +16,7 @@ using System.Web.Mvc.Ajax;
 using PortalMvcTools.Models;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Contracts;
+using MvcTools.Contracts;
 
 namespace PortalMvcTools.Web
 {
@@ -821,18 +822,16 @@ namespace PortalMvcTools.Web
             if (partialViewUrl == null)
                 return html.HiddenFor(expression);
 
-            var key = string.Format("HIDDEN: {0} - {1} - {2}", partialViewUrl, modelType.Name, propertyName);
-            //var key = string.Format("HIDDEN: {0} - {1}", modelType.Name, propertyName);
+            var formSettingsAdminMode = html.ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
+            var fieldIsHidden = CustomModelValidatorsProvider.IsPropertyHidden(modelType.GetFullTypeName(), propertyName);
 
-            var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
-            if (customerConfigurationProvider == null)
-                return html.HiddenFor(expression);
-
-            var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
-
-            var fieldIsHidden = (fieldConfigValue == "true");
             if (fieldIsHidden)
-                model.IsCollapsed = true;
+            {
+                if (formSettingsAdminMode)
+                    model.IsGrayed = true;
+                else
+                    model.IsCollapsed = true;
+            }
 
             return html.Partial(PartialViewNameFormLeftLabelControl, model);
         }

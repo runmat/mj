@@ -87,7 +87,7 @@ namespace MvcTools.Web
                              metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(RequiredConditionalAttribute), false).Any();
 
                 if (!isRequired)
-                    isRequired = CustomModelValidatorsProvider.IsPropertyRequired(metadata.ContainerType.Name, metadata.PropertyName);
+                    isRequired = CustomModelValidatorsProvider.IsPropertyRequired(metadata.ContainerType.GetFullTypeName(), metadata.PropertyName);
             }
 
             var asteriskTag = new TagBuilder("span") { InnerHtml = "&nbsp;" };

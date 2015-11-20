@@ -1,4 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -18,20 +20,49 @@ namespace MvcTools.Web
 
         public static bool IsPropertyRequired(string modelTypeName, string propertyName)
         {
+            return IsPropertyTrueFor("REQUIRED", modelTypeName, propertyName);
+        }
+
+        public static bool IsPropertyHidden(string modelTypeName, string propertyName)
+        {
+            return IsPropertyTrueFor("HIDDEN", modelTypeName, propertyName);
+        }
+
+        private static bool IsPropertyTrueFor(string propertyBooleanName, string modelFullTypeName, string propertyName)
+        {
+            var modelType = Type.GetType(modelFullTypeName);
+            if (modelType == null)
+                return false;
+
+            var modelTypeName = modelType.Name;
+
             var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
             if (partialViewUrl == null)
                 return false;
-
-            var key = string.Format("REQUIRED: {0} - {1} - {2}", partialViewUrl, modelTypeName, propertyName);
 
             var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
             if (customerConfigurationProvider == null)
                 return false;
 
-            var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
-            var fieldIsRequired = (fieldConfigValue == "true");
+            var basicKey = string.Format("{0} - {1} - {2}", partialViewUrl, modelTypeName, propertyName);
 
-            return fieldIsRequired;
+            var key = propertyBooleanName + ": " + basicKey;
+            var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
+            var fieldIsTrue = (fieldConfigValue == "true");
+
+            if (!fieldIsTrue)
+            {
+                var localizedDisplayAttribute = modelType.GetAttributeFrom<LocalizedDisplayAttribute>(propertyName);
+
+                if (localizedDisplayAttribute == null)
+                    return false;
+
+                key = propertyBooleanName + ": " + localizedDisplayAttribute.ResourceID;
+                fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();
+                fieldIsTrue = (fieldConfigValue == "true");
+            }
+
+            return fieldIsTrue;
         }
     }
 
@@ -75,7 +106,7 @@ namespace MvcTools.Web
             var modelType = container.GetType();
             var propertyName = Metadata.PropertyName ?? Metadata.ModelType.Name;
 
-            var fieldIsRequired = CustomModelValidatorsProvider.IsPropertyRequired(modelType.Name, propertyName);
+            var fieldIsRequired = CustomModelValidatorsProvider.IsPropertyRequired(modelType.GetFullTypeName(), propertyName);
 
             if (!fieldIsRequired)
                 yield break;

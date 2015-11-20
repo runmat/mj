@@ -1109,9 +1109,11 @@
 
 
     function FormControlsTranslationsComplete() {
+        var tmpSwitchGlobalFlag = $("#FormControlsTranslationsForm input[name=TmpSwitchGlobalFlag]").val().toLowerCase();
+
         FormControlsGridColumnTranslationsComplete("FormControlsTranslationsForm", function() {
-            //alert(_modelStateTranslationValidFormControls);
-            if (!_modelStateTranslationValidFormControls)
+            //alert(tmpSwitchGlobalFlag);
+            if (!_modelStateTranslationValidFormControls || tmpSwitchGlobalFlag == "true")
                 return;
 
             FormControlsTranslationsFormClosePopup();

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
@@ -19,7 +20,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 {
     public enum GridAdminMode { GridColumns, FormControls  };
 
-    public class GridAdminViewModel : CkgBaseViewModel
+    public class GridAdminViewModel : CkgBaseViewModel, IValidatableObject
     {
         [ModelMappingCopyIgnore]
         public GridAdminMode Mode { get; set; }
@@ -90,6 +91,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
+            TmpDeleteCustomerTranslation = false;
+            TmpSwitchGlobalFlag = false;
+
             if (!LoadTranslatedResourcesForProperty(true))
                 return false;
 
@@ -105,7 +109,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return true;
         }
 
-        private bool LoadTranslatedResourcesForProperty(bool forceLoadingFromLocalizeAttribute = false)
+        public bool LoadTranslatedResourcesForProperty(bool forceLoadingFromLocalizeAttribute = false)
         {
             var modelType = Type.GetType(ModelTypeName);
             if (modelType == null)
@@ -122,22 +126,23 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (IsGlobal || forceLoadingFromLocalizeAttribute)
                 CurrentResourceID = localizeAttribute.ResourceID;
             else
-                CurrentResourceID = "InvoiceDate";
+                CurrentResourceID = CreateConfigKey();
 
             CurrentTranslatedResource = DataService.TranslatedResourceLoad(CurrentResourceID);
             CurrentTranslatedResourceCustomer = DataService.TranslatedResourceCustomerLoad(CurrentResourceID, CurrentCustomerID);
+
+            var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+            if (appConf != null)
+            {
+                IsRequired = appConf.GetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID).NotNullOrEmpty().ToLower() == "true";
+                IsHidden = appConf.GetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID).NotNullOrEmpty().ToLower() == "true";
+            }
 
             return true;
         }
 
         public void DataSave()
         {
-            if (TmpSwitchGlobalFlag)
-            {
-                LoadTranslatedResourcesForProperty();
-                return;
-            }
-
             if (TmpDeleteCustomerTranslation)
             {
                 DataService.TranslatedResourceCustomerDelete(CurrentTranslatedResourceCustomer);
@@ -151,13 +156,11 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             if (Mode == GridAdminMode.FormControls)
             {
-                var key = CreateConfigKey();
-
                 var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
                 if (appConf != null)
                 {
-                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "REQUIRED"), IsRequired.ToString().ToLower());
-                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "HIDDEN"), IsHidden.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, IsRequired.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, IsHidden.ToString().ToLower());
                 }
             }
         }
@@ -172,7 +175,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (modelType == null)
                 return "";
 
-            var key = string.Format("[SELECTOR]: {0} - {1} - {2}", partialViewUrl, modelType.Name, PropertyName);
+            var key = string.Format("{0} - {1} - {2}", partialViewUrl, modelType.Name, PropertyName);
 
             return key;
         }
@@ -248,6 +251,12 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             var appFriendlyName = DataService.GetAppFriendlyName(appId);
 
             return appFriendlyName;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (IsHidden && IsRequired)
+                yield return new ValidationResult("Ein ausgeblendetes Feld darf nicht gleichzeitig Pflichtfeld sein", new[] { "IsRequired" });
         }
     }
 }

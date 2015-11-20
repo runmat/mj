@@ -52,13 +52,23 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult EditTranslationsForm(GridAdminViewModel model)
         {
+            if (model.TmpSwitchGlobalFlag)
+            {
+                ViewModel.IsGlobal = model.IsGlobal;
+                ViewModel.TmpSwitchGlobalFlag = model.TmpSwitchGlobalFlag;
+                ViewModel.LoadTranslatedResourcesForProperty();
+                ModelState.Clear();
+                return PartialView("Partial/EditTranslations", ViewModel);
+            }
+
             if (!ModelState.IsValid)
-                return PartialView("Partial/EditTranslations", model);
+                return PartialView("Partial/EditTranslations", ViewModel);
 
             ModelMapping.CopyPropertiesTo(model, ViewModel);
+
             ViewModel.DataSave();
 
-            if (model.TmpDeleteCustomerTranslation || model.TmpSwitchGlobalFlag)
+            if (ViewModel.TmpDeleteCustomerTranslation)
                 ModelState.Clear();
 
             return PartialView("Partial/EditTranslations", ViewModel);

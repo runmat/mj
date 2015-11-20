@@ -66,6 +66,8 @@ namespace MvcTools.Models
         /// </summary>
         public bool IsCollapsed { get; set; }
 
+        public bool IsGrayed { get; set; }
+
         private FormMultiColumnMode _columnMode = FormMultiColumnMode.None;
         public FormMultiColumnMode ColumnMode
         {

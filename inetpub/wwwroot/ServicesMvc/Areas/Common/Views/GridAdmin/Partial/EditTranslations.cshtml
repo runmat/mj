@@ -12,8 +12,8 @@
     {    
         <div class="form-horizontal" id="translation-edit-form">
 
-            <h4 class="margin-bottom-20">
-                <span>Translation-Key: <strong>@Model.CurrentTranslatedResource.Resource</strong></span>
+            <h4 class="translation-key-header">
+                <span>Translation-Key: <span class="translation-key @Model.IsGlobal.ToString().ToLower()">@Model.CurrentTranslatedResource.Resource</span></span>
             </h4>
                         
             @Html.HiddenFor(m => m.CurrentTranslatedResource.Resource)
@@ -32,35 +32,25 @@
             }
             @if (Model.Mode == GridAdminMode.FormControls)
             {
-                <div class="divider">
-                    Eigenschaften
-                </div>
-
                 @Html.FormCheckBoxFor(m => m.IsGlobal, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
                 @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
-
-                @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
-                @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
             }
             
             @if (globalTranslationWarning)
             {
-            <div class="alert warning margin-left-180">
+            <div class="alert warning">
                 <i class="icon-bell margin-right-10 margin-bottom-20 margin-top-20"></i>
                 <span>
-                    Bitte beachten Sie, dass Sie diese Übersetzung
-                    <br />mit dem Schlüssel "@Model.CurrentTranslatedResource.Resource"
-                    <span class="bold margin-left-5"> global für alle(!) Web-Anwendungen pflegen!</span>
+                    Bitte beachten Sie, dass Sie diese Übersetzung mit dem Schlüssel "@Model.CurrentTranslatedResource.Resource"
+                    <br /><span class="bold margin-left-25"> global für alle(!) Web-Anwendungen pflegen!</span>
                 </span>
             </div>
             }
-
 
             @Html.FormValidationSummary()
 
 
             <div class="divider">Standard, für alle Kunden</div>
-
 
             @if (Model.Mode == GridAdminMode.GridColumns)
             {
@@ -110,6 +100,9 @@
             }            
             @if (Model.Mode == GridAdminMode.FormControls)
             {
+                @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
+                @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
+
                 @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.de_kurz)
                 @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.en_kurz)
                 @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.fr_kurz)
@@ -131,8 +124,7 @@
         
         <script type="text/javascript">
             _modelStateTranslationValid@(modeAsText) = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            if (@(Model.TmpSwitchGlobalFlag.ToString().ToLower()))
-                _modelStateTranslationValid@(modeAsText) = false;
+            //alert('_modelStateTranslationValid@(modeAsText)');
 
             @(modeAsText)TranslationsFormPrepare();
         </script>

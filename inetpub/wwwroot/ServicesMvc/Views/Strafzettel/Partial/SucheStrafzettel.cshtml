@@ -1,8 +1,6 @@
 ﻿@using CkgDomainLogic.Strafzettel.Models
 @model StrafzettelSelektor
 
-@{ const string formMultiColumnMode = "auto"; }
-
 <div id="divStrafzettelSuche">
     @using (Ajax.BeginForm("LoadStrafzettel", "Strafzettel", null,
         new MvcAjaxOptions("divStrafzettelSuche") { OnComplete = "ShowStrafzettel();" }, new { id = "StrafzettelForm" }))
@@ -12,31 +10,31 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormMultiColumnModeStart(formMultiColumnMode)
+            @Html.FormMultiColumnModeStart("auto")
 
-            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = formMultiColumnMode })
-            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "auto" })
 
-            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = formMultiColumnMode })
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "auto" })
 
-            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = formMultiColumnMode })
-            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = formMultiColumnMode })
+            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "auto" })
+            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "auto" })
 
-            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = formMultiColumnMode })
-            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "auto" })
             
-            @Html.FormMultiSelectListFor(m => m.Standorte, StrafzettelSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = formMultiColumnMode })
-            @Html.FormCheckBoxFor(m => m.IstAusland, new { col = formMultiColumnMode }, labelHidden: true)
+            @Html.FormMultiSelectListFor(m => m.Standorte, StrafzettelSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "auto" })
+            @Html.FormCheckBoxFor(m => m.IstAusland, new { col = "auto" }, labelHidden: true)
 
-            @Html.FormRadioButtonListFor(m => m.FahrzeugStatus, StrafzettelSelektor.FahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap", col = formMultiColumnMode })
-            @Html.FormDatePickerFor(m => m.RechnungsDatum, new { @class = "m-wrap small", col = formMultiColumnMode })
+            @Html.FormRadioButtonListFor(m => m.FahrzeugStatus, StrafzettelSelektor.FahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "auto" })
+            @Html.FormDatePickerFor(m => m.RechnungsDatum, new { @class = "m-wrap small", col = "auto" })
 
-            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = formMultiColumnMode })
-            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap", col = formMultiColumnMode })
+            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap", col = "auto" })
 
 
-            @Html.FormMultiColumnModeEnd(formMultiColumnMode)
+            @Html.FormMultiColumnModeEnd("auto")
 
 
             @Html.FormRequiredFieldsSummary()

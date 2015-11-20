@@ -1394,3 +1394,22 @@ div.span-alert-placeholder .alert {
     border-bottom: 1px solid #efefef;
     padding-bottom: 5px;
 }
+.translation-key-header {
+    min-height: 30px;
+    margin-bottom: 20px;
+}
+.translation-key {
+    margin-left: 10px;
+    background-color: ivory;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0;
+}
+.translation-key.true {
+}
+.translation-key.false {
+    font-size: 0.7em;
+}
+.grayed {
+    opacity: 0.4!important;
+}
