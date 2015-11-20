@@ -13,7 +13,6 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Resources;
-using GeneralTools.Services;
 using ServicesMvc.DomainCommon.Models;
 using MvcTools.Web;
 
@@ -24,6 +23,8 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
     public class GridAdminViewModel : CkgBaseViewModel
     {
         public GridAdminMode Mode { get; set; }
+
+        public string ModeAsText { get; set; }
 
         [XmlIgnore]
         public IGridAdminDataService DataService { get { return CacheGet<IGridAdminDataService>(); } }
@@ -105,7 +106,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             if (Mode == GridAdminMode.FormControls)
             {
-                var key = CreateConfigKey(model);
+                var key = CreateConfigKey();
 
                 var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
                 if (appConf != null)
@@ -116,7 +117,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             }
         }
 
-        string CreateConfigKey(GridAdminViewModel model)
+        string CreateConfigKey()
         {
             var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
             if (partialViewUrl == null)

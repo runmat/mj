@@ -33,61 +33,37 @@ namespace ServicesMvc.Common.Controllers
 
 
         [HttpPost]
-        public ActionResult EditGridColumns(string columnMember)
+        public ActionResult EditTranslations(string modelTypeName, string propertyName)
         {
-            ViewModel.Mode = GridAdminMode.GridColumns;
+            ViewModel.Mode = (modelTypeName == null ? GridAdminMode.GridColumns : GridAdminMode.FormControls);
+            ViewModel.ModeAsText = ViewModel.Mode.ToString("F");
+
             ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
-            var gridCurrentModelType = (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
-            if (gridCurrentModelType == null)
-                return new EmptyResult();
-
-            if (!ViewModel.DataInit(gridCurrentModelType, columnMember))
-                return new EmptyResult();
-
-            return PartialView("Partial/EditGridColumns", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult EditGridColumnsTranslations(GridAdminViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return PartialView("Partial/EditGridColumns", model);
-
-            ViewModel.DataSave(model);
-            if (model.TmpDeleteCustomerTranslation)
-                ModelState.Clear();
-
-            return PartialView("Partial/EditGridColumns", model);
-        }
-
-        [HttpPost]
-        public ActionResult EditFormControls(string modelTypeName, string propertyName)
-        {
-            ViewModel.Mode = GridAdminMode.FormControls;
-            ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
-
-            var currentModelType = Type.GetType(modelTypeName);
+            var currentModelType = ViewModel.Mode == GridAdminMode.GridColumns
+                                            ? (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type)
+                                            : Type.GetType(modelTypeName);
             if (currentModelType == null)
                 return new EmptyResult();
 
             if (!ViewModel.DataInit(currentModelType, propertyName))
                 return new EmptyResult();
 
-            return PartialView("Partial/EditFormControls", ViewModel);
+            return PartialView("Partial/EditTranslations", ViewModel);
         }
 
         [HttpPost]
-        public ActionResult EditFormControlsTranslations(GridAdminViewModel model)
+        public ActionResult EditTranslationsForm(GridAdminViewModel model)
         {
+            model.Mode = (GridAdminMode) Enum.Parse(typeof (GridAdminMode), model.ModeAsText);
             if (!ModelState.IsValid)
-                return PartialView("Partial/EditFormControls", model);
+                return PartialView("Partial/EditTranslations", model);
 
             ViewModel.DataSave(model);
             if (model.TmpDeleteCustomerTranslation)
                 ModelState.Clear();
 
-            return PartialView("Partial/EditFormControls", model);
+            return PartialView("Partial/EditTranslations", model);
         }
 
         [HttpPost]

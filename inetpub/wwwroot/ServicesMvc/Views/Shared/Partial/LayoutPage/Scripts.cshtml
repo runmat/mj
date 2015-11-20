@@ -979,14 +979,14 @@
     }
 
     var _formSettingsAdminMode_CurrentItem = null;
-    var _modelStateFormControlsTranslationValid = false;
+    var _modelStateTranslationValidFormControls = false;
 
     function FormSettingsAdminMode_EditFormControls(o) {
         _formSettingsAdminMode_CurrentItem = o;
 
         $.ajax({
             type: "POST",
-            url: "/ServicesMvc/Common/GridAdmin/EditFormControls",
+            url: "/ServicesMvc/Common/GridAdmin/EditTranslations",
             loadingShow: false,
             data: 
                 { 
@@ -1068,31 +1068,77 @@
         $(".mfp-close").trigger("click");
     }
 
+
     function FormControlsTranslationsFormPrepare() {
+        FormControlsGridColumnsTranslationsFormPrepare("FormControlsTranslationsForm");
     }
+    function GridColumnsTranslationsFormPrepare() {
+        FormControlsGridColumnsTranslationsFormPrepare("GridColumnsTranslationsForm");
+    }
+    function FormControlsGridColumnsTranslationsFormPrepare(that) {
+        $(".tooltips").tooltip();
+        $.each($("#" + that + " label.control-label"), function(index, elem) {
+            var labelText = $(elem).text().trim();
+            if (labelText.length < 2)
+                return;
+
+            var flag = labelText.substring(0, 2);
+            $(elem).append($("img.flag-" + flag).clone().attr("class", ""));
+        });
+    }
+
 
     function FormControlsTranslationsCancel() {
         FormControlsTranslationsFormClosePopup();
         return false;
     }
 
-    function FormControlsTranslationsComplete() {
-        $("#TmpDeleteCustomerTranslation").val(false);
-        FormPreparePrivateAjax();
-
-        if (!_modelStateFormControlsTranslationValid)
-            return;
-
-        FormControlsTranslationsFormClosePopup();
-        FormSettingsAdminMode_PartialViewReload();
+    function GridColumnsTranslationsCancel() {
+        var adminEditDiv = $(".grid-t-column-header-admin-edit-div");
+        adminEditDiv.closest(".portlet-body").css("background-color", "");
+        adminEditDiv.slideUp(300);
+        return false;
     }
 
+
+    function FormControlsTranslationsComplete() {
+        FormControlsGridColumnTranslationsComplete("FormControlsTranslationsForm", function() {
+            if (!_modelStateTranslationValidFormControls)
+                return;
+
+            FormControlsTranslationsFormClosePopup();
+            FormSettingsAdminMode_PartialViewReload();
+        });
+    }
+    function GridColumnsTranslationsComplete() {
+        FormControlsGridColumnTranslationsComplete("GridColumnsTranslationsForm", function() {
+            if (!_modelStateTranslationValidGridColumns)
+                return;
+
+            GridColumnsTranslationsCancel();
+            $('#FormSearchBox form .form-actions button[type="submit"]').trigger('click');
+        });
+    }
+    function FormControlsGridColumnTranslationsComplete(that, func) {
+        $("#" + that + " input[name=TmpDeleteCustomerTranslation]").val(false);
+        FormPreparePrivateAjax();
+
+        func();
+    }
+
+
     function FormControlsTranslationsFormDeleteCustomerTranslation() {
+        return FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation("FormControlsTranslationsForm");
+    }
+    function GridColumnsTranslationsFormDeleteCustomerTranslation() {
+        return FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation("GridColumnsTranslationsForm");
+    }
+    function FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation(that) {
         if (!confirm("Diese kundenbezogene Übersetzung wirklich löschen?"))
             return false;
         
-        $("#TmpDeleteCustomerTranslation").val(true);
-        $("#FormControlsTranslationsForm").submit();
+        $("#" + that + " input[name=TmpDeleteCustomerTranslation]").val(true);
+        $("#" + that).submit();
         return false;
     }
 
