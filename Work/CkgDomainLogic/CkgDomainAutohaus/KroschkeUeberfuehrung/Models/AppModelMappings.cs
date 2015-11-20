@@ -138,12 +138,12 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         }
 
         // ReSharper disable InconsistentNaming
-        public static ModelMapping<Z_V_Kcl_Gruppendaten.ZZGRUPPENDATEN, KclGruppe> Z_V_Kcl_Gruppendaten_ZZGRUPPENDATEN_To_KclGruppe
+        public static ModelMapping<Z_V_KCL_GRUPPENDATEN.ZZGRUPPENDATEN, KclGruppe> Z_V_Kcl_Gruppendaten_ZZGRUPPENDATEN_To_KclGruppe
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Kcl_Gruppendaten.ZZGRUPPENDATEN, KclGruppe>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_KCL_GRUPPENDATEN.ZZGRUPPENDATEN, KclGruppe>(
                     new Dictionary<string, string> {
                         { "ZFILIALE", "Filiale" },
                         { "NAME1", "Name1" },
@@ -154,12 +154,12 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         }
 
         // ReSharper disable InconsistentNaming
-        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag> Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag
+        public static ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE, HistoryAuftrag> Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE, HistoryAuftrag>(
                     new Dictionary<string, string> {
                         { "AUFNR", "AuftragsNr" },
                         { "ERDAT", "AuftragsDatum" },
@@ -184,12 +184,12 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         }
 
         // ReSharper disable InconsistentNaming
-        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragFilter> Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter
+        public static ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT, HistoryAuftragFilter> Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragFilter>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT, HistoryAuftragFilter>(
                     new Dictionary<string, string> {
                         { "Aufnr", "AuftragsNr" },
                         { "Erdat", "ErfassungsDatumVon" },

@@ -114,7 +114,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         
         public List<AbgemeldetesFahrzeug> GetAbgemeldeteFahrzeuge2(AbgemeldeteFahrzeugeSelektor selector)
         {                                  
-            Z_M_Abm_Abgemeldete_Kfz.Init(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_M_ABM_ABGEMELDETE_KFZ.Init(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
             if (selector.AbmeldeDatumRange.IsSelected)
             {
@@ -124,7 +124,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             SAP.Execute();
 
-            var sapItemsEquis = Z_M_Abm_Abgemeldete_Kfz.AUSGABE.GetExportList(SAP); 
+            var sapItemsEquis = Z_M_ABM_ABGEMELDETE_KFZ.AUSGABE.GetExportList(SAP); 
             var webItemsEquis = AppModelMappings.Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug.Copy(sapItemsEquis).ToList();
 
             return webItemsEquis;
@@ -384,11 +384,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     // exception safe SAP action:
                     () =>
                     {
-                        var list = Z_M_Warenkorb_Sperre_001.GT_IN.GetImportList(SAP);
+                        var list = Z_M_WARENKORB_SPERRE_001.GT_IN.GetImportList(SAP);
                         foreach (var f in fahrzeuge)
-                            list.Add(new Z_M_Warenkorb_Sperre_001.GT_IN { EQUNR = f.EquiNummer });
+                            list.Add(new Z_M_WARENKORB_SPERRE_001.GT_IN { EQUNR = f.EquiNummer });
 
-                        Z_M_Warenkorb_Sperre_001.Init(SAP);
+                        Z_M_WARENKORB_SPERRE_001.Init(SAP);
                         SAP.ApplyImport(list);
                         SAP.Execute();
                     },
@@ -413,10 +413,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     // exception safe SAP action:
                     () =>
                     {
-                        var list = Z_Massenzulassung.INTERNTAB.GetImportList(SAP);
+                        var list = Z_MASSENZULASSUNG.INTERNTAB.GetImportList(SAP);
 
                         foreach (var f in fahrzeuge)
-                            list.Add(new Z_Massenzulassung.INTERNTAB
+                            list.Add(new Z_MASSENZULASSUNG.INTERNTAB
                             {
                                 I_KUNNR_AG = LogonContext.KundenNr.ToSapKunnr(),
                                 I_ZZFAHRG = f.Fahrgestellnummer,
@@ -430,14 +430,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                                 I_ZZCARPORT = f.DadPdi,
                             });
 
-                        Z_Massenzulassung.Init(SAP);
+                        Z_MASSENZULASSUNG.Init(SAP);
                         SAP.ApplyImport(list);
                         SAP.Execute();
 
                         var retCode = SAP.GetExportParameter("RETURN");
                         // ReSharper disable once UnusedVariable
                         var anzahlZugelassen = SAP.GetExportParameter("ANZAHL");
-                        var exportList = Z_Massenzulassung.OUTPUT.GetExportList(SAP);
+                        var exportList = Z_MASSENZULASSUNG.OUTPUT.GetExportList(SAP);
 
                         foreach (var f in fahrzeuge)
                         {

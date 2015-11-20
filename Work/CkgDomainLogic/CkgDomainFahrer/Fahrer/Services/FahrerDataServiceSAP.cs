@@ -45,7 +45,7 @@ namespace CkgDomainLogic.Fahrer.Services
         {
             EnforceValidUserReference();
 
-            var sapList = Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1.GetExportListWithInitExecute(SAP,
+            var sapList = Z_V_UEBERF_VERFUEGBARKEIT1.T_VERFUEG1.GetExportListWithInitExecute(SAP,
                 "I_FAHRER, I_VONDAT, I_BISDAT",
                 FahrerID, DateTime.Today.ToString("ddMMyyyy"), "31122999");
 
