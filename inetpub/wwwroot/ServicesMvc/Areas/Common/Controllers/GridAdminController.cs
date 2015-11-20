@@ -36,9 +36,6 @@ namespace ServicesMvc.Common.Controllers
         public ActionResult EditTranslations(string modelTypeName, string propertyName)
         {
             ViewModel.Mode = (modelTypeName == null ? GridAdminMode.GridColumns : GridAdminMode.FormControls);
-            ViewModel.ModeAsText = ViewModel.Mode.ToString("F");
-
-            ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
             var currentModelType = ViewModel.Mode == GridAdminMode.GridColumns
                                             ? (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type)
@@ -55,15 +52,16 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult EditTranslationsForm(GridAdminViewModel model)
         {
-            model.Mode = (GridAdminMode) Enum.Parse(typeof (GridAdminMode), model.ModeAsText);
             if (!ModelState.IsValid)
                 return PartialView("Partial/EditTranslations", model);
 
-            ViewModel.DataSave(model);
-            if (model.TmpDeleteCustomerTranslation)
+            ModelMapping.CopyPropertiesTo(model, ViewModel);
+            ViewModel.DataSave();
+
+            if (model.TmpDeleteCustomerTranslation || model.TmpSwitchGlobalFlag)
                 ModelState.Clear();
 
-            return PartialView("Partial/EditTranslations", model);
+            return PartialView("Partial/EditTranslations", ViewModel);
         }
 
         [HttpPost]

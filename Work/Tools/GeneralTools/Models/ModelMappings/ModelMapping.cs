@@ -65,6 +65,17 @@ namespace GeneralTools.Models
             return destination;
         }
 
+        public static void CopyPropertiesTo<T>(T source, T destination, Action<T, T> onInit = null)
+            where T : class, new()
+        {
+            if (source == null || destination == null)
+                return;
+
+            UpdateRecursivelyWithBaseClasses(source, destination);
+            if (onInit != null)
+                onInit(source, destination);
+        }
+
         public static T CopyOnlyPersistableProperties<T>(T source, Action<T, T> onInit = null)
             where T : class, new()
         {
@@ -72,7 +83,7 @@ namespace GeneralTools.Models
                 return null;
 
             var destination = new T();
-            UpdateRecursivelyWithBaseClasses(source, destination, 'X', 
+            UpdateRecursivelyWithBaseClasses(source, destination, 'X',
                 (propertySrc, propertyDst) =>
                     propertySrc.GetCustomAttributes(true).OfType<FormPersistableAttribute>().Any() &&
                     propertyDst.GetCustomAttributes(true).OfType<FormPersistableAttribute>().Any()

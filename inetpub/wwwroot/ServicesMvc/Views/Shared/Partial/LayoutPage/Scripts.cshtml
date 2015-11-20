@@ -1070,7 +1070,14 @@
 
 
     function FormControlsTranslationsFormPrepare() {
-        FormControlsGridColumnsTranslationsFormPrepare("FormControlsTranslationsForm");
+        var that = "FormControlsTranslationsForm";
+
+        FormControlsGridColumnsTranslationsFormPrepare(that);
+
+        $("#" + that + " input[name=IsGlobal]").change(function() {
+            $("#" + that + " input[name=TmpSwitchGlobalFlag]").val(true);
+            $("#" + that).submit();
+        });
     }
     function GridColumnsTranslationsFormPrepare() {
         FormControlsGridColumnsTranslationsFormPrepare("GridColumnsTranslationsForm");
@@ -1103,6 +1110,7 @@
 
     function FormControlsTranslationsComplete() {
         FormControlsGridColumnTranslationsComplete("FormControlsTranslationsForm", function() {
+            //alert(_modelStateTranslationValidFormControls);
             if (!_modelStateTranslationValidFormControls)
                 return;
 
@@ -1121,6 +1129,7 @@
     }
     function FormControlsGridColumnTranslationsComplete(that, func) {
         $("#" + that + " input[name=TmpDeleteCustomerTranslation]").val(false);
+        $("#" + that + " input[name=TmpSwitchGlobalFlag]").val(false);
         FormPreparePrivateAjax();
 
         func();

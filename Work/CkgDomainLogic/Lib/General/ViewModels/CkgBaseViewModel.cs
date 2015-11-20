@@ -18,9 +18,11 @@ namespace CkgDomainLogic.General.ViewModels
     public class CkgBaseViewModel : Store 
     {
         [XmlIgnore, ScriptIgnore]
+        [ModelMappingCopyIgnore]
         public IAppSettings AppSettings { get; private set; }
 
         [XmlIgnore, ScriptIgnore]
+        [ModelMappingCopyIgnore]
         public ILogonContextDataService LogonContext { get; private set; }
 
 

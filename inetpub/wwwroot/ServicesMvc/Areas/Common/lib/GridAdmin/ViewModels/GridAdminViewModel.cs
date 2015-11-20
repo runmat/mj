@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
@@ -22,28 +21,37 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
     public class GridAdminViewModel : CkgBaseViewModel
     {
+        [ModelMappingCopyIgnore]
         public GridAdminMode Mode { get; set; }
 
-        public string ModeAsText { get; set; }
+        [ModelMappingCopyIgnore]
+        public bool GlobalTranslationDangerous { get; set; }
 
         [XmlIgnore]
+        [ModelMappingCopyIgnore]
         public IGridAdminDataService DataService { get { return CacheGet<IGridAdminDataService>(); } }
 
         public bool TmpDeleteCustomerTranslation { get; set; }
+        public bool TmpSwitchGlobalFlag { get; set; }
 
+        [ModelMappingCopyIgnore]
         public int CurrentCustomerID { get; set; }
 
+        [ModelMappingCopyIgnore]
         public string CurrentResourceID { get; set; }
 
         public TranslatedResource CurrentTranslatedResource { get; set; }
 
         public TranslatedResourceCustom CurrentTranslatedResourceCustomer { get; set; }
 
+        [ModelMappingCopyIgnore]
         public ReportSolution ReportSettings { get; set; }
 
 
+        [ModelMappingCopyIgnore]
         public Customer CurrentCustomer { get; set; }
 
+        [ModelMappingCopyIgnore]
         public List<Customer> Customers
         {
             get
@@ -53,12 +61,16 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             }
         }
 
+        [ModelMappingCopyIgnore]
         public User CurrentUser { get; set; }
-        
+
+        [ModelMappingCopyIgnore]
         public List<User> Users { get; set; }
 
+        [ModelMappingCopyIgnore]
         public string ModelTypeName { get; set; }
 
+        [ModelMappingCopyIgnore]
         public string PropertyName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FieldTranslationIsHidden)]
@@ -71,37 +83,70 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public bool IsGlobal { get; set; }
 
 
-        public bool DataInit(Type modelType, string columnMember)
+        public bool DataInit(Type modelType, string propertyName)
         {
             ModelTypeName = modelType.GetFullTypeName();
-            PropertyName = columnMember;
+            PropertyName = propertyName;
 
-            var propertyInfo = modelType.GetProperty(columnMember);
-            if (propertyInfo  == null)
+            CurrentCustomerID = LogonContext.KundenNr.ToInt();
+
+            if (!LoadTranslatedResourcesForProperty(true))
+                return false;
+
+            if (CurrentTranslatedResource != null && CurrentTranslatedResource.Resource != null)
+            {
+                GlobalTranslationDangerous = !CurrentTranslatedResource.Resource.ToLower().StartsWith("customizable");
+                IsGlobal = (Mode == GridAdminMode.GridColumns || !GlobalTranslationDangerous);
+            }
+
+            if (!LoadTranslatedResourcesForProperty())
+                return false;
+
+            return true;
+        }
+
+        private bool LoadTranslatedResourcesForProperty(bool forceLoadingFromLocalizeAttribute = false)
+        {
+            var modelType = Type.GetType(ModelTypeName);
+            if (modelType == null)
+                 return false;
+
+            var propertyInfo = modelType.GetProperty(PropertyName);
+            if (propertyInfo == null)
                 return false;
 
             var localizeAttribute = propertyInfo.GetCustomAttributes(true).OfType<LocalizedDisplayAttribute>().FirstOrDefault();
             if (localizeAttribute == null)
                 return false;
 
-            CurrentResourceID = localizeAttribute.ResourceID;
+            if (IsGlobal || forceLoadingFromLocalizeAttribute)
+                CurrentResourceID = localizeAttribute.ResourceID;
+            else
+                CurrentResourceID = "InvoiceDate";
+
             CurrentTranslatedResource = DataService.TranslatedResourceLoad(CurrentResourceID);
             CurrentTranslatedResourceCustomer = DataService.TranslatedResourceCustomerLoad(CurrentResourceID, CurrentCustomerID);
 
             return true;
         }
 
-        public void DataSave(GridAdminViewModel model)
+        public void DataSave()
         {
-            if (model.TmpDeleteCustomerTranslation)
+            if (TmpSwitchGlobalFlag)
             {
-                DataService.TranslatedResourceCustomerDelete(model.CurrentTranslatedResourceCustomer);
+                LoadTranslatedResourcesForProperty();
+                return;
+            }
+
+            if (TmpDeleteCustomerTranslation)
+            {
+                DataService.TranslatedResourceCustomerDelete(CurrentTranslatedResourceCustomer);
                 UpdateTranslationTimeStamp();
                 return;
             }
 
-            DataService.TranslatedResourceUpdate(model.CurrentTranslatedResource);
-            DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
+            DataService.TranslatedResourceUpdate(CurrentTranslatedResource);
+            DataService.TranslatedResourceCustomerUpdate(CurrentTranslatedResourceCustomer);
             UpdateTranslationTimeStamp();
 
             if (Mode == GridAdminMode.FormControls)
@@ -111,8 +156,8 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                 var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
                 if (appConf != null)
                 {
-                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "REQUIRED"), model.IsRequired.ToString().ToLower());
-                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "HIDDEN"), model.IsHidden.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "REQUIRED"), IsRequired.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal(key.Replace("[SELECTOR]", "HIDDEN"), IsHidden.ToString().ToLower());
                 }
             }
         }

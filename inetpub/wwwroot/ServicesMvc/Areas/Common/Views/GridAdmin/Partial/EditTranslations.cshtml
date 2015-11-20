@@ -2,15 +2,15 @@
 @model GridAdminViewModel
 
 @{
-    var globalTranslationWarning = (!Model.CurrentTranslatedResource.Resource.ToLower().StartsWith("customizable"));
-    var modeAsText = Model.ModeAsText;
+    var globalTranslationWarning = Model.IsGlobal && Model.GlobalTranslationDangerous;
+    var modeAsText = Model.Mode.ToString("F");
 }
 
 <div id="@(modeAsText)DivTranslations" class="margin-bottom-10">
     @using (Ajax.BeginForm("EditTranslationsForm", "GridAdmin", null,
         new MvcAjaxOptions(modeAsText + "DivTranslations") { OnComplete = modeAsText + "TranslationsComplete();" }, new { id = modeAsText + "TranslationsForm" }))
     {    
-        <div class="form-horizontal" id="searchForm">
+        <div class="form-horizontal" id="translation-edit-form">
 
             <h4 class="margin-bottom-20">
                 <span>Translation-Key: <strong>@Model.CurrentTranslatedResource.Resource</strong></span>
@@ -21,9 +21,7 @@
             @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.CustomerID)
 
             @Html.HiddenFor(m => m.TmpDeleteCustomerTranslation)
-            @Html.HiddenFor(m => m.ModelTypeName)
-            @Html.HiddenFor(m => m.PropertyName)
-            @Html.HiddenFor(m => m.ModeAsText)
+            @Html.HiddenFor(m => m.TmpSwitchGlobalFlag)
 
 
             @if (Model.Mode == GridAdminMode.GridColumns)
@@ -44,12 +42,25 @@
                 @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
                 @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
             }
+            
+            @if (globalTranslationWarning)
+            {
+            <div class="alert warning margin-left-180">
+                <i class="icon-bell margin-right-10 margin-bottom-20 margin-top-20"></i>
+                <span>
+                    Bitte beachten Sie, dass Sie diese Übersetzung
+                    <br />mit dem Schlüssel "@Model.CurrentTranslatedResource.Resource"
+                    <span class="bold margin-left-5"> global für alle(!) Web-Anwendungen pflegen!</span>
+                </span>
+            </div>
+            }
 
 
             @Html.FormValidationSummary()
 
-            
+
             <div class="divider">Standard, für alle Kunden</div>
+
 
             @if (Model.Mode == GridAdminMode.GridColumns)
             {
@@ -120,6 +131,8 @@
         
         <script type="text/javascript">
             _modelStateTranslationValid@(modeAsText) = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            if (@(Model.TmpSwitchGlobalFlag.ToString().ToLower()))
+                _modelStateTranslationValid@(modeAsText) = false;
 
             @(modeAsText)TranslationsFormPrepare();
         </script>
