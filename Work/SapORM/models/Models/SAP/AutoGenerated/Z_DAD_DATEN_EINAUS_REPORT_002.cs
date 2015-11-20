@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DAD_DATEN_EINAUS_REPORT_002).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_ABCKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ABCKZ", value);
+		}
+
+		public void SetImportParameter_ACTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ACTION", value);
+		}
+
+		public void SetImportParameter_DATANF(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("DATANF", value);
+		}
+
+		public void SetImportParameter_DATEND(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("DATEND", value);
+		}
+
+		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR", value);
+		}
+
+		public void SetImportParameter_LIZNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("LIZNR", value);
 		}
 
 		public partial class EINNEU : IModelMappingApplied
@@ -146,14 +178,14 @@ namespace SapORM.Models
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					TIDNR = (string)row["TIDNR"],
 					ZZMODID = (string)row["ZZMODID"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZET = (string)row["ERZET"],
 					ERNAM = (string)row["ERNAM"],
 					ERST = (string)row["ERST"],
 					FEHLERKZ = (string)row["FEHLERKZ"],
 					ABCKZ = (string)row["ABCKZ"],
 					EQUNR = (string)row["EQUNR"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					ADRNR = (string)row["ADRNR"],
 					NAME1 = (string)row["NAME1"],
 					NAME2 = (string)row["NAME2"],
@@ -164,7 +196,7 @@ namespace SapORM.Models
 					ZZVGRUND = (string)row["ZZVGRUND"],
 					TEXT50 = (string)row["TEXT50"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
-					ZZMADAT = (string.IsNullOrEmpty(row["ZZMADAT"].ToString())) ? null : (DateTime?)row["ZZMADAT"],
+					ZZMADAT = string.IsNullOrEmpty(row["ZZMADAT"].ToString()) ? null : (DateTime?)row["ZZMADAT"],
 					ZZMAHNS = (string)row["ZZMAHNS"],
 					ZZCOCKZ = (string)row["ZZCOCKZ"],
 					ZS_SORTL = (string)row["ZS_SORTL"],
@@ -181,7 +213,7 @@ namespace SapORM.Models
 					ORT01_PDI = (string)row["ORT01_PDI"],
 					PSTLZ_PDI = (string)row["PSTLZ_PDI"],
 					STRAS1_PDI = (string)row["STRAS1_PDI"],
-					INBDT = (string.IsNullOrEmpty(row["INBDT"].ToString())) ? null : (DateTime?)row["INBDT"],
+					INBDT = string.IsNullOrEmpty(row["INBDT"].ToString()) ? null : (DateTime?)row["INBDT"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 					ZZHERST_TEXT = (string)row["ZZHERST_TEXT"],
 					ZZVVS_SCHLUESSEL = (string)row["ZZVVS_SCHLUESSEL"],
@@ -214,7 +246,7 @@ namespace SapORM.Models
 
 			public static List<EINNEU> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<EINNEU> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -228,7 +260,7 @@ namespace SapORM.Models
 
 			public static List<EINNEU> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EINNEU> ToList(ISapDataService sapDataService)
@@ -243,7 +275,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DAD_DATEN_EINAUS_REPORT_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EINNEU> GetExportListWithExecute(ISapDataService sapDataService)
@@ -253,7 +285,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EINNEU> GetExportList(ISapDataService sapDataService)
@@ -263,7 +295,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EINNEU> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -273,7 +305,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DAD_DATEN_EINAUS_REPORT_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EINNEU> GetImportList(ISapDataService sapDataService)
@@ -283,7 +315,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -294,11 +326,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DAD_DATEN_EINAUS_REPORT_002.EINNEU> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

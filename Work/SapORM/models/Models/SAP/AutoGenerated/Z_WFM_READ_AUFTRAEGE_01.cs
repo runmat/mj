@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_READ_AUFTRAEGE_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN", value);
+		}
+
+		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNZ", value);
+		}
+
+		public void SetImportParameter_I_SELEKTION1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION1", value);
+		}
+
+		public void SetImportParameter_I_SELEKTION2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION2", value);
+		}
+
+		public void SetImportParameter_I_SELEKTION3(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION3", value);
+		}
+
+		public void SetImportParameter_I_TODO_WER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TODO_WER", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -171,25 +217,25 @@ namespace SapORM.Models
 					EQUNR_ZB2 = (string)row["EQUNR_ZB2"],
 					ABMELDEART = (string)row["ABMELDEART"],
 					ABMELDESTATUS = (string)row["ABMELDESTATUS"],
-					ABMELDEDATUM = (string.IsNullOrEmpty(row["ABMELDEDATUM"].ToString())) ? null : (DateTime?)row["ABMELDEDATUM"],
-					STORNODATUM = (string.IsNullOrEmpty(row["STORNODATUM"].ToString())) ? null : (DateTime?)row["STORNODATUM"],
-					ZB1_VORHANDEN = (string.IsNullOrEmpty(row["ZB1_VORHANDEN"].ToString())) ? null : (DateTime?)row["ZB1_VORHANDEN"],
-					ZB2_VORHANDEN = (string.IsNullOrEmpty(row["ZB2_VORHANDEN"].ToString())) ? null : (DateTime?)row["ZB2_VORHANDEN"],
-					KENNZ_VORN_VORH = (string.IsNullOrEmpty(row["KENNZ_VORN_VORH"].ToString())) ? null : (DateTime?)row["KENNZ_VORN_VORH"],
-					KENNZ_HINTEN_VORH = (string.IsNullOrEmpty(row["KENNZ_HINTEN_VORH"].ToString())) ? null : (DateTime?)row["KENNZ_HINTEN_VORH"],
-					KENNZV_ENTWERTET = (string.IsNullOrEmpty(row["KENNZV_ENTWERTET"].ToString())) ? null : (DateTime?)row["KENNZV_ENTWERTET"],
-					KENNZH_ENTWERTET = (string.IsNullOrEmpty(row["KENNZH_ENTWERTET"].ToString())) ? null : (DateTime?)row["KENNZH_ENTWERTET"],
-					KENNZV_DIEBSTAHL = (string.IsNullOrEmpty(row["KENNZV_DIEBSTAHL"].ToString())) ? null : (DateTime?)row["KENNZV_DIEBSTAHL"],
-					KENNZH_DIEBSTAHL = (string.IsNullOrEmpty(row["KENNZH_DIEBSTAHL"].ToString())) ? null : (DateTime?)row["KENNZH_DIEBSTAHL"],
+					ABMELDEDATUM = string.IsNullOrEmpty(row["ABMELDEDATUM"].ToString()) ? null : (DateTime?)row["ABMELDEDATUM"],
+					STORNODATUM = string.IsNullOrEmpty(row["STORNODATUM"].ToString()) ? null : (DateTime?)row["STORNODATUM"],
+					ZB1_VORHANDEN = string.IsNullOrEmpty(row["ZB1_VORHANDEN"].ToString()) ? null : (DateTime?)row["ZB1_VORHANDEN"],
+					ZB2_VORHANDEN = string.IsNullOrEmpty(row["ZB2_VORHANDEN"].ToString()) ? null : (DateTime?)row["ZB2_VORHANDEN"],
+					KENNZ_VORN_VORH = string.IsNullOrEmpty(row["KENNZ_VORN_VORH"].ToString()) ? null : (DateTime?)row["KENNZ_VORN_VORH"],
+					KENNZ_HINTEN_VORH = string.IsNullOrEmpty(row["KENNZ_HINTEN_VORH"].ToString()) ? null : (DateTime?)row["KENNZ_HINTEN_VORH"],
+					KENNZV_ENTWERTET = string.IsNullOrEmpty(row["KENNZV_ENTWERTET"].ToString()) ? null : (DateTime?)row["KENNZV_ENTWERTET"],
+					KENNZH_ENTWERTET = string.IsNullOrEmpty(row["KENNZH_ENTWERTET"].ToString()) ? null : (DateTime?)row["KENNZH_ENTWERTET"],
+					KENNZV_DIEBSTAHL = string.IsNullOrEmpty(row["KENNZV_DIEBSTAHL"].ToString()) ? null : (DateTime?)row["KENNZV_DIEBSTAHL"],
+					KENNZH_DIEBSTAHL = string.IsNullOrEmpty(row["KENNZH_DIEBSTAHL"].ToString()) ? null : (DateTime?)row["KENNZH_DIEBSTAHL"],
 					BELNR_ZCARPK = (string)row["BELNR_ZCARPK"],
 					CARPORT = (string)row["CARPORT"],
-					ERDAT_ZCARPK = (string.IsNullOrEmpty(row["ERDAT_ZCARPK"].ToString())) ? null : (DateTime?)row["ERDAT_ZCARPK"],
-					WIEDVORLAGE_KUNDE = (string.IsNullOrEmpty(row["WIEDVORLAGE_KUNDE"].ToString())) ? null : (DateTime?)row["WIEDVORLAGE_KUNDE"],
-					WIEDVORLAGE_SC = (string.IsNullOrEmpty(row["WIEDVORLAGE_SC"].ToString())) ? null : (DateTime?)row["WIEDVORLAGE_SC"],
-					ZUSTIMMUNG_ZLS = (string.IsNullOrEmpty(row["ZUSTIMMUNG_ZLS"].ToString())) ? null : (DateTime?)row["ZUSTIMMUNG_ZLS"],
+					ERDAT_ZCARPK = string.IsNullOrEmpty(row["ERDAT_ZCARPK"].ToString()) ? null : (DateTime?)row["ERDAT_ZCARPK"],
+					WIEDVORLAGE_KUNDE = string.IsNullOrEmpty(row["WIEDVORLAGE_KUNDE"].ToString()) ? null : (DateTime?)row["WIEDVORLAGE_KUNDE"],
+					WIEDVORLAGE_SC = string.IsNullOrEmpty(row["WIEDVORLAGE_SC"].ToString()) ? null : (DateTime?)row["WIEDVORLAGE_SC"],
+					ZUSTIMMUNG_ZLS = string.IsNullOrEmpty(row["ZUSTIMMUNG_ZLS"].ToString()) ? null : (DateTime?)row["ZUSTIMMUNG_ZLS"],
 					ZUSTIMM_EMPF = (string)row["ZUSTIMM_EMPF"],
 					ZUSTIMM_USER = (string)row["ZUSTIMM_USER"],
-					NAUANF_ZLS = (string.IsNullOrEmpty(row["NAUANF_ZLS"].ToString())) ? null : (DateTime?)row["NAUANF_ZLS"],
+					NAUANF_ZLS = string.IsNullOrEmpty(row["NAUANF_ZLS"].ToString()) ? null : (DateTime?)row["NAUANF_ZLS"],
 					EMPF_NEUANFORD = (string)row["EMPF_NEUANFORD"],
 					NAUANF_USER = (string)row["NAUANF_USER"],
 					SELEKTION1 = (string)row["SELEKTION1"],
@@ -201,16 +247,16 @@ namespace SapORM.Models
 					VORGAENGER_AUFTR = (string)row["VORGAENGER_AUFTR"],
 					LFD_NR = (string)row["LFD_NR"],
 					AUFGABE = (string)row["AUFGABE"],
-					ERFASST = (decimal?)row["ERFASST"],
-					ENDE = (decimal?)row["ENDE"],
+					ERFASST = string.IsNullOrEmpty(row["ERFASST"].ToString()) ? null : (decimal?)row["ERFASST"],
+					ENDE = string.IsNullOrEmpty(row["ENDE"].ToString()) ? null : (decimal?)row["ENDE"],
 					TASK_ID = (string)row["TASK_ID"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					TODO_WER = (string)row["TODO_WER"],
-					STARTDATUM = (string.IsNullOrEmpty(row["STARTDATUM"].ToString())) ? null : (DateTime?)row["STARTDATUM"],
+					STARTDATUM = string.IsNullOrEmpty(row["STARTDATUM"].ToString()) ? null : (DateTime?)row["STARTDATUM"],
 					STARTZEIT = (string)row["STARTZEIT"],
-					SOLL_DATUM = (string.IsNullOrEmpty(row["SOLL_DATUM"].ToString())) ? null : (DateTime?)row["SOLL_DATUM"],
+					SOLL_DATUM = string.IsNullOrEmpty(row["SOLL_DATUM"].ToString()) ? null : (DateTime?)row["SOLL_DATUM"],
 					SOLL_ZEIT = (string)row["SOLL_ZEIT"],
-					IST_DATUM = (string.IsNullOrEmpty(row["IST_DATUM"].ToString())) ? null : (DateTime?)row["IST_DATUM"],
+					IST_DATUM = string.IsNullOrEmpty(row["IST_DATUM"].ToString()) ? null : (DateTime?)row["IST_DATUM"],
 					IST_ZEIT = (string)row["IST_ZEIT"],
 					ZUSER = (string)row["ZUSER"],
 					ANMERKUNG = (string)row["ANMERKUNG"],
@@ -1032,8 +1078,8 @@ namespace SapORM.Models
 			{
 				var o = new GT_SEL_SOLLDAT
 				{
-					SOLLDATUM_VON = (string.IsNullOrEmpty(row["SOLLDATUM_VON"].ToString())) ? null : (DateTime?)row["SOLLDATUM_VON"],
-					SOLLDATUM_BIS = (string.IsNullOrEmpty(row["SOLLDATUM_BIS"].ToString())) ? null : (DateTime?)row["SOLLDATUM_BIS"],
+					SOLLDATUM_VON = string.IsNullOrEmpty(row["SOLLDATUM_VON"].ToString()) ? null : (DateTime?)row["SOLLDATUM_VON"],
+					SOLLDATUM_BIS = string.IsNullOrEmpty(row["SOLLDATUM_BIS"].ToString()) ? null : (DateTime?)row["SOLLDATUM_BIS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -1140,20 +1186,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMART> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMART> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1162,20 +1198,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMSTAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_KDAUF> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_KDAUF> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1184,20 +1210,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF1> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF2> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF2> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1206,20 +1222,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF3> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_SOLLDAT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_SOLLDAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

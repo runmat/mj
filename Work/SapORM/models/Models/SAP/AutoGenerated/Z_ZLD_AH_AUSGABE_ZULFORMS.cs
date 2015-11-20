@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_AUSGABE_ZULFORMS).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
 		public partial class GT_BAK_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -177,7 +188,7 @@ namespace SapORM.Models
 
 			public string RES_NAME { get; set; }
 
-			public Int32? HALTEDAUER { get; set; }
+			public int? HALTEDAUER { get; set; }
 
 			public DateTime? VE_ERDAT { get; set; }
 
@@ -206,7 +217,7 @@ namespace SapORM.Models
 					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
 					RESERVKENN = (string)row["RESERVKENN"],
 					FEINSTAUB = (string)row["FEINSTAUB"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					WU_KENNZ2 = (string)row["WU_KENNZ2"],
 					WU_KENNZ3 = (string)row["WU_KENNZ3"],
@@ -225,7 +236,7 @@ namespace SapORM.Models
 					ALT_KENNZ = (string)row["ALT_KENNZ"],
 					ZBII_ALT_NEU = (string)row["ZBII_ALT_NEU"],
 					VH_KENNZ_RES = (string)row["VH_KENNZ_RES"],
-					STILL_DAT = (string.IsNullOrEmpty(row["STILL_DAT"].ToString())) ? null : (DateTime?)row["STILL_DAT"],
+					STILL_DAT = string.IsNullOrEmpty(row["STILL_DAT"].ToString()) ? null : (DateTime?)row["STILL_DAT"],
 					FAHRZ_ART = (string)row["FAHRZ_ART"],
 					MNRESW = (string)row["MNRESW"],
 					ZZEVB = (string)row["ZZEVB"],
@@ -249,7 +260,7 @@ namespace SapORM.Models
 					EINZ_JN = (string)row["EINZ_JN"],
 					RECH_JN = (string)row["RECH_JN"],
 					BARZ_JN = (string)row["BARZ_JN"],
-					HALTE_DAUER = (string.IsNullOrEmpty(row["HALTE_DAUER"].ToString())) ? null : (DateTime?)row["HALTE_DAUER"],
+					HALTE_DAUER = string.IsNullOrEmpty(row["HALTE_DAUER"].ToString()) ? null : (DateTime?)row["HALTE_DAUER"],
 					O_G_VERSSCHEIN = (string)row["O_G_VERSSCHEIN"],
 					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
 					ZZREFNR5 = (string)row["ZZREFNR5"],
@@ -262,8 +273,8 @@ namespace SapORM.Models
 					APPID = (string)row["APPID"],
 					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
 					RES_NAME = (string)row["RES_NAME"],
-					HALTEDAUER = (string.IsNullOrEmpty(row["HALTEDAUER"].ToString())) ? null : (Int32?)Convert.ToInt32(row["HALTEDAUER"]),
-					VE_ERDAT = (string.IsNullOrEmpty(row["VE_ERDAT"].ToString())) ? null : (DateTime?)row["VE_ERDAT"],
+					HALTEDAUER = string.IsNullOrEmpty(row["HALTEDAUER"].ToString()) ? null : (int?)row["HALTEDAUER"],
+					VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
 					VE_ERZEIT = (string)row["VE_ERZEIT"],
 					VE_AENAM = (string)row["VE_AENAM"],
 
@@ -495,20 +506,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_BAK_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -4,20 +4,27 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Unzugelassene_Fzge_Sixt_L
+	public partial class Z_M_UNZUGELASSENE_FZGE_SIXT_L
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Unzugelassene_Fzge_Sixt_L).Name);
+			sap.Init(typeof(Z_M_UNZUGELASSENE_FZGE_SIXT_L).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Unzugelassene_Fzge_Sixt_L).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_UNZUGELASSENE_FZGE_SIXT_L).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
 		}
 
 		public partial class T_DATA : IModelMappingApplied
@@ -86,9 +93,9 @@ namespace SapORM.Models
 					ZZLVNR = (string)row["ZZLVNR"],
 					NAME1_HAENDLER = (string)row["NAME1_HAENDLER"],
 					ORT_HAENDLER = (string)row["ORT_HAENDLER"],
-					ZBRIEFEINGANG = (string.IsNullOrEmpty(row["ZBRIEFEINGANG"].ToString())) ? null : (DateTime?)row["ZBRIEFEINGANG"],
-					ZDATBEAUFTRAGUNG = (string.IsNullOrEmpty(row["ZDATBEAUFTRAGUNG"].ToString())) ? null : (DateTime?)row["ZDATBEAUFTRAGUNG"],
-					VDATU = (string.IsNullOrEmpty(row["VDATU"].ToString())) ? null : (DateTime?)row["VDATU"],
+					ZBRIEFEINGANG = string.IsNullOrEmpty(row["ZBRIEFEINGANG"].ToString()) ? null : (DateTime?)row["ZBRIEFEINGANG"],
+					ZDATBEAUFTRAGUNG = string.IsNullOrEmpty(row["ZDATBEAUFTRAGUNG"].ToString()) ? null : (DateTime?)row["ZDATBEAUFTRAGUNG"],
+					VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZULORT = (string)row["ZULORT"],
 					NAME1_ZH = (string)row["NAME1_ZH"],
@@ -130,7 +137,7 @@ namespace SapORM.Models
 
 			public static List<T_DATA> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<T_DATA> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -144,7 +151,7 @@ namespace SapORM.Models
 
 			public static List<T_DATA> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_DATA> ToList(ISapDataService sapDataService)
@@ -157,9 +164,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<T_DATA>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Unzugelassene_Fzge_Sixt_L", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_UNZUGELASSENE_FZGE_SIXT_L", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_DATA> GetExportListWithExecute(ISapDataService sapDataService)
@@ -169,7 +176,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_DATA> GetExportList(ISapDataService sapDataService)
@@ -179,7 +186,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_DATA> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -187,9 +194,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<T_DATA>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Unzugelassene_Fzge_Sixt_L", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_UNZUGELASSENE_FZGE_SIXT_L", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_DATA> GetImportList(ISapDataService sapDataService)
@@ -199,7 +206,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -207,14 +214,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Unzugelassene_Fzge_Sixt_L.T_DATA> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_UNZUGELASSENE_FZGE_SIXT_L.T_DATA> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Unzugelassene_Fzge_Sixt_L.T_DATA> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_SAVE_TAGGLEICHE_MELDUNG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class IS_TG_MELDUNG : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -45,7 +61,7 @@ namespace SapORM.Models
 
 			public string ZZKENN { get; set; }
 
-			public string GEB_AMT { get; set; }
+			public decimal? GEB_AMT { get; set; }
 
 			public string AUSLIEF { get; set; }
 
@@ -64,9 +80,9 @@ namespace SapORM.Models
 					EBELN = (string)row["EBELN"],
 					FAHRG = (string)row["FAHRG"],
 					BRIEF = (string)row["BRIEF"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
-					GEB_AMT = (string)row["GEB_AMT"],
+					GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
 					AUSLIEF = (string)row["AUSLIEF"],
 					ZZSEND2 = (string)row["ZZSEND2"],
 					ERNAM = (string)row["ERNAM"],
@@ -93,11 +109,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<IS_TG_MELDUNG> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<IS_TG_MELDUNG> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(IS_TG_MELDUNG).Name.ToLower());
@@ -105,46 +116,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<IS_TG_MELDUNG> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_TG_MELDUNG> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<IS_TG_MELDUNG> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<IS_TG_MELDUNG>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_SAVE_TAGGLEICHE_MELDUNG", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_TG_MELDUNG> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_TG_MELDUNG>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_TG_MELDUNG> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_TG_MELDUNG>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<IS_TG_MELDUNG> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -175,11 +146,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_SAVE_TAGGLEICHE_MELDUNG.IS_TG_MELDUNG> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_SAVE_TAGGLEICHE_MELDUNG.IS_TG_MELDUNG> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

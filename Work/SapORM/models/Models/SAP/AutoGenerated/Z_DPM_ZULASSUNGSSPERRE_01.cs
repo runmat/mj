@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_ZULASSUNGSSPERRE_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ACTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ACTION", value);
+		}
+
+		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -264,20 +285,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_ZULASSUNGSSPERRE_01.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_ZULASSUNGSSPERRE_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_ZULASSUNGSSPERRE_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

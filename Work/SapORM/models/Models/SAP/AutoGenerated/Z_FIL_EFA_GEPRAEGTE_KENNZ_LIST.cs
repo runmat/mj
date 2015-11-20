@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,27 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
 		public partial class GT_PO_K : IModelMappingApplied
@@ -61,7 +83,7 @@ namespace SapORM.Models
 					BSTNR = (string)row["BSTNR"],
 					LIFNR = (string)row["LIFNR"],
 					NAME1 = (string)row["NAME1"],
-					BEDAT = (string.IsNullOrEmpty(row["BEDAT"].ToString())) ? null : (DateTime?)row["BEDAT"],
+					BEDAT = string.IsNullOrEmpty(row["BEDAT"].ToString()) ? null : (DateTime?)row["BEDAT"],
 					EKORG = (string)row["EKORG"],
 					BUKRS = (string)row["BUKRS"],
 					KOSTL = (string)row["KOSTL"],
@@ -69,7 +91,7 @@ namespace SapORM.Models
 					EBELN = (string)row["EBELN"],
 					LIEFERSNR = (string)row["LIEFERSNR"],
 					MVT_BELNR = (string)row["MVT_BELNR"],
-					EEIND = (string.IsNullOrEmpty(row["EEIND"].ToString())) ? null : (DateTime?)row["EEIND"],
+					EEIND = string.IsNullOrEmpty(row["EEIND"].ToString()) ? null : (DateTime?)row["EEIND"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -94,7 +116,7 @@ namespace SapORM.Models
 
 			public static List<GT_PO_K> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_PO_K> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -108,7 +130,7 @@ namespace SapORM.Models
 
 			public static List<GT_PO_K> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_K> ToList(ISapDataService sapDataService)
@@ -123,7 +145,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_K> GetExportListWithExecute(ISapDataService sapDataService)
@@ -133,7 +155,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_K> GetExportList(ISapDataService sapDataService)
@@ -143,7 +165,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_K> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -153,7 +175,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_K> GetImportList(ISapDataService sapDataService)
@@ -163,7 +185,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -208,11 +230,11 @@ namespace SapORM.Models
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
 					ARTLIF = (string)row["ARTLIF"],
-					MENGE = (decimal?)row["MENGE"],
-					EEIND = (string.IsNullOrEmpty(row["EEIND"].ToString())) ? null : (DateTime?)row["EEIND"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
+					EEIND = string.IsNullOrEmpty(row["EEIND"].ToString()) ? null : (DateTime?)row["EEIND"],
 					WERKS = (string)row["WERKS"],
 					LGORT = (string)row["LGORT"],
-					PREIS = (decimal?)row["PREIS"],
+					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
 					LTEXT_NR = (string)row["LTEXT_NR"],
 
 					SAPConnection = sapConnection,
@@ -238,7 +260,7 @@ namespace SapORM.Models
 
 			public static List<GT_PO_P> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_PO_P> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -252,7 +274,7 @@ namespace SapORM.Models
 
 			public static List<GT_PO_P> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_P> ToList(ISapDataService sapDataService)
@@ -267,7 +289,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_P> GetExportListWithExecute(ISapDataService sapDataService)
@@ -277,7 +299,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_P> GetExportList(ISapDataService sapDataService)
@@ -287,7 +309,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_P> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -297,7 +319,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_PO_P> GetImportList(ISapDataService sapDataService)
@@ -307,7 +329,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -320,20 +342,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST.GT_PO_K> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST.GT_PO_P> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST.GT_PO_P> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

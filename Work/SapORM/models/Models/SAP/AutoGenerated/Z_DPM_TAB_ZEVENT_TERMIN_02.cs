@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_TAB_ZEVENT_TERMIN_02).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_DATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_BIS", value);
+		}
+
+		public void SetImportParameter_I_DATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_VON", value);
+		}
+
+		public void SetImportParameter_I_EVENT_ORT_BOX(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT_ORT_BOX", value);
+		}
+
+		public void SetImportParameter_I_EVENT_SCHADEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT_SCHADEN", value);
+		}
+
+		public void SetImportParameter_I_EVENT_TERMIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT_TERMIN", value);
+		}
+
+		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
 		public partial class GT_TERMIN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -81,12 +112,12 @@ namespace SapORM.Models
 			{
 				var o = new GT_TERMIN
 				{
-					DATUM_VON = (string.IsNullOrEmpty(row["DATUM_VON"].ToString())) ? null : (DateTime?)row["DATUM_VON"],
+					DATUM_VON = string.IsNullOrEmpty(row["DATUM_VON"].ToString()) ? null : (DateTime?)row["DATUM_VON"],
 					ZEIT_VON = (string)row["ZEIT_VON"],
-					DATUM_BIS = (string.IsNullOrEmpty(row["DATUM_BIS"].ToString())) ? null : (DateTime?)row["DATUM_BIS"],
+					DATUM_BIS = string.IsNullOrEmpty(row["DATUM_BIS"].ToString()) ? null : (DateTime?)row["DATUM_BIS"],
 					ZEIT_BIS = (string)row["ZEIT_BIS"],
 					TEXT = (string)row["TEXT"],
-					ANLAGEDATUM = (string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString())) ? null : (DateTime?)row["ANLAGEDATUM"],
+					ANLAGEDATUM = string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString()) ? null : (DateTime?)row["ANLAGEDATUM"],
 					ANLAGEUSER = (string)row["ANLAGEUSER"],
 					EVENT_NAME = (string)row["EVENT_NAME"],
 					NAME1 = (string)row["NAME1"],
@@ -102,7 +133,7 @@ namespace SapORM.Models
 					EVENT_ORTBOX = (string)row["EVENT_ORTBOX"],
 					EVENT_SCHADEN = (string)row["EVENT_SCHADEN"],
 					NACHNAME = (string)row["NACHNAME"],
-					LOESCHDATUM = (string.IsNullOrEmpty(row["LOESCHDATUM"].ToString())) ? null : (DateTime?)row["LOESCHDATUM"],
+					LOESCHDATUM = string.IsNullOrEmpty(row["LOESCHDATUM"].ToString()) ? null : (DateTime?)row["LOESCHDATUM"],
 					LOESCHUSER = (string)row["LOESCHUSER"],
 
 					SAPConnection = sapConnection,
@@ -208,11 +239,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_TAB_ZEVENT_TERMIN_02.GT_TERMIN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_TAB_ZEVENT_TERMIN_02.GT_TERMIN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

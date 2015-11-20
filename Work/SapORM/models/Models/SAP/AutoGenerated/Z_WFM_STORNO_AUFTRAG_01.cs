@@ -20,6 +20,42 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_WFM_STORNO_AUFTRAG_01).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_STORNODATUM(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_STORNODATUM", value);
+		}
+
+		public void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_NR_ABM_AUF", value);
+		}
+
+		public string GetExportParameter_E_ERF_VERS_ADR(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ERF_VERS_ADR");
+		}
+
+		public string GetExportParameter_E_FAHRG(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FAHRG");
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

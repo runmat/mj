@@ -21,6 +21,57 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_VZOZUERL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public void SetImportParameter_I_LISTE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LISTE", value);
+		}
+
+		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
+		}
+
+		public void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_VON", value);
+		}
+
 		public partial class GT_EX_ZUERL : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -127,12 +178,12 @@ namespace SapORM.Models
 					VBELN = (string)row["VBELN"],
 					VKORG = (string)row["VKORG"],
 					VKBUR = (string)row["VKBUR"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
 					BLTYP = (string)row["BLTYP"],
 					FLAG = (string)row["FLAG"],
 					STATUS = (string)row["STATUS"],
-					VZERDAT = (string.IsNullOrEmpty(row["VZERDAT"].ToString())) ? null : (DateTime?)row["VZERDAT"],
+					VZERDAT = string.IsNullOrEmpty(row["VZERDAT"].ToString()) ? null : (DateTime?)row["VZERDAT"],
 					BARCODE = (string)row["BARCODE"],
 					KUNNR = (string)row["KUNNR"],
 					KUNDEN_NAME1 = (string)row["KUNDEN_NAME1"],
@@ -144,7 +195,7 @@ namespace SapORM.Models
 					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
 					RESERVKENN = (string)row["RESERVKENN"],
 					FEINSTAUBAMT = (string)row["FEINSTAUBAMT"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					KENNZTYP = (string)row["KENNZTYP"],
 					KENNZFORM = (string)row["KENNZFORM"],
@@ -159,12 +210,12 @@ namespace SapORM.Models
 					ZULPOSNR = (string)row["ZULPOSNR"],
 					UEPOS = (string)row["UEPOS"],
 					LOEKZ = (string)row["LOEKZ"],
-					MENGE = (decimal?)row["MENGE"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					PREIS = (decimal?)row["PREIS"],
+					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
 					WEBMTART = (string)row["WEBMTART"],
-					KBETR = (decimal?)row["KBETR"],
+					KBETR = string.IsNullOrEmpty(row["KBETR"].ToString()) ? null : (decimal?)row["KBETR"],
 					NAME1 = (string)row["NAME1"],
 					VZB_STATUS = (string)row["VZB_STATUS"],
 
@@ -271,11 +322,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_VZOZUERL.GT_EX_ZUERL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_VZOZUERL.GT_EX_ZUERL> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

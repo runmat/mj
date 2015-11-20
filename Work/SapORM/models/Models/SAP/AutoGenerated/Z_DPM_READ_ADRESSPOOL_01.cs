@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -20,136 +21,45 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_ADRESSPOOL_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_ZULAST : IModelMappingApplied
+
+		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
+			sap.SetImportParameter("I_EQTYP", value);
+		}
 
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
 
-			public string LIFNR { get; set; }
+		public void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME1", value);
+		}
 
-			public string ZKFZKZ { get; set; }
+		public void SetImportParameter_I_NAME2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME2", value);
+		}
 
-			public string ORT01 { get; set; }
+		public void SetImportParameter_I_ORT01(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORT01", value);
+		}
 
-			public string PSTLZ { get; set; }
+		public void SetImportParameter_I_POS_TEXT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_POS_TEXT", value);
+		}
 
-			public string STRAS { get; set; }
+		public void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PSTLZ", value);
+		}
 
-			public string NAME1 { get; set; }
-
-			public string NAME2 { get; set; }
-
-			public static GT_ZULAST Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_ZULAST
-				{
-					LIFNR = (string)row["LIFNR"],
-					ZKFZKZ = (string)row["ZKFZKZ"],
-					ORT01 = (string)row["ORT01"],
-					PSTLZ = (string)row["PSTLZ"],
-					STRAS = (string)row["STRAS"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_ZULAST> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_ZULAST> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToList();
-			}
-
-			public static IEnumerable<GT_ZULAST> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ZULAST).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_ZULAST> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToList();
-			}
-
-			public static List<GT_ZULAST> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_ZULAST> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZULAST>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZULAST> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZULAST>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZULAST> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZULAST>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZULAST> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZULAST>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZULAST> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZULAST>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
+		public void SetImportParameter_I_STRAS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STRAS", value);
 		}
 
 		public partial class GT_ADRS : IModelMappingApplied
@@ -241,7 +151,7 @@ namespace SapORM.Models
 
 			public static List<GT_ADRS> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ADRS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -255,7 +165,7 @@ namespace SapORM.Models
 
 			public static List<GT_ADRS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> ToList(ISapDataService sapDataService)
@@ -270,7 +180,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetExportListWithExecute(ISapDataService sapDataService)
@@ -280,7 +190,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetExportList(ISapDataService sapDataService)
@@ -290,7 +200,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -300,7 +210,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetImportList(ISapDataService sapDataService)
@@ -310,7 +220,139 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_ZULAST : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string LIFNR { get; set; }
+
+			public string ZKFZKZ { get; set; }
+
+			public string ORT01 { get; set; }
+
+			public string PSTLZ { get; set; }
+
+			public string STRAS { get; set; }
+
+			public string NAME1 { get; set; }
+
+			public string NAME2 { get; set; }
+
+			public static GT_ZULAST Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_ZULAST
+				{
+					LIFNR = (string)row["LIFNR"],
+					ZKFZKZ = (string)row["ZKFZKZ"],
+					ORT01 = (string)row["ORT01"],
+					PSTLZ = (string)row["PSTLZ"],
+					STRAS = (string)row["STRAS"],
+					NAME1 = (string)row["NAME1"],
+					NAME2 = (string)row["NAME2"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_ZULAST> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_ZULAST> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_ZULAST> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ZULAST).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_ZULAST> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZULAST> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_ZULAST> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZULAST>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZULAST> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZULAST>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZULAST> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZULAST>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZULAST> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZULAST>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_ADRESSPOOL_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZULAST> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZULAST>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -318,25 +360,15 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_ADRESSPOOL_01.GT_ADRS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_READ_ADRESSPOOL_01.GT_ADRS> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_ADRESSPOOL_01.GT_ZULAST> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

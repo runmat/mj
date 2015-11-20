@@ -21,6 +21,62 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_STO_STORNO_ORDER).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_BEGRUENDUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BEGRUENDUNG", value);
+		}
+
+		public void SetImportParameter_I_ERNAM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ERNAM", value);
+		}
+
+		public void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_STORNOGRUND(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STORNOGRUND", value);
+		}
+
+		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZKENN", value);
+		}
+
+		public void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
+		public string GetExportParameter_E_ZULBELN_NEU(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ZULBELN_NEU");
+		}
+
 		public partial class GT_BARQ : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -142,11 +198,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_STO_STORNO_ORDER.GT_BARQ> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_STO_STORNO_ORDER.GT_BARQ> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

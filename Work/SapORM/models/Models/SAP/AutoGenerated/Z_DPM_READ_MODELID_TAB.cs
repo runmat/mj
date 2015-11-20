@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_MODELID_TAB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_MODELID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MODELID", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public string GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_SUBRC");
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -193,11 +214,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_MODELID_TAB.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_MODELID_TAB.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

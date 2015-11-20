@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_ZGBS_BEN_ZULASSUNGSUNT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AUSWAHL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AUSWAHL", value);
+		}
+
+		public void SetImportParameter_I_ZKBA1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZKBA1", value);
+		}
+
+		public void SetImportParameter_I_ZKBA2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZKBA2", value);
+		}
+
+		public void SetImportParameter_I_ZKFZKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZKFZKZ", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -218,7 +239,7 @@ namespace SapORM.Models
 					MANDT = (string)row["MANDT"],
 					ZKBA1 = (string)row["ZKBA1"],
 					ZKBA2 = (string)row["ZKBA2"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					AENAM = (string)row["AENAM"],
 					PZUL_BRIEF = (string)row["PZUL_BRIEF"],
 					PUMSCHR_BRIEF = (string)row["PUMSCHR_BRIEF"],
@@ -409,11 +430,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

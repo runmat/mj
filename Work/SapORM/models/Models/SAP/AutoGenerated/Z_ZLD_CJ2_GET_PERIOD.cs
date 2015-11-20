@@ -20,6 +20,27 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_CJ2_GET_PERIOD).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_COMP_CODE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_COMP_CODE", value);
+		}
+
+		public void SetImportParameter_I_DATUM(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM", value);
+		}
+
+		public DateTime? GetExportParameter_E_FDAY(ISapDataService sap)
+		{
+			return sap.GetExportParameter<DateTime?>("E_FDAY");
+		}
+
+		public DateTime? GetExportParameter_E_LDAY(ISapDataService sap)
+		{
+			return sap.GetExportParameter<DateTime?>("E_LDAY");
+		}
 	}
 
 	public static partial class DataTableExtensions

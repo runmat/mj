@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_2015_ETIKETT_SEL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_DELTA_LISTE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_DELTA_LISTE", value);
+		}
+
+		public void SetImportParameter_I_ID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ID", value);
+		}
+
+		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNZ", value);
+		}
+
+		public void SetImportParameter_I_ZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZLDAT", value);
+		}
+
 		public partial class ET_BAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -61,7 +82,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					NAME = (string)row["NAME"],
 					ZULBELN = (string)row["ZULBELN"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -166,11 +187,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_2015_ETIKETT_SEL.ET_BAK> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_2015_ETIKETT_SEL.ET_BAK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

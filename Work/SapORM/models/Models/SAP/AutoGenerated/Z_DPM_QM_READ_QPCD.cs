@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_QM_READ_QPCD).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_CODEGRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CODEGRUPPE", value);
+		}
+
+		public void SetImportParameter_I_KATALOGART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KATALOGART", value);
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_OUTQPCD : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -151,11 +167,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_QM_READ_QPCD.GT_OUTQPCD> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_QM_READ_QPCD.GT_OUTQPCD> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

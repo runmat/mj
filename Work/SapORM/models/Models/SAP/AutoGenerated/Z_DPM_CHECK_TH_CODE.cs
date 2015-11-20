@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_CHECK_TH_CODE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_TREU(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TREU", value);
+		}
+
+		public void SetImportParameter_I_TREUH_VGA(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TREUH_VGA", value);
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -47,8 +63,8 @@ namespace SapORM.Models
 				{
 					EQUI_KEY = (string)row["EQUI_KEY"],
 					ERNAM = (string)row["ERNAM"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
-					SPERRDAT = (string.IsNullOrEmpty(row["SPERRDAT"].ToString())) ? null : (DateTime?)row["SPERRDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					SPERRDAT = string.IsNullOrEmpty(row["SPERRDAT"].ToString()) ? null : (DateTime?)row["SPERRDAT"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 
 					SAPConnection = sapConnection,
@@ -187,8 +203,8 @@ namespace SapORM.Models
 					TREU = (string)row["TREU"],
 					EQUI_KEY = (string)row["EQUI_KEY"],
 					ERNAM = (string)row["ERNAM"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
-					SPERRDAT = (string.IsNullOrEmpty(row["SPERRDAT"].ToString())) ? null : (DateTime?)row["SPERRDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					SPERRDAT = string.IsNullOrEmpty(row["SPERRDAT"].ToString()) ? null : (DateTime?)row["SPERRDAT"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 					ERROR_TYP = (string)row["ERROR_TYP"],
 					ERROR = (string)row["ERROR"],
@@ -300,20 +316,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_CHECK_TH_CODE.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_CHECK_TH_CODE.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CHECK_TH_CODE.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

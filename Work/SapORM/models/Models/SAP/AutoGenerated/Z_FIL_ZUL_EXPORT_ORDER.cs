@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_ZUL_EXPORT_ORDER).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
 		public partial class GT_ZUL_ORDER : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -69,7 +75,7 @@ namespace SapORM.Models
 					VKBUR = (string)row["VKBUR"],
 					KUNNR = (string)row["KUNNR"],
 					NAME1 = (string)row["NAME1"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					REFERENZ = (string)row["REFERENZ"],
 					ZZKENN = (string)row["ZZKENN"],
 					ORDERID = (string)row["ORDERID"],
@@ -78,7 +84,7 @@ namespace SapORM.Models
 					POSNR = (string)row["POSNR"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					GEBUEHR = (decimal?)row["GEBUEHR"],
+					GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
 					GEB_POS = (string)row["GEB_POS"],
 
 					SAPConnection = sapConnection,
@@ -184,11 +190,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_ZUL_EXPORT_ORDER.GT_ZUL_ORDER> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_ZUL_EXPORT_ORDER.GT_ZUL_ORDER> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

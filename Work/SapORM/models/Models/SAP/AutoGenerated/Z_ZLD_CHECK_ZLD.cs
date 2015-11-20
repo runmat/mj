@@ -20,6 +20,22 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_CHECK_ZLD).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public string GetExportParameter_E_ZLD(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ZLD");
+		}
 	}
 
 	public static partial class DataTableExtensions

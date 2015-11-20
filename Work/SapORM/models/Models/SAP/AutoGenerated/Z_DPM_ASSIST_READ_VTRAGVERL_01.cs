@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,27 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_ASSIST_READ_VTRAGVERL_01).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_KUNNR_AH(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AH", value);
+		}
+
+		public void SetImportParameter_I_KUNNR_FIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_FIL", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -55,8 +77,8 @@ namespace SapORM.Models
 					HERSTNAME = (string)row["HERSTNAME"],
 					BEDINGUNGEN = (string)row["BEDINGUNGEN"],
 					PRODUKTBEZ = (string)row["PRODUKTBEZ"],
-					VERTRAGSBEGINN = (string.IsNullOrEmpty(row["VERTRAGSBEGINN"].ToString())) ? null : (DateTime?)row["VERTRAGSBEGINN"],
-					VERTRAGSABLAUF = (string.IsNullOrEmpty(row["VERTRAGSABLAUF"].ToString())) ? null : (DateTime?)row["VERTRAGSABLAUF"],
+					VERTRAGSBEGINN = string.IsNullOrEmpty(row["VERTRAGSBEGINN"].ToString()) ? null : (DateTime?)row["VERTRAGSBEGINN"],
+					VERTRAGSABLAUF = string.IsNullOrEmpty(row["VERTRAGSABLAUF"].ToString()) ? null : (DateTime?)row["VERTRAGSABLAUF"],
 					ID = (string)row["ID"],
 
 					SAPConnection = sapConnection,
@@ -82,7 +104,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -96,7 +118,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -111,7 +133,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_ASSIST_READ_VTRAGVERL_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -121,7 +143,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -131,7 +153,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -141,7 +163,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_ASSIST_READ_VTRAGVERL_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -151,7 +173,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -162,11 +184,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_ASSIST_READ_VTRAGVERL_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_ASSIST_READ_VTRAGVERL_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

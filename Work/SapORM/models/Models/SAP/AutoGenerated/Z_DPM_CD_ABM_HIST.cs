@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,17 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_CD_ABM_HIST).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_CDKFN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CDKFN", value);
+		}
+
+		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN", value);
 		}
 
 		public partial class ET_ABM_HIST : IModelMappingApplied
@@ -56,10 +68,10 @@ namespace SapORM.Models
 					KUNNR_AG = (string)row["KUNNR_AG"],
 					CDKFN = (string)row["CDKFN"],
 					LFNDR = (string)row["LFNDR"],
-					DATBI = (string.IsNullOrEmpty(row["DATBI"].ToString())) ? null : (DateTime?)row["DATBI"],
+					DATBI = string.IsNullOrEmpty(row["DATBI"].ToString()) ? null : (DateTime?)row["DATBI"],
 					TODO_TXT = (string)row["TODO_TXT"],
 					BEMERKUNG_TXT = (string)row["BEMERKUNG_TXT"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
 
 					SAPConnection = sapConnection,
@@ -85,7 +97,7 @@ namespace SapORM.Models
 
 			public static List<ET_ABM_HIST> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<ET_ABM_HIST> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -99,7 +111,7 @@ namespace SapORM.Models
 
 			public static List<ET_ABM_HIST> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_ABM_HIST> ToList(ISapDataService sapDataService)
@@ -114,7 +126,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_ABM_HIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_ABM_HIST> GetExportListWithExecute(ISapDataService sapDataService)
@@ -124,7 +136,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_ABM_HIST> GetExportList(ISapDataService sapDataService)
@@ -134,7 +146,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_ABM_HIST> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -144,7 +156,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_ABM_HIST", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_ABM_HIST> GetImportList(ISapDataService sapDataService)
@@ -154,7 +166,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -165,11 +177,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_ABM_HIST.ET_ABM_HIST> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CD_ABM_HIST.ET_ABM_HIST> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -21,6 +21,165 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_FILL_VERSAUFTR).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_FNAME(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("FNAME", value);
+		}
+
+		public void SetImportParameter_FNUM_CHECK(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("FNUM_CHECK", value);
+		}
+
+		public void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR_AG", value);
+		}
+
+		public void SetImportParameter_Z1_UEB(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("Z1_UEB", value);
+		}
+
+		public string GetExportParameter_E_FNAME(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FNAME");
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
+		public partial class GT_ERR : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KUNNR_AG { get; set; }
+
+			public string CHASSIS_NUM { get; set; }
+
+			public string LICENSE_NUM { get; set; }
+
+			public string BEMERKUNG { get; set; }
+
+			public static GT_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_ERR
+				{
+					KUNNR_AG = (string)row["KUNNR_AG"],
+					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+					LICENSE_NUM = (string)row["LICENSE_NUM"],
+					BEMERKUNG = (string)row["BEMERKUNG"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_ERR> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_ERR> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_ERR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ERR).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_ERR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ERR> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_ERR> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ERR>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ERR> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ERR>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ERR> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ERR>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ERR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ERR>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ERR> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ERR>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -166,7 +325,7 @@ namespace SapORM.Models
 					ZZPLFOR = (string)row["ZZPLFOR"],
 					MATNR = (string)row["MATNR"],
 					ZZVGRUND = (string)row["ZZVGRUND"],
-					ZZANFDT = (string.IsNullOrEmpty(row["ZZANFDT"].ToString())) ? null : (DateTime?)row["ZZANFDT"],
+					ZZANFDT = string.IsNullOrEmpty(row["ZZANFDT"].ToString()) ? null : (DateTime?)row["ZZANFDT"],
 					ZZKUNNR_ZS = (string)row["ZZKUNNR_ZS"],
 					ZZADRNR_ZS = (string)row["ZZADRNR_ZS"],
 					ZZKONZS_ZS = (string)row["ZZKONZS_ZS"],
@@ -177,7 +336,7 @@ namespace SapORM.Models
 					ZZPSTLZ_ZS = (string)row["ZZPSTLZ_ZS"],
 					ZZORT01_ZS = (string)row["ZZORT01_ZS"],
 					ZZLAND_ZS = (string)row["ZZLAND_ZS"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZET = (string)row["ERZET"],
 					ERNAM = (string)row["ERNAM"],
 					ZZFCODE = (string)row["ZZFCODE"],
@@ -186,7 +345,7 @@ namespace SapORM.Models
 					ZZHERST = (string)row["ZZHERST"],
 					ZZMODELL = (string)row["ZZMODELL"],
 					ZZVSFREIGABE = (string)row["ZZVSFREIGABE"],
-					VERKAUFSDATUM = (string.IsNullOrEmpty(row["VERKAUFSDATUM"].ToString())) ? null : (DateTime?)row["VERKAUFSDATUM"],
+					VERKAUFSDATUM = string.IsNullOrEmpty(row["VERKAUFSDATUM"].ToString()) ? null : (DateTime?)row["VERKAUFSDATUM"],
 					LIZNR = (string)row["LIZNR"],
 					ZZ_MAHNA = (string)row["ZZ_MAHNA"],
 					ZZBETREFF = (string)row["ZZBETREFF"],
@@ -196,14 +355,14 @@ namespace SapORM.Models
 					ZUSANSCHREIBEN2 = (string)row["ZUSANSCHREIBEN2"],
 					ZUSANSCHREIBEN3 = (string)row["ZUSANSCHREIBEN3"],
 					NUR_MIT_ZB2 = (string)row["NUR_MIT_ZB2"],
-					VERSDAT_MIN = (string.IsNullOrEmpty(row["VERSDAT_MIN"].ToString())) ? null : (DateTime?)row["VERSDAT_MIN"],
+					VERSDAT_MIN = string.IsNullOrEmpty(row["VERSDAT_MIN"].ToString()) ? null : (DateTime?)row["VERSDAT_MIN"],
 					VERS_NACH_ZUL = (string)row["VERS_NACH_ZUL"],
 					TREUGEBER_VERS = (string)row["TREUGEBER_VERS"],
 					KREDITBETRAG = (string)row["KREDITBETRAG"],
 					INKASSO = (string)row["INKASSO"],
 					HAENDLER_NR = (string)row["HAENDLER_NR"],
 					USER_AUTOR = (string)row["USER_AUTOR"],
-					DATUM_AUTOR = (string.IsNullOrEmpty(row["DATUM_AUTOR"].ToString())) ? null : (DateTime?)row["DATUM_AUTOR"],
+					DATUM_AUTOR = string.IsNullOrEmpty(row["DATUM_AUTOR"].ToString()) ? null : (DateTime?)row["DATUM_AUTOR"],
 					UZEIT_AUTOR = (string)row["UZEIT_AUTOR"],
 					ZZNAME3_ZS = (string)row["ZZNAME3_ZS"],
 					ZZNAME4_ZS = (string)row["ZZNAME4_ZS"],
@@ -308,153 +467,20 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
-
-		public partial class GT_ERR : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string KUNNR_AG { get; set; }
-
-			public string CHASSIS_NUM { get; set; }
-
-			public string LICENSE_NUM { get; set; }
-
-			public string BEMERKUNG { get; set; }
-
-			public static GT_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_ERR
-				{
-					KUNNR_AG = (string)row["KUNNR_AG"],
-					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_ERR> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_ERR> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_ERR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ERR).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_ERR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_ERR> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_ERR> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ERR>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_ERR> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ERR>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_ERR> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ERR>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_ERR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ERR>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_ERR> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ERR>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
 	}
 
 	public static partial class DataTableExtensions
 	{
-
-		public static DataTable ToTable(this IEnumerable<Z_DPM_FILL_VERSAUFTR.GT_IN> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_FILL_VERSAUFTR.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_FILL_VERSAUFTR.GT_ERR> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_FILL_VERSAUFTR.GT_ERR> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_DPM_FILL_VERSAUFTR.GT_IN> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

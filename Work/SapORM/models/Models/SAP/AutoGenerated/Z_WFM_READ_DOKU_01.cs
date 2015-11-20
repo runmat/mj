@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_READ_DOKU_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_AR_OBJECT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AR_OBJECT", value);
+		}
+
+		public void SetImportParameter_I_DATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_BIS", value);
+		}
+
+		public void SetImportParameter_I_DATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_VON", value);
+		}
+
+		public void SetImportParameter_I_OBJECT_ID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_OBJECT_ID", value);
+		}
+
+		public void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_NR_ABM_AUF", value);
+		}
+
+		public byte[] GetExportParameter_E_DOC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_DOC");
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class ES_DOKUMENT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -56,7 +102,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
 					LFD_NR = (string)row["LFD_NR"],
-					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
+					DATUM = string.IsNullOrEmpty(row["DATUM"].ToString()) ? null : (DateTime?)row["DATUM"],
 					AR_OBJECT = (string)row["AR_OBJECT"],
 					ARCHIV_ID = (string)row["ARCHIV_ID"],
 					AR_JAHR = (string)row["AR_JAHR"],
@@ -137,26 +183,6 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<ES_DOKUMENT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_DOKUMENT>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_DOKU_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_DOKUMENT> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_DOKUMENT>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 	}
 
@@ -166,11 +192,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_DOKU_01.ES_DOKUMENT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_DOKU_01.ES_DOKUMENT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

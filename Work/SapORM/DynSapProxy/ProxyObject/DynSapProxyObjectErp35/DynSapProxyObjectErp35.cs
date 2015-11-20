@@ -850,6 +850,23 @@ namespace SapORM.Services
             return null;
         }
 
+        public T GetExportParameter<T>(string name)
+        {
+            try
+            {
+                var expParamValue = ((DataTable) Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2];
+
+                if (expParamValue == DBNull.Value)
+                    return default(T);
+
+                return (T) expParamValue;
+            }
+            catch (Exception)
+            {
+                throw new Exception("ExportParameter mit dem Namen: " + name + " nicht vorhanden!");
+            }
+        }
+
 
 
         public DataTable GetExportTable(string name)
@@ -1062,38 +1079,37 @@ namespace SapORM.Services
 
                 var func = con.CreateFunction(BapiName);
 
-                foreach (RFCParameter impItem in func.Imports)
+                // Exports -> Daten zu SAP
+                foreach (RFCParameter impItem in func.Exports)
                 {
                     var item = impItem;
 
                     if (item.IsStructure())
                     {
-                        if (structure.ImportTables.None(t => t.TableName == item.Name))
+                        if (!structure.ImportTables.ContainsKey(item.Name))
                         {
                             var rfcStructure = item.ToStructure();
 
-                            var impStructure = new DataTable(item.Name);
+                            structure.ImportTables.Add(item.Name, new List<BapiField>());
+
                             foreach (RFCTableColumn col in rfcStructure.Columns)
                             {
-                                impStructure.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.ImportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.ImportTables.Add(impStructure);
                         }
                     }
                     else if (item.IsTable())
                     {
-                        if (structure.ImportTables.None(t => t.TableName == item.Name))
+                        if (!structure.ImportTables.ContainsKey(item.Name))
                         {
                             var rfcTable = item.ToTable();
 
-                            var impTable = new DataTable(rfcTable.Name);
+                            structure.ImportTables.Add(item.Name, new List<BapiField>());
+
                             foreach (RFCTableColumn col in rfcTable.Columns)
                             {
-                                impTable.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.ImportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.ImportTables.Add(impTable);
                         }
                     }
                     else
@@ -1102,38 +1118,37 @@ namespace SapORM.Services
                     }
                 }
 
-                foreach (RFCParameter expItem in func.Exports)
+                // Imports -> Daten von SAP
+                foreach (RFCParameter expItem in func.Imports)
                 {
                     var item = expItem;
 
                     if (item.IsStructure())
                     {
-                        if (structure.ExportTables.None(t => t.TableName == item.Name))
+                        if (!structure.ExportTables.ContainsKey(item.Name))
                         {
                             var rfcStructure = item.ToStructure();
 
-                            var expStructure = new DataTable(item.Name);
+                            structure.ExportTables.Add(item.Name, new List<BapiField>());
+                            
                             foreach (RFCTableColumn col in rfcStructure.Columns)
                             {
-                                expStructure.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.ExportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.ExportTables.Add(expStructure);
                         }
                     }
                     else if (item.IsTable())
                     {
-                        if (structure.ExportTables.None(t => t.TableName == item.Name))
+                        if (!structure.ExportTables.ContainsKey(item.Name))
                         {
                             var rfcTable = item.ToTable();
 
-                            var expTable = new DataTable(rfcTable.Name);
+                            structure.ExportTables.Add(item.Name, new List<BapiField>());
+
                             foreach (RFCTableColumn col in rfcTable.Columns)
                             {
-                                expTable.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.ExportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.ExportTables.Add(expTable);
                         }
                     }
                     else
@@ -1148,32 +1163,30 @@ namespace SapORM.Services
 
                     if (item.IsStructure())
                     {
-                        if (structure.Tables.None(t => t.TableName == item.Name))
+                        if (!structure.Tables.ContainsKey(item.Name))
                         {
                             var rfcStructure = item.ToStructure();
 
-                            var chStructure = new DataTable(item.Name);
+                            structure.Tables.Add(item.Name, new List<BapiField>());
+
                             foreach (RFCTableColumn col in rfcStructure.Columns)
                             {
-                                chStructure.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.Tables.Add(chStructure);
                         }
                     }
                     else if (item.IsTable())
                     {
-                        if (structure.Tables.None(t => t.TableName == item.Name))
+                        if (!structure.Tables.ContainsKey(item.Name))
                         {
                             var rfcTable = item.ToTable();
 
-                            var chTable = new DataTable(rfcTable.Name);
+                            structure.Tables.Add(item.Name, new List<BapiField>());
+
                             foreach (RFCTableColumn col in rfcTable.Columns)
                             {
-                                chTable.Columns.Add(col.Name, GetDotNetType(col.Type));
+                                structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                             }
-
-                            structure.Tables.Add(chTable);
                         }
                     }
                     else
@@ -1186,23 +1199,18 @@ namespace SapORM.Services
                 {
                     var item = tblItem;
 
-                    if (structure.Tables.None(t => t.TableName == item.Name))
+                    if (!structure.Tables.ContainsKey(item.Name))
                     {
-                        var table = new DataTable(item.Name);
+                        structure.Tables.Add(item.Name, new List<BapiField>());
+
                         foreach (RFCTableColumn col in item.Columns)
                         {
-                            table.Columns.Add(col.Name, GetDotNetType(col.Type));
+                            structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
                         }
-
-                        structure.Tables.Add(table);
                     }
                 }
 
                 return structure;
-            }
-            catch (Exception)
-            {
-                return null;
             }
             finally
             {

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,22 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_GET_FAHRER_AUFTRAEGE).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER", value);
+		}
+
+		public void SetImportParameter_I_FAHRER_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER_STATUS", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
 		}
 
 		public partial class GT_ORDER : IModelMappingApplied
@@ -67,10 +84,10 @@ namespace SapORM.Models
 				var o = new GT_ORDER
 				{
 					VBELN = (string)row["VBELN"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					EBELN = (string)row["EBELN"],
-					VDATU = (string.IsNullOrEmpty(row["VDATU"].ToString())) ? null : (DateTime?)row["VDATU"],
-					AUN_DAT = (string.IsNullOrEmpty(row["AUN_DAT"].ToString())) ? null : (DateTime?)row["AUN_DAT"],
+					VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
+					AUN_DAT = string.IsNullOrEmpty(row["AUN_DAT"].ToString()) ? null : (DateTime?)row["AUN_DAT"],
 					ZB_POST_CODE1 = (string)row["ZB_POST_CODE1"],
 					ZB_CITY1 = (string)row["ZB_CITY1"],
 					WE_POST_CODE1 = (string)row["WE_POST_CODE1"],
@@ -106,7 +123,7 @@ namespace SapORM.Models
 
 			public static List<GT_ORDER> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ORDER> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -120,7 +137,7 @@ namespace SapORM.Models
 
 			public static List<GT_ORDER> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORDER> ToList(ISapDataService sapDataService)
@@ -135,7 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_GET_FAHRER_AUFTRAEGE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORDER> GetExportListWithExecute(ISapDataService sapDataService)
@@ -145,7 +162,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORDER> GetExportList(ISapDataService sapDataService)
@@ -155,7 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORDER> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -165,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_GET_FAHRER_AUFTRAEGE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORDER> GetImportList(ISapDataService sapDataService)
@@ -175,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -186,11 +203,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_GET_FAHRER_AUFTRAEGE.GT_ORDER> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_GET_FAHRER_AUFTRAEGE.GT_ORDER> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

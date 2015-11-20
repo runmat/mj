@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_FAELLIGE_EQUI_LP).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_FAELLIGKEIT(ISapDataService sap, int? value)
+		{
+			sap.SetImportParameter("I_FAELLIGKEIT", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -74,7 +85,7 @@ namespace SapORM.Models
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					TIDNR = (string)row["TIDNR"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					KUNNR_ZS = (string)row["KUNNR_ZS"],
 					NAME1_ZS = (string)row["NAME1_ZS"],
 					ORT01_ZS = (string)row["ORT01_ZS"],
@@ -82,7 +93,7 @@ namespace SapORM.Models
 					ZZMAHNS = (string)row["ZZMAHNS"],
 					TEXT200 = (string)row["TEXT200"],
 					ZZVGRUND_TEXT = (string)row["ZZVGRUND_TEXT"],
-					ZZFAEDT = (string.IsNullOrEmpty(row["ZZFAEDT"].ToString())) ? null : (DateTime?)row["ZZFAEDT"],
+					ZZFAEDT = string.IsNullOrEmpty(row["ZZFAEDT"].ToString()) ? null : (DateTime?)row["ZZFAEDT"],
 					ZZLABEL = (string)row["ZZLABEL"],
 					SORTL = (string)row["SORTL"],
 					IHREZ = (string)row["IHREZ"],
@@ -190,11 +201,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_FAELLIGE_EQUI_LP.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_FAELLIGE_EQUI_LP.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

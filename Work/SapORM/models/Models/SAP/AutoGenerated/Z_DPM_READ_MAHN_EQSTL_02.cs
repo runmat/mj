@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,72 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_READ_MAHN_EQSTL_02).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_KONTONR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KONTONR", value);
+		}
+
+		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public void SetImportParameter_I_MAHNSTUFEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MAHNSTUFEN", value);
+		}
+
+		public void SetImportParameter_I_MATNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MATNR", value);
+		}
+
+		public void SetImportParameter_I_MIT_MAHNSPERRE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MIT_MAHNSPERRE", value);
+		}
+
+		public void SetImportParameter_I_NUR_OFFENE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_OFFENE", value);
+		}
+
+		public void SetImportParameter_I_OHNE_GESPERRTE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_OHNE_GESPERRTE", value);
+		}
+
+		public void SetImportParameter_I_PAID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PAID", value);
+		}
+
+		public void SetImportParameter_I_STOPDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_STOPDAT_BIS", value);
+		}
+
+		public void SetImportParameter_I_STOPDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_STOPDAT_VON", value);
+		}
+
+		public void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_BIS", value);
+		}
+
+		public void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_VON", value);
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -112,9 +179,9 @@ namespace SapORM.Models
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
 					ZZMAHNS = (string)row["ZZMAHNS"],
-					ZZMADAT_1 = (string.IsNullOrEmpty(row["ZZMADAT_1"].ToString())) ? null : (DateTime?)row["ZZMADAT_1"],
-					ZZMADAT_2 = (string.IsNullOrEmpty(row["ZZMADAT_2"].ToString())) ? null : (DateTime?)row["ZZMADAT_2"],
-					ZZMADAT_3 = (string.IsNullOrEmpty(row["ZZMADAT_3"].ToString())) ? null : (DateTime?)row["ZZMADAT_3"],
+					ZZMADAT_1 = string.IsNullOrEmpty(row["ZZMADAT_1"].ToString()) ? null : (DateTime?)row["ZZMADAT_1"],
+					ZZMADAT_2 = string.IsNullOrEmpty(row["ZZMADAT_2"].ToString()) ? null : (DateTime?)row["ZZMADAT_2"],
+					ZZMADAT_3 = string.IsNullOrEmpty(row["ZZMADAT_3"].ToString()) ? null : (DateTime?)row["ZZMADAT_3"],
 					MAHNART = (string)row["MAHNART"],
 					NAME1_ME = (string)row["NAME1_ME"],
 					NAME2_ME = (string)row["NAME2_ME"],
@@ -124,20 +191,20 @@ namespace SapORM.Models
 					CITY1_ME = (string)row["CITY1_ME"],
 					COUNTRY_ME = (string)row["COUNTRY_ME"],
 					SMTP_ADDR_ME = (string)row["SMTP_ADDR_ME"],
-					EINGDAT_IST = (string.IsNullOrEmpty(row["EINGDAT_IST"].ToString())) ? null : (DateTime?)row["EINGDAT_IST"],
-					ZULDAT = (string.IsNullOrEmpty(row["ZULDAT"].ToString())) ? null : (DateTime?)row["ZULDAT"],
+					EINGDAT_IST = string.IsNullOrEmpty(row["EINGDAT_IST"].ToString()) ? null : (DateTime?)row["EINGDAT_IST"],
+					ZULDAT = string.IsNullOrEmpty(row["ZULDAT"].ToString()) ? null : (DateTime?)row["ZULDAT"],
 					STATUS_GEN = (string)row["STATUS_GEN"],
-					ANL_MAHNDAT_AM = (string.IsNullOrEmpty(row["ANL_MAHNDAT_AM"].ToString())) ? null : (DateTime?)row["ANL_MAHNDAT_AM"],
+					ANL_MAHNDAT_AM = string.IsNullOrEmpty(row["ANL_MAHNDAT_AM"].ToString()) ? null : (DateTime?)row["ANL_MAHNDAT_AM"],
 					ANL_MAHNDAT_US = (string)row["ANL_MAHNDAT_US"],
-					MAHNSP_GES_AM = (string.IsNullOrEmpty(row["MAHNSP_GES_AM"].ToString())) ? null : (DateTime?)row["MAHNSP_GES_AM"],
+					MAHNSP_GES_AM = string.IsNullOrEmpty(row["MAHNSP_GES_AM"].ToString()) ? null : (DateTime?)row["MAHNSP_GES_AM"],
 					MAHNSP_GES_US = (string)row["MAHNSP_GES_US"],
-					MAHNSP_ENTF_AM = (string.IsNullOrEmpty(row["MAHNSP_ENTF_AM"].ToString())) ? null : (DateTime?)row["MAHNSP_ENTF_AM"],
+					MAHNSP_ENTF_AM = string.IsNullOrEmpty(row["MAHNSP_ENTF_AM"].ToString()) ? null : (DateTime?)row["MAHNSP_ENTF_AM"],
 					MAHNSP_ENTF_US = (string)row["MAHNSP_ENTF_US"],
-					MAHNDATUM_AB = (string.IsNullOrEmpty(row["MAHNDATUM_AB"].ToString())) ? null : (DateTime?)row["MAHNDATUM_AB"],
+					MAHNDATUM_AB = string.IsNullOrEmpty(row["MAHNDATUM_AB"].ToString()) ? null : (DateTime?)row["MAHNDATUM_AB"],
 					BEM = (string)row["BEM"],
 					KONTONR = (string)row["KONTONR"],
-					BEZUG_DAT = (string.IsNullOrEmpty(row["BEZUG_DAT"].ToString())) ? null : (DateTime?)row["BEZUG_DAT"],
-					MAHND_AB_CHG_AM = (string.IsNullOrEmpty(row["MAHND_AB_CHG_AM"].ToString())) ? null : (DateTime?)row["MAHND_AB_CHG_AM"],
+					BEZUG_DAT = string.IsNullOrEmpty(row["BEZUG_DAT"].ToString()) ? null : (DateTime?)row["BEZUG_DAT"],
+					MAHND_AB_CHG_AM = string.IsNullOrEmpty(row["MAHND_AB_CHG_AM"].ToString()) ? null : (DateTime?)row["MAHND_AB_CHG_AM"],
 					CODE_STORT = (string)row["CODE_STORT"],
 
 					SAPConnection = sapConnection,
@@ -163,7 +230,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -177,7 +244,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -192,7 +259,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_MAHN_EQSTL_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -202,7 +269,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -212,7 +279,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -222,7 +289,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_MAHN_EQSTL_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -232,7 +299,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -243,11 +310,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_MAHN_EQSTL_02.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

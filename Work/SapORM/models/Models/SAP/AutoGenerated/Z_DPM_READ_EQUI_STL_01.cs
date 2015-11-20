@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_EQUI_STL_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public void SetImportParameter_I_KOMP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOMP", value);
+		}
+
+		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public string GetExportParameter_E_ESTL_LOGIK(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ESTL_LOGIK");
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -279,20 +305,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_READ_EQUI_STL_01.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_EQUI_STL_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_EQUI_STL_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

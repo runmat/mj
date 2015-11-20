@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_ZULDOK_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_HALTER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HALTER", value);
+		}
+
+		public void SetImportParameter_I_NAME_HALTER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME_HALTER", value);
+		}
+
+		public void SetImportParameter_I_NUR_UNVOLLST(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_UNVOLLST", value);
+		}
+
+		public void SetImportParameter_I_NUR_VOLLST(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_VOLLST", value);
+		}
+
+		public void SetImportParameter_I_STANDORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STANDORT", value);
+		}
+
+		public void SetImportParameter_I_ZKUNNR_EXT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZKUNNR_EXT", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -149,8 +195,8 @@ namespace SapORM.Models
 					EINZUG = (string)row["EINZUG"],
 					VOLLST = (string)row["VOLLST"],
 					EVB_NUM = (string)row["EVB_NUM"],
-					EVB_VON = (string.IsNullOrEmpty(row["EVB_VON"].ToString())) ? null : (DateTime?)row["EVB_VON"],
-					EVB_BIS = (string.IsNullOrEmpty(row["EVB_BIS"].ToString())) ? null : (DateTime?)row["EVB_BIS"],
+					EVB_VON = string.IsNullOrEmpty(row["EVB_VON"].ToString()) ? null : (DateTime?)row["EVB_VON"],
+					EVB_BIS = string.IsNullOrEmpty(row["EVB_BIS"].ToString()) ? null : (DateTime?)row["EVB_BIS"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
 					KZ_ZLS = (string)row["KZ_ZLS"],
 					SCHLNR_ZLS = (string)row["SCHLNR_ZLS"],
@@ -163,31 +209,31 @@ namespace SapORM.Models
 					WKENNZ = (string)row["WKENNZ"],
 					SONST_SH = (string)row["SONST_SH"],
 					BEVOLLM1 = (string)row["BEVOLLM1"],
-					GUELTIG_BIS1 = (string.IsNullOrEmpty(row["GUELTIG_BIS1"].ToString())) ? null : (DateTime?)row["GUELTIG_BIS1"],
+					GUELTIG_BIS1 = string.IsNullOrEmpty(row["GUELTIG_BIS1"].ToString()) ? null : (DateTime?)row["GUELTIG_BIS1"],
 					BEVOLLM2 = (string)row["BEVOLLM2"],
-					GUELTIG_BIS2 = (string.IsNullOrEmpty(row["GUELTIG_BIS2"].ToString())) ? null : (DateTime?)row["GUELTIG_BIS2"],
+					GUELTIG_BIS2 = string.IsNullOrEmpty(row["GUELTIG_BIS2"].ToString()) ? null : (DateTime?)row["GUELTIG_BIS2"],
 					BEVOLLM3 = (string)row["BEVOLLM3"],
-					GUELTIG_BIS3 = (string.IsNullOrEmpty(row["GUELTIG_BIS3"].ToString())) ? null : (DateTime?)row["GUELTIG_BIS3"],
+					GUELTIG_BIS3 = string.IsNullOrEmpty(row["GUELTIG_BIS3"].ToString()) ? null : (DateTime?)row["GUELTIG_BIS3"],
 					ZULKREIS = (string)row["ZULKREIS"],
 					PERSO_FEHLT = (string)row["PERSO_FEHLT"],
 					VOLLMACHT_FEHLT = (string)row["VOLLMACHT_FEHLT"],
-					DAT_GW_ANMELD = (string.IsNullOrEmpty(row["DAT_GW_ANMELD"].ToString())) ? null : (DateTime?)row["DAT_GW_ANMELD"],
+					DAT_GW_ANMELD = string.IsNullOrEmpty(row["DAT_GW_ANMELD"].ToString()) ? null : (DateTime?)row["DAT_GW_ANMELD"],
 					EZERM_KFZBEZOGEN = (string)row["EZERM_KFZBEZOGEN"],
 					ZKUNNR_EXT = (string)row["ZKUNNR_EXT"],
-					DAT_LOE = (string.IsNullOrEmpty(row["DAT_LOE"].ToString())) ? null : (DateTime?)row["DAT_LOE"],
+					DAT_LOE = string.IsNullOrEmpty(row["DAT_LOE"].ToString()) ? null : (DateTime?)row["DAT_LOE"],
 					WEB_USER = (string)row["WEB_USER"],
 					BARCODE = (string)row["BARCODE"],
-					VOLLMACHT_VON = (string.IsNullOrEmpty(row["VOLLMACHT_VON"].ToString())) ? null : (DateTime?)row["VOLLMACHT_VON"],
-					VOLLMACHT_BIS = (string.IsNullOrEmpty(row["VOLLMACHT_BIS"].ToString())) ? null : (DateTime?)row["VOLLMACHT_BIS"],
-					HREGDAT_VON = (string.IsNullOrEmpty(row["HREGDAT_VON"].ToString())) ? null : (DateTime?)row["HREGDAT_VON"],
-					HREGDAT_BIS = (string.IsNullOrEmpty(row["HREGDAT_BIS"].ToString())) ? null : (DateTime?)row["HREGDAT_BIS"],
-					GA_VON = (string.IsNullOrEmpty(row["GA_VON"].ToString())) ? null : (DateTime?)row["GA_VON"],
-					GA_BIS = (string.IsNullOrEmpty(row["GA_BIS"].ToString())) ? null : (DateTime?)row["GA_BIS"],
+					VOLLMACHT_VON = string.IsNullOrEmpty(row["VOLLMACHT_VON"].ToString()) ? null : (DateTime?)row["VOLLMACHT_VON"],
+					VOLLMACHT_BIS = string.IsNullOrEmpty(row["VOLLMACHT_BIS"].ToString()) ? null : (DateTime?)row["VOLLMACHT_BIS"],
+					HREGDAT_VON = string.IsNullOrEmpty(row["HREGDAT_VON"].ToString()) ? null : (DateTime?)row["HREGDAT_VON"],
+					HREGDAT_BIS = string.IsNullOrEmpty(row["HREGDAT_BIS"].ToString()) ? null : (DateTime?)row["HREGDAT_BIS"],
+					GA_VON = string.IsNullOrEmpty(row["GA_VON"].ToString()) ? null : (DateTime?)row["GA_VON"],
+					GA_BIS = string.IsNullOrEmpty(row["GA_BIS"].ToString()) ? null : (DateTime?)row["GA_BIS"],
 					BEST_ORIG_VM = (string)row["BEST_ORIG_VM"],
 					OBJECT_ID = (string)row["OBJECT_ID"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
-					AENDAT = (string.IsNullOrEmpty(row["AENDAT"].ToString())) ? null : (DateTime?)row["AENDAT"],
+					AENDAT = string.IsNullOrEmpty(row["AENDAT"].ToString()) ? null : (DateTime?)row["AENDAT"],
 					AENAM = (string)row["AENAM"],
 					NAME1_HALTER = (string)row["NAME1_HALTER"],
 					ORT01_HALTER = (string)row["ORT01_HALTER"],
@@ -295,11 +341,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_ZULDOK_01.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_ZULDOK_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

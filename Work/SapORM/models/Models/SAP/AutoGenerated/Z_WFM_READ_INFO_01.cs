@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_READ_INFO_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_DATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_BIS", value);
+		}
+
+		public void SetImportParameter_I_DATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_VON", value);
+		}
+
+		public void SetImportParameter_I_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_USER", value);
+		}
+
+		public void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_NR_ABM_AUF", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -57,7 +93,7 @@ namespace SapORM.Models
 					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
 					LFD_NR = (string)row["LFD_NR"],
 					ZUSER = (string)row["ZUSER"],
-					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
+					DATUM = string.IsNullOrEmpty(row["DATUM"].ToString()) ? null : (DateTime?)row["DATUM"],
 					ZEIT = (string)row["ZEIT"],
 					TODO_WER = (string)row["TODO_WER"],
 					TEXT = (string)row["TEXT"],
@@ -166,11 +202,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_INFO_01.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_INFO_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

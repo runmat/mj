@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,42 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_DRUCK_FEHLTEILETIK).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_POSITION(ISapDataService sap, int? value)
+		{
+			sap.SetImportParameter("I_POSITION", value);
+		}
+
+		public void SetImportParameter_I_PREVIEW(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PREVIEW", value);
+		}
+
+		public void SetImportParameter_I_VERART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERART", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_PDF");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
 		public partial class GT_ETIKETT : IModelMappingApplied
@@ -124,7 +161,7 @@ namespace SapORM.Models
 
 			public static List<GT_ETIKETT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ETIKETT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -138,7 +175,7 @@ namespace SapORM.Models
 
 			public static List<GT_ETIKETT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ETIKETT> ToList(ISapDataService sapDataService)
@@ -153,7 +190,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_DRUCK_FEHLTEILETIK", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ETIKETT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -163,7 +200,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ETIKETT> GetExportList(ISapDataService sapDataService)
@@ -173,7 +210,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ETIKETT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -183,7 +220,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_DRUCK_FEHLTEILETIK", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ETIKETT> GetImportList(ISapDataService sapDataService)
@@ -193,7 +230,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -204,11 +241,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_DRUCK_FEHLTEILETIK.GT_ETIKETT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_DRUCK_FEHLTEILETIK.GT_ETIKETT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

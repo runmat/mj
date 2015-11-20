@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,17 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_HAENDLER_KONTINGENT_STD).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HAENDLER_EX", value);
 		}
 
 		public partial class EX_ADRS : IModelMappingApplied
@@ -91,7 +103,7 @@ namespace SapORM.Models
 
 			public static List<EX_ADRS> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<EX_ADRS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -105,7 +117,7 @@ namespace SapORM.Models
 
 			public static List<EX_ADRS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EX_ADRS> ToList(ISapDataService sapDataService)
@@ -120,7 +132,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_HAENDLER_KONTINGENT_STD", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EX_ADRS> GetExportListWithExecute(ISapDataService sapDataService)
@@ -130,7 +142,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EX_ADRS> GetExportList(ISapDataService sapDataService)
@@ -140,27 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<EX_ADRS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<EX_ADRS>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_HAENDLER_KONTINGENT_STD", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<EX_ADRS> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<EX_ADRS>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -193,9 +185,9 @@ namespace SapORM.Models
 					KKBER = (string)row["KKBER"],
 					RECART = (string)row["RECART"],
 					SPEERKZ = (string)row["SPEERKZ"],
-					KLIMK = (decimal?)row["KLIMK"],
-					SKFOR = (decimal?)row["SKFOR"],
-					FREIKONTI = (decimal?)row["FREIKONTI"],
+					KLIMK = string.IsNullOrEmpty(row["KLIMK"].ToString()) ? null : (decimal?)row["KLIMK"],
+					SKFOR = string.IsNullOrEmpty(row["SKFOR"].ToString()) ? null : (decimal?)row["SKFOR"],
+					FREIKONTI = string.IsNullOrEmpty(row["FREIKONTI"].ToString()) ? null : (decimal?)row["FREIKONTI"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -220,7 +212,7 @@ namespace SapORM.Models
 
 			public static List<GT_LIMIT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_LIMIT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -234,7 +226,7 @@ namespace SapORM.Models
 
 			public static List<GT_LIMIT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_LIMIT> ToList(ISapDataService sapDataService)
@@ -249,7 +241,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_HAENDLER_KONTINGENT_STD", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_LIMIT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -259,7 +251,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_LIMIT> GetExportList(ISapDataService sapDataService)
@@ -269,7 +261,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_LIMIT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -279,7 +271,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_HAENDLER_KONTINGENT_STD", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_LIMIT> GetImportList(ISapDataService sapDataService)
@@ -289,7 +281,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -302,20 +294,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_M_HAENDLER_KONTINGENT_STD.EX_ADRS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_M_HAENDLER_KONTINGENT_STD.GT_LIMIT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_HAENDLER_KONTINGENT_STD.GT_LIMIT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

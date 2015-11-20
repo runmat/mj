@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_2015_HOLUNDBRING_PDF).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_PDF");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class IS_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -153,11 +169,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<IS_DATEN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<IS_DATEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(IS_DATEN).Name.ToLower());
@@ -165,46 +176,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<IS_DATEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_DATEN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<IS_DATEN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<IS_DATEN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_AH_2015_HOLUNDBRING_PDF", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_DATEN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_DATEN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_DATEN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_DATEN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<IS_DATEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -235,11 +206,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

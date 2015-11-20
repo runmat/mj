@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_SET_STATUS_UEBERM_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -148,11 +154,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_WFM_SET_STATUS_UEBERM_01.GT_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_SET_STATUS_UEBERM_01.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

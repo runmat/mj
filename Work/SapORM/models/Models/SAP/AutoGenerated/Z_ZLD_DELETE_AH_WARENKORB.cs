@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_DELETE_AH_WARENKORB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_BAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -33,7 +44,7 @@ namespace SapORM.Models
 
 			public string ZULBELN { get; set; }
 
-			public Int32? SUBRC { get; set; }
+			public int? SUBRC { get; set; }
 
 			public string MESSAGE { get; set; }
 
@@ -42,7 +53,7 @@ namespace SapORM.Models
 				var o = new GT_BAK
 				{
 					ZULBELN = (string)row["ZULBELN"],
-					SUBRC = (string.IsNullOrEmpty(row["SUBRC"].ToString())) ? null : (Int32?)Convert.ToInt32(row["SUBRC"]),
+					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
 					MESSAGE = (string)row["MESSAGE"],
 
 					SAPConnection = sapConnection,
@@ -148,11 +159,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_DELETE_AH_WARENKORB.GT_BAK> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_DELETE_AH_WARENKORB.GT_BAK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

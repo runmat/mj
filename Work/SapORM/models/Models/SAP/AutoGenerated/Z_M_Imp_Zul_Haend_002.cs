@@ -4,20 +4,37 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Imp_Zul_Haend_002
+	public partial class Z_M_IMP_ZUL_HAEND_002
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Imp_Zul_Haend_002).Name);
+			sap.Init(typeof(Z_M_IMP_ZUL_HAEND_002).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Imp_Zul_Haend_002).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_IMP_ZUL_HAEND_002).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_KONZ_BEARB(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KONZ_BEARB", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_NAME_SUS_BEARB(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME_SUS_BEARB", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -94,7 +111,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -108,7 +125,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -121,9 +138,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Imp_Zul_Haend_002", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_IMP_ZUL_HAEND_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -133,7 +150,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -143,7 +160,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -151,9 +168,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Imp_Zul_Haend_002", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_IMP_ZUL_HAEND_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -163,7 +180,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -171,14 +188,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Imp_Zul_Haend_002.GT_WEB> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_IMP_ZUL_HAEND_002.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Imp_Zul_Haend_002.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

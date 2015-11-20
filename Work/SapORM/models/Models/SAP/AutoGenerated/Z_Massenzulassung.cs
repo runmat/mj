@@ -9,16 +9,27 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_Massenzulassung
+	public partial class Z_MASSENZULASSUNG
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_Massenzulassung).Name);
+			sap.Init(typeof(Z_MASSENZULASSUNG).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_Massenzulassung).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_MASSENZULASSUNG).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public string GetExportParameter_ANZAHL(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("ANZAHL");
+		}
+
+		public string GetExportParameter_RETURN(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("RETURN");
 		}
 
 		public partial class INTERNTAB : IModelMappingApplied
@@ -61,7 +72,7 @@ namespace SapORM.Models
 
 			public string VBELN { get; set; }
 
-			public Int32? SUBRC { get; set; }
+			public int? SUBRC { get; set; }
 
 			public string LABO_ID { get; set; }
 
@@ -83,7 +94,7 @@ namespace SapORM.Models
 					I_KUNNR_AG = (string)row["I_KUNNR_AG"],
 					I_ZZFAHRG = (string)row["I_ZZFAHRG"],
 					I_EDATU = (string)row["I_EDATU"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZET = (string)row["ERZET"],
 					I_KUNNR_ZV = (string)row["I_KUNNR_ZV"],
 					I_ZZKENNZ = (string)row["I_ZZKENNZ"],
@@ -94,12 +105,12 @@ namespace SapORM.Models
 					I_ZZCARPORT = (string)row["I_ZZCARPORT"],
 					EQUNR = (string)row["EQUNR"],
 					VBELN = (string)row["VBELN"],
-					SUBRC = (string.IsNullOrEmpty(row["SUBRC"].ToString())) ? null : (Int32?)Convert.ToInt32(row["SUBRC"]),
+					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
 					LABO_ID = (string)row["LABO_ID"],
 					ZZVORGANGSSTATUS = (string)row["ZZVORGANGSSTATUS"],
-					ZZSTATUSDATUM = (string.IsNullOrEmpty(row["ZZSTATUSDATUM"].ToString())) ? null : (DateTime?)row["ZZSTATUSDATUM"],
+					ZZSTATUSDATUM = string.IsNullOrEmpty(row["ZZSTATUSDATUM"].ToString()) ? null : (DateTime?)row["ZZSTATUSDATUM"],
 					ZZSTATUSUHRZEIT = (string)row["ZZSTATUSUHRZEIT"],
-					GEBAUSL = (decimal?)row["GEBAUSL"],
+					GEBAUSL = string.IsNullOrEmpty(row["GEBAUSL"].ToString()) ? null : (decimal?)row["GEBAUSL"],
 					ZERNAM = (string)row["ZERNAM"],
 
 					SAPConnection = sapConnection,
@@ -152,7 +163,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<INTERNTAB>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_Massenzulassung", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_MASSENZULASSUNG", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -182,7 +193,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<INTERNTAB>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_Massenzulassung", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_MASSENZULASSUNG", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -275,7 +286,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<OUTPUT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_Massenzulassung", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_MASSENZULASSUNG", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -305,7 +316,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<OUTPUT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_Massenzulassung", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_MASSENZULASSUNG", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -325,25 +336,15 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_Massenzulassung.INTERNTAB> list)
+		public static DataTable ToTable(this IEnumerable<Z_MASSENZULASSUNG.INTERNTAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_Massenzulassung.INTERNTAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
 
-
-		public static DataTable ToTable(this IEnumerable<Z_Massenzulassung.OUTPUT> list)
+		public static DataTable ToTable(this IEnumerable<Z_MASSENZULASSUNG.OUTPUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_Massenzulassung.OUTPUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

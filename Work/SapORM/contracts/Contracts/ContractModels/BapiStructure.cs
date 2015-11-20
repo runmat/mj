@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 
 namespace SapORM.Contracts
 {
@@ -11,20 +10,20 @@ namespace SapORM.Contracts
 
         public List<BapiField> Parameters { get; set; }
 
-        public List<DataTable> ImportTables { get; set; }
+        public Dictionary<string, List<BapiField>> ImportTables { get; set; }
 
-        public List<DataTable> ExportTables { get; set; }
+        public Dictionary<string, List<BapiField>> ExportTables { get; set; }
 
-        public List<DataTable> Tables { get; set; }
+        public Dictionary<string, List<BapiField>> Tables { get; set; }
 
         public BapiStructure()
         {
             ImportParameters = new List<BapiField>();
             ExportParameters = new List<BapiField>();
             Parameters = new List<BapiField>();
-            ImportTables = new List<DataTable>();
-            ExportTables = new List<DataTable>();
-            Tables = new List<DataTable>();
+            ImportTables = new Dictionary<string, List<BapiField>>();
+            ExportTables = new Dictionary<string, List<BapiField>>();
+            Tables = new Dictionary<string, List<BapiField>>();
         }
     }
 }

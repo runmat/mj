@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,47 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_ZLD_AH_FS_STATISTIK).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_BIS", value);
+		}
+
+		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNZ", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_STANDORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STANDORT", value);
+		}
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public void SetImportParameter_I_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_VON", value);
+		}
+
+		public void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEB_USER", value);
 		}
 
 		public partial class GT_FSP : IModelMappingApplied
@@ -43,7 +85,7 @@ namespace SapORM.Models
 				var o = new GT_FSP
 				{
 					KENNZ = (string)row["KENNZ"],
-					SELLDAT = (string.IsNullOrEmpty(row["SELLDAT"].ToString())) ? null : (DateTime?)row["SELLDAT"],
+					SELLDAT = string.IsNullOrEmpty(row["SELLDAT"].ToString()) ? null : (DateTime?)row["SELLDAT"],
 					PLAKART = (string)row["PLAKART"],
 					WEB_USER = (string)row["WEB_USER"],
 
@@ -70,7 +112,7 @@ namespace SapORM.Models
 
 			public static List<GT_FSP> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_FSP> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -84,7 +126,7 @@ namespace SapORM.Models
 
 			public static List<GT_FSP> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FSP> ToList(ISapDataService sapDataService)
@@ -99,7 +141,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_AH_FS_STATISTIK", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FSP> GetExportListWithExecute(ISapDataService sapDataService)
@@ -109,7 +151,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FSP> GetExportList(ISapDataService sapDataService)
@@ -119,7 +161,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FSP> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -129,7 +171,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_AH_FS_STATISTIK", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FSP> GetImportList(ISapDataService sapDataService)
@@ -139,7 +181,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -150,11 +192,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_FS_STATISTIK.GT_FSP> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_FS_STATISTIK.GT_FSP> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

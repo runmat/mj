@@ -21,6 +21,47 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_UF_EQUI_SUCHE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TIDNR", value);
+		}
+
+		public void SetImportParameter_I_VORG_ART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_ART", value);
+		}
+
+		public void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFERENZ1", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_EQUIS : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -54,7 +95,7 @@ namespace SapORM.Models
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 					TIDNR = (string)row["TIDNR"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					ZZBEZEI = (string)row["ZZBEZEI"],
 
 					SAPConnection = sapConnection,
@@ -160,11 +201,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

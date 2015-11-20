@@ -20,6 +20,22 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_EXPORT_BELNR).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public string GetExportParameter_E_BELN(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_BELN");
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

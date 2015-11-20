@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,17 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_ZLD_IMPORT_ABMELDUNG_VWL).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EMAIL", value);
 		}
 
 		public partial class GT_IN : IModelMappingApplied
@@ -94,6 +106,8 @@ namespace SapORM.Models
 
 			public DateTime? ERST_ZUL_DAT { get; set; }
 
+			public string MODEL_MBV { get; set; }
+
 			public static GT_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_IN
@@ -123,13 +137,14 @@ namespace SapORM.Models
 					AH_PARTNER = (string)row["AH_PARTNER"],
 					AH_TELEFON = (string)row["AH_TELEFON"],
 					RE_EMPF = (string)row["RE_EMPF"],
-					VERTRAGSBEGINN = (string.IsNullOrEmpty(row["VERTRAGSBEGINN"].ToString())) ? null : (DateTime?)row["VERTRAGSBEGINN"],
-					VERTRAGSENDE = (string.IsNullOrEmpty(row["VERTRAGSENDE"].ToString())) ? null : (DateTime?)row["VERTRAGSENDE"],
-					ANLAGE_EXCEL = (string.IsNullOrEmpty(row["ANLAGE_EXCEL"].ToString())) ? null : (DateTime?)row["ANLAGE_EXCEL"],
+					VERTRAGSBEGINN = string.IsNullOrEmpty(row["VERTRAGSBEGINN"].ToString()) ? null : (DateTime?)row["VERTRAGSBEGINN"],
+					VERTRAGSENDE = string.IsNullOrEmpty(row["VERTRAGSENDE"].ToString()) ? null : (DateTime?)row["VERTRAGSENDE"],
+					ANLAGE_EXCEL = string.IsNullOrEmpty(row["ANLAGE_EXCEL"].ToString()) ? null : (DateTime?)row["ANLAGE_EXCEL"],
 					BEM = (string)row["BEM"],
 					BILL_ORGID = (string)row["BILL_ORGID"],
 					HERKUNFT = (string)row["HERKUNFT"],
-					ERST_ZUL_DAT = (string.IsNullOrEmpty(row["ERST_ZUL_DAT"].ToString())) ? null : (DateTime?)row["ERST_ZUL_DAT"],
+					ERST_ZUL_DAT = string.IsNullOrEmpty(row["ERST_ZUL_DAT"].ToString()) ? null : (DateTime?)row["ERST_ZUL_DAT"],
+					MODEL_MBV = (string)row["MODEL_MBV"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -154,7 +169,7 @@ namespace SapORM.Models
 
 			public static List<GT_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -168,7 +183,7 @@ namespace SapORM.Models
 
 			public static List<GT_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> ToList(ISapDataService sapDataService)
@@ -183,7 +198,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_IMPORT_ABMELDUNG_VWL", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -193,7 +208,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetExportList(ISapDataService sapDataService)
@@ -203,7 +218,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -213,7 +228,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_IMPORT_ABMELDUNG_VWL", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetImportList(ISapDataService sapDataService)
@@ -223,7 +238,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -234,11 +249,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_IMPORT_ABMELDUNG_VWL.GT_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_IMPORT_ABMELDUNG_VWL.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

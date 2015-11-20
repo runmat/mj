@@ -20,6 +20,27 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_DPM_PRUEF_FIN_001).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_FGNU(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FGNU", value);
+		}
+
+		public void SetImportParameter_I_FGPZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FGPZ", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public string GetExportParameter_E_STATUS(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_STATUS");
+		}
 	}
 
 	public static partial class DataTableExtensions

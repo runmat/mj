@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_VB_EXPORT_FAELLE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_HERKUNFT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HERKUNFT", value);
+		}
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
 		public partial class GT_VERBANDBUCH : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -64,13 +75,13 @@ namespace SapORM.Models
 					ID = (string)row["ID"],
 					VKBUR = (string)row["VKBUR"],
 					NAME_VERL = (string)row["NAME_VERL"],
-					DATUM_UNF = (string.IsNullOrEmpty(row["DATUM_UNF"].ToString())) ? null : (DateTime?)row["DATUM_UNF"],
+					DATUM_UNF = string.IsNullOrEmpty(row["DATUM_UNF"].ToString()) ? null : (DateTime?)row["DATUM_UNF"],
 					ZEIT_UNF = (string)row["ZEIT_UNF"],
 					ORT = (string)row["ORT"],
 					HERGANG = (string)row["HERGANG"],
 					NAME_ZEUG = (string)row["NAME_ZEUG"],
 					ART_VERL = (string)row["ART_VERL"],
-					DATUM_HILF = (string.IsNullOrEmpty(row["DATUM_HILF"].ToString())) ? null : (DateTime?)row["DATUM_HILF"],
+					DATUM_HILF = string.IsNullOrEmpty(row["DATUM_HILF"].ToString()) ? null : (DateTime?)row["DATUM_HILF"],
 					ZEIT_HILF = (string)row["ZEIT_HILF"],
 					ART_HILF = (string)row["ART_HILF"],
 					NAME_HELFER = (string)row["NAME_HELFER"],
@@ -178,11 +189,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_VB_EXPORT_FAELLE.GT_VERBANDBUCH> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_VB_EXPORT_FAELLE.GT_VERBANDBUCH> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

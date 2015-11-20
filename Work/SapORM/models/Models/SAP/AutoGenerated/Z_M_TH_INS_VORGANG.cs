@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_TH_INS_VORGANG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public void SetImportParameter_I_KOMBI(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOMBI", value);
+		}
+
+		public void SetImportParameter_I_TREU(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TREU", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -43,7 +69,7 @@ namespace SapORM.Models
 
 			public string TREUH_VGA { get; set; }
 
-			public Int32? SUBRC { get; set; }
+			public int? SUBRC { get; set; }
 
 			public string MESSAGE { get; set; }
 
@@ -60,14 +86,14 @@ namespace SapORM.Models
 					AG = (string)row["AG"],
 					EQUI_KEY = (string)row["EQUI_KEY"],
 					ERNAM = (string)row["ERNAM"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
-					SPERRDAT = (string.IsNullOrEmpty(row["SPERRDAT"].ToString())) ? null : (DateTime?)row["SPERRDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					SPERRDAT = string.IsNullOrEmpty(row["SPERRDAT"].ToString()) ? null : (DateTime?)row["SPERRDAT"],
 					TREUH_VGA = (string)row["TREUH_VGA"],
-					SUBRC = (string.IsNullOrEmpty(row["SUBRC"].ToString())) ? null : (Int32?)Convert.ToInt32(row["SUBRC"]),
+					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
 					MESSAGE = (string)row["MESSAGE"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
-					VERTR_BEGINN = (string.IsNullOrEmpty(row["VERTR_BEGINN"].ToString())) ? null : (DateTime?)row["VERTR_BEGINN"],
-					VERTR_ENDE = (string.IsNullOrEmpty(row["VERTR_ENDE"].ToString())) ? null : (DateTime?)row["VERTR_ENDE"],
+					VERTR_BEGINN = string.IsNullOrEmpty(row["VERTR_BEGINN"].ToString()) ? null : (DateTime?)row["VERTR_BEGINN"],
+					VERTR_ENDE = string.IsNullOrEmpty(row["VERTR_ENDE"].ToString()) ? null : (DateTime?)row["VERTR_ENDE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -172,11 +198,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_TH_INS_VORGANG.GT_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_TH_INS_VORGANG.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

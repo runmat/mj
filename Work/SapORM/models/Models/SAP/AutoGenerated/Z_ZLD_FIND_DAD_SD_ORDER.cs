@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_FIND_DAD_SD_ORDER).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_BRIEF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BRIEF", value);
+		}
+
+		public void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRG", value);
+		}
+
+		public void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VBELN", value);
+		}
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class E_VBAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -61,7 +97,7 @@ namespace SapORM.Models
 					ZZREFNR = (string)row["ZZREFNR"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
 					EBELN = (string)row["EBELN"],
-					VDATU = (string.IsNullOrEmpty(row["VDATU"].ToString())) ? null : (DateTime?)row["VDATU"],
+					VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -137,26 +173,6 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<E_VBAK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<E_VBAK>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_FIND_DAD_SD_ORDER", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<E_VBAK> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<E_VBAK>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 	}
 
@@ -166,11 +182,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_FIND_DAD_SD_ORDER.E_VBAK> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_FIND_DAD_SD_ORDER.E_VBAK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

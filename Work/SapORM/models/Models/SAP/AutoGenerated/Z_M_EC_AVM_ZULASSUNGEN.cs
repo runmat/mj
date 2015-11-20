@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_ZULASSUNGEN).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_PDI(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PDI", value);
+		}
+
+		public void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_BIS", value);
+		}
+
+		public void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_VON", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -53,7 +74,7 @@ namespace SapORM.Models
 			{
 				var o = new GT_WEB
 				{
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					ZZCARPORT = (string)row["ZZCARPORT"],
 					ZCARPORT_NAME1 = (string)row["ZCARPORT_NAME1"],
 					ZMODEL_ID = (string)row["ZMODEL_ID"],
@@ -166,11 +187,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

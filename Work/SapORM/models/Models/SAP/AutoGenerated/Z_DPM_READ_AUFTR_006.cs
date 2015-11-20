@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_AUFTR_006).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KENNUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNUNG", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -96,11 +107,11 @@ namespace SapORM.Models
 					INTNR = (string)row["INTNR"],
 					SAPNR = (string)row["SAPNR"],
 					LOEVM = (string)row["LOEVM"],
-					AENDT = (string.IsNullOrEmpty(row["AENDT"].ToString())) ? null : (DateTime?)row["AENDT"],
+					AENDT = string.IsNullOrEmpty(row["AENDT"].ToString()) ? null : (DateTime?)row["AENDT"],
 					AENUS = (string)row["AENUS"],
 					AD_PRUEF = (string)row["AD_PRUEF"],
-					DATAB = (string.IsNullOrEmpty(row["DATAB"].ToString())) ? null : (DateTime?)row["DATAB"],
-					DATBI = (string.IsNullOrEmpty(row["DATBI"].ToString())) ? null : (DateTime?)row["DATBI"],
+					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
+					DATBI = string.IsNullOrEmpty(row["DATBI"].ToString()) ? null : (DateTime?)row["DATBI"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -205,11 +216,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_AUFTR_006.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_AUFTR_006.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -9,16 +9,37 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_V_Ueberf_Verfuegbarkeit1
+	public partial class Z_V_UEBERF_VERFUEGBARKEIT1
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_V_Ueberf_Verfuegbarkeit1).Name);
+			sap.Init(typeof(Z_V_UEBERF_VERFUEGBARKEIT1).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_V_Ueberf_Verfuegbarkeit1).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_V_UEBERF_VERFUEGBARKEIT1).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_BISDAT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BISDAT", value);
+		}
+
+		public void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER", value);
+		}
+
+		public void SetImportParameter_I_VONDAT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VONDAT", value);
+		}
+
+		public string GetExportParameter_O_MELDUNG(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("O_MELDUNG");
 		}
 
 		public partial class T_VERFUEG1 : IModelMappingApplied
@@ -43,7 +64,7 @@ namespace SapORM.Models
 			{
 				var o = new T_VERFUEG1
 				{
-					VERFDAT = (string.IsNullOrEmpty(row["VERFDAT"].ToString())) ? null : (DateTime?)row["VERFDAT"],
+					VERFDAT = string.IsNullOrEmpty(row["VERFDAT"].ToString()) ? null : (DateTime?)row["VERFDAT"],
 					ANZ_FAHRER = (string)row["ANZ_FAHRER"],
 					LIFNR = (string)row["LIFNR"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
@@ -98,7 +119,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<T_VERFUEG1>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_Ueberf_Verfuegbarkeit1", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_UEBERF_VERFUEGBARKEIT1", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -128,7 +149,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<T_VERFUEG1>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_V_Ueberf_Verfuegbarkeit1", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_V_UEBERF_VERFUEGBARKEIT1", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -148,14 +169,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1> list)
+		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_VERFUEGBARKEIT1.T_VERFUEG1> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

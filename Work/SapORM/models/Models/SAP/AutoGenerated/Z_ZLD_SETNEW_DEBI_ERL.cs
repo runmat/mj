@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_SETNEW_DEBI_ERL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_KUNDEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -154,11 +165,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_SETNEW_DEBI_ERL.GT_KUNDEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_SETNEW_DEBI_ERL.GT_KUNDEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

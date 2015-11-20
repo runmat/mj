@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_EFA_UML_MAT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_MAT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -157,11 +173,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_UML_MAT.GT_MAT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_UML_MAT.GT_MAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

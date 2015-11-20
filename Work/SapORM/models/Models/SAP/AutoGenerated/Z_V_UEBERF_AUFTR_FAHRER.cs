@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_V_UEBERF_AUFTR_FAHRER).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER", value);
+		}
+
+		public string GetExportParameter_CITY1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("CITY1");
+		}
+
+		public string GetExportParameter_E_FAHRER(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FAHRER");
+		}
+
+		public string GetExportParameter_NAME1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("NAME1");
+		}
+
+		public string GetExportParameter_PSTCD1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("PSTCD1");
+		}
+
+		public string GetExportParameter_STREET(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("STREET");
 		}
 
 		public partial class T_AUFTRAEGE : IModelMappingApplied
@@ -58,7 +90,7 @@ namespace SapORM.Models
 				{
 					AUFNR = (string)row["AUFNR"],
 					FAHRTNR = (string)row["FAHRTNR"],
-					WADAT = (string.IsNullOrEmpty(row["WADAT"].ToString())) ? null : (DateTime?)row["WADAT"],
+					WADAT = string.IsNullOrEmpty(row["WADAT"].ToString()) ? null : (DateTime?)row["WADAT"],
 					EQUNR = (string)row["EQUNR"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
@@ -91,7 +123,7 @@ namespace SapORM.Models
 
 			public static List<T_AUFTRAEGE> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<T_AUFTRAEGE> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -105,7 +137,7 @@ namespace SapORM.Models
 
 			public static List<T_AUFTRAEGE> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_AUFTRAEGE> ToList(ISapDataService sapDataService)
@@ -120,7 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_UEBERF_AUFTR_FAHRER", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_AUFTRAEGE> GetExportListWithExecute(ISapDataService sapDataService)
@@ -130,7 +162,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_AUFTRAEGE> GetExportList(ISapDataService sapDataService)
@@ -140,7 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_AUFTRAEGE> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -150,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_V_UEBERF_AUFTR_FAHRER", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_AUFTRAEGE> GetImportList(ISapDataService sapDataService)
@@ -160,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -171,11 +203,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

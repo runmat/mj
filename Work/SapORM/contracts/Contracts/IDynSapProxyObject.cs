@@ -44,6 +44,8 @@ namespace SapORM.Contracts
         DataTable Export { get; set; }
 
         string GetExportParameter(string name);
+
+        T GetExportParameter<T>(string name);
         
         byte[] GetExportParameterByte(string name);
         

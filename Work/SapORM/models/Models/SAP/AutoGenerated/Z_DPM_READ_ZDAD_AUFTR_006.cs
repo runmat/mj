@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,22 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_READ_ZDAD_AUFTR_006).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_KENNUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNUNG", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_POS_KURZTEXT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_POS_KURZTEXT", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -83,7 +100,7 @@ namespace SapORM.Models
 					FAXNR = (string)row["FAXNR"],
 					INTNR = (string)row["INTNR"],
 					SAPNR = (string)row["SAPNR"],
-					AENDT = (string.IsNullOrEmpty(row["AENDT"].ToString())) ? null : (DateTime?)row["AENDT"],
+					AENDT = string.IsNullOrEmpty(row["AENDT"].ToString()) ? null : (DateTime?)row["AENDT"],
 					AENUS = (string)row["AENUS"],
 
 					SAPConnection = sapConnection,
@@ -109,7 +126,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -123,7 +140,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -138,7 +155,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_ZDAD_AUFTR_006", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -148,7 +165,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -158,7 +175,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -168,7 +185,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_ZDAD_AUFTR_006", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -178,7 +195,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -189,11 +206,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

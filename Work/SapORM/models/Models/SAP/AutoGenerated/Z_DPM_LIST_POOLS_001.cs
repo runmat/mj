@@ -21,6 +21,62 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_LIST_POOLS_001).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ERDAT_EQUI_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_EQUI_BIS", value);
+		}
+
+		public void SetImportParameter_I_ERDAT_EQUI_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_EQUI_VON", value);
+		}
+
+		public void SetImportParameter_I_HERST_T(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HERST_T", value);
+		}
+
+		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_REPLA_DATE_BIS", value);
+		}
+
+		public void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_REPLA_DATE_VON", value);
+		}
+
+		public void SetImportParameter_I_SELECT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELECT", value);
+		}
+
+		public void SetImportParameter_I_ZZDAT_BER_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZDAT_BER_BIS", value);
+		}
+
+		public void SetImportParameter_I_ZZDAT_BER_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZDAT_BER_VON", value);
+		}
+
+		public void SetImportParameter_I_ZZDAT_EIN_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZDAT_EIN_BIS", value);
+		}
+
+		public void SetImportParameter_I_ZZDAT_EIN_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZDAT_EIN_VON", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -125,14 +181,14 @@ namespace SapORM.Models
 					ZZKRAFTSTOFF_TXT = (string)row["ZZKRAFTSTOFF_TXT"],
 					KUNPDI = (string)row["KUNPDI"],
 					KUNPDI_TXT = (string)row["KUNPDI_TXT"],
-					ERDAT_EQUI = (string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString())) ? null : (DateTime?)row["ERDAT_EQUI"],
-					ZZDAT_EIN = (string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString())) ? null : (DateTime?)row["ZZDAT_EIN"],
-					ZZDAT_BER = (string.IsNullOrEmpty(row["ZZDAT_BER"].ToString())) ? null : (DateTime?)row["ZZDAT_BER"],
+					ERDAT_EQUI = string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString()) ? null : (DateTime?)row["ERDAT_EQUI"],
+					ZZDAT_EIN = string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString()) ? null : (DateTime?)row["ZZDAT_EIN"],
+					ZZDAT_BER = string.IsNullOrEmpty(row["ZZDAT_BER"].ToString()) ? null : (DateTime?)row["ZZDAT_BER"],
 					ZULBEREIT = (string)row["ZULBEREIT"],
 					ZZAKTSPERRE = (string)row["ZZAKTSPERRE"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
-					EXPIRY_DATE = (string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString())) ? null : (DateTime?)row["EXPIRY_DATE"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+					EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					STATUS_TEXT = (string)row["STATUS_TEXT"],
 					NAME1_ZP = (string)row["NAME1_ZP"],
 					CITY1_ZP = (string)row["CITY1_ZP"],
@@ -253,11 +309,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_LIST_POOLS_001.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_LIST_POOLS_001.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

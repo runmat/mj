@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_PFLEGE_ZDAD_AUFTR_006).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_VERKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERKZ", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -81,7 +102,7 @@ namespace SapORM.Models
 					FAXNR = (string)row["FAXNR"],
 					INTNR = (string)row["INTNR"],
 					SAPNR = (string)row["SAPNR"],
-					AENDT = (string.IsNullOrEmpty(row["AENDT"].ToString())) ? null : (DateTime?)row["AENDT"],
+					AENDT = string.IsNullOrEmpty(row["AENDT"].ToString()) ? null : (DateTime?)row["AENDT"],
 					AENUS = (string)row["AENUS"],
 
 					SAPConnection = sapConnection,
@@ -187,11 +208,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_PFLEGE_ZDAD_AUFTR_006.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_PFLEGE_ZDAD_AUFTR_006.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

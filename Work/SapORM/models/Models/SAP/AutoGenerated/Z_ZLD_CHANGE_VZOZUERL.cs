@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_CHANGE_VZOZUERL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_IMP_VZOZUERL : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -49,7 +60,7 @@ namespace SapORM.Models
 					ZULPOSNR = (string)row["ZULPOSNR"],
 					STATUS = (string)row["STATUS"],
 					LOEKZ = (string)row["LOEKZ"],
-					VZERDAT = (string.IsNullOrEmpty(row["VZERDAT"].ToString())) ? null : (DateTime?)row["VZERDAT"],
+					VZERDAT = string.IsNullOrEmpty(row["VZERDAT"].ToString()) ? null : (DateTime?)row["VZERDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -154,11 +165,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_CHANGE_VZOZUERL.GT_IMP_VZOZUERL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_CHANGE_VZOZUERL.GT_IMP_VZOZUERL> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

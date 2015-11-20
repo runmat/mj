@@ -20,6 +20,27 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_MOB_SET_VG_STATUS).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

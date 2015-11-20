@@ -4,20 +4,32 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_V_Kcl_Gruppendaten
+	public partial class Z_V_KCL_GRUPPENDATEN
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_V_Kcl_Gruppendaten).Name);
+			sap.Init(typeof(Z_V_KCL_GRUPPENDATEN).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_V_Kcl_Gruppendaten).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_V_KCL_GRUPPENDATEN).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("GRUPPE", value);
+		}
+
+		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR", value);
 		}
 
 		public partial class ZZGRUPPENDATEN : IModelMappingApplied
@@ -70,7 +82,7 @@ namespace SapORM.Models
 
 			public static List<ZZGRUPPENDATEN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<ZZGRUPPENDATEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -84,7 +96,7 @@ namespace SapORM.Models
 
 			public static List<ZZGRUPPENDATEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZZGRUPPENDATEN> ToList(ISapDataService sapDataService)
@@ -97,9 +109,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<ZZGRUPPENDATEN>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_Kcl_Gruppendaten", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_KCL_GRUPPENDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZZGRUPPENDATEN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -109,7 +121,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZZGRUPPENDATEN> GetExportList(ISapDataService sapDataService)
@@ -119,7 +131,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZZGRUPPENDATEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -127,9 +139,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<ZZGRUPPENDATEN>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_V_Kcl_Gruppendaten", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_V_KCL_GRUPPENDATEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZZGRUPPENDATEN> GetImportList(ISapDataService sapDataService)
@@ -139,7 +151,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -147,14 +159,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_V_Kcl_Gruppendaten.ZZGRUPPENDATEN> list)
+		public static DataTable ToTable(this IEnumerable<Z_V_KCL_GRUPPENDATEN.ZZGRUPPENDATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_Kcl_Gruppendaten.ZZGRUPPENDATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

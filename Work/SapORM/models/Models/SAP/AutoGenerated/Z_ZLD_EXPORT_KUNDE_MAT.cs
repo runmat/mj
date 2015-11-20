@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_KUNDE_MAT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
 		public partial class GT_EX_KUNDE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -351,20 +362,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_KUNDE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_MATERIAL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_MATERIAL> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

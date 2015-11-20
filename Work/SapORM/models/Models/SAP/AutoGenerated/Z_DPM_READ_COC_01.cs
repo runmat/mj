@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,52 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_READ_COC_01).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AKTION", value);
+		}
+
+		public void SetImportParameter_I_AUFTRAG_DAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_AUFTRAG_DAT", value);
+		}
+
+		public void SetImportParameter_I_AUFTRAG_DAT_INIT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AUFTRAG_DAT_INIT", value);
+		}
+
+		public void SetImportParameter_I_AUFTR_NR_KD(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AUFTR_NR_KD", value);
+		}
+
+		public void SetImportParameter_I_AUSLIEFER_DATUM(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_AUSLIEFER_DATUM", value);
+		}
+
+		public void SetImportParameter_I_DRU_DATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DRU_DATUM_BIS", value);
+		}
+
+		public void SetImportParameter_I_DRU_DATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DRU_DATUM_VON", value);
+		}
+
+		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN", value);
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -313,22 +360,22 @@ namespace SapORM.Models
 					VORG_NR = (string)row["VORG_NR"],
 					VIN = (string)row["VIN"],
 					AUFTR_NR_KD = (string)row["AUFTR_NR_KD"],
-					AUSLIEFER_DATUM = (string.IsNullOrEmpty(row["AUSLIEFER_DATUM"].ToString())) ? null : (DateTime?)row["AUSLIEFER_DATUM"],
+					AUSLIEFER_DATUM = string.IsNullOrEmpty(row["AUSLIEFER_DATUM"].ToString()) ? null : (DateTime?)row["AUSLIEFER_DATUM"],
 					LAND = (string)row["LAND"],
 					EQUNR = (string)row["EQUNR"],
 					KUNNR_AG = (string)row["KUNNR_AG"],
-					COC_ERF_DAT = (string.IsNullOrEmpty(row["COC_ERF_DAT"].ToString())) ? null : (DateTime?)row["COC_ERF_DAT"],
-					AUFTRAG_DAT = (string.IsNullOrEmpty(row["AUFTRAG_DAT"].ToString())) ? null : (DateTime?)row["AUFTRAG_DAT"],
+					COC_ERF_DAT = string.IsNullOrEmpty(row["COC_ERF_DAT"].ToString()) ? null : (DateTime?)row["COC_ERF_DAT"],
+					AUFTRAG_DAT = string.IsNullOrEmpty(row["AUFTRAG_DAT"].ToString()) ? null : (DateTime?)row["AUFTRAG_DAT"],
 					COC_KD_ORIG = (string)row["COC_KD_ORIG"],
 					COC_KD_KOPIE = (string)row["COC_KD_KOPIE"],
 					COC_DRUCK_ORIG = (string)row["COC_DRUCK_ORIG"],
 					COC_DRUCK_KOPIE = (string)row["COC_DRUCK_KOPIE"],
-					COC_DRUCK_DATUM = (string.IsNullOrEmpty(row["COC_DRUCK_DATUM"].ToString())) ? null : (DateTime?)row["COC_DRUCK_DATUM"],
+					COC_DRUCK_DATUM = string.IsNullOrEmpty(row["COC_DRUCK_DATUM"].ToString()) ? null : (DateTime?)row["COC_DRUCK_DATUM"],
 					COC_DRUCK_ZEIT = (string)row["COC_DRUCK_ZEIT"],
 					ZBII_DRUCK = (string)row["ZBII_DRUCK"],
-					ZBII_DRUCK_DATUM = (string.IsNullOrEmpty(row["ZBII_DRUCK_DATUM"].ToString())) ? null : (DateTime?)row["ZBII_DRUCK_DATUM"],
+					ZBII_DRUCK_DATUM = string.IsNullOrEmpty(row["ZBII_DRUCK_DATUM"].ToString()) ? null : (DateTime?)row["ZBII_DRUCK_DATUM"],
 					ZBII_DRUCK_ZEIT = (string)row["ZBII_DRUCK_ZEIT"],
-					ZBII_KBA_MELD = (string.IsNullOrEmpty(row["ZBII_KBA_MELD"].ToString())) ? null : (DateTime?)row["ZBII_KBA_MELD"],
+					ZBII_KBA_MELD = string.IsNullOrEmpty(row["ZBII_KBA_MELD"].ToString()) ? null : (DateTime?)row["ZBII_KBA_MELD"],
 					VERSAND = (string)row["VERSAND"],
 					ZUL_DEZ = (string)row["ZUL_DEZ"],
 					ZUL_AUSLAND = (string)row["ZUL_AUSLAND"],
@@ -472,7 +519,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -486,7 +533,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -501,7 +548,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_COC_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -511,7 +558,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -521,7 +568,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -531,7 +578,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_COC_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -541,7 +588,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -552,11 +599,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_COC_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_COC_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

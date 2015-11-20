@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_CHECK_48H).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_DATUM_AUSFUEHRUNG(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_AUSFUEHRUNG", value);
+		}
+
+		public void SetImportParameter_I_DATUM_BEAUFTRAGUNG(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DATUM_BEAUFTRAGUNG", value);
+		}
+
+		public void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class ES_VERSAND_48H : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -47,6 +78,10 @@ namespace SapORM.Models
 
 			public string Z48H { get; set; }
 
+			public string ABW_ADR_GENERELL { get; set; }
+
+			public string IST_48H { get; set; }
+
 			public static ES_VERSAND_48H Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ES_VERSAND_48H
@@ -59,6 +94,8 @@ namespace SapORM.Models
 					LIFUHRBIS = (string)row["LIFUHRBIS"],
 					NACHREICH = (string)row["NACHREICH"],
 					Z48H = (string)row["Z48H"],
+					ABW_ADR_GENERELL = (string)row["ABW_ADR_GENERELL"],
+					IST_48H = (string)row["IST_48H"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -134,26 +171,6 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<ES_VERSAND_48H> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_VERSAND_48H>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_CHECK_48H", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_VERSAND_48H> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_VERSAND_48H>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 
 		public partial class ET_MESSAGE : IModelMappingApplied
@@ -166,7 +183,7 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public Int32? SUBRC { get; set; }
+			public int? SUBRC { get; set; }
 
 			public string MESSAGE { get; set; }
 
@@ -176,7 +193,7 @@ namespace SapORM.Models
 			{
 				var o = new ET_MESSAGE
 				{
-					SUBRC = (string.IsNullOrEmpty(row["SUBRC"].ToString())) ? null : (Int32?)Convert.ToInt32(row["SUBRC"]),
+					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
 					MESSAGE = (string)row["MESSAGE"],
 					GRUND = (string)row["GRUND"],
 
@@ -285,20 +302,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_CHECK_48H.ES_VERSAND_48H> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_CHECK_48H.ET_MESSAGE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_CHECK_48H.ET_MESSAGE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

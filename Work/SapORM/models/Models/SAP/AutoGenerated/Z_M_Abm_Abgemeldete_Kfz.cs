@@ -9,16 +9,62 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Abm_Abgemeldete_Kfz
+	public partial class Z_M_ABM_ABGEMELDETE_KFZ
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Abm_Abgemeldete_Kfz).Name);
+			sap.Init(typeof(Z_M_ABM_ABGEMELDETE_KFZ).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Abm_Abgemeldete_Kfz).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_ABM_ABGEMELDETE_KFZ).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_ABMDATAB(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("ABMDATAB", value);
+		}
+
+		public void SetImportParameter_ABMDATBI(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("ABMDATBI", value);
+		}
+
+		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR", value);
+		}
+
+		public void SetImportParameter_PICKDATAB(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("PICKDATAB", value);
+		}
+
+		public void SetImportParameter_PICKDATBI(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("PICKDATBI", value);
+		}
+
+		public void SetImportParameter_TIDNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("TIDNR", value);
+		}
+
+		public void SetImportParameter_ZFAHRG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZFAHRG", value);
+		}
+
+		public void SetImportParameter_ZZKENN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZZKENN", value);
+		}
+
+		public string GetExportParameter_ANZAHL(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("ANZAHL");
 		}
 
 		public partial class AUSGABE : IModelMappingApplied
@@ -148,7 +194,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					QMNUM = (string)row["QMNUM"],
 					EQUNR = (string)row["EQUNR"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZZBRIEF = (string)row["ZZBRIEF"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
@@ -163,22 +209,22 @@ namespace SapORM.Models
 					ZZANTR = (string)row["ZZANTR"],
 					ZZREIFEN = (string)row["ZZREIFEN"],
 					ZZNAVI = (string)row["ZZNAVI"],
-					ZZDAT_EIN = (string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString())) ? null : (DateTime?)row["ZZDAT_EIN"],
+					ZZDAT_EIN = string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString()) ? null : (DateTime?)row["ZZDAT_EIN"],
 					ZZKLEBE = (string)row["ZZKLEBE"],
 					ZZAKTSPERRE = (string)row["ZZAKTSPERRE"],
 					ANZAHL_ZUL = (string)row["ANZAHL_ZUL"],
 					ANZAHL_GSP = (string)row["ANZAHL_GSP"],
 					KUNNR_ZP = (string)row["KUNNR_ZP"],
 					NAME1_ZP = (string)row["NAME1_ZP"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
-					VDATU = (string.IsNullOrEmpty(row["VDATU"].ToString())) ? null : (DateTime?)row["VDATU"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+					VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
 					ZZREF1 = (string)row["ZZREF1"],
 					ZZREF2 = (string)row["ZZREF2"],
-					ERDAT_LOW = (string.IsNullOrEmpty(row["ERDAT_LOW"].ToString())) ? null : (DateTime?)row["ERDAT_LOW"],
-					ERDAT_HIGH = (string.IsNullOrEmpty(row["ERDAT_HIGH"].ToString())) ? null : (DateTime?)row["ERDAT_HIGH"],
+					ERDAT_LOW = string.IsNullOrEmpty(row["ERDAT_LOW"].ToString()) ? null : (DateTime?)row["ERDAT_LOW"],
+					ERDAT_HIGH = string.IsNullOrEmpty(row["ERDAT_HIGH"].ToString()) ? null : (DateTime?)row["ERDAT_HIGH"],
 					FLEET_VIN = (string)row["FLEET_VIN"],
 					KUNNR_ZK = (string)row["KUNNR_ZK"],
-					ZZDATBEM = (string.IsNullOrEmpty(row["ZZDATBEM"].ToString())) ? null : (DateTime?)row["ZZDATBEM"],
+					ZZDATBEM = string.IsNullOrEmpty(row["ZZDATBEM"].ToString()) ? null : (DateTime?)row["ZZDATBEM"],
 					ZZMODELL = (string)row["ZZMODELL"],
 					ZZFARBE = (string)row["ZZFARBE"],
 					ZZHERST_TEXT = (string)row["ZZHERST_TEXT"],
@@ -186,13 +232,13 @@ namespace SapORM.Models
 					ZZHUBRAUM = (string)row["ZZHUBRAUM"],
 					ZZNENNLEISTUNG = (string)row["ZZNENNLEISTUNG"],
 					ZZKRAFTSTOFF_TXT = (string)row["ZZKRAFTSTOFF_TXT"],
-					ZZDAT_BER = (string.IsNullOrEmpty(row["ZZDAT_BER"].ToString())) ? null : (DateTime?)row["ZZDAT_BER"],
+					ZZDAT_BER = string.IsNullOrEmpty(row["ZZDAT_BER"].ToString()) ? null : (DateTime?)row["ZZDAT_BER"],
 					ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
 					ZZLAUFZEIT = (string)row["ZZLAUFZEIT"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 					ZSTATUS = (string)row["ZSTATUS"],
-					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					PICKDAT = string.IsNullOrEmpty(row["PICKDAT"].ToString()) ? null : (DateTime?)row["PICKDAT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					BELNR = (string)row["BELNR"],
 					NAME1_ZH = (string)row["NAME1_ZH"],
 					NAME2_ZH = (string)row["NAME2_ZH"],
@@ -251,7 +297,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<AUSGABE>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Abm_Abgemeldete_Kfz", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_ABM_ABGEMELDETE_KFZ", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -281,7 +327,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<AUSGABE>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Abm_Abgemeldete_Kfz", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_ABM_ABGEMELDETE_KFZ", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -301,14 +347,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Abm_Abgemeldete_Kfz.AUSGABE> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_ABM_ABGEMELDETE_KFZ.AUSGABE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Abm_Abgemeldete_Kfz.AUSGABE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

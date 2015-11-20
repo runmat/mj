@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -20,118 +21,45 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_CD_READ_GRUEQUIDAT_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_ZIELORT : IModelMappingApplied
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
+			sap.SetImportParameter("I_AG", value);
+		}
 
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+		public void SetImportParameter_I_ALLE_FZG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ALLE_FZG", value);
+		}
 
-			public string ZIELORT { get; set; }
+		public void SetImportParameter_I_DAT_ABM_AUFTR_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_ABM_AUFTR_BIS", value);
+		}
 
-			public static GT_ZIELORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_ZIELORT
-				{
-					ZIELORT = (string)row["ZIELORT"],
+		public void SetImportParameter_I_DAT_ABM_AUFTR_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_ABM_AUFTR_VON", value);
+		}
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
+		public void SetImportParameter_I_NUR_ABGEM_FZG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_ABGEM_FZG", value);
+		}
 
-			partial void OnInitFromSap();
+		public void SetImportParameter_I_NUR_ZUGEL_FZG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_ZUGEL_FZG", value);
+		}
 
-			partial void OnInitFromExtern();
+		public void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_REPLA_DATE_BIS", value);
+		}
 
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_ZIELORT> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_ZIELORT> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToList();
-			}
-
-			public static IEnumerable<GT_ZIELORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ZIELORT).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_ZIELORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToList();
-			}
-
-			public static List<GT_ZIELORT> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_ZIELORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZIELORT>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZIELORT> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZIELORT>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZIELORT> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZIELORT>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZIELORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZIELORT>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_ZIELORT> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_ZIELORT>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
+		public void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_REPLA_DATE_VON", value);
 		}
 
 		public partial class GT_BETRIEB : IModelMappingApplied
@@ -175,7 +103,7 @@ namespace SapORM.Models
 
 			public static List<GT_BETRIEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_BETRIEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -189,7 +117,7 @@ namespace SapORM.Models
 
 			public static List<GT_BETRIEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_BETRIEB> ToList(ISapDataService sapDataService)
@@ -204,7 +132,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_BETRIEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -214,7 +142,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_BETRIEB> GetExportList(ISapDataService sapDataService)
@@ -224,7 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_BETRIEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -234,7 +162,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_BETRIEB> GetImportList(ISapDataService sapDataService)
@@ -244,121 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-		}
-
-		public partial class GT_FIN_17 : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string FIN_17 { get; set; }
-
-			public static GT_FIN_17 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_FIN_17
-				{
-					FIN_17 = (string)row["FIN_17"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_FIN_17> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_FIN_17> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToList();
-			}
-
-			public static IEnumerable<GT_FIN_17> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_FIN_17).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_FIN_17> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToList();
-			}
-
-			public static List<GT_FIN_17> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_FIN_17> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_FIN_17>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_FIN_17> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_FIN_17>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_FIN_17> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_FIN_17>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_FIN_17> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_FIN_17>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
-			}
-
-			public static List<GT_FIN_17> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_FIN_17>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -403,7 +217,7 @@ namespace SapORM.Models
 
 			public static List<GT_FIN_10> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_FIN_10> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -417,7 +231,7 @@ namespace SapORM.Models
 
 			public static List<GT_FIN_10> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FIN_10> ToList(ISapDataService sapDataService)
@@ -432,7 +246,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FIN_10> GetExportListWithExecute(ISapDataService sapDataService)
@@ -442,7 +256,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FIN_10> GetExportList(ISapDataService sapDataService)
@@ -452,7 +266,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FIN_10> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -462,7 +276,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_FIN_10> GetImportList(ISapDataService sapDataService)
@@ -472,11 +286,11 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
-		public partial class GT_STORT : IModelMappingApplied
+		public partial class GT_FIN_17 : IModelMappingApplied
 		{
 			[SapIgnore]
 			[ScriptIgnore]
@@ -486,13 +300,13 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public string STORT { get; set; }
+			public string FIN_17 { get; set; }
 
-			public static GT_STORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			public static GT_FIN_17 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_STORT
+				var o = new GT_FIN_17
 				{
-					STORT = (string)row["STORT"],
+					FIN_17 = (string)row["FIN_17"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -510,83 +324,83 @@ namespace SapORM.Models
 				OnInitFromExtern();
 			}
 
-			public static IEnumerable<GT_STORT> Select(DataTable dt, ISapConnection sapConnection = null)
+			public static IEnumerable<GT_FIN_17> Select(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<GT_STORT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			public static List<GT_FIN_17> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
-			public static IEnumerable<GT_STORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static IEnumerable<GT_FIN_17> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_STORT).Name.ToLower());
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_FIN_17).Name.ToLower());
 				if (tbl == null)
 					return null;
 
 				return Select(tbl, sapConnection);
 			}
 
-			public static List<GT_STORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static List<GT_FIN_17> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_STORT> ToList(ISapDataService sapDataService)
+			public static List<GT_FIN_17> ToList(ISapDataService sapDataService)
 			{
 				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
 			}
 
-			public static List<GT_STORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<GT_FIN_17> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_STORT>();
+					return new List<GT_FIN_17>();
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_STORT> GetExportListWithExecute(ISapDataService sapDataService)
+			public static List<GT_FIN_17> GetExportListWithExecute(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_STORT>();
+					return new List<GT_FIN_17>();
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_STORT> GetExportList(ISapDataService sapDataService)
+			public static List<GT_FIN_17> GetExportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_STORT>();
+					return new List<GT_FIN_17>();
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_STORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<GT_FIN_17> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_STORT>();
+					return new List<GT_FIN_17>();
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_STORT> GetImportList(ISapDataService sapDataService)
+			public static List<GT_FIN_17> GetImportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_STORT>();
+					return new List<GT_FIN_17>();
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -638,14 +452,14 @@ namespace SapORM.Models
 					BETRIEB = (string)row["BETRIEB"],
 					FIN = (string)row["FIN"],
 					FIN_10 = (string)row["FIN_10"],
-					DAT_ABM_AUFTR = (string.IsNullOrEmpty(row["DAT_ABM_AUFTR"].ToString())) ? null : (DateTime?)row["DAT_ABM_AUFTR"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					DAT_ABM_AUFTR = string.IsNullOrEmpty(row["DAT_ABM_AUFTR"].ToString()) ? null : (DateTime?)row["DAT_ABM_AUFTR"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					TIDNR = (string)row["TIDNR"],
-					EXPIRY_DATE = (string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString())) ? null : (DateTime?)row["EXPIRY_DATE"],
+					EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
 					ZZCOCKZ = (string)row["ZZCOCKZ"],
-					ZZEDCOC = (string.IsNullOrEmpty(row["ZZEDCOC"].ToString())) ? null : (DateTime?)row["ZZEDCOC"],
+					ZZEDCOC = string.IsNullOrEmpty(row["ZZEDCOC"].ToString()) ? null : (DateTime?)row["ZZEDCOC"],
 					STORT = (string)row["STORT"],
 					STORT_TEXT = (string)row["STORT_TEXT"],
 					ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
@@ -673,7 +487,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -687,7 +501,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -702,7 +516,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -712,7 +526,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -722,7 +536,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -732,7 +546,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -742,7 +556,235 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_STORT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string STORT { get; set; }
+
+			public static GT_STORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_STORT
+				{
+					STORT = (string)row["STORT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_STORT> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_STORT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_STORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_STORT).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_STORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_STORT> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_STORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_STORT>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_STORT> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_STORT>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_STORT> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_STORT>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_STORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_STORT>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_STORT> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_STORT>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_ZIELORT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ZIELORT { get; set; }
+
+			public static GT_ZIELORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_ZIELORT
+				{
+					ZIELORT = (string)row["ZIELORT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_ZIELORT> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_ZIELORT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_ZIELORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_ZIELORT).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_ZIELORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZIELORT> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_ZIELORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZIELORT>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZIELORT> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZIELORT>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZIELORT> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZIELORT>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZIELORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZIELORT>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_CD_READ_GRUEQUIDAT_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_ZIELORT> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_ZIELORT>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -750,36 +792,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_ZIELORT> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_ZIELORT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
 		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_BETRIEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_BETRIEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_FIN_17> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_FIN_17> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -788,20 +803,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_FIN_10> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
 
-
-		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_STORT> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_FIN_17> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_STORT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -810,9 +815,16 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_OUT> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_STORT> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_DPM_CD_READ_GRUEQUIDAT_01.GT_ZIELORT> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_STO_GET_ORDER2).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class ES_BAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -135,16 +151,16 @@ namespace SapORM.Models
 					VBELN = (string)row["VBELN"],
 					VKORG = (string)row["VKORG"],
 					VKBUR = (string)row["VKBUR"],
-					VE_ERDAT = (string.IsNullOrEmpty(row["VE_ERDAT"].ToString())) ? null : (DateTime?)row["VE_ERDAT"],
+					VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
 					VE_ERNAM = (string)row["VE_ERNAM"],
 					VE_ERZEIT = (string)row["VE_ERZEIT"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
 					STATUS = (string)row["STATUS"],
 					BLTYP = (string)row["BLTYP"],
 					VZB_STATUS = (string)row["VZB_STATUS"],
 					VZD_VKBUR = (string)row["VZD_VKBUR"],
-					VZERDAT = (string.IsNullOrEmpty(row["VZERDAT"].ToString())) ? null : (DateTime?)row["VZERDAT"],
+					VZERDAT = string.IsNullOrEmpty(row["VZERDAT"].ToString()) ? null : (DateTime?)row["VZERDAT"],
 					BARCODE = (string)row["BARCODE"],
 					KUNNR = (string)row["KUNNR"],
 					ZZREFNR1 = (string)row["ZZREFNR1"],
@@ -154,7 +170,7 @@ namespace SapORM.Models
 					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
 					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
 					RESERVKENN = (string)row["RESERVKENN"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					KENNZFORM = (string)row["KENNZFORM"],
 					KENNZANZ = (string)row["KENNZANZ"],
@@ -251,26 +267,6 @@ namespace SapORM.Models
 					return new List<ES_BAK>();
 				 
 				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_BAK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_BAK>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_STO_GET_ORDER2", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_BAK> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_BAK>();
-				 
-				var dts = sapDataService.GetImportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -395,26 +391,6 @@ namespace SapORM.Models
 					return new List<ES_BANK>();
 				 
 				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_BANK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_BANK>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_STO_GET_ORDER2", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_BANK> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_BANK>();
-				 
-				var dts = sapDataService.GetImportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -619,21 +595,21 @@ namespace SapORM.Models
 					ZULPOSNR = (string)row["ZULPOSNR"],
 					UEPOS = (string)row["UEPOS"],
 					LOEKZ = (string)row["LOEKZ"],
-					MENGE = (decimal?)row["MENGE"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					PREIS = (decimal?)row["PREIS"],
-					GEB_AMT = (decimal?)row["GEB_AMT"],
-					GEB_AMT_ADD = (decimal?)row["GEB_AMT_ADD"],
+					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
+					GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
+					GEB_AMT_ADD = string.IsNullOrEmpty(row["GEB_AMT_ADD"].ToString()) ? null : (decimal?)row["GEB_AMT_ADD"],
 					WEBMTART = (string)row["WEBMTART"],
 					SD_REL = (string)row["SD_REL"],
 					NULLPREIS_OK = (string)row["NULLPREIS_OK"],
 					GBPAK = (string)row["GBPAK"],
-					UPREIS = (decimal?)row["UPREIS"],
-					DIFF = (decimal?)row["DIFF"],
+					UPREIS = string.IsNullOrEmpty(row["UPREIS"].ToString()) ? null : (decimal?)row["UPREIS"],
+					DIFF = string.IsNullOrEmpty(row["DIFF"].ToString()) ? null : (decimal?)row["DIFF"],
 					KONDTAB = (string)row["KONDTAB"],
 					KSCHL = (string)row["KSCHL"],
-					CALCDAT = (string.IsNullOrEmpty(row["CALCDAT"].ToString())) ? null : (DateTime?)row["CALCDAT"],
+					CALCDAT = string.IsNullOrEmpty(row["CALCDAT"].ToString()) ? null : (DateTime?)row["CALCDAT"],
 					WEB_STATUS = (string)row["WEB_STATUS"],
 
 					SAPConnection = sapConnection,
@@ -741,20 +717,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_STO_GET_ORDER2.ES_BAK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_STO_GET_ORDER2.ES_BANK> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_STO_GET_ORDER2.ES_BANK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -763,20 +729,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_STO_GET_ORDER2.GT_ADRS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_STO_GET_ORDER2.GT_POS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_STO_GET_ORDER2.GT_POS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

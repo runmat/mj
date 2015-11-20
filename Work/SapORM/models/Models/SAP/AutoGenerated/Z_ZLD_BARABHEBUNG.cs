@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_BARABHEBUNG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_AUSGABE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("AUSGABE", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_PDF");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class IS_BARABHEBUNG : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -43,7 +64,7 @@ namespace SapORM.Models
 
 			public string ORT { get; set; }
 
-			public string BETRAG { get; set; }
+			public decimal? BETRAG { get; set; }
 
 			public string WAERS { get; set; }
 
@@ -54,10 +75,10 @@ namespace SapORM.Models
 					VKBUR = (string)row["VKBUR"],
 					NAME = (string)row["NAME"],
 					EC_KARTE_NR = (string)row["EC_KARTE_NR"],
-					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
+					DATUM = string.IsNullOrEmpty(row["DATUM"].ToString()) ? null : (DateTime?)row["DATUM"],
 					UZEIT = (string)row["UZEIT"],
 					ORT = (string)row["ORT"],
-					BETRAG = (string)row["BETRAG"],
+					BETRAG = string.IsNullOrEmpty(row["BETRAG"].ToString()) ? null : (decimal?)row["BETRAG"],
 					WAERS = (string)row["WAERS"],
 
 					SAPConnection = sapConnection,
@@ -81,11 +102,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<IS_BARABHEBUNG> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<IS_BARABHEBUNG> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(IS_BARABHEBUNG).Name.ToLower());
@@ -93,46 +109,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<IS_BARABHEBUNG> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_BARABHEBUNG> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<IS_BARABHEBUNG> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<IS_BARABHEBUNG>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_BARABHEBUNG", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_BARABHEBUNG> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_BARABHEBUNG>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<IS_BARABHEBUNG> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<IS_BARABHEBUNG>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<IS_BARABHEBUNG> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -163,11 +139,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_BARABHEBUNG.IS_BARABHEBUNG> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_BARABHEBUNG.IS_BARABHEBUNG> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

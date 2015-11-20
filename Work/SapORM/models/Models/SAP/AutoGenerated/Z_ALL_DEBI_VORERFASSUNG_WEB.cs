@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ALL_DEBI_VORERFASSUNG_WEB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
+		public string GetExportParameter_E_VKUNNR(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_VKUNNR");
+		}
+
 		public partial class GS_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -101,7 +117,7 @@ namespace SapORM.Models
 
 			public string GRUPPE_T { get; set; }
 
-			public string UMS_P_MON { get; set; }
+			public decimal? UMS_P_MON { get; set; }
 
 			public string GEB_M_UST { get; set; }
 
@@ -150,7 +166,7 @@ namespace SapORM.Models
 					SWIFT = (string)row["SWIFT"],
 					IBAN = (string)row["IBAN"],
 					GRUPPE_T = (string)row["GRUPPE_T"],
-					UMS_P_MON = (string)row["UMS_P_MON"],
+					UMS_P_MON = string.IsNullOrEmpty(row["UMS_P_MON"].ToString()) ? null : (decimal?)row["UMS_P_MON"],
 					GEB_M_UST = (string)row["GEB_M_UST"],
 					KREDITVS = (string)row["KREDITVS"],
 					AUSKUNFT = (string)row["AUSKUNFT"],
@@ -177,11 +193,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<GS_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<GS_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GS_IN).Name.ToLower());
@@ -189,46 +200,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<GS_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_IN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GS_IN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GS_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_VORERFASSUNG_WEB", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_IN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GS_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_IN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GS_IN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GS_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -259,11 +230,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_VORERFASSUNG_WEB.GS_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_VORERFASSUNG_WEB.GS_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

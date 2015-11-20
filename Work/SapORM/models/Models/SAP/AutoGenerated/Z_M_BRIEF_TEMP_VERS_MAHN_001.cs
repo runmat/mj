@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_BRIEF_TEMP_VERS_MAHN_001).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -69,7 +75,7 @@ namespace SapORM.Models
 					POST_CODE1 = (string)row["POST_CODE1"],
 					CITY1 = (string)row["CITY1"],
 					STREET = (string)row["STREET"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					ZZVGRUND = (string)row["ZZVGRUND"],
 					ZZVGRUND_TEXT = (string)row["ZZVGRUND_TEXT"],
 					EQUNR = (string)row["EQUNR"],
@@ -178,11 +184,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_BRIEF_TEMP_VERS_MAHN_001.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_BRIEF_TEMP_VERS_MAHN_001.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

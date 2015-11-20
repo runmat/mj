@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,17 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_ABWEICH_ABRUFGRUND_02).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_ABWEICHUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ABWEICHUNG", value);
+		}
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -116,10 +128,10 @@ namespace SapORM.Models
 				{
 					KUNNR = (string)row["KUNNR"],
 					EQUNR = (string)row["EQUNR"],
-					DATAUS = (string.IsNullOrEmpty(row["DATAUS"].ToString())) ? null : (DateTime?)row["DATAUS"],
+					DATAUS = string.IsNullOrEmpty(row["DATAUS"].ToString()) ? null : (DateTime?)row["DATAUS"],
 					ZZVGRUND = (string)row["ZZVGRUND"],
 					ZZVGRUND_TXT = (string)row["ZZVGRUND_TXT"],
-					DATEIN = (string.IsNullOrEmpty(row["DATEIN"].ToString())) ? null : (DateTime?)row["DATEIN"],
+					DATEIN = string.IsNullOrEmpty(row["DATEIN"].ToString()) ? null : (DateTime?)row["DATEIN"],
 					ZZVGRUND_1 = (string)row["ZZVGRUND_1"],
 					ZZVGRUND_1_TXT = (string)row["ZZVGRUND_1_TXT"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
@@ -149,7 +161,7 @@ namespace SapORM.Models
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					ZZCOCKZ = (string)row["ZZCOCKZ"],
 					ZZCOCKZ_NEU = (string)row["ZZCOCKZ_NEU"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					ERNAM = (string)row["ERNAM"],
 					ZB1 = (string)row["ZB1"],
 					ZB1_NEU = (string)row["ZB1_NEU"],
@@ -178,7 +190,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -192,7 +204,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -207,7 +219,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_ABWEICH_ABRUFGRUND_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -217,7 +229,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -227,7 +239,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -237,7 +249,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_ABWEICH_ABRUFGRUND_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -247,7 +259,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -258,11 +270,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

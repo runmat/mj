@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_FILIAL_ADRESSE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class ES_FIL_ADRS : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -146,26 +167,6 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<ES_FIL_ADRS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_FIL_ADRS>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_FILIAL_ADRESSE", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_FIL_ADRS> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_FIL_ADRS>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 	}
 
@@ -175,11 +176,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_FILIAL_ADRESSE.ES_FIL_ADRS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_FILIAL_ADRESSE.ES_FIL_ADRS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

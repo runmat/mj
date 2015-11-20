@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_READ_KONVERTER_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -154,11 +170,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_KONVERTER_01.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_KONVERTER_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

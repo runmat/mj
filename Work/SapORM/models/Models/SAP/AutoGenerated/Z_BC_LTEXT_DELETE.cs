@@ -20,6 +20,22 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_BC_LTEXT_DELETE).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public void SetImportParameter_I_LTEXT_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LTEXT_NR", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

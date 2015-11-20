@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_KENNZ_SERIE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ART", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -100,11 +111,11 @@ namespace SapORM.Models
 					SONDERSERIE = (string)row["SONDERSERIE"],
 					SWLETTER = (string)row["SWLETTER"],
 					SWNUMBER = (string)row["SWNUMBER"],
-					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
+					DATUM = string.IsNullOrEmpty(row["DATUM"].ToString()) ? null : (DateTime?)row["DATUM"],
 					SMTP_ADDR = (string)row["SMTP_ADDR"],
 					VKORG = (string)row["VKORG"],
 					BESTBISKNZ = (string)row["BESTBISKNZ"],
-					BESTDATUM = (string.IsNullOrEmpty(row["BESTDATUM"].ToString())) ? null : (DateTime?)row["BESTDATUM"],
+					BESTDATUM = string.IsNullOrEmpty(row["BESTDATUM"].ToString()) ? null : (DateTime?)row["BESTDATUM"],
 					BESTUSER = (string)row["BESTUSER"],
 					BESTANDKNZ = (string)row["BESTANDKNZ"],
 					GRENZWERT = (string)row["GRENZWERT"],
@@ -214,11 +225,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

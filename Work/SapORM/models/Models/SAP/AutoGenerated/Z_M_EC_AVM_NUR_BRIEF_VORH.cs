@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_NUR_BRIEF_VORH).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_HERST(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HERST", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -56,7 +67,7 @@ namespace SapORM.Models
 					ZKLTXT = (string)row["ZKLTXT"],
 					TIDNR = (string)row["TIDNR"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					DATAB = (string.IsNullOrEmpty(row["DATAB"].ToString())) ? null : (DateTime?)row["DATAB"],
+					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
 					NAME1 = (string)row["NAME1"],
 					OBJNR = (string)row["OBJNR"],
 					LIZNR = (string)row["LIZNR"],
@@ -166,11 +177,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_NUR_BRIEF_VORH.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_NUR_BRIEF_VORH.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

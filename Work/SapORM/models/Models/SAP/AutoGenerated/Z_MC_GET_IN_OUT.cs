@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_MC_GET_IN_OUT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_BIS", value);
+		}
+
+		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public void SetImportParameter_I_UNAME(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_UNAME", value);
+		}
+
+		public void SetImportParameter_I_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_VON", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -63,7 +94,7 @@ namespace SapORM.Models
 				{
 					VORGID = (string)row["VORGID"],
 					LFDNR = (string)row["LFDNR"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZEIT = (string)row["ERZEIT"],
 					VON = (string)row["VON"],
 					VERTR = (string)row["VERTR"],
@@ -73,7 +104,7 @@ namespace SapORM.Models
 					STATUS = (string)row["STATUS"],
 					STATUSE = (string)row["STATUSE"],
 					VGART = (string)row["VGART"],
-					ZERLDAT = (string.IsNullOrEmpty(row["ZERLDAT"].ToString())) ? null : (DateTime?)row["ZERLDAT"],
+					ZERLDAT = string.IsNullOrEmpty(row["ZERLDAT"].ToString()) ? null : (DateTime?)row["ZERLDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -215,7 +246,7 @@ namespace SapORM.Models
 				{
 					VORGID = (string)row["VORGID"],
 					LFDNR = (string)row["LFDNR"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZEIT = (string)row["ERZEIT"],
 					ZAN = (string)row["ZAN"],
 					VERTR = (string)row["VERTR"],
@@ -225,8 +256,8 @@ namespace SapORM.Models
 					STATUS = (string)row["STATUS"],
 					STATUSE = (string)row["STATUSE"],
 					VGART = (string)row["VGART"],
-					ZERLDAT = (string.IsNullOrEmpty(row["ZERLDAT"].ToString())) ? null : (DateTime?)row["ZERLDAT"],
-					ERLDAT = (string.IsNullOrEmpty(row["ERLDAT"].ToString())) ? null : (DateTime?)row["ERLDAT"],
+					ZERLDAT = string.IsNullOrEmpty(row["ZERLDAT"].ToString()) ? null : (DateTime?)row["ZERLDAT"],
+					ERLDAT = string.IsNullOrEmpty(row["ERLDAT"].ToString()) ? null : (DateTime?)row["ERLDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -333,20 +364,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_MC_GET_IN_OUT.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_MC_GET_IN_OUT.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_MC_GET_IN_OUT.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

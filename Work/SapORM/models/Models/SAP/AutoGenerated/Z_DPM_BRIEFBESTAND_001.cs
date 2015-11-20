@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_BRIEFBESTAND_001).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_BESTAND(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BESTAND", value);
+		}
+
+		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_TEMPVERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TEMPVERS", value);
+		}
+
+		public void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFERENZ1", value);
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -82,16 +108,16 @@ namespace SapORM.Models
 					MSGRP = (string)row["MSGRP"],
 					STORT = (string)row["STORT"],
 					ZZVGRUND = (string)row["ZZVGRUND"],
-					DATAB = (string.IsNullOrEmpty(row["DATAB"].ToString())) ? null : (DateTime?)row["DATAB"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
-					EXPIRY_DATE = (string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString())) ? null : (DateTime?)row["EXPIRY_DATE"],
-					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
+					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
+					EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
+					PICKDAT = string.IsNullOrEmpty(row["PICKDAT"].ToString()) ? null : (DateTime?)row["PICKDAT"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 					SWERK = (string)row["SWERK"],
 					TEXT_STO = (string)row["TEXT_STO"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -196,11 +222,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_BRIEFBESTAND_001.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_BRIEFBESTAND_001.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

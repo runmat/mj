@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_EXP_MAHN_ERSTEINGANG).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_MAHNSTUFE1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MAHNSTUFE1", value);
+		}
+
+		public void SetImportParameter_I_MAHNSTUFE2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MAHNSTUFE2", value);
+		}
+
+		public void SetImportParameter_I_MAHNSTUFE3(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MAHNSTUFE3", value);
+		}
+
+		public void SetImportParameter_I_MASPER_GES(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MASPER_GES", value);
+		}
+
+		public void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZVERT_ART", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -64,9 +96,9 @@ namespace SapORM.Models
 					ZZMAHNS = (string)row["ZZMAHNS"],
 					ZZ_MAHNA = (string)row["ZZ_MAHNA"],
 					MANSP = (string)row["MANSP"],
-					MASPB = (string.IsNullOrEmpty(row["MASPB"].ToString())) ? null : (DateTime?)row["MASPB"],
-					MADAT = (string.IsNullOrEmpty(row["MADAT"].ToString())) ? null : (DateTime?)row["MADAT"],
-					MNDAT = (string.IsNullOrEmpty(row["MNDAT"].ToString())) ? null : (DateTime?)row["MNDAT"],
+					MASPB = string.IsNullOrEmpty(row["MASPB"].ToString()) ? null : (DateTime?)row["MASPB"],
+					MADAT = string.IsNullOrEmpty(row["MADAT"].ToString()) ? null : (DateTime?)row["MADAT"],
+					MNDAT = string.IsNullOrEmpty(row["MNDAT"].ToString()) ? null : (DateTime?)row["MNDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -91,7 +123,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -105,7 +137,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -120,7 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_EXP_MAHN_ERSTEINGANG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -130,7 +162,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -140,7 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -150,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_EXP_MAHN_ERSTEINGANG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -160,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -171,11 +203,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_EXP_MAHN_ERSTEINGANG.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_EXP_MAHN_ERSTEINGANG.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

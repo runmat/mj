@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_EFA_PLATSTAMM).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_FIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIL", value);
+		}
+
+		public void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public void SetImportParameter_I_SUPER_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SUPER_USER", value);
+		}
+
+		public void SetImportParameter_I_ZLD(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZLD", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_PLATSTAMM : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -151,11 +182,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_PLATSTAMM.GT_PLATSTAMM> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_PLATSTAMM.GT_PLATSTAMM> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

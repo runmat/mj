@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_BAPIRDZ).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_INAME1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("INAME1", value);
+		}
+
+		public void SetImportParameter_IPOST_CODE1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("IPOST_CODE1", value);
+		}
+
+		public void SetImportParameter_IREMARK(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("IREMARK", value);
+		}
+
+		public void SetImportParameter_IZKFZKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("IZKFZKZ", value);
+		}
+
 		public partial class ITAB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -31,7 +52,7 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public Int32? ID { get; set; }
+			public int? ID { get; set; }
 
 			public string LIFNR { get; set; }
 
@@ -97,11 +118,13 @@ namespace SapORM.Models
 
 			public string Z48H { get; set; }
 
+			public string ABW_ADR_GENERELL { get; set; }
+
 			public static ITAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ITAB
 				{
-					ID = (string.IsNullOrEmpty(row["ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["ID"]),
+					ID = string.IsNullOrEmpty(row["ID"].ToString()) ? null : (int?)row["ID"],
 					LIFNR = (string)row["LIFNR"],
 					ADRNR = (string)row["ADRNR"],
 					MATNR = (string)row["MATNR"],
@@ -134,6 +157,7 @@ namespace SapORM.Models
 					LIFUHRBIS = (string)row["LIFUHRBIS"],
 					NACHREICH = (string)row["NACHREICH"],
 					Z48H = (string)row["Z48H"],
+					ABW_ADR_GENERELL = (string)row["ABW_ADR_GENERELL"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -238,11 +262,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_BAPIRDZ.ITAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_BAPIRDZ.ITAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

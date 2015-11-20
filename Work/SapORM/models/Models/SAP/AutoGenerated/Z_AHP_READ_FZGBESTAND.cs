@@ -21,6 +21,72 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_AHP_READ_FZGBESTAND).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ABMDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ABMDAT", value);
+		}
+
+		public void SetImportParameter_I_AKTZULDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_AKTZULDAT", value);
+		}
+
+		public void SetImportParameter_I_BRIEFBESTAND(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BRIEFBESTAND", value);
+		}
+
+		public void SetImportParameter_I_BRIEFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BRIEFNR", value);
+		}
+
+		public void SetImportParameter_I_COCVORHANDEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_COCVORHANDEN", value);
+		}
+
+		public void SetImportParameter_I_ERSTZULDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERSTZULDAT", value);
+		}
+
+		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN", value);
+		}
+
+		public void SetImportParameter_I_HALTER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HALTER", value);
+		}
+
+		public void SetImportParameter_I_KAEUFER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KAEUFER", value);
+		}
+
+		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNZ", value);
+		}
+
+		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public void SetImportParameter_I_LGORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LGORT", value);
+		}
+
+		public void SetImportParameter_I_STANDORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STANDORT", value);
+		}
+
 		public partial class GT_WEBOUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -97,7 +163,7 @@ namespace SapORM.Models
 				{
 					FIN_ID = (string)row["FIN_ID"],
 					FIN = (string)row["FIN"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ZZHERSTELLER_SCH = (string)row["ZZHERSTELLER_SCH"],
 					ZZTYP_SCHL = (string)row["ZZTYP_SCHL"],
 					ZZVVS_SCHLUESSEL = (string)row["ZZVVS_SCHLUESSEL"],
@@ -110,9 +176,9 @@ namespace SapORM.Models
 					BRIEFBESTAND = (string)row["BRIEFBESTAND"],
 					LGORT = (string)row["LGORT"],
 					STANDORT = (string)row["STANDORT"],
-					ERSTZULDAT = (string.IsNullOrEmpty(row["ERSTZULDAT"].ToString())) ? null : (DateTime?)row["ERSTZULDAT"],
-					AKTZULDAT = (string.IsNullOrEmpty(row["AKTZULDAT"].ToString())) ? null : (DateTime?)row["AKTZULDAT"],
-					ABMDAT = (string.IsNullOrEmpty(row["ABMDAT"].ToString())) ? null : (DateTime?)row["ABMDAT"],
+					ERSTZULDAT = string.IsNullOrEmpty(row["ERSTZULDAT"].ToString()) ? null : (DateTime?)row["ERSTZULDAT"],
+					AKTZULDAT = string.IsNullOrEmpty(row["AKTZULDAT"].ToString()) ? null : (DateTime?)row["AKTZULDAT"],
+					ABMDAT = string.IsNullOrEmpty(row["ABMDAT"].ToString()) ? null : (DateTime?)row["ABMDAT"],
 					KENNZ = (string)row["KENNZ"],
 					BRIEFNR = (string)row["BRIEFNR"],
 					COCVORHANDEN = (string)row["COCVORHANDEN"],
@@ -229,11 +295,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

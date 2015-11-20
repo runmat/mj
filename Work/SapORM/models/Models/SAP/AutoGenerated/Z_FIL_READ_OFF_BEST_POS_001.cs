@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_READ_OFF_BEST_POS_001).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_EBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EBELN", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -160,11 +166,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_READ_OFF_BEST_POS_001.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_READ_OFF_BEST_POS_001.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

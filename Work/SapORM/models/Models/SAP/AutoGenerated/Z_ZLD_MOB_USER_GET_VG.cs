@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_MOB_USER_GET_VG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_MOBUSER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MOBUSER", value);
+		}
+
+		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_VGANZ : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -35,7 +61,7 @@ namespace SapORM.Models
 
 			public string KREISBEZ { get; set; }
 
-			public Int32? VG_ANZ { get; set; }
+			public int? VG_ANZ { get; set; }
 
 			public static GT_VGANZ Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
@@ -43,7 +69,7 @@ namespace SapORM.Models
 				{
 					AMT = (string)row["AMT"],
 					KREISBEZ = (string)row["KREISBEZ"],
-					VG_ANZ = (string.IsNullOrEmpty(row["VG_ANZ"].ToString())) ? null : (Int32?)Convert.ToInt32(row["VG_ANZ"]),
+					VG_ANZ = string.IsNullOrEmpty(row["VG_ANZ"].ToString()) ? null : (int?)row["VG_ANZ"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -205,6 +231,12 @@ namespace SapORM.Models
 
 			public string VE_ERNAM { get; set; }
 
+			public string SAISON_KNZ { get; set; }
+
+			public string SAISON_BEG { get; set; }
+
+			public string SAISON_END { get; set; }
+
 			public static GT_VG_KOPF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_VG_KOPF
@@ -219,7 +251,7 @@ namespace SapORM.Models
 					REFERENZ1 = (string)row["REFERENZ1"],
 					REFERENZ2 = (string)row["REFERENZ2"],
 					KREISKZ = (string)row["KREISKZ"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					BEB_STATUS = (string)row["BEB_STATUS"],
 					EC_JN = (string)row["EC_JN"],
@@ -236,6 +268,9 @@ namespace SapORM.Models
 					TEL_NUMBER = (string)row["TEL_NUMBER"],
 					TEL_EXTENS = (string)row["TEL_EXTENS"],
 					VE_ERNAM = (string)row["VE_ERNAM"],
+					SAISON_KNZ = (string)row["SAISON_KNZ"],
+					SAISON_BEG = (string)row["SAISON_BEG"],
+					SAISON_END = (string)row["SAISON_END"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -363,7 +398,7 @@ namespace SapORM.Models
 					ZULPOSNR = (string)row["ZULPOSNR"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					GEB_AMT = (decimal?)row["GEB_AMT"],
+					GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
 					GEBMAT = (string)row["GEBMAT"],
 
 					SAPConnection = sapConnection,
@@ -471,31 +506,16 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_USER_GET_VG.GT_VGANZ> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_MOB_USER_GET_VG.GT_VG_KOPF> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_USER_GET_VG.GT_VG_KOPF> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_MOB_USER_GET_VG.GT_VG_POS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_USER_GET_VG.GT_VG_POS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

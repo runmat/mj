@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_ZULST_BY_PLZ).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_ORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORT", value);
+		}
+
+		public void SetImportParameter_I_PLZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PLZ", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class T_ORTE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -260,14 +281,14 @@ namespace SapORM.Models
 					ZTXT2 = (string)row["ZTXT2"],
 					ZTXT3 = (string)row["ZTXT3"],
 					ZHPAGE = (string)row["ZHPAGE"],
-					ZKFZBST = (decimal?)row["ZKFZBST"],
-					ZMARKTPTL = (decimal?)row["ZMARKTPTL"],
-					ZABSATZ = (decimal?)row["ZABSATZ"],
+					ZKFZBST = string.IsNullOrEmpty(row["ZKFZBST"].ToString()) ? null : (decimal?)row["ZKFZBST"],
+					ZMARKTPTL = string.IsNullOrEmpty(row["ZMARKTPTL"].ToString()) ? null : (decimal?)row["ZMARKTPTL"],
+					ZABSATZ = string.IsNullOrEmpty(row["ZABSATZ"].ToString()) ? null : (decimal?)row["ZABSATZ"],
 					ZLSSTATUS = (string)row["ZLSSTATUS"],
-					ZLSDATUM = (string.IsNullOrEmpty(row["ZLSDATUM"].ToString())) ? null : (DateTime?)row["ZLSDATUM"],
+					ZLSDATUM = string.IsNullOrEmpty(row["ZLSDATUM"].ToString()) ? null : (DateTime?)row["ZLSDATUM"],
 					LFB = (string)row["LFB"],
 					LIFNR_ABW = (string)row["LIFNR_ABW"],
-					ZEINWOHNER = (decimal?)row["ZEINWOHNER"],
+					ZEINWOHNER = string.IsNullOrEmpty(row["ZEINWOHNER"].ToString()) ? null : (decimal?)row["ZEINWOHNER"],
 					KREISKZ = (string)row["KREISKZ"],
 
 					SAPConnection = sapConnection,
@@ -375,20 +396,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ORTE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

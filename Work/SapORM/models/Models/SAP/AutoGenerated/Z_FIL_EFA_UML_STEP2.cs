@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_EFA_UML_STEP2).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public void SetImportParameter_I_BELNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BELNR", value);
+		}
+
+		public void SetImportParameter_I_BUDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_BUDAT", value);
+		}
+
+		public void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE");
+		}
+
+		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_OFF_UML_POS : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -58,9 +84,9 @@ namespace SapORM.Models
 					BELNR = (string)row["BELNR"],
 					POSNR = (string)row["POSNR"],
 					MATNR = (string)row["MATNR"],
-					MENGE = (decimal?)row["MENGE"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
 					MAKTX = (string)row["MAKTX"],
-					BUDAT = (string.IsNullOrEmpty(row["BUDAT"].ToString())) ? null : (DateTime?)row["BUDAT"],
+					BUDAT = string.IsNullOrEmpty(row["BUDAT"].ToString()) ? null : (DateTime?)row["BUDAT"],
 					EAN11 = (string)row["EAN11"],
 					TEXT = (string)row["TEXT"],
 					LTEXT_NR = (string)row["LTEXT_NR"],
@@ -169,11 +195,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_UML_STEP2.GT_OFF_UML_POS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_UML_STEP2.GT_OFF_UML_POS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
