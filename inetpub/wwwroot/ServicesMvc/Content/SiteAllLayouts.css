@@ -36,6 +36,9 @@
 .m-wrap.hasDatepicker {
     width: 180px;
 }
+.m-wrap.smaller {
+    width: 90px !important;
+}
 .m-wrap.xlarge {
     width: 520px !important;
 }

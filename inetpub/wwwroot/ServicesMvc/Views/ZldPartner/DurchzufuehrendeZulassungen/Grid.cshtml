@@ -23,12 +23,12 @@
         columns.XBound(c => c.ZulassungsDatum).Visible(!Model.EditMode);
         columns.XBound(c => c.ZulassungsDatum).Visible(Model.EditMode)
             .ClientTemplate(
-                Html.TextBox("ZulassungsDatum", "<#= data.ZulassungsDatum #>", new { @class = "m-wrap small", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','ZulassungsDatum',$(this).val());" }).ToHtmlString()
+                Html.TextBox("ZulassungsDatum", "<#= data.ZulassungsDatum #>", new { @class = "m-wrap smaller", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','ZulassungsDatum',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.Kennzeichen).Visible(!Model.EditMode);
         columns.XBound(c => c.Kennzeichen).Visible(Model.EditMode)
             .ClientTemplate(
-                Html.TextBox("Kennzeichen", "<#= data.Kennzeichen #>", new { @class = "m-wrap small uppercase", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Kennzeichen',$(this).val());" }).ToHtmlString()
+                Html.TextBox("Kennzeichen", "<#= data.Kennzeichen #>", new { @class = "m-wrap smaller uppercase", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Kennzeichen',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.Gebuehr).Visible(!Model.EditMode);
         columns.XBound(c => c.Gebuehr).Visible(Model.EditMode)
