@@ -38,7 +38,7 @@ else
                         postControlHtml:
                             @<text>
                                 <span id="divWkzLink">
-                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn white margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
+                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn reserve-button margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
                                 </span>
                             </text>)
 
