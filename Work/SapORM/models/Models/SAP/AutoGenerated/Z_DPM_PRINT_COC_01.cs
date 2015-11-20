@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_PDF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PDF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PDF", value);
 		}
 
-		public void SetImportParameter_I_SAP_PREVIEW(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SAP_PREVIEW(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SAP_PREVIEW", value);
 		}
 
-		public void SetImportParameter_I_VKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKZ", value);
 		}
 
-		public void SetImportParameter_I_VORG_NR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORG_NR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORG_NR", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
 		{
 			return sap.GetExportParameter<byte[]>("E_PDF");
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

@@ -22,52 +22,52 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AN", value);
 		}
 
-		public void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BD_NR", value);
 		}
 
-		public void SetImportParameter_I_BETREFF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BETREFF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BETREFF", value);
 		}
 
-		public void SetImportParameter_I_LTXNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LTXNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LTXNR", value);
 		}
 
-		public void SetImportParameter_I_UNAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_UNAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_UNAME", value);
 		}
 
-		public void SetImportParameter_I_VGART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VGART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VGART", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_ZERLDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZERLDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZERLDAT", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

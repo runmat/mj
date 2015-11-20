@@ -22,39 +22,39 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VBELN", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZULBELN", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
-		public string GetExportParameter_E_ZULBELN(ISapDataService sap)
+		public static string GetExportParameter_E_ZULBELN(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ZULBELN");
+			return sap.GetExportParameter<string>("E_ZULBELN").NotNullOrEmpty().Trim();
 		}
 	}
 

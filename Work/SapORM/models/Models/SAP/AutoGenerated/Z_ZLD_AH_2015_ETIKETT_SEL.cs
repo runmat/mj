@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_DELTA_LISTE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_DELTA_LISTE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_DELTA_LISTE", value);
 		}
 
-		public void SetImportParameter_I_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ID", value);
 		}
 
-		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNZ", value);
 		}
 
-		public void SetImportParameter_I_ZLDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZLDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZLDAT", value);
 		}

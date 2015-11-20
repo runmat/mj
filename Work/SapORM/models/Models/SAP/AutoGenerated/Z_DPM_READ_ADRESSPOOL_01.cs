@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME1", value);
 		}
 
-		public void SetImportParameter_I_NAME2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME2", value);
 		}
 
-		public void SetImportParameter_I_ORT01(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ORT01(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ORT01", value);
 		}
 
-		public void SetImportParameter_I_POS_TEXT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_POS_TEXT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_POS_TEXT", value);
 		}
 
-		public void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PSTLZ", value);
 		}
 
-		public void SetImportParameter_I_STRAS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STRAS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STRAS", value);
 		}

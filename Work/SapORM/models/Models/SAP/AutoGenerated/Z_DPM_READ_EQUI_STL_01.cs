@@ -22,29 +22,29 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_KOMP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KOMP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KOMP", value);
 		}
 
-		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STATUS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STATUS", value);
 		}
 
-		public string GetExportParameter_E_ESTL_LOGIK(ISapDataService sap)
+		public static string GetExportParameter_E_ESTL_LOGIK(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ESTL_LOGIK");
+			return sap.GetExportParameter<string>("E_ESTL_LOGIK").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_IN : IModelMappingApplied

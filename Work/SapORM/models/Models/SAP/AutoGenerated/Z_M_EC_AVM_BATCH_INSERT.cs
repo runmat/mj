@@ -22,7 +22,7 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_WEB_USER(ISapDataService sap, string value)
+		public static void SetImportParameter_WEB_USER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("WEB_USER", value);
 		}

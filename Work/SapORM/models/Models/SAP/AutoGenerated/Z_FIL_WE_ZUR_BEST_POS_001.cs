@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BLDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_BLDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_BLDAT", value);
 		}
 
-		public void SetImportParameter_I_EBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EBELN", value);
 		}
 
-		public void SetImportParameter_I_LFSNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LFSNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LFSNR", value);
 		}
 
-		public void SetImportParameter_I_LGORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LGORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LGORT", value);
 		}
 
-		public string GetExportParameter_E_BELNR(ISapDataService sap)
+		public static string GetExportParameter_E_BELNR(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BELNR");
+			return sap.GetExportParameter<string>("E_BELNR").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

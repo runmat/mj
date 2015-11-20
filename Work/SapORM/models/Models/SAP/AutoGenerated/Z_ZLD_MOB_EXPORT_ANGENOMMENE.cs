@@ -22,62 +22,62 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BLTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BLTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BLTYP", value);
 		}
 
-		public void SetImportParameter_I_DZLD_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_DZLD_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_DZLD_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_FLIEGER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FLIEGER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FLIEGER", value);
 		}
 
-		public void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_GRUPPE", value);
 		}
 
-		public void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KREISKZ", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIFNR", value);
 		}
 
-		public void SetImportParameter_I_MATNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MATNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MATNR", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZULBELN", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT", value);
 		}

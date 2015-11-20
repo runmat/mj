@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EVB2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EVB2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EVB2", value);
 		}
 
-		public void SetImportParameter_I_VSU_NR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VSU_NR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VSU_NR", value);
 		}

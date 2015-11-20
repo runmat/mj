@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}

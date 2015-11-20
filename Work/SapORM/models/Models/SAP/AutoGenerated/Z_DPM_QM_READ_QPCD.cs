@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_CODEGRUPPE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CODEGRUPPE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CODEGRUPPE", value);
 		}
 
-		public void SetImportParameter_I_KATALOGART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KATALOGART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KATALOGART", value);
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

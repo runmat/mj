@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_AUART(ISapDataService sap, string value)
+		public static void SetImportParameter_AUART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("AUART", value);
 		}
 
-		public void SetImportParameter_AUGRU(ISapDataService sap, string value)
+		public static void SetImportParameter_AUGRU(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("AUGRU", value);
 		}
 
-		public void SetImportParameter_CHECK_SEND2(ISapDataService sap, string value)
+		public static void SetImportParameter_CHECK_SEND2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("CHECK_SEND2", value);
 		}
 
-		public void SetImportParameter_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNNR_AG", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

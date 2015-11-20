@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_DATAB(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DATAB(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DATAB", value);
 		}
 
-		public void SetImportParameter_I_DATBI(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DATBI(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DATBI", value);
 		}
 
-		public void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIFNR", value);
 		}
 
-		public string GetExportParameter_E_DATAB_TXT(ISapDataService sap)
+		public static string GetExportParameter_E_DATAB_TXT(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_DATAB_TXT");
+			return sap.GetExportParameter<string>("E_DATAB_TXT").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_DATBI_TXT(ISapDataService sap)
+		public static string GetExportParameter_E_DATBI_TXT(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_DATBI_TXT");
+			return sap.GetExportParameter<string>("E_DATBI_TXT").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_RANKING_COUNT(ISapDataService sap)
+		public static int? GetExportParameter_E_RANKING_COUNT(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_RANKING_COUNT");
 		}

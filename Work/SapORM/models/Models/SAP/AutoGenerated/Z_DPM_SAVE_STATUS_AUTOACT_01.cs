@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AUTOACT_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUTOACT_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUTOACT_ID", value);
 		}
 
-		public void SetImportParameter_I_BELEGNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BELEGNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BELEGNR", value);
 		}
 
-		public void SetImportParameter_I_RUECK_AUTOACT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_RUECK_AUTOACT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_RUECK_AUTOACT", value);
 		}
 
-		public void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STATUS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STATUS", value);
 		}

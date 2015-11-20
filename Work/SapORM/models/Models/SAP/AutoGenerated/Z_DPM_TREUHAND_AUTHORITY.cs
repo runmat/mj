@@ -22,52 +22,52 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EMAIL", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_TG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_TG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_TG", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_TN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_TN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_TN", value);
 		}
 
-		public void SetImportParameter_I_NAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME", value);
 		}
 
-		public void SetImportParameter_I_VORNA(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORNA(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORNA", value);
 		}
 
-		public string GetExportParameter_E_ENTSPERREN(ISapDataService sap)
+		public static string GetExportParameter_E_ENTSPERREN(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ENTSPERREN");
+			return sap.GetExportParameter<string>("E_ENTSPERREN").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_FREIGABE(ISapDataService sap)
+		public static string GetExportParameter_E_FREIGABE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_FREIGABE");
+			return sap.GetExportParameter<string>("E_FREIGABE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_SPERREN(ISapDataService sap)
+		public static string GetExportParameter_E_SPERREN(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_SPERREN");
+			return sap.GetExportParameter<string>("E_SPERREN").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

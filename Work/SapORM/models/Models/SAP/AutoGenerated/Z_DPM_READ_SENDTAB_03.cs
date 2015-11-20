@@ -22,57 +22,57 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_CHECK_TRACK(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHECK_TRACK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHECK_TRACK", value);
 		}
 
-		public void SetImportParameter_I_POOLGROUP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_POOLGROUP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_POOLGROUP", value);
 		}
 
-		public void SetImportParameter_I_POOLNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_POOLNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_POOLNR", value);
 		}
 
-		public void SetImportParameter_I_TRACK(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TRACK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TRACK", value);
 		}
 
-		public void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZBRIEF", value);
 		}
 
-		public void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZKENN", value);
 		}
 
-		public void SetImportParameter_I_ZZLSDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZLSDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZLSDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZLSDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZLSDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZLSDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_ZZREFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR", value);
 		}

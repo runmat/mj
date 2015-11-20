@@ -22,24 +22,24 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_MODELID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MODELID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MODELID", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static string GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_SUBRC");
+			return sap.GetExportParameter<string>("E_SUBRC").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_OUT : IModelMappingApplied

@@ -22,52 +22,52 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AKTION", value);
 		}
 
-		public void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EMAIL", value);
 		}
 
-		public void SetImportParameter_I_FREIGABEDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_FREIGABEDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_FREIGABEDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_FREIGABEDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_FREIGABEDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_FREIGABEDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_NAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME", value);
 		}
 
-		public void SetImportParameter_I_TREU(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TREU(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TREU", value);
 		}
 
-		public void SetImportParameter_I_VORNA(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORNA(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORNA", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

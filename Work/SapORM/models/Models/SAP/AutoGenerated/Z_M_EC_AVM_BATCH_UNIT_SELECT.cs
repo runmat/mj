@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BATCH_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BATCH_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BATCH_ID", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}

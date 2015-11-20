@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AENDERUNG_ANGENOMMENE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AENDERUNG_ANGENOMMENE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AENDERUNG_ANGENOMMENE", value);
 		}
 
-		public void SetImportParameter_I_AH_ANNAHME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AH_ANNAHME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AH_ANNAHME", value);
 		}
 
-		public void SetImportParameter_I_SOFORTABRECHNUNG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SOFORTABRECHNUNG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SOFORTABRECHNUNG", value);
 		}

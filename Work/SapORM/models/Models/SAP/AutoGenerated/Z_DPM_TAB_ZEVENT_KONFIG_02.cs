@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AKTION", value);
 		}
 
-		public void SetImportParameter_I_EVENT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EVENT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EVENT", value);
 		}
 
-		public void SetImportParameter_I_EVENT_ORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EVENT_ORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EVENT_ORT", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}

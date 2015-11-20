@@ -22,82 +22,82 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_GRUPPE", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LISTE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LISTE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LISTE", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZKENN", value);
 		}
 
-		public void SetImportParameter_I_ZZREFNR1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFNR1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR1", value);
 		}
 
-		public void SetImportParameter_I_ZZREFNR2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFNR2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR2", value);
 		}
 
-		public void SetImportParameter_I_ZZREFNR3(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFNR3(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR3", value);
 		}
 
-		public void SetImportParameter_I_ZZREFNR4(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFNR4(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR4", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT_VON", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

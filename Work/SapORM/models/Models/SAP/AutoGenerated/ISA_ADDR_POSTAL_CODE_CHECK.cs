@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_COUNTRY(ISapDataService sap, string value)
+		public static void SetImportParameter_COUNTRY(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("COUNTRY", value);
 		}
 
-		public void SetImportParameter_POSTAL_CODE_CITY(ISapDataService sap, string value)
+		public static void SetImportParameter_POSTAL_CODE_CITY(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("POSTAL_CODE_CITY", value);
 		}
 
-		public void SetImportParameter_POSTAL_CODE_COMPANY(ISapDataService sap, string value)
+		public static void SetImportParameter_POSTAL_CODE_COMPANY(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("POSTAL_CODE_COMPANY", value);
 		}
 
-		public void SetImportParameter_POSTAL_CODE_PO_BOX(ISapDataService sap, string value)
+		public static void SetImportParameter_POSTAL_CODE_PO_BOX(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("POSTAL_CODE_PO_BOX", value);
 		}
 
-		public void SetImportParameter_PO_BOX(ISapDataService sap, string value)
+		public static void SetImportParameter_PO_BOX(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("PO_BOX", value);
 		}
 
-		public void SetImportParameter_REGION(ISapDataService sap, string value)
+		public static void SetImportParameter_REGION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("REGION", value);
 		}

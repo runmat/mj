@@ -22,64 +22,64 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ADATUM_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ADATUM_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ADATUM_BIS", value);
 		}
 
-		public void SetImportParameter_I_ADATUM_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ADATUM_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ADATUM_VON", value);
 		}
 
-		public void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AKTION", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_ERL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ERL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ERL", value);
 		}
 
-		public void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRG", value);
 		}
 
-		public void SetImportParameter_I_KLAERF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KLAERF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KLAERF", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_OFFEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_OFFEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_OFFEN", value);
 		}
 
-		public void SetImportParameter_I_REFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_REFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_REFNR", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ADRESS : IModelMappingApplied

@@ -22,27 +22,27 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ZZCARPORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZCARPORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZCARPORT", value);
 		}
 
-		public void SetImportParameter_I_ZZDATBEM(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZDATBEM(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZDATBEM", value);
 		}
 
-		public void SetImportParameter_ZZCARPORT(ISapDataService sap, string value)
+		public static void SetImportParameter_ZZCARPORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZZCARPORT", value);
 		}
 
-		public void SetImportParameter_ZZKUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_ZZKUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZZKUNNR", value);
 		}
 
-		public void SetImportParameter_ZZQMNUM(ISapDataService sap, string value)
+		public static void SetImportParameter_ZZQMNUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZZQMNUM", value);
 		}

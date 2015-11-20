@@ -22,77 +22,77 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABMDT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMDT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMDT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ABMDT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMDT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMDT_VON", value);
 		}
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_ERNAM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ERNAM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ERNAM", value);
 		}
 
-		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LICENSE_NUM", value);
 		}
 
-		public void SetImportParameter_I_MAHNSTUFE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MAHNSTUFE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MAHNSTUFE", value);
 		}
 
-		public void SetImportParameter_I_MIT_ABM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MIT_ABM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MIT_ABM", value);
 		}
 
-		public void SetImportParameter_I_OHNE_ABM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_OHNE_ABM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_OHNE_ABM", value);
 		}
 
-		public void SetImportParameter_I_STATION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STATION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STATION", value);
 		}
 
-		public void SetImportParameter_I_STORNO(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STORNO(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STORNO", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

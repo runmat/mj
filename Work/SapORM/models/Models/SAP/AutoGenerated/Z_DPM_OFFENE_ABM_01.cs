@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRG", value);
 		}
 
-		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNZ", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_SCHEIN_FEHLT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SCHEIN_FEHLT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SCHEIN_FEHLT", value);
 		}
 
-		public void SetImportParameter_I_SCHILD_FEHLT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SCHILD_FEHLT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SCHILD_FEHLT", value);
 		}

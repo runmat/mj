@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_STORNODATUM(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_STORNODATUM(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_STORNODATUM", value);
 		}
 
-		public void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORG_NR_ABM_AUF", value);
 		}
 
-		public string GetExportParameter_E_ERF_VERS_ADR(ISapDataService sap)
+		public static string GetExportParameter_E_ERF_VERS_ADR(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ERF_VERS_ADR");
+			return sap.GetExportParameter<string>("E_ERF_VERS_ADR").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_FAHRG(ISapDataService sap)
+		public static string GetExportParameter_E_FAHRG(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_FAHRG");
+			return sap.GetExportParameter<string>("E_FAHRG").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

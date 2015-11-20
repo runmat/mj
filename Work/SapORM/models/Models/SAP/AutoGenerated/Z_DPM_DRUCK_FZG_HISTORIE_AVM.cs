@@ -22,67 +22,67 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_DEST(ISapDataService sap, string value)
+		public static void SetImportParameter_I_DEST(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_DEST", value);
 		}
 
-		public void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQUNR", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LICENSE_NUM", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_QMNUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_QMNUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_QMNUM", value);
 		}
 
-		public void SetImportParameter_I_REFERENZ1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_REFERENZ1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_REFERENZ1", value);
 		}
 
-		public void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TIDNR", value);
 		}
 
-		public int? GetExportParameter_E_COUNTER(ISapDataService sap)
+		public static int? GetExportParameter_E_COUNTER(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_COUNTER");
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
 		{
 			return sap.GetExportParameter<byte[]>("E_PDF");
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

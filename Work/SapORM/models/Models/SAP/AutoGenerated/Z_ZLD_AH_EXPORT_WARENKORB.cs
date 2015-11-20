@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AUFRUF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUFRUF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUFRUF", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_WEBGOUP_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_WEBGOUP_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_WEBGOUP_ID", value);
 		}
 
-		public void SetImportParameter_I_WEBUSER_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_WEBUSER_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_WEBUSER_ID", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

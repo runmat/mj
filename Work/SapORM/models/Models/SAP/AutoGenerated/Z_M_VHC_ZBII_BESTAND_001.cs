@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_KNRZE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KNRZE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KNRZE", value);
 		}
 
-		public void SetImportParameter_I_KONZS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KONZS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KONZS", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public void SetImportParameter_I_ZB2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZB2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZB2", value);
 		}
 
-		public void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFERENZ1", value);
 		}

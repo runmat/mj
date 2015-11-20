@@ -22,57 +22,57 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ERDAT_EQUI_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_EQUI_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_EQUI_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_EQUI_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_EQUI_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_EQUI_VON", value);
 		}
 
-		public void SetImportParameter_I_HERST_T(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HERST_T(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HERST_T", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REPLA_DATE_BIS", value);
 		}
 
-		public void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REPLA_DATE_VON", value);
 		}
 
-		public void SetImportParameter_I_SELECT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SELECT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SELECT", value);
 		}
 
-		public void SetImportParameter_I_ZZDAT_BER_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZDAT_BER_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZDAT_BER_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZDAT_BER_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZDAT_BER_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZDAT_BER_VON", value);
 		}
 
-		public void SetImportParameter_I_ZZDAT_EIN_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZDAT_EIN_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZDAT_EIN_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZDAT_EIN_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZDAT_EIN_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZDAT_EIN_VON", value);
 		}

@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABWEICHUNG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABWEICHUNG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABWEICHUNG", value);
 		}
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}

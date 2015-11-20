@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_DDLANGUAGE(ISapDataService sap, string value)
+		public static void SetImportParameter_DDLANGUAGE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("DDLANGUAGE", value);
 		}
 
-		public void SetImportParameter_DOMNAME(ISapDataService sap, string value)
+		public static void SetImportParameter_DOMNAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("DOMNAME", value);
 		}
 
-		public void SetImportParameter_SORTIEREN(ISapDataService sap, string value)
+		public static void SetImportParameter_SORTIEREN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("SORTIEREN", value);
 		}

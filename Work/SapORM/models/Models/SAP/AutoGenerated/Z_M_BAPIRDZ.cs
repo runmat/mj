@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_INAME1(ISapDataService sap, string value)
+		public static void SetImportParameter_INAME1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("INAME1", value);
 		}
 
-		public void SetImportParameter_IPOST_CODE1(ISapDataService sap, string value)
+		public static void SetImportParameter_IPOST_CODE1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("IPOST_CODE1", value);
 		}
 
-		public void SetImportParameter_IREMARK(ISapDataService sap, string value)
+		public static void SetImportParameter_IREMARK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("IREMARK", value);
 		}
 
-		public void SetImportParameter_IZKFZKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_IZKFZKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("IZKFZKZ", value);
 		}

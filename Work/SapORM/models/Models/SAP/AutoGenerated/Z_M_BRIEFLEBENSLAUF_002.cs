@@ -22,49 +22,49 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQUNR", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_MVA_NUMMER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MVA_NUMMER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MVA_NUMMER", value);
 		}
 
-		public void SetImportParameter_I_PROD_KENNZIFFER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PROD_KENNZIFFER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PROD_KENNZIFFER", value);
 		}
 
-		public void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZBRIEF", value);
 		}
 
-		public void SetImportParameter_I_ZZFAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZFAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZFAHRG", value);
 		}
 
-		public void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZKENN", value);
 		}
 
-		public void SetImportParameter_I_ZZREF1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREF1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREF1", value);
 		}
 
-		public string GetExportParameter_E_MULTI_EQUI(ISapDataService sap)
+		public static string GetExportParameter_E_MULTI_EQUI(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MULTI_EQUI");
+			return sap.GetExportParameter<string>("E_MULTI_EQUI").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ADDR : IModelMappingApplied

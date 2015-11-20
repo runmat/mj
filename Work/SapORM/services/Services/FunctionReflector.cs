@@ -118,7 +118,7 @@ namespace SapORM.Services
             if (isImport)
             {
                 sw.WriteLine();
-                sw.WriteLine("\t\tpublic void SetImportParameter_{0}(ISapDataService sap, {1} value)", item.Name, item.TypeAsString);
+                sw.WriteLine("\t\tpublic static void SetImportParameter_{0}(ISapDataService sap, {1} value)", item.Name, item.TypeAsString);
                 sw.WriteLine("\t\t{");
                 sw.WriteLine("\t\t\tsap.SetImportParameter(\"{0}\", value);", item.Name);
                 sw.WriteLine("\t\t}");
@@ -127,9 +127,9 @@ namespace SapORM.Services
             if (isExport)
             {
                 sw.WriteLine();
-                sw.WriteLine("\t\tpublic {0} GetExportParameter_{1}(ISapDataService sap)", item.TypeAsString, item.Name);
+                sw.WriteLine("\t\tpublic static {0} GetExportParameter_{1}(ISapDataService sap)", item.TypeAsString, item.Name);
                 sw.WriteLine("\t\t{");
-                sw.WriteLine("\t\t\treturn sap.GetExportParameter<{0}>(\"{1}\");", item.TypeAsString, item.Name);
+                sw.WriteLine("\t\t\treturn sap.GetExportParameter<{0}>(\"{1}\"){2};", item.TypeAsString, item.Name, (item.TypeAsString == "string" ? ".NotNullOrEmpty().Trim()" : ""));
                 sw.WriteLine("\t\t}");
             }
         }

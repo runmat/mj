@@ -22,52 +22,52 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AUSGABE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUSGABE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUSGABE", value);
 		}
 
-		public void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KREISKZ_BIS", value);
 		}
 
-		public void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KREISKZ_VON", value);
 		}
 
-		public void SetImportParameter_I_SORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SORT", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_ZDELTA(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZDELTA(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZDELTA", value);
 		}
 
-		public void SetImportParameter_I_ZGESAMT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZGESAMT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZGESAMT", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT", value);
 		}
 
-		public string GetExportParameter_E_FILENAME(ISapDataService sap)
+		public static string GetExportParameter_E_FILENAME(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_FILENAME");
+			return sap.GetExportParameter<string>("E_FILENAME").NotNullOrEmpty().Trim();
 		}
 
-		public byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
 		{
 			return sap.GetExportParameter<byte[]>("E_PDF");
 		}

@@ -22,67 +22,67 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABMART_KLAER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABMART_KLAER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABMART_KLAER", value);
 		}
 
-		public void SetImportParameter_I_ABMART_STD(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABMART_STD(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABMART_STD", value);
 		}
 
-		public void SetImportParameter_I_ANLAGE_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ANLAGE_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ANLAGE_BIS", value);
 		}
 
-		public void SetImportParameter_I_ANLAGE_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ANLAGE_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ANLAGE_VON", value);
 		}
 
-		public void SetImportParameter_I_ERLEDIGT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERLEDIGT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERLEDIGT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERLEDIGT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERLEDIGT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERLEDIGT_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_SELEKTION1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SELEKTION1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SELEKTION1", value);
 		}
 
-		public void SetImportParameter_I_SELEKTION2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SELEKTION2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SELEKTION2", value);
 		}
 
-		public void SetImportParameter_I_SELEKTION3(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SELEKTION3(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SELEKTION3", value);
 		}
 
-		public void SetImportParameter_I_ZEIT_IN_WERKTAGEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZEIT_IN_WERKTAGEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZEIT_IN_WERKTAGEN", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZBRIEF", value);
 		}
 
-		public void SetImportParameter_I_ZZFAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZFAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZFAHRG", value);
 		}
 
-		public void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZKENN", value);
 		}
 
-		public void SetImportParameter_I_ZZREF1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREF1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREF1", value);
 		}
 
-		public int? GetExportParameter_E_COUNTER(ISapDataService sap)
+		public static int? GetExportParameter_E_COUNTER(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_COUNTER");
 		}

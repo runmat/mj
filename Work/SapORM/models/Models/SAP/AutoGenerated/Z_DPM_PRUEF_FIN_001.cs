@@ -22,24 +22,24 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FGNU(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FGNU(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FGNU", value);
 		}
 
-		public void SetImportParameter_I_FGPZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FGPZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FGPZ", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_STATUS(ISapDataService sap)
+		public static string GetExportParameter_E_STATUS(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_STATUS");
+			return sap.GetExportParameter<string>("E_STATUS").NotNullOrEmpty().Trim();
 		}
 	}
 

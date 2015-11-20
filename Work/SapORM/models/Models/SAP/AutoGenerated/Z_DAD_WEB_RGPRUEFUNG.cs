@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AUSLIDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_AUSLIDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_AUSLIDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_AUSLIDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_AUSLIDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_AUSLIDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_RECHNUNGSNUMMERN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_RECHNUNGSNUMMERN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_RECHNUNGSNUMMERN", value);
 		}
 
-		public void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFERENZ1", value);
 		}

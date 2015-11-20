@@ -22,54 +22,54 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BEG_DATE(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_BEG_DATE(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_BEG_DATE", value);
 		}
 
-		public void SetImportParameter_I_END_DATE(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_END_DATE(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_END_DATE", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public decimal? GetExportParameter_E_BEG_SALDO(ISapDataService sap)
+		public static decimal? GetExportParameter_E_BEG_SALDO(ISapDataService sap)
 		{
 			return sap.GetExportParameter<decimal?>("E_BEG_SALDO");
 		}
 
-		public decimal? GetExportParameter_E_END_SALDO(ISapDataService sap)
+		public static decimal? GetExportParameter_E_END_SALDO(ISapDataService sap)
 		{
 			return sap.GetExportParameter<decimal?>("E_END_SALDO");
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
-		public decimal? GetExportParameter_E_SUM_AUS(ISapDataService sap)
+		public static decimal? GetExportParameter_E_SUM_AUS(ISapDataService sap)
 		{
 			return sap.GetExportParameter<decimal?>("E_SUM_AUS");
 		}
 
-		public decimal? GetExportParameter_E_SUM_EIN(ISapDataService sap)
+		public static decimal? GetExportParameter_E_SUM_EIN(ISapDataService sap)
 		{
 			return sap.GetExportParameter<decimal?>("E_SUM_EIN");
 		}
 
-		public string GetExportParameter_E_WAERS(ISapDataService sap)
+		public static string GetExportParameter_E_WAERS(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_WAERS");
+			return sap.GetExportParameter<string>("E_WAERS").NotNullOrEmpty().Trim();
 		}
 	}
 

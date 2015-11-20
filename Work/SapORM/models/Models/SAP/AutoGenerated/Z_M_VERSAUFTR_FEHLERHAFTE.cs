@@ -22,27 +22,27 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_FLAG_VERS(ISapDataService sap, string value)
+		public static void SetImportParameter_FLAG_VERS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("FLAG_VERS", value);
 		}
 
-		public void SetImportParameter_FLAG_VERS_SPERR(ISapDataService sap, string value)
+		public static void SetImportParameter_FLAG_VERS_SPERR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("FLAG_VERS_SPERR", value);
 		}
 
-		public void SetImportParameter_I_BEAUFTR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BEAUFTR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BEAUFTR", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_TREUGEBER_VERS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TREUGEBER_VERS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TREUGEBER_VERS", value);
 		}

@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_AUGRU(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUGRU(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUGRU", value);
 		}
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_NUR_KLAERFAELLE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_KLAERFAELLE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_KLAERFAELLE", value);
 		}
 
-		public void SetImportParameter_I_NUR_OFFENE_UK(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_OFFENE_UK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_OFFENE_UK", value);
 		}
 
-		public void SetImportParameter_I_VDATU_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_VDATU_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_VDATU_BIS", value);
 		}
 
-		public void SetImportParameter_I_VDATU_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_VDATU_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_VDATU_VON", value);
 		}

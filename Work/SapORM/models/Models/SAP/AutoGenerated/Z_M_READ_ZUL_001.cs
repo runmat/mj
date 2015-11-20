@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_DAT_FREIS_ZUL_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_FREIS_ZUL_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_FREIS_ZUL_BIS", value);
 		}
 
-		public void SetImportParameter_I_DAT_FREIS_ZUL_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_FREIS_ZUL_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_FREIS_ZUL_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_VERWENDUNGSZWECK(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERWENDUNGSZWECK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERWENDUNGSZWECK", value);
 		}
 
-		public void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULDAT_VON", value);
 		}

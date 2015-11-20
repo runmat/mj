@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ARC_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ARC_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ARC_ID", value);
 		}
 
-		public void SetImportParameter_I_DOC_ID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_DOC_ID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_DOC_ID", value);
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
-		public byte[] GetExportParameter_E_XSTRING(ISapDataService sap)
+		public static byte[] GetExportParameter_E_XSTRING(ISapDataService sap)
 		{
 			return sap.GetExportParameter<byte[]>("E_XSTRING");
 		}

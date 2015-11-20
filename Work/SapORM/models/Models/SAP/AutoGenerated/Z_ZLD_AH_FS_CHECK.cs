@@ -22,29 +22,29 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_CODE_AUFBAU(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CODE_AUFBAU(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CODE_AUFBAU", value);
 		}
 
-		public void SetImportParameter_I_CODE_KRAFTSTOFF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CODE_KRAFTSTOFF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CODE_KRAFTSTOFF", value);
 		}
 
-		public void SetImportParameter_I_FAHRZEUGKLASSE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRZEUGKLASSE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRZEUGKLASSE", value);
 		}
 
-		public void SetImportParameter_I_SLD2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SLD2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SLD2", value);
 		}
 
-		public string GetExportParameter_E_PLAKART(ISapDataService sap)
+		public static string GetExportParameter_E_PLAKART(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_PLAKART");
+			return sap.GetExportParameter<string>("E_PLAKART").NotNullOrEmpty().Trim();
 		}
 	}
 

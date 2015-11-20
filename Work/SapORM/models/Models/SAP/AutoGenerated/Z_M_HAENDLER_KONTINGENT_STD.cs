@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HAENDLER_EX", value);
 		}

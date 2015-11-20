@@ -22,72 +22,72 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABTEILUNG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABTEILUNG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABTEILUNG", value);
 		}
 
-		public void SetImportParameter_I_ABT_LEITER_NAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABT_LEITER_NAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABT_LEITER_NAME", value);
 		}
 
-		public void SetImportParameter_I_ABT_LEITER_VNAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABT_LEITER_VNAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABT_LEITER_VNAME", value);
 		}
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_BETRIEB(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BETRIEB(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BETRIEB", value);
 		}
 
-		public void SetImportParameter_I_DAT_ABM_AUFTR_AB(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ABM_AUFTR_AB(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ABM_AUFTR_AB", value);
 		}
 
-		public void SetImportParameter_I_DAT_ABM_AUFTR_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ABM_AUFTR_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ABM_AUFTR_BIS", value);
 		}
 
-		public void SetImportParameter_I_EXPIRY_DATE_AB(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EXPIRY_DATE_AB(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EXPIRY_DATE_AB", value);
 		}
 
-		public void SetImportParameter_I_EXPIRY_DATE_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EXPIRY_DATE_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EXPIRY_DATE_BIS", value);
 		}
 
-		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN", value);
 		}
 
-		public void SetImportParameter_I_FIN_10(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN_10(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN_10", value);
 		}
 
-		public void SetImportParameter_I_KOSTST(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KOSTST(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KOSTST", value);
 		}
 
-		public void SetImportParameter_I_STATUS_NUR_KF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STATUS_NUR_KF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STATUS_NUR_KF", value);
 		}
 
-		public void SetImportParameter_I_ZIELORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZIELORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZIELORT", value);
 		}

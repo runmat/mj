@@ -22,7 +22,7 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNNR", value);
 		}

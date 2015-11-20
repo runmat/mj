@@ -22,87 +22,87 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_ANZAHL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ANZAHL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ANZAHL", value);
 		}
 
-		public void SetImportParameter_I_LFD_NR_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LFD_NR_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LFD_NR_BIS", value);
 		}
 
-		public void SetImportParameter_I_LFD_NR_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LFD_NR_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LFD_NR_VON", value);
 		}
 
-		public void SetImportParameter_I_SOLL_DATUM_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_SOLL_DATUM_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_SOLL_DATUM_BIS", value);
 		}
 
-		public void SetImportParameter_I_SOLL_DATUM_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_SOLL_DATUM_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_SOLL_DATUM_VON", value);
 		}
 
-		public void SetImportParameter_I_SOLL_ZEIT_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SOLL_ZEIT_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SOLL_ZEIT_BIS", value);
 		}
 
-		public void SetImportParameter_I_SOLL_ZEIT_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SOLL_ZEIT_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SOLL_ZEIT_VON", value);
 		}
 
-		public void SetImportParameter_I_STARTDATUM_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_STARTDATUM_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_STARTDATUM_BIS", value);
 		}
 
-		public void SetImportParameter_I_STARTDATUM_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_STARTDATUM_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_STARTDATUM_VON", value);
 		}
 
-		public void SetImportParameter_I_TODO_WER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TODO_WER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TODO_WER", value);
 		}
 
-		public void SetImportParameter_I_VORG_NR_ABM_AUF_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORG_NR_ABM_AUF_BIS", value);
 		}
 
-		public void SetImportParameter_I_VORG_NR_ABM_AUF_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORG_NR_ABM_AUF_VON", value);
 		}
 
-		public void SetImportParameter_I_WFSTATUS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_WFSTATUS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_WFSTATUS", value);
 		}
 
-		public void SetImportParameter_I_ZUSER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZUSER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZUSER", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

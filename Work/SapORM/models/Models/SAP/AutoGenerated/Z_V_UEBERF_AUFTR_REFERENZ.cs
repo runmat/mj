@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_AUFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_AUFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("AUFNR", value);
 		}
 
-		public void SetImportParameter_REFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_REFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("REFNR", value);
 		}

@@ -22,77 +22,77 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABGEARB(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABGEARB(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABGEARB", value);
 		}
 
-		public void SetImportParameter_I_FAHRGNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRGNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRGNR", value);
 		}
 
-		public void SetImportParameter_I_LEIST_CODE_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LEIST_CODE_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LEIST_CODE_BIS", value);
 		}
 
-		public void SetImportParameter_I_LEIST_CODE_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LEIST_CODE_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LEIST_CODE_VON", value);
 		}
 
-		public void SetImportParameter_I_LEIST_DATE_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_LEIST_DATE_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_LEIST_DATE_BIS", value);
 		}
 
-		public void SetImportParameter_I_LEIST_DATE_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_LEIST_DATE_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_LEIST_DATE_VON", value);
 		}
 
-		public void SetImportParameter_I_NUR_OHNE_GRUNDDAT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_OHNE_GRUNDDAT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_OHNE_GRUNDDAT", value);
 		}
 
-		public void SetImportParameter_I_RECH_NR_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_RECH_NR_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_RECH_NR_BIS", value);
 		}
 
-		public void SetImportParameter_I_RECH_NR_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_RECH_NR_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_RECH_NR_VON", value);
 		}
 
-		public void SetImportParameter_I_REDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_REDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_SEL_ART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SEL_ART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SEL_ART", value);
 		}
 
-		public void SetImportParameter_I_SPEDI(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SPEDI(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SPEDI", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

@@ -22,59 +22,59 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ADATUM(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ADATUM(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ADATUM", value);
 		}
 
-		public void SetImportParameter_I_ERDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT", value);
 		}
 
-		public void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRG", value);
 		}
 
-		public void SetImportParameter_I_KLAERF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KLAERF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KLAERF", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_NUR_OHNE_DAT_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_OHNE_DAT_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_OHNE_DAT_EMAIL", value);
 		}
 
-		public void SetImportParameter_I_ORDERID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ORDERID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ORDERID", value);
 		}
 
-		public void SetImportParameter_I_REFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_REFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_REFNR", value);
 		}
 
-		public void SetImportParameter_I_UPDATE_DB(ISapDataService sap, string value)
+		public static void SetImportParameter_I_UPDATE_DB(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_UPDATE_DB", value);
 		}
 
-		public void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VBELN", value);
 		}
 
-		public string GetExportParameter_FLAG_FOUND(ISapDataService sap)
+		public static string GetExportParameter_FLAG_FOUND(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("FLAG_FOUND");
+			return sap.GetExportParameter<string>("FLAG_FOUND").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ARVAL : IModelMappingApplied

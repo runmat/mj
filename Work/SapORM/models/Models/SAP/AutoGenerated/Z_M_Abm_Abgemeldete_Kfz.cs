@@ -22,49 +22,49 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_ABMDATAB(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ABMDATAB(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ABMDATAB", value);
 		}
 
-		public void SetImportParameter_ABMDATBI(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ABMDATBI(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ABMDATBI", value);
 		}
 
-		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNNR", value);
 		}
 
-		public void SetImportParameter_PICKDATAB(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_PICKDATAB(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("PICKDATAB", value);
 		}
 
-		public void SetImportParameter_PICKDATBI(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_PICKDATBI(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("PICKDATBI", value);
 		}
 
-		public void SetImportParameter_TIDNR(ISapDataService sap, string value)
+		public static void SetImportParameter_TIDNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("TIDNR", value);
 		}
 
-		public void SetImportParameter_ZFAHRG(ISapDataService sap, string value)
+		public static void SetImportParameter_ZFAHRG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZFAHRG", value);
 		}
 
-		public void SetImportParameter_ZZKENN(ISapDataService sap, string value)
+		public static void SetImportParameter_ZZKENN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZZKENN", value);
 		}
 
-		public string GetExportParameter_ANZAHL(ISapDataService sap)
+		public static string GetExportParameter_ANZAHL(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("ANZAHL");
+			return sap.GetExportParameter<string>("ANZAHL").NotNullOrEmpty().Trim();
 		}
 
 		public partial class AUSGABE : IModelMappingApplied

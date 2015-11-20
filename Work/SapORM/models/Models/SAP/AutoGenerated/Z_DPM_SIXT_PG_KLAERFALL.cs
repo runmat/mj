@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_ANNAHME(ISapDataService sap, string value)
+		public static void SetImportParameter_ANNAHME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ANNAHME", value);
 		}
 
-		public void SetImportParameter_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("EMAIL", value);
 		}
 
-		public void SetImportParameter_KLAERFALL(ISapDataService sap, string value)
+		public static void SetImportParameter_KLAERFALL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KLAERFALL", value);
 		}
 
-		public void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_KUNUM(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNUM", value);
 		}
 
-		public void SetImportParameter_LVTNR(ISapDataService sap, string value)
+		public static void SetImportParameter_LVTNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("LVTNR", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

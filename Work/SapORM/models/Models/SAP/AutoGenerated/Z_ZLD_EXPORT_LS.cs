@@ -22,47 +22,47 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_GRUPPE", value);
 		}
 
-		public void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KREISKZ_BIS", value);
 		}
 
-		public void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KREISKZ_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_BIS", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_VON", value);
 		}
 
-		public void SetImportParameter_I_LS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LS", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZZLDAT_VON", value);
 		}

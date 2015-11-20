@@ -22,62 +22,62 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABCKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABCKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABCKZ", value);
 		}
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_DAT_ABM_AUFTR_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ABM_AUFTR_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ABM_AUFTR_BIS", value);
 		}
 
-		public void SetImportParameter_I_DAT_ABM_AUFTR_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ABM_AUFTR_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ABM_AUFTR_VON", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_NUR_ABGEM_FZG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_ABGEM_FZG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_ABGEM_FZG", value);
 		}
 
-		public void SetImportParameter_I_NUR_UNZUGEL_FZG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_UNZUGEL_FZG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_UNZUGEL_FZG", value);
 		}
 
-		public void SetImportParameter_I_NUR_ZUGEL_FZG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_ZUGEL_FZG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_ZUGEL_FZG", value);
 		}
 
-		public void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REPLA_DATE_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REPLA_DATE_BIS", value);
 		}
 
-		public void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_REPLA_DATE_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_REPLA_DATE_VON", value);
 		}
 
-		public void SetImportParameter_I_SUMMEN_BILDEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SUMMEN_BILDEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SUMMEN_BILDEN", value);
 		}

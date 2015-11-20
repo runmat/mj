@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_COMP_CODE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_COMP_CODE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_COMP_CODE", value);
 		}
 
-		public void SetImportParameter_I_DATUM(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DATUM(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DATUM", value);
 		}
 
-		public DateTime? GetExportParameter_E_FDAY(ISapDataService sap)
+		public static DateTime? GetExportParameter_E_FDAY(ISapDataService sap)
 		{
 			return sap.GetExportParameter<DateTime?>("E_FDAY");
 		}
 
-		public DateTime? GetExportParameter_E_LDAY(ISapDataService sap)
+		public static DateTime? GetExportParameter_E_LDAY(ISapDataService sap)
 		{
 			return sap.GetExportParameter<DateTime?>("E_LDAY");
 		}

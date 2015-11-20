@@ -22,72 +22,72 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABMAUF_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMAUF_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMAUF_BIS", value);
 		}
 
-		public void SetImportParameter_I_ABMAUF_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMAUF_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMAUF_VON", value);
 		}
 
-		public void SetImportParameter_I_ABMDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ABMDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_ABMELD(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ABMELD(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ABMELD", value);
 		}
 
-		public void SetImportParameter_I_ALLE_VERSF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ALLE_VERSF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ALLE_VERSF", value);
 		}
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_2", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_ZP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_ZP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_ZP", value);
 		}
 
-		public void SetImportParameter_I_PARVW_2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PARVW_2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PARVW_2", value);
 		}
 
-		public void SetImportParameter_I_RESTLAUFZEIT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_RESTLAUFZEIT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_RESTLAUFZEIT", value);
 		}
 
-		public void SetImportParameter_I_ZULASS_DAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULASS_DAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULASS_DAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZULASS_DAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULASS_DAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULASS_DAT_VON", value);
 		}

@@ -22,67 +22,67 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_KONTONR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KONTONR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KONTONR", value);
 		}
 
-		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LICENSE_NUM", value);
 		}
 
-		public void SetImportParameter_I_MAHNSTUFEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MAHNSTUFEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MAHNSTUFEN", value);
 		}
 
-		public void SetImportParameter_I_MATNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MATNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MATNR", value);
 		}
 
-		public void SetImportParameter_I_MIT_MAHNSPERRE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MIT_MAHNSPERRE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MIT_MAHNSPERRE", value);
 		}
 
-		public void SetImportParameter_I_NUR_OFFENE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NUR_OFFENE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NUR_OFFENE", value);
 		}
 
-		public void SetImportParameter_I_OHNE_GESPERRTE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_OHNE_GESPERRTE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_OHNE_GESPERRTE", value);
 		}
 
-		public void SetImportParameter_I_PAID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PAID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PAID", value);
 		}
 
-		public void SetImportParameter_I_STOPDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_STOPDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_STOPDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_STOPDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_STOPDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_STOPDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZULDAT_VON", value);
 		}

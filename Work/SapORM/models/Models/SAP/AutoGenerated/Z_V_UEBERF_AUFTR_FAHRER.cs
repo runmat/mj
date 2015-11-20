@@ -22,34 +22,34 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRER", value);
 		}
 
-		public string GetExportParameter_CITY1(ISapDataService sap)
+		public static string GetExportParameter_CITY1(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("CITY1");
+			return sap.GetExportParameter<string>("CITY1").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_FAHRER(ISapDataService sap)
+		public static string GetExportParameter_E_FAHRER(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_FAHRER");
+			return sap.GetExportParameter<string>("E_FAHRER").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_NAME1(ISapDataService sap)
+		public static string GetExportParameter_NAME1(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("NAME1");
+			return sap.GetExportParameter<string>("NAME1").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_PSTCD1(ISapDataService sap)
+		public static string GetExportParameter_PSTCD1(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("PSTCD1");
+			return sap.GetExportParameter<string>("PSTCD1").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_STREET(ISapDataService sap)
+		public static string GetExportParameter_STREET(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("STREET");
+			return sap.GetExportParameter<string>("STREET").NotNullOrEmpty().Trim();
 		}
 
 		public partial class T_AUFTRAEGE : IModelMappingApplied

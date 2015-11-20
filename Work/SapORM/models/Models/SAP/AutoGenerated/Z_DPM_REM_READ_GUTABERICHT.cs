@@ -22,92 +22,92 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AVNR_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AVNR_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AVNR_BIS", value);
 		}
 
-		public void SetImportParameter_I_AVNR_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AVNR_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AVNR_VON", value);
 		}
 
-		public void SetImportParameter_I_DAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_DAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_VON", value);
 		}
 
-		public void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EMAIL", value);
 		}
 
-		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN", value);
 		}
 
-		public void SetImportParameter_I_HC_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HC_BIS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HC_BIS", value);
 		}
 
-		public void SetImportParameter_I_HC_VON(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HC_VON(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HC_VON", value);
 		}
 
-		public void SetImportParameter_I_INVENT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_INVENT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_INVENT", value);
 		}
 
-		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNZ", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_VJAHR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VJAHR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VJAHR", value);
 		}
 
-		public void SetImportParameter_I_WERTAV_BIS(ISapDataService sap, decimal? value)
+		public static void SetImportParameter_I_WERTAV_BIS(ISapDataService sap, decimal? value)
 		{
 			sap.SetImportParameter("I_WERTAV_BIS", value);
 		}
 
-		public void SetImportParameter_I_WERTAV_VON(ISapDataService sap, decimal? value)
+		public static void SetImportParameter_I_WERTAV_VON(ISapDataService sap, decimal? value)
 		{
 			sap.SetImportParameter("I_WERTAV_VON", value);
 		}
 
-		public void SetImportParameter_I_WERTMIN_BIS(ISapDataService sap, decimal? value)
+		public static void SetImportParameter_I_WERTMIN_BIS(ISapDataService sap, decimal? value)
 		{
 			sap.SetImportParameter("I_WERTMIN_BIS", value);
 		}
 
-		public void SetImportParameter_I_WERTMIN_VON(ISapDataService sap, decimal? value)
+		public static void SetImportParameter_I_WERTMIN_VON(ISapDataService sap, decimal? value)
 		{
 			sap.SetImportParameter("I_WERTMIN_VON", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

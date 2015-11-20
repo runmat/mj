@@ -22,54 +22,54 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BD_NR", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public string GetExportParameter_E_BD_NAME(ISapDataService sap)
+		public static string GetExportParameter_E_BD_NAME(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BD_NAME");
+			return sap.GetExportParameter<string>("E_BD_NAME").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_BEZEI(ISapDataService sap)
+		public static string GetExportParameter_E_BEZEI(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BEZEI");
+			return sap.GetExportParameter<string>("E_BEZEI").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_ROLLE(ISapDataService sap)
+		public static string GetExportParameter_E_ROLLE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ROLLE");
+			return sap.GetExportParameter<string>("E_ROLLE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_ROLLE_PA(ISapDataService sap)
+		public static string GetExportParameter_E_ROLLE_PA(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ROLLE_PA");
+			return sap.GetExportParameter<string>("E_ROLLE_PA").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
-		public string GetExportParameter_E_UNAME(ISapDataService sap)
+		public static string GetExportParameter_E_UNAME(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_UNAME");
+			return sap.GetExportParameter<string>("E_UNAME").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_UNAME_PA(ISapDataService sap)
+		public static string GetExportParameter_E_UNAME_PA(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_UNAME_PA");
+			return sap.GetExportParameter<string>("E_UNAME_PA").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ROLLE_VGART : IModelMappingApplied

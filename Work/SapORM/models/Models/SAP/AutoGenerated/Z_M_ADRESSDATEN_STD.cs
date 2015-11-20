@@ -22,52 +22,52 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_ALL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ALL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ALL", value);
 		}
 
-		public void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HAENDLER_EX", value);
 		}
 
-		public void SetImportParameter_I_HDGRP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HDGRP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HDGRP", value);
 		}
 
-		public void SetImportParameter_I_KONTINGENT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KONTINGENT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KONTINGENT", value);
 		}
 
-		public void SetImportParameter_I_MAX(ISapDataService sap, int? value)
+		public static void SetImportParameter_I_MAX(ISapDataService sap, int? value)
 		{
 			sap.SetImportParameter("I_MAX", value);
 		}
 
-		public void SetImportParameter_I_NAME(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME", value);
 		}
 
-		public void SetImportParameter_I_ORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ORT", value);
 		}
 
-		public void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PSTLZ", value);
 		}
 
-		public int? GetExportParameter_E_REC_ANZ(ISapDataService sap)
+		public static int? GetExportParameter_E_REC_ANZ(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_REC_ANZ");
 		}

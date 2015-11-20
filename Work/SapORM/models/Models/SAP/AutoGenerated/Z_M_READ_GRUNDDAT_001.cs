@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EING_DAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EING_DAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EING_DAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_EING_DAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EING_DAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EING_DAT_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_ZUGELASSEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZUGELASSEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZUGELASSEN", value);
 		}

@@ -22,19 +22,19 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKORG", value);
 		}
 
-		public string GetExportParameter_E_ZLD(ISapDataService sap)
+		public static string GetExportParameter_E_ZLD(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ZLD");
+			return sap.GetExportParameter<string>("E_ZLD").NotNullOrEmpty().Trim();
 		}
 	}
 

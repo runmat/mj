@@ -22,9 +22,9 @@ namespace SapORM.Models
 		}
 
 
-		public string GetExportParameter_E_VORGANG(ISapDataService sap)
+		public static string GetExportParameter_E_VORGANG(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_VORGANG");
+			return sap.GetExportParameter<string>("E_VORGANG").NotNullOrEmpty().Trim();
 		}
 	}
 

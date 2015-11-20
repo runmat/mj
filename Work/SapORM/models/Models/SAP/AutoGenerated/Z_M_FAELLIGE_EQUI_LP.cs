@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FAELLIGKEIT(ISapDataService sap, int? value)
+		public static void SetImportParameter_I_FAELLIGKEIT(ISapDataService sap, int? value)
 		{
 			sap.SetImportParameter("I_FAELLIGKEIT", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}

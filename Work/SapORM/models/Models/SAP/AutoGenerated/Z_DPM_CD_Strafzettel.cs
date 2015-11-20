@@ -22,57 +22,57 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_DATBEHO_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DATBEHO_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DATBEHO_BIS", value);
 		}
 
-		public void SetImportParameter_I_DATBEHO_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DATBEHO_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DATBEHO_VON", value);
 		}
 
-		public void SetImportParameter_I_EINGDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EINGDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EINGDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_EINGDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_EINGDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_EINGDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_FIN10(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN10(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN10", value);
 		}
 
-		public void SetImportParameter_I_FIN17(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN17(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN17", value);
 		}
 
-		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNZ", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_NAME1_AMT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME1_AMT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME1_AMT", value);
 		}
 
-		public void SetImportParameter_I_PLZCODE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PLZCODE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PLZCODE", value);
 		}
 
-		public void SetImportParameter_I_VERTRAGS_NR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERTRAGS_NR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERTRAGS_NR", value);
 		}

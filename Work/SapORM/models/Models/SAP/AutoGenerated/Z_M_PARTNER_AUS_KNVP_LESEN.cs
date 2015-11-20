@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_EIKTO(ISapDataService sap, string value)
+		public static void SetImportParameter_EIKTO(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("EIKTO", value);
 		}
 
-		public void SetImportParameter_GRUPPE(ISapDataService sap, string value)
+		public static void SetImportParameter_GRUPPE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("GRUPPE", value);
 		}
 
-		public void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KUNNR", value);
 		}

@@ -22,47 +22,47 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_MAXROWS(ISapDataService sap, int? value)
+		public static void SetImportParameter_I_MAXROWS(ISapDataService sap, int? value)
 		{
 			sap.SetImportParameter("I_MAXROWS", value);
 		}
 
-		public void SetImportParameter_I_TYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TYP", value);
 		}
 
-		public void SetImportParameter_I_VARIANTE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VARIANTE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VARIANTE", value);
 		}
 
-		public void SetImportParameter_I_VERKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERKZ", value);
 		}
 
-		public void SetImportParameter_I_VERSION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERSION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERSION", value);
 		}
 
-		public void SetImportParameter_I_VORLAGE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORLAGE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORLAGE", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

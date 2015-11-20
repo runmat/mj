@@ -22,64 +22,64 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_IBAN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_IBAN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_IBAN", value);
 		}
 
-		public string GetExportParameter_E_BANKA(ISapDataService sap)
+		public static string GetExportParameter_E_BANKA(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BANKA");
+			return sap.GetExportParameter<string>("E_BANKA").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_BANK_ACCOUNT(ISapDataService sap)
+		public static string GetExportParameter_E_BANK_ACCOUNT(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BANK_ACCOUNT");
+			return sap.GetExportParameter<string>("E_BANK_ACCOUNT").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_BANK_CONTROL_KEY(ISapDataService sap)
+		public static string GetExportParameter_E_BANK_CONTROL_KEY(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BANK_CONTROL_KEY");
+			return sap.GetExportParameter<string>("E_BANK_CONTROL_KEY").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_BANK_COUNTRY(ISapDataService sap)
+		public static string GetExportParameter_E_BANK_COUNTRY(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BANK_COUNTRY");
+			return sap.GetExportParameter<string>("E_BANK_COUNTRY").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_BANK_NUMBER(ISapDataService sap)
+		public static string GetExportParameter_E_BANK_NUMBER(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_BANK_NUMBER");
+			return sap.GetExportParameter<string>("E_BANK_NUMBER").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_ORT01(ISapDataService sap)
+		public static string GetExportParameter_E_ORT01(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_ORT01");
+			return sap.GetExportParameter<string>("E_ORT01").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_PROVZ(ISapDataService sap)
+		public static string GetExportParameter_E_PROVZ(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_PROVZ");
+			return sap.GetExportParameter<string>("E_PROVZ").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_STRAS(ISapDataService sap)
+		public static string GetExportParameter_E_STRAS(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_STRAS");
+			return sap.GetExportParameter<string>("E_STRAS").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
-		public string GetExportParameter_E_SWIFT(ISapDataService sap)
+		public static string GetExportParameter_E_SWIFT(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_SWIFT");
+			return sap.GetExportParameter<string>("E_SWIFT").NotNullOrEmpty().Trim();
 		}
 	}
 

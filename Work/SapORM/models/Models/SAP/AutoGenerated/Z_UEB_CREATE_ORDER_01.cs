@@ -22,47 +22,47 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("AG", value);
 		}
 
-		public void SetImportParameter_EMAIL_WEB_USER(ISapDataService sap, string value)
+		public static void SetImportParameter_EMAIL_WEB_USER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("EMAIL_WEB_USER", value);
 		}
 
-		public void SetImportParameter_INFO_ZUM_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_INFO_ZUM_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("INFO_ZUM_AG", value);
 		}
 
-		public void SetImportParameter_LIFSK(ISapDataService sap, string value)
+		public static void SetImportParameter_LIFSK(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("LIFSK", value);
 		}
 
-		public void SetImportParameter_MATVKTXT(ISapDataService sap, string value)
+		public static void SetImportParameter_MATVKTXT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("MATVKTXT", value);
 		}
 
-		public void SetImportParameter_RE(ISapDataService sap, string value)
+		public static void SetImportParameter_RE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("RE", value);
 		}
 
-		public void SetImportParameter_RG(ISapDataService sap, string value)
+		public static void SetImportParameter_RG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("RG", value);
 		}
 
-		public void SetImportParameter_WEB_USER(ISapDataService sap, string value)
+		public static void SetImportParameter_WEB_USER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("WEB_USER", value);
 		}
 
-		public void SetImportParameter_ZVERBVBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_ZVERBVBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZVERBVBELN", value);
 		}

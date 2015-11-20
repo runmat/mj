@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KONTONR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KONTONR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KONTONR", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_PAID(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PAID(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PAID", value);
 		}

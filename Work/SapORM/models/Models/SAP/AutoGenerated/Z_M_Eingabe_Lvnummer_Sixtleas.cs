@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_LF_EQUNR(ISapDataService sap, string value)
+		public static void SetImportParameter_LF_EQUNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("LF_EQUNR", value);
 		}
 
-		public void SetImportParameter_LF_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_LF_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("LF_KUNNR", value);
 		}
 
-		public void SetImportParameter_LF_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_LF_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("LF_LIZNR", value);
 		}
 
-		public int? GetExportParameter_LF_RETURN(ISapDataService sap)
+		public static int? GetExportParameter_LF_RETURN(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("LF_RETURN");
 		}

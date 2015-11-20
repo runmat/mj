@@ -22,14 +22,14 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRER", value);
 		}
 
-		public string GetExportParameter_O_MELDUNG(ISapDataService sap)
+		public static string GetExportParameter_O_MELDUNG(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("O_MELDUNG");
+			return sap.GetExportParameter<string>("O_MELDUNG").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_FAHRER : IModelMappingApplied

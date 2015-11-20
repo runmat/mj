@@ -22,12 +22,12 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FAHRER_STATUS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FAHRER_STATUS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FAHRER_STATUS", value);
 		}
 
-		public void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VBELN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VBELN", value);
 		}

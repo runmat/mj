@@ -22,24 +22,24 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_GUTA(ISapDataService sap, string value)
+		public static void SetImportParameter_I_GUTA(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_GUTA", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_VERWERT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERWERT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERWERT", value);
 		}
 
-		public string GetExportParameter_E_SEND(ISapDataService sap)
+		public static string GetExportParameter_E_SEND(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_SEND");
+			return sap.GetExportParameter<string>("E_SEND").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_IN : IModelMappingApplied

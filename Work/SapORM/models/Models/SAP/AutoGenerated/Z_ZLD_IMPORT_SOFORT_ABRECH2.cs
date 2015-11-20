@@ -22,9 +22,9 @@ namespace SapORM.Models
 		}
 
 
-		public string GetExportParameter_G_SA_PFAD(ISapDataService sap)
+		public static string GetExportParameter_G_SA_PFAD(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("G_SA_PFAD");
+			return sap.GetExportParameter<string>("G_SA_PFAD").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_EX_ERRORS : IModelMappingApplied

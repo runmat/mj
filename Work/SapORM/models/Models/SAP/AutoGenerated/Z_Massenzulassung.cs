@@ -22,14 +22,14 @@ namespace SapORM.Models
 		}
 
 
-		public string GetExportParameter_ANZAHL(ISapDataService sap)
+		public static string GetExportParameter_ANZAHL(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("ANZAHL");
+			return sap.GetExportParameter<string>("ANZAHL").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_RETURN(ISapDataService sap)
+		public static string GetExportParameter_RETURN(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("RETURN");
+			return sap.GetExportParameter<string>("RETURN").NotNullOrEmpty().Trim();
 		}
 
 		public partial class INTERNTAB : IModelMappingApplied

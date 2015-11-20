@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_PROZESSNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PROZESSNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PROZESSNR", value);
 		}
 
-		public void SetImportParameter_I_SCHADEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SCHADEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SCHADEN", value);
 		}
 
-		public void SetImportParameter_I_SPRAS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SPRAS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SPRAS", value);
 		}

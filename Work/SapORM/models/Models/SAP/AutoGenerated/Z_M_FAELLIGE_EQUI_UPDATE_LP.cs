@@ -22,22 +22,22 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQUNR", value);
 		}
 
-		public void SetImportParameter_I_FALLIG_VERLAENGERN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FALLIG_VERLAENGERN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FALLIG_VERLAENGERN", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_TEXT200(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TEXT200(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TEXT200", value);
 		}

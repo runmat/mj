@@ -22,67 +22,67 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_ABMDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ABMDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ABMDAT", value);
 		}
 
-		public void SetImportParameter_I_AKTZULDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_AKTZULDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_AKTZULDAT", value);
 		}
 
-		public void SetImportParameter_I_BRIEFBESTAND(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BRIEFBESTAND(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BRIEFBESTAND", value);
 		}
 
-		public void SetImportParameter_I_BRIEFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BRIEFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BRIEFNR", value);
 		}
 
-		public void SetImportParameter_I_COCVORHANDEN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_COCVORHANDEN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_COCVORHANDEN", value);
 		}
 
-		public void SetImportParameter_I_ERSTZULDAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ERSTZULDAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ERSTZULDAT", value);
 		}
 
-		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN", value);
 		}
 
-		public void SetImportParameter_I_HALTER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HALTER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HALTER", value);
 		}
 
-		public void SetImportParameter_I_KAEUFER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KAEUFER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KAEUFER", value);
 		}
 
-		public void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNZ", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LGORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LGORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LGORT", value);
 		}
 
-		public void SetImportParameter_I_STANDORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_STANDORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_STANDORT", value);
 		}

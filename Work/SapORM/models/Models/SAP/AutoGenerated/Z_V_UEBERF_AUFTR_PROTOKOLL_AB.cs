@@ -22,64 +22,64 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_ABHOL_DAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ABHOL_DAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ABHOL_DAT", value);
 		}
 
-		public void SetImportParameter_ABHOL_ZEIT(ISapDataService sap, string value)
+		public static void SetImportParameter_ABHOL_ZEIT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ABHOL_ZEIT", value);
 		}
 
-		public void SetImportParameter_AUFNR(ISapDataService sap, string value)
+		public static void SetImportParameter_AUFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("AUFNR", value);
 		}
 
-		public void SetImportParameter_FAHRTNR(ISapDataService sap, string value)
+		public static void SetImportParameter_FAHRTNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("FAHRTNR", value);
 		}
 
-		public void SetImportParameter_IUG_ZEIT(ISapDataService sap, string value)
+		public static void SetImportParameter_IUG_ZEIT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("IUG_ZEIT", value);
 		}
 
-		public void SetImportParameter_KMSTAND(ISapDataService sap, string value)
+		public static void SetImportParameter_KMSTAND(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("KMSTAND", value);
 		}
 
-		public void SetImportParameter_UEBERGABE_DAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_UEBERGABE_DAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("UEBERGABE_DAT", value);
 		}
 
-		public void SetImportParameter_UNTERSCHR_VORH(ISapDataService sap, string value)
+		public static void SetImportParameter_UNTERSCHR_VORH(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("UNTERSCHR_VORH", value);
 		}
 
-		public void SetImportParameter_VERARBEITUNG(ISapDataService sap, string value)
+		public static void SetImportParameter_VERARBEITUNG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("VERARBEITUNG", value);
 		}
 
-		public void SetImportParameter_WADAT_IST(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_WADAT_IST(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("WADAT_IST", value);
 		}
 
-		public void SetImportParameter_ZZKATEGORIE(ISapDataService sap, string value)
+		public static void SetImportParameter_ZZKATEGORIE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("ZZKATEGORIE", value);
 		}
 
-		public string GetExportParameter_UPDATE(ISapDataService sap)
+		public static string GetExportParameter_UPDATE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("UPDATE");
+			return sap.GetExportParameter<string>("UPDATE").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_IMP_QM : IModelMappingApplied

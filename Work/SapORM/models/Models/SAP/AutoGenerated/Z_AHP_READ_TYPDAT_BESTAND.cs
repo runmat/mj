@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_PRUEF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PRUEF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PRUEF", value);
 		}
 
-		public void SetImportParameter_I_ZZHERSTELLER_SCH(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZHERSTELLER_SCH(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZHERSTELLER_SCH", value);
 		}
 
-		public void SetImportParameter_I_ZZTYP_SCHL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZTYP_SCHL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZTYP_SCHL", value);
 		}
 
-		public void SetImportParameter_I_ZZVVS_SCHLUESSEL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZVVS_SCHLUESSEL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZVVS_SCHLUESSEL", value);
 		}

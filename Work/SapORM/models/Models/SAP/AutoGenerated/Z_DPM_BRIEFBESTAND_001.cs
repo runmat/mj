@@ -22,27 +22,27 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_BESTAND(ISapDataService sap, string value)
+		public static void SetImportParameter_I_BESTAND(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_BESTAND", value);
 		}
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_TEMPVERS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TEMPVERS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TEMPVERS", value);
 		}
 
-		public void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFERENZ1", value);
 		}

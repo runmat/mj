@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_HERSTNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_HERSTNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HERSTNR", value);
 		}
 
-		public void SetImportParameter_ZUL_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ZUL_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ZUL_BIS", value);
 		}
 
-		public void SetImportParameter_ZUL_DAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_ZUL_DAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("ZUL_DAT", value);
 		}

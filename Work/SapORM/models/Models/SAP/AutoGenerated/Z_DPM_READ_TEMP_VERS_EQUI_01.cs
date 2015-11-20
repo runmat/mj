@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LICENSE_NUM", value);
 		}
 
-		public void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LIZNR", value);
 		}
 
-		public void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TIDNR", value);
 		}

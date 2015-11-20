@@ -22,34 +22,34 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_ANRUFART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ANRUFART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ANRUFART", value);
 		}
 
-		public void SetImportParameter_I_ANRUFDATUM_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ANRUFDATUM_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ANRUFDATUM_BIS", value);
 		}
 
-		public void SetImportParameter_I_ANRUFDATUM_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ANRUFDATUM_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ANRUFDATUM_VON", value);
 		}
 
-		public void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZVERT_ART", value);
 		}
 
-		public string GetExportParameter_E_FOUND(ISapDataService sap)
+		public static string GetExportParameter_E_FOUND(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_FOUND");
+			return sap.GetExportParameter<string>("E_FOUND").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_OUT : IModelMappingApplied

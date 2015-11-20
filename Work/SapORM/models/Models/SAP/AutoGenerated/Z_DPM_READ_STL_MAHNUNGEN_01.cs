@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_CHASSIS_NUM", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_ZZMADAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZMADAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZMADAT", value);
 		}
 
-		public void SetImportParameter_I_ZZMAHNS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZMAHNS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZMAHNS", value);
 		}
 
-		public void SetImportParameter_I_ZZMANSP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZZMANSP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZMANSP", value);
 		}
 
-		public void SetImportParameter_I_ZZTMPDT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZTMPDT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZTMPDT_BIS", value);
 		}
 
-		public void SetImportParameter_I_ZZTMPDT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_ZZTMPDT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_ZZTMPDT_VON", value);
 		}

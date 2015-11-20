@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_DAT_ANGEL_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ANGEL_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ANGEL_BIS", value);
 		}
 
-		public void SetImportParameter_I_DAT_ANGEL_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_ANGEL_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_ANGEL_VON", value);
 		}
 
-		public void SetImportParameter_I_DAT_VERSAUFTR_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_VERSAUFTR_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_VERSAUFTR_BIS", value);
 		}
 
-		public void SetImportParameter_I_DAT_VERSAUFTR_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DAT_VERSAUFTR_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DAT_VERSAUFTR_VON", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_BEIM_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_BEIM_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_BEIM_AG", value);
 		}
 
-		public void SetImportParameter_I_VERSANDART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERSANDART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERSANDART", value);
 		}
 
-		public void SetImportParameter_I_VERT_ART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERT_ART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERT_ART", value);
 		}

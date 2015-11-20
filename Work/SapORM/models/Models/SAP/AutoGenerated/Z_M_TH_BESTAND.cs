@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EQTYP", value);
 		}
 
-		public void SetImportParameter_I_SPD_TAGESDAT_MINUS_TAGE(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SPD_TAGESDAT_MINUS_TAGE(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SPD_TAGESDAT_MINUS_TAGE", value);
 		}
 
-		public void SetImportParameter_I_SPERRDAT_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_SPERRDAT_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_SPERRDAT_BIS", value);
 		}
 
-		public void SetImportParameter_I_SPERRDAT_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_SPERRDAT_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_SPERRDAT_VON", value);
 		}
 
-		public void SetImportParameter_I_TG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_TG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_TG", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

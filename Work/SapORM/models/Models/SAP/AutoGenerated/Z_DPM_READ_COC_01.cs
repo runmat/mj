@@ -22,47 +22,47 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AKTION", value);
 		}
 
-		public void SetImportParameter_I_AUFTRAG_DAT(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_AUFTRAG_DAT(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_AUFTRAG_DAT", value);
 		}
 
-		public void SetImportParameter_I_AUFTRAG_DAT_INIT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUFTRAG_DAT_INIT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUFTRAG_DAT_INIT", value);
 		}
 
-		public void SetImportParameter_I_AUFTR_NR_KD(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUFTR_NR_KD(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AUFTR_NR_KD", value);
 		}
 
-		public void SetImportParameter_I_AUSLIEFER_DATUM(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_AUSLIEFER_DATUM(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_AUSLIEFER_DATUM", value);
 		}
 
-		public void SetImportParameter_I_DRU_DATUM_BIS(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DRU_DATUM_BIS(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DRU_DATUM_BIS", value);
 		}
 
-		public void SetImportParameter_I_DRU_DATUM_VON(ISapDataService sap, DateTime? value)
+		public static void SetImportParameter_I_DRU_DATUM_VON(ISapDataService sap, DateTime? value)
 		{
 			sap.SetImportParameter("I_DRU_DATUM_VON", value);
 		}
 
-		public void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FIN", value);
 		}

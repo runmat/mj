@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KENNUNG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KENNUNG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KENNUNG", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_LAND1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_LAND1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_LAND1", value);
 		}
 
-		public void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME1", value);
 		}
 
-		public void SetImportParameter_I_ORT01(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ORT01(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ORT01", value);
 		}
 
-		public void SetImportParameter_I_POS_KURZTEXT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_POS_KURZTEXT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_POS_KURZTEXT", value);
 		}
 
-		public void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PSTLZ", value);
 		}

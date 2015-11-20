@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_E_DOC(ISapDataService sap, byte[] value)
+		public static void SetImportParameter_E_DOC(ISapDataService sap, byte[] value)
 		{
 			sap.SetImportParameter("E_DOC", value);
 		}
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_SET_TODO(ISapDataService sap, string value)
+		public static void SetImportParameter_I_SET_TODO(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SET_TODO", value);
 		}
 
-		public void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VORG_NR_ABM_AUF", value);
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

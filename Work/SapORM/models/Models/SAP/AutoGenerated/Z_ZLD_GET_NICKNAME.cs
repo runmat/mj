@@ -22,42 +22,42 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public string GetExportParameter_E_EXTENSION1(ISapDataService sap)
+		public static string GetExportParameter_E_EXTENSION1(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_EXTENSION1");
+			return sap.GetExportParameter<string>("E_EXTENSION1").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_MESSAGE");
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_NAME1(ISapDataService sap)
+		public static string GetExportParameter_E_NAME1(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_NAME1");
+			return sap.GetExportParameter<string>("E_NAME1").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_NAME2(ISapDataService sap)
+		public static string GetExportParameter_E_NAME2(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_NAME2");
+			return sap.GetExportParameter<string>("E_NAME2").NotNullOrEmpty().Trim();
 		}
 
-		public string GetExportParameter_E_NICK_NAME(ISapDataService sap)
+		public static string GetExportParameter_E_NICK_NAME(ISapDataService sap)
 		{
-			return sap.GetExportParameter<string>("E_NICK_NAME");
+			return sap.GetExportParameter<string>("E_NICK_NAME").NotNullOrEmpty().Trim();
 		}
 
-		public int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
 		{
 			return sap.GetExportParameter<int?>("E_SUBRC");
 		}

@@ -22,32 +22,32 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_MAHNSTUFE1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MAHNSTUFE1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MAHNSTUFE1", value);
 		}
 
-		public void SetImportParameter_I_MAHNSTUFE2(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MAHNSTUFE2(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MAHNSTUFE2", value);
 		}
 
-		public void SetImportParameter_I_MAHNSTUFE3(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MAHNSTUFE3(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MAHNSTUFE3", value);
 		}
 
-		public void SetImportParameter_I_MASPER_GES(ISapDataService sap, string value)
+		public static void SetImportParameter_I_MASPER_GES(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MASPER_GES", value);
 		}
 
-		public void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZVERT_ART", value);
 		}

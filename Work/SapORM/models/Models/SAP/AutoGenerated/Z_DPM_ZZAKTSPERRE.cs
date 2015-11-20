@@ -22,17 +22,17 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_AG", value);
 		}
 
-		public void SetImportParameter_I_VERKZ(ISapDataService sap, string value)
+		public static void SetImportParameter_I_VERKZ(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VERKZ", value);
 		}
 
-		public void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_WEB_USER", value);
 		}

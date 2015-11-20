@@ -22,37 +22,37 @@ namespace SapORM.Models
 		}
 
 
-		public void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_EMAIL", value);
 		}
 
-		public void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR", value);
 		}
 
-		public void SetImportParameter_I_KUNNR_PARVW(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNR_PARVW(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KUNNR_PARVW", value);
 		}
 
-		public void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_NAME1", value);
 		}
 
-		public void SetImportParameter_I_ORT(ISapDataService sap, string value)
+		public static void SetImportParameter_I_ORT(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ORT", value);
 		}
 
-		public void SetImportParameter_I_PARTART(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PARTART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PARTART", value);
 		}
 
-		public void SetImportParameter_I_PLZNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_PLZNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_PLZNR", value);
 		}
