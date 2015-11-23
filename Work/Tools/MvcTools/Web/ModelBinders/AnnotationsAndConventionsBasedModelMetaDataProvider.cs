@@ -18,6 +18,22 @@ namespace MvcTools.Web
             if (string.IsNullOrEmpty(propertyName))
                 return result;
 
+            var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+            var validTranslationFound = false;
+            if (customerConfigurationProvider != null)
+            {
+                var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+                if (partialViewUrl != null)
+                {
+                    var key = string.Format("{0} - {1} - {2}", partialViewUrl, containerType.Name, propertyName);
+                    var translationValue = TranslationService.GetTranslation(key);
+
+                    validTranslationFound = (translationValue.IsNotNullOrEmpty() && key != translationValue);
+                    if (validTranslationFound)
+                        result.DisplayName = translationValue;
+                }
+            }
+
             // Via Reflection das LocalizedDisplayAttribute finden, Property ResourceID einlesen
             var localizedDisplayAttribute = containerType.GetAttributeFrom<LocalizedDisplayAttribute>(propertyName);
 
@@ -25,17 +41,20 @@ namespace MvcTools.Web
             if (localizedDisplayAttribute == null)
                 return result;
 
-            // Auf die gecachten Resourcen zugreifen und die Übersetzung ermitteln
-            if (localizedDisplayAttribute.Suffix == null)
-                result.DisplayName = TranslationService.GetTranslation(localizedDisplayAttribute.DisplayName);    
-            else
-                result.DisplayName = string.Concat(TranslationService.GetTranslation(localizedDisplayAttribute.DisplayName), " ", localizedDisplayAttribute.Suffix.ToString());    
+            if (!validTranslationFound)
+            {
+                // Auf die gecachten Resourcen zugreifen und die Übersetzung ermitteln
+                if (localizedDisplayAttribute.Suffix == null)
+                    result.DisplayName = TranslationService.GetTranslation(localizedDisplayAttribute.ResourceID);
+                else
+                    result.DisplayName = string.Concat(TranslationService.GetTranslation(localizedDisplayAttribute.ResourceID), " ", localizedDisplayAttribute.Suffix.ToString());
+            }
 
             if (string.IsNullOrEmpty(result.DisplayFormatString))
-                result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.DisplayName);
+                result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.ResourceID);
 
             // Auf die gecachten Resourcen zugreifen und die Übersetzung und Format ermitteln
-            result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.DisplayName);
+            result.DisplayFormatString = TranslationService.GetFormat(localizedDisplayAttribute.ResourceID);
 
             return result;
         }
