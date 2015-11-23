@@ -45,6 +45,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void LoadHistoryAuftraege()
         {
+            HistoryAuftragSelector.KundenNr = LogonContext.KundenNr.ToSapKunnr();
+            HistoryAuftragSelector.KundenNrUser = LogonContext.KundenNr.ToSapKunnr();
+
             if (IstKroschke && !String.IsNullOrEmpty(HistoryAuftragSelector.AgKundenNr))
                 HistoryAuftragSelector.KundenNr = HistoryAuftragSelector.AgKundenNr;
 

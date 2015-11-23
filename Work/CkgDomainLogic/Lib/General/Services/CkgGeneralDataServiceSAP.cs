@@ -178,7 +178,7 @@ namespace CkgDomainLogic.General.Services
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = LogonContext.Organization.OrganizationReference;
+            var orgRef = LogonContext.Organization == null ? "" : LogonContext.Organization.OrganizationReference;
 
             if (!String.IsNullOrEmpty(orgRef))
             {

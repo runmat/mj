@@ -5,6 +5,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
+    [GridColumnsAutoPersist]
     public class ZulassungsReportModel
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]

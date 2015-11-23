@@ -48,7 +48,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.Validate(ModelState.AddModelError);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !PersistableMode)
             {
                 ViewModel.LoadZulassungsReport(ModelState.AddModelError);
                 if (ViewModel.Items.None())
@@ -56,7 +56,8 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ViewData.Add("KundenList", ViewModel.Kunden);
-            return PartialView("Partial/Suche", ViewModel.Selektor);
+
+            return PersistablePartialView("Partial/Suche", ViewModel.Selektor);
         }
 
         [HttpPost]

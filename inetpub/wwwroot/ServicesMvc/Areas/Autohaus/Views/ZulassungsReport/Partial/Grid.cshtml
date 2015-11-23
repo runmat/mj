@@ -18,7 +18,7 @@
                     "   <a class='btn mini gray tooltips' " +
                     "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DokumentName #>' ><i class='icon-download-alt'></i></a> " +
                     "<# } #> "
-                ).Title("").Sortable(false).Filterable(false);
+                ).Title("Aktion").Sortable(false).Filterable(false);
             columns.XBound(c => c.KundenNrAndName)
                 .Aggregate(aggregates => aggregates.Count())
                     .ClientGroupHeaderTemplate("<strong>Kunde: <#= Key #>, Anzahl: <#= Count #></strong>")

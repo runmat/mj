@@ -14,6 +14,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
     {
         [LocalizedDisplay(LocalizeConstants.OverpassDate)]
         [RequiredAsGroup]
+        [FormPersistable]
         public DateRange UeberfuehrungsDatumRange 
         { 
             get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months)); } 
@@ -22,6 +23,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.OrderDate)]
         [RequiredAsGroup]
+        [FormPersistable]
         public DateRange AuftragsDatumRange
         {
             get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months, true)); } 
@@ -29,8 +31,10 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
+        [FormPersistable]
         public string KundenNr { get; set; }
 
+        [FormPersistable]
         public string KundenNrUser { get; set; }
 
         #region AG
@@ -62,6 +66,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.Principal)]
+        [FormPersistable]
         public string AgKundenNr { get; set; }
 
         [XmlIgnore]
@@ -74,24 +79,30 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.OrderID)]
         [RequiredAsGroup]
+        [FormPersistable]
         public string AuftragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
         [RequiredAsGroup]
+        [FormPersistable]
         public string Referenz { get; set; }
         
         [LocalizedDisplay(LocalizeConstants._AlleOrganisationen)]
+        [FormPersistable]
         public bool AlleOrganisationen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [RequiredAsGroup]
         [KennzeichenPartial]
+        [FormPersistable]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._KundenReferenz)]
+        [FormPersistable]
         public string KundenReferenz { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Auftragsart)]
+        [FormPersistable]
         public string AuftragsArt { get { return PropertyCacheGet(() => "A"); } set { PropertyCacheSet(value);} }
 
         [XmlIgnore]

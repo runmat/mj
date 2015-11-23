@@ -23,52 +23,55 @@
 
 @Html.HiddenFor(m => m.ObjectKey)
 
-<li class="dropdown user persistable-form-dropdown-menu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span id="badgeVisibleItemsCount" class="badge">@selectors.Count</span>
-        <i class="icon-cog"></i>
-        <i class="icon-angle-down"></i>
-    </a>
-    <ul class="dropdown-menu">
-            
-        @foreach (var selector in selectors)
-        {
-            var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
-            var liCssClass = (isCurrentSelector ? "current" : "");
-            
-            <li class="loadable @liCssClass" id="li_dropdown_@selector.ObjectKey">
-                <span class="li-button" title="@Localize.FormPersistableSelector_FormLoad" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
-                    <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
-                </span>
-                @if (!isCurrentSelector)
-                {
-                    <span class="li-button" title="@Localize.FormPersistableSelector_FormDelete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
-                        <i class="icon-remove"></i> 
+<div class="report-generator-wrapper">
+    <li class="dropdown user persistable-form-dropdown-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span id="badgeVisibleItemsCount" class="badge">@selectors.Count</span>
+            <i class="icon-cog"></i>
+            <i class="icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+
+            @foreach (var selector in selectors)
+            {
+                var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
+                var liCssClass = (isCurrentSelector ? "current" : "");
+
+                <li class="loadable @liCssClass" id="li_dropdown_@selector.ObjectKey">
+                    <span class="li-button" title="@Localize.FormPersistableSelector_FormLoad" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
+                        <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
                     </span>
-                }
-            </li>
-        }
-        @if (selectors.None())
-        {
-            <li class="" id="li_dropdown_none">
-                <span class="li-button">
-                    <span class="li-item margin-left-10 margin-right-5">@Localize.FormPersistableSelector_NoFormsAvailable</span>
-                </span>
-            </li>
-        }
+                    @if (!isCurrentSelector)
+                {
+                        <span class="li-button" title="@Localize.FormPersistableSelector_FormDelete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
+                            <i class="icon-remove"></i>
+                        </span>
+                    }
+                </li>
+            }
+            @if (selectors.None())
+            {
+                <li class="" id="li_dropdown_none">
+                    <span class="li-button">
+                        <span class="li-item margin-left-10 margin-right-5">@Localize.FormPersistableSelector_NoFormsAvailable</span>
+                    </span>
+                </li>
+            }
 
-    </ul>
-</li> 
+        </ul>
+    </li>
 
-@Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap large persistable-selector-current-textbox placeholder-no-fix", placeholder = Localize.FormPersistableSelector_FormNamePlaceholderHint })
+    @Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap large persistable-selector-current-textbox placeholder-no-fix", placeholder = Localize.FormPersistableSelector_FormNamePlaceholderHint })
 
-<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSave" onclick="PersistableSelectorSave($(this), '@Model.ObjectKey')">
-    <i class='icon-save'></i>
-</span>
-<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSaveAs" onclick="PersistableSelectorSaveAs($(this), '@Model.ObjectKey')">
-    <i class='icon-copy'></i>
-</span>
-<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormReset" onclick="PersistableSelectorClear($(this))">
-    <i class='icon-remove'></i>
-</span>
-
+    <div class="report-generator-buttons">
+        <span class='btn mini yellow report-generator' title="@Localize.FormPersistableSelector_FormSave" onclick="PersistableSelectorSave($(this), '@Model.ObjectKey')">
+            <i class='icon-save'></i>
+        </span>
+        <span class='btn mini yellow report-generator' title="@Localize.FormPersistableSelector_FormSaveAs" onclick="PersistableSelectorSaveAs($(this), '@Model.ObjectKey')">
+            <i class='icon-copy'></i>
+        </span>
+        <span class='btn mini yellow report-generator' title="@Localize.FormPersistableSelector_FormReset" onclick="PersistableSelectorClear($(this))">
+            <i class='icon-remove'></i>
+        </span>
+    </div>
+</div>
