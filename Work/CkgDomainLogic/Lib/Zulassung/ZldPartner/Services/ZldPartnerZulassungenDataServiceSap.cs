@@ -51,7 +51,7 @@ namespace CkgDomainLogic.ZldPartner.Services
             return zulassungen;
         }
 
-        public List<DurchgefuehrteZulassung> LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter)
+        public string LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter, out List<DurchgefuehrteZulassung> zulassungen)
         {
             Z_ZLD_PP_GET_ZULASSUNGEN_01.Init(SAP, "I_LIFNR", LogonContext.User.Reference.NotNullOrEmpty().ToSapKunnr());
 
@@ -78,7 +78,15 @@ namespace CkgDomainLogic.ZldPartner.Services
 
             SAP.Execute();
 
-            return AppModelMappings.Z_ZLD_PP_GET_ZULASSUNGEN_01_GT_BESTELL_LISTE_To_DurchgefuehrteZulassung.Copy(Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE.GetExportList(SAP)).ToList();
+            if (SAP.ResultCode != 0)
+            {
+                zulassungen = new List<DurchgefuehrteZulassung>();
+                return SAP.ResultMessage;
+            }
+
+            zulassungen = AppModelMappings.Z_ZLD_PP_GET_ZULASSUNGEN_01_GT_BESTELL_LISTE_To_DurchgefuehrteZulassung.Copy(Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE.GetExportList(SAP)).ToList();
+
+            return "";
         }
     }
 }

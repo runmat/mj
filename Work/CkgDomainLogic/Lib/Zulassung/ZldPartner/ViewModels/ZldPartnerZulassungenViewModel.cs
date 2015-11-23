@@ -188,12 +188,17 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                 EditMode = false;
         }
 
-        public void LoadDurchgefuehrteZulassungen()
+        public void LoadDurchgefuehrteZulassungen(ModelStateDictionary state)
         {
             PropertyCacheClear(this, m => m.DurchgefuehrteZulassungen);
             PropertyCacheClear(this, m => m.DurchgefuehrteZulassungenFiltered);
 
-            DurchgefuehrteZulassungen = DataService.LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSelektor);
+            List<DurchgefuehrteZulassung> tmpZulassungen;
+            var errMessage = DataService.LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSelektor, out tmpZulassungen);
+            DurchgefuehrteZulassungen = tmpZulassungen;
+
+            if (!string.IsNullOrEmpty(errMessage))
+                state.AddModelError("", errMessage);
         }
 
         #region Filter

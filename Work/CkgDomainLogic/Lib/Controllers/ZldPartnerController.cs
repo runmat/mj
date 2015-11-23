@@ -1,13 +1,11 @@
 ﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.ZldPartner.Contracts;
 using CkgDomainLogic.ZldPartner.Models;
 using CkgDomainLogic.ZldPartner.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
-using GeneralTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.ZldPartner.Controllers
@@ -108,11 +106,7 @@ namespace ServicesMvc.ZldPartner.Controllers
             ViewModel.DurchgefuehrteZulassungenSelektor = model;
 
             if (ModelState.IsValid)
-            {
-                ViewModel.LoadDurchgefuehrteZulassungen();
-                if (ViewModel.DurchgefuehrteZulassungen.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
+                ViewModel.LoadDurchgefuehrteZulassungen(ModelState);
 
             return PartialView("ReportDurchgefuehrteZulassungen/Suche", ViewModel.DurchgefuehrteZulassungenSelektor);
         }

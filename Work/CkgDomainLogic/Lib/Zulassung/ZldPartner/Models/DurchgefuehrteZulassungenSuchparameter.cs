@@ -13,7 +13,7 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string Kunde { get; set; }
 
-        public string Kunden { get { return ",Alle;1510,DAD;1010,Kroschke"; } }
+        public string Kunden { get { return ",Alle;DAD,DAD;CKG,Kroschke"; } }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]

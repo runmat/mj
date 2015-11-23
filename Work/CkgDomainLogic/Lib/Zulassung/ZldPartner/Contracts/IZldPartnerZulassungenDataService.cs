@@ -9,6 +9,6 @@ namespace CkgDomainLogic.ZldPartner.Contracts
 
         List<OffeneZulassung> SaveOffeneZulassungen(bool nurSpeichern, List<OffeneZulassung> zulassungen);
 
-        List<DurchgefuehrteZulassung> LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter);
+        string LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter, out List<DurchgefuehrteZulassung> zulassungen);
     }
 }
