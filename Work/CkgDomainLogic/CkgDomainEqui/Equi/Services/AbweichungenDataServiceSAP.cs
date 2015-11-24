@@ -106,7 +106,7 @@ namespace CkgDomainLogic.Equi.Services
                 // exception safe SAP action:
                 () =>
                 {
-                    Z_M_Save_ZABWVERSGRUND.Init(SAP, "IMP_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+                    Z_M_SAVE_ZABWVERSGRUND.Init(SAP, "IMP_KUNNR", LogonContext.KundenNr.ToSapKunnr());
                     SAP.SetImportParameter("IMP_EQUNR", equiNr);
                     SAP.SetImportParameter("IMP_DATAUS", ausgangsDatum.GetValueOrDefault().ToString("dd.MM.yyyy"));
                     SAP.SetImportParameter("IMP_MEMO", memo);

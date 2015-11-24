@@ -96,11 +96,11 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
-        static public ModelMapping<Z_dpm_Read_Prot_Telefonate_01.GT_OUT, TelefoniedatenItem> Z_dpm_Read_Prot_Telefonate_01_GT_OUT_To_TelefoniedatenItem
+        static public ModelMapping<Z_DPM_READ_PROT_TELEFONATE_01.GT_OUT, TelefoniedatenItem> Z_dpm_Read_Prot_Telefonate_01_GT_OUT_To_TelefoniedatenItem
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_dpm_Read_Prot_Telefonate_01.GT_OUT, TelefoniedatenItem>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_PROT_TELEFONATE_01.GT_OUT, TelefoniedatenItem>(
                     new Dictionary<string, string>()
                     , (source, destination) =>
                         {
@@ -377,6 +377,12 @@ namespace CkgDomainLogic.Finance.Models
                             destination.Versandgrund = source.VERS_GRUND;
                             destination.Vertragsart = source.ZVERT_ART;
                             destination.Zb2Nummer = source.ZBRIEF;
+                            destination.HaendlerNr = source.KUNNR_BEIM_AG;
+                            destination.HaendlerName = source.NAME;
+                            destination.HaendlerOrt = source.CITY1;
+                            destination.AnforderungsUhrzeit = source.UZEIT_ANGEL;
+                            destination.StatusSicherheit = source.STATUS_SI;
+                            destination.MahnstufeSicherheit = source.MAHNS_SI;
                         }));
             }
         }
@@ -525,11 +531,11 @@ namespace CkgDomainLogic.Finance.Models
         /// <summary>
         /// Upload Fahrzeugeinsteuerung
         /// </summary>
-        static public ModelMapping<Z_M_Schluesselverloren.GT_WEB_IN, FehlendeSchluesseltuete> Z_M_Schluesselverloren_GT_WEB_IN_From_FehlendeSchluesseltuete
+        static public ModelMapping<Z_M_SCHLUESSELVERLOREN.GT_WEB_IN, FehlendeSchluesseltuete> Z_M_Schluesselverloren_GT_WEB_IN_From_FehlendeSchluesseltuete
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_Schluesselverloren.GT_WEB_IN, FehlendeSchluesseltuete>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_SCHLUESSELVERLOREN.GT_WEB_IN, FehlendeSchluesseltuete>(
                     new Dictionary<string, string>()
                     , null
                     , (source, destination) =>

@@ -31,6 +31,9 @@
         <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
             <uc:ucManageGitBranchesDevX/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:SapOrmModelGenerationViewModel}">
+            <uc:ucSapOrmModelGeneration/>
+        </DataTemplate>
         <conv:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
     </Window.Resources>
 
@@ -61,6 +64,7 @@
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Command="{Binding CommandCheckBapis}" 
                                LargeIcon="{StaticResource image/32x32/sap_check}"
                                Header="BAPI Definitionen" Height="Auto" ToolTip="BAPI-Definitionen prüfen" />
+                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Size="Middle" Command="{Binding CommandSapOrmModelGeneration}" Header="SapORM-Modelgenerierung" Height="Auto" />
                 </fl:RibbonGroupBox>
 
                 <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">

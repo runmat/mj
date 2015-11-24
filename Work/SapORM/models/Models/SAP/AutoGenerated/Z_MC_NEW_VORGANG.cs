@@ -20,6 +20,57 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_MC_NEW_VORGANG).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public static void SetImportParameter_I_AN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AN", value);
+		}
+
+		public static void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BD_NR", value);
+		}
+
+		public static void SetImportParameter_I_BETREFF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BETREFF", value);
+		}
+
+		public static void SetImportParameter_I_LTXNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LTXNR", value);
+		}
+
+		public static void SetImportParameter_I_UNAME(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_UNAME", value);
+		}
+
+		public static void SetImportParameter_I_VGART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VGART", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_ZERLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZERLDAT", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

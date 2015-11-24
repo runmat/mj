@@ -104,6 +104,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucSapOrmModelGeneration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ucReportBapiApplications.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +176,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucSapOrmModelGeneration.xaml.cs">
+      <DependentUpon>ucSapOrmModelGeneration.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucGitBranchInfoItems.xaml.cs">
       <DependentUpon>ucGitBranchInfoItems.xaml</DependentUpon>
     </Compile>

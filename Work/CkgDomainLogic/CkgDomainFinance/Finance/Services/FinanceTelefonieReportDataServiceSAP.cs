@@ -28,7 +28,7 @@ namespace CkgDomainLogic.Finance.Services
 
         private IEnumerable<TelefoniedatenItem> LoadTelefoniedatenFromSap()
         {
-            Z_dpm_Read_Prot_Telefonate_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_READ_PROT_TELEFONATE_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             if (Suchparameter.Vertragsart != "alle")
                 SAP.SetImportParameter("I_ZVERT_ART", Suchparameter.Vertragsart);
@@ -45,7 +45,7 @@ namespace CkgDomainLogic.Finance.Services
             if (!string.IsNullOrEmpty(Suchparameter.Anrufart))
                 SAP.SetImportParameter("I_ANRUFART", Suchparameter.Anrufart);
 
-            var sapList = Z_dpm_Read_Prot_Telefonate_01.GT_OUT.GetExportListWithExecute(SAP);
+            var sapList = Z_DPM_READ_PROT_TELEFONATE_01.GT_OUT.GetExportListWithExecute(SAP);
 
             return AppModelMappings.Z_dpm_Read_Prot_Telefonate_01_GT_OUT_To_TelefoniedatenItem.Copy(sapList);
         }

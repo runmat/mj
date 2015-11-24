@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_BATCH_UNIT_SELECT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_BATCH_ID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BATCH_ID", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -70,12 +81,12 @@ namespace SapORM.Models
 					ZEQUNR = (string)row["ZEQUNR"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					TIDNR = (string)row["TIDNR"],
-					ERDAT_EQUI = (string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString())) ? null : (DateTime?)row["ERDAT_EQUI"],
+					ERDAT_EQUI = string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString()) ? null : (DateTime?)row["ERDAT_EQUI"],
 					LIZNR = (string)row["LIZNR"],
-					ZZDAT_EIN = (string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString())) ? null : (DateTime?)row["ZZDAT_EIN"],
-					ZZDAT_BER = (string.IsNullOrEmpty(row["ZZDAT_BER"].ToString())) ? null : (DateTime?)row["ZZDAT_BER"],
+					ZZDAT_EIN = string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString()) ? null : (DateTime?)row["ZZDAT_EIN"],
+					ZZDAT_BER = string.IsNullOrEmpty(row["ZZDAT_BER"].ToString()) ? null : (DateTime?)row["ZZDAT_BER"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					ZLOEVM = (string)row["ZLOEVM"],
 					BLUETOOTH = (string)row["BLUETOOTH"],
 					ANTR = (string)row["ANTR"],
@@ -184,11 +195,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

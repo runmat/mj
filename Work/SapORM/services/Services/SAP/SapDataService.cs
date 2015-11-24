@@ -209,6 +209,12 @@ namespace SapORM.Services
             return _sapProxy.GetExportParameterByte(paramName);
         }
 
+        public T GetExportParameter<T>(string paramName)
+        {
+            if (_sapProxy == null) return default(T);
+            return _sapProxy.GetExportParameter<T>(paramName);
+        }
+
         #endregion
 
 

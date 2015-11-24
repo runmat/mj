@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_TAB_ZEVENT_SCHADEN_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AKTION", value);
+		}
+
+		public static void SetImportParameter_I_EVENT_SCHADEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT_SCHADEN", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
 		public partial class GT_SCHADEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -86,9 +102,9 @@ namespace SapORM.Models
 					SBHOEHE = (string)row["SBHOEHE"],
 					REFNR = (string)row["REFNR"],
 					SAMMELBES = (string)row["SAMMELBES"],
-					ANLAGEDATUM = (string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString())) ? null : (DateTime?)row["ANLAGEDATUM"],
+					ANLAGEDATUM = string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString()) ? null : (DateTime?)row["ANLAGEDATUM"],
 					ANLAGEUSER = (string)row["ANLAGEUSER"],
-					LOESCHDATUM = (string.IsNullOrEmpty(row["LOESCHDATUM"].ToString())) ? null : (DateTime?)row["LOESCHDATUM"],
+					LOESCHDATUM = string.IsNullOrEmpty(row["LOESCHDATUM"].ToString()) ? null : (DateTime?)row["LOESCHDATUM"],
 					LOESCHUSER = (string)row["LOESCHUSER"],
 					ERROR = (string)row["ERROR"],
 					ANDERE = (string)row["ANDERE"],
@@ -196,11 +212,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_TAB_ZEVENT_SCHADEN_01.GT_SCHADEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

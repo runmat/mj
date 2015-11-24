@@ -65,7 +65,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string LastCarportId { get; set; }
 
-        public string UserCarportId { get { return LogonContext.User.Reference; } }
+        public string UserCarportId
+        {
+            get
+            {
+                if (LogonContext == null || LogonContext.User == null)
+                    return "";
+
+                return LogonContext.User.Reference;
+            }
+        }
 
         [XmlIgnore]
         public IDictionary<string, string> CarportPdis
@@ -78,6 +87,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
+                if (FahrzeugeAlle == null)
+                    return new Dictionary<string, string>();
+
                 return CarportPdis
                             .Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key) || c.Key == LastCarportId)
                                 .ToDictionary(c => c.Key, c => c.Value);

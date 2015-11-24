@@ -689,11 +689,11 @@ namespace Leasing.lib
                         newRow["EVBBISDAT"] = EvbGueltigBis;
                     }
 
-
+                    newRow["ZULDAT"] = DurchfuehrungsDatum;
                     newRow["ZZBRIEF"] = row["NummerZB2"];
                     newRow["ZZREFNR"] = row["Leasingnummer"];
 
-                    newRow["WUNSCHKENNZ"] = Wunschkennzeichen;
+                    newRow["WUNSCHKENNZ"] = Kreis + "-" + Wunschkennzeichen;
                     newRow["VERSICHERUNG"] = Versicherungstraeger;
                     newRow["EQUNR"] = row["EQUNR"].ToString();
                     newRow["SFV_FZG"] = Bemerkung;
@@ -854,5 +854,51 @@ namespace Leasing.lib
             Regex regexAlphaNum = new Regex("[^a-zA-Z0-9]");
             return !regexAlphaNum.IsMatch(str);
         }
+
+        public string KreisSuche(String strAppID, String strSessionID, Page page, String plz)
+        {
+            string kreiskennzeichen = "";
+
+            try
+            {
+                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_GET_ZULST_BY_PLZ", ref m_objApp, ref m_objUser, ref page);
+
+
+                myProxy.setImportParameter("I_PLZ", plz);
+                myProxy.setImportParameter("I_ORT", "");
+
+                myProxy.callBapi();
+
+                var kreise = myProxy.getExportTable("T_ZULST");
+
+                if (kreise.Rows.Count > 0)
+                {
+                    kreiskennzeichen = kreise.Rows[0]["ZKFZKZ"].ToString();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                {
+                    case "ERR_INV_PLZ":
+                        m_intStatus = -1118;
+                        m_strMessage = "Ungültige Postleitzahl.";
+                        break;
+                    default:
+                        m_intStatus = -9999;
+                        m_strMessage = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
+                        break;
+                }
+                
+            }
+
+
+            return kreiskennzeichen;
+
+        }
+
+
     }
 }

@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_AF_ABM_SAVE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_ABM : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -37,7 +48,7 @@ namespace SapORM.Models
 
 			public string VE_ERNAM { get; set; }
 
-			public Int32? SUBRC { get; set; }
+			public int? SUBRC { get; set; }
 
 			public string MESSAGE { get; set; }
 
@@ -50,7 +61,7 @@ namespace SapORM.Models
 					ZULBELN = (string)row["ZULBELN"],
 					AUSWAHL = (string)row["AUSWAHL"],
 					VE_ERNAM = (string)row["VE_ERNAM"],
-					SUBRC = (string.IsNullOrEmpty(row["SUBRC"].ToString())) ? null : (Int32?)Convert.ToInt32(row["SUBRC"]),
+					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
 					MESSAGE = (string)row["MESSAGE"],
 					ZZKENN = (string)row["ZZKENN"],
 
@@ -282,20 +293,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_AH_AF_ABM_SAVE.GT_ABM> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_AF_ABM_SAVE.GT_FILENAME> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_AF_ABM_SAVE.GT_FILENAME> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

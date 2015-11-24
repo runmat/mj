@@ -95,7 +95,7 @@ namespace ServicesMvc
             var container = builder.Build();
             return container;
         }
-
+        
         public static void RegisterTelerikLocalizationAdapterServiceFactory()
         {
             DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());

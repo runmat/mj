@@ -149,6 +149,8 @@ namespace SapORM.Contracts
         /// <returns></returns>
         byte[] GetExportParameterByte(string paramName);
 
+        T GetExportParameter<T>(string paramName);
+
         /// <summary>
         /// Führt für eine SAP-Funktion (Bapi) ein „InitExecute“ aus und liefert 
         /// den Wert eines bestimmten Export-Parameters aus SAP als Byte Array zurück mit „Init“ + „Execute“.

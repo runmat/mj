@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Web.Caching;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainInternal.Verbandbuch.Contracts;
@@ -27,7 +24,7 @@ namespace CkgDomainInternal.Verbandbuch.ViewModels
 
         public void GetVerbandbuchEntries(string vkbur)
         {
-            Verbandbuch =  DataService.GetVerbandbuchEntries(vkbur);
+            Verbandbuch = DataService.GetVerbandbuchEntries(vkbur);
             Verbandbuch = PrepareDataForDisplay(Verbandbuch);
         }
 
@@ -77,7 +74,7 @@ namespace CkgDomainInternal.Verbandbuch.ViewModels
 
         public void DataMarkForRefresh()
         {
-            PropertyCacheClear(this, m => m.Verbandbuch);
+            PropertyCacheClear(this, m => m.VerbandbuchFiltered);
         }
 
         public VerbandbuchModel GetVerbandBuchModel(string vkbur)
@@ -116,7 +113,7 @@ namespace CkgDomainInternal.Verbandbuch.ViewModels
             vbModel.TimeOfAccident = vbModel.DateOfAccident.Value.ToString("HHmmss");
             vbModel.TimeOfFirstAid= vbModel.DateOfFirstAid.Value.ToString("HHmmss");
 
-           var result =  DataService.SaveVorfallSAP(vbModel);
+            var result =  DataService.SaveVorfallSAP(vbModel);
 
             if (!String.IsNullOrEmpty(result))
             {
