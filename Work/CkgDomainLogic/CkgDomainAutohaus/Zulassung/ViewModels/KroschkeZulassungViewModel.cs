@@ -589,7 +589,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr) && Zulassung.Zulassungsdaten.ModusAbmeldung)
             {
-                var abmArt = Abmeldearten.FirstOrDefault();
+                var abmArt = Abmeldearten.FirstOrDefault(z => z.Belegtyp == "AA");
                 if (abmArt != null)
                     Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
             }
@@ -921,7 +921,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten
         {
-            get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose }); }
+            get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose, IstAbmeldung = true }); }
         }
 
         [XmlIgnore, ScriptIgnore]
