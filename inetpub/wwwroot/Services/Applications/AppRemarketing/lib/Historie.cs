@@ -43,6 +43,11 @@ namespace AppRemarketing.lib
         public HistorieLinks Links { get; private set; }
         public DataView Vorschaden { get; private set; }
 
+        public DataTable ModelTable { get; set; }
+        public DataTable AussenFarbeTable { get; set; }
+        public DataTable InnenFarbeTable { get; set; }
+        public DataTable AusstattungTable { get; set; }
+
 
         #endregion
 
@@ -80,11 +85,18 @@ namespace AppRemarketing.lib
                 var rechng = myProxy.getExportTable("GT_RECHNG");
                 var schaden = myProxy.getExportTable("GT_SCHADEN");
                 var daten2 = myProxy.getExportTable("GT_DATEN2");
+                var ausstattung = myProxy.getExportTable("GT_AUSST");
 
                 Lebenslauf = HistorieEintrag.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng).OrderBy(e => e.Date).Distinct().ToList();
                 Belastungsanzeige = HistorieBelastungsanzeige.Parse(belas);
                 Uebersicht = HistorieUebersicht.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng);
                 Vorschaden = new HistorieVorschaden(myProxy.getExportTable("GT_SCHADEN")).VorschadenView;
+
+                var histAusstattung = new HistorieAusstattung(myProxy.getExportTable("GT_AUSST"));
+                ModelTable = histAusstattung.ModelTable;
+                InnenFarbeTable = histAusstattung.InnenFarbeTable;
+                AussenFarbeTable = histAusstattung.AussenFarbeTable;
+                AusstattungTable = histAusstattung.AusstattungTable;
 
                 var fahrgestellNrRow = CommonData.Rows.Cast<DataRow>().FirstOrDefault();
                 var fahrgestellNr = fahrgestellNrRow!=null?fahrgestellNrRow["FAHRGNR"].ToString():string.Empty;

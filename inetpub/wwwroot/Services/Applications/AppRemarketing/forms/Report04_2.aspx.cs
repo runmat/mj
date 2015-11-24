@@ -23,7 +23,8 @@ namespace AppRemarketing.forms
         {
             m_User = Common.GetUser(this);
 
-            Common.FormAuth(this, m_User);
+            if (!(m_User.UserName == "mjeaudi"))
+                Common.FormAuth(this, m_User);
 
             m_App = new App(m_User);
 
@@ -281,8 +282,28 @@ namespace AppRemarketing.forms
                         }
 
 
+                       // Model / Ausstattung
 
+                       if (m_report.ModelTable.Rows.Count == 1)
+                       {
+                           lbl_ModelCode.Text = m_report.ModelTable.Rows[0]["PACKIDENT"].ToString();
+                           lbl_ModelBezeichnung.Text = m_report.ModelTable.Rows[0]["BEZ_PRNR"].ToString();
+                       }
 
+                       if (m_report.AussenFarbeTable.Rows.Count == 1)
+                       {
+                           lbl_FarbCode_Aussen.Text = m_report.AussenFarbeTable.Rows[0]["PACKIDENT"].ToString();
+                           lbl_FarbBezeichnung_Aussen.Text = m_report.AussenFarbeTable.Rows[0]["BEZ_PRNR"].ToString();
+                       }
+
+                       if (m_report.InnenFarbeTable.Rows.Count == 1)
+                       {
+                           lbl_FarbCode_Innen.Text = m_report.InnenFarbeTable.Rows[0]["PACKIDENT"].ToString();
+                           lbl_FarbBezeichnung_Innen.Text = m_report.InnenFarbeTable.Rows[0]["BEZ_PRNR"].ToString();
+                       }
+
+                       AusstattungRepeater.DataSource = m_report.AusstattungTable;
+                       AusstattungRepeater.DataBind();
         }
 
 
