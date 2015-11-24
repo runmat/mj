@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using CKGDatabaseAdminLib.ViewModels;
 using CKGDatabaseAdminTool.UIServices;
 
@@ -14,6 +15,7 @@ namespace CKGDatabaseAdminTool
         public MainWindow(MainViewModel vm)
         {
             InitializeComponent();
+            Title = string.Format("CKGDatabaseAdminTool v{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00"));
 
             DataContext = vm;
 

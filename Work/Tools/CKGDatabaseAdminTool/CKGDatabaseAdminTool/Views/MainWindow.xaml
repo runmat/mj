@@ -64,7 +64,9 @@
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Command="{Binding CommandCheckBapis}" 
                                LargeIcon="{StaticResource image/32x32/sap_check}"
                                Header="BAPI Definitionen" Height="Auto" ToolTip="BAPI-Definitionen prüfen" />
-                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Size="Middle" Command="{Binding CommandSapOrmModelGeneration}" Header="SapORM-Modelgenerierung" Height="Auto" />
+                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Command="{Binding CommandSapOrmModelGeneration}" 
+                               LargeIcon="{StaticResource image/32x32/sap_models}"
+                               Header="SapORM Models" Height="Auto" ToolTip="SapORM Models generieren" />
                 </fl:RibbonGroupBox>
 
                 <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
