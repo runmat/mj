@@ -12,6 +12,13 @@
         padding-right: 44px;
     }
     
+    .updateAnzAbmButton {
+        background-color: #9B9B9B !important;
+        color:#FFF;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    
     .controls.no-left-margin {
         margin-left: 0 !Important;
     }
@@ -23,6 +30,10 @@
     
     #EvbInfo {
         width: 430px;
+    }
+    
+    .form-actions-top {
+        padding-left: 162px !important;
     }
 </style>
 
@@ -244,8 +255,6 @@
             return;
         }
 
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
         $(".mfp-close").trigger("click");
     }
 
@@ -271,8 +280,6 @@
     function AjaxFormZahlerKfzSteuerComplete() {
         FormPrepareAjax();
 
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
         $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
@@ -366,8 +373,6 @@
     function AjaxFormAuslieferAdressenComplete() {
         FormPrepareAjax();
 
-        //var detailWindow = $("#Adressen").data("tWindow");
-        //detailWindow.center().close();
         $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
@@ -621,29 +626,6 @@
         tb.autocomplete("enable");
     }
 
-//    function AjaxFormAdresseEmpty(formID, url) {
-//        var form = $("#" + formID);
-//        form.find(":input").each(function () {
-//            switch (this.type) {
-//                case 'password':
-//                case 'select-multiple':
-//                case 'text':
-//                case 'textarea':
-//                    $(this).val('');
-//                    break;
-//                case 'select-one':
-//                    $(this).val('DE');
-//                    break;
-//                case 'checkbox':
-//                case 'radio':
-//                    this.checked = false;
-//            }
-//        });
-
-//        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
-//        return false;
-//    }
-
     function AjaxFormAdressenShowGrid(addressType) {
 
         $.ajax(
@@ -656,8 +638,6 @@
                     $("#InnerAdressen").html(result);
                     GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
 
-                    //var detailWindow = $("#Adressen").data("tWindow");
-                    //detailWindow.center().open();
                     $.magnificPopup.open({
                         items: { src: $("#InnerAdressen") },
                         type: 'inline',
@@ -705,34 +685,6 @@
         return false;
     }
 
-//    // 20150722 FahrzeugdatenForm-Grid
-//    function OnSelectionChange_GridFahrzeugAuswahlX(cb) {
-//        alert("OnSelectionChange_GridFahrzeugAuswahlX");
-//        Grid_FormatMultiRowSelected(cb);
-//        $.ajax({
-//            type: "POST",
-//            url: "FahrzeugAuswahlSelectionChanged",
-//            data: { vin: cb.val(), isChecked: cb.is(':checked') },
-//            loadingShow: false,
-//            success: function (result) {
-//                UpdateGridInfo(result.allSelectionCount);
-//            }
-//        });
-//    }
-//    function OnAllSelectionChange_GridFahrzeugAuswahlX(check) {
-//        alert("OnAllSelectionChange_GridFahrzeugAuswahlX");
-//        $.ajax({
-//            type: "POST",
-//            url: "FahrzeugAuswahlSelectionChanged",
-//            data: { vin: "", isChecked: check },
-//            loadingShow: true,
-//            success: function (result) {
-//                UpdateGridInfo(result.allSelectionCount);
-//                FilterGrid("GridFahrzeugAuswahl");
-//            }
-//        });
-//    }
-    
     function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
@@ -746,19 +698,23 @@
         $.uniform.update($("#uncheckAllRecords"));
     }
 
-//    function OnDataBound_GridFahrzeugAuswahlX() {
-//        alert("OnDataBound_GridFahrzeugAuswahlX");
-//        FilteredData_Grid_OnDataBound($(this));
-//        jQuery('.tooltips').tooltip();
-//        LoadingHide();
-//    }
-//    function OnColumnShowHide_GridFahrzeugAuswahlX() {
-//        FilteredData_Grid_OnColumnShowHide($(this));
-//    }
-//    function OnColumnReorder_GridFahrzeugAuswahlX() {
-//        FilteredData_Grid_OnColumnReorder($(this));
-//    }
-    
+    // 20150815 MMA Ausgelagert, da genutzt in ZulassungsdatenForm und FahrzeugdatenForm
+    function SetFinValue(finId, field, value) {
+        $.ajax({
+            type: "POST",
+            url: "SetFinValue",
+            data: { finId: finId, field: field, value: value },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                }
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
+    };
+
 </script>
 
 <div id="InnerAdressen" class="white-popup mfp-hide">
