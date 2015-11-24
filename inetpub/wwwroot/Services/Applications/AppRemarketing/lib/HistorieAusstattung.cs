@@ -25,7 +25,7 @@ namespace AppRemarketing.lib
             dataTable.DefaultView.RowFilter = "PRNR_TYP='I'";
             InnenFarbeTable = dataTable.DefaultView.ToTable();
 
-            dataTable.DefaultView.RowFilter = "PRNR_TYP='P'";
+            dataTable.DefaultView.RowFilter = "PRNR_TYP='P' OR PRNR_TYP='E'";
             AusstattungTable = dataTable.DefaultView.ToTable();
             AusstattungTable.Columns.Add(new DataColumn("Pos", typeof(System.Int32)));
             for (int i = 0; i < AusstattungTable.Rows.Count; i++)
