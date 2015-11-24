@@ -16,13 +16,6 @@ namespace AppRemarketing.lib
 
         void BuildAusstattungView(DataTable dataTable)
         {
-            //foreach (DataRow dRow in dataTable.Rows)
-            //{
-            //    dRow["PRNR_TYP"] = dRow["PRNR_TYP"];
-            //    dRow["PACKIDENT"] = dRow["PACKIDENT"];
-            //    dRow["BEZ_PRNR"] = dRow["BEZ_PRNR"];
-            //}
-
             dataTable.DefaultView.RowFilter = "PRNR_TYP='M'";
             ModelTable = dataTable.DefaultView.ToTable();
 

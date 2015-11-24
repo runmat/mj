@@ -684,7 +684,7 @@ namespace AppRemarketing.forms
 
                     if (qe.ReturnStatus == 2)
                     {
-                        Helper.GetPDF(this, qe.path, "Belastungsanzeige_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
+                        Helper.GetPDF(this, qe.path, "Belastungsanzeige_" + txtFahrgestellnummer.Text + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
                     }
                     else
                     {
