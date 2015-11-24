@@ -185,24 +185,25 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             if (!UseDefaultStartupView)
             {
-            LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
-            ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
-            BapiApplicationViewModel = new BapiApplicationViewModel(this);
-            ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
-            FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
-            BapiCheckViewModel = new BapiCheckViewModel(this);
-            SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
+                LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
+                ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
+                BapiApplicationViewModel = new BapiApplicationViewModel(this);
+                ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
+                FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+                BapiCheckViewModel = new BapiCheckViewModel(this);
+                SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
 
-            // Git-Branch Verwaltung nur in DAD-Datenbanken
-            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
-            {
-                GitBranchViewModel = new GitBranchInfoViewModel(this);
-                if (UseDefaultStartupView)
-                    GitBranchViewModel.ManageGitBranches(null);
-            }
-            else
-            {
-                GitBranchViewModel = null;
+                // Git-Branch Verwaltung nur in DAD-Datenbanken
+                if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
+                {
+                    GitBranchViewModel = new GitBranchInfoViewModel(this);
+                    if (UseDefaultStartupView)
+                        GitBranchViewModel.ManageGitBranches(null);
+                }
+                else
+                {
+                    GitBranchViewModel = null;
+                }
             }
         }
 

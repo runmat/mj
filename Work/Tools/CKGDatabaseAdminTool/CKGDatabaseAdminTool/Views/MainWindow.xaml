@@ -1,4 +1,4 @@
-﻿<fl:RibbonWindow x:Class="CKGDatabaseAdminTool.MainWindow"
+﻿<fl:RibbonWindow x:Class="CKGDatabaseAdminTool.MainWindow" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
