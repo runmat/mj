@@ -668,6 +668,15 @@ namespace AppRemarketing.forms
                     break;
 
                 case "PDF":
+                        var fin = "_";
+                        if (e.Item is GridDataItem)
+                        {
+                            GridDataItem item = e.Item as GridDataItem;
+                            HyperLink lnkFahrgestellnummer = (HyperLink)item.FindControl("lnkHistorie");
+                            if (lnkFahrgestellnummer != null)
+                                fin += lnkFahrgestellnummer.Text + "_";
+                        }
+
                     QuickEasy.Documents qe = new QuickEasy.Documents(".1001=" + e.CommandArgument.ToString(),
                         ConfigurationManager.AppSettings["EasyRemoteHosts"].ToString(),
                         60, ConfigurationManager.AppSettings["EasySessionId"],
@@ -684,7 +693,7 @@ namespace AppRemarketing.forms
 
                     if (qe.ReturnStatus == 2)
                     {
-                        Helper.GetPDF(this, qe.path, "Belastungsanzeige_" + txtFahrgestellnummer.Text + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
+                        Helper.GetPDF(this, qe.path, "Belastungsanzeige" + fin + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf");
                     }
                     else
                     {
