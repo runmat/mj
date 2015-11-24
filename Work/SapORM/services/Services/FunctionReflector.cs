@@ -26,7 +26,7 @@ namespace SapORM.Services
         {
             sapFunction = sapFunction.NotNullOrEmpty().ToUpper();
 
-            var sapProxy = DynFactory.CreateProxyCache(sapFunction, SapConnection, DynFactory).GetProxy();
+            var sapProxy = DynFactory.CreateProxyCache(sapFunction, SapConnection, DynFactory).GetEmptyProxy();
 
             var bapiStructure = sapProxy.GetBapiStructure();
 
