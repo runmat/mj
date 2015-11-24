@@ -34,6 +34,7 @@
             <RowDefinition Height="28px"/>
             <RowDefinition Height="16px"/>
             <RowDefinition Height="28px"/>
+            <RowDefinition Height="8px"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -43,14 +44,14 @@
             <ColumnDefinition Width="180px"/>
         </Grid.ColumnDefinitions>
 
-        <GridSplitter Grid.Row="0" Grid.RowSpan="6" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeBehavior="PreviousAndNext" Width="4" Background="#00FFFFFF" />
+        <GridSplitter Grid.Row="0" Grid.RowSpan="7" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeBehavior="PreviousAndNext" Width="4" Background="#00FFFFFF" />
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="BAPIs:" FontWeight="Bold" />
 
         <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding BapiName}" />
         <Button Grid.Row="2" Grid.Column="3" Command="{Binding CommandGenerateSapOrmModel}" Content="SapORM-Model generieren"/>
 
-        <DataGrid Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Name="dgBapis" ItemsSource="{Binding Bapis}" SelectionChanged="dgBapis_OnSelectionChanged" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="2" Grid.RowSpan="5" Grid.Column="0" Name="dgBapis" ItemsSource="{Binding Bapis}" SelectionChanged="dgBapis_OnSelectionChanged" SelectionMode="Single" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding BAPI}" Width="*" />
@@ -59,5 +60,6 @@
 
         <Button Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding CommandGenerateAllSapOrmModels}" Content="alle Models neu generieren"/>
 
+        <ListBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" IsEnabled="False" ItemsSource="{Binding GenerationErrors}"/>
     </Grid>
 </UserControl>

@@ -20,6 +20,8 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public ObservableCollection<BapiTable> Bapis { get { return DataService.Bapis; } }
 
+        public ObservableCollection<string> GenerationErrors { get; private set; }
+
         [XmlIgnore]
         private readonly IApplicationBapiDataService DataService;
 
@@ -31,6 +33,8 @@ namespace CKGDatabaseAdminLib.ViewModels
             get { return _bapiName; }
             set { _bapiName = value; SendPropertyChanged("BapiName"); }
         }
+
+        public string SapOrmModelsProjectPath { get; private set; }
 
         public ICommand CommandSapOrmModelGeneration { get; private set; }
         public ICommand CommandGenerateSapOrmModel { get; private set; }
@@ -57,13 +61,19 @@ namespace CKGDatabaseAdminLib.ViewModels
 
             if (FunctionReflector.DataService == null)
                 FunctionReflector.DataService = new SapDataServiceFromConfigNoCacheFactory().Create();
+
+            SapOrmModelsProjectPath = ConfigurationManager.AppSettings["SapOrmModelsProjectPath"];
+
+            GenerationErrors = new ObservableCollection<string>();
         }
 
         public void GenerateSapOrmModel(object parameter)
         {
+            GenerationErrors.Clear();
+
             if (!string.IsNullOrEmpty(BapiName))
             {
-                var erg = FunctionReflector.WriteOrmForSapFunction(BapiName, ConfigurationManager.AppSettings["SapOrmModelPath"]);
+                var erg = FunctionReflector.WriteOrmForSapFunction(BapiName, SapOrmModelsProjectPath);
 
                 if (Bapis.None(b => b.BAPI.ToUpper() == BapiName.ToUpper()))
                 {
@@ -72,9 +82,14 @@ namespace CKGDatabaseAdminLib.ViewModels
                 }
 
                 if (erg.IsNotNullOrEmpty())
-                    Parent.ShowMessage("SapORM-Model für BAPI " + BapiName + " konnte nicht generiert werden (" + erg + ")", MessageType.Error);
+                {
+                    GenerationErrors.Add(string.Format("{0}: {1}", BapiName, erg));
+                    Parent.ShowMessage("SapORM-Model für BAPI " + BapiName + " konnte nicht generiert werden", MessageType.Error);
+                }
                 else
+                {
                     Parent.ShowMessage("SapORM-Model für BAPI " + BapiName + " wurde erfolgreich generiert", MessageType.Success);
+                }
 
                 BapiName = "";
             }
@@ -86,21 +101,23 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public void GenerateAllSapOrmModels(object parameter)
         {
+            GenerationErrors.Clear();
+
             if (Bapis.Any())
             {
-                var erg = "";
+                var okCount = 0;
 
                 foreach (var bapi in Bapis)
                 {
-                    erg = FunctionReflector.WriteOrmForSapFunction(bapi.BAPI, ConfigurationManager.AppSettings["SapOrmModelPath"]);
+                    var erg = FunctionReflector.WriteOrmForSapFunction(bapi.BAPI, SapOrmModelsProjectPath);
+
                     if (erg.IsNotNullOrEmpty())
-                        break;
+                        GenerationErrors.Add(string.Format("{0}: {1}", bapi.BAPI, erg));
+                    else
+                        okCount++;
                 }
 
-                if (erg.IsNotNullOrEmpty())
-                    Parent.ShowMessage("Fehler bei der Modelgenerierung: " + erg, MessageType.Error);
-                else
-                    Parent.ShowMessage(Bapis.Count.ToString() + " SapORM-Models wurden erfolgreich generiert", MessageType.Success);
+                Parent.ShowMessage(string.Format("{0} von {1} SapORM-Models wurden erfolgreich generiert", okCount, Bapis.Count), MessageType.Success);
 
                 BapiName = "";
             }
