@@ -296,7 +296,7 @@
 	background-position: 	-683px 0;
 }
 .ui-icon-radio-on {
-	background-position: 	-718px 0;
+	background-position: 	-720px 0;
 }
 .ui-icon-radio-off {
 	background-position: 	-754px 0;
@@ -466,18 +466,23 @@
     text-align: right !Important;
 }
 
-.NoVerticalPadding {
+.NoVerticalPadding, .TableGridCell.NoVerticalPadding, .TableGridCellNarrow.NoVerticalPadding {
     padding-top: 0 !Important;
     padding-bottom: 0 !Important;
 }
 
-.NoHorizontalPadding {
+.NoHorizontalPadding, .TableGridCell.NoHorizontalPadding, .TableGridCellNarrow.NoHorizontalPadding {
     padding-left: 0 !Important;
     padding-right: 0 !Important;
 }
 
-.NoPadding {
+.NoPadding, .TableGridCell.NoPadding, .TableGridCellNarrow.NoPadding {
     padding: 0 !Important;
+}
+
+.LessHorizontalPadding, .TableGridCell.LessHorizontalPadding, .TableGridCellNarrow.LessHorizontalPadding {
+    padding-left: 4px !Important;
+    padding-right: 4px !Important;
 }
 
 .NotVisible {
@@ -637,4 +642,13 @@ div.StaticHeaderTableContainer {
 table th div.StaticHeaderTableColumnHeader {
     position: absolute;
     top: 0;
+}
+
+.ui-page {
+    font-size: 14px;
+}
+
+.ui-checkbox .ui-mini.ui-btn-icon-left .ui-btn-inner,.ui-radio .ui-mini.ui-btn-icon-left .ui-btn-inner {
+    padding-left: 32px;
+    padding-right: 8px;
 }
