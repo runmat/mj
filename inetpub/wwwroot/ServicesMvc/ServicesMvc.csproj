@@ -98,6 +98,10 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\Autofac.Mvc4.3.1.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="CkgDomainInternal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\CkgDomainLogic\CkgDomainInternal\bin\Debug\CkgDomainInternal.dll</HintPath>
+    </Reference>
     <Reference Include="Commons.Web.Mvc.PrecompiledViews, Version=1.0.5.0, Culture=neutral, PublicKeyToken=b66b1a10e1d96b4d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\work\GAC\Commons.Web.Mvc.PrecompiledViews.dll</HintPath>
@@ -2847,6 +2851,10 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Verbandbuch\Erfassung.cshtml" />
+    <Content Include="Views\Verbandbuch\Report.cshtml" />
+    <Content Include="Views\Verbandbuch\Partial\Grid.cshtml" />
+    <Content Include="Views\Verbandbuch\Partial\FormErfassung.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContacts.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\CustomerGroupContactInfo.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPageHeader.cshtml" />
@@ -2860,6 +2868,9 @@
     <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdressenAuswahlGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresse.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresseForm.cshtml" />
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\ATest.cshtml" />
     <None Include="Web.config">
