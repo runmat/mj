@@ -88,9 +88,6 @@ namespace ServicesMvc.DataKonverter.Controllers
                 ViewModel.DataMapper.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn2.xml");
             }
 
-            var test = ViewModel.DataMapper.SourceFile.RowCount;
-            var test2 = ViewModel.DataMapper.RecordNo;
-
             return PartialView("Partial/Konfiguration", ViewModel);
         }
 
@@ -131,6 +128,22 @@ namespace ServicesMvc.DataKonverter.Controllers
             var newConnection = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
 
             // Alle Prozessoren zur späteren Ausgabe aktualisieren...
+            //var processorList = new List<Processor>();
+            //foreach (var processor in ViewModel.DataMapper.Processors)
+            //{
+            //    var processorResult = ViewModel.DataMapper.GetProcessorResult(processor);
+            //    processorList.Add(processorResult);
+            //}
+
+            // Alle genutzen Zielfelder aktualisieren...
+            //var destFieldList = new List<Processor>();
+            //foreach (var processor in ViewModel.DataMapper.DestinationFile)
+            //{
+            //    var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
+            //    processorList.Add(processorResult);
+            //}
+
+            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
             var processorList = new List<Processor>();
             foreach (var processor in ViewModel.DataMapper.Processors)
             {
@@ -138,15 +151,50 @@ namespace ServicesMvc.DataKonverter.Controllers
                 processorList.Add(processorResult);
             }
 
-            // Alle genutzen Zielfelder aktualisieren...
-            var destFieldList = new List<Processor>();
-            //foreach (var processor in ViewModel.DataMapper.DestinationFile)
-            //{
-            //    var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
-            //    processorList.Add(processorResult);
-            //}
+            // Alle DatenRecords der Quellfelder ermitteln...
+            var sourceFieldList = new List<Domaenenfestwert>();
+            foreach (var field in ViewModel.DataMapper.SourceFile.Fields)
+            {
+                sourceFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = field.Guid,
+                    Beschreibung = field.Records[ViewModel.DataMapper.RecordNo - 1]
+                });
+            }
 
-            return Json(processorList);
+            // Alle DatenRecords der Zielfelder ermitteln...
+            var destFieldList = new List<Domaenenfestwert>();
+            foreach (var field in ViewModel.DataMapper.DestinationFile.Fields)
+            {
+                var value = "";
+
+                // Prüfen, ob Connection vorliegt...
+                var connection = ViewModel.DataMapper.DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
+                if (connection != null)
+                {
+                    if (connection.SourceIsProcessor)
+                    {
+                        var processor = ViewModel.DataMapper.Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-",""));
+                        value = processor.Output;
+                    }
+                    else
+                    {
+                        var sourceItem = ViewModel.DataMapper.SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
+                        value = sourceItem.Records[ViewModel.DataMapper.RecordNo - 1];
+                    }
+                }
+
+                destFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = field.Guid,
+                    Beschreibung = value
+                });
+
+            }
+
+            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
+
+            // return Json(processorList);
         }
 
         [HttpPost]
@@ -166,7 +214,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
-        public JsonResult RefreshUi(string recordOffset)
+        public JsonResult RefreshUi(string recordOffset = null)
         {
             switch (recordOffset)
             {
@@ -212,7 +260,37 @@ namespace ServicesMvc.DataKonverter.Controllers
                 });
             }
 
-            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = "", ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
+            // Alle DatenRecords der Zielfelder ermitteln...
+            var destFieldList = new List<Domaenenfestwert>();
+            foreach (var field in ViewModel.DataMapper.DestinationFile.Fields)
+            {
+                var value = "";
+
+                // Prüfen, ob Connection vorliegt...
+                var connection = ViewModel.DataMapper.DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
+                if (connection != null)
+                {
+                    if (connection.SourceIsProcessor)
+                    {
+                        var processor = ViewModel.DataMapper.Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-",""));
+                        value = processor.Output;
+                    }
+                    else
+                    {
+                        var sourceItem = ViewModel.DataMapper.SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
+                        value = sourceItem.Records[ViewModel.DataMapper.RecordNo - 1];
+                    }
+                }
+
+                destFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = field.Guid,
+                    Beschreibung = value
+                });
+
+            }
+
+            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
         }
         #endregion
 

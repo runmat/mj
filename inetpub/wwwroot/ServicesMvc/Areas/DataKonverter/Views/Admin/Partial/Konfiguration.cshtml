@@ -18,17 +18,17 @@
         <option value="2">Abmeldung</option>
     </select>*@
 
-    <button class="btn white" onclick="Goto('first');">
+    <button class="btn white" onclick="GotoRecord('first');">
         <<
     </button>
-    <button class="btn white" onclick="Goto('-1');">
+    <button class="btn white" onclick="GotoRecord('-1');">
         <
     </button>
 
-    <button class="btn white" onclick="Goto('+1');">
+    <button class="btn white" onclick="GotoRecord('+1');">
         >
     </button>
-    <button class="btn white" onclick="Goto('last');">
+    <button class="btn white" onclick="GotoRecord('last');">
         >>
     </button>
 
@@ -107,7 +107,6 @@
                         if (tag != null)
                         {
                             id = child.Attributes["id"].Value;
-                            // Dest-@parent.Name-@child.Name
                         }
 
                         if (!child.HasChildNodes)
@@ -116,7 +115,7 @@
                             <div class="ep">
                             </div>
                             <div class="field">@child.Name</div>
-                            <span class="data"></span>
+                            <span class="data "></span>
                         </div> 
                         }
 
@@ -262,14 +261,15 @@
                 url: "Admin/NewConnection",
                 data: { IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor },
                 loadingShow: false,
-                success: function (processors) {
-                    for (var i = 0; i < processors.length; i++) {
-                        var processorId = processors[i].Guid;
-                        var valueIn = processors[i].Input;
-                        var valueOut = processors[i].Output;
-                        $('#' + processorId).find(".datain").html(valueIn);
-                        $('#' + processorId).find(".dataout").html(valueOut);
-                    }
+                success: function (result) {
+                    RefreshUi(result);
+//                    for (var i = 0; i < processors.length; i++) {
+//                        var processorId = processors[i].Guid;
+//                        var valueIn = processors[i].Input;
+//                        var valueOut = processors[i].Output;
+//                        $('#' + processorId).find(".datain").html(valueIn);
+//                        $('#' + processorId).find(".dataout").html(valueOut);
+//                    }
                 }
             });
 
@@ -437,35 +437,36 @@
         });
     }
 
-    function Goto(value) {
+    function GotoRecord(value) {
         $.ajax({
             type: "POST",
             url: "Admin/RefreshUi",
             data: { recordOffset: value },
             loadingShow: false,
             success: function (result) {
-                // alert(result.RecordInfoText);
-                $('#RecordPosition').html(result.RecordInfoText);
-
-                // Refresh SourceField data
-                for (var i = 0; i < result.SourceFieldList.length; i++) {
-                    var guid = result.SourceFieldList[i].Wert;
-                    var value = result.SourceFieldList[i].Beschreibung;
-                    $('#' + guid).find(".data").html(value);
-                }
-
-                // Refresh processors
-                for (var i = 0; i < result.ProcessorList.length; i++) {
-                    var processorId = result.ProcessorList[i].Guid;
-                    var valueIn = result.ProcessorList[i].Input;
-                    var valueOut = result.ProcessorList[i].Output;
-                    $('#' + processorId).find(".datain").html(valueIn);
-                    $('#' + processorId).find(".dataout").html(valueOut);
-                }
-
-
+                RefreshUi(result);
             }
         });
+    }
+
+    function RefreshUi(uiObject) {
+        $('#RecordPosition').html(uiObject.RecordInfoText);
+
+        // Refresh SourceField data
+        for (var i = 0; i < uiObject.SourceFieldList.length; i++) {
+            var guid = uiObject.SourceFieldList[i].Wert;
+            var value = uiObject.SourceFieldList[i].Beschreibung;
+            $('#' + guid).find(".data").html(value);
+        }
+
+        // Refresh processors
+        for (var i = 0; i < uiObject.ProcessorList.length; i++) {
+            var processorId = uiObject.ProcessorList[i].Guid;
+            var valueIn = uiObject.ProcessorList[i].Input;
+            var valueOut = uiObject.ProcessorList[i].Output;
+            $('#' + processorId).find(".datain").html(valueIn);
+            $('#' + processorId).find(".dataout").html(valueOut);
+        }
     }
 
 </script>

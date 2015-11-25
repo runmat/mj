@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Xml.XPath;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.DataKonverter.Contracts;
@@ -25,9 +26,6 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
 
         public DataMapper DataMapper { get; set; }
-
-        // public SourceFile SourceFile { get; set; }
-        // public DestinationObj DestinationFile { get; set; }
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
 
@@ -164,14 +162,39 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 xmlContent = sr.ReadToEnd();
             }
 
-            var destinationObj = new DestinationFile
+            var destinationFileObj = new DestinationFile
             {
                 Filename = filename,
                 XmlRaw = xmlContent,
-                XmlDocument = StringToXmlDoc(xmlContent)
+                XmlDocument = StringToXmlDoc(xmlContent),
+                Fields = new List<Field>()
             };
 
-            return destinationObj;
+            var doc = new XmlDocument();
+            doc.Load(filenameFull);
+
+            doc.IterateThroughAllNodes( delegate(XmlNode node)
+            {
+                try
+                {
+                    var nodeId = node.Attributes["id"].Value;
+
+                    var newField = new Field
+                    {
+                        Guid = "Dest-" + nodeId,
+                        Records = new List<string>()
+                    };
+                    newField.Records.Add("test");
+
+                    destinationFileObj.Fields.Add(newField);
+                }
+                catch (Exception)
+                {
+                }
+
+            });
+
+            return destinationFileObj;
         }
 
         private XmlDocument StringToXmlDoc(string xml)
