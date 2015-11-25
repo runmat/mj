@@ -26,5 +26,9 @@ namespace CkgDomainLogic.Archive.Contracts
         string ViewDocument(string docId);
 
         EasyAccessDetail GetDocumentDetail(string docId);
+
+        List<string> GetDocuments(EasyAccessArchiveDefinition archiveToSearch, string query);
+
+        List<string> GetDocuments(List<EasyAccessArchiveDefinition> archivesToSearch, string query);
     }
 }

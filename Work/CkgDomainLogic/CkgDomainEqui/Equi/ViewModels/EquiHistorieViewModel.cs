@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
+using CkgDomainLogic.Archive.Contracts;
+using CkgDomainLogic.Archive.Models;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
+using DocumentTools.Services;
 using GeneralTools.Models;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -17,7 +21,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         public IEquiHistorieDataService DataService { get { return CacheGet<IEquiHistorieDataService>(); } }
 
         [XmlIgnore]
+        public IEasyAccessDataService EasyAccessDataService { get { return CacheGet<IEasyAccessDataService>(); } }
+
+        [XmlIgnore]
         public List<EquiHistorieInfo> HistorieInfos { get { return DataService.HistorieInfos; } }
+
+        [XmlIgnore]
+        public List<EasyAccessArchiveDefinition> Archives { get; private set; }
+
+        public bool HasArchives { get { return (Archives.AnyAndNotNull()); } }
 
         public EquiHistorie EquipmentHistorie { get; set; }
 
@@ -48,6 +60,20 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public void DataInit()
+        {
+            GetCurrentAppID();
+
+            Archives = DataService.GetArchiveDefinitions();
+        }
+
+        public void DataInitAndLoad(string fin)
+        {
+            DataInit();
+
+            LoadHistorie(fin);
+        }
+
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
         {
             DataService.Suchparameter = suchparameter;
@@ -62,10 +88,8 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
-        public void LoadHistorie(string fin)
+        private void LoadHistorie(string fin)
         {
-            GetCurrentAppID();
-
             if (!String.IsNullOrEmpty(fin))
             {
                 EquipmentHistorie = DataService.GetEquiHistorie(fin, CurrentAppID);
@@ -140,6 +164,20 @@ namespace CkgDomainLogic.Equi.ViewModels
             };
 
             return summaryModel;
+        }
+
+        public byte[] GetDocumentsFromArchive()
+        {
+            var docPaths = EasyAccessDataService.GetDocuments(Archives, string.Format(".1001={0}", EquipmentHistorie.Fahrgestellnummer));
+
+            var fileList = new List<byte[]>();
+
+            docPaths.ForEach(d => fileList.Add(File.ReadAllBytes(d)));
+
+            if (fileList.None())
+                return null;
+
+            return PdfDocumentFactory.MergePdfDocuments(fileList);
         }
 
         #region Filter
