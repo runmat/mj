@@ -114,19 +114,6 @@ namespace ServicesMvc.DataKonverter.Controllers
             return PartialView("Partial/Abschluss", ViewModel);
         }
 
-        #region Ajax
-
-        //[HttpPost]
-        //public JsonResult LiveTransform(string input, string func)
-        //{
-        //    var output = "";
-        //    output = string.Format("#{0}", input);
-
-        //    return Json(new { Output = output });
-        //}
-
-        #endregion
-
         [HttpPost]
         public JsonResult NewProcessor()
         {
@@ -140,10 +127,19 @@ namespace ServicesMvc.DataKonverter.Controllers
             ViewModel.DataMapper.RecordNo = 0;
 
             // var result = ViewModel.DataMapper.AddConnection(dataConnection);            
-            var result = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
+            var newConnection = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
 
+            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
             var processorList = new List<Processor>();
             foreach (var processor in ViewModel.DataMapper.Processors)
+            {
+                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
+                processorList.Add(processorResult);
+            }
+
+            // Alle genutzen Zielfelder aktualisieren...
+            var destFieldList = new List<Processor>();
+            foreach (var processor in ViewModel.DataMapper.DestinationFile)
             {
                 var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
                 processorList.Add(processorResult);

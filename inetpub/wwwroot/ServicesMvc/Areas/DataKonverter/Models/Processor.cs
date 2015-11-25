@@ -7,7 +7,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class Processor
     {
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
         public string Name { get; set; }
         public Operation Operation { get; set; }
         public string Input { get; set; }       
@@ -16,16 +16,16 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public int PosLeft { get; set; }
         public int PosTop { get; set; }
 
-        public List<DataConnection> DataConnectionsIn { get; set; }
-        public List<DataConnection> DataConnectionsOut { get; set; }
+        //public List<DataConnection> DataConnectionsIn { get; set; }
+        //public List<DataConnection> DataConnectionsOut { get; set; }
 
         //public List<string> InputValues { get; set; }
 
         public Processor()
         {
-            Guid =  Guid.NewGuid();
-            DataConnectionsIn = new List<DataConnection>();
-            DataConnectionsOut = new List<DataConnection>();
+            Guid = System.Guid.NewGuid().ToString();
+            //DataConnectionsIn = new List<DataConnection>();
+            //DataConnectionsOut = new List<DataConnection>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class SourceFile
     {
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
         public string Filename { get; set; }
         public bool FirstRowIsCaption { get; set; }
         public Encoding Encoding { get; set; }
@@ -28,7 +28,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public SourceFile()
         {
-            Guid = Guid.NewGuid();
+            Guid = System.Guid.NewGuid().ToString();
             //    public Guid Guid { get { return Guid.NewGuid(); } }
             //    public string Caption { get; set; }
             //    public DataType DataType { get; set; }

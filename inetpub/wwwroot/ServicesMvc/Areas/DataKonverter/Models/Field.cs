@@ -7,7 +7,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class Field
     {
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
         public string Caption { get; set; }
         public FieldType FieldType { get; set; }
         public bool IsUsed { get; set; }
@@ -16,7 +16,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public Field()
         {
-            Guid = Guid.NewGuid();
+            Guid = System.Guid.NewGuid().ToString();
             Records = new List<string>();
         }
     }    

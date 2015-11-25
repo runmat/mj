@@ -55,8 +55,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
             var newConnection = new DataConnection
             {
-                GuidSource = new Guid(idSource),
-                GuidDest = new Guid(idDest),
+                GuidSource = idSource,
+                GuidDest = idDest,
                 SourceIsProcessor = sourceIsProcessor,
                 DestIsProcessor = destIsProcessor
             };
@@ -97,14 +97,16 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return DataConnections;
         }
 
-        public Guid AddProcessor()
+        public string AddProcessor()
         {
             var newProcessor = new Processor();
             Processors.Add(newProcessor);
-            return newProcessor.Guid;           
+            
+            // return System.Guid.NewGuid().ToString();         
+            return newProcessor.Guid;         
         }
 
-        public string RemoveProcessor(Guid processorId)
+        public string RemoveProcessor(string processorId)
         {
             var processor = Processors.FirstOrDefault(x => x.Guid == processorId);
             Processors.Remove(processor);
@@ -134,8 +136,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             }
             input = input.Remove(input.Length-3,3);
             processor.Input = input.ToString();
-            processor.DataConnectionsIn = connectionsIn;
-            processor.DataConnectionsOut = connectionsOut;
+            //processor.DataConnectionsIn = connectionsIn;
+            //processor.DataConnectionsOut = connectionsOut;
             
             // Operation durchführen...
             processor.Output = "#" + input;

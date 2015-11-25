@@ -9,8 +9,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     {
         public Guid Guid { get; set; }
 
-        public Guid GuidSource { get; set; }
-        public Guid GuidDest { get; set; }
+        public string GuidSource { get; set; }
+        public string GuidDest { get; set; }
         public bool SourceIsProcessor { get; set; }
         public bool DestIsProcessor { get; set; }
 
