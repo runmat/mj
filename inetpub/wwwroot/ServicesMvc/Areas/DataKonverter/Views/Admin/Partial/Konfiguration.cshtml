@@ -18,17 +18,17 @@
         <option value="2">Abmeldung</option>
     </select>*@
 
-    <button class="btn white" onclick="GotoFirst();">
+    <button class="btn white" onclick="Goto('first');">
         <<
     </button>
-    <button class="btn white" onclick="Goto(-1);">
+    <button class="btn white" onclick="Goto('-1');">
         <
     </button>
 
-    <button class="btn white" onclick="Goto(1);">
+    <button class="btn white" onclick="Goto('+1');">
         >
     </button>
-    <button class="btn white" onclick="GotoLast();">
+    <button class="btn white" onclick="Goto('last');">
         >>
     </button>
 
@@ -79,15 +79,6 @@
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
     </div>
-
-    @*<div id="DivKonfiguration" class="margin-top-20">
-    @using (Ajax.BeginForm("Konfiguration", "Admin", null,
-        new MvcAjaxOptions { UpdateTargetId = "DivKonfiguration", OnComplete = "AjaxFormKonfigurationComplete();" },
-        htmlAttributes: new {@class = "form-horizontal", id = "AjaxFormKonfiguration"}))
-    {
-        @Html.FormValidationSummary()
-    }
-</div>*@
 
     <div id="DataKonverterContainer2x" style="width: 650px;">
         <div id="source" style="padding: 0px;">
@@ -237,7 +228,6 @@
         });
 
         jsPlumb.unbind("connection").bind("connection", function (info) {
-
             var idSource = info.sourceId;
             var sourceDiv = $('#' + idSource);
             var sourceField = sourceDiv.find(".field").html();
@@ -270,14 +260,10 @@
             $.ajax({
                 type: "POST",
                 url: "Admin/NewConnection",
-                // data: newConnection,
                 data: { IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor },
                 loadingShow: false,
                 success: function (processors) {
-                    // alert("result: " + result.SourceIsProcessor);
                     for (var i = 0; i < processors.length; i++) {
-                        // console.log(x[i].id);
-                        // alert(processorList[i].Input + " -> " + processorList[i].Output);
                         var processorId = processors[i].Guid;
                         var valueIn = processors[i].Input;
                         var valueOut = processors[i].Output;
@@ -303,7 +289,6 @@
             loadingShow: false,
             success: function (result) {
                 var processorId = result.NewGuid;
-                // alert("processorId: " + processorId);
 
                 var numItems = $('.processor').length;
                 var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
@@ -453,7 +438,34 @@
     }
 
     function Goto(value) {
-        
+        $.ajax({
+            type: "POST",
+            url: "Admin/RefreshUi",
+            data: { recordOffset: value },
+            loadingShow: false,
+            success: function (result) {
+                // alert(result.RecordInfoText);
+                $('#RecordPosition').html(result.RecordInfoText);
+
+                // Refresh SourceField data
+                for (var i = 0; i < result.SourceFieldList.length; i++) {
+                    var guid = result.SourceFieldList[i].Wert;
+                    var value = result.SourceFieldList[i].Beschreibung;
+                    $('#' + guid).find(".data").html(value);
+                }
+
+                // Refresh processors
+                for (var i = 0; i < result.ProcessorList.length; i++) {
+                    var processorId = result.ProcessorList[i].Guid;
+                    var valueIn = result.ProcessorList[i].Input;
+                    var valueOut = result.ProcessorList[i].Output;
+                    $('#' + processorId).find(".datain").html(valueIn);
+                    $('#' + processorId).find(".dataout").html(valueOut);
+                }
+
+
+            }
+        });
     }
 
 </script>

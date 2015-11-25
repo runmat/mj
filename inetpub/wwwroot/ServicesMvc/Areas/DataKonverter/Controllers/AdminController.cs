@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DataKonverter.Contracts;
 using CkgDomainLogic.DataKonverter.ViewModels;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
@@ -50,7 +51,6 @@ namespace ServicesMvc.DataKonverter.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-
             ViewModel.DataInit();
 
             //var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
@@ -63,12 +63,12 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         [HttpPost]
         [CkgApplication]
-        public ActionResult Prozessauswahl()
+        public ActionResult Prozessauswahl(KroschkeDataKonverterViewModel.WizardProzessauswahl model)
         {
             //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
             //    model = ViewModel.Auftraggeber;
 
-            return PartialView("Partial/Prozessauswahl", ViewModel.DataMapper.SourceFile);
+            return PartialView("Partial/Prozessauswahl", model);
         }
 
         [HttpPost]
@@ -114,6 +114,7 @@ namespace ServicesMvc.DataKonverter.Controllers
             return PartialView("Partial/Abschluss", ViewModel);
         }
 
+        #region Ajax
         [HttpPost]
         public JsonResult NewProcessor()
         {
@@ -124,7 +125,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         [HttpPost]
         public JsonResult NewConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
-            ViewModel.DataMapper.RecordNo = 0;
+            // ViewModel.DataMapper.RecordNo = 1;            
 
             // var result = ViewModel.DataMapper.AddConnection(dataConnection);            
             var newConnection = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
@@ -133,17 +134,17 @@ namespace ServicesMvc.DataKonverter.Controllers
             var processorList = new List<Processor>();
             foreach (var processor in ViewModel.DataMapper.Processors)
             {
-                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
+                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor);
                 processorList.Add(processorResult);
             }
 
             // Alle genutzen Zielfelder aktualisieren...
             var destFieldList = new List<Processor>();
-            foreach (var processor in ViewModel.DataMapper.DestinationFile)
-            {
-                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
-                processorList.Add(processorResult);
-            }
+            //foreach (var processor in ViewModel.DataMapper.DestinationFile)
+            //{
+            //    var processorResult = ViewModel.DataMapper.GetProcessorResult(processor, ViewModel.DataMapper.RecordNo);
+            //    processorList.Add(processorResult);
+            //}
 
             return Json(processorList);
         }
@@ -163,6 +164,57 @@ namespace ServicesMvc.DataKonverter.Controllers
 
             return Json(result);
         }
+
+        [HttpPost]
+        public JsonResult RefreshUi(string recordOffset)
+        {
+            switch (recordOffset)
+            {
+                case "first":
+                    ViewModel.DataMapper.RecordNo = 0;
+                    break;
+
+                case "-1":
+                    ViewModel.DataMapper.RecordNo --;
+                    break;
+
+                case "+1":
+                    ViewModel.DataMapper.RecordNo++;
+                    break;
+
+                case "last":
+                    ViewModel.DataMapper.RecordNo = ViewModel.DataMapper.RecordCount;
+                    break;
+            }
+
+            if (ViewModel.DataMapper.RecordNo < 1)
+                ViewModel.DataMapper.RecordNo = 1;
+
+            if (ViewModel.DataMapper.RecordNo > ViewModel.DataMapper.RecordCount )
+                ViewModel.DataMapper.RecordNo = ViewModel.DataMapper.RecordCount;
+            
+            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
+            var processorList = new List<Processor>();
+            foreach (var processor in ViewModel.DataMapper.Processors)
+            {
+                var processorResult = ViewModel.DataMapper.GetProcessorResult(processor);
+                processorList.Add(processorResult);
+            }
+
+            // Alle DatenRecords der Quellfelder ermitteln...
+            var sourceFieldList = new List<Domaenenfestwert>();
+            foreach (var field in ViewModel.DataMapper.SourceFile.Fields)
+            {
+                sourceFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = field.Guid,
+                    Beschreibung = field.Records[ViewModel.DataMapper.RecordNo - 1]
+                });
+            }
+
+            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = "", ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
+        }
+        #endregion
 
         #region Upload
 

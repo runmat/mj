@@ -1,4 +1,4 @@
-﻿@model ServicesMvc.Areas.DataKonverter.Models.SourceFile
+﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel.WizardProzessauswahl
 
 <script>
     
@@ -11,7 +11,7 @@
         $(window).resize(function () {
         });
 
-        $('#processId').chosen();
+        $('#SelectedProcess').chosen();
     });
 
     function UploadStart(e) {
@@ -68,7 +68,6 @@
 
         <div class="row-fluid">
             <div class="span6">
-                <h3>Datenquelle</h3>
                 <div class="control-group">
                     <div class="controls">
                         @(Html.Telerik().Upload()
@@ -89,15 +88,11 @@
                     </div>
                 </div>
 
-                @Html.TextBoxFor(m => m.Filename)
+                @Html.TextBoxFor(m => m.SourceFile.Filename)                
 
             </div>
             <div class="span6">
-                <h3>Prozess</h3>
-                <select id="processId" name="processId" size="5">
-                    <option value="1">Zulassung</option>
-                    <option value="2">Abmeldung</option>
-                </select>
+                @Html.FormDropDownListFor(m => m.SelectedProcess, Model.ProcessList.ToSelectList(), new { @class = "m-wrap" })
             </div>
         </div>
     }

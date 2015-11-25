@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using CkgDomainLogic.DataKonverter.ViewModels;
+using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class SourceFile
     {
         public string Guid { get; set; }
+
         public string Filename { get; set; }
+
         public bool FirstRowIsCaption { get; set; }
         public Encoding Encoding { get; set; }
         public List<Field> Fields { get; set; }

@@ -29,6 +29,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public DataMapper()
         {
+            RecordNo = 1;
+            
             SourceFile = new SourceFile();
             DestinationFile = new DestinationFile();
             DataConnections = new List<DataConnection>();
@@ -113,7 +115,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return processorId.ToString();
         }
 
-        public Processor GetProcessorResult(Processor processor, int recordNo)   // string fieldGuid, string origValue
+        public Processor GetProcessorResult(Processor processor)
         {
             // Alle eingehenden Connections ermitteln...
             var connectionsIn = DataConnections.Where(x => x.GuidDest == processor.Guid).ToList();
@@ -129,15 +131,15 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 var sourceField = SourceFile.Fields.FirstOrDefault(x => x.Guid == dataConnection.GuidSource);
                 if (sourceField != null)
                 {
-                    var value = sourceField.Records[recordNo];
+                    var value = sourceField.Records[RecordNo - 1];
                     input.Append(value);
                     input.Append("*#*");    
                 }
             }
-            input = input.Remove(input.Length-3,3);
+            if (input.Length > 0)
+                input = input.Remove(input.Length-3,3);
+
             processor.Input = input.ToString();
-            //processor.DataConnectionsIn = connectionsIn;
-            //processor.DataConnectionsOut = connectionsOut;
             
             // Operation durchführen...
             processor.Output = "#" + input;

@@ -167,6 +167,8 @@
         white-space: nowrap;
         overflow: hidden;
         float: left;
+        margin-right: 3px;
+        padding-right: 3px;
     }
 
     .btnfirst {
@@ -192,7 +194,7 @@
     @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
 
     <div id="formWizardTab1" class="hide">
-        @Html.Partial("Partial/Prozessauswahl", Model.DataMapper.SourceFile)
+        @Html.Partial("Partial/Prozessauswahl", Model.Prozessauswahl)
     </div>
 </div>
 

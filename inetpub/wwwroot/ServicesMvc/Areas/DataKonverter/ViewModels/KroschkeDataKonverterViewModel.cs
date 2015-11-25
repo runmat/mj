@@ -12,6 +12,8 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.DataKonverter.Contracts;
 using DocumentTools.Services;
+using GeneralTools.Models;
+using GeneralTools.Resources;
 using ServicesMvc.Areas.DataKonverter.Models;
 
 namespace CkgDomainLogic.DataKonverter.ViewModels
@@ -72,9 +74,36 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             // DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
 
             DataMapper.DestinationFile = FillDestinationObj("KroschkeOn2.xml");
+            Prozessauswahl = new WizardProzessauswahl();
 
             #endregion
         }
+
+        #region Wizard-ViewModels
+
+        public WizardProzessauswahl Prozessauswahl { get; set; }
+
+        public class WizardProzessauswahl
+        {
+            public SourceFile SourceFile { get; set; }
+
+            [LocalizedDisplay("Prozess")]  // LocalizeConstants.Customer
+            public string SelectedProcess { get; set; }
+
+            [SelectListText]            
+            public List<string> ProcessList
+            {
+                get { return new List<string>
+                        {
+                            "Zulassung",
+                            "Abmeldung",
+                            "Test"
+                        };
+                }
+            }
+        }
+
+        #endregion
 
         #region File converter
 
