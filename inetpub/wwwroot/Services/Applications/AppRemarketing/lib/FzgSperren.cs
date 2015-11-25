@@ -11,7 +11,9 @@ namespace AppRemarketing.lib
 
         String m_strFilename2;
         String m_strFahrgestellnummer;
-        String m_strDebitor;
+        String m_selHaendler;
+        String m_debitor;
+        String m_haendler;
         DataTable m_tblFahrzeuge;
         DataTable m_tblFehlerFahrzeuge;
         DataTable m_tblUpload;
@@ -59,10 +61,22 @@ namespace AppRemarketing.lib
             set { m_strFahrgestellnummer = value; }
         }
 
+        public String SelHaendler
+        {
+            get { return m_selHaendler; }
+            set { m_selHaendler = value; }
+        }
+
         public String Debitor
         {
-            get { return m_strDebitor; }
-            set { m_strDebitor = value; }
+            get { return m_debitor; }
+            set { m_debitor = value; }
+        }
+
+        public String Haendler
+        {
+            get { return m_haendler; }
+            set { m_haendler = value; }
         }
 
         #endregion
@@ -100,10 +114,10 @@ namespace AppRemarketing.lib
 
                 myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
 
-                // Selektion nach Händler/Debitor oder Upload-Tabelle/FIN-Liste
-                if (!String.IsNullOrEmpty(m_strDebitor))
+                // Selektion nach Händler oder Upload-Tabelle/FIN-Liste
+                if (!String.IsNullOrEmpty(m_selHaendler))
                 {
-                    myProxy.setImportParameter("I_RDEALER", m_strDebitor);
+                    myProxy.setImportParameter("I_RDEALER", m_selHaendler);
                 }
                 else if (m_tblUpload != null)
                 {
@@ -343,22 +357,26 @@ namespace AppRemarketing.lib
             {
                 DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_SPERR_HAEND_FZG_01", ref m_objApp, ref m_objUser, ref page);
 
-                myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+                if (!string.IsNullOrEmpty(m_debitor))
+                    myProxy.setImportParameter("I_KUNNR_AG", m_debitor.PadLeft(10, '0'));
+                else
+                    myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
 
+                if (!string.IsNullOrEmpty(m_haendler))
+                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
 
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 
+                DataRow tmpSAPRow = SapTable.NewRow();
 
-                    DataRow tmpSAPRow = SapTable.NewRow();
+                {
+                    tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
+                }
 
-                    {
-                        tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
-                    }
-
-                    SapTable.Rows.Add(tmpSAPRow);
-                    SapTable.AcceptChanges();
-     
+                SapTable.Rows.Add(tmpSAPRow);
+                SapTable.AcceptChanges();
                 
                 myProxy.callBapi();
                 
@@ -374,7 +392,6 @@ namespace AppRemarketing.lib
                 {
                     WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblFahrzeuge);
                 }
-
             }
             catch (Exception ex)
             {
@@ -387,9 +404,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void Entsperren(String strAppID, String strSessionID, System.Web.UI.Page page)
@@ -405,21 +420,27 @@ namespace AppRemarketing.lib
             try
             {
                 DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_ENTSP_HAEND_FZG_01", ref m_objApp, ref m_objUser, ref page);
-                myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
+                if (!string.IsNullOrEmpty(m_debitor))
+                    myProxy.setImportParameter("I_KUNNR_AG", m_debitor.PadLeft(10, '0'));
+                else
+                    myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
 
+                if (!string.IsNullOrEmpty(m_haendler))
+                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
 
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 
-                    DataRow tmpSAPRow = SapTable.NewRow();
+                DataRow tmpSAPRow = SapTable.NewRow();
 
-                    {
-                        tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
-                    }
+                {
+                    tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
+                }
 
-                    SapTable.Rows.Add(tmpSAPRow);
-                    SapTable.AcceptChanges();
-         
+                SapTable.Rows.Add(tmpSAPRow);
+                SapTable.AcceptChanges();
 
                 myProxy.callBapi();
 
@@ -435,7 +456,6 @@ namespace AppRemarketing.lib
                 {
                     WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblFahrzeuge);
                 }
-
             }
             catch (Exception ex)
             {
@@ -448,9 +468,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
     }
 }

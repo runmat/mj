@@ -110,7 +110,7 @@ namespace AppRemarketing.forms
                 m_report.tblUpload.Rows.Add(m_report.tblUpload.NewRow());
                 m_report.tblUpload.Rows[0][0] = txtFin.Text;
 
-                m_report.Debitor = ""; // Suche über tblUpload, wenn Debitor nicht gesetzt
+                m_report.SelHaendler = ""; // Suche über tblUpload, wenn nicht gesetzt
 
                 DoSubmit();
                 return;
@@ -122,7 +122,7 @@ namespace AppRemarketing.forms
                 {
                     DataRow[] selRow = objSuche.Haendler.Table.Select("Debitor = '" + lbHaendler.SelectedValue + "'");
 
-                    m_report.Debitor = selRow[0]["Referenz"].ToString();
+                    m_report.SelHaendler = selRow[0]["Referenz"].ToString();
 
                     DoSubmit();
                 }
@@ -146,7 +146,7 @@ namespace AppRemarketing.forms
                 }
                 else
                 {
-                    m_report.Debitor = ""; // Suche über tblUpload, wenn Debitor nicht gesetzt
+                    m_report.SelHaendler = ""; // Suche über tblUpload, wenn nicht gesetzt
 
                     DoSubmit();
                 }
@@ -486,7 +486,7 @@ namespace AppRemarketing.forms
                     objSuche.Kennung = txtNummerDetail.Text.Trim(); 
                 }
 
-                m_report.Debitor = txtNummerDetail.Text.Trim();
+                m_report.SelHaendler = txtNummerDetail.Text.Trim();
 
                 DoSubmit();
             }
