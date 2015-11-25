@@ -1273,18 +1273,23 @@ namespace AppZulassungsdienst.forms
 
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
 
-                tblData.Rows[i]["Search"] = txtBox.Text;
-                tblData.Rows[i]["Value"] = ddl.SelectedValue;
-                tblData.Rows[i]["Text"] = ddl.SelectedItem.Text;
-                tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
+                if (tblData.Rows.Count > i)
+                {
+                    var row = tblData.Rows[i];
 
-                if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
-                {
-                    tblData.Rows[i]["DLBezeichnung"] = lblDLBezeichnung.Text;
-                }
-                else
-                {
-                    tblData.Rows[i]["DLBezeichnung"] = "";
+                    row["Search"] = txtBox.Text;
+                    row["Value"] = ddl.SelectedValue;
+                    row["Text"] = ddl.SelectedItem.Text;
+                    row["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
+
+                    if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
+                    {
+                        row["DLBezeichnung"] = lblDLBezeichnung.Text;
+                    }
+                    else
+                    {
+                        row["DLBezeichnung"] = "";
+                    }
                 }
 
                 i++;
@@ -1298,61 +1303,64 @@ namespace AppZulassungsdienst.forms
         /// <param name="tblData">Diensteistungstabelle</param>
         private void addButtonAttr(DataTable tblData)
         {
-            int i = 0;
-            var lblMenge = (Label)GridView1.HeaderRow.FindControl("lblMenge");
-            lblMenge.Style["display"] = "none";
-
-            foreach (GridViewRow gvRow in GridView1.Rows)
+            if (GridView1.Rows.Count > 0)
             {
-                var txtBox = (TextBox)gvRow.FindControl("txtSearch");
-                var ddl = (DropDownList)gvRow.FindControl("ddlItems");
-                var lblID_POS = (Label)gvRow.FindControl("lblID_POS");
-                var txtMenge = (TextBox)gvRow.FindControl("txtMenge");
+                int i = 0;
+                var lblMenge = (Label)GridView1.HeaderRow.FindControl("lblMenge");
+                lblMenge.Style["display"] = "none";
 
-                txtMenge.Style["display"] = "none";
-                //var temp = "<%=" + ddl.ClientID + "%>";
-                txtBox.Attributes.Add("onkeyup", "SetNurEinKennzFuerDL(this.value," + gvRow.RowIndex + "," +
-                    chkEinKennz.ClientID + ");FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
-                txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
-
-                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
-                ddl.DataValueField = "MaterialNr";
-                ddl.DataTextField = "Name";
-                ddl.DataBind();
-
-                DataRow[] dRows = tblData.Select("ID_POS='" + lblID_POS.Text + "'");
-                if (dRows.Length == 0)
+                foreach (GridViewRow gvRow in GridView1.Rows)
                 {
-                    txtBox.Text = tblData.Rows[i]["Search"].ToString();
-                    ddl.SelectedValue = tblData.Rows[i]["Value"].ToString();
-                    ddl.SelectedItem.Text = tblData.Rows[i]["Text"].ToString();
-                }
-                else
-                {
-                    txtBox.Text = dRows[0]["Search"].ToString();
-                    ddl.SelectedValue = dRows[0]["Value"].ToString();
-                }
+                    var txtBox = (TextBox)gvRow.FindControl("txtSearch");
+                    var ddl = (DropDownList)gvRow.FindControl("ddlItems");
+                    var lblID_POS = (Label)gvRow.FindControl("lblID_POS");
+                    var txtMenge = (TextBox)gvRow.FindControl("txtMenge");
 
-                ddl.Attributes.Add("onchange", "SetNurEinKennzFuerDL(this.options[this.selectedIndex].value," + gvRow.RowIndex + "," +
-                    chkEinKennz.ClientID + ");SetTexttValue(" + ddl.ClientID + "," + txtBox.ClientID + "," + txtMenge.ClientID + "," +
-                    lblMenge.ClientID + ")");
+                    txtMenge.Style["display"] = "none";
+                    //var temp = "<%=" + ddl.ClientID + "%>";
+                    txtBox.Attributes.Add("onkeyup", "SetNurEinKennzFuerDL(this.value," + gvRow.RowIndex + "," +
+                        chkEinKennz.ClientID + ");FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
+                    txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
 
-                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
-                if (mat != null)
-                {
-                    if (mat.MengeErlaubt)
+                    ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
+                    ddl.DataValueField = "MaterialNr";
+                    ddl.DataTextField = "Name";
+                    ddl.DataBind();
+
+                    DataRow[] dRows = tblData.Select("ID_POS='" + lblID_POS.Text + "'");
+                    if (dRows.Length == 0)
                     {
-                        txtMenge.Style["display"] = "block";
-                        lblMenge.Style["display"] = "block";
+                        txtBox.Text = tblData.Rows[i]["Search"].ToString();
+                        ddl.SelectedValue = tblData.Rows[i]["Value"].ToString();
+                        ddl.SelectedItem.Text = tblData.Rows[i]["Text"].ToString();
                     }
-                }
+                    else
+                    {
+                        txtBox.Text = dRows[0]["Search"].ToString();
+                        ddl.SelectedValue = dRows[0]["Value"].ToString();
+                    }
 
-                if (i + 1 == GridView1.Rows.Count)
-                {
-                    ddl.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$txtStVa.select();");
-                }
+                    ddl.Attributes.Add("onchange", "SetNurEinKennzFuerDL(this.options[this.selectedIndex].value," + gvRow.RowIndex + "," +
+                        chkEinKennz.ClientID + ");SetTexttValue(" + ddl.ClientID + "," + txtBox.ClientID + "," + txtMenge.ClientID + "," +
+                        lblMenge.ClientID + ")");
 
-                i++;
+                    var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+                    if (mat != null)
+                    {
+                        if (mat.MengeErlaubt)
+                        {
+                            txtMenge.Style["display"] = "block";
+                            lblMenge.Style["display"] = "block";
+                        }
+                    }
+
+                    if (i + 1 == GridView1.Rows.Count)
+                    {
+                        ddl.Attributes.Add("onblur", "ctl00$ContentPlaceHolder1$txtStVa.select();");
+                    }
+
+                    i++;
+                }
             }
         }
 
