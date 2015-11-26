@@ -8,7 +8,7 @@ namespace AppRemarketing.lib
 {
     public class HistorieEintrag
     {
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; set; }
         public string Description { get; private set; }
 
         private HistorieEintrag(DateTime date, string description)

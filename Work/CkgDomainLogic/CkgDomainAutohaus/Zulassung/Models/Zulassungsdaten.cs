@@ -32,6 +32,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusSonderzulassung { get; set; }
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
 
