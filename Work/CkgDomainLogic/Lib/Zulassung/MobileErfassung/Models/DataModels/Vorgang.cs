@@ -121,7 +121,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public bool Reserviert { get; set; }
 
         [Display(Name = "R/W")]
-        public string RWKennzeichen { get { return (Wunschkennzeichen ? "W" : (Reserviert ? "R" : "")); } }
+        public string RWKennzeichen { get { return (Reserviert ? "R" : (Wunschkennzeichen ? "W" : "")); } }
 
         [Display(Name = "Saisonkennzeichen")]
         public bool Saisonkennzeichen { get; set; }
