@@ -17,6 +17,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public string ValueSource { get; set; }
         public string ValueDest { get; set; }
 
+        public int SortNo { get; set; }             // Sortierung
 
         public DataConnection()
         {

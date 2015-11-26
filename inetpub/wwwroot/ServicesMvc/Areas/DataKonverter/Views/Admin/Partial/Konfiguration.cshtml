@@ -1,5 +1,4 @@
 ﻿@using System.Xml
-@using Newtonsoft.Json
 @model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
 
 <style>
@@ -17,49 +16,57 @@
         <option value="1">5. Januar 2015 -> 05.01.2015</option>
         <option value="2">Abmeldung</option>
     </select>*@
+    <span class="float-left">
+        <button class="btn white" onclick="GotoRecord('first');">
+            <<
+        </button>
+        <button class="btn white" onclick="GotoRecord('-1');">
+            <
+        </button>
 
-    <button class="btn white" onclick="GotoRecord('first');">
-        <<
-    </button>
-    <button class="btn white" onclick="GotoRecord('-1');">
-        <
-    </button>
+        <button class="btn white" onclick="GotoRecord('+1');">
+            >
+        </button>
+        <button class="btn white" onclick="GotoRecord('last');">
+            >>
+        </button>
 
-    <button class="btn white" onclick="GotoRecord('+1');">
-        >
-    </button>
-    <button class="btn white" onclick="GotoRecord('last');">
-        >>
-    </button>
+        <span id="RecordPosition" class="margin-left-15 badge margin-right-30">
+            @Model.DataMapper.RecordInfoText
+        </span>
+    </span>
 
-    <span id="RecordPosition" class="margin-left-15 badge margin-right-30">
-        @Model.DataMapper.RecordInfoText
+    <span class="float-left">
+        <button class="btn white" onclick="NewProcessor();">
+            Prozessor
+            <i class="halflings-icon  plus"></i>
+        </button>
+
+        <button class="btn white" onclick="ClearAll();">
+            Leeren
+            <i class="icon-remove"></i>
+        </button>
+
+        @*<button class="btn white margin-left-10" onclick="Save();">
+            Save
+        </button>
+        <button class="btn white" onclick="Load();">
+            Load
+        </button>*@
+
+        <button class="btn white margin-left-10" onclick="ShowHideProcessors(false);">
+            Hide
+        </button>
+        <button class="btn white" onclick="ShowHideProcessors(true);">
+            Show
+        </button>
     </span>
     
-    <button class="btn white" onclick="NewProcessor();">
-        Neuer Prozessor
-        <i class="halflings-icon  plus"></i>
-    </button>
+    <div class="float-left margin-left-10">
+        @Html.DropDownListFor(m => m.Konfiguration.GlobalDateTransformation, Model.GlobalViewData.DateTransformations.ToSelectList(), new {@class = "small margin-left-20"})
+    </div>
 
-    <button class="btn white" onclick="ClearAll();">
-        Leeren
-        <i class="icon-remove"></i>
-    </button>
-
-    @*<button class="btn white margin-left-10" onclick="Save();">
-        Save
-    </button>
-    <button class="btn white" onclick="Load();">
-        Load
-    </button>*@
-
-    <button class="btn white margin-left-10" onclick="ShowProcessors(false);">
-        Hide
-    </button>
-    <button class="btn white" onclick="ShowProcessors(true);">
-        Show
-    </button>
-
+    <span class="clearfix"></span>
     <div id="processorTemplate" class="processor hidden">
         <div class="title">
             <div id="name" class="float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
@@ -73,8 +80,8 @@
             <input type="text" name="Para1" value="*#*" style="width: 60px; float: left; margin-bottom: 2px;"/>
             <input type="text" name="Para2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
             <br style="clear: both;"/> 
-            <div class="data datain">in</div><br style="clear: both;"/> 
-            <div class="data dataout" >out</div>
+            <div class="data datain width-160">in</div><br style="clear: both;"/> 
+            <div class="data dataout width-160" >out</div>
         </div>
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
@@ -149,8 +156,8 @@
 
 <script>
 
-    var jsonProcessors = [{ "ProcessorId": "Processor-1", Title: "Title 1", "Top": "100", "Left": "100", "Type": "Formel"}];
-    var jsonConnections = [{ "ConnectionId": "Connection-1", SourceId: "Source2", DestId: "Dest1"}];
+    var jsonProcessors; //  = [{ "ProcessorId": "Processor-1", Title: "Title 1", "Top": "100", "Left": "100", "Type": "Formel"}];
+    var jsonConnections; //  = [{ "ConnectionId": "Connection-1", SourceId: "Source2", DestId: "Dest1"}];
 
     var startpointOptions = {
         isSource: true,
@@ -178,8 +185,9 @@
     };
 
     $(function () {
-        $('.processorobj').show();
-        $('#GlobalDtFormat').chosen();
+        $('.processorobj').show();        
+        $('#SelectedDateTransformation').chosen();
+//        $('#Konfiguration_GlobalDateTransformation').chosen();
     });
 
     jsPlumb.ready(function () {
@@ -211,7 +219,6 @@
             clone: true
         });
 
-
         // Events
         window.addEventListener("resize", refreshPlumb);
 
@@ -228,12 +235,7 @@
 
         jsPlumb.unbind("connection").bind("connection", function (info) {
             var idSource = info.sourceId;
-            var sourceDiv = $('#' + idSource);
-            var sourceField = sourceDiv.find(".field").html();
-            var sourceData = "";
-
             var idDest = info.targetId;
-            var destDiv = $('#' + idDest);
 
             var connections = [];
             $.each(jsPlumb.getConnections(), function (idx, connection) {
@@ -243,8 +245,6 @@
                     pageTargetId: connection.targetId
                 });
             });
-
-            var source = info.source;
 
             var sourceIsProcessor = false;
             var destIsProcessor = false;
@@ -263,13 +263,6 @@
                 loadingShow: false,
                 success: function (result) {
                     RefreshUi(result);
-//                    for (var i = 0; i < processors.length; i++) {
-//                        var processorId = processors[i].Guid;
-//                        var valueIn = processors[i].Input;
-//                        var valueOut = processors[i].Output;
-//                        $('#' + processorId).find(".datain").html(valueIn);
-//                        $('#' + processorId).find(".dataout").html(valueOut);
-//                    }
                 }
             });
 
@@ -403,30 +396,7 @@
         });
     }
 
-//    function LiveTransform(input, func, outputDivId) {
-//        $.ajax({
-//            type: "POST",
-//            url: "Admin/LiveTransform",
-//            data: { input: input, func: func },
-//            loadingShow: false,
-//            success: function (result) {
-//                
-//                // Direkt an Zielfeld
-//                if (outputDivId.substr(0, 4) === "Dest") {
-//                    $('#' + outputDivId).find(".data").html(result.Output);
-//                }
-
-//                // An Prozessor
-//                if (outputDivId.substr(0, 6) === "prozin") {
-//                    $('#' + outputDivId).parent().find(".datain").html(input);
-//                    $('#' + outputDivId).parent().find(".dataout").html(result.Output);
-//                }
-//                
-//            }
-//        });
-//    }
-    
-    function ShowProcessors(value) {
+    function ShowHideProcessors(value) {
         $(".processorobj").each(function (index) {
             $(this).find(".content").toggle(value);
             if (value) {
@@ -466,6 +436,13 @@
             var valueOut = uiObject.ProcessorList[i].Output;
             $('#' + processorId).find(".datain").html(valueIn);
             $('#' + processorId).find(".dataout").html(valueOut);
+        }
+
+        // Refresh DestField data
+        for (var i = 0; i < uiObject.DestFieldList.length; i++) {
+            var guid = uiObject.DestFieldList[i].Wert;
+            var value = uiObject.DestFieldList[i].Beschreibung;            
+            $('#' + guid).find(".data").html(value);
         }
     }
 

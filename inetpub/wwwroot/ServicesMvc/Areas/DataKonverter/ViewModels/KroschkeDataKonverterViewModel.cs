@@ -80,6 +80,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         #region Wizard-ViewModels
 
         public WizardProzessauswahl Prozessauswahl { get; set; }
+        public WizardKonfiguration Konfiguration { get; set; }
 
         public class WizardProzessauswahl
         {
@@ -99,6 +100,12 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                         };
                 }
             }
+        }
+
+        public class WizardKonfiguration
+        {
+            [LocalizedDisplay("Datumsformat")] 
+            public string GlobalDateTransformation { get; set; }
         }
 
         #endregion
