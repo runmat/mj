@@ -323,6 +323,9 @@ namespace CkgDomainLogic.Archive.Services
 
         public List<string> GetDocuments(List<EasyAccessArchiveDefinition> archivesToSearch, string query)
         {
+            // LogonContext nochmal explizit setzen, da nicht zwangsläufig schon im Konstruktor komplett
+            m_easyAccess.setUser((ILogonContextDataService)LogonContext);
+
             var docList = new List<string>();
 
             var status = "";

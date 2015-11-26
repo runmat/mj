@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.Archive.Contracts;
@@ -168,11 +168,11 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public byte[] GetDocumentsFromArchive()
         {
-            var docPaths = EasyAccessDataService.GetDocuments(Archives, string.Format(".1001={0}", EquipmentHistorie.Fahrgestellnummer));
+            var relDocPaths = EasyAccessDataService.GetDocuments(Archives, string.Format(".1001={0}", EquipmentHistorie.Fahrgestellnummer));
 
             var fileList = new List<byte[]>();
 
-            docPaths.ForEach(d => fileList.Add(File.ReadAllBytes(d)));
+            relDocPaths.ForEach(d => fileList.Add(File.ReadAllBytes(HttpContext.Current.Server.MapPath(d.Replace("\\", "/")))));
 
             if (fileList.None())
                 return null;
