@@ -14,12 +14,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public string XmlRaw { get; set; }
         public XmlDocument XmlDocument { get; set; }
-        public List<Field> Fields { get; set; }
+        public List<FieldXml> Fields { get; set; }
 
         public DestinationFile()
         {
             Guid = Guid.NewGuid();
-            Fields = new List<Field>();
+            Fields = new List<FieldXml>();
         }
     }
 }

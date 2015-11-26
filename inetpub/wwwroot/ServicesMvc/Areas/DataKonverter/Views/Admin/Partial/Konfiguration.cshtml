@@ -50,6 +50,7 @@
         @*<button class="btn white margin-left-10" onclick="Save();">
             Save
         </button>
+
         <button class="btn white" onclick="Load();">
             Load
         </button>*@
@@ -60,6 +61,11 @@
         <button class="btn white" onclick="ShowHideProcessors(true);">
             Show
         </button>
+        
+        <button class="btn white margin-left-10" onclick="Export();">
+            Export
+        </button>
+
     </span>
     
     <div class="float-left margin-left-10">
@@ -367,6 +373,17 @@
         console.log(jsonConnections);
     }
 
+    function Export() {
+        $.ajax({
+            type: "POST",
+            url: "Admin/ExportXml",
+            loadingShow: false,
+            success: function (result) {
+                alert(result);
+            }
+        });
+    }
+
     function Load() {
         ClearAll();
 
@@ -440,8 +457,10 @@
 
         // Refresh DestField data
         for (var i = 0; i < uiObject.DestFieldList.length; i++) {
-            var guid = uiObject.DestFieldList[i].Wert;
-            var value = uiObject.DestFieldList[i].Beschreibung;            
+//            var guid = uiObject.DestFieldList[i].Wert;
+//            var value = uiObject.DestFieldList[i].Beschreibung;
+            var guid = uiObject.DestFieldList[i].Beschreibung;
+            var value = uiObject.DestFieldList[i].Wert;         
             $('#' + guid).find(".data").html(value);
         }
     }

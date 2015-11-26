@@ -4,6 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using CkgDomainLogic.DomainCommon.Models;
+using GeneralTools.Models;
 using SapORM.Models;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
@@ -72,20 +76,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             // Verbindung hinzufügen
             DataConnections.Add(newConnection);
 
-            Debug.WriteLine(DataConnections);
-
-            //// Falls Destination ein Prozessor, dann die dortige Verbindungsliste entsprechend erweitern
-            //if (destIsProcessor)
-            //{
-            //    var destProcessor = Processors.FirstOrDefault(x => x.Guid == new Guid(idDest));
-
-            //    if (destProcessor != null && destProcessor.DataConnectionsIn.FirstOrDefault(x => x.GuidDest == destProcessor.Guid && x.GuidSource == newConnection.GuidSource) == null)
-            //    {
-            //        // Neue Verbindung zur Liste hinzufügen
-            //        destProcessor.DataConnectionsIn.Add(newConnection);                    
-            //    }
-            //}
-
             return newConnection;
         }
 
@@ -147,14 +137,120 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return processor;
         }
 
-        public string GetFieldResult(string fieldGuid, string origValue)
+        public string ExportToXml()
         {
-            // Alle Connections ermitteln...
-            // var connections = DataConnections.Where(x => x.)
+            var xmlFileContent = new XmlDocument();
 
-            return null;
+            var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
+
+            var destFields = RecalcDestFields();
+
+            var xml = XDocument.Parse(xmlSingleRecord.InnerXml);
+
+            // Alle Felder durchlaufen, die über einen Inhalt verfügen...
+            foreach (var field in DestinationFile.Fields.Where(x => x.IsUsed))
+            {
+                var id = field.Guid.Replace("Dest-","");
+
+                // Element in leerem XmlDokument finden...
+                var found = xml.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
+                if (found)
+                {
+                    var element = xml.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == id);
+                    var content = destFields.FirstOrDefault(x => x.Beschreibung == "Dest-" + id);
+                    // element.Value = field.Records[0];
+                    if (content != null)
+                    {
+                        element.Value = content.Wert;    
+                    }
+                }
+            }
+
+            //// Alle Knoten der noch leeren Output-XML durchlaufen...
+            //xmlSingleRecord.IterateThroughAllNodes(delegate(XmlNode node)
+            //{
+            //    try
+            //    {
+            //        var nodeId = "Dest-" + node.Attributes["id"].Value;
+            //        var fieldContent = destFields.FirstOrDefault(x => x.Beschreibung == nodeId);
+            //        if (fieldContent != null)
+            //        {
+            //            node.InnerText = fieldContent.Wert;
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+            //});
+
+            // xmlFileContent.Add(xmlSingleRecord);
+
+            xml.Save(@"C:\tmp\TestOutput.xml");
+
+            return xmlSingleRecord.ToString();
         }
 
+        // Alle DatenRecords der Quellfelder ermitteln...
+        public List<Domaenenfestwert> RecalcSourceFields()
+        {
+            var sourceFieldList = new List<Domaenenfestwert>();
+            foreach (var field in SourceFile.Fields)
+            {
+                sourceFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = field.Guid,
+                    Beschreibung = field.Records[RecordNo - 1]
+                });
+            }
+            return sourceFieldList;
+        }
 
+        public List<Processor> RecalcProcessors()
+        {
+            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
+            var processorList = new List<Processor>();
+            foreach (var processor in Processors)
+            {
+                var processorResult = GetProcessorResult(processor);
+                processorList.Add(processorResult);
+            }
+
+            return processorList;
+        }
+
+        public List<Domaenenfestwert> RecalcDestFields()
+        {
+            var destFieldList = new List<Domaenenfestwert>();
+            foreach (var field in DestinationFile.Fields)
+            {
+                var value = "";
+                field.IsUsed = false;
+
+                // Prüfen, ob Connection vorliegt...
+                var connection = DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
+                if (connection != null)
+                {
+                    if (connection.SourceIsProcessor)
+                    {
+                        var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
+                        value = processor.Output;
+                        field.IsUsed = true;
+                    }
+                    else
+                    {
+                        var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
+                        value = sourceItem.Records[RecordNo - 1];
+                        field.IsUsed = true;
+                    }
+                }
+
+                destFieldList.Add(new Domaenenfestwert
+                {
+                    Wert = value,
+                    Beschreibung = field.Guid
+                });
+            }
+            return destFieldList;
+        }
     }
 }

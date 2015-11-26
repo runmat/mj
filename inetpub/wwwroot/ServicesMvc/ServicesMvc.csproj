@@ -736,6 +736,7 @@
     <Compile Include="Areas\DataKonverter\Models\DestinationFile.cs" />
     <Compile Include="Areas\DataKonverter\Models\Field.cs" />
     <Compile Include="Areas\DataKonverter\Models\FieldType.cs" />
+    <Compile Include="Areas\DataKonverter\Models\FieldXml.cs" />
     <Compile Include="Areas\DataKonverter\Models\GlobalViewData.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataMapper.cs" />
     <Compile Include="Areas\DataKonverter\Models\Operation.cs" />

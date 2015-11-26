@@ -16,16 +16,9 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public int PosLeft { get; set; }
         public int PosTop { get; set; }
 
-        //public List<DataConnection> DataConnectionsIn { get; set; }
-        //public List<DataConnection> DataConnectionsOut { get; set; }
-
-        //public List<string> InputValues { get; set; }
-
         public Processor()
         {
             Guid = System.Guid.NewGuid().ToString();
-            //DataConnectionsIn = new List<DataConnection>();
-            //DataConnectionsOut = new List<DataConnection>();
         }
     }
 }

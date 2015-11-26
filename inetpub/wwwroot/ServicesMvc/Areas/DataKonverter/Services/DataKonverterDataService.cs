@@ -51,21 +51,17 @@ namespace CkgDomainLogic.DataKonverter.Services
                     Caption = headers[i],
                     FieldType = FieldType.String,  // DefaultType
                     IsUsed = true,
-                    // Content = new List<string>()
-
                 };
 
                 fields.Add(newField);
             }
 
             // Daten jeder Column zuordnen...
-            // csvObj.MoveTo(0);
             while (csvObj.ReadNextRecord())
             {
                 for (var j = 0; j < fieldCount; j++)
                 {
                     var value = csvObj[j];
-                    // fields[j].Content.Add(value);
                     fields[j].Records.Add(value);
                 }
             }
@@ -76,36 +72,7 @@ namespace CkgDomainLogic.DataKonverter.Services
                 FirstRowIsCaption = firstRowIsCaption,
                 Fields = fields
             };
-
-            // csvTable.Load(csvObj);   // ist leer...
-            //var tableColumns = csvTable.Columns;
-            //for (var j = 0; j < fieldCount; j++)
-            //{
-            //    var type = tableColumns[j].DataType.ToString();
-            //    switch (type)
-            //    {
-            //        case "System.DateTime":
-            //          sourceFile.Columns[j].DataType = SourceFile.DataType.DateTime;
-            //          break;
-
-            //        case "System.Boolean":
-            //          sourceFile.Columns[j].DataType = SourceFile.DataType.Boolean;
-            //          break;
-
-            //        case "System.Decimal":
-            //          sourceFile.Columns[j].DataType = SourceFile.DataType.Double;
-            //          break;
-
-            //        case "System.Double":
-            //          sourceFile.Columns[j].DataType = SourceFile.DataType.Double;
-            //          break;
-
-            //        default:
-            //          sourceFile.Columns[j].DataType = SourceFile.DataType.String;
-            //          break;
-            //    }
-            //}
-
+            
             // File.Delete(filename);
             return sourceFile;
         }
@@ -113,11 +80,6 @@ namespace CkgDomainLogic.DataKonverter.Services
         protected DataItem.DataType GetDataType(IEnumerable<string> values)
         {
             var dataType = DataItem.DataType.String;
-
-            //foreach (var value in values)
-            //{
-            //    if (value.GetItemType())
-            //}
 
             return dataType;
         }

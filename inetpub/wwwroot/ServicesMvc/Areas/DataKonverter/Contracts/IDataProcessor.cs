@@ -10,8 +10,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     public interface IDataProcessor
     {
         DataItem SplitString(string input1, char separator, int stringNo);
+        DataItem MergeString(string input1, string input2, char separator);
     }
-
 
     public class DataProcessor : IDataProcessor
     {
@@ -26,9 +26,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 OutputString = output[stringNo]
             };
 
-
             return dateItem;
+        }
 
+        public DataItem MergeString(string input1, string input2, char separator)
+        {
+            throw new NotImplementedException();
         }
     }
 

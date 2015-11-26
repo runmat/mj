@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using CkgDomainLogic.General.Services;
@@ -174,7 +175,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 Filename = filename,
                 XmlRaw = xmlContent,
                 XmlDocument = StringToXmlDoc(xmlContent),
-                Fields = new List<Field>()
+                Fields = new List<FieldXml>()
             };
 
             var doc = new XmlDocument();
@@ -186,11 +187,12 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 {
                     var nodeId = node.Attributes["id"].Value;
 
-                    var newField = new Field
+                    var newField = new FieldXml
                     {
                         Guid = "Dest-" + nodeId,
                         Records = new List<string>()
                     };
+                    // newField.Records.Add("test");
                     newField.Records.Add("test");
 
                     destinationFileObj.Fields.Add(newField);
@@ -198,7 +200,6 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 catch (Exception)
                 {
                 }
-
             });
 
             return destinationFileObj;
@@ -208,16 +209,17 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         {
             var doc = new XmlDocument();
             doc.LoadXml(xml);
+            // var xmlTest = XDocument.Parse(doc.InnerXml);
             return doc;
         }
 
-        private string XsdToJson(string xsd)
-        {
-            var doc = new XmlDocument();
-            doc.LoadXml(xsd);
-            var json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
-            return json;
-        }
+        //private string XsdToJson(string xsd)
+        //{
+        //    var doc = new XmlDocument();
+        //    doc.LoadXml(xsd);
+        //    var json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
+        //    return json;
+        //}
 
         #endregion
 
@@ -256,5 +258,14 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #endregion
 
+        #region XML-Output
+
+        public string CreateXmlContent()
+        {
+            var xmlContent = DataMapper.ExportToXml();
+            return xmlContent;
+        }
+
+        #endregion
     }
 }
