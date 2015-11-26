@@ -585,6 +585,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
             ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            ViewData["ModusAbmeldung"] = ViewModel.ModusAbmeldung;
             ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);

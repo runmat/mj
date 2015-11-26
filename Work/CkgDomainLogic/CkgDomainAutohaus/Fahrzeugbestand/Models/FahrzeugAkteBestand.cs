@@ -88,6 +88,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
         public string Kostenstelle { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.TuevAu)]
+        public string TuevAu { get; set; }
+
         public bool IsSchnellabmeldungSpeicherrelevant
         {
             get { return (FIN.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || Halter.IsNotNullOrEmpty() || AuftragsNummer.IsNotNullOrEmpty() || BestellNr.IsNotNullOrEmpty() || Kostenstelle.IsNotNullOrEmpty()); }

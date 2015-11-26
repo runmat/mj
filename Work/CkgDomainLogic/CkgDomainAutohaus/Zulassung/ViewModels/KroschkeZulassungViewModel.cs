@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -71,9 +72,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
                     return Localize.MassCancellation;
-
-                if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
-                    return Localize.QuickCancellation;
 
                 if (ModusAbmeldung)
                     return Localize.Cancellation;
@@ -414,6 +412,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     case "kostenstelle": // Schnellabmeldung
                         FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Kostenstelle = value);
+                        break;
+
+                    case "tuevau": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.TuevAu = value);
+                        break;
+
+                    case "briefnummer": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Briefnummer = value);
                         break;
                 }
                 return null;
@@ -898,6 +904,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
+            Zulassung.Fahrzeugdaten.TuevAu = model.TuevAu;
 
             // 20150826 MMA
             Zulassung.Fahrzeugdaten.HasEtikett = model.HasEtikett;
@@ -1160,7 +1167,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             Halter = Zulassung.HalterName,
                             AuftragsNummer = Zulassung.Fahrzeugdaten.AuftragsNr,
                             BestellNr = Zulassung.Fahrzeugdaten.BestellNr,
-                            Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle
+                            Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle,
+                            TuevAu = Zulassung.Fahrzeugdaten.TuevAu,
+                            Briefnummer = Zulassung.Fahrzeugdaten.Zb2Nr
                         }
                     }, true);
                 }
@@ -1281,9 +1290,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     {
                         singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;
                         singleZulassung.Zulassungsdaten.HalterNameSchnellabmeldung = fahrzeugAkteBestand.Halter;
-                        singleZulassung.Fahrzeugdaten.AuftragsNr = fahrzeugAkteBestand.AuftragsNummer;
-                        singleZulassung.Fahrzeugdaten.BestellNr = fahrzeugAkteBestand.BestellNr;
-                        singleZulassung.Fahrzeugdaten.Kostenstelle = fahrzeugAkteBestand.Kostenstelle;
+                        singleZulassung.Fahrzeugdaten.TuevAu = fahrzeugAkteBestand.TuevAu;
+                        singleZulassung.Fahrzeugdaten.Zb2Nr = fahrzeugAkteBestand.Briefnummer;
                     }
                     else
                     {
@@ -1396,6 +1404,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
                 }
             }
+
+            if (ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            {
+                if (fahrzeugdatenModel.Zb2Nr.IsNullOrEmpty())
+                    addModelError("Zb2Nr", string.Format("{0} {1}", Localize.ZB2, Localize.Required.ToLower()));
+
+                if (fahrzeugdatenModel.TuevAu.IsNullOrEmpty())
+                    addModelError("TuevAu", string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Required.ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+            }
         }
 
         public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten fahrzeugdatenModel)
@@ -1429,8 +1446,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 if (FinList.None(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant))
                     addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
+
                 if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
-                    addModelError(string.Empty, Localize.LicenseNoInvalid);
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+
+                if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarOwner, Localize.Required.NotNullOrEmpty().ToLower()));
+
+                var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
+                if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower()));
             }
         }
 

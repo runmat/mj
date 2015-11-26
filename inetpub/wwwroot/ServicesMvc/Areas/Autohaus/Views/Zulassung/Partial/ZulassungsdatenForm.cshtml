@@ -14,6 +14,10 @@
         width: 150px;
     }
     
+    .inputwidth-small {
+        width: 50px;
+    }
+    
     .blockdisabled {
         background-color: #F0F0F0 !important;
         color: gray !important;
@@ -199,14 +203,16 @@
                 // Halteränderung bei Schnellabmeldung
                 SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.edithalterabm', false);
 
-                // Auftragsnummeränderung bei Schnellabmeldung
-                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editauftragsnummerabm', false);
+                // TÜV/AU-Änderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.edittuevauabm', false);
 
-                // Bestellnr-Änderung bei Schnellabmeldung
-                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editbestellnrabm', false);
+                // Briefnummer-Änderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editbriefnummerabm', false);
 
-                // Kostenstellenänderung bei Schnellabmeldung
-                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editkostenstelleabm', false);
+                $(document).off('keypress', '.edittuevauabm');
+                $(document).on('keypress', '.edittuevauabm', function (e) {    
+                    return NumbersOnly(e, false);
+                });
         });      
           
         function OnRowDataBound_GridFahrzeugAuswahlZulassung(e) {

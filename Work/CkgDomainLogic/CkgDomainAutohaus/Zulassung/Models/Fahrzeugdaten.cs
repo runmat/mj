@@ -13,7 +13,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class Fahrzeugdaten// : IValidatableObject
+    public class Fahrzeugdaten
     {
         private string _kostenstelle;
         private string _bestellNr;
@@ -35,6 +35,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string FahrgestellNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2)]
+        [RequiredConditional]
         public string Zb2Nr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.HasEtikett)]
@@ -78,14 +79,11 @@ namespace CkgDomainLogic.Autohaus.Models
         public string VerkaeuferKuerzel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
-        //[RequiredConditional]
         public string Kostenstelle
         {
             get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
             set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
         }
-
-        //public bool KostenstelleVisible { get { return  GetZulassungViewModel().FahrzeugdatenKostenstelleIsVisible; } }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
@@ -94,6 +92,10 @@ namespace CkgDomainLogic.Autohaus.Models
             get { return _bestellNr.NotNullOrEmpty().ToUpper(); }
             set { _bestellNr = value.NotNullOrEmpty().ToUpper(); }
         }
+
+        [LocalizedDisplay(LocalizeConstants.TuevAu)]
+        [RequiredConditional]
+        public string TuevAu { get; set; }
 
         public string GetSummaryString()
         {
@@ -107,11 +109,5 @@ namespace CkgDomainLogic.Autohaus.Models
 
             return s;
         }
-
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    if (KostenstelleVisible && Kostenstelle.IsNullOrEmpty())
-        //        yield return new ValidationResult(Localize.CostcenterRequired, new[] { "Kostenstelle" });
-        //}
     }
 }

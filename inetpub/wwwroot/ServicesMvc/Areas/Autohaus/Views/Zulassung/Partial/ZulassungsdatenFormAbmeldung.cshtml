@@ -62,12 +62,11 @@ else if (Model.IsSchnellabmeldung)
                 {
                     columns.XBound(c => c.FinID).Visible(false);
                     columns.XBound(c => c.FIN).ClientTemplate("<input id='FIN_<#= data.FinID #>' type='text' class='inputwidth-large uppercase editfinabm' data-fieldname='FIN' value='<#= data.FIN #>' />");
-                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' /><span class='requiredField requiredFieldMarker'>*</span>");
                     columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzres' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='True' />").Filterable(false);
-                    columns.XBound(c => c.Halter).ClientTemplate("<input id='Halter_<#= data.FinID #>' type='text' class='inputwidth-large edithalterabm' data-fieldname='Halter' value='<#= data.Halter #>' />");
-                    columns.XBound(c => c.AuftragsNummer).ClientTemplate("<input id='AuftragsNummer_<#= data.FinID #>' type='text' class='inputwidth editauftragsnummerabm' data-fieldname='AuftragsNummer' value='<#= data.AuftragsNummer #>' />");
-                    columns.XBound(c => c.BestellNr).ClientTemplate("<input id='BestellNr_<#= data.FinID #>' type='text' class='inputwidth editbestellnrabm' data-fieldname='BestellNr' value='<#= data.BestellNr #>' />");
-                    columns.XBound(c => c.Kostenstelle).ClientTemplate("<input id='Kostenstelle_<#= data.FinID #>' type='text' class='inputwidth editkostenstelleabm' data-fieldname='Kostenstelle' value='<#= data.Kostenstelle #>' />");
+                    columns.XBound(c => c.Halter).ClientTemplate("<input id='Halter_<#= data.FinID #>' type='text' class='inputwidth-large edithalterabm' data-fieldname='Halter' value='<#= data.Halter #>' /><span class='requiredField requiredFieldMarker'>*</span>");
+                    columns.XBound(c => c.TuevAu).ClientTemplate("<input id='TuevAu_<#= data.FinID #>' type='text' maxlength='4' class='inputwidth-small edittuevauabm' data-fieldname='TuevAu' value='<#= data.TuevAu #>' />");
+                    columns.XBound(c => c.Briefnummer).ClientTemplate("<input id='Briefnummer_<#= data.FinID #>' type='text' class='inputwidth editbriefnummerabm' data-fieldname='Briefnummer' value='<#= data.Briefnummer #>' />");
                 })
                 .XAutoColumnConfiguration()
                 .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName))
