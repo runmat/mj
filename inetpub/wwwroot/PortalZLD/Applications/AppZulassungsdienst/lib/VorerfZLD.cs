@@ -34,7 +34,6 @@ namespace AppZulassungsdienst.lib
 	    }
 
         public bool IsZLD { get; set; }
-        public int IDCount { get; set; }
         public String Name1Hin { get; set; }
         public String Name2Hin { get; set; }
         public String StrasseHin { get; set; }
@@ -242,8 +241,6 @@ namespace AppZulassungsdienst.lib
                 Vorgangsliste.Clear();
 
                 var ids = zldDataContext.ZLDVorgangKopf.Where(k => k.Vorgang == "V" && k.Vorerfasser == userName).Select(v => v.SapId);
-
-                IDCount = ids.Count();
 
                 foreach (var item in ids)
                 {
