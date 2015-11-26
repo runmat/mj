@@ -287,7 +287,8 @@ namespace AppZulassungsdienst.forms
                     }
                 }
 
-                lblAnzahl.Text = "Anzahl Vorgänge: " + objVorerf.IDCount;
+                var idList = objVorerf.Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                lblAnzahl.Text = "Anzahl Vorgänge: " + idList.Count;
             }
         }
 
