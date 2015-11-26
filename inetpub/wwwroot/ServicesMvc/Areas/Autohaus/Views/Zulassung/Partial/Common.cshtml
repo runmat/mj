@@ -511,10 +511,10 @@
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest("span").show();
+            $("#Expressversand").closest("label").show();
         }
         else {
-            $("#Expressversand").closest("span").hide();
+            $("#Expressversand").closest("label").hide();
         }
         $.uniform.update($("#Expressversand"));
     }
