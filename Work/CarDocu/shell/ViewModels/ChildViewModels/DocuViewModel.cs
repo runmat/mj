@@ -853,7 +853,6 @@ namespace CarDocu.ViewModels
             var scanDocumentIsValid = (ScanDocument.ValidFinNumber && ScanDocument.PdfPageCountIsValid);
 
             ScanDocument.ScanImages.Clear();
-            ScanDocument.FinNumber = "";
 
             if (scanDocumentIsValid)
                 BatchSummary.ResultsGoodItems++;
@@ -871,6 +870,9 @@ namespace CarDocu.ViewModels
 
             // altes Dokument abschließen
             BatchFinishScanDocument();
+
+            ScanDocument = ScanDocument.Clone();
+            ScanDocument.FinNumber = "";
 
             GC.Collect();
 

@@ -1226,18 +1226,24 @@ namespace AppZulassungsdienst.forms
 
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
 
-                tblData.Rows[i]["Search"] = txtBox.Text;
-                tblData.Rows[i]["Value"] = ddl.SelectedValue;
-                tblData.Rows[i]["Text"] = ddl.SelectedItem.Text;
-                tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
-                if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
+                if (tblData.Rows.Count > i)
                 {
-                    tblData.Rows[i]["DLBezeichnung"] = lblDLBezeichnung.Text;
+                    var row = tblData.Rows[i];
+
+                    row["Search"] = txtBox.Text;
+                    row["Value"] = ddl.SelectedValue;
+                    row["Text"] = ddl.SelectedItem.Text;
+                    row["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
+                    if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
+                    {
+                        row["DLBezeichnung"] = lblDLBezeichnung.Text;
+                    }
+                    else
+                    {
+                        row["DLBezeichnung"] = "";
+                    }
                 }
-                else
-                {
-                    tblData.Rows[i]["DLBezeichnung"] = "";
-                }
+
                 i++;
             }
         }
@@ -1249,38 +1255,41 @@ namespace AppZulassungsdienst.forms
         /// <param name="tblData">interne Diensteistungstabelle</param>
         private void addButtonAttr(DataTable tblData)
         {
-            int i = 0;
-            Label lblMenge = (Label)GridView1.HeaderRow.FindControl("lblMenge");
-            lblMenge.Style["display"] = "none";
-            foreach (GridViewRow gvRow in GridView1.Rows)
+            if (GridView1.Rows.Count > 0)
             {
-                TextBox txtBox;
-                DropDownList ddl;
-                TextBox txtMenge;
-                txtMenge = (TextBox)gvRow.FindControl("txtMenge");
-                txtMenge.Style["display"] = "none";
-                txtBox = (TextBox)gvRow.FindControl("txtSearch");
-                ddl = (DropDownList)gvRow.FindControl("ddlItems");
-
-                txtBox.Attributes.Add("onkeyup", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
-                txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
-                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
-                ddl.DataValueField = "MaterialNr";
-                ddl.DataTextField = "Name";
-                ddl.DataBind();
-                txtBox.Text = tblData.Rows[i]["Search"].ToString();
-                ddl.SelectedValue = tblData.Rows[i]["Value"].ToString();
-                ddl.Attributes.Add("onchange", "SetTexttValue(" + ddl.ClientID + "," + txtBox.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
-                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
-                if (mat != null)
+                int i = 0;
+                Label lblMenge = (Label)GridView1.HeaderRow.FindControl("lblMenge");
+                lblMenge.Style["display"] = "none";
+                foreach (GridViewRow gvRow in GridView1.Rows)
                 {
-                    if (mat.MengeErlaubt)
+                    TextBox txtBox;
+                    DropDownList ddl;
+                    TextBox txtMenge;
+                    txtMenge = (TextBox)gvRow.FindControl("txtMenge");
+                    txtMenge.Style["display"] = "none";
+                    txtBox = (TextBox)gvRow.FindControl("txtSearch");
+                    ddl = (DropDownList)gvRow.FindControl("ddlItems");
+
+                    txtBox.Attributes.Add("onkeyup", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
+                    txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
+                    ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
+                    ddl.DataValueField = "MaterialNr";
+                    ddl.DataTextField = "Name";
+                    ddl.DataBind();
+                    txtBox.Text = tblData.Rows[i]["Search"].ToString();
+                    ddl.SelectedValue = tblData.Rows[i]["Value"].ToString();
+                    ddl.Attributes.Add("onchange", "SetTexttValue(" + ddl.ClientID + "," + txtBox.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
+                    var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+                    if (mat != null)
                     {
-                        txtMenge.Style["display"] = "block";
-                        lblMenge.Style["display"] = "block";
+                        if (mat.MengeErlaubt)
+                        {
+                            txtMenge.Style["display"] = "block";
+                            lblMenge.Style["display"] = "block";
+                        }
                     }
+                    i++;
                 }
-                i++;
             }
         }
 
