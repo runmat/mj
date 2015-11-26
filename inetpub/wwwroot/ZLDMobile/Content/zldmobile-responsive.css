@@ -22,9 +22,9 @@
 	}
 	
 	/* bei Layoutänderungen etc. ggf. den Offset anpassen */
-	div.StaticHeaderTableContainer {
+	/*div.StaticHeaderTableContainer {
         max-height: calc(100vh - 360px);
-    }
+    }*/
 }
 
 /* Hack to make IE9 and WP7.5 treat cells like block level elements, scoped to table-vorgaenge-responsive class */ 
