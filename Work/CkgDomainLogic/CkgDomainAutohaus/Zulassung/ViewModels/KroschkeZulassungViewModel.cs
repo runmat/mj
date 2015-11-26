@@ -587,20 +587,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
                 Zulassung.Zulassungsdaten.Expressversand = false;
 
-            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr))
+            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr) && Zulassung.Zulassungsdaten.ModusAbmeldung)
             {
-                if (Zulassung.Zulassungsdaten.ModusAbmeldung)
-                {
-                    var abmArt = Abmeldearten.FirstOrDefault();
-                    if (abmArt != null)
-                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
-                }
-                else if (Zulassung.Zulassungsdaten.Versandzulassung)
-                {
-                    var zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich);
-                    if (zulArt != null)
-                        Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
-                }
+                var abmArt = Abmeldearten.FirstOrDefault(z => z.Belegtyp == "AA");
+                if (abmArt != null)
+                    Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
             }
         }
 
@@ -922,10 +913,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return ZulassungsAbmeldearten.Where(z => !z.IstAbmeldung).ToList(); } }
+        public List<Material> Zulassungsarten
+        {
+            get { return ZulassungsAbmeldearten.Where(z => !z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose }); }
+        }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Abmeldearten { get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList(); } }
+        public List<Material> Abmeldearten
+        {
+            get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose, IstAbmeldung = true }); }
+        }
 
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
