@@ -305,12 +305,16 @@ namespace AppZulassungsdienst.forms
                 GridView1.PageIndex = intTempPageIndex;
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
-                GridViewRow row = GridView1.HeaderRow;
-                Image ImgButton;
-                ImgButton = (Image)(row.FindControl("imgbAllVollstaendig"));
-                ImgButton.Attributes.Add("onclick", "javascript:SelectRbandChk('" + GridView1.Rows.Count + "', true)");
-                ImgButton = (Image)(row.FindControl("imgbAlleUnvollstaendig"));
-                ImgButton.Attributes.Add("onclick", "javascript:SelectRbandChk('" + GridView1.Rows.Count + "', false)");
+
+                if (GridView1.Rows.Count > 0)
+                {
+                    GridViewRow row = GridView1.HeaderRow;
+                    Image ImgButton;
+                    ImgButton = (Image)(row.FindControl("imgbAllVollstaendig"));
+                    ImgButton.Attributes.Add("onclick", "javascript:SelectRbandChk('" + GridView1.Rows.Count + "', true)");
+                    ImgButton = (Image)(row.FindControl("imgbAlleUnvollstaendig"));
+                    ImgButton.Attributes.Add("onclick", "javascript:SelectRbandChk('" + GridView1.Rows.Count + "', false)");
+                }
             }
         }
 
