@@ -91,7 +91,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        private static void SetPreise(Z_ZLD_AH_2015_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
         {
             d.Preis = null;
             d.PreisGebuehr = null;
@@ -129,11 +129,11 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        static public ModelMapping<Z_ZLD_AH_ZULLISTE.GT_OUT, ZulassungsReportModel> Z_ZLD_AH_ZULLISTE_GT_OUT_To_ZulassungsReportModel
+        static public ModelMapping<Z_ZLD_AH_2015_ZULLISTE.GT_OUT, ZulassungsReportModel> Z_ZLD_AH_2015_ZULLISTE_GT_OUT_To_ZulassungsReportModel
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_ZULLISTE.GT_OUT, ZulassungsReportModel>(
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_2015_ZULLISTE.GT_OUT, ZulassungsReportModel>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
@@ -143,7 +143,6 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.BelegNummer = s.ZULBELN;
                         d.PositionsNummer = s.ZULPOSNR;
                         d.ErfassungsDatum = s.VE_ERDAT;
-                        d.ErfassungsUser = s.VE_ERNAM;
                         d.ZulassungsKreis = s.KREISKZ;
                         d.MaterialNr = s.MATNR;
                         d.KundenReferenz = s.KUNDEN_REF;
@@ -155,9 +154,11 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.FeinstaubAmt = s.FEINSTAUBAMT;
                         d.DokumentName = s.AH_DOKNAME.NotNullOrEmpty().Trim(' ');
                         d.Referenz1 = s.ZZREFNR1;
-                        d.Referenz1 = s.ZZREFNR2;
-                        d.Referenz1 = s.ZZREFNR3;
-                        d.Referenz1 = s.ZZREFNR4;
+                        d.Referenz2 = s.ZZREFNR2;
+                        d.Referenz3 = s.ZZREFNR3;
+                        d.Referenz4 = s.ZZREFNR4;
+                        d.Referenz5 = s.ZZREFNR5;
+                        d.Vorerfasser = s.VE_ERNAM;
 
                         SetStatus(s, d);
 
@@ -199,7 +200,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        static void SetStatus(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        static void SetStatus(Z_ZLD_AH_2015_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
         {
             d.StatusAsText = d.Status = s.BEB_STATUS.NotNullOrEmpty().ToUpper();
 

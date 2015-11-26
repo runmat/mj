@@ -459,20 +459,12 @@ namespace CkgDomainLogic.Autohaus.Services
         public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
             var iKunnr = selector.KundenNr;
-            var iGroup = LogonContext.Organization.OrganizationName;
             var iVkOrg = LogonContext.Customer.AccountingArea.ToString();
             var iVkBur = LogonContext.Organization.OrganizationReference2;
 
             try
             {
-                Z_ZLD_AH_ZULLISTE.Init(SAP);
-
-                SAP.SetImportParameter("I_KUNNR", iKunnr.ToSapKunnr());
-                if (iKunnr.IsNullOrEmpty())
-                {
-                    SAP.SetImportParameter("I_KUNNR", "");
-                    SAP.SetImportParameter("I_GRUPPE", iGroup);
-                }
+                Z_ZLD_AH_2015_ZULLISTE.Init(SAP);
 
                 SAP.SetImportParameter("I_VKORG", iVkOrg);
                 SAP.SetImportParameter("I_VKBUR", iVkBur);
@@ -481,6 +473,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 SAP.SetImportParameter("I_ZZREFNR2", selector.Referenz2);
                 SAP.SetImportParameter("I_ZZREFNR3", selector.Referenz3);
                 SAP.SetImportParameter("I_ZZREFNR4", selector.Referenz4);
+                SAP.SetImportParameter("I_ZZREFNR5", selector.Referenz5);
 
                 SAP.SetImportParameter("I_ZZKENN", selector.Kennzeichen);
                 SAP.SetImportParameter("I_LISTE", selector.AuftragsArt);
@@ -496,6 +489,15 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_ERDAT_BIS", selector.AuftragsDatumRange.EndDate);
                 }
 
+                var kundenAuswahl = new List<Z_ZLD_AH_2015_ZULLISTE.IT_KUNNR>();
+
+                if (iKunnr.IsNotNullOrEmpty())
+                    kundenAuswahl.Add(new Z_ZLD_AH_2015_ZULLISTE.IT_KUNNR { KUNNR = iKunnr.ToSapKunnr() });
+                else
+                    kunden.ForEach(k => kundenAuswahl.Add(new Z_ZLD_AH_2015_ZULLISTE.IT_KUNNR { KUNNR = k.KundenNr.ToSapKunnr() }));
+
+                SAP.ApplyImport(kundenAuswahl);
+
                 SAP.Execute();
             }
             catch (Exception e)
@@ -508,9 +510,9 @@ namespace CkgDomainLogic.Autohaus.Services
                 if (addModelError != null)
                     addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
 
-            var sapItems = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportList(SAP);
-            var webItems = AppModelMappings.Z_ZLD_AH_ZULLISTE_GT_OUT_To_ZulassungsReportModel.Copy(sapItems).ToList();
-            var sapKunden = Z_ZLD_AH_ZULLISTE.GT_KUN.GetExportList(SAP).ToListOrEmptyList();
+            var sapItems = Z_ZLD_AH_2015_ZULLISTE.GT_OUT.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_ZLD_AH_2015_ZULLISTE_GT_OUT_To_ZulassungsReportModel.Copy(sapItems).ToList();
+
             webItems.ForEach(item =>
                 {
                     if (iKunnr.IsNotNullOrEmpty())
@@ -520,8 +522,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     }
                     else
                     {
-                        var sapKunde = sapKunden.FirstOrDefault(k => k.KUNNR.ToSapKunnr() == item.KundenNr.ToSapKunnr());
-                        item.KundenNrAndName = (sapKunde == null ? item.KundenNr : string.Format("{0} - {1}", sapKunde.KUNNR, sapKunde.NAME1));
+                        item.KundenNrAndName = item.KundenNr;
                     }
                 } 
             );
