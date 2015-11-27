@@ -169,12 +169,12 @@ namespace MvcTools.Web
             return GetSessionValue("FormSettingsAdminModeWysiwygMode", false);
         }
 
-        public static string GetPartialViewUrlCurrent()
+        public static string GetPartialViewContextCurrent()
         {
-            return GetSessionString("PartialViewUrlCurrent");
+            return GetSessionString("PartialViewContextCurrent");
         }
 
-        public static void SetPartialViewUrlCurrent(HtmlHelper html = null)
+        public static void SetPartialViewContextCurrent(HtmlHelper html = null)
         {
             var partialViewUrl = "";
 
@@ -199,7 +199,7 @@ namespace MvcTools.Web
             if (partialViewUrl.Contains("/gridadmin"))
                 return;
 
-            SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
+            SetSessionValue("PartialViewContextCurrent", partialViewUrl);
         }
     }
 }

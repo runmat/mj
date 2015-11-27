@@ -167,7 +167,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         string CreateConfigKey()
         {
-            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
             if (partialViewUrl == null)
                 return "";
 

@@ -36,7 +36,7 @@ namespace MvcTools.Web
 
             var modelTypeName = modelType.Name;
 
-            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
             if (partialViewUrl == null)
                 return false;
 
@@ -74,7 +74,7 @@ namespace MvcTools.Web
 
         public override IEnumerable<ModelValidationResult> Validate(object container)
         {
-            SessionHelper.SetPartialViewUrlCurrent();
+            SessionHelper.SetPartialViewContextCurrent();
 
             if (SessionHelper.FormSettingsAdminModeWysiwygModeGet())
                 yield return new ModelValidationResult
@@ -94,7 +94,7 @@ namespace MvcTools.Web
 
         public override IEnumerable<ModelValidationResult> Validate(object container)
         {
-            SessionHelper.SetPartialViewUrlCurrent();
+            SessionHelper.SetPartialViewContextCurrent();
 
             if (container == null)
                 yield break;

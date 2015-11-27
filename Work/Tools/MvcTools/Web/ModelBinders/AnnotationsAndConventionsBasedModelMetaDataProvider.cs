@@ -22,7 +22,7 @@ namespace MvcTools.Web
             var validTranslationFound = false;
             if (customerConfigurationProvider != null)
             {
-                var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+                var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
                 if (partialViewUrl != null)
                 {
                     var key = string.Format("{0} - {1} - {2}", partialViewUrl, containerType.Name, propertyName);

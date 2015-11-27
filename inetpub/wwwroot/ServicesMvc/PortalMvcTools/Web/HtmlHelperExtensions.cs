@@ -805,7 +805,7 @@ namespace PortalMvcTools.Web
 
         private static void FormLeftLabelControlConditionalInit(this HtmlHelper html)
         {
-            SessionHelper.SetPartialViewUrlCurrent(html);
+            SessionHelper.SetPartialViewContextCurrent(html);
         }
 
         private static MvcHtmlString FormLeftLabelControlConditional<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, FormControlModel model)
@@ -818,7 +818,7 @@ namespace PortalMvcTools.Web
 
             var propertyName = expression.GetPropertyName();
 
-            var partialViewUrl = SessionHelper.GetPartialViewUrlCurrent();
+            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
             if (partialViewUrl == null)
                 return html.HiddenFor(expression);
 
