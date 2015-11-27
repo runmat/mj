@@ -583,6 +583,13 @@ namespace CkgDomainLogic.General.Database.Services
                     r.Resource);
         }
 
+        public void TranslatedResourceDelete(TranslatedResource r)
+        {
+            Database.ExecuteSqlCommand(
+                " delete from TranslatedResource where Resource = {0}",
+                    r.Resource);
+        }
+
         public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r)
         {
             if (r.de.IsNullOrEmpty() || r.en.IsNullOrEmpty())

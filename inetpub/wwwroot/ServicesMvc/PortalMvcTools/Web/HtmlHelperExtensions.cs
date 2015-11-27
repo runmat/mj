@@ -853,6 +853,8 @@ namespace PortalMvcTools.Web
             while (!new FormControlModel().AutoMultiColumnModeEndReached(autoKey))
                 html.RenderPartial(PartialViewNameFormLeftLabelControl, GetFormPlaceHolderModel(null, null));
 
+            SessionHelper.SetPartialViewContextIsFormControlHidingAvailable(true);
+
             return MvcHtmlString.Empty;
         }
 

@@ -143,39 +143,48 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void DataSave()
         {
-            if (TmpDeleteCustomerTranslation)
+            var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+
+            if (TmpDeleteCustomerTranslation || (CurrentTranslatedResourceCustomer.de.IsNullOrEmpty() && CurrentTranslatedResourceCustomer.en.IsNullOrEmpty()))
             {
                 DataService.TranslatedResourceCustomerDelete(CurrentTranslatedResourceCustomer);
                 UpdateTranslationTimeStamp();
-                return;
+                if (Mode == GridAdminMode.FormControls && appConf != null)
+                {
+                    appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, false.ToString().ToLower());
+                    appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, false.ToString().ToLower());
+                }
+                if(TmpDeleteCustomerTranslation)
+                    return;
+            }
+            if (Mode == GridAdminMode.FormControls && !IsGlobal && CurrentTranslatedResource.de.IsNullOrEmpty() && CurrentTranslatedResource.en.IsNullOrEmpty())
+            {
+                DataService.TranslatedResourceDelete(CurrentTranslatedResource);
+                UpdateTranslationTimeStamp();
             }
 
             DataService.TranslatedResourceUpdate(CurrentTranslatedResource);
             DataService.TranslatedResourceCustomerUpdate(CurrentTranslatedResourceCustomer);
             UpdateTranslationTimeStamp();
 
-            if (Mode == GridAdminMode.FormControls)
-            {
-                var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
-                if (appConf != null)
-                {
-                    appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, IsRequired.ToString().ToLower());
-                    appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, IsHidden.ToString().ToLower());
-                }
+            if (Mode == GridAdminMode.FormControls && appConf != null)
+            { 
+                appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, IsRequired.ToString().ToLower());
+                appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, IsHidden.ToString().ToLower());
             }
         }
 
         string CreateConfigKey()
         {
-            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
-            if (partialViewUrl == null)
+            var partialViewContextCurrent = SessionHelper.GetPartialViewContextCurrent();
+            if (partialViewContextCurrent == null)
                 return "";
 
             var modelType = Type.GetType(ModelTypeName);
             if (modelType == null)
                 return "";
 
-            var key = string.Format("{0} - {1} - {2}", partialViewUrl, modelType.Name, PropertyName);
+            var key = string.Format("{0}___{1}___{2}", partialViewContextCurrent, modelType.Name, PropertyName);
 
             return key;
         }
@@ -257,6 +266,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             if (IsHidden && IsRequired)
                 yield return new ValidationResult("Ein ausgeblendetes Feld darf nicht gleichzeitig Pflichtfeld sein", new[] { "IsRequired" });
+
+            if (IsHidden && !SessionHelper.GetPartialViewContextIsFormControlHidingAvailable())
+                yield return new ValidationResult("Das Formular zu dem dieses Feld gehört, unterstützt ausgeblendete Felder aktuell noch nicht. Bitte sprechen Sie die CKG Entwicklung an.", new[] { "IsHidden" });
         }
     }
 }

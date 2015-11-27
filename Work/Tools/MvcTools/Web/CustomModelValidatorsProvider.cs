@@ -36,15 +36,15 @@ namespace MvcTools.Web
 
             var modelTypeName = modelType.Name;
 
-            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
-            if (partialViewUrl == null)
+            var partialViewContextCurrent = SessionHelper.GetPartialViewContextCurrent();
+            if (partialViewContextCurrent == null)
                 return false;
 
             var customerConfigurationProvider = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
             if (customerConfigurationProvider == null)
                 return false;
 
-            var basicKey = string.Format("{0} - {1} - {2}", partialViewUrl, modelTypeName, propertyName);
+            var basicKey = string.Format("{0}___{1}___{2}", partialViewContextCurrent, modelTypeName, propertyName);
 
             var key = propertyBooleanName + ": " + basicKey;
             var fieldConfigValue = customerConfigurationProvider.GetCurrentBusinessCustomerConfigVal(key).NotNullOrEmpty().ToLower();

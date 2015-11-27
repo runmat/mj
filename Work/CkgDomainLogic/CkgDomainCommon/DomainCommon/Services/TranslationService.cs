@@ -98,12 +98,11 @@ namespace CkgDomainLogic.DomainCommon.Services
                                       select translation).FirstOrDefault();
 
             if (translatedResource == null)
-                return null;
+                translatedResource = new TranslatedResource { Resource = resource };
 
             var translatedResourceForCurrentCustomer = (from translation in _resourcesForCurrentCustomer
                                                         where translation.Resource == resource
                                                         select translation).FirstOrDefault();
-
             var translatedResourceCloned = ModelMapping.Copy(translatedResource);
             if (translatedResourceForCurrentCustomer != null)
                 translatedResourceCloned.MergeTranslatedResourceCustom(translatedResourceForCurrentCustomer);

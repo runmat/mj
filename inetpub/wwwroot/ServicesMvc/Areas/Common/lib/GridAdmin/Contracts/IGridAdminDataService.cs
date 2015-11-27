@@ -14,6 +14,8 @@ namespace CkgDomainLogic.General.Contracts
         string GetAppFriendlyName(int appId);
 
         void TranslatedResourceUpdate(TranslatedResource r);
+        void TranslatedResourceDelete(TranslatedResource r);
+
         void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r);
         void TranslatedResourceCustomerDelete(TranslatedResourceCustom r);
 

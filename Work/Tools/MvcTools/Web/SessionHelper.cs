@@ -177,6 +177,7 @@ namespace MvcTools.Web
         public static void SetPartialViewContextCurrent(HtmlHelper html = null)
         {
             var partialViewUrl = "";
+            var browserUrl = HttpContext.Current.GetAppUrlCurrent();
 
             if (html == null)
             {
@@ -185,21 +186,51 @@ namespace MvcTools.Web
             }
             else
             { 
-                var partialViewContext = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+                var partialViewHtml = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
                 const string strRegex = @"action=\""(?<url>.*?)\""";
-                var matches = Regex.Match(partialViewContext, strRegex);
+                var matches = Regex.Match(partialViewHtml, strRegex);
                 if (matches.Groups.Count > 0)
                     partialViewUrl = matches.Groups["url"].Value;
                 else
-                    partialViewUrl = partialViewContext.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+                    partialViewUrl = partialViewHtml.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
             }
 
-            partialViewUrl = partialViewUrl.NotNullOrEmpty().ToLower();
+            browserUrl = GetUrlWithoutIisWebAppName(browserUrl.NotNullOrEmpty().ToLower());
+            partialViewUrl = GetUrlWithoutIisWebAppName(partialViewUrl.NotNullOrEmpty().ToLower());
 
             if (partialViewUrl.Contains("/gridadmin"))
                 return;
 
-            SetSessionValue("PartialViewContextCurrent", partialViewUrl);
+            var partialViewContext = string.Format("{0}___{1}", browserUrl, partialViewUrl);
+            partialViewContext = partialViewContext.Replace("/", "_");
+
+            SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
+            SetSessionValue("PartialViewContextCurrent", partialViewContext);
+        }
+
+        private static string GetPartialViewContextIsFormControlHidingAvailableKey()
+        {
+            return "PartialViewUrlCurrent_" + GetPartialViewContextCurrent();
+        }
+
+        public static bool GetPartialViewContextIsFormControlHidingAvailable()
+        {
+            return GetSessionValue(GetPartialViewContextIsFormControlHidingAvailableKey(), false);
+        }
+
+        public static void SetPartialViewContextIsFormControlHidingAvailable(bool set)
+        {
+            SetSessionValue(GetPartialViewContextIsFormControlHidingAvailableKey(), set);
+        }
+
+        static string GetUrlWithoutIisWebAppName(string url)
+        {
+            var path = url;
+            var index = path.SubstringTry(1).IndexOf("/", StringComparison.Ordinal);
+            if (index < 0)
+                return "";
+
+            return path.SubstringTry(index + 1);
         }
     }
 }

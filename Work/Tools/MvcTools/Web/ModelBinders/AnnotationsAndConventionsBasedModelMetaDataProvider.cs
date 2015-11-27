@@ -22,10 +22,10 @@ namespace MvcTools.Web
             var validTranslationFound = false;
             if (customerConfigurationProvider != null)
             {
-                var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
-                if (partialViewUrl != null)
+                var partialViewContextCurrent = SessionHelper.GetPartialViewContextCurrent();
+                if (partialViewContextCurrent != null)
                 {
-                    var key = string.Format("{0} - {1} - {2}", partialViewUrl, containerType.Name, propertyName);
+                    var key = string.Format("{0}___{1}___{2}", partialViewContextCurrent, containerType.Name, propertyName);
                     var translationValue = TranslationService.GetTranslation(key);
 
                     validTranslationFound = (translationValue.IsNotNullOrEmpty() && key != translationValue);
