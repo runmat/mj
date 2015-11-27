@@ -5,6 +5,7 @@
 @{
     var formSettingsAdminMode = ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
     var formSettingsButtonAvailable = (formSettingsAdminMode && Model.ControlHtml != null && !Model.ModelTypeName.NotNullOrEmpty().ToLower().Contains("gridadminviewmodel"));
+    var partialViewContext = SessionHelper.GetPartialViewContextCurrent();
 
     var additionalClass = "";
     if (Model.IsCollapsed)
@@ -46,7 +47,9 @@
         {
             <span>
                 <i class="icon-wrench" 
-                     data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" 
+                     data-model-type-name="@Model.ModelTypeName" 
+                     data-property-name="@Model.PropertyName" 
+                     data-partial-view-context="@partialViewContext"
                      onclick="return FormSettingsAdminMode_EditFormControls($(this));">
                 </i>
             </span>

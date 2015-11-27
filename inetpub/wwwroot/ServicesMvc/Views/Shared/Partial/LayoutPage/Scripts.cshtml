@@ -991,7 +991,8 @@
             data: 
                 { 
                     modelTypeName: o.attr("data-model-type-name"), 
-                    propertyName: o.attr("data-property-name") 
+                    propertyName: o.attr("data-property-name"),
+                    partialViewContext: o.attr("data-partial-view-context") 
                 },
             success: function (result) {
                 $("#global-popup").html(result);

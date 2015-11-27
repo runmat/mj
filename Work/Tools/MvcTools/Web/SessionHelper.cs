@@ -193,6 +193,9 @@ namespace MvcTools.Web
                     partialViewUrl = matches.Groups["url"].Value;
                 else
                     partialViewUrl = partialViewHtml.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+
+                if (partialViewUrl.IsNullOrEmpty())
+                    partialViewUrl = GetSessionString("PartialViewUrlCurrent");
             }
 
             browserUrl = GetUrlWithoutIisWebAppName(browserUrl.NotNullOrEmpty().ToLower());

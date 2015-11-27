@@ -33,8 +33,11 @@ namespace ServicesMvc.Common.Controllers
 
 
         [HttpPost]
-        public ActionResult EditTranslations(string modelTypeName, string propertyName)
+        public ActionResult EditTranslations(string modelTypeName, string propertyName, string partialViewContext)
         {
+            if (partialViewContext.IsNotNullOrEmpty())
+                SessionHelper.SetSessionValue("PartialViewContextCurrent", partialViewContext); 
+
             ViewModel.Mode = (modelTypeName == null ? GridAdminMode.GridColumns : GridAdminMode.FormControls);
 
             var currentModelType = ViewModel.Mode == GridAdminMode.GridColumns
@@ -44,7 +47,7 @@ namespace ServicesMvc.Common.Controllers
                 return new EmptyResult();
 
             if (!ViewModel.DataInit(currentModelType, propertyName))
-                return new EmptyResult();
+                return PartialView("Partial/NoTranslationAvailable", ViewModel);
 
             return PartialView("Partial/EditTranslations", ViewModel);
         }

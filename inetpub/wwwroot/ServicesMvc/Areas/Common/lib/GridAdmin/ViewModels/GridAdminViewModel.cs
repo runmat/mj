@@ -111,20 +111,22 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public bool LoadTranslatedResourcesForProperty(bool forceLoadingFromLocalizeAttribute = false)
         {
-            var modelType = Type.GetType(ModelTypeName);
-            if (modelType == null)
-                 return false;
-
-            var propertyInfo = modelType.GetProperty(PropertyName);
-            if (propertyInfo == null)
-                return false;
-
-            var localizeAttribute = propertyInfo.GetCustomAttributes(true).OfType<LocalizedDisplayAttribute>().FirstOrDefault();
-            if (localizeAttribute == null)
-                return false;
-
             if (IsGlobal || forceLoadingFromLocalizeAttribute)
+            {
+                var modelType = Type.GetType(ModelTypeName);
+                if (modelType == null)
+                    return false;
+
+                var propertyInfo = modelType.GetProperty(PropertyName);
+                if (propertyInfo == null)
+                    return false;
+
+                var localizeAttribute = propertyInfo.GetCustomAttributes(true).OfType<LocalizedDisplayAttribute>().FirstOrDefault();
+                if (localizeAttribute == null)
+                    return false;
+
                 CurrentResourceID = localizeAttribute.ResourceID;
+            }
             else
                 CurrentResourceID = CreateConfigKey();
 

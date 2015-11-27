@@ -279,6 +279,7 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -820,10 +821,6 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\EditTranslations.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
@@ -844,7 +841,6 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
