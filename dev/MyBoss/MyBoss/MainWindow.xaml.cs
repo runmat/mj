@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -12,6 +12,10 @@ namespace MyBoss
 {
     public partial class MainWindow
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        const int WmClose = 0x0010;
+
         private LowLevelKeyboardListener _listener;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Forms.Timer _t;
@@ -44,7 +48,7 @@ namespace MyBoss
         {
             var outlookProcess = Process.GetProcesses().FirstOrDefault(p => OutlookProcessFullName.Contains(p.ProcessName.ToLower()));
             if (outlookProcess != null)
-                outlookProcess.Kill();
+                SendMessage(outlookProcess.MainWindowHandle, WmClose, (IntPtr) 0, (IntPtr) 0);
         }
 
         public static void StartOutlook()
