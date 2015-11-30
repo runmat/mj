@@ -4,6 +4,13 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="uc2" TagName="GridNavigation" Src="../PageElements/GridNavigation.ascx" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <style type="text/css">
+        .editable
+        {
+            background-color: ivory;
+            padding: 6px 1px 1px 1px;
+        }
+    </style>
     <div>
         <div id="site">
             <div id="content">
@@ -71,6 +78,14 @@
                                         </tr>
                                         <tr class="formquery">
                                             <td class="firstLeft active">
+                                                Rechte:
+                                            </td>
+                                            <td class="firstLeft active">
+                                                <asp:CheckBox ID="cbNurMitRechten" runat="server" Width="257px" Text="Nur User mit Übersetzungsrechten" />
+                                            </td>
+                                        </tr>
+                                        <tr class="formquery">
+                                            <td class="firstLeft active">
                                                 &nbsp;
                                             </td>
                                             <td class="firstLeft active">
@@ -126,7 +141,7 @@
                                             <td align="left">
                                                 <asp:GridView ID="dgSearchResult" Width="100%" runat="server" AllowSorting="True"
                                                     AutoGenerateColumns="False" CellPadding="0" AlternatingRowStyle-BackColor="#DEE1E0"
-                                                    AllowPaging="True" GridLines="None" PageSize="20" EditRowStyle-Wrap="False" PagerStyle-Wrap="True"
+                                                    AllowPaging="True" GridLines="None" PageSize="10" EditRowStyle-Wrap="False" PagerStyle-Wrap="True"
                                                     CssClass="GridView">
                                                     <PagerSettings Visible="False" />
                                                     <HeaderStyle CssClass="GridTableHead"></HeaderStyle>
@@ -143,10 +158,7 @@
                                                                 </asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:ButtonField DataTextField="UserName" SortExpression="UserName" CommandName="Edit"
-                                                            HeaderText="Benutzer" />
-                                                        <asp:BoundField DataField="Reference" SortExpression="Reference" HeaderText="Referenz">
-                                                        </asp:BoundField>
+                                                        <asp:BoundField DataField="UserName" SortExpression="UserName" HeaderText="Benutzer" />
                                                         <asp:BoundField DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe">
                                                         </asp:BoundField>
                                                         <asp:BoundField DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Orga.">
@@ -163,6 +175,17 @@
                                                                     Enabled="False"></asp:CheckBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
+                                                        <asp:TemplateField SortExpression="HasCategoryRights" HeaderText="Darf übersetzen">
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="cbxHasCategoryRights" AutoPostBack="True" OnCheckedChanged="cbxHasCategoryRights_CheckedChanged"
+                                                                    runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "HasCategoryRights") %>'
+                                                                    CssClass="editable" Enabled="True"></asp:CheckBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="CategoryRightsCreateUser" SortExpression="CategoryRightsCreateUser" HeaderText="Geändert von">
+                                                        </asp:BoundField>
+                                                        <asp:BoundField DataField="CategoryRightsCreateDate" SortExpression="CategoryRightsCreateUser" HeaderText="am">
+                                                        </asp:BoundField>
                                                     </Columns>
                                                 </asp:GridView>
                                             </td>

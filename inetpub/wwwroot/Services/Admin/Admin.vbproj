@@ -261,6 +261,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Kernel\AppConfiguration.vb" />
+    <Compile Include="Kernel\UserListCategoryRights.Designer.vb">
+      <DependentUpon>UserListCategoryRights.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\UserListCategoryRights.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UserLocalizationAdmin.aspx.designer.vb">
       <DependentUpon>UserLocalizationAdmin.aspx</DependentUpon>
     </Compile>

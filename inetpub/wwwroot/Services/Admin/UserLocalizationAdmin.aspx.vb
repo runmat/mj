@@ -3,6 +3,7 @@ Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Services
+Imports System.Data.SqlClient
 
 Partial Public Class UserLocalizationAdmin
     Inherits System.Web.UI.Page
@@ -12,6 +13,8 @@ Partial Public Class UserLocalizationAdmin
     Private m_App As App
     Protected WithEvents GridNavigation1 As GridNavigation
 #End Region
+
+    Private Shared m_CategoryName As String = "LOCALIZATION_ADMIN"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         m_User = GetUser(Me)
@@ -40,6 +43,7 @@ Partial Public Class UserLocalizationAdmin
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
+        EnsureWebUserCategoryRights(cn)
         FillCustomer(cn) 'DropDowns fuer Customer fuellen
         FillGroups(CInt(ddlFilterCustomer.SelectedItem.Value), cn) 'DropDowns fuer Group fuellen
         FillOrganizations(CInt(ddlFilterCustomer.SelectedItem.Value), cn) 'DropDowns fuer Group fuellen
@@ -69,17 +73,13 @@ Partial Public Class UserLocalizationAdmin
 
             'lblCustomer.Text = m_User.Customer.CustomerName 'Customer des angemeldeten Benutzers
             trCustomer.Visible = False 'Customer-Auswahl im Edit-bereich ausblenden
-            dgSearchResult.Columns(6).Visible = False 'Spalte "Test-Zugang" ausblenden
             trTestUser.Visible = False '"Test-Zugang" aus dem Edit-Bereich ausblenden
-            dgSearchResult.Columns(8).Visible = False 'Spalte "Passwort läuft nie ab" ausblenden
-            dgSearchResult.Columns(5).Visible = False 'Spalte "Customer-Admin" ausblenden
             trCustomerAdmin1.Visible = False 'Customer-Admin im Editbereich ausblenden
             trCustomerAdmin2.Visible = False 'Customer-Admin im Editbereich ausblenden
             trPwdNeverExpires.Visible = False '"Passwort laeuft nie ab" aus dem Edit-Bereich ausblenden
             trReadMessageCount.Visible = False
             If Not m_User.IsCustomerAdmin Then
                 'Wenn nicht Customer-Admin:
-                dgSearchResult.Columns(4).Visible = False 'Spalte "Organisation" ausblenden
                 trGroup.Visible = False 'Gruppenauswahl im Edit-Bereich ausblenden
                 trOrganization.Visible = False 'Organisationsauswahl im Edit-Bereich ausblenden
                 trOrganizationAdministrator.Visible = False 'OrganisationAdmin-Auswahl im Edit-Bereich ausblenden
@@ -166,6 +166,17 @@ Partial Public Class UserLocalizationAdmin
         End With
     End Sub
 
+    Private Sub EnsureWebUserCategoryRights(ByVal cn As SqlClient.SqlConnection)
+        Dim sc As New SqlCommand(
+                                        String.Format(
+                                            " INSERT INTO WebUserCategoryRights (UserName,CategoryName,HasRights)" &
+                                            " select UserName, '{0}', 0 from WebUser u where AccountIsLockedOut = 0 and Approved = 1 " &
+                                            " and not exists(select UserName, CategoryName from WebUserCategoryRights c where c.UserName = u.UserName and c.CategoryName = '{0}')",
+                                            m_CategoryName),
+                                        cn)
+        sc.ExecuteNonQuery()
+    End Sub
+
     Private Sub FillCustomer(ByVal cn As SqlClient.SqlConnection)
         Dim dtCustomers As Kernel.CustomerList
         dtCustomers = New Kernel.CustomerList(m_User.Customer.AccountingArea, cn)
@@ -214,14 +225,16 @@ Partial Public Class UserLocalizationAdmin
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
 
-            Dim dtUser As New Kernel.UserList(txtFilterUserName.Text, _
+            Dim dtUser As New Kernel.UserListCategoryRights(txtFilterUserName.Text, _
                                                    CInt(ddlFilterCustomer.SelectedItem.Value), _
                                                    CInt(ddlFilterGroup.SelectedItem.Value), _
                                                    CInt(ddlFilterOrganization.SelectedItem.Value), _
                                                    cn, _
                                                    False, _
                                                    -1, _
-                                                   m_User.Customer.AccountingArea)
+                                                   m_User.Customer.AccountingArea, _
+                                                   m_CategoryName, _
+                                                   cbNurMitRechten.Checked)
             dvUser = dtUser.DefaultView
             Session("myUserListView") = dvUser
         End If
@@ -232,6 +245,23 @@ Partial Public Class UserLocalizationAdmin
             .DataSource = dvUser
             .DataBind()
         End With
+    End Sub
+
+    Public Sub cbxHasCategoryRights_CheckedChanged(sender As Object, e As EventArgs)
+        Dim cb As CheckBox = DirectCast(sender, CheckBox)
+        Dim row As GridViewRow = DirectCast((cb.NamingContainer), GridViewRow)
+        Dim cell As DataControlFieldCell = row.Cells(1)
+        Dim userName As String = cell.Text
+
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        cn.Open()
+        Dim sc As New SqlCommand(String.Format(" update WebUserCategoryRights set " &
+                                               "HasRights = {2}, CreateUserName='{3}', CreateDate=getdate()" &
+                                               " where UserName = '{0}' and CategoryName = '{1}'",
+                                                userName, m_CategoryName, IIf(cb.Checked, 1, 0), m_User.UserName),
+                                                cn)
+        sc.ExecuteNonQuery()
+        cn.Close()
     End Sub
 
     Private Function FillEdit(ByVal intUserId As Integer) As Boolean
