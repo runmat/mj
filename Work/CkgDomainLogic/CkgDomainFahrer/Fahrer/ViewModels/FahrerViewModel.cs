@@ -219,10 +219,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (ModeProtokoll)
             {
                 FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsProtokolle().ToList();
-                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES" });
+                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES", ProtokollName = "SONSTIGES" });
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
 
-                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.NotNullOrEmpty().Contains("_")))
+                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollName.NotNullOrEmpty().Contains("_")))
                     return Localize.ErrorNoUnderscoresAllowedInProtocolTypes;
             }
             else
@@ -507,6 +507,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                     KundenNr = teile[0],
                     AuftragsNr = teile[1],
                     ProtokollArt = protArt,
+                    ProtokollName = protArt,
                     Fahrt = teile[teile.Length - 1]
                 });
             }
