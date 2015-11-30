@@ -234,7 +234,7 @@ namespace CkgDomainLogic.Fahrer.Services
             SAP.SetImportParameter("AUFNR", item.Protokoll.AuftragsNr);
             SAP.SetImportParameter("FAHRTNR", item.Protokoll.FahrtNr);
             SAP.SetImportParameter("WADAT_IST", item.UeberfuehrungsDatum);
-            SAP.SetImportParameter("ZZKATEGORIE", item.Protokoll.ProtokollArt);
+            SAP.SetImportParameter("ZZKATEGORIE", item.Protokoll.ProtokollName);
             SAP.SetImportParameter("VERARBEITUNG", " ");
             SAP.SetImportParameter("ABHOL_DAT", item.AbholDatum);
             SAP.SetImportParameter("ABHOL_ZEIT", (String.IsNullOrEmpty(item.AbholUhrzeit) ? "" : String.Format("{0}00", item.AbholUhrzeit.PadLeft0(4))));
