@@ -163,36 +163,6 @@
                                                                     Enabled="False"></asp:CheckBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:BoundField DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="Passwort geändert">
-                                                        </asp:BoundField>
-                                                        <asp:TemplateField SortExpression="PwdNeverExpires" HeaderStyle-Wrap="True" HeaderText="Passwort läuft ab">
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="cbxSRPwdNeverExpires" runat="server" Checked='<%# not(DataBinder.Eval(Container.DataItem, "PwdNeverExpires")) %>'
-                                                                    Enabled="False"></asp:CheckBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:BoundField DataField="FailedLogins" SortExpression="FailedLogins" HeaderText="Anmeld.- Fehlvers.">
-                                                        </asp:BoundField>
-                                                        <asp:TemplateField SortExpression="AccountIsLockedOut" HeaderText="Konto gesperrt">
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="cbxSRAccountIsLockedOut" runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "AccountIsLockedOut") %>'
-                                                                    Enabled="False"></asp:CheckBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField SortExpression="LoggedOn" HeaderText="Angemeldet">
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="chkSRLoggedOn" runat="server" Enabled="False" Checked='<%# DataBinder.Eval(Container, "DataItem.LoggedOn") %>'>
-                                                                </asp:CheckBox>
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="TextBox1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LoggedOn") %>'>
-                                                                </asp:TextBox>
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:ButtonField CommandName="Del" HeaderText="Löschen" ButtonType="Image" ImageUrl="../Images/Papierkorb_01.gif"
-                                                            ControlStyle-Height="16px" ControlStyle-Width="16px" Visible="false" />
-                                                        <asp:BoundField Visible="False" DataField="CreatedBy" SortExpression="CreatedBy"
-                                                            HeaderText="CreatedBy"></asp:BoundField>
                                                     </Columns>
                                                 </asp:GridView>
                                             </td>
