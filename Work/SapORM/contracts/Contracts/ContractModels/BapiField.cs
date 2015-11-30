@@ -3,6 +3,7 @@ using GeneralTools.Models;
 
 namespace SapORM.Contracts
 {
+    [Serializable]
     public class BapiField
     {
         public string Name { get; set; }

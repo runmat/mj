@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SapORM.Contracts
 {
+    [Serializable]
     public class BapiStructure
     {
         public List<BapiField> ImportParameters { get; set; }
