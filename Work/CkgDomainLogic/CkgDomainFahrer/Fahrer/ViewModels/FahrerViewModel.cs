@@ -104,7 +104,13 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public string AuftragsFahrtTypen { get { return string.Format("H,{0};R,{1}", Localize._FahrtHin, Localize._FahrtRueck); } }
 
-        public IFahrerAuftragsFahrt SelectedFahrerAuftrag { get { return FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); } }
+
+        private IFahrerAuftragsFahrt _selectedFahrerAuftrag;
+        public IFahrerAuftragsFahrt SelectedFahrerAuftrag
+        {
+            get { return _selectedFahrerAuftrag ?? FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); }
+            private set { _selectedFahrerAuftrag = value; }
+        }
 
 
         public void LoadFahrerAuftraege(string status = null)
@@ -626,6 +632,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
                 FahrerProtokolle.RemoveAll(p => p.Filename == ProtokollEditFileName);
                 PropertyCacheClear(this, m => m.FahrerProtokolleFiltered);
+
+                SelectedFahrerAuftrag = prot;
+                PropertyCacheClear(this, e => e.UploadedImageFiles);
+                ProtokollDeleteUploadedImagesAndPdf();
+                SelectedFahrerAuftrag = null;
 
                 return "";
             }
