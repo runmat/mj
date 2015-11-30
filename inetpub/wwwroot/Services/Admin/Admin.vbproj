@@ -261,6 +261,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Kernel\AppConfiguration.vb" />
+    <Compile Include="UserLocalizationAdmin.aspx.designer.vb">
+      <DependentUpon>UserLocalizationAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserLocalizationAdmin.aspx.vb">
+      <DependentUpon>UserLocalizationAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="lib\ShowBapisClass.vb" />
     <Compile Include="Bapi2Report.aspx.designer.vb">
       <DependentUpon>Bapi2Report.aspx</DependentUpon>
@@ -605,6 +612,7 @@
     <Content Include="Bapi2Report.aspx" />
     <Content Include="JahresArchivManagement.aspx" />
     <Content Include="ApplicationConfiguration.aspx" />
+    <Content Include="UserLocalizationAdmin.aspx" />
     <Content Include="RightsOverview.aspx" />
     <Content Include="LogSchwellwert.aspx" />
     <Content Include="LogViewer.aspx" />
