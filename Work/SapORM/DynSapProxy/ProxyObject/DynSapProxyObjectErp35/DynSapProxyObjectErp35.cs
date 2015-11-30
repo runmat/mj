@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using GeneralTools.Contracts;
 using GeneralTools.Services;
 using Microsoft.VisualBasic;
 using SapORM.Contracts;
 using ERPConnect;
-using GeneralTools.Models;
-
 
 namespace SapORM.Services
 {
@@ -1220,6 +1220,19 @@ namespace SapORM.Services
                     con.Dispose();
                 }
             }
+        }
+
+        public byte[] GetBapiStructureSerialized()
+        {
+            var bapiStructure = GetBapiStructure();
+
+            var ms = new MemoryStream();
+            var myFormatter = new BinaryFormatter();
+
+            myFormatter.Serialize(ms, bapiStructure);
+            ms.Close();
+
+            return ms.ToArray();
         }
 
         private static Type GetDotNetType(RFCTYPE rfcType)

@@ -57,6 +57,8 @@ namespace SapORM.Contracts
 
         BapiStructure GetBapiStructure();
 
+        byte[] GetBapiStructureSerialized();
+
         #endregion
     }
 }
