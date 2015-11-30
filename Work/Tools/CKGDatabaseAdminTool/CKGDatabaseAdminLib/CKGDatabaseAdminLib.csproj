@@ -49,13 +49,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\GAC\SapORM.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="SapORM.Services">
-      <HintPath>..\..\..\GAC\SapORM.Services.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -111,6 +104,7 @@
     <Compile Include="ViewModels\ChildViewModels\BapiCheckViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\GitBranchInfoViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\BapiApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\SapOrmModelGenerationViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\LoginUserMessageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
@@ -118,6 +112,14 @@
     <ProjectReference Include="..\..\..\CkgDomainLogic\Lib\CkgDomainLogic.csproj">
       <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
       <Name>CkgDomainLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SapORM\services\SapORM.Services.csproj">
+      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
+      <Name>SapORM.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DocumentTools\DocumentTools.csproj">
       <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>

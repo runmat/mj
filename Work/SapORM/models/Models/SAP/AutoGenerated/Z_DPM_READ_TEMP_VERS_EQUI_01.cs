@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_READ_TEMP_VERS_EQUI_01).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIZNR", value);
+		}
+
+		public static void SetImportParameter_I_TIDNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TIDNR", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -79,7 +111,7 @@ namespace SapORM.Models
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					LIZNR = (string)row["LIZNR"],
 					TIDNR = (string)row["TIDNR"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					NAME1 = (string)row["NAME1"],
 					NAME2 = (string)row["NAME2"],
 					STREET = (string)row["STREET"],
@@ -91,7 +123,7 @@ namespace SapORM.Models
 					STLKN = (string)row["STLKN"],
 					VERS_ID = (string)row["VERS_ID"],
 					ZZMANSP = (string)row["ZZMANSP"],
-					ZZMANSP_DATBI = (string.IsNullOrEmpty(row["ZZMANSP_DATBI"].ToString())) ? null : (DateTime?)row["ZZMANSP_DATBI"],
+					ZZMANSP_DATBI = string.IsNullOrEmpty(row["ZZMANSP_DATBI"].ToString()) ? null : (DateTime?)row["ZZMANSP_DATBI"],
 					KONTONR = (string)row["KONTONR"],
 					CIN = (string)row["CIN"],
 
@@ -118,7 +150,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -132,7 +164,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -147,7 +179,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_TEMP_VERS_EQUI_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -157,7 +189,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -167,7 +199,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -177,7 +209,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_TEMP_VERS_EQUI_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -187,7 +219,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -198,11 +230,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_TEMP_VERS_EQUI_01.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_TEMP_VERS_EQUI_01.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

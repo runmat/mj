@@ -21,6 +21,92 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_READ_TODO_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_ANZAHL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ANZAHL", value);
+		}
+
+		public static void SetImportParameter_I_LFD_NR_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LFD_NR_BIS", value);
+		}
+
+		public static void SetImportParameter_I_LFD_NR_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LFD_NR_VON", value);
+		}
+
+		public static void SetImportParameter_I_SOLL_DATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_SOLL_DATUM_BIS", value);
+		}
+
+		public static void SetImportParameter_I_SOLL_DATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_SOLL_DATUM_VON", value);
+		}
+
+		public static void SetImportParameter_I_SOLL_ZEIT_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SOLL_ZEIT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_SOLL_ZEIT_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SOLL_ZEIT_VON", value);
+		}
+
+		public static void SetImportParameter_I_STARTDATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_STARTDATUM_BIS", value);
+		}
+
+		public static void SetImportParameter_I_STARTDATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_STARTDATUM_VON", value);
+		}
+
+		public static void SetImportParameter_I_TODO_WER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TODO_WER", value);
+		}
+
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_NR_ABM_AUF_BIS", value);
+		}
+
+		public static void SetImportParameter_I_VORG_NR_ABM_AUF_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORG_NR_ABM_AUF_VON", value);
+		}
+
+		public static void SetImportParameter_I_WFSTATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WFSTATUS", value);
+		}
+
+		public static void SetImportParameter_I_ZUSER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZUSER", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -82,11 +168,11 @@ namespace SapORM.Models
 					TASK_ID = (string)row["TASK_ID"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					TODO_WER = (string)row["TODO_WER"],
-					STARTDATUM = (string.IsNullOrEmpty(row["STARTDATUM"].ToString())) ? null : (DateTime?)row["STARTDATUM"],
+					STARTDATUM = string.IsNullOrEmpty(row["STARTDATUM"].ToString()) ? null : (DateTime?)row["STARTDATUM"],
 					STARTZEIT = (string)row["STARTZEIT"],
-					SOLL_DATUM = (string.IsNullOrEmpty(row["SOLL_DATUM"].ToString())) ? null : (DateTime?)row["SOLL_DATUM"],
+					SOLL_DATUM = string.IsNullOrEmpty(row["SOLL_DATUM"].ToString()) ? null : (DateTime?)row["SOLL_DATUM"],
 					SOLL_ZEIT = (string)row["SOLL_ZEIT"],
-					IST_DATUM = (string.IsNullOrEmpty(row["IST_DATUM"].ToString())) ? null : (DateTime?)row["IST_DATUM"],
+					IST_DATUM = string.IsNullOrEmpty(row["IST_DATUM"].ToString()) ? null : (DateTime?)row["IST_DATUM"],
 					IST_ZEIT = (string)row["IST_ZEIT"],
 					ZUSER = (string)row["ZUSER"],
 					ANMERKUNG = (string)row["ANMERKUNG"],
@@ -318,20 +404,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_TODO_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_TODO_01.GT_SEL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_READ_TODO_01.GT_SEL> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

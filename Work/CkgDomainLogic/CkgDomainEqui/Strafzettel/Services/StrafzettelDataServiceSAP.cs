@@ -21,7 +21,7 @@ namespace CkgDomainLogic.Strafzettel.Services
 
         public List<StrafzettelModel> GetStrafzettel(StrafzettelSelektor selector)
         {
-            Z_DPM_CD_Strafzettel.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_CD_STRAFZETTEL.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
             if (selector.Fin.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_FIN17", selector.Fin);
@@ -53,7 +53,7 @@ namespace CkgDomainLogic.Strafzettel.Services
 
             SAP.Execute();
 
-            var sapItemsEquis = Z_DPM_CD_Strafzettel.GT_OUT.GetExportList(SAP);
+            var sapItemsEquis = Z_DPM_CD_STRAFZETTEL.GT_OUT.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_Strafzettel.Copy(sapItemsEquis).ToList();
 
             return webItemsEquis;

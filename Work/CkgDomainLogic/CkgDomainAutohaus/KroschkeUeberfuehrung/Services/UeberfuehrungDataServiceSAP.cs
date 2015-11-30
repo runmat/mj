@@ -145,12 +145,12 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
 
         public List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragFilter filter)
         {
-            var importList = Z_V_Ueberf_Auftr_Kund_Port.T_SELECT.GetImportListWithInit(SAP);
+            var importList = Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT.GetImportListWithInit(SAP);
             AppModelMappings.Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter.CopyBack(filter);
             importList.Add(AppModelMappings.Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter.CopyBack(filter));
             SAP.ApplyImport(importList);
             SAP.Execute();
-            var sapAuftraege = Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE.GetExportList(SAP);
+            var sapAuftraege = Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE.GetExportList(SAP);
 
             return AppModelMappings.Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag.Copy(sapAuftraege).ToList();
         }

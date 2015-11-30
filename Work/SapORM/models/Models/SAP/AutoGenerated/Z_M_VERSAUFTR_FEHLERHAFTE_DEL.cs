@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,47 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_VERSAUFTR_FEHLERHAFTE_DEL).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_IDNRK(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_IDNRK", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public static void SetImportParameter_I_LOENAM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LOENAM", value);
+		}
+
+		public static void SetImportParameter_I_ZANF_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZANF_NR", value);
+		}
+
+		public static void SetImportParameter_I_ZZBRFVERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZBRFVERS", value);
+		}
+
+		public static void SetImportParameter_I_ZZSCHLVERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZSCHLVERS", value);
 		}
 	}
 

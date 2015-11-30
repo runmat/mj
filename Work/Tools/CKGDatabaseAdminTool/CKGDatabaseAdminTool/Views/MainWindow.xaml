@@ -30,6 +30,9 @@
         <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
             <uc:ucManageGitBranches/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:SapOrmModelGenerationViewModel}">
+            <uc:ucSapOrmModelGeneration/>
+        </DataTemplate>
         <conv:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
     </Window.Resources>
 
@@ -52,6 +55,7 @@
                     <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiApplicationViewModel}" Size="Middle" Command="{Binding CommandReportBapiApplications}" Header="BAPI-Verwendung" Height="Auto" />
                     <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
+                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Size="Middle" Command="{Binding CommandSapOrmModelGeneration}" Header="SapORM-Modelgenerierung" Height="Auto" />
                 </fl:RibbonGroupBox>
 
                 <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left">

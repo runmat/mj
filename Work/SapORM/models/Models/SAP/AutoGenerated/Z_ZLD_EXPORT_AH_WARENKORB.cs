@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_AH_WARENKORB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPPE", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public static void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_BAK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -57,7 +103,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					NAME1 = (string)row["NAME1"],
 					MAKTX = (string)row["MAKTX"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZREFNR1 = (string)row["ZZREFNR1"],
 					ZZREFNR2 = (string)row["ZZREFNR2"],
 					ZZKENN = (string)row["ZZKENN"],
@@ -166,11 +212,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
