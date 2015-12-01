@@ -23,8 +23,7 @@ namespace AppRemarketing.forms
         {
             m_User = Common.GetUser(this);
 
-            if (!(m_User.UserName == "mjeaudi"))
-                Common.FormAuth(this, m_User);
+            Common.FormAuth(this, m_User);
 
             m_App = new App(m_User);
 
