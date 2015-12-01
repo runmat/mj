@@ -7,12 +7,14 @@ using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
-    public class GridAdminDataServiceSql : IGridAdminDataService 
+    public class GridAdminDataServiceSql : CkgGeneralDataServiceSAP, IGridAdminDataService 
     {
         static string ConnectionStringWorkServer { get { return ConfigurationManager.AppSettings["ConnectionString"].NotNullOrEmpty(); } }
 
@@ -20,6 +22,11 @@ namespace CkgDomainLogic.DomainCommon.Services
         
         static string ConnectionStringProdServer { get { return ConfigurationManager.AppSettings["ConnectionStringProdServer"].NotNullOrEmpty(); } }
 
+
+        public GridAdminDataServiceSql(ISapDataService sap)
+            : base(sap)
+        {
+        }
 
         static DomainDbContext CreateDbContext(string connectionString)
         {
@@ -68,37 +75,37 @@ namespace CkgDomainLogic.DomainCommon.Services
         public void TranslatedResourceUpdate(TranslatedResource r)
         {
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
-            dbContextTestServer.TranslatedResourceUpdate(r);
+            dbContextTestServer.TranslatedResourceUpdate(r, UserName);
 
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceUpdate(r);
+            dbContextProdServer.TranslatedResourceUpdate(r, UserName);
         }
 
         public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r)
         {
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
-            dbContextTestServer.TranslatedResourceCustomerUpdate(r);
+            dbContextTestServer.TranslatedResourceCustomerUpdate(r, UserName);
 
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceCustomerUpdate(r);
+            dbContextProdServer.TranslatedResourceCustomerUpdate(r, UserName);
         }
 
         public void TranslatedResourceDelete(TranslatedResource r)
         {
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
-            dbContextTestServer.TranslatedResourceDelete(r);
+            dbContextTestServer.TranslatedResourceDelete(r, UserName);
 
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceDelete(r);
+            dbContextProdServer.TranslatedResourceDelete(r, UserName);
         }
 
         public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
         {
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
-            dbContextTestServer.TranslatedResourceCustomerDelete(r);
+            dbContextTestServer.TranslatedResourceCustomerDelete(r, UserName);
 
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceCustomerDelete(r);
+            dbContextProdServer.TranslatedResourceCustomerDelete(r, UserName);
         }
 
         #endregion

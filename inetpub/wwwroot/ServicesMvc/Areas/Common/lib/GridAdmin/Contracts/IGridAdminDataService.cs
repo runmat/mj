@@ -3,7 +3,7 @@ using CkgDomainLogic.General.Database.Models;
 
 namespace CkgDomainLogic.General.Contracts
 {
-    public interface IGridAdminDataService
+    public interface IGridAdminDataService : ICkgGeneralDataService
     {
         TranslatedResource TranslatedResourceLoad(string resourceKey);
         TranslatedResourceCustom TranslatedResourceCustomerLoad(string resourceKey, int customerID);
