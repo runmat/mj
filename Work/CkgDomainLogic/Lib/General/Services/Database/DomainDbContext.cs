@@ -97,6 +97,18 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<string>("SELECT LastChangedBy FROM AdminHistory_User WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = {0} AND Action = {1})", userName, "Benutzer gesperrt").FirstOrDefault();
         }
 
+        private bool CheckUserHasCategoryRights(string userName, string categoryName)
+        {
+            var sql = string.Format("select COUNT(*) from WebUserCategoryRights where CategoryName = '{0}' and HasRights = 1 and UserName = '{1}'", categoryName, userName);
+            var result = Database.SqlQuery<int>(sql).First();
+            return (result > 0);
+        }
+
+        public bool CheckUserHasLocalizationTranslationRights(string userName)
+        {
+            return CheckUserHasCategoryRights(userName, "LOKALISIERUNGS_RECHT");
+        }
+
         public User GetUserFromPasswordToken(string passwordRequestKey)
         {
             return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();

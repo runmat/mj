@@ -40,6 +40,8 @@ namespace CkgDomainLogic.General.Services
             set { PropertyCacheSet(value); }
         }
 
+        public virtual bool HasLocalizationTranslationRights { get { return false; } }
+
         public WebUserInfo UserInfo { get; set; }
 
         private LogonLevel _userLogonLevel = LogonLevel.User;

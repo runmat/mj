@@ -21,6 +21,11 @@ namespace CkgDomainLogic.General.Services
     {
         private IEnumerable<LoginUserMessageConfirmations> _loginUserMessageConfirmations;
 
+        public override bool HasLocalizationTranslationRights
+        {
+            get { return CreateDbContext().CheckUserHasLocalizationTranslationRights(UserName); }
+        }
+
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages
         {
             get { return MaintenanceCoreLoginUserMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }

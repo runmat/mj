@@ -40,6 +40,8 @@ namespace CkgDomainLogic.General.Services
             set { PropertyCacheSet(value); }
         }
 
+        public virtual bool HasLocalizationTranslationRights { get { return false; } }
+
         private WebUserInfo _userInfo = new WebUserInfo { Telephone = "04102 56677" };
         public WebUserInfo UserInfo
         {

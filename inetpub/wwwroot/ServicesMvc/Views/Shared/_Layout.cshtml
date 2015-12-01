@@ -126,15 +126,9 @@
             <div class="span pull-right">
                 <a class="link teamviewer" href="~/Teamviewer-Support.zip" title="Download Teamviewer"><img src="~/Images/teamviewer-icon.png" /></a>
                 <span class="go-top"><i class="icon-angle-up"></i></span>
-                @if (Environment.MachineName.ToUpper().Contains("AHW460") && logonContext.UserName.ToLower().StartsWith("mje"))
+                @if (logonContext.HasLocalizationTranslationRights)
                 {
                     <a class="link" href="#" onclick="return GridSettingsAdminModeSet()"><i class="icon-wrench"></i></a>
-                     if (!gridSettingsAdminMode && !gridSettingsAdminModeChanged)
-                     {
-                         <script type="text/javascript">
-                             GridSettingsAdminModeSet(true); 
-                         </script>
-                     }
                 }
             </div>
         </div>
