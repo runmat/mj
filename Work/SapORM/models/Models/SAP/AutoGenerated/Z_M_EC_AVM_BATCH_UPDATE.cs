@@ -122,18 +122,6 @@ namespace SapORM.Models
 
 			public string ANTR { get; set; }
 
-			public DateTime? ZFREISETZUNG { get; set; }
-
-			public DateTime? ZGW_DAT_FREIS { get; set; }
-
-			public string ZGW_ZEIT_FREIS { get; set; }
-
-			public DateTime? ZUKZ { get; set; }
-
-			public DateTime? ZGW_DAT_UKZ { get; set; }
-
-			public string ZGW_ZEIT_UKZ { get; set; }
-
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -183,12 +171,6 @@ namespace SapORM.Models
 					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					BLUETOOTH = (string)row["BLUETOOTH"],
 					ANTR = (string)row["ANTR"],
-					ZFREISETZUNG = string.IsNullOrEmpty(row["ZFREISETZUNG"].ToString()) ? null : (DateTime?)row["ZFREISETZUNG"],
-					ZGW_DAT_FREIS = string.IsNullOrEmpty(row["ZGW_DAT_FREIS"].ToString()) ? null : (DateTime?)row["ZGW_DAT_FREIS"],
-					ZGW_ZEIT_FREIS = (string)row["ZGW_ZEIT_FREIS"],
-					ZUKZ = string.IsNullOrEmpty(row["ZUKZ"].ToString()) ? null : (DateTime?)row["ZUKZ"],
-					ZGW_DAT_UKZ = string.IsNullOrEmpty(row["ZGW_DAT_UKZ"].ToString()) ? null : (DateTime?)row["ZGW_DAT_UKZ"],
-					ZGW_ZEIT_UKZ = (string)row["ZGW_ZEIT_UKZ"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
