@@ -151,21 +151,21 @@
                             <tr>
                                 <td>
                                     <div style="width: 100%; max-width: 909px">        
-                                        <telerik:RadGrid ID="rgGrid1" runat="server" PageSize="15" AllowSorting="True" 
+                                        <telerik:RadGrid ID="rgGrid1" runat="server" Width="100%" PageSize="15" AllowSorting="True" 
                                             AutoGenerateColumns="False" GridLines="None" Culture="de-DE" EnableHeaderContextMenu="true" 
                                             OnExcelMLExportRowCreated="rgGrid1_ExcelMLExportRowCreated" 
                                             OnExcelMLExportStylesCreated="rgGrid1_ExcelMLExportStylesCreated" 
                                             OnItemCommand="rgGrid1_ItemCommand" OnItemCreated="rgGrid1_ItemCreated" 
                                             OnNeedDataSource="rgGrid1_NeedDataSource" 
                                             OnItemDataBound="rgGrid1_ItemDataBound" ShowGroupPanel="True" >
-                                            <ExportSettings HideStructureColumns="true">
+                                            <ExportSettings HideStructureColumns="true" >
                                                 <Excel Format="ExcelML" />
                                             </ExportSettings>
                                             <ClientSettings AllowColumnsReorder="true" AllowKeyboardNavigation="true" AllowDragToGroup="true">
-                                                <Scrolling ScrollHeight="480px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
+                                                <Scrolling ScrollHeight="550px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
                                                 <Resizing AllowColumnResize="True" ClipCellContentOnResize="False" />
                                             </ClientSettings>
-                                            <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="true" 
+                                            <MasterTableView GroupLoadMode="Client" TableLayout="Auto" AllowPaging="true" 
                                                 CommandItemDisplay="Top"  >
                                                 <PagerStyle Mode="NextPrevAndNumeric" ></PagerStyle>
                                                 <CommandItemSettings ShowExportToExcelButton="true" ShowAddNewRecordButton="false"
@@ -211,9 +211,13 @@
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
-                                                    <telerik:GridBoundColumn DataField="HCORT" SortExpression="HCORT" >
-                                                        <HeaderStyle Width="100px" />
+                                                    <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
+                                                        <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridTemplateColumn Groupable="false" UniqueName="Bearbeiten" >
                                                         <HeaderStyle Width="40px" />
