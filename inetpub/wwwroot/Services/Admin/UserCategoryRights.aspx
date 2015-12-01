@@ -78,13 +78,13 @@
                                         </tr>
                                         <tr class="formquery">
                                             <td class="firstLeft active">
-                                                Rechte:
+                                                Rechte:<br /><br />
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:CheckBox ID="cbNurMitRechten" runat="server" Width="257px"  />
+                                                <asp:CheckBox ID="cbNurMitRechten" runat="server" Width="257px"  /><br /><br />
                                             </td>
                                         </tr>
-                                        <tr class="formquery">
+                                        <tr class="formquery" style="display:none"> 
                                             <td class="firstLeft active">
                                                 &nbsp;
                                             </td>
@@ -92,20 +92,6 @@
                                                 <asp:TextBox ID="txtEmpty" runat="server" CssClass="InputTextbox" Width="160px" Visible="False">*</asp:TextBox>
                                                 <asp:ImageButton ID="btnEmpty" runat="server" Height="16px" ImageUrl="../images/empty.gif"
                                                     Width="1px" />
-                                            </td>
-                                        </tr>
-                                        <tr class="formquery">
-                                            <td class="firstLeft active">
-                                            </td>
-                                            <td style="width: 35%">
-                                            </td>
-                                        </tr>
-                                        <tr class="formquery">
-                                            <td class="firstLeft active">
-                                                &nbsp;
-                                            </td>
-                                            <td align="right" nowrap="nowrap" class="rightPadding">
-                                                &nbsp;
                                             </td>
                                         </tr>
                                         <tr style="background-color: #dfdfdf; height: 22px">
