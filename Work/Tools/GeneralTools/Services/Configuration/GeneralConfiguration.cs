@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using GeneralTools.Contracts;
 
 namespace GeneralTools.Services
@@ -13,9 +15,14 @@ namespace GeneralTools.Services
             return GetConfigValue(context, keyName);
         }
 
-        public void SetConfigVal(string context, string keyName, string value)
+        public IDictionary<string, string> GetConfigVals(string context)
         {
-            SetConfigValue(context, keyName, value);
+            return GetConfigValues(context);
+        }
+
+        public void SetConfigVal(string context, string keyName, string value, string connectionString = null)
+        {
+            SetConfigValue(context, keyName, value, connectionString);
         }
 
         private const string SQLClause = "Context = @Context AND [Key] = @Key";
@@ -47,11 +54,40 @@ namespace GeneralTools.Services
             }
         }
 
-        public static void SetConfigValue(string context, string keyName, string value)
+        public static IDictionary<string,string> GetConfigValues(string context)
         {
             try
             {
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+                var cmd = cnn.CreateCommand();
+                cmd.CommandText = "SELECT [key], value FROM Config " +
+                                  "WHERE Context = @Context";
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Context", context);
+
+                cnn.Open();
+                var dr = cmd.ExecuteReader();
+                var dt = new DataTable();
+                dt.Load(dr);
+                cnn.Close();
+
+                if (dt.Rows.Count > 0)
+                    return dt.Rows.OfType<DataRow>().ToDictionary(row => row[0].ToString(), row => row[1].ToString().Replace("******", "seE?Anemone"));
+
+                return new Dictionary<string, string>();
+            }
+                // ReSharper disable once UnusedVariable
+            catch (Exception e)
+            {
+                return new Dictionary<string, string>();
+            }
+        }
+
+        public static void SetConfigValue(string context, string keyName, string value, string connectionString = null)
+        {
+            try
+            {
+                var cnn = new SqlConnection(connectionString ?? ConfigurationManager.AppSettings["Connectionstring"]);
                 cnn.Open();
 
                 var cmdInsert = cnn.CreateCommand();
@@ -77,7 +113,9 @@ namespace GeneralTools.Services
 
                 cnn.Close();
             }
-            catch (Exception exception)
+                // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable once UnusedVariable
+            catch (Exception e)
             {
             }
         }

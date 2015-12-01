@@ -145,16 +145,14 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void DataSave()
         {
-            var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
-
             if (TmpDeleteCustomerTranslation || (CurrentTranslatedResourceCustomer.de.IsNullOrEmpty() && CurrentTranslatedResourceCustomer.en.IsNullOrEmpty()))
             {
                 DataService.TranslatedResourceCustomerDelete(CurrentTranslatedResourceCustomer);
                 UpdateTranslationTimeStamp();
-                if (Mode == GridAdminMode.FormControls && appConf != null)
+                if (Mode == GridAdminMode.FormControls)
                 {
-                    appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, false.ToString().ToLower());
-                    appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, false.ToString().ToLower());
+                    DataService.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, false.ToString().ToLower());
+                    DataService.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, false.ToString().ToLower());
                 }
                 if(TmpDeleteCustomerTranslation)
                     return;
@@ -169,10 +167,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.TranslatedResourceCustomerUpdate(CurrentTranslatedResourceCustomer);
             UpdateTranslationTimeStamp();
 
-            if (Mode == GridAdminMode.FormControls && appConf != null)
-            { 
-                appConf.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, IsRequired.ToString().ToLower());
-                appConf.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, IsHidden.ToString().ToLower());
+            if (Mode == GridAdminMode.FormControls)
+            {
+                DataService.SetCurrentBusinessCustomerConfigVal("REQUIRED: " + CurrentResourceID, IsRequired.ToString().ToLower());
+                DataService.SetCurrentBusinessCustomerConfigVal("HIDDEN: " + CurrentResourceID, IsHidden.ToString().ToLower());
             }
         }
 

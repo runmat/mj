@@ -16,9 +16,9 @@ namespace GeneralTools.Services
             return GetApplicationConfigValue(keyName, appID, customerID, groupID);
         }
 
-        public void SetApplicationConfigVal(string keyName, string value, string appID, int customerID = 0, int groupID = 0)
+        public void SetApplicationConfigVal(string keyName, string value, string appID, int customerID = 0, int groupID = 0, string connectionString = null)
         {
-            SetApplicationConfigValue(keyName, value, appID, customerID, groupID);
+            SetApplicationConfigValue(keyName, value, appID, customerID, groupID, connectionString);
         }
 
         public string GetCustomerConfigVal(string keyName, int customerId)
@@ -26,9 +26,9 @@ namespace GeneralTools.Services
             return GetApplicationConfigValue(keyName, "0", customerId);
         }
 
-        public void SetCustomerConfigVal(string keyName, string value, int customerId)
+        public void SetCustomerConfigVal(string keyName, string value, int customerId, string connectionString = null)
         {
-            SetApplicationConfigValue(keyName, value, "0", customerId);
+            SetApplicationConfigValue(keyName, value, "0", customerId, 0, connectionString);
         }
 
         public string GetCurrentCustomerConfigVal(string keyName)
@@ -43,14 +43,14 @@ namespace GeneralTools.Services
             return GetCustomerConfigVal(keyName, LogonContextProvider.GetLogonContext().KundenNr.ToInt());
         }
 
-        public void SetCurrentCustomerConfigVal(string keyName, string value)
+        public void SetCurrentCustomerConfigVal(string keyName, string value, string connectionString = null)
         {
-            SetCustomerConfigVal(keyName, value, LogonContextProvider.GetLogonContext().CustomerID);
+            SetCustomerConfigVal(keyName, value, LogonContextProvider.GetLogonContext().CustomerID, connectionString);
         }
 
-        public void SetCurrentBusinessCustomerConfigVal(string keyName, string value)
+        public void SetCurrentBusinessCustomerConfigVal(string keyName, string value, string connectionString = null)
         {
-            SetCustomerConfigVal(keyName, value, LogonContextProvider.GetLogonContext().KundenNr.ToInt());
+            SetCustomerConfigVal(keyName, value, LogonContextProvider.GetLogonContext().KundenNr.ToInt(), connectionString);
         }
 
         private const string SQLClause = "AppID = @AppID AND ConfigKey = @ConfigKey AND CustomerID IN (1, @CustomerID) AND GroupID IN (0, @GroupID)";
@@ -109,11 +109,11 @@ namespace GeneralTools.Services
             }
         }
 
-        public static void SetApplicationConfigValue(string keyName, string value, string appID, int customerID = 0, int groupID = 0)
+        public static void SetApplicationConfigValue(string keyName, string value, string appID, int customerID = 0, int groupID = 0, string connectionString = null)
         {
             try
             {
-                var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+                var cnn = new SqlConnection(connectionString ?? ConfigurationManager.AppSettings["Connectionstring"]);
                 cnn.Open();
 
                 var cmdInsert = cnn.CreateCommand();

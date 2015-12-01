@@ -20,5 +20,7 @@ namespace CkgDomainLogic.General.Contracts
         void TranslatedResourceCustomerDelete(TranslatedResourceCustom r);
 
         void TranslationsMarkForRefresh();
+
+        void SetCurrentBusinessCustomerConfigVal(string keyName, string value);
     }
 }

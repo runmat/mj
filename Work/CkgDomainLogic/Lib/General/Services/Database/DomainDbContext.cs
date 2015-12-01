@@ -56,6 +56,7 @@ namespace CkgDomainLogic.General.Database.Services
                     " select {0}, {1}, {2}, getdate()", 
                     UserID, messageID, showMessageFromDate);
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception) { }
         }
 

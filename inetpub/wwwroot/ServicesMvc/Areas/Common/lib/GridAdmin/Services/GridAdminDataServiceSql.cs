@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
@@ -19,8 +21,6 @@ namespace CkgDomainLogic.DomainCommon.Services
         static string ConnectionStringWorkServer { get { return ConfigurationManager.AppSettings["ConnectionString"].NotNullOrEmpty(); } }
 
         static string ConnectionStringTestServer { get { return ConfigurationManager.AppSettings["ConnectionStringTestServer"].NotNullOrEmpty(); } }
-        
-        static string ConnectionStringProdServer { get { return ConfigurationManager.AppSettings["ConnectionStringProdServer"].NotNullOrEmpty(); } }
 
 
         public GridAdminDataServiceSql(ISapDataService sap)
@@ -74,46 +74,118 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public void TranslatedResourceUpdate(TranslatedResource r)
         {
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceUpdate(r, UserName);
 
-            var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceUpdate(r, UserName);
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                var dbContext = CreateDbContext(connectionString);
+                dbContext.TranslatedResourceUpdate(r, UserName);
+            }
         }
 
         public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r)
         {
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceCustomerUpdate(r, UserName);
 
-            var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceCustomerUpdate(r, UserName);
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                var dbContext = CreateDbContext(connectionString);
+                dbContext.TranslatedResourceCustomerUpdate(r, UserName);
+            }
         }
 
         public void TranslatedResourceDelete(TranslatedResource r)
         {
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceDelete(r, UserName);
 
-            var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceDelete(r, UserName);
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                var dbContext = CreateDbContext(connectionString);
+                dbContext.TranslatedResourceDelete(r, UserName);
+            }
         }
 
         public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
         {
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceCustomerDelete(r, UserName);
 
-            var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
-            dbContextProdServer.TranslatedResourceCustomerDelete(r, UserName);
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                var dbContext = CreateDbContext(connectionString);
+                dbContext.TranslatedResourceCustomerDelete(r, UserName);
+            }
         }
 
         #endregion
 
-
         public void TranslationsMarkForRefresh()
         {
-            GeneralConfiguration.SetConfigValue("Localization", "TimeOfLastResourceUpdate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
+            generalConf.SetConfigVal("Localization", "TimeOfLastResourceUpdate", DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                generalConf.SetConfigVal("Localization", "TimeOfLastResourceUpdate", DateTime.Now.ToString("yyyyMMddHHmmss"), connectionString);
+            }
+        }
+
+        public void SetCurrentBusinessCustomerConfigVal(string keyName, string value)
+        {
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
+
+            var appConf = DependencyResolver.Current.GetService<ICustomerConfigurationProvider>();
+            if (appConf == null)
+                return;
+
+            appConf.SetCurrentBusinessCustomerConfigVal(keyName, value);
+
+            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            foreach (var connectionStringEntry in connectionStringDict)
+            {
+                var connectionString = connectionStringEntry.Value;
+
+                appConf.SetCurrentBusinessCustomerConfigVal(keyName, value, connectionString);
+            }
         }
     }
 }
