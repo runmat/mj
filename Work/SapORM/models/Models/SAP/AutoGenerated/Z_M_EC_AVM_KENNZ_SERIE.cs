@@ -66,6 +66,8 @@ namespace SapORM.Models
 
 			public string NEXTNUMBER { get; set; }
 
+			public string ZUSATZ { get; set; }
+
 			public string SONDERSERIE { get; set; }
 
 			public string SWLETTER { get; set; }
@@ -108,6 +110,7 @@ namespace SapORM.Models
 					MAXNUMBER = (string)row["MAXNUMBER"],
 					NEXTLETTER = (string)row["NEXTLETTER"],
 					NEXTNUMBER = (string)row["NEXTNUMBER"],
+					ZUSATZ = (string)row["ZUSATZ"],
 					SONDERSERIE = (string)row["SONDERSERIE"],
 					SWLETTER = (string)row["SWLETTER"],
 					SWNUMBER = (string)row["SWNUMBER"],

@@ -75,6 +75,10 @@ namespace SapORM.Models
 
 			public string BEM { get; set; }
 
+			public string NACHLIEFERUNG { get; set; }
+
+			public string ORGANISATION { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -98,6 +102,8 @@ namespace SapORM.Models
 					NAVI_CD_VORH = (string)row["NAVI_CD_VORH"],
 					LSNUMMER = (string)row["LSNUMMER"],
 					BEM = (string)row["BEM"],
+					NACHLIEFERUNG = (string)row["NACHLIEFERUNG"],
+					ORGANISATION = (string)row["ORGANISATION"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

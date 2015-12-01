@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_SAVE_REM_VERS_VORG_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
 		public partial class GT_TAB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -69,6 +75,8 @@ namespace SapORM.Models
 
 			public string BEM { get; set; }
 
+			public string FORM_SPRAS { get; set; }
+
 			public static GT_TAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_TAB
@@ -92,6 +100,7 @@ namespace SapORM.Models
 					CLIENT_NR = (string)row["CLIENT_NR"],
 					CLIENTNAME = (string)row["CLIENTNAME"],
 					BEM = (string)row["BEM"],
+					FORM_SPRAS = (string)row["FORM_SPRAS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -196,11 +205,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
