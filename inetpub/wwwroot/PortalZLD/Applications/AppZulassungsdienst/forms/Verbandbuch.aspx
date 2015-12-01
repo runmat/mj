@@ -26,11 +26,11 @@
                     <div id="data" style="text-align: center" >
                         
                                 <asp:LinkButton CssClass="TablebuttonXLarge" Width="155px"
-                                            Height="22px" runat="server" ID="btnErfassung" OnClick="btnErfassung_Click" Text="Erfassung eines Vorfalls" Style="margin-top: 20px;"/> <br/>
+                                            Height="22px" runat="server" ID="btnErfassung" OnClick="btnErfassung_Click" Text="Verbandbuch-Erfassung" Style="margin-top: 20px;"/> <br/>
                      
                            
                                 <asp:LinkButton CssClass="TablebuttonXLarge" Width="155px"
-                                            Height="22px" runat="server" ID="btnReport" OnClick="btnReport_Click" Text="Filialreport" Style="margin-top: 10px; margin-bottom: 20px" />
+                                            Height="22px" runat="server" ID="btnReport" OnClick="btnReport_Click" Text="Verbandbuch-Report" Style="margin-top: 10px; margin-bottom: 20px" />
   
                     </div>
                                            
