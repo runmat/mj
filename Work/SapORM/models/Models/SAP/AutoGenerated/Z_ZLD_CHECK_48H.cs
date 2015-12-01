@@ -78,10 +78,6 @@ namespace SapORM.Models
 
 			public string Z48H { get; set; }
 
-			public string ABW_ADR_GENERELL { get; set; }
-
-			public string IST_48H { get; set; }
-
 			public static ES_VERSAND_48H Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ES_VERSAND_48H
@@ -94,8 +90,6 @@ namespace SapORM.Models
 					LIFUHRBIS = (string)row["LIFUHRBIS"],
 					NACHREICH = (string)row["NACHREICH"],
 					Z48H = (string)row["Z48H"],
-					ABW_ADR_GENERELL = (string)row["ABW_ADR_GENERELL"],
-					IST_48H = (string)row["IST_48H"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
