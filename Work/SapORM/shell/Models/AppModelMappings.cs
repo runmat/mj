@@ -7,12 +7,12 @@ namespace SapORM.Models
     {
 
         // ReSharper disable InconsistentNaming
-        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag> Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag
+        public static ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE, HistoryAuftrag> Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE, HistoryAuftrag>(
                                                 new Dictionary<string, string> {
                                                     { "AUFNR", "AuftragsNr" },
                                                     { "ERDAT", "AuftragsDatum" },
@@ -38,12 +38,12 @@ namespace SapORM.Models
 
         
         // ReSharper disable InconsistentNaming
-        public static ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragFilter> Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter
+        public static ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT, HistoryAuftragFilter> Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragFilter
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragFilter>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT, HistoryAuftragFilter>(
                                                  new Dictionary<string, string> {
                                                      { "Aufnr", "AuftragsNr" },
                                                      { "Erdat", "ErfassungsDatumVon" },

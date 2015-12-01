@@ -21,6 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_BATCH_UPDATE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -121,6 +122,18 @@ namespace SapORM.Models
 
 			public string ANTR { get; set; }
 
+			public DateTime? ZFREISETZUNG { get; set; }
+
+			public DateTime? ZGW_DAT_FREIS { get; set; }
+
+			public string ZGW_ZEIT_FREIS { get; set; }
+
+			public DateTime? ZUKZ { get; set; }
+
+			public DateTime? ZGW_DAT_UKZ { get; set; }
+
+			public string ZGW_ZEIT_UKZ { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -151,25 +164,31 @@ namespace SapORM.Models
 					ZLOEVM = (string)row["ZLOEVM"],
 					ZERNAM = (string)row["ZERNAM"],
 					ZEQUNR = (string)row["ZEQUNR"],
-					ZGW_DATUM = (string.IsNullOrEmpty(row["ZGW_DATUM"].ToString())) ? null : (DateTime?)row["ZGW_DATUM"],
+					ZGW_DATUM = string.IsNullOrEmpty(row["ZGW_DATUM"].ToString()) ? null : (DateTime?)row["ZGW_DATUM"],
 					ZGW_ZEIT = (string)row["ZGW_ZEIT"],
-					ZVERGDAT = (string.IsNullOrEmpty(row["ZVERGDAT"].ToString())) ? null : (DateTime?)row["ZVERGDAT"],
-					ZGW_DATUM_ZUL = (string.IsNullOrEmpty(row["ZGW_DATUM_ZUL"].ToString())) ? null : (DateTime?)row["ZGW_DATUM_ZUL"],
+					ZVERGDAT = string.IsNullOrEmpty(row["ZVERGDAT"].ToString()) ? null : (DateTime?)row["ZVERGDAT"],
+					ZGW_DATUM_ZUL = string.IsNullOrEmpty(row["ZGW_DATUM_ZUL"].ToString()) ? null : (DateTime?)row["ZGW_DATUM_ZUL"],
 					ZGW_ZEIT_ZUL = (string)row["ZGW_ZEIT_ZUL"],
 					ZLEASING = (string)row["ZLEASING"],
 					ZVERGZEIT = (string)row["ZVERGZEIT"],
 					ZUSER_SPERR = (string)row["ZUSER_SPERR"],
-					ZDAT_SPERR = (string.IsNullOrEmpty(row["ZDAT_SPERR"].ToString())) ? null : (DateTime?)row["ZDAT_SPERR"],
+					ZDAT_SPERR = string.IsNullOrEmpty(row["ZDAT_SPERR"].ToString()) ? null : (DateTime?)row["ZDAT_SPERR"],
 					ZBEM_SPERR = (string)row["ZBEM_SPERR"],
 					ZSONDERSERIE = (string)row["ZSONDERSERIE"],
 					ZNAVI = (string)row["ZNAVI"],
 					ZAHK = (string)row["ZAHK"],
-					DAT_UMSETZ = (string.IsNullOrEmpty(row["DAT_UMSETZ"].ToString())) ? null : (DateTime?)row["DAT_UMSETZ"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					DAT_UMSETZ = string.IsNullOrEmpty(row["DAT_UMSETZ"].ToString()) ? null : (DateTime?)row["DAT_UMSETZ"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					AENAM = (string)row["AENAM"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					BLUETOOTH = (string)row["BLUETOOTH"],
 					ANTR = (string)row["ANTR"],
+					ZFREISETZUNG = string.IsNullOrEmpty(row["ZFREISETZUNG"].ToString()) ? null : (DateTime?)row["ZFREISETZUNG"],
+					ZGW_DAT_FREIS = string.IsNullOrEmpty(row["ZGW_DAT_FREIS"].ToString()) ? null : (DateTime?)row["ZGW_DAT_FREIS"],
+					ZGW_ZEIT_FREIS = (string)row["ZGW_ZEIT_FREIS"],
+					ZUKZ = string.IsNullOrEmpty(row["ZUKZ"].ToString()) ? null : (DateTime?)row["ZUKZ"],
+					ZGW_DAT_UKZ = string.IsNullOrEmpty(row["ZGW_DAT_UKZ"].ToString()) ? null : (DateTime?)row["ZGW_DAT_UKZ"],
+					ZGW_ZEIT_UKZ = (string)row["ZGW_ZEIT_UKZ"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -274,11 +293,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
