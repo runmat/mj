@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,57 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_ADRESSDATEN_STD).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_ALL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ALL", value);
+		}
+
+		public static void SetImportParameter_I_HAENDLER_EX(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HAENDLER_EX", value);
+		}
+
+		public static void SetImportParameter_I_HDGRP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HDGRP", value);
+		}
+
+		public static void SetImportParameter_I_KONTINGENT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KONTINGENT", value);
+		}
+
+		public static void SetImportParameter_I_MAX(ISapDataService sap, int? value)
+		{
+			sap.SetImportParameter("I_MAX", value);
+		}
+
+		public static void SetImportParameter_I_NAME(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME", value);
+		}
+
+		public static void SetImportParameter_I_ORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORT", value);
+		}
+
+		public static void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PSTLZ", value);
+		}
+
+		public static int? GetExportParameter_E_REC_ANZ(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_REC_ANZ");
 		}
 
 		public partial class GT_ADRS : IModelMappingApplied
@@ -91,7 +143,7 @@ namespace SapORM.Models
 
 			public static List<GT_ADRS> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ADRS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -105,7 +157,7 @@ namespace SapORM.Models
 
 			public static List<GT_ADRS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> ToList(ISapDataService sapDataService)
@@ -120,7 +172,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_ADRESSDATEN_STD", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetExportListWithExecute(ISapDataService sapDataService)
@@ -130,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetExportList(ISapDataService sapDataService)
@@ -140,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -150,7 +202,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_ADRESSDATEN_STD", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ADRS> GetImportList(ISapDataService sapDataService)
@@ -160,7 +212,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -171,11 +223,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_ADRESSDATEN_STD.GT_ADRS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_ADRESSDATEN_STD.GT_ADRS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

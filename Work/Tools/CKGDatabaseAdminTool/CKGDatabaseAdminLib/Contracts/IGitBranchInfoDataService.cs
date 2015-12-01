@@ -8,6 +8,8 @@ namespace CKGDatabaseAdminLib.Contracts
     {
         GitBranchViewFilter AnzeigeFilter { get; set; }
 
+        ObservableCollection<CkgEntwickler> CkgEntwickler { get; }
+
         ObservableCollection<GitBranchInfo> GitBranches { get; }
 
         string SaveChanges();

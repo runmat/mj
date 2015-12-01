@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using CKGDatabaseAdminLib.ViewModels;
 using CKGDatabaseAdminTool.UIServices;
 
@@ -17,7 +18,18 @@ namespace CKGDatabaseAdminTool
 
             DataContext = vm;
 
-            ShowDbSelectionDialog();
+            if (vm.UseDefaultDbServer)
+            {
+                IsDbSelected = true;
+                vm.SelectDbConnection();
+            }
+            else
+                ShowDbSelectionDialog();
+
+            Title = string.Format("CKGDatabaseAdminTool v{0}.{1}, Entwickler = {2}",
+                                        Assembly.GetEntryAssembly().GetName().Version.Major,
+                                        Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00"),
+                                        vm.Developer);
         }
 
         private void ShowDbSelectionDialog()

@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
@@ -32,11 +33,12 @@ namespace ServicesMvc.Controllers
             IMahnsperreDataService mahnsperreDataService, 
             IBriefbestandVhcDataService briefbestandVhcDataService, 
             IKlaerfaelleVhcDataService klaerfaelleVhcDataService,
-            IEquiHistorieVermieterDataService equiHistorieVermieterDataService)
+            IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
+            IEasyAccessDataService easyAccessDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenViewModel, appSettings, logonContext, equiGrunddatenDataService);
-            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService);
+            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService, easyAccessDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
             InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);
             InitViewModel(MahnreportViewModel, appSettings, logonContext, mahnreportDataService);

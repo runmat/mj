@@ -9,6 +9,8 @@ namespace SapORM.Contracts
 
         IDynSapProxyObject GetProxy();
 
+        IDynSapProxyObject GetEmptyProxy();
+
         void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure);
     }
 }

@@ -54,8 +54,10 @@
                                 Typdaten </li>
                             <li id="Tab4" onclick="javascript:click4()" class="Histbutton">
                                 Lebenslauf </li>
-                            <li id="Tab5" onclick="javascript:click5()" class="HistButtonLast">
+                            <li id="Tab5" onclick="javascript:click5()" class="Histbutton">
                                 Vorschäden </li>
+                            <li id="Tab6" onclick="javascript:click6()" class="HistButtonLast">
+                                Modell/Ausstatt.&nbsp;&nbsp;&nbsp; </li>
                         </ul>
                     </div>
                     <div id="HistTabPanel1" class="HistTabPanel">
@@ -950,6 +952,120 @@
                         </table>
                     </div>
                     
+                    <div id="HistTabPanel6"  class="HistTabPanel"  style="display: none">
+                                    
+                        <table id="Table1" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="6">
+                                    &nbsp;
+                                </td>                                            
+                                </tr>                                    
+                                <tr>
+                                <td colspan="6"  style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" ID="Label30" runat="server"> Modell</asp:Label>
+                                </td>                                            
+                            </tr>
+                            <tr>
+                                <td class="First" nowrap align="right" width="20">
+                                    1
+                                </td>
+                                <td  class="First" nowrap width="220">
+                                    Modell Code / Bezeichnung
+                                </td>
+                                <td class="ABEDaten" colspan="3" nowrap width="100">
+                                    <asp:Label ID="lbl_ModelCode" runat="server">-</asp:Label>
+                                </td>
+                                <td class="ABEDaten" align="left" nowrap width="100%">
+                                    <asp:Label ID="lbl_ModelBezeichnung" runat="server">-</asp:Label>
+                                </td>
+                            </tr>
+                        </table>                              
+                                              
+                        <table id="Table6" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="6">
+                                    &nbsp;
+                                </td>                                            
+                                </tr>                                    
+                                <tr>
+                                <td colspan="6"  style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" ID="Label52" runat="server"> Außenfarbe</asp:Label>
+                                </td>                                            
+                            </tr>
+                            <tr>
+                                <td class="First" nowrap align="right" width="20">
+                                    1
+                                </td>
+                                <td  class="First" nowrap width="220">
+                                    Farbcode / Bezeichnung
+                                </td>
+                                <td class="ABEDaten" colspan="3" nowrap width="100">
+                                    <asp:Label ID="lbl_FarbCode_Aussen" runat="server">-</asp:Label>
+                                </td>
+                                <td class="ABEDaten" align="left" nowrap width="100%">
+                                    <asp:Label ID="lbl_FarbBezeichnung_Aussen" runat="server">-</asp:Label>
+                                </td>
+                            </tr>
+                        </table>                                                 
+                        <table id="Table2" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="6">
+                                    &nbsp;
+                                </td>                                            
+                                </tr>                                    
+                                <tr>
+                                <td colspan="6"  style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" ID="Label62" runat="server"> Innenfarbe</asp:Label>
+                                </td>                                            
+                            </tr>
+                            <tr>
+                                <td class="First" nowrap align="right" width="20">
+                                    1
+                                </td>
+                                <td  class="First" nowrap width="220">
+                                    Farbcode / Bezeichnung
+                                </td>
+                                <td class="ABEDaten" colspan="3" nowrap width="100">
+                                    <asp:Label ID="lbl_FarbCode_Innen" runat="server">-</asp:Label>
+                                </td>
+                                <td class="ABEDaten" align="left" nowrap width="100%">
+                                    <asp:Label ID="lbl_FarbBezeichnung_Innen" runat="server">-</asp:Label>
+                                </td>
+                            </tr>
+                        </table>                      
+                                                                      
+                        <table id="Table3" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="6">
+                                    &nbsp;
+                                </td>                                            
+                                </tr>                                    
+                                <tr>
+                                <td colspan="6"  style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" ID="Label64" runat="server"> Ausstattungen</asp:Label>
+                                </td>                                            
+                            </tr>
+                            <asp:Repeater id="AusstattungRepeater" runat="server">
+                                <ItemTemplate>
+                                    <tr>
+                                        <td class="First" nowrap align="right" width="20">
+                                            <%# DataBinder.Eval(Container.DataItem, "Pos") %>
+                                        </td>
+                                        <td  class="First" nowrap width="220">
+                                            Ausstattung&nbsp;Code / Bezeichnung
+                                        </td>
+                                        <td class="ABEDaten" colspan="3" nowrap width="100">
+                                            <%# DataBinder.Eval(Container.DataItem, "PACKIDENT") %>
+                                        </td>
+                                        <td class="ABEDaten" align="left" nowrap width="100%">
+                                            <%# DataBinder.Eval(Container.DataItem, "BEZ_PRNR") %>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </table>   
+                                 
+                </div>
                     
 
                 </div>
@@ -964,9 +1080,10 @@
         click3 = function () { click(2); };
         click4 = function () { click(3); };
         click5 = function () { click(4); };
+        click6 = function () { click(5); };
 
         click = function (i) {
-            var numTabs = 5;
+            var numTabs = 6;
             for (var t = 0; t < numTabs; t++) {
                 var tab = document.getElementById("Tab" + (t + 1));
                 var panel = document.getElementById("HistTabPanel" + (t + 1));

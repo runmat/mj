@@ -264,6 +264,8 @@ namespace CkgDomainLogic.Equi.Models
 
         public bool ShowHaendlerdaten { get; set; }
 
+        public bool HasArchives { get { return (GetViewModel != null && GetViewModel().HasArchives); } }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<EquiHistorieViewModel> GetViewModel { get; set; }
 

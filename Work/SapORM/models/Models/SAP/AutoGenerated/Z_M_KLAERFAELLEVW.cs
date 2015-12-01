@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_KLAERFAELLEVW).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -53,6 +59,22 @@ namespace SapORM.Models
 
 			public DateTime? AUDAT { get; set; }
 
+			public DateTime? ERDAT { get; set; }
+
+			public string TDLINE6 { get; set; }
+
+			public string TDLINE7 { get; set; }
+
+			public string TDLINE8 { get; set; }
+
+			public string TDLINE9 { get; set; }
+
+			public string TDLINE10 { get; set; }
+
+			public string TDLINE11 { get; set; }
+
+			public string TDLINE12 { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -67,7 +89,15 @@ namespace SapORM.Models
 					TDLINE3 = (string)row["TDLINE3"],
 					TDLINE4 = (string)row["TDLINE4"],
 					TDLINE5 = (string)row["TDLINE5"],
-					AUDAT = (string.IsNullOrEmpty(row["AUDAT"].ToString())) ? null : (DateTime?)row["AUDAT"],
+					AUDAT = string.IsNullOrEmpty(row["AUDAT"].ToString()) ? null : (DateTime?)row["AUDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					TDLINE6 = (string)row["TDLINE6"],
+					TDLINE7 = (string)row["TDLINE7"],
+					TDLINE8 = (string)row["TDLINE8"],
+					TDLINE9 = (string)row["TDLINE9"],
+					TDLINE10 = (string)row["TDLINE10"],
+					TDLINE11 = (string)row["TDLINE11"],
+					TDLINE12 = (string)row["TDLINE12"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -172,11 +202,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_KLAERFAELLEVW.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_KLAERFAELLEVW.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
