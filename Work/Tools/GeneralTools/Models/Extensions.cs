@@ -313,6 +313,15 @@ namespace GeneralTools.Models
             return string.Join(separator, list.ToListOrEmptyList().ToArray());
         }
 
+        public static string ToLowerFirstUpperWithFragments(this string s, char fragmentSourceSeparator = '_', char fragmentDestinationSeparator = '-')
+        {
+            if (!s.Contains(fragmentSourceSeparator))
+                return s.ToLowerFirstUpper();
+
+            var fragments = s.Split(fragmentSourceSeparator);
+            return string.Join(fragmentDestinationSeparator.ToString(), fragments.Select(f => f.ToLowerFirstUpper()).ToArray());
+        }
+
         public static string ToLowerFirstUpper(this string s)
         {
             s = s.NotNullOrEmpty();

@@ -81,7 +81,7 @@
                                                 Rechte:
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:CheckBox ID="cbNurMitRechten" runat="server" Width="257px" Text="Nur User mit Übersetzungsrechten" />
+                                                <asp:CheckBox ID="cbNurMitRechten" runat="server" Width="257px"  />
                                             </td>
                                         </tr>
                                         <tr class="formquery">
@@ -162,7 +162,7 @@
                                                         <asp:BoundField DataField="CustomerName" SortExpression="CustomerName" HeaderText="Kunde" />
                                                         <asp:BoundField DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe" />
                                                         <asp:BoundField DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Orga." />
-                                                        <asp:TemplateField SortExpression="HasCategoryRights" HeaderText="Darf übersetzen">
+                                                        <asp:TemplateField SortExpression="HasCategoryRights" HeaderText="Category">
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="cbxHasCategoryRights" AutoPostBack="True" OnCheckedChanged="cbxHasCategoryRights_CheckedChanged"
                                                                     runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "HasCategoryRights") %>'

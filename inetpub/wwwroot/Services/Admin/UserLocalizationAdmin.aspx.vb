@@ -4,6 +4,8 @@ Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Services
 Imports System.Data.SqlClient
+Imports System.Linq
+Imports GeneralTools.Models
 
 Partial Public Class UserLocalizationAdmin
     Inherits System.Web.UI.Page
@@ -14,12 +16,22 @@ Partial Public Class UserLocalizationAdmin
     Protected WithEvents GridNavigation1 As GridNavigation
 #End Region
 
-    Private Shared m_CategoryName As String = "LOCALIZATION_ADMIN"
+    Private m_CategoryName As String = "LOKALISIERUNGS_RECHT"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         m_User = GetUser(Me)
 
-        lblHead.Text = "Lokalisierungs-Rechte (Übersetzungen)"
+        If (Not Request.QueryString("category") Is Nothing And Not String.IsNullOrEmpty(Request.QueryString("category"))) Then
+            m_CategoryName = Request.QueryString("category")
+        End If
+
+        lblHead.Text = m_CategoryName.ToLowerFirstUpperWithFragments
+        cbNurMitRechten.Text = "Nur User mit " & lblHead.Text
+        Dim categoryTemplateField = dgSearchResult.Columns.OfType(Of TemplateField).FirstOrDefault(Function(r) r.HeaderText = "Category")
+        If (Not categoryTemplateField Is Nothing) Then
+            categoryTemplateField.HeaderText = lblHead.Text
+        End If
+
         FormAuth(Me, m_User)
         GridNavigation1.setGridElment(dgSearchResult)
 
