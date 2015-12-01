@@ -1,11 +1,12 @@
-﻿<fl:RibbonWindow x:Class="CKGDatabaseAdminTool.MainWindow"
+﻿<fl:RibbonWindow x:Class="CKGDatabaseAdminTool.MainWindow" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
         xmlns:ViewModels="clr-namespace:CKGDatabaseAdminLib.ViewModels;assembly=CKGDatabaseAdminLib"
         xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
         xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
-                 WindowStartupLocation="CenterScreen" 
+                 WindowStartupLocation="CenterScreen"
+                 WindowState="Maximized"
         Width="1280" Height="720" Title="CKGDatabaseAdminTool" IsIconVisible="False">
 
     <Window.Resources>
@@ -28,7 +29,7 @@
             <uc:ucCheckBapis/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
-            <uc:ucManageGitBranches/>
+            <uc:ucManageGitBranchesDevX/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModels:SapOrmModelGenerationViewModel}">
             <uc:ucSapOrmModelGeneration/>
@@ -45,29 +46,44 @@
 
         <fl:Ribbon Name="Ribbon" DockPanel.Dock="Top" IsQuickAccessToolBarVisible="False">
             
-            <fl:RibbonTabItem Header="Verwaltung" Name="TabVerwaltung">
-                
-                <fl:RibbonGroupBox Header="Login-Messages" HorizontalContentAlignment="Left">
-                    <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Size="Middle" Command="{Binding CommandManageLoginMessages}" Header="Login-Messages verwalten" Height="Auto" />
+            <fl:RibbonTabItem Header="Tools" Name="TabVerwaltung">
+
+                <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                    <fl:Button DataContext="{Binding LoginUserMessageViewModel}" Command="{Binding CommandManageLoginMessages}" Header="Login Messages" 
+                               LargeIcon="{StaticResource image/32x32/message}"
+                               Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="BAPIs" HorizontalContentAlignment="Left">
-                    <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Size="Middle" Command="{Binding CommandManageApplicationBapis}" Header="BAPIs verwalten" Height="Auto" />
-                    <fl:Button DataContext="{Binding BapiApplicationViewModel}" Size="Middle" Command="{Binding CommandReportBapiApplications}" Header="BAPI-Verwendung" Height="Auto" />
-                    <fl:Button DataContext="{Binding BapiCheckViewModel}" Size="Middle" Command="{Binding CommandCheckBapis}" Header="BAPI-Definitionen prüfen" Height="Auto" />
-                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Size="Middle" Command="{Binding CommandSapOrmModelGeneration}" Header="SapORM-Modelgenerierung" Height="Auto" />
+                <fl:RibbonGroupBox Header="SAP" HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                    <fl:Button DataContext="{Binding ApplicationBapiViewModel}" Command="{Binding CommandManageApplicationBapis}" 
+                               LargeIcon="{StaticResource image/32x32/sap_manage}"
+                               Header="BAPIs verwalten" Height="Auto" />
+                    <fl:Button DataContext="{Binding BapiApplicationViewModel}" Command="{Binding CommandReportBapiApplications}" 
+                               LargeIcon="{StaticResource image/32x32/sap_usages}"
+                               Header="BAPI Verwendung" Height="Auto" />
+                    <fl:Button DataContext="{Binding BapiCheckViewModel}" Command="{Binding CommandCheckBapis}" 
+                               LargeIcon="{StaticResource image/32x32/sap_check}"
+                               Header="BAPI Definitionen" Height="Auto" ToolTip="BAPI-Definitionen prüfen" />
+                    <fl:Button DataContext="{Binding SapOrmModelGenerationViewModel}" Command="{Binding CommandSapOrmModelGeneration}" 
+                               LargeIcon="{StaticResource image/32x32/sap_models}"
+                               Header="SapORM Models" Height="Auto" ToolTip="SapORM Models generieren" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="Anwendungen" HorizontalContentAlignment="Left">
-                    <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                    <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" 
+                               LargeIcon="{StaticResource image/32x32/app_copy}"
+                               Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="Feldübersetzungen" HorizontalContentAlignment="Left">
-                    <fl:Button DataContext="{Binding FieldTranslationCopyViewModel}" Size="Middle" Command="{Binding CommandCopyFieldTranslations}" Header="Feldübersetzungen übertragen" Height="Auto" />
+                <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                    <fl:Button DataContext="{Binding FieldTranslationCopyViewModel}" Command="{Binding CommandCopyFieldTranslations}" 
+                               LargeIcon="{StaticResource image/32x32/translate}"
+                               Header="Feldübersetzungen übertragen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
-                <fl:RibbonGroupBox Header="Git-Branches" HorizontalContentAlignment="Left">
-                    <fl:Button DataContext="{Binding GitBranchViewModel}" Size="Middle" Command="{Binding CommandManageGitBranches}" Header="Git-Branches verwalten" 
+                <fl:RibbonGroupBox HorizontalContentAlignment="Left">
+                    <fl:Button DataContext="{Binding GitBranchViewModel}" Command="{Binding CommandManageGitBranches}" Header="Git Branches" 
+                               LargeIcon="{StaticResource image/32x32/git}"
                         Height="Auto" IsEnabled="{Binding Path=DataContext, RelativeSource={RelativeSource Self}, Converter={StaticResource NotNullToBooleanConverter}}" />
                 </fl:RibbonGroupBox>
 
@@ -75,7 +91,7 @@
             
         </fl:Ribbon>
 
-        <Grid Name="Statusleiste" Height="24px" DockPanel.Dock="Bottom" Background="#EEEEEE">
+        <Grid Name="Statusleiste" Height="24px" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="100px" />
@@ -101,7 +117,7 @@
             </Button>
         </Grid>
         
-        <ContentControl Background="LightGray" Content="{Binding ActiveViewModel}" />   
+        <ContentControl Content="{Binding ActiveViewModel}" />   
 
     </DockPanel>
     

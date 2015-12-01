@@ -4,6 +4,9 @@ using System.Configuration;
 using WpfTools4.ViewModels;
 using System.Collections.ObjectModel;
 using System.Timers;
+using System.Linq;
+using CKGDatabaseAdminLib.Services;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib.ViewModels
 {
@@ -15,6 +18,12 @@ namespace CKGDatabaseAdminLib.ViewModels
 
     public class MainViewModel : ViewModelBase
     {
+        public static MainViewModel Instance { get; set; } 
+
+        public bool UseDefaultDbServer { get; set; }
+        public string Developer { get; set; }
+        public bool UseDefaultStartupView { get; set; }
+
         #region Properties
 
         private ViewModelBase _activeViewModel;
@@ -114,12 +123,35 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         #endregion
 
-        public MainViewModel()
+        public MainViewModel(bool useDefaultDbServer, string developer, bool useDefaultStartupView)
         {
+            Instance = this;
+
+            UseDefaultDbServer = useDefaultDbServer;
+            Developer = developer;
+            UseDefaultStartupView = useDefaultStartupView;
+
             _messageDisplayTimer = new Timer(10000);
             TestSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
             LoadDbConnections();
+        }
+
+        void TryAutoRecognizeDeveloper()
+        {
+            if (Developer.IsNotNullOrEmpty())
+                return;
+
+            var vms012Conn = DbConnections.FirstOrDefault(db => db.ToLower().Contains("vms012"));
+            if (vms012Conn == null)
+                return;
+
+            var vms012DataService = new GitBranchInfoDataServiceSql(vms012Conn);
+            var developer = vms012DataService.CkgEntwickler.FirstOrDefault(e => e.UserName.ToLower() == Environment.UserName.ToLower());
+            if (developer == null)
+                return;
+
+            Developer = developer.ID;
         }
 
         private void MessageDisplayTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
@@ -145,22 +177,29 @@ namespace CKGDatabaseAdminLib.ViewModels
         {
             ActiveViewModel = null;
             InitViewModels();
+
+            TryAutoRecognizeDeveloper();
         }
 
         private void InitViewModels()
         {
-            LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
-            ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
-            BapiApplicationViewModel = new BapiApplicationViewModel(this);
-            ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
-            FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
-            BapiCheckViewModel = new BapiCheckViewModel(this);
-            SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
+            if (!UseDefaultStartupView)
+            {
+                LoginUserMessageViewModel = new LoginUserMessageViewModel(this);
+                ApplicationBapiViewModel = new ApplicationBapiViewModel(this);
+                BapiApplicationViewModel = new BapiApplicationViewModel(this);
+                ApplicationCopyViewModel = new ApplicationCopyViewModel(this);
+                FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
+                BapiCheckViewModel = new BapiCheckViewModel(this);
+                SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
+            }
 
             // Git-Branch Verwaltung nur in DAD-Datenbanken
             if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
             {
                 GitBranchViewModel = new GitBranchInfoViewModel(this);
+                if (UseDefaultStartupView)
+                    GitBranchViewModel.ManageGitBranches(null);
             }
             else
             {

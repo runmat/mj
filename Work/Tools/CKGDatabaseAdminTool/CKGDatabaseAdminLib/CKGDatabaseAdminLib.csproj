@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\GAC\Aspose.Cells.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Data.v11.2.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\..\GAC\EntityFramework.dll</HintPath>
     </Reference>
@@ -76,6 +79,7 @@
     <Compile Include="DbContext.cs" />
     <Compile Include="Models\Bapi2Report4CsvExport.cs" />
     <Compile Include="Models\BapiCheckAbweichung.cs" />
+    <Compile Include="Models\CkgEntwickler.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
     </Compile>
