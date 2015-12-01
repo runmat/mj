@@ -392,6 +392,9 @@ namespace CkgDomainLogic.General.Services
 
         public void RewriteUrlToLogPageVisit(IApplicationUserMenuItem menuItem)
         {
+            if (menuItem.AppURL.NotNullOrEmpty().ToLower().StartsWith("http"))
+                return;
+
             var appId = menuItem.AppID;
             var url = menuItem.AppURL;
             var urlUtf8 = Encoding.UTF8.GetString(Encoding.Default.GetBytes(url));
