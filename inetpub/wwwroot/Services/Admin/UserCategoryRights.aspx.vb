@@ -7,7 +7,7 @@ Imports System.Data.SqlClient
 Imports System.Linq
 Imports GeneralTools.Models
 
-Partial Public Class UserLocalizationAdmin
+Partial Public Class UserCategoryRights
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "

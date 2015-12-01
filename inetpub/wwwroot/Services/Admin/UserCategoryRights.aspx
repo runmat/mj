@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="UserLocalizationAdmin.aspx.vb" Inherits="Admin.UserLocalizationAdmin"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="UserCategoryRights.aspx.vb" Inherits="Admin.UserCategoryRights"
     MasterPageFile="MasterPage/Admin.Master" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
