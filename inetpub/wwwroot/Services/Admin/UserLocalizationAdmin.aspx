@@ -159,22 +159,9 @@
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:BoundField DataField="UserName" SortExpression="UserName" HeaderText="Benutzer" />
-                                                        <asp:BoundField DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe">
-                                                        </asp:BoundField>
-                                                        <asp:BoundField DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Orga.">
-                                                        </asp:BoundField>
-                                                        <asp:TemplateField SortExpression="CustomerAdmin" HeaderText="Firmenadmin">
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="cbxSRCustomerAdmin" runat="server" Enabled="False" Checked='<%# DataBinder.Eval(Container.DataItem, "CustomerAdmin") %>'>
-                                                                </asp:CheckBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField SortExpression="TestUser" HeaderText="Test">
-                                                            <ItemTemplate>
-                                                                <asp:CheckBox ID="cbxSRTestUser" runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "TestUser") %>'
-                                                                    Enabled="False"></asp:CheckBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="CustomerName" SortExpression="CustomerName" HeaderText="Kunde" />
+                                                        <asp:BoundField DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe" />
+                                                        <asp:BoundField DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Orga." />
                                                         <asp:TemplateField SortExpression="HasCategoryRights" HeaderText="Darf übersetzen">
                                                             <ItemTemplate>
                                                                 <asp:CheckBox ID="cbxHasCategoryRights" AutoPostBack="True" OnCheckedChanged="cbxHasCategoryRights_CheckedChanged"
