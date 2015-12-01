@@ -435,6 +435,9 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_WFM_CALC_DURCHLAUFZEIT_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SET_DAT_ABM_STATUS_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_CHECK_BEB_STATUS");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_LAND_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_REM_VERS_VORG_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_REM_VERS_VORG_01");
 
             #endregion
 
