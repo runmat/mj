@@ -4,20 +4,32 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Brief_3mal_Gemahnt
+	public partial class Z_M_BRIEF_3MAL_GEMAHNT
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Brief_3mal_Gemahnt).Name);
+			sap.Init(typeof(Z_M_BRIEF_3MAL_GEMAHNT).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Brief_3mal_Gemahnt).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_BRIEF_3MAL_GEMAHNT).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_SPRAS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SPRAS", value);
 		}
 
 		public partial class EXP_BRIEFE : IModelMappingApplied
@@ -75,7 +87,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					NAME1 = (string)row["NAME1"],
 					NAME2 = (string)row["NAME2"],
 					NAME3 = (string)row["NAME3"],
@@ -115,7 +127,7 @@ namespace SapORM.Models
 
 			public static List<EXP_BRIEFE> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<EXP_BRIEFE> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -129,7 +141,7 @@ namespace SapORM.Models
 
 			public static List<EXP_BRIEFE> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EXP_BRIEFE> ToList(ISapDataService sapDataService)
@@ -142,9 +154,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<EXP_BRIEFE>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Brief_3mal_Gemahnt", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_BRIEF_3MAL_GEMAHNT", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EXP_BRIEFE> GetExportListWithExecute(ISapDataService sapDataService)
@@ -154,7 +166,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EXP_BRIEFE> GetExportList(ISapDataService sapDataService)
@@ -164,7 +176,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EXP_BRIEFE> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -172,9 +184,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<EXP_BRIEFE>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Brief_3mal_Gemahnt", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_BRIEF_3MAL_GEMAHNT", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<EXP_BRIEFE> GetImportList(ISapDataService sapDataService)
@@ -184,7 +196,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -232,7 +244,7 @@ namespace SapORM.Models
 
 			public static List<GT_TEXT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_TEXT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -246,7 +258,7 @@ namespace SapORM.Models
 
 			public static List<GT_TEXT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_TEXT> ToList(ISapDataService sapDataService)
@@ -259,9 +271,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TEXT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Brief_3mal_Gemahnt", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_BRIEF_3MAL_GEMAHNT", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_TEXT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -271,7 +283,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_TEXT> GetExportList(ISapDataService sapDataService)
@@ -281,7 +293,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_TEXT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -289,9 +301,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TEXT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Brief_3mal_Gemahnt", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_BRIEF_3MAL_GEMAHNT", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_TEXT> GetImportList(ISapDataService sapDataService)
@@ -301,7 +313,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -309,25 +321,15 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Brief_3mal_Gemahnt.EXP_BRIEFE> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_BRIEF_3MAL_GEMAHNT.EXP_BRIEFE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_M_Brief_3mal_Gemahnt.EXP_BRIEFE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
 
-
-		public static DataTable ToTable(this IEnumerable<Z_M_Brief_3mal_Gemahnt.GT_TEXT> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_BRIEF_3MAL_GEMAHNT.GT_TEXT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Brief_3mal_Gemahnt.GT_TEXT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_CARPID_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
 		public partial class GT_TAB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -148,11 +154,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_CARPID_01.GT_TAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_CARPID_01.GT_TAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -61,9 +61,9 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
-        public List<Z_M_Land_Plz_001.GT_WEB> SapLaender
+        public List<Z_M_LAND_PLZ_001.GT_WEB> SapLaender
         {
-            get { return PropertyCacheGet(() => Z_M_Land_Plz_001.GT_WEB.GetExportListWithInitExecute(SAP, "")).ToList(); }
+            get { return PropertyCacheGet(() => Z_M_LAND_PLZ_001.GT_WEB.GetExportListWithInitExecute(SAP, "")).ToList(); }
         }
 
 
@@ -275,7 +275,7 @@ namespace CkgDomainLogic.General.Services
 
             SAP.ExecuteAndCatchErrors(() =>
                 {
-                    var zulassungsKreisList = Z_Get_Zulst_By_Plz.T_ZULST.GetExportListWithInitExecute(SAP, "I_PLZ,I_ORT", postCode, city);
+                    var zulassungsKreisList = Z_GET_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(SAP, "I_PLZ,I_ORT", postCode, city);
                     var zulassungsKreisItem = zulassungsKreisList.FirstOrDefault();
                     if (zulassungsKreisItem != null)
                         zulassungsKreis = zulassungsKreisItem.ZKFZKZ;

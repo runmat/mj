@@ -331,11 +331,11 @@ Partial Public Class Login
                         'Benutzer existiert und die Voraussetzungen zur Passwortanforderung
                         'per geheimer Frage sind gegeben
                         Session("objUser") = m_User
-                        lblError.Text = "Fehler bei der Anmeldung."
+                        lblError.Text = "Fehler bei der Anmeldung"
                         trPasswortVergessen.Visible = True
                         trHelpCenter.Visible = False
                     ElseIf m_User.ErrorMessage = "9999" Then
-                        lblError.Text = "Fehler bei der Anmeldung. Prüfen Sie Ihre Eingaben!"
+                        lblError.Text = "Fehler bei der Anmeldung"
                         trPasswortVergessen.Visible = True
                         trHelpCenter.Visible = False
                     Else
@@ -368,11 +368,11 @@ Partial Public Class Login
                             trPasswortVergessen.Visible = False
                         End If
 
-                        lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
+                        lblError.Text = "Fehler bei der Anmeldung (" & m_User.ErrorMessage & ")"
 
                     End If
                 Else
-                    lblError.Text = "Fehler bei der Anmeldung."
+                    lblError.Text = "Fehler bei der Anmeldung"
                     trPasswortVergessen.Visible = True
                 End If
             End If

@@ -21,6 +21,97 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_AUSWERTUNG_1).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ABRKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ABRKZ", value);
+		}
+
+		public static void SetImportParameter_I_BAR_JN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BAR_JN", value);
+		}
+
+		public static void SetImportParameter_I_EC_JN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EC_JN", value);
+		}
+
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPPE", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_LOEKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LOEKZ", value);
+		}
+
+		public static void SetImportParameter_I_MATNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MATNR", value);
+		}
+
+		public static void SetImportParameter_I_NNDGF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NNDGF", value);
+		}
+
+		public static void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public static void SetImportParameter_I_ZAHLART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZAHLART", value);
+		}
+
+		public static void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZKENN", value);
+		}
+
+		public static void SetImportParameter_I_ZZREFNR1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFNR1", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_VON", value);
+		}
+
 		public partial class GT_LISTE1 : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -120,19 +211,19 @@ namespace SapORM.Models
 					KUNDENNAME = (string)row["KUNDENNAME"],
 					ZZREFNR1 = (string)row["ZZREFNR1"],
 					ZZREFNR2 = (string)row["ZZREFNR2"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					KREISKZ = (string)row["KREISKZ"],
-					MENGE = (decimal?)row["MENGE"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
 					MAKTX = (string)row["MAKTX"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
 					BLTYP = (string)row["BLTYP"],
 					STATUS = (string)row["STATUS"],
-					PREIS_DL = (decimal?)row["PREIS_DL"],
-					PREIS_GB = (decimal?)row["PREIS_GB"],
-					GEB_AMT = (decimal?)row["GEB_AMT"],
-					PREIS_ST = (decimal?)row["PREIS_ST"],
-					PREIS_KZ = (decimal?)row["PREIS_KZ"],
+					PREIS_DL = string.IsNullOrEmpty(row["PREIS_DL"].ToString()) ? null : (decimal?)row["PREIS_DL"],
+					PREIS_GB = string.IsNullOrEmpty(row["PREIS_GB"].ToString()) ? null : (decimal?)row["PREIS_GB"],
+					GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
+					PREIS_ST = string.IsNullOrEmpty(row["PREIS_ST"].ToString()) ? null : (decimal?)row["PREIS_ST"],
+					PREIS_KZ = string.IsNullOrEmpty(row["PREIS_KZ"].ToString()) ? null : (decimal?)row["PREIS_KZ"],
 					FEINSTAUBAMT = (string)row["FEINSTAUBAMT"],
 					RESWUNSCH = (string)row["RESWUNSCH"],
 					EC_JN = (string)row["EC_JN"],
@@ -259,11 +350,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_AUSWERTUNG_1.GT_LISTE1> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_AUSWERTUNG_1.GT_LISTE1> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

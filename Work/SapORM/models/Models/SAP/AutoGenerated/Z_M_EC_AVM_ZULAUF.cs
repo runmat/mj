@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_ZULAUF).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_HERSTNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HERSTNR", value);
+		}
+
+		public static void SetImportParameter_ZUL_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("ZUL_BIS", value);
+		}
+
+		public static void SetImportParameter_ZUL_DAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("ZUL_DAT", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -57,7 +73,7 @@ namespace SapORM.Models
 			{
 				var o = new GT_WEB
 				{
-					ZVERGDAT = (string.IsNullOrEmpty(row["ZVERGDAT"].ToString())) ? null : (DateTime?)row["ZVERGDAT"],
+					ZVERGDAT = string.IsNullOrEmpty(row["ZVERGDAT"].ToString()) ? null : (DateTime?)row["ZVERGDAT"],
 					ZMAKE = (string)row["ZMAKE"],
 					ZMODEL_ID = (string)row["ZMODEL_ID"],
 					ZMOD_DESCR = (string)row["ZMOD_DESCR"],
@@ -66,8 +82,8 @@ namespace SapORM.Models
 					ZPZ_UNIT = (string)row["ZPZ_UNIT"],
 					LIZNR = (string)row["LIZNR"],
 					ZVERGZEIT = (string)row["ZVERGZEIT"],
-					ERDAT_EQUI = (string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString())) ? null : (DateTime?)row["ERDAT_EQUI"],
-					ZZDAT_EIN = (string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString())) ? null : (DateTime?)row["ZZDAT_EIN"],
+					ERDAT_EQUI = string.IsNullOrEmpty(row["ERDAT_EQUI"].ToString()) ? null : (DateTime?)row["ERDAT_EQUI"],
+					ZZDAT_EIN = string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString()) ? null : (DateTime?)row["ZZDAT_EIN"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -172,11 +188,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_ZULAUF.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_ZULAUF.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

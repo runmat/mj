@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_MOB_DISPO_GET_VG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_FUNCTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FUNCTION", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_VGANZ : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -35,7 +66,7 @@ namespace SapORM.Models
 
 			public string KREISBEZ { get; set; }
 
-			public Int32? VG_ANZ { get; set; }
+			public int? VG_ANZ { get; set; }
 
 			public string MOBUSER { get; set; }
 
@@ -47,7 +78,7 @@ namespace SapORM.Models
 				{
 					AMT = (string)row["AMT"],
 					KREISBEZ = (string)row["KREISBEZ"],
-					VG_ANZ = (string.IsNullOrEmpty(row["VG_ANZ"].ToString())) ? null : (Int32?)Convert.ToInt32(row["VG_ANZ"]),
+					VG_ANZ = string.IsNullOrEmpty(row["VG_ANZ"].ToString()) ? null : (int?)row["VG_ANZ"],
 					MOBUSER = (string)row["MOBUSER"],
 					NAME = (string)row["NAME"],
 
@@ -154,11 +185,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_MOB_DISPO_GET_VG.GT_VGANZ> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_DISPO_GET_VG.GT_VGANZ> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

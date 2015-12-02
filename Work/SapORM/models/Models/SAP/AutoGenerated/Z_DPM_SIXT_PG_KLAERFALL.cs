@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,47 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_SIXT_PG_KLAERFALL).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_ANNAHME(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ANNAHME", value);
+		}
+
+		public static void SetImportParameter_EMAIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("EMAIL", value);
+		}
+
+		public static void SetImportParameter_KLAERFALL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KLAERFALL", value);
+		}
+
+		public static void SetImportParameter_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_KUNUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNUM", value);
+		}
+
+		public static void SetImportParameter_LVTNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("LVTNR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -136,22 +178,22 @@ namespace SapORM.Models
 				{
 					KUNNR = (string)row["KUNNR"],
 					LVTNR = (string)row["LVTNR"],
-					IMPDAT = (string.IsNullOrEmpty(row["IMPDAT"].ToString())) ? null : (DateTime?)row["IMPDAT"],
+					IMPDAT = string.IsNullOrEmpty(row["IMPDAT"].ToString()) ? null : (DateTime?)row["IMPDAT"],
 					STATUS = (string)row["STATUS"],
-					ANFDA = (string.IsNullOrEmpty(row["ANFDA"].ToString())) ? null : (DateTime?)row["ANFDA"],
-					MAHNDAT1 = (string.IsNullOrEmpty(row["MAHNDAT1"].ToString())) ? null : (DateTime?)row["MAHNDAT1"],
-					MAHNDAT2 = (string.IsNullOrEmpty(row["MAHNDAT2"].ToString())) ? null : (DateTime?)row["MAHNDAT2"],
-					MAHNDAT3 = (string.IsNullOrEmpty(row["MAHNDAT3"].ToString())) ? null : (DateTime?)row["MAHNDAT3"],
-					EINGANG_VM = (string.IsNullOrEmpty(row["EINGANG_VM"].ToString())) ? null : (DateTime?)row["EINGANG_VM"],
-					EINGANG_HR = (string.IsNullOrEmpty(row["EINGANG_HR"].ToString())) ? null : (DateTime?)row["EINGANG_HR"],
-					EINGANG_GA = (string.IsNullOrEmpty(row["EINGANG_GA"].ToString())) ? null : (DateTime?)row["EINGANG_GA"],
-					EINGANG_PA = (string.IsNullOrEmpty(row["EINGANG_PA"].ToString())) ? null : (DateTime?)row["EINGANG_PA"],
-					EINGANG_EE = (string.IsNullOrEmpty(row["EINGANG_EE"].ToString())) ? null : (DateTime?)row["EINGANG_EE"],
+					ANFDA = string.IsNullOrEmpty(row["ANFDA"].ToString()) ? null : (DateTime?)row["ANFDA"],
+					MAHNDAT1 = string.IsNullOrEmpty(row["MAHNDAT1"].ToString()) ? null : (DateTime?)row["MAHNDAT1"],
+					MAHNDAT2 = string.IsNullOrEmpty(row["MAHNDAT2"].ToString()) ? null : (DateTime?)row["MAHNDAT2"],
+					MAHNDAT3 = string.IsNullOrEmpty(row["MAHNDAT3"].ToString()) ? null : (DateTime?)row["MAHNDAT3"],
+					EINGANG_VM = string.IsNullOrEmpty(row["EINGANG_VM"].ToString()) ? null : (DateTime?)row["EINGANG_VM"],
+					EINGANG_HR = string.IsNullOrEmpty(row["EINGANG_HR"].ToString()) ? null : (DateTime?)row["EINGANG_HR"],
+					EINGANG_GA = string.IsNullOrEmpty(row["EINGANG_GA"].ToString()) ? null : (DateTime?)row["EINGANG_GA"],
+					EINGANG_PA = string.IsNullOrEmpty(row["EINGANG_PA"].ToString()) ? null : (DateTime?)row["EINGANG_PA"],
+					EINGANG_EE = string.IsNullOrEmpty(row["EINGANG_EE"].ToString()) ? null : (DateTime?)row["EINGANG_EE"],
 					EVBNR = (string)row["EVBNR"],
-					EINGANG_SS = (string.IsNullOrEmpty(row["EINGANG_SS"].ToString())) ? null : (DateTime?)row["EINGANG_SS"],
+					EINGANG_SS = string.IsNullOrEmpty(row["EINGANG_SS"].ToString()) ? null : (DateTime?)row["EINGANG_SS"],
 					KOMPLETT = (string)row["KOMPLETT"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
-					ZULDAT = (string.IsNullOrEmpty(row["ZULDAT"].ToString())) ? null : (DateTime?)row["ZULDAT"],
+					ZULDAT = string.IsNullOrEmpty(row["ZULDAT"].ToString()) ? null : (DateTime?)row["ZULDAT"],
 					VERTRAGSSTATUS = (string)row["VERTRAGSSTATUS"],
 					KUNDENTYP = (string)row["KUNDENTYP"],
 					LVID = (string)row["LVID"],
@@ -174,9 +216,9 @@ namespace SapORM.Models
 					ZUL_AUF = (string)row["ZUL_AUF"],
 					ZUL_DURCH = (string)row["ZUL_DURCH"],
 					BESTELLART = (string)row["BESTELLART"],
-					WUNSCHDATUM = (string.IsNullOrEmpty(row["WUNSCHDATUM"].ToString())) ? null : (DateTime?)row["WUNSCHDATUM"],
-					DAT_ANNAHMEDOK = (string.IsNullOrEmpty(row["DAT_ANNAHMEDOK"].ToString())) ? null : (DateTime?)row["DAT_ANNAHMEDOK"],
-					LIEFERTERMIN = (string.IsNullOrEmpty(row["LIEFERTERMIN"].ToString())) ? null : (DateTime?)row["LIEFERTERMIN"],
+					WUNSCHDATUM = string.IsNullOrEmpty(row["WUNSCHDATUM"].ToString()) ? null : (DateTime?)row["WUNSCHDATUM"],
+					DAT_ANNAHMEDOK = string.IsNullOrEmpty(row["DAT_ANNAHMEDOK"].ToString()) ? null : (DateTime?)row["DAT_ANNAHMEDOK"],
+					LIEFERTERMIN = string.IsNullOrEmpty(row["LIEFERTERMIN"].ToString()) ? null : (DateTime?)row["LIEFERTERMIN"],
 					ALT_NAME1 = (string)row["ALT_NAME1"],
 					ALT_NAME2 = (string)row["ALT_NAME2"],
 					ALT_NAME3 = (string)row["ALT_NAME3"],
@@ -208,7 +250,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -222,7 +264,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -237,7 +279,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_SIXT_PG_KLAERFALL", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -247,7 +289,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -257,7 +299,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -267,7 +309,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_SIXT_PG_KLAERFALL", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -277,7 +319,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -288,11 +330,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_SIXT_PG_KLAERFALL.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_SIXT_PG_KLAERFALL.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
