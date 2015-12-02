@@ -223,6 +223,26 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #endregion
 
+        public string SetProcessorSettings(string processorId, Operation processorType, string processorPara1, string processorPara2)
+        {
+            var processor = DataMapper.Processors.FirstOrDefault(x => x.Guid == processorId);
+            if (processor == null)
+                return null;
+
+            try
+            {
+                processor.Operation = processorType;
+                processor.OperationPara1 = processorPara1;
+                processor.OperationPara2 = processorPara2;
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
         #region Upload source file
         public bool UploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {

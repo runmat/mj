@@ -123,16 +123,16 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 {
                     var value = sourceField.Records[RecordNo - 1];
                     input.Append(value);
-                    input.Append("*#*");    
+                    input.Append("|");    
                 }
             }
             if (input.Length > 0)
-                input = input.Remove(input.Length-3,3);
+                input = input.Remove(input.Length-1,1);
 
             processor.Input = input.ToString();
             
             // Operation durchführen...
-            processor.Output = "#" + input;
+            // processor.Output = "#" + input;
 
             return processor;
         }

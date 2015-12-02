@@ -65,7 +65,6 @@
         <button class="btn white margin-left-10" onclick="Export();">
             Export
         </button>
-
     </span>
     
     <div class="float-left margin-left-10">
@@ -79,15 +78,15 @@
             <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
         </div>
         <div class="content" style="">
-            <select class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;">
-                <option value="add">Splitten</option>
-                <option value="replace">Zusammenfassen</option>
+            <select name="ProcessorType" class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;" onchange="ChangeProcessorType(this);">
+                <option value="Split">Splitten</option>
+                <option value="Merge">Zusammenfassen</option>
             </select>
-            <input type="text" name="Para1" value="*#*" style="width: 60px; float: left; margin-bottom: 2px;"/>
-            <input type="text" name="Para2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
+            <input type="text" name="ProcessorPara1" value="|" style="width: 60px; float: left; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
+            <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
             <br style="clear: both;"/> 
-            <div class="data datain width-160">in</div><br style="clear: both;"/> 
-            <div class="data dataout width-160" >out</div>
+            <div class="data datain width-160 margin-top-5 datastyle">In: </div><br style="clear: both;"/> 
+            <div class="data dataout width-160 datastyle">Out: </div>
         </div>
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
@@ -162,8 +161,8 @@
 
 <script>
 
-    var jsonProcessors; //  = [{ "ProcessorId": "Processor-1", Title: "Title 1", "Top": "100", "Left": "100", "Type": "Formel"}];
-    var jsonConnections; //  = [{ "ConnectionId": "Connection-1", SourceId: "Source2", DestId: "Dest1"}];
+    var jsonProcessors; 
+    var jsonConnections;
 
     var startpointOptions = {
         isSource: true,
@@ -436,33 +435,66 @@
         });
     }
 
-    function RefreshUi(uiObject) {
-        $('#RecordPosition').html(uiObject.RecordInfoText);
+    function RecalcProcessor(obj) {
+        var processor = $(obj).closest(".processor");
+        var processorId = processor.attr("id");
+        var processorType = $(processor).find('[name="ProcessorType"]').val();
+        var processorPara1 = $(processor).find('[name="ProcessorPara1"]').val();
+        var processorPara2 = $(processor).find('[name="ProcessorPara2"]').val();
 
+        $.ajax({
+            type: "POST",
+            url: "Admin/SetProcessorSettings",
+            data: { processorId: processorId, processorType: processorType, processorPara1: processorPara1, processorPara2: processorPara2 },
+            loadingShow: false,
+            success: function (result) {
+                RefreshUi(result);
+            }
+        });
+    }
+
+    function RefreshUi(uiObject) {
+        var guid;
+        var value;
+        var i;
+
+        $('#RecordPosition').html(uiObject.RecordInfoText);
+        
         // Refresh SourceField data
-        for (var i = 0; i < uiObject.SourceFieldList.length; i++) {
-            var guid = uiObject.SourceFieldList[i].Wert;
-            var value = uiObject.SourceFieldList[i].Beschreibung;
+        for (i = 0; i < uiObject.SourceFieldList.length; i++) {
+            guid = uiObject.SourceFieldList[i].Wert;
+            value = uiObject.SourceFieldList[i].Beschreibung;
             $('#' + guid).find(".data").html(value);
         }
 
         // Refresh processors
-        for (var i = 0; i < uiObject.ProcessorList.length; i++) {
+        for (i = 0; i < uiObject.ProcessorList.length; i++) {
             var processorId = uiObject.ProcessorList[i].Guid;
             var valueIn = uiObject.ProcessorList[i].Input;
             var valueOut = uiObject.ProcessorList[i].Output;
-            $('#' + processorId).find(".datain").html(valueIn);
-            $('#' + processorId).find(".dataout").html(valueOut);
+            $('#' + processorId).find(".datain").html("In: " + valueIn);
+            $('#' + processorId).find(".dataout").html("Out: " + valueOut);
         }
 
         // Refresh DestField data
-        for (var i = 0; i < uiObject.DestFieldList.length; i++) {
-//            var guid = uiObject.DestFieldList[i].Wert;
-//            var value = uiObject.DestFieldList[i].Beschreibung;
-            var guid = uiObject.DestFieldList[i].Beschreibung;
-            var value = uiObject.DestFieldList[i].Wert;         
+        for (i = 0; i < uiObject.DestFieldList.length; i++) {
+            guid = uiObject.DestFieldList[i].Beschreibung;
+            value = uiObject.DestFieldList[i].Wert;         
             $('#' + guid).find(".data").html(value);
         }
     }
 
+    function ChangeProcessorType(obj) {
+        var processor = $(obj).closest(".processor");
+        var processorType = $(processor).find('[name="ProcessorType"]').val();
+        var processorPara1 = $(processor).find('[name="ProcessorPara2"]');
+
+        if (processorType == "Merge") {
+            processorPara1.hide();
+        } else {
+            processorPara1.show();
+        }
+
+        RecalcProcessor(obj);
+    }
 </script>

@@ -155,6 +155,13 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
+        public JsonResult SetProcessorSettings(string processorId, Operation processorType, string processorPara1, string processorPara2)
+        {
+            ViewModel.SetProcessorSettings(processorId, processorType, processorPara1, processorPara2);
+            return RefreshUi();
+        }
+
+        [HttpPost]
         public JsonResult RefreshUi(string recordOffset = null)
         {
             switch (recordOffset)
@@ -201,7 +208,12 @@ namespace ServicesMvc.DataKonverter.Controllers
 
             return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
         }
+        
+        
+
         #endregion
+
+
 
         #region Upload
 
