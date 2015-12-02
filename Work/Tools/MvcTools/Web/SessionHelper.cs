@@ -211,19 +211,19 @@ namespace MvcTools.Web
             SetSessionValue("PartialViewContextCurrent", partialViewContext);
         }
 
-        private static string GetPartialViewContextIsFormControlHidingAvailableKey()
+        private static string GetPartialViewContextIsFormControlHidingNotAvailableKey()
         {
             return "PartialViewUrlCurrent_" + GetPartialViewContextCurrent();
         }
 
-        public static bool GetPartialViewContextIsFormControlHidingAvailable()
+        public static bool GetPartialViewContextIsFormControlHidingNotAvailable()
         {
-            return GetSessionValue(GetPartialViewContextIsFormControlHidingAvailableKey(), false);
+            return GetSessionValue(GetPartialViewContextIsFormControlHidingNotAvailableKey(), false);
         }
 
-        public static void SetPartialViewContextIsFormControlHidingAvailable(bool set)
+        public static void SetPartialViewContextIsFormControlHidingNotAvailable(bool set)
         {
-            SetSessionValue(GetPartialViewContextIsFormControlHidingAvailableKey(), set);
+            SetSessionValue(GetPartialViewContextIsFormControlHidingNotAvailableKey(), set);
         }
 
         static string GetUrlWithoutIisWebAppName(string url)

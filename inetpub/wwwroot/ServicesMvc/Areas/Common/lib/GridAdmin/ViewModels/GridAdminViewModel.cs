@@ -267,7 +267,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (IsHidden && IsRequired)
                 yield return new ValidationResult("Ein ausgeblendetes Feld darf nicht gleichzeitig Pflichtfeld sein", new[] { "IsRequired" });
 
-            if (IsHidden && !SessionHelper.GetPartialViewContextIsFormControlHidingAvailable())
+            if (IsHidden && SessionHelper.GetPartialViewContextIsFormControlHidingNotAvailable())
                 yield return new ValidationResult("Das Formular zu dem dieses Feld gehört, unterstützt ausgeblendete Felder aktuell noch nicht. Bitte sprechen Sie die CKG Entwicklung an.", new[] { "IsHidden" });
         }
     }

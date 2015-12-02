@@ -261,7 +261,6 @@ namespace PortalMvcTools.Web
 
             try
             {
-
                 if (!dict.ContainsKey("data-bind"))
                     return dict;
 
@@ -357,6 +356,7 @@ namespace PortalMvcTools.Web
 
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -401,6 +401,7 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -423,6 +424,7 @@ namespace PortalMvcTools.Web
             html.FormLeftLabelControlConditionalInit();
 
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -462,6 +464,7 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "datepicker");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             return FormDatePickerForInner(html, expression, controlHtmlAttributesDict, iconCssClass, postControlHtml: postControlHtml);
         }
@@ -542,6 +545,7 @@ namespace PortalMvcTools.Web
             html.FormLeftLabelControlConditionalInit();
 
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "dropdown");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -602,6 +606,7 @@ namespace PortalMvcTools.Web
             var controlHtmlAttributesDict = controlHtmlAttributes.MergePropertiesStrictly(new { multiple = "multiple", @class = "hide" });
             controlHtmlAttributesDict.Add("data-placeholder", "..."); // because of the hyphen it is necessary to add this attribute here and not right above
             controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributesDict, expression.GetPropertyName(), "multiselect");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -640,6 +645,7 @@ namespace PortalMvcTools.Web
             html.FormLeftLabelControlConditionalInit();
 
             var radioButtonsFor = MvcHtmlString.Empty.Concat(selectList.Select(item => html.FormRadioButtonForInner(expression, item)).ToArray());
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributes.ToHtmlDictionary(), typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -674,6 +680,7 @@ namespace PortalMvcTools.Web
             html.FormLeftLabelControlConditionalInit();
 
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -744,6 +751,7 @@ namespace PortalMvcTools.Web
             html.FormLeftLabelControlConditionalInit();
 
             var dateRangePropertyName = dateRangeExpression.GetPropertyName();
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributes.ToHtmlDictionary(), typeof(TModel));
 
             var innerModel = new FormDateRangePickerModel
             {
@@ -783,6 +791,7 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
@@ -853,9 +862,25 @@ namespace PortalMvcTools.Web
             while (!new FormControlModel().AutoMultiColumnModeEndReached(autoKey))
                 html.RenderPartial(PartialViewNameFormLeftLabelControl, GetFormPlaceHolderModel(null, null));
 
-            SessionHelper.SetPartialViewContextIsFormControlHidingAvailable(true);
+            // explizite Freigabe für Form Control Ausblendbarkeit
+            SessionHelper.SetPartialViewContextIsFormControlHidingNotAvailable(false);
 
             return MvcHtmlString.Empty;
+        }
+
+        static void CheckSetPartialViewContextIsFormControlHidingAvailable(IDictionary<string, object> dict, Type modelType)
+        {
+            if (modelType.Name.ToLower().Contains("gridadminviewmodel"))
+                return;
+
+            object propertyValue;
+            dict.TryGetValue("col", out propertyValue);
+            if (propertyValue == null)
+                return;
+
+            if (propertyValue.ToString().ToLower() == "left")
+                // explizite Sperre für Form Control Ausblendbarkeit
+                SessionHelper.SetPartialViewContextIsFormControlHidingNotAvailable(true);
         }
 
 
