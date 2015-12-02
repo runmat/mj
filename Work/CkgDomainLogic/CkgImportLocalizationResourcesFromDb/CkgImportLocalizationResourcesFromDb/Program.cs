@@ -1,15 +1,29 @@
 ﻿using System;
 using System.Configuration;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
+using GeneralTools.Services;
 
 namespace CkgImportLocalizationResourcesFromDb
 {
     class Program
     {
+        static readonly string SourceConnectionString = ConfigurationManager.AppSettings["DadTest"];
+
+        static bool ConnectionStringsAreDifferent(string connString1, string connString2)
+        {
+            var conn1 = new SqlConnection(connString1);
+            var conn2 = new SqlConnection(connString2);
+            if (conn1.DataSource == null || conn2.DataSource == null)
+                return true;
+
+            return !(conn1.DataSource.ToLower() == conn2.DataSource.ToLower() && conn1.Database.ToLower() == conn2.Database.ToLower());
+        }
+
         private static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -18,44 +32,52 @@ namespace CkgImportLocalizationResourcesFromDb
                 return;
             }
 
-            var sourceDbServer = "DadTest";
-            foreach (var destinationDbServer in ConfigurationManager.AppSettings.AllKeys)
+            var connectionStringDict = GeneralConfiguration.GetConfigAllServersValues("ConnectionString", SourceConnectionString)
+                .Where(ce => ConnectionStringsAreDifferent(ce.Value, SourceConnectionString));
+            foreach (var destinationConnStringEntry in connectionStringDict)
             {
-                Console.WriteLine("*** Connection '{0}' ***", destinationDbServer);
+                var destinationConnectionString = destinationConnStringEntry.Value;
 
-                CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResource");
-                CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResourceCustom");
-                SetTimeOfLastResourceUpdate(destinationDbServer);
+                Console.WriteLine(@"*** Connection '{0}' ***", destinationConnStringEntry.Key);
+
+                CopyDataTable(SourceConnectionString, destinationConnectionString, "TranslatedResource");
+                CopyDataTable(SourceConnectionString, destinationConnectionString, "TranslatedResourceCustom");
+                CopyDataTable(SourceConnectionString, destinationConnectionString, "ConfigAllServers");
+                SetTimeOfLastResourceUpdate(destinationConnectionString);
 
                 Console.WriteLine();
                 Console.WriteLine();
             }
         }
 
-        private static void CopyTranslationDataTable(string sourceDbServer, string destinationDbServer, string tableName)
+        private static void CopyDataTable(string sourceConnString, string destinationConnString, string tableName)
         {
-            if (destinationDbServer.ToLower() == sourceDbServer.ToLower())
+            if (destinationConnString.ToLower() == sourceConnString.ToLower())
                 return;
 
-            var sourceDbContext = new DomainDbContext(ConfigurationManager.AppSettings[sourceDbServer]);
-            var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]); // new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer == "PROD" ? "ConnectionstringProdSystem" : "ConnectionstringDevSystem"]);
+            var sourceDbContext = new DomainDbContext(sourceConnString);
+            var destinationDbContext = new DomainDbContext(destinationConnString); 
 
-            Console.WriteLine("Tabelle '{0}' wird kopiert ...", tableName);
+            Console.WriteLine(@"Tabelle '{0}' wird kopiert ...", tableName);
 
             destinationDbContext.Database.ExecuteSqlCommand("delete from " + tableName);
             destinationDbContext.SaveChanges();
+
             if (tableName.ToLower() == "translatedresource")
                 sourceDbContext.TranslatedResources.ToList().ForEach(sourceResource => destinationDbContext.TranslatedResources.Add(ModelMapping.Copy(sourceResource)));
-            else
+            else if (tableName.ToLower() == "translatedresourcecustom")
                 sourceDbContext.TranslatedResourcesCustom.ToList().ForEach(sourceResource => destinationDbContext.TranslatedResourcesCustom.Add(ModelMapping.Copy(sourceResource)));
+            else if (tableName.ToLower() == "configallservers")
+                sourceDbContext.ConfigsAllServers.ToList().ForEach(sourceResource => destinationDbContext.ConfigsAllServers.Add(ModelMapping.Copy(sourceResource)));
+
             destinationDbContext.SaveChanges();
         }
 
-        private static void SetTimeOfLastResourceUpdate(string destinationDbServer)
+        private static void SetTimeOfLastResourceUpdate(string destinationConnString)
         {
-            var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]);
+            var destinationDbContext = new DomainDbContext(destinationConnString);
 
-            Console.WriteLine("Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config'");
+            Console.WriteLine(@"Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config'");
 
             destinationDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
             destinationDbContext.SaveChanges();
@@ -63,8 +85,8 @@ namespace CkgImportLocalizationResourcesFromDb
 
         private static void GenerateTranslationCsharpCode()
         {
-            var domainDbContext = new DomainDbContext(ConfigurationManager.AppSettings["DadTest"]);
-            var q = from translatedresource in domainDbContext.TranslatedResources //domainDbContext.GetResourceSchluessel()
+            var domainDbContext = new DomainDbContext(SourceConnectionString);
+            var q = from translatedresource in domainDbContext.TranslatedResources 
                     select translatedresource;
             const string namespaceDeclaration = "namespace CkgDomainLogic.General.Services {";
             const string classDeclaration = "\tpublic partial class Localize { ";

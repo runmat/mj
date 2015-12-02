@@ -81,7 +81,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceUpdate(r, UserName);
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
@@ -100,7 +100,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceCustomerUpdate(r, UserName);
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
@@ -119,7 +119,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceDelete(r, UserName);
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
@@ -138,7 +138,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
             dbContextTestServer.TranslatedResourceCustomerDelete(r, UserName);
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
@@ -158,7 +158,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             generalConf.SetConfigVal("Localization", "TimeOfLastResourceUpdate", DateTime.Now.ToString("yyyyMMddHHmmss"));
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
@@ -179,7 +179,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             appConf.SetCurrentBusinessCustomerConfigVal(keyName, value);
 
-            var connectionStringDict = generalConf.GetConfigVals("ConnectionString");
+            var connectionStringDict = generalConf.GetConfigAllServersVals("ConnectionString");
             foreach (var connectionStringEntry in connectionStringDict)
             {
                 var connectionString = connectionStringEntry.Value;
