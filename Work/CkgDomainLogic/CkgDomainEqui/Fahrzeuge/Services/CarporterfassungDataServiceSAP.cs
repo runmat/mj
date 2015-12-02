@@ -18,22 +18,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
 
-        public CarporterfassungModel LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
-        {
-            Z_DPM_READ_MEL_CARP_01.Init(SAP, "I_AG, I_CARPORT_ID_AG", LogonContext.KundenNr.ToSapKunnr(), LogonContext.User.Reference);
-
-            if (kennzeichen.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_LICENSE_NUM", kennzeichen);
-
-            if (bestandsnummer.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_MVA_NUMMER", bestandsnummer);
-
-            if (fin.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_CHASSIS_NUM", fin);
-
-            return AppModelMappings.Z_DPM_READ_MEL_CARP_01_GT_TAB_To_CarporterfassungModel.Copy(Z_DPM_READ_MEL_CARP_01.GT_TAB.GetExportListWithExecute(SAP).FirstOrDefault());
-        }
-
         public IDictionary<string, string> GetCarportPdis()
         {
             Z_DPM_READ_CARPID_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());

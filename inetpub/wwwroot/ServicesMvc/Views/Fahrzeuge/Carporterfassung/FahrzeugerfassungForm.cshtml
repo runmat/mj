@@ -1,5 +1,23 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.Models
-@model CkgDomainLogic.Fahrzeuge.Models.CarporterfassungModel
+@model CarporterfassungModel
+
+<script type="text/javascript">
+
+    function ApplySelection(applyAbgemeldetSelection) {
+        if (applyAbgemeldetSelection && $("#Abgemeldet").is(":checked")) {
+            $("#AnzahlKennzeichen").val("0");
+        }
+
+        if ($("#AnzahlKennzeichen").val() == "0") {
+            $("#DemontageDatum").val("");
+            $("#DemontageDatum").attr("disabled", "disabled");
+        }
+        else {
+            $("#DemontageDatum").removeAttr("disabled");
+        }
+    }
+
+</script>
 
 <div id="DivFahrzeugerfassung" class="margin-top-20">
     @using (Ajax.BeginForm("FahrzeugerfassungForm", "Fahrzeuge", null,
@@ -29,7 +47,6 @@
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 
-
         @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap uppercase"},
             postControlHtml: @<text>
                                     @Html.CheckBoxFor(m => m.Ausland)<label for="Ausland">@Localize.LicenseNoForeignCountries</label>
@@ -43,24 +60,22 @@
 
         @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
 
-        
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
-
-        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap tiny", col = "right", @onkeypress = "return NumbersOnly(false);" })
+        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right", onchange = "ApplySelection(false)" })
         
-        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true)" }, labelHidden: true)
+        @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
 
-        @Html.FormCheckBoxFor(m => m.Zb2Vorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+        @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
 
-        @Html.FormCheckBoxFor(m => m.ServiceheftVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.HuAuBerichtVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+        @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
 
-        @Html.FormCheckBoxFor(m => m.ZweitschluesselVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.NaviCdVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+        @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
         
         
         @Html.FormRequiredFieldsSummary()
@@ -72,6 +87,8 @@
         
         <script type="text/javascript">       
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            ApplySelection(true);
         </script>
     }
 </div>

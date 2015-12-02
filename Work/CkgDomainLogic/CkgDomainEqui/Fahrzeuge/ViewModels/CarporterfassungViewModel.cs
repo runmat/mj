@@ -191,14 +191,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return fzg.ObjectKey;
         }
 
-        public void LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
-        {
-            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().Trim().ToUpper(), bestandsnummer.NotNullOrEmpty().Trim().ToUpper(), fin.NotNullOrEmpty().Trim().ToUpper());
-
-            if (AktuellesFahrzeug != null && Fahrzeuge.Any(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen))
-                AktuellesFahrzeug = new CarporterfassungModel { TmpStatus = "VEHICLE_ALREADY_EXISTS" };
-        }
-
         public void AddFahrzeug(CarporterfassungModel item)
         {
             FahrzeugeAlle.Add(item);
@@ -225,7 +217,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             model.Kennzeichen = model.Kennzeichen.NotNullOrEmpty().Trim().ToUpper();
             model.BestandsNr = model.BestandsNr.NotNullOrEmpty().Trim().ToUpper();
-            model.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().Trim().ToUpper();
+            model.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().Trim().ToUpper().Replace("O", "0").Replace("I", "1");
 
             string carportName;
             if (CarportPdis.TryGetValue(model.CarportId, out carportName))
@@ -357,7 +349,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Fahrgestellnummer"] = fzg.FahrgestellNr;
                 newRow["Hersteller"] = "";
                 newRow["Demontagedatum"] = fzg.DemontageDatum.ToString("dd.MM.yyyy");
-                newRow["Vorlage ZBI"] = fzg.Zb1Vorhanden.BoolToX();
+                newRow["Vorlage ZBI"] = fzg.Zb1Vorhanden;
                 newRow["Anzahl Kennzeichen"] = fzg.AnzahlKennzeichen;
                 newRow["Web User"] = LogonContext.UserName;
                 newRow["Carport Nr"] = fzg.CarportId;

@@ -75,9 +75,23 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [Required, Numeric, Length(8, forceExactLength: true)]
         public string Barcode { get; set; }
 
-        [Length(1)]
         [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
+        [Required]
         public string AnzahlKennzeichen { get; set; }
+
+        public static string AnzahlKennzeichenOptionen
+        {
+            get
+            {
+                return string.Format(",{0};0,{1};1,{2};2,{3};H,{4};V,{5}",
+                    Localize.DropdownDefaultOptionPleaseChoose,
+                    Localize.NoLicensePlatesAvailable,
+                    Localize.OneLicensePlateAvailableTrailerBike,
+                    Localize.BothLicensePlatesAvailable,
+                    Localize.LicensePlateRearAvailable,
+                    Localize.LicensePlateFrontAvailable);
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.DisassemblyDate)]
         public DateTime? DemontageDatum { get; set; }
@@ -86,25 +100,44 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public bool Abgemeldet { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Zb1Available)]
-        public bool Zb1Vorhanden { get; set; }
+        [Required]
+        public string Zb1Vorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Zb2Available)]
-        public bool Zb2Vorhanden { get; set; }
+        [Required]
+        public string Zb2Vorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CocAvailable)]
-        public bool CocVorhanden { get; set; }
+        [Required]
+        public string CocVorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ServiceRecordAvailable)]
-        public bool ServiceheftVorhanden { get; set; }
+        [Required]
+        public string ServiceheftVorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.HuAuReportAvailable)]
-        public bool HuAuBerichtVorhanden { get; set; }
+        [Required]
+        public string HuAuBerichtVorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SpareKeyAvailable)]
-        public bool ZweitschluesselVorhanden { get; set; }
+        [Required]
+        public string ZweitschluesselVorhanden { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.NaviCdAvailable)]
-        public bool NaviCdVorhanden { get; set; }
+        [Required]
+        public string NaviCdVorhanden { get; set; }
+
+        public static string MaterialVorhandenOptionen
+        {
+            get
+            {
+                return string.Format(",{0};1,{1};0,{2};N,{3}",
+                    Localize.DropdownDefaultOptionPleaseChoose,
+                    Localize.Available,
+                    Localize.NotAvailable,
+                    Localize.WillBeDelivered);
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.DeliveryNoteNo)]
         public string LieferscheinNr { get; set; }
@@ -123,6 +156,32 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public bool UserHasCarportId
         {
             get { return GetViewModel != null && !String.IsNullOrEmpty(GetViewModel().UserCarportId); }
+        }
+
+        public static string GetMaterialVorhandenOptionWeb(string sapWert)
+        {
+            switch (sapWert)
+            {
+                case "X":
+                    return "1";
+                case "N":
+                    return "N";
+                default:
+                    return "0";
+            }
+        }
+
+        public static string GetMaterialVorhandenOptionSap(string webWert)
+        {
+            switch (webWert)
+            {
+                case "1":
+                    return "X";
+                case "N":
+                    return "N";
+                default:
+                    return "";
+            }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
