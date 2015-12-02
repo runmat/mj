@@ -25,13 +25,17 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Processor()
         {
             Guid = System.Guid.NewGuid().ToString();
-            Operation = Operation.Split;    // Default
+            Operation = Operation.Fix;    // Default
+            OperationPara1 = "X";
         }
 
         private string CalcOutput()
         {
             switch (Operation)
             {
+                    case Operation.Fix:
+                    return OperationPara1;
+
                     case Operation.Merge:
                     try
                     {

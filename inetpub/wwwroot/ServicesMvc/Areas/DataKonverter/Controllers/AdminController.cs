@@ -113,14 +113,14 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         #region Ajax
         [HttpPost]
-        public JsonResult NewProcessor()
+        public JsonResult AddProcessor()
         {
             var processorGuid = ViewModel.DataMapper.AddProcessor();
             return Json(new { NewGuid = processorGuid });
         }
 
         [HttpPost]
-        public JsonResult NewConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
+        public JsonResult AddConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
         {
             var newConnection = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
 
@@ -134,16 +134,14 @@ namespace ServicesMvc.DataKonverter.Controllers
             var destFieldList = ViewModel.DataMapper.RecalcDestFields();
 
             return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
-
-            // return Json(processorList);
         }
 
         [HttpPost]
-        public JsonResult RemoveConnection(DataConnection dataConnection)
+        public JsonResult RemoveConnection(string idSource, string idDest)
         {
-            var result = ViewModel.DataMapper.RemoveConnection(dataConnection);
+            ViewModel.DataMapper.RemoveConnection(idSource, idDest);
 
-            return Json(result);
+            return RefreshUi();
         }
 
         [HttpPost]
@@ -208,12 +206,8 @@ namespace ServicesMvc.DataKonverter.Controllers
 
             return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
         }
-        
-        
 
         #endregion
-
-
 
         #region Upload
 

@@ -79,9 +79,15 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return newConnection;
         }
 
-        public DataConnection RemoveConnection(DataConnection dataConnection)
+        public string RemoveConnection(string idSource, string idDest)
         {
-            return dataConnection;
+            idDest = idDest.Replace("prozin-","");
+            var connection = DataConnections.FirstOrDefault(x => x.GuidSource == idSource && x.GuidDest == idDest);
+            if (connection == null)
+                return null;
+
+            DataConnections.Remove(connection);            
+            return null;
         }
 
         public List<DataConnection> GetConnections()
@@ -94,7 +100,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             var newProcessor = new Processor();
             Processors.Add(newProcessor);
             
-            // return System.Guid.NewGuid().ToString();         
             return newProcessor.Guid;         
         }
 
@@ -111,7 +116,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             var connectionsIn = DataConnections.Where(x => x.GuidDest == processor.Guid).ToList();
 
             // Alle ausgehenden Connections ermitteln...
-            var connectionsOut = DataConnections.Where(x => x.GuidSource == processor.Guid).ToList();
+            // var connectionsOut = DataConnections.Where(x => x.GuidSource == processor.Guid).ToList();
 
             // Input-String ermitteln...
             var input = new StringBuilder();
@@ -130,9 +135,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 input = input.Remove(input.Length-1,1);
 
             processor.Input = input.ToString();
-            
-            // Operation durchführen...
-            // processor.Output = "#" + input;
 
             return processor;
         }

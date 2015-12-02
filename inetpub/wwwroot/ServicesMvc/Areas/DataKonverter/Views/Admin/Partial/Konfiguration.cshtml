@@ -37,7 +37,7 @@
     </span>
 
     <span class="float-left">
-        <button class="btn white" onclick="NewProcessor();">
+        <button class="btn white" onclick="AddProcessor();">
             Prozessor
             <i class="halflings-icon  plus"></i>
         </button>
@@ -78,12 +78,13 @@
             <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
         </div>
         <div class="content" style="">
-            <select name="ProcessorType" class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;" onchange="ChangeProcessorType(this);">
+            <select name="ProcessorType" class="processortype" onchange="ChangeProcessorType(this);">
+                <option value="Fix">Festwert</option>
                 <option value="Split">Splitten</option>
                 <option value="Merge">Zusammenfassen</option>
             </select>
-            <input type="text" name="ProcessorPara1" value="|" style="width: 60px; float: left; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
-            <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
+            <input type="text" name="ProcessorPara1" value="X" style="width: 60px; float: left; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
+            <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;display: none;" onchange="RecalcProcessor(this);"/>
             <br style="clear: both;"/> 
             <div class="data datain width-160 margin-top-5 datastyle">In: </div><br style="clear: both;"/> 
             <div class="data dataout width-160 datastyle">Out: </div>
@@ -199,7 +200,7 @@
         jsPlumb.importDefaults({
             Connector: ["Straight"], 
             Endpoint: ["Dot", { radius: 1}],
-            HoverPaintStyle: { strokeStyle: "#1e8151", lineWidth: 5 },
+            // HoverPaintStyle: { strokeStyle: "#1e8151", lineWidth: 2 },
             Anchors: ["Right", "Left"],
             ConnectionOverlays: [
                 [
@@ -236,6 +237,18 @@
 
         jsPlumb.bind("dblclick", function (c) {
             jsPlumb.detach(c);
+
+            var idSource = c.sourceId;
+            var idDest = c.targetId;
+            $.ajax({
+                type: "POST",
+                url: "Admin/RemoveConnection",
+                data: { IdSource: idSource, IdDest: idDest },   // , SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor 
+                loadingShow: false,
+                success: function (result) {
+                    RefreshUi(result);
+                }
+            });
         });
 
         jsPlumb.unbind("connection").bind("connection", function (info) {
@@ -263,7 +276,7 @@
             idDest = idDest.replace("prozin-", "");
             $.ajax({
                 type: "POST",
-                url: "Admin/NewConnection",
+                url: "Admin/AddConnection",
                 data: { IdSource: idSource, IdDest: idDest, SourceIsProcessor: sourceIsProcessor, DestIsProcessor: destIsProcessor },
                 loadingShow: false,
                 success: function (result) {
@@ -279,11 +292,10 @@
         jsPlumb.repaintEverything();
     }
 
-    function NewProcessor(processorId, title, posTop, posLeft, type) {
+    function AddProcessor(processorId, title, posTop, posLeft, type) {
         $.ajax({
             type: "POST",
-            url: "Admin/NewProcessor",
-            // data: { Id: "Id", Name: "Name" },
+            url: "Admin/AddProcessor",
             loadingShow: false,
             success: function (result) {
                 var processorId = result.NewGuid;
@@ -333,7 +345,7 @@
         });
     }
 
-    function NewConnection(connectionId, source, dest) {
+    function AddConnection(connectionId, source, dest) {
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);
 
@@ -388,12 +400,12 @@
 
         jsonProcessors.forEach(function (item) {
             if (item.ProcessorId !== "processorTemplate")
-                NewProcessor(item.ProcessorId, item.Title, item.Top, item.Left, item.Type);
+                AddProcessor(item.ProcessorId, item.Title, item.Top, item.Left, item.Type);
         });
                 
         jsonConnections.forEach(function (item) {
             console.log(item.ConnectionId + " -> " + item.SourceId + " -> " + item.DestId);
-            NewConnection(item.ConnectionId, item.SourceId, item.DestId);
+            AddConnection(item.ConnectionId, item.SourceId, item.DestId);
             jsPlumb.repaint(item.ConnectionId);
         });
 
@@ -489,11 +501,15 @@
         var processorType = $(processor).find('[name="ProcessorType"]').val();
         var processorPara1 = $(processor).find('[name="ProcessorPara2"]');
 
+        if (processorType == "Fix") {
+            processorPara1.hide();
+        };
         if (processorType == "Merge") {
             processorPara1.hide();
-        } else {
+        };
+        if (processorType == "Split") {
             processorPara1.show();
-        }
+        };
 
         RecalcProcessor(obj);
     }
