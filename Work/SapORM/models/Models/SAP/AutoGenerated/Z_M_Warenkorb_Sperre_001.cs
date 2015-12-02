@@ -9,17 +9,18 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Warenkorb_Sperre_001
+	public partial class Z_M_WARENKORB_SPERRE_001
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Warenkorb_Sperre_001).Name);
+			sap.Init(typeof(Z_M_WARENKORB_SPERRE_001).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Warenkorb_Sperre_001).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_WARENKORB_SPERRE_001).Name, inputParameterKeys, inputParameterValues);
 		}
+
 
 		public partial class GT_IN : IModelMappingApplied
 		{
@@ -89,7 +90,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_IN>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Warenkorb_Sperre_001", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_WARENKORB_SPERRE_001", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -119,7 +120,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_IN>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Warenkorb_Sperre_001", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_WARENKORB_SPERRE_001", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -139,14 +140,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Warenkorb_Sperre_001.GT_IN> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_WARENKORB_SPERRE_001.GT_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Warenkorb_Sperre_001.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

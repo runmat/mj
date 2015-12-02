@@ -21,6 +21,82 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_UF_MELDUNGS_SUCHE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ABMDT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ABMDT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ABMDT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ABMDT_VON", value);
+		}
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_VON", value);
+		}
+
+		public static void SetImportParameter_I_ERNAM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ERNAM", value);
+		}
+
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public static void SetImportParameter_I_MAHNSTUFE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MAHNSTUFE", value);
+		}
+
+		public static void SetImportParameter_I_MIT_ABM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MIT_ABM", value);
+		}
+
+		public static void SetImportParameter_I_OHNE_ABM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_OHNE_ABM", value);
+		}
+
+		public static void SetImportParameter_I_STATION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATION", value);
+		}
+
+		public static void SetImportParameter_I_STORNO(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STORNO", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_UF : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -88,26 +164,26 @@ namespace SapORM.Models
 					UNFALL_NR = (string)row["UNFALL_NR"],
 					STATUS = (string)row["STATUS"],
 					AG = (string)row["AG"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
 					EQUNR = (string)row["EQUNR"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					ERSTZULDAT = (string.IsNullOrEmpty(row["ERSTZULDAT"].ToString())) ? null : (DateTime?)row["ERSTZULDAT"],
+					ERSTZULDAT = string.IsNullOrEmpty(row["ERSTZULDAT"].ToString()) ? null : (DateTime?)row["ERSTZULDAT"],
 					MODELL_BEZ = (string)row["MODELL_BEZ"],
-					REST_PREIS = (decimal?)row["REST_PREIS"],
+					REST_PREIS = string.IsNullOrEmpty(row["REST_PREIS"].ToString()) ? null : (decimal?)row["REST_PREIS"],
 					WAERS = (string)row["WAERS"],
 					STATION = (string)row["STATION"],
 					STANDORT = (string)row["STANDORT"],
-					VSDAT = (string.IsNullOrEmpty(row["VSDAT"].ToString())) ? null : (DateTime?)row["VSDAT"],
+					VSDAT = string.IsNullOrEmpty(row["VSDAT"].ToString()) ? null : (DateTime?)row["VSDAT"],
 					MAHNSTUFE = (string)row["MAHNSTUFE"],
-					MAHNDAT1 = (string.IsNullOrEmpty(row["MAHNDAT1"].ToString())) ? null : (DateTime?)row["MAHNDAT1"],
-					MAHNDAT2 = (string.IsNullOrEmpty(row["MAHNDAT2"].ToString())) ? null : (DateTime?)row["MAHNDAT2"],
-					MAHNDAT3 = (string.IsNullOrEmpty(row["MAHNDAT3"].ToString())) ? null : (DateTime?)row["MAHNDAT3"],
-					EG_KENNZ = (string.IsNullOrEmpty(row["EG_KENNZ"].ToString())) ? null : (DateTime?)row["EG_KENNZ"],
-					ABMDT = (string.IsNullOrEmpty(row["ABMDT"].ToString())) ? null : (DateTime?)row["ABMDT"],
-					VSZB2DAT = (string.IsNullOrEmpty(row["VSZB2DAT"].ToString())) ? null : (DateTime?)row["VSZB2DAT"],
-					STORNODAT = (string.IsNullOrEmpty(row["STORNODAT"].ToString())) ? null : (DateTime?)row["STORNODAT"],
+					MAHNDAT1 = string.IsNullOrEmpty(row["MAHNDAT1"].ToString()) ? null : (DateTime?)row["MAHNDAT1"],
+					MAHNDAT2 = string.IsNullOrEmpty(row["MAHNDAT2"].ToString()) ? null : (DateTime?)row["MAHNDAT2"],
+					MAHNDAT3 = string.IsNullOrEmpty(row["MAHNDAT3"].ToString()) ? null : (DateTime?)row["MAHNDAT3"],
+					EG_KENNZ = string.IsNullOrEmpty(row["EG_KENNZ"].ToString()) ? null : (DateTime?)row["EG_KENNZ"],
+					ABMDT = string.IsNullOrEmpty(row["ABMDT"].ToString()) ? null : (DateTime?)row["ABMDT"],
+					VSZB2DAT = string.IsNullOrEmpty(row["VSZB2DAT"].ToString()) ? null : (DateTime?)row["VSZB2DAT"],
+					STORNODAT = string.IsNullOrEmpty(row["STORNODAT"].ToString()) ? null : (DateTime?)row["STORNODAT"],
 					STORNOBEM = (string)row["STORNOBEM"],
 					STORNONAM = (string)row["STORNONAM"],
 
@@ -214,11 +290,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

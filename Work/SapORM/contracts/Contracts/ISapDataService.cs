@@ -86,10 +86,8 @@ namespace SapORM.Contracts
         /// Gibt die serialisierten Im-/Export-Strukturen eines Bapis für den Bapistruktur-Check zurück
         /// </summary>
         /// <param name="sapFunction"></param>
-        /// <param name="importStructure"></param>
-        /// <param name="exportStructure"></param>
         /// <returns></returns>
-        void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure);
+        byte[] GetSerializedBapiStructuresForBapiCheck(string sapFunction);
 
 
         #region Export 
@@ -148,6 +146,8 @@ namespace SapORM.Contracts
         /// <param name="name"></param>
         /// <returns></returns>
         byte[] GetExportParameterByte(string paramName);
+
+        T GetExportParameter<T>(string paramName);
 
         /// <summary>
         /// Führt für eine SAP-Funktion (Bapi) ein „InitExecute“ aus und liefert 

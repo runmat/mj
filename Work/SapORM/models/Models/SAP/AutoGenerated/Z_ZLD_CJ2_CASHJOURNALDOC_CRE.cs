@@ -20,6 +20,27 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_CJ2_CASHJOURNALDOC_CRE).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public static void SetImportParameter_I_POSTING_NUMBER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_POSTING_NUMBER", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

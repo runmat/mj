@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,27 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_AKTIVCHECK_READ).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_FIN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN", value);
+		}
+
+		public static void SetImportParameter_I_NUR_AKTIVE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_AKTIVE", value);
+		}
+
+		public static void SetImportParameter_I_VORGANGS_ID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORGANGS_ID", value);
 		}
 
 		public partial class ET_TREFF : IModelMappingApplied
@@ -76,8 +98,8 @@ namespace SapORM.Models
 					FIN = (string)row["FIN"],
 					ZB2 = (string)row["ZB2"],
 					VERTRAGNR = (string)row["VERTRAGNR"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
-					PRUEFDAT = (string.IsNullOrEmpty(row["PRUEFDAT"].ToString())) ? null : (DateTime?)row["PRUEFDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					PRUEFDAT = string.IsNullOrEmpty(row["PRUEFDAT"].ToString()) ? null : (DateTime?)row["PRUEFDAT"],
 					KOLLISION = (string)row["KOLLISION"],
 					KLASSIFIZIER = (string)row["KLASSIFIZIER"],
 					BEARBEITET = (string)row["BEARBEITET"],
@@ -112,7 +134,7 @@ namespace SapORM.Models
 
 			public static List<ET_TREFF> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<ET_TREFF> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -126,7 +148,7 @@ namespace SapORM.Models
 
 			public static List<ET_TREFF> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_TREFF> ToList(ISapDataService sapDataService)
@@ -141,7 +163,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_AKTIVCHECK_READ", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_TREFF> GetExportListWithExecute(ISapDataService sapDataService)
@@ -151,7 +173,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_TREFF> GetExportList(ISapDataService sapDataService)
@@ -161,7 +183,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_TREFF> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -171,7 +193,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_AKTIVCHECK_READ", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ET_TREFF> GetImportList(ISapDataService sapDataService)
@@ -181,7 +203,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -192,11 +214,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_AKTIVCHECK_READ.ET_TREFF> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_AKTIVCHECK_READ.ET_TREFF> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

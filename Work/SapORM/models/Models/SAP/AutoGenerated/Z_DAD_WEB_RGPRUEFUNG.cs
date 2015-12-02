@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DAD_WEB_RGPRUEFUNG).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AUSLIDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_AUSLIDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_AUSLIDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_AUSLIDAT_VON", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_LIZNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIZNR", value);
+		}
+
+		public static void SetImportParameter_I_RECHNUNGSNUMMERN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_RECHNUNGSNUMMERN", value);
+		}
+
+		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFERENZ1", value);
 		}
 
 		public partial class GT_RECHNUNGEN : IModelMappingApplied
@@ -53,13 +85,13 @@ namespace SapORM.Models
 				var o = new GT_RECHNUNGEN
 				{
 					ZZMODID = (string)row["ZZMODID"],
-					ZZABRDT = (string.IsNullOrEmpty(row["ZZABRDT"].ToString())) ? null : (DateTime?)row["ZZABRDT"],
-					ZZFAEDT = (string.IsNullOrEmpty(row["ZZFAEDT"].ToString())) ? null : (DateTime?)row["ZZFAEDT"],
-					AULDT = (string.IsNullOrEmpty(row["AULDT"].ToString())) ? null : (DateTime?)row["AULDT"],
+					ZZABRDT = string.IsNullOrEmpty(row["ZZABRDT"].ToString()) ? null : (DateTime?)row["ZZABRDT"],
+					ZZFAEDT = string.IsNullOrEmpty(row["ZZFAEDT"].ToString()) ? null : (DateTime?)row["ZZFAEDT"],
+					AULDT = string.IsNullOrEmpty(row["AULDT"].ToString()) ? null : (DateTime?)row["AULDT"],
 					LIZNR = (string)row["LIZNR"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 
 					SAPConnection = sapConnection,
@@ -85,7 +117,7 @@ namespace SapORM.Models
 
 			public static List<GT_RECHNUNGEN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_RECHNUNGEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -99,7 +131,7 @@ namespace SapORM.Models
 
 			public static List<GT_RECHNUNGEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_RECHNUNGEN> ToList(ISapDataService sapDataService)
@@ -114,7 +146,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DAD_WEB_RGPRUEFUNG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_RECHNUNGEN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -124,7 +156,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_RECHNUNGEN> GetExportList(ISapDataService sapDataService)
@@ -134,7 +166,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_RECHNUNGEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -144,7 +176,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DAD_WEB_RGPRUEFUNG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_RECHNUNGEN> GetImportList(ISapDataService sapDataService)
@@ -154,7 +186,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -165,11 +197,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DAD_WEB_RGPRUEFUNG.GT_RECHNUNGEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DAD_WEB_RGPRUEFUNG.GT_RECHNUNGEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

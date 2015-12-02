@@ -32,7 +32,7 @@ namespace CkgServerTasks
 
                     var mailText = "Beim Bapi-Check wurden folgende Abweichungen festgestellt:" + Environment.NewLine; 
                     mailText += String.Join(Environment.NewLine, dataService.BapiCheckAbweichungen.Select(
-                        a => (a.BapiName + (a.DoesNotExistInSap ? " existiert nicht in SAP" : (a.IsNew ? " ist neu in SAP" : " hat sich geändert")))));
+                        a => (a.BapiName + (a.DoesNotExistInSap ? " existiert (noch) nicht in SAP" : (a.IsNew ? " ist neu in SAP" : " hat sich geändert")))));
 
                     Common.SendMail("Bapi-Abweichungen", mailText);
                 }

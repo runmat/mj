@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_AVM_DOKUMENT_KOPIE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -58,7 +79,7 @@ namespace SapORM.Models
 					KUNNR_AG = (string)row["KUNNR_AG"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					DOK_TYP = (string)row["DOK_TYP"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERZET = (string)row["ERZET"],
 					ERNAM = (string)row["ERNAM"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
@@ -169,11 +190,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

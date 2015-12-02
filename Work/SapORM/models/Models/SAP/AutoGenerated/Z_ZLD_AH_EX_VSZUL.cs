@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_EX_VSZUL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPPE", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
+		}
+
+		public static void SetImportParameter_I_ZULBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZULBELN", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -68,7 +114,7 @@ namespace SapORM.Models
 					EXTENSION1 = (string)row["EXTENSION1"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZZREFNR1 = (string)row["ZZREFNR1"],
 					ZZREFNR2 = (string)row["ZZREFNR2"],
@@ -178,11 +224,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_EX_VSZUL.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_EX_VSZUL.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

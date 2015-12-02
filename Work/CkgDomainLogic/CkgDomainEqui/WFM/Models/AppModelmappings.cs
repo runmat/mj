@@ -195,27 +195,27 @@ namespace CkgDomainLogic.WFM.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.DurchschnittDauer = s.DURCHSCHNITT_DAUER;
+                        d.DurchschnittDauer = s.DURCHSCHNITT_DAUER.ToString();
 
-                        d.AnzGes = s.ANZ_GES;
+                        d.AnzGes = s.ANZ_GES.ToString();
 
-                        d.AnzStdLe10 = s.ANZ_STD_LE_10;
-                        d.AnzStd1120 = s.ANZ_STD_11_20;
-                        d.AnzStd2130 = s.ANZ_STD_21_30;
-                        d.AnzStd3140 = s.ANZ_STD_31_40;
-                        d.AnzStdGt40 = s.ANZ_STD_GT_40;
+                        d.AnzStdLe10 = s.ANZ_STD_LE_10.ToString();
+                        d.AnzStd1120 = s.ANZ_STD_11_20.ToString();
+                        d.AnzStd2130 = s.ANZ_STD_21_30.ToString();
+                        d.AnzStd3140 = s.ANZ_STD_31_40.ToString();
+                        d.AnzStdGt40 = s.ANZ_STD_GT_40.ToString();
 
-                        d.AnzKlaerLe10 = s.ANZ_KLAER_LE_10;
-                        d.AnzKlaer1120 = s.ANZ_KLAER_11_20;
-                        d.AnzKlaer2130 = s.ANZ_KLAER_21_30;
-                        d.AnzKlaer3140 = s.ANZ_KLAER_31_40;
-                        d.AnzKlaerGt40 = s.ANZ_KLAER_GT_40;
+                        d.AnzKlaerLe10 = s.ANZ_KLAER_LE_10.ToString();
+                        d.AnzKlaer1120 = s.ANZ_KLAER_11_20.ToString();
+                        d.AnzKlaer2130 = s.ANZ_KLAER_21_30.ToString();
+                        d.AnzKlaer3140 = s.ANZ_KLAER_31_40.ToString();
+                        d.AnzKlaerGt40 = s.ANZ_KLAER_GT_40.ToString();
 
-                        d.AnzAlleLe10 = s.ANZ_ALLE_LE_10;
-                        d.AnzAlle1120 = s.ANZ_ALLE_11_20;
-                        d.AnzAlle2130 = s.ANZ_ALLE_21_30;
-                        d.AnzAlle3140 = s.ANZ_ALLE_31_40;
-                        d.AnzAlleGt40 = s.ANZ_ALLE_GT_40;
+                        d.AnzAlleLe10 = s.ANZ_ALLE_LE_10.ToString();
+                        d.AnzAlle1120 = s.ANZ_ALLE_11_20.ToString();
+                        d.AnzAlle2130 = s.ANZ_ALLE_21_30.ToString();
+                        d.AnzAlle3140 = s.ANZ_ALLE_31_40.ToString();
+                        d.AnzAlleGt40 = s.ANZ_ALLE_GT_40.ToString();
                     }));
             }
         }
