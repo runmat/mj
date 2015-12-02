@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_MEL_CARP_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_CARPORT_ID_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CARPORT_ID_AG", value);
+		}
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public static void SetImportParameter_I_MVA_NUMMER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MVA_NUMMER", value);
+		}
+
 		public partial class GT_TAB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -160,11 +186,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_MEL_CARP_01.GT_TAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_MEL_CARP_01.GT_TAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

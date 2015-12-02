@@ -977,5 +977,24 @@ namespace CkgDomainLogic.General.Database.Services
         }
 
         #endregion
+
+        #region Archive
+
+        public IEnumerable<GroupArchiveAssigned> GetArchives(int customerId = 0, int groupId = 0)
+        {
+            var query = "SELECT * FROM vwGroupArchivAssigned";
+
+            if (customerId > 0)
+            {
+                query += " WHERE CustomerID = " + customerId;
+
+                if (groupId > 0)
+                    query += " AND GroupID = " + groupId;
+            }
+
+            return Database.SqlQuery<GroupArchiveAssigned>(query);
+        }
+
+        #endregion
     }
 }

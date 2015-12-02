@@ -28,10 +28,10 @@ namespace CkgDomainLogic.Leasing.Services
 
         private IEnumerable<Abmeldedaten> LoadAbzumeldendeFzgeFromSap()
         {
-            Z_M_Abm_Fehl_Unterl_Sixt_Leas.Init(SAP);
+            Z_M_ABM_FEHL_UNTERL_SIXT_LEAS.Init(SAP);
             SAP.SetImportParameter("KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            var sapList = Z_M_Abm_Fehl_Unterl_Sixt_Leas.AUSGABE.GetExportListWithExecute(SAP);
+            var sapList = Z_M_ABM_FEHL_UNTERL_SIXT_LEAS.AUSGABE.GetExportListWithExecute(SAP);
 
             return AppModelMappings.Z_M_Abm_Fehl_Unterl_Sixt_Leas_AUSGABE_To_Abmeldedaten.Copy(sapList);
         }

@@ -21,6 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ALL_DEBI_CHECK_TABLES).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
 		public partial class GT_T001 : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -144,243 +145,6 @@ namespace SapORM.Models
 			}
 		}
 
-		public partial class GT_VKO : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string VKORG { get; set; }
-
-			public string BUKRS { get; set; }
-
-			public string VTEXT { get; set; }
-
-			public static GT_VKO Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_VKO
-				{
-					VKORG = (string)row["VKORG"],
-					BUKRS = (string)row["BUKRS"],
-					VTEXT = (string)row["VTEXT"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_VKO> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_VKO> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_VKO> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_VKO).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_VKO> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VKO> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_VKO> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VKO>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VKO> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VKO>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VKO> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VKO>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VKO> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VKO>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VKO> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VKO>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_TVBUR : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string VKBUR { get; set; }
-
-			public string BEZEI { get; set; }
-
-			public static GT_TVBUR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_TVBUR
-				{
-					VKBUR = (string)row["VKBUR"],
-					BEZEI = (string)row["BEZEI"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_TVBUR> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_TVBUR> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_TVBUR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TVBUR).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_TVBUR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVBUR> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_TVBUR> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVBUR>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVBUR> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVBUR>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVBUR> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVBUR>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVBUR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVBUR>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVBUR> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVBUR>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
 		public partial class GT_T005 : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -491,6 +255,126 @@ namespace SapORM.Models
 			{
 				if (sapDataService == null) 
 					return new List<GT_T005>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_T005U : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string LAND1 { get; set; }
+
+			public string BLAND { get; set; }
+
+			public string BEZEI { get; set; }
+
+			public static GT_T005U Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_T005U
+				{
+					LAND1 = (string)row["LAND1"],
+					BLAND = (string)row["BLAND"],
+					BEZEI = (string)row["BEZEI"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_T005U> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_T005U> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_T005U> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_T005U).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_T005U> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_T005U> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_T005U> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_T005U>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_T005U> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_T005U>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_T005U> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_T005U>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_T005U> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_T005U>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_T005U> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_T005U>();
 				 
 				var dts = sapDataService.GetImportTables();
 				 
@@ -728,594 +612,6 @@ namespace SapORM.Models
 			{
 				if (sapDataService == null) 
 					return new List<GT_T052>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_TSAD3 : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string TITLE { get; set; }
-
-			public string TITLE_MEDI { get; set; }
-
-			public static GT_TSAD3 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_TSAD3
-				{
-					TITLE = (string)row["TITLE"],
-					TITLE_MEDI = (string)row["TITLE_MEDI"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_TSAD3> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_TSAD3> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_TSAD3> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TSAD3).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_TSAD3> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAD3> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_TSAD3> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAD3>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAD3> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAD3>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAD3> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAD3>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAD3> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAD3>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAD3> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAD3>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_TSAB : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string ABTNR { get; set; }
-
-			public string VTEXT { get; set; }
-
-			public static GT_TSAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_TSAB
-				{
-					ABTNR = (string)row["ABTNR"],
-					VTEXT = (string)row["VTEXT"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_TSAB> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_TSAB> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_TSAB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TSAB).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_TSAB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAB> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_TSAB> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAB>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAB> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAB>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAB> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAB>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAB>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TSAB> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TSAB>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_TPFK : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string PAFKT { get; set; }
-
-			public string VTEXT { get; set; }
-
-			public static GT_TPFK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_TPFK
-				{
-					PAFKT = (string)row["PAFKT"],
-					VTEXT = (string)row["VTEXT"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_TPFK> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_TPFK> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_TPFK> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TPFK).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_TPFK> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TPFK> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_TPFK> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TPFK>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TPFK> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TPFK>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TPFK> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TPFK>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TPFK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TPFK>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TPFK> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TPFK>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_T005U : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string LAND1 { get; set; }
-
-			public string BLAND { get; set; }
-
-			public string BEZEI { get; set; }
-
-			public static GT_T005U Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_T005U
-				{
-					LAND1 = (string)row["LAND1"],
-					BLAND = (string)row["BLAND"],
-					BEZEI = (string)row["BEZEI"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_T005U> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_T005U> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_T005U> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_T005U).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_T005U> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_T005U> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_T005U> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_T005U>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_T005U> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_T005U>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_T005U> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_T005U>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_T005U> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_T005U>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_T005U> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_T005U>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class GT_TVKD : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string KALKS { get; set; }
-
-			public string VTEXT { get; set; }
-
-			public static GT_TVKD Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_TVKD
-				{
-					KALKS = (string)row["KALKS"],
-					VTEXT = (string)row["VTEXT"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_TVKD> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_TVKD> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_TVKD> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TVKD).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_TVKD> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVKD> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_TVKD> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVKD>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVKD> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVKD>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVKD> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVKD>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVKD> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVKD>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_TVKD> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_TVKD>();
 				 
 				var dts = sapDataService.GetImportTables();
 				 
@@ -1674,6 +970,591 @@ namespace SapORM.Models
 			}
 		}
 
+		public partial class GT_TPFK : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string PAFKT { get; set; }
+
+			public string VTEXT { get; set; }
+
+			public static GT_TPFK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_TPFK
+				{
+					PAFKT = (string)row["PAFKT"],
+					VTEXT = (string)row["VTEXT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TPFK> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TPFK> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TPFK> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TPFK).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TPFK> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TPFK> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TPFK> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TPFK>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TPFK> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TPFK>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TPFK> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TPFK>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TPFK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TPFK>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TPFK> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TPFK>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_TSAB : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ABTNR { get; set; }
+
+			public string VTEXT { get; set; }
+
+			public static GT_TSAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_TSAB
+				{
+					ABTNR = (string)row["ABTNR"],
+					VTEXT = (string)row["VTEXT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TSAB> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TSAB> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TSAB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TSAB).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TSAB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAB> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TSAB> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAB>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAB> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAB>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAB> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAB>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAB>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAB> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAB>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_TSAD3 : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string TITLE { get; set; }
+
+			public string TITLE_MEDI { get; set; }
+
+			public static GT_TSAD3 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_TSAD3
+				{
+					TITLE = (string)row["TITLE"],
+					TITLE_MEDI = (string)row["TITLE_MEDI"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TSAD3> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TSAD3> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TSAD3> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TSAD3).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TSAD3> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAD3> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TSAD3> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAD3>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAD3> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAD3>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAD3> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAD3>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAD3> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAD3>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TSAD3> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TSAD3>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_TVBUR : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string VKBUR { get; set; }
+
+			public string BEZEI { get; set; }
+
+			public static GT_TVBUR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_TVBUR
+				{
+					VKBUR = (string)row["VKBUR"],
+					BEZEI = (string)row["BEZEI"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TVBUR> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TVBUR> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TVBUR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TVBUR).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TVBUR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVBUR> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TVBUR> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVBUR>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVBUR> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVBUR>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVBUR> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVBUR>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVBUR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVBUR>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVBUR> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVBUR>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_TVKD : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KALKS { get; set; }
+
+			public string VTEXT { get; set; }
+
+			public static GT_TVKD Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_TVKD
+				{
+					KALKS = (string)row["KALKS"],
+					VTEXT = (string)row["VTEXT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TVKD> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TVKD> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TVKD> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TVKD).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TVKD> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVKD> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TVKD> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVKD>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVKD> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVKD>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVKD> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVKD>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVKD> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVKD>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TVKD> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TVKD>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class GT_TVKGR : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -1790,6 +1671,126 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
+
+		public partial class GT_VKO : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string VKORG { get; set; }
+
+			public string BUKRS { get; set; }
+
+			public string VTEXT { get; set; }
+
+			public static GT_VKO Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_VKO
+				{
+					VKORG = (string)row["VKORG"],
+					BUKRS = (string)row["BUKRS"],
+					VTEXT = (string)row["VTEXT"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_VKO> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_VKO> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_VKO> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_VKO).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_VKO> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VKO> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_VKO> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VKO>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VKO> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VKO>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VKO> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VKO>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VKO> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VKO>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ALL_DEBI_CHECK_TABLES", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VKO> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VKO>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
@@ -1800,97 +1801,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T001> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_VKO> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_VKO> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVBUR> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVBUR> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T005> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T005> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T016> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T016> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T052> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T052> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAD3> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAD3> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAB> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TPFK> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TPFK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1899,20 +1813,16 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T005U> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
 
-
-		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVKD> list)
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T016> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVKD> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T052> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
@@ -1921,20 +1831,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T151> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T171> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_T171> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1943,9 +1843,34 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TFACD> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TPFK> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAB> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TSAD3> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVBUR> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVKD> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
@@ -1954,9 +1879,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_TVKGR> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_ALL_DEBI_CHECK_TABLES.GT_VKO> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

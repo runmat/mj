@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_GET_GRUPPE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_GRUPART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPART", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_GRUPPE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -49,7 +70,7 @@ namespace SapORM.Models
 					VKBUR = (string)row["VKBUR"],
 					GRUPART = (string)row["GRUPART"],
 					BEZEI = (string)row["BEZEI"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -154,11 +175,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_GET_GRUPPE.GT_GRUPPE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_GET_GRUPPE.GT_GRUPPE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

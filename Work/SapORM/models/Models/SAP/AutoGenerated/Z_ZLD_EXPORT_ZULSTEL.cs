@@ -21,6 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_ZULSTEL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
 		public partial class GT_EX_ZULSTELL : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -276,20 +277,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_ZULSTEL.GT_SONDER> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_ZULSTEL.GT_SONDER> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

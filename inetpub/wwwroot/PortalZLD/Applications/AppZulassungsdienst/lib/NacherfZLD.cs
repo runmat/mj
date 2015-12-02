@@ -415,11 +415,10 @@ namespace AppZulassungsdienst.lib
                     {
                         // Gebührenposition
                         var gebuehrenPos = AktuellerVorgang.Positionen.FirstOrDefault(gp => gp.UebergeordnetePosition == p.PositionsNr && gp.WebMaterialart == "G");
-                        if (gebuehrenPos != null && !String.IsNullOrEmpty(mat.GebuehrenMaterialNr))
+                        if (kunde != null && gebuehrenPos != null && !String.IsNullOrEmpty(mat.GebuehrenMaterialNr))
                         {
-                            var ohneUst = (kunde != null && kunde.OhneUst);
-                            var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
-                            var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+                            var matNr = (kunde.OhneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                            var matName = (kunde.OhneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
 
                             var gebuehrenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 

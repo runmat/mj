@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_GET_DAD_SD_ORDER).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VBELN", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GS_DAD_ORDER : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -45,6 +66,36 @@ namespace SapORM.Models
 
 			public string ZZSEND2 { get; set; }
 
+			public string ZH_TITLE { get; set; }
+
+			public string ZH_NAME1 { get; set; }
+
+			public string ZH_NAME2 { get; set; }
+
+			public string ZH_CITY1 { get; set; }
+
+			public string ZH_POST_CODE1 { get; set; }
+
+			public string ZH_STREET { get; set; }
+
+			public string ZH_HOUSE_NUM1 { get; set; }
+
+			public string ZZHERSTELLER_SCH { get; set; }
+
+			public string ZZTYP_SCHL { get; set; }
+
+			public string ZZVVS_SCHLUESSEL { get; set; }
+
+			public string ZZTYP_VVS_PRUEF { get; set; }
+
+			public string TIDNR { get; set; }
+
+			public string CHASSIS_NUM { get; set; }
+
+			public string ZPRFZ { get; set; }
+
+			public string ZZVSNR { get; set; }
+
 			public static GS_DAD_ORDER Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GS_DAD_ORDER
@@ -52,10 +103,25 @@ namespace SapORM.Models
 					ZZREFNR1 = (string)row["ZZREFNR1"],
 					ZZREFNR2 = (string)row["ZZREFNR2"],
 					ZZKENN = (string)row["ZZKENN"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					KUNNR = (string)row["KUNNR"],
 					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
 					ZZSEND2 = (string)row["ZZSEND2"],
+					ZH_TITLE = (string)row["ZH_TITLE"],
+					ZH_NAME1 = (string)row["ZH_NAME1"],
+					ZH_NAME2 = (string)row["ZH_NAME2"],
+					ZH_CITY1 = (string)row["ZH_CITY1"],
+					ZH_POST_CODE1 = (string)row["ZH_POST_CODE1"],
+					ZH_STREET = (string)row["ZH_STREET"],
+					ZH_HOUSE_NUM1 = (string)row["ZH_HOUSE_NUM1"],
+					ZZHERSTELLER_SCH = (string)row["ZZHERSTELLER_SCH"],
+					ZZTYP_SCHL = (string)row["ZZTYP_SCHL"],
+					ZZVVS_SCHLUESSEL = (string)row["ZZVVS_SCHLUESSEL"],
+					ZZTYP_VVS_PRUEF = (string)row["ZZTYP_VVS_PRUEF"],
+					TIDNR = (string)row["TIDNR"],
+					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+					ZPRFZ = (string)row["ZPRFZ"],
+					ZZVSNR = (string)row["ZZVSNR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -128,26 +194,6 @@ namespace SapORM.Models
 					return new List<GS_DAD_ORDER>();
 				 
 				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_DAD_ORDER> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GS_DAD_ORDER>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_GET_DAD_SD_ORDER", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_DAD_ORDER> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GS_DAD_ORDER>();
-				 
-				var dts = sapDataService.GetImportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -276,20 +322,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_GET_DAD_SD_ORDER.GS_DAD_ORDER> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_GET_DAD_SD_ORDER.GT_MAT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_GET_DAD_SD_ORDER.GT_MAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

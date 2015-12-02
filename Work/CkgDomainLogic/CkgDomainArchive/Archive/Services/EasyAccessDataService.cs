@@ -7,6 +7,7 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Models;
 using EasyAccess40;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.Archive.Services
 {
@@ -314,6 +315,56 @@ namespace CkgDomainLogic.Archive.Services
 
             return erg;
         }
-          
+
+        public List<string> GetDocuments(EasyAccessArchiveDefinition archiveToSearch, string query)
+        {
+            return GetDocuments(new List<EasyAccessArchiveDefinition> { archiveToSearch }, query);
+        }
+
+        public List<string> GetDocuments(List<EasyAccessArchiveDefinition> archivesToSearch, string query)
+        {
+            // LogonContext nochmal explizit setzen, da nicht zwangsläufig schon im Konstruktor komplett
+            m_easyAccess.setUser((ILogonContextDataService)LogonContext);
+
+            var docList = new List<string>();
+
+            var status = "";
+
+            if (archivesToSearch.None())
+                ErrorMessage = "Kein Archiv ausgewählt";
+
+            if (!HasErrors)
+            {
+                m_easyAccess.init(ref status);
+                ErrorMessage = status;
+            }
+
+            if (!HasErrors)
+            {
+                var archiveList = new List<EasyAccess40.Archive>();
+                archivesToSearch.ForEach(a => archiveList.Add(new EasyAccess40.Archive(0, a.Location, a.Name, 0, a.IndexName, "", null, "")));
+
+                m_easyAccess.query(archiveList, query, ref status);
+                ErrorMessage = status;
+            }
+
+            if (!HasErrors)
+            {
+                var tblResults = m_easyAccess.getResult().getHitTable();
+
+                foreach (DataRow row in tblResults.Rows)
+                {
+                    var docStatus = "";
+                    var docPath = "";
+                    m_easyAccess.getPics(row["DOC_Location"].ToString(), row["DOC_Archive"].ToString(), row["DOC_ID"].ToString(),
+                        row["DOC_Version"].ToString(), ref docStatus, ref docPath);
+
+                    if (string.IsNullOrEmpty(docStatus))
+                        docList.Add(docPath);
+                }
+            }
+
+            return docList;
+        }
     }
 }

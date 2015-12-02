@@ -63,27 +63,27 @@ Partial Public Class IframeLogin
                         'Benutzer existiert und die Voraussetzungen zur Passwortanforderung
                         'per geheimer Frage sind gegeben
                         Session("objUser") = m_User
-                        lblError.Text = "Fehler bei der Anmeldung."
+                        lblError.Text = "Fehler bei der Anmeldung"
 
                     ElseIf m_User.ErrorMessage = "9999" Then
-                        lblError.Text = "Fehler bei der Anmeldung. Prüfen Sie Ihre Eingaben!"
+                        lblError.Text = "Fehler bei der Anmeldung"
                     Else
                         If m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "User" Then ' Gleich weiter zur Ensperrung!
                             If m_User.Email.Length > 0 And m_User.Customer.ForcePasswordQuestion And m_User.QuestionID > -1 Then
                                 System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                             Else
-                                lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
+                                lblError.Text = "Fehler bei der Anmeldung (" & m_User.ErrorMessage & ")"
                             End If
                         ElseIf m_User.AccountIsLockedOut AndAlso m_User.AccountIsLockedBy = "Now" Then ' gerade gesperrt? Sperrung anzeigen!
-                            lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
+                            lblError.Text = "Fehler bei der Anmeldung (" & m_User.ErrorMessage & ")"
                         Else
-                            lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
+                            lblError.Text = "Fehler bei der Anmeldung (" & m_User.ErrorMessage & ")"
 
                         End If
 
                     End If
                 Else
-                    lblError.Text = "Fehler bei der Anmeldung."
+                    lblError.Text = "Fehler bei der Anmeldung"
                 End If
             End If
         Catch ex As Exception

@@ -27,11 +27,11 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
-        static public ModelMapping<Z_M_Unzugelassene_Fzge_Sixt_L.T_DATA, UnzugelFzg> Z_M_Unzugelassene_Fzge_Sixt_L_T_DATA_To_UnzugelFzg
+        static public ModelMapping<Z_M_UNZUGELASSENE_FZGE_SIXT_L.T_DATA, UnzugelFzg> Z_M_Unzugelassene_Fzge_Sixt_L_T_DATA_To_UnzugelFzg
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_Unzugelassene_Fzge_Sixt_L.T_DATA, UnzugelFzg>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_UNZUGELASSENE_FZGE_SIXT_L.T_DATA, UnzugelFzg>(
                     new Dictionary<string, string> {
                         { "EQUNR", "Equipmentnummer" },
                         { "ZBRIEFEINGANG", "Briefeingang" },
@@ -44,11 +44,11 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
-        static public ModelMapping<Z_M_Abm_Fehl_Unterl_Sixt_Leas.AUSGABE, Abmeldedaten> Z_M_Abm_Fehl_Unterl_Sixt_Leas_AUSGABE_To_Abmeldedaten
+        static public ModelMapping<Z_M_ABM_FEHL_UNTERL_SIXT_LEAS.AUSGABE, Abmeldedaten> Z_M_Abm_Fehl_Unterl_Sixt_Leas_AUSGABE_To_Abmeldedaten
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_Abm_Fehl_Unterl_Sixt_Leas.AUSGABE, Abmeldedaten>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_ABM_FEHL_UNTERL_SIXT_LEAS.AUSGABE, Abmeldedaten>(
                     new Dictionary<string, string> {
                         { "ZZKENN", "Kennzeichen" },
                         { "LIZNR", "Leasingvertragsnummer" },

@@ -296,7 +296,7 @@
 	background-position: 	-683px 0;
 }
 .ui-icon-radio-on {
-	background-position: 	-718px 0;
+	background-position: 	-720px 0;
 }
 .ui-icon-radio-off {
 	background-position: 	-754px 0;
@@ -327,10 +327,14 @@
 }
 
 .ui-header {
-    min-height: 80px;
+    height: 80px;
     background-image: url(../Images/LogoHeaderKroschke.jpg);
     background-repeat: no-repeat;
     background-position: top right;
+}
+
+.ui-footer {
+    height: 18px;
 }
 
 .IconButtonDeleteBig {
@@ -356,6 +360,22 @@
 
 .TextInput110 {
     width: 110px !Important;
+}
+
+.TableColumn40 {
+    width: 40px;
+}
+
+.TableColumn50 {
+    width: 50px;
+}
+
+.TableColumn60 {
+    width: 60px;
+}
+
+.TableColumn70 {
+    width: 70px;
 }
 
 .TableColumn80 {
@@ -446,18 +466,23 @@
     text-align: right !Important;
 }
 
-.NoVerticalPadding {
+.NoVerticalPadding, .TableGridCell.NoVerticalPadding, .TableGridCellNarrow.NoVerticalPadding {
     padding-top: 0 !Important;
     padding-bottom: 0 !Important;
 }
 
-.NoHorizontalPadding {
+.NoHorizontalPadding, .TableGridCell.NoHorizontalPadding, .TableGridCellNarrow.NoHorizontalPadding {
     padding-left: 0 !Important;
     padding-right: 0 !Important;
 }
 
-.NoPadding {
+.NoPadding, .TableGridCell.NoPadding, .TableGridCellNarrow.NoPadding {
     padding: 0 !Important;
+}
+
+.LessHorizontalPadding, .TableGridCell.LessHorizontalPadding, .TableGridCellNarrow.LessHorizontalPadding {
+    padding-left: 4px !Important;
+    padding-right: 4px !Important;
 }
 
 .NotVisible {
@@ -540,6 +565,26 @@
     margin-left: 20px;
 }
 
+.Min-Width-80 {
+    min-width: 80px;
+}
+
+.Min-Width-90 {
+    min-width: 90px;
+}
+
+.Min-Width-100 {
+    min-width: 100px;
+}
+
+.Min-Width-110 {
+    min-width: 110px;
+}
+
+.Min-Width-130 {
+    min-width: 130px;
+}
+
 .Min-Width-275 {
     min-width: 275px;
 }
@@ -575,4 +620,35 @@
 
 .width-100percent {
     width: 100%;
+}
+
+div.StaticHeaderTableOuterContainer {
+    padding-top: 50px;
+    position: relative;
+}
+
+div.StaticHeaderTableHeaderRow {
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+div.StaticHeaderTableContainer {
+    overflow: auto;
+}
+
+table th div.StaticHeaderTableColumnHeader {
+    position: absolute;
+    top: 0;
+}
+
+.ui-page {
+    font-size: 14px;
+}
+
+.ui-checkbox .ui-mini.ui-btn-icon-left .ui-btn-inner,.ui-radio .ui-mini.ui-btn-icon-left .ui-btn-inner {
+    padding-left: 32px;
+    padding-right: 8px;
 }
