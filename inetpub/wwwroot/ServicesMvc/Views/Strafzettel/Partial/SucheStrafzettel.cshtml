@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.Strafzettel.Models
-@model StrafzettelSelektor
+﻿@model CkgDomainLogic.Strafzettel.Models.StrafzettelSelektor
 
 <div id="divStrafzettelSuche">
     @using (Ajax.BeginForm("LoadStrafzettel", "Strafzettel", null,
@@ -23,13 +22,6 @@
 
             @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "auto" })
             @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "auto" })
-            
-            @Html.FormMultiSelectListFor(m => m.Standorte, StrafzettelSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "auto" })
-            @Html.FormCheckBoxFor(m => m.IstAusland, new { col = "auto" }, labelHidden: true)
-
-            @Html.FormRadioButtonListFor(m => m.FahrzeugStatus, StrafzettelSelektor.FahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "auto" })
-            @Html.FormDatePickerFor(m => m.RechnungsDatum, new { @class = "m-wrap small", col = "auto" })
-
 
             @Html.FormMultiColumnModeEnd("auto")
 
