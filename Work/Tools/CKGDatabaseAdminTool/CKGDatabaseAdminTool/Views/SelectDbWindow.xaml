@@ -4,7 +4,7 @@
         WindowStartupLocation="CenterScreen" 
         Title="CKGDatabaseAdminTool - Datenbankauswahl" Width="400px" Height="100px">
 
-    <Grid Background="#EEEEEE">
+    <Grid>
        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80px"/>

@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_BATCH_SELECT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_STATUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUS", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static string GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_SUBRC").NotNullOrEmpty().Trim();
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -73,8 +89,8 @@ namespace SapORM.Models
 					ZMODEL_ID_BIS = (string)row["ZMODEL_ID_BIS"],
 					ZPURCH_MTH_VON = (string)row["ZPURCH_MTH_VON"],
 					ZPURCH_MTH_BIS = (string)row["ZPURCH_MTH_BIS"],
-					ERDAT_VON = (string.IsNullOrEmpty(row["ERDAT_VON"].ToString())) ? null : (DateTime?)row["ERDAT_VON"],
-					ERDAT_BIS = (string.IsNullOrEmpty(row["ERDAT_BIS"].ToString())) ? null : (DateTime?)row["ERDAT_BIS"],
+					ERDAT_VON = string.IsNullOrEmpty(row["ERDAT_VON"].ToString()) ? null : (DateTime?)row["ERDAT_VON"],
+					ERDAT_BIS = string.IsNullOrEmpty(row["ERDAT_BIS"].ToString()) ? null : (DateTime?)row["ERDAT_BIS"],
 					ZERNAM = (string)row["ZERNAM"],
 					ZSIPP_CODE = (string)row["ZSIPP_CODE"],
 					ZAUFNR = (string)row["ZAUFNR"],
@@ -278,9 +294,9 @@ namespace SapORM.Models
 					ZVERWENDUNG = (string)row["ZVERWENDUNG"],
 					ZBEMERKUNG = (string)row["ZBEMERKUNG"],
 					ZERNAM = (string)row["ZERNAM"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					AENAM = (string)row["AENAM"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					ZLOEVM_BATCH_ID = (string)row["ZLOEVM_BATCH_ID"],
 					ZUNITVERGEBEN = (string)row["ZUNITVERGEBEN"],
 					STATUS = (string)row["STATUS"],
@@ -393,20 +409,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_SELECT.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_SELECT.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_SELECT.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

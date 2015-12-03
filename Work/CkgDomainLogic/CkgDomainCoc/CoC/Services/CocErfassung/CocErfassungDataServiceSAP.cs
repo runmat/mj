@@ -14,7 +14,7 @@ namespace CkgDomainLogic.CoC.Services
 {
     public class CocErfassungDataServiceSAP : CkgGeneralDataServiceSAP, ICocErfassungDataService
     {
-        private IEnumerable<Z_M_Blocken_Farben.FARBE> SapFarben { get { return PropertyCacheGet(() => Z_M_Blocken_Farben.FARBE.GetExportListWithInitExecute(SAP)); } }
+        private IEnumerable<Z_M_BLOCKEN_FARBEN.FARBE> SapFarben { get { return PropertyCacheGet(() => Z_M_BLOCKEN_FARBEN.FARBE.GetExportListWithInitExecute(SAP)); } }
 
         private IEnumerable<Z_DPM_READ_COC_01.GT_OUT> SapCocAuftraege { get { return PropertyCacheGet(() => GetSapCocAuftraege().ToList()); } }
 

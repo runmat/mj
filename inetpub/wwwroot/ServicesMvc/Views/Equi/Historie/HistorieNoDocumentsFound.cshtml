@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+<style>
+    .alert {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+</style>
+
+<div class="alert alert-error">
+    <span class="label label-important margin-top-40"><i class="icon-bell"></i><span class="margin-left-5">@Localize.NoDocumentsFound! @Localize.ThisWindowWillCloseAutomaticallyIn5Seconds</span></span><br/><br/>
+</div>
+
+<script type="text/javascript">
+
+    function CloseCurrentBrowserTab() {
+        window.top.close();
+    }
+
+    setTimeout("CloseCurrentBrowserTab()", 5000);
+
+</script>

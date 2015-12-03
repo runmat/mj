@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_READ_REM_VERS_VORG_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_HAENDLER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HAENDLER", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_I_LAND_CODE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LAND_CODE", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -220,11 +236,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

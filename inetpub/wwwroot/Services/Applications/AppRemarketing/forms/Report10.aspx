@@ -207,8 +207,12 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCORT" SortExpression="HCORT" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
@@ -217,7 +221,7 @@
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridTemplateColumn Groupable="false" UniqueName="Bearbeiten" >
-                                                        <HeaderStyle Width="15px" />
+                                                        <HeaderStyle Width="30px" />
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="ibtnEdit" runat="server" SortExpression="ibtnEdit" CommandName="Show"
                                                                 ImageUrl="/services/images/info.gif" ToolTip="Vorschäden anzeigen." Visible='<%# Eval("LFDNR").ToString()!="000" %>'

@@ -65,6 +65,7 @@
     <Compile Include="Archive\Models\DataModels\EasyAccessResultField.cs" />
     <Compile Include="Archive\Models\DataModels\EasyAccessDetail.cs" />
     <Compile Include="Archive\Models\DataModels\DateiInfo.cs" />
+    <Compile Include="Archive\Models\DataModels\EasyAccessArchiveDefinition.cs" />
     <Compile Include="Archive\Models\UIModels\EasyAccessSuchparameter.cs" />
     <Compile Include="Archive\Services\EasyAccessDataService.cs" />
     <Compile Include="Archive\Services\DateiDownloadDataService.cs" />
