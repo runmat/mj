@@ -95,11 +95,16 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return DataConnections;
         }
 
-        public string AddProcessor()
+        public string AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
         {
             var newProcessor = new Processor();
             Processors.Add(newProcessor);
-            
+            if (guid != null)
+            {
+                newProcessor.Guid = guid;
+                newProcessor.PosLeft = posLeft;
+                newProcessor.PosTop = posTop;
+            }
             return newProcessor.Guid;         
         }
 

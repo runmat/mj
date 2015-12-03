@@ -8,7 +8,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     public class Processor
     {
         public string Guid { get; set; }
-        public string Name { get; set; }
+        public int Number { get; set; }
+        public string Title { get; set; }
         public Operation Operation { get; set; }
         public string OperationPara1 { get; set; }
         public string OperationPara2 { get; set; }
@@ -18,7 +19,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         {
             get { return CalcOutput(); }
         }
-
+        
         public int PosLeft { get; set; }
         public int PosTop { get; set; }
 
@@ -26,7 +27,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         {
             Guid = System.Guid.NewGuid().ToString();
             Operation = Operation.Fix;    // Default
-            OperationPara1 = "X";
+            OperationPara1 = "X";            
         }
 
         private string CalcOutput()

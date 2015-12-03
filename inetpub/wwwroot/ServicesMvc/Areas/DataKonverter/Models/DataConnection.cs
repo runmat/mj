@@ -7,7 +7,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class DataConnection
     {
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
 
         public string GuidSource { get; set; }
         public string GuidDest { get; set; }
@@ -21,7 +21,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public DataConnection()
         {
-            Guid = Guid.NewGuid();
+            Guid = System.Guid.NewGuid().ToString();
         }
     }
 }
