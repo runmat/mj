@@ -21,6 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_MOB_STAMMD).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
 		public partial class GT_KREISKZ : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -267,20 +268,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_STAMMD.GT_KREISKZ> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_MOB_STAMMD.GT_MAT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_MOB_STAMMD.GT_MAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

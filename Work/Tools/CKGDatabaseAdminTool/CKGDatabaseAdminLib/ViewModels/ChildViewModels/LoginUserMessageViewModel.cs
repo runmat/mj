@@ -5,6 +5,7 @@ using CKGDatabaseAdminLib.Contracts;
 using CKGDatabaseAdminLib.Models;
 using CKGDatabaseAdminLib.Services;
 using WpfTools4.Commands;
+using WpfTools4.Services;
 using WpfTools4.ViewModels;
 
 namespace CKGDatabaseAdminLib.ViewModels
@@ -61,6 +62,9 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public void DeleteLoginMessage(object parameter)
         {
+            if (!Tools.Confirm("Login-Message wirklich löschen?"))
+                return;
+
             var id = (parameter as int?);
             if (id.HasValue)
             {

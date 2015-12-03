@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using CkgDomainLogic.Archive.Models;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Contracts;
@@ -189,5 +190,19 @@ namespace CkgDomainLogic.Equi.Services
 
             return erg;
         }
+
+        public List<EasyAccessArchiveDefinition> GetArchiveDefinitions()
+        {
+            var defList = new List<EasyAccessArchiveDefinition>();
+
+            using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName))
+            {
+                var archives = dbContext.GetArchives(LogonContext.User.CustomerID, LogonContext.Group.GroupID).ToList();
+
+                archives.ForEach(a => defList.Add(new EasyAccessArchiveDefinition { Location = a.EasyLagerortName, Name = a.EasyArchivName, IndexName = a.EasyQueryIndexName }));
+            }
+
+            return defList;
+        } 
     }
 }

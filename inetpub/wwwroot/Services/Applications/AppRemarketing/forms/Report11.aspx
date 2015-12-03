@@ -296,8 +296,12 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
-                                                        <HeaderStyle Width="125px" />
+                                                        <HeaderStyle Width="140px" />
                                                         <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" UniqueName="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="118px" />

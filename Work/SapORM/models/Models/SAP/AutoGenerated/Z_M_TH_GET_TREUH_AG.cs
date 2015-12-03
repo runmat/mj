@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_TH_GET_TREUH_AG).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ALL_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ALL_AG", value);
+		}
+
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public static void SetImportParameter_I_TREU(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TREU", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_EXP : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -178,11 +204,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_TH_GET_TREUH_AG.GT_EXP> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_TH_GET_TREUH_AG.GT_EXP> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

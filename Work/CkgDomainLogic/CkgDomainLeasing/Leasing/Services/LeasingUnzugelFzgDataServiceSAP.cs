@@ -26,10 +26,10 @@ namespace CkgDomainLogic.Leasing.Services
 
         private IEnumerable<UnzugelFzg> LoadUnzugelFzgeFromSap()
         {
-            Z_M_Unzugelassene_Fzge_Sixt_L.Init(SAP);
+            Z_M_UNZUGELASSENE_FZGE_SIXT_L.Init(SAP);
             SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            var sapList = Z_M_Unzugelassene_Fzge_Sixt_L.T_DATA.GetExportListWithExecute(SAP);
+            var sapList = Z_M_UNZUGELASSENE_FZGE_SIXT_L.T_DATA.GetExportListWithExecute(SAP);
 
             // ggf. Dummy-Leasingvertragsnummern entfernen
             sapList.ForEach(f => f.ZZLVNR = "");
