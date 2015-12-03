@@ -399,7 +399,7 @@ namespace CkgDomainLogic.General.Services
         {
             var url = menuItem.AppURL;
 
-            if (url.StartsWith("/"))
+            if (url.StartsWith("/") || url.ToLower().StartsWith("http"))
                 return;
 
             url = url.Replace("../", "");

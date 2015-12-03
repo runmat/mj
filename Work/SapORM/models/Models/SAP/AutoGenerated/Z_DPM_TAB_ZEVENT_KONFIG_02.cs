@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,27 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_TAB_ZEVENT_KONFIG_02).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AKTION", value);
+		}
+
+		public static void SetImportParameter_I_EVENT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT", value);
+		}
+
+		public static void SetImportParameter_I_EVENT_ORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVENT_ORT", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
 		}
 
 		public partial class GT_ORT : IModelMappingApplied
@@ -79,7 +101,7 @@ namespace SapORM.Models
 					ENDZEITMOFR = (string)row["ENDZEITMOFR"],
 					STARTZEITSA = (string)row["STARTZEITSA"],
 					ENDZEITSA = (string)row["ENDZEITSA"],
-					LOESCHDATUM = (string.IsNullOrEmpty(row["LOESCHDATUM"].ToString())) ? null : (DateTime?)row["LOESCHDATUM"],
+					LOESCHDATUM = string.IsNullOrEmpty(row["LOESCHDATUM"].ToString()) ? null : (DateTime?)row["LOESCHDATUM"],
 					LOESCHUSER = (string)row["LOESCHUSER"],
 					ERROR = (string)row["ERROR"],
 
@@ -106,7 +128,7 @@ namespace SapORM.Models
 
 			public static List<GT_ORT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -120,7 +142,7 @@ namespace SapORM.Models
 
 			public static List<GT_ORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORT> ToList(ISapDataService sapDataService)
@@ -135,7 +157,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_TAB_ZEVENT_KONFIG_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -145,7 +167,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORT> GetExportList(ISapDataService sapDataService)
@@ -155,7 +177,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -165,7 +187,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_TAB_ZEVENT_KONFIG_02", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ORT> GetImportList(ISapDataService sapDataService)
@@ -175,7 +197,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -186,11 +208,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_TAB_ZEVENT_KONFIG_02.GT_ORT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_TAB_ZEVENT_KONFIG_02.GT_ORT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

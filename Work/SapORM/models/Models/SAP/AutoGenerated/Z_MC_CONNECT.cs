@@ -21,127 +21,55 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_MC_CONNECT).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_VORGART : IModelMappingApplied
+
+		public static void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
 		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
+			sap.SetImportParameter("I_BD_NR", value);
+		}
 
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
 
-			public string VGART { get; set; }
+		public static string GetExportParameter_E_BD_NAME(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_BD_NAME").NotNullOrEmpty().Trim();
+		}
 
-			public string BEZEI { get; set; }
+		public static string GetExportParameter_E_BEZEI(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_BEZEI").NotNullOrEmpty().Trim();
+		}
 
-			public string ANTW_ART { get; set; }
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
 
-			public string FILIALBUCH_VG { get; set; }
+		public static string GetExportParameter_E_ROLLE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ROLLE").NotNullOrEmpty().Trim();
+		}
 
-			public static GT_VORGART Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_VORGART
-				{
-					VGART = (string)row["VGART"],
-					BEZEI = (string)row["BEZEI"],
-					ANTW_ART = (string)row["ANTW_ART"],
-					FILIALBUCH_VG = (string)row["FILIALBUCH_VG"],
+		public static string GetExportParameter_E_ROLLE_PA(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_ROLLE_PA").NotNullOrEmpty().Trim();
+		}
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 
-			partial void OnInitFromSap();
+		public static string GetExportParameter_E_UNAME(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_UNAME").NotNullOrEmpty().Trim();
+		}
 
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_VORGART> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_VORGART> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_VORGART> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_VORGART).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_VORGART> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VORGART> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_VORGART> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VORGART>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_MC_CONNECT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VORGART> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VORGART>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VORGART> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VORGART>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VORGART> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VORGART>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_MC_CONNECT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_VORGART> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_VORGART>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
+		public static string GetExportParameter_E_UNAME_PA(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_UNAME_PA").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ROLLE_VGART : IModelMappingApplied
@@ -266,30 +194,143 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
+
+		public partial class GT_VORGART : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string VGART { get; set; }
+
+			public string BEZEI { get; set; }
+
+			public string ANTW_ART { get; set; }
+
+			public string FILIALBUCH_VG { get; set; }
+
+			public static GT_VORGART Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_VORGART
+				{
+					VGART = (string)row["VGART"],
+					BEZEI = (string)row["BEZEI"],
+					ANTW_ART = (string)row["ANTW_ART"],
+					FILIALBUCH_VG = (string)row["FILIALBUCH_VG"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_VORGART> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_VORGART> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_VORGART> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_VORGART).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_VORGART> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VORGART> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_VORGART> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VORGART>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_MC_CONNECT", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VORGART> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VORGART>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VORGART> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VORGART>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VORGART> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VORGART>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_MC_CONNECT", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_VORGART> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_VORGART>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
 	{
-
-		public static DataTable ToTable(this IEnumerable<Z_MC_CONNECT.GT_VORGART> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_MC_CONNECT.GT_VORGART> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_MC_CONNECT.GT_ROLLE_VGART> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_MC_CONNECT.GT_ROLLE_VGART> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_MC_CONNECT.GT_VORGART> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\SapNotMappedAttribute.cs" />
+    <Compile Include="Contracts\ContractModels\BapiField.cs" />
+    <Compile Include="Contracts\ContractModels\BapiStructure.cs" />
     <Compile Include="Contracts\ContractModels\SapConnectionWrapper.cs" />
     <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />

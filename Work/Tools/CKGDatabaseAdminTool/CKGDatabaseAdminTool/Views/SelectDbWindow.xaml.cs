@@ -17,6 +17,8 @@ namespace CKGDatabaseAdminTool
             if (cbDatabase.SelectedValue != null)
             {
                 this.DialogResult = true;
+                var splashScreen = new SplashScreen("splashscreen.png");
+                splashScreen.Show(true);
             }
         }
     }

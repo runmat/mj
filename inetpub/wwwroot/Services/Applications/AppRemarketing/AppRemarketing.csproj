@@ -481,6 +481,7 @@
     <Compile Include="lib\HistorieLinks.cs" />
     <Compile Include="lib\HistorieUebersicht.cs" />
     <Compile Include="lib\HistorieVorschaden.cs" />
+    <Compile Include="lib\HistorieAusstattung.cs" />
     <Compile Include="lib\UebergabeTUEV.cs" />
     <Compile Include="lib\Reifenversand.cs" />
     <Compile Include="lib\Rechnungsdaten.cs" />
