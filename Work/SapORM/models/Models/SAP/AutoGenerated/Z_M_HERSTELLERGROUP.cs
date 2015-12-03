@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_HERSTELLERGROUP).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public partial class T_HERST : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -145,11 +151,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_HERSTELLERGROUP.T_HERST> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_HERSTELLERGROUP.T_HERST> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -20,6 +20,47 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_MC_SAVE_ANSWER).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public static void SetImportParameter_I_AN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AN", value);
+		}
+
+		public static void SetImportParameter_I_BD_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BD_NR", value);
+		}
+
+		public static void SetImportParameter_I_LFDNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LFDNR", value);
+		}
+
+		public static void SetImportParameter_I_LTXNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LTXNR", value);
+		}
+
+		public static void SetImportParameter_I_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VON", value);
+		}
+
+		public static void SetImportParameter_I_VORGID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VORGID", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

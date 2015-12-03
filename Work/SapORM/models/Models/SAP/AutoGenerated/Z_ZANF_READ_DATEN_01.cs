@@ -21,175 +21,65 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZANF_READ_DATEN_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_DATEN : IModelMappingApplied
+
+		public static void SetImportParameter_I_ADATUM_BIS(ISapDataService sap, DateTime? value)
 		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
+			sap.SetImportParameter("I_ADATUM_BIS", value);
+		}
 
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+		public static void SetImportParameter_I_ADATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ADATUM_VON", value);
+		}
 
-			public string ORDERID { get; set; }
+		public static void SetImportParameter_I_AKTION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AKTION", value);
+		}
 
-			public string VBELN { get; set; }
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_BIS", value);
+		}
 
-			public string AKTION { get; set; }
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_VON", value);
+		}
 
-			public string KTEXT { get; set; }
+		public static void SetImportParameter_I_ERL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ERL", value);
+		}
 
-			public string ZZFAHRG { get; set; }
+		public static void SetImportParameter_I_FAHRG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRG", value);
+		}
 
-			public string ZZREFNR { get; set; }
+		public static void SetImportParameter_I_KLAERF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KLAERF", value);
+		}
 
-			public string ZZKENN { get; set; }
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
 
-			public DateTime? ERDAT { get; set; }
+		public static void SetImportParameter_I_OFFEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_OFFEN", value);
+		}
 
-			public DateTime? ADATUM { get; set; }
+		public static void SetImportParameter_I_REFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_REFNR", value);
+		}
 
-			public string PSTATUS { get; set; }
-
-			public string PKTEXT { get; set; }
-
-			public string EQUNR { get; set; }
-
-			public string ZUSER { get; set; }
-
-			public string KUNNR_ZH_OLD { get; set; }
-
-			public string NAME1_ZH_OLD { get; set; }
-
-			public string NAME2_ZH_OLD { get; set; }
-
-			public string CITY1_ZH_OLD { get; set; }
-
-			public string POST_CODE1_ZH_OLD { get; set; }
-
-			public string STREET_ZH_OLD { get; set; }
-
-			public string HOUSE_NUM1_ZH_OLD { get; set; }
-
-			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_DATEN
-				{
-					ORDERID = (string)row["ORDERID"],
-					VBELN = (string)row["VBELN"],
-					AKTION = (string)row["AKTION"],
-					KTEXT = (string)row["KTEXT"],
-					ZZFAHRG = (string)row["ZZFAHRG"],
-					ZZREFNR = (string)row["ZZREFNR"],
-					ZZKENN = (string)row["ZZKENN"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
-					ADATUM = (string.IsNullOrEmpty(row["ADATUM"].ToString())) ? null : (DateTime?)row["ADATUM"],
-					PSTATUS = (string)row["PSTATUS"],
-					PKTEXT = (string)row["PKTEXT"],
-					EQUNR = (string)row["EQUNR"],
-					ZUSER = (string)row["ZUSER"],
-					KUNNR_ZH_OLD = (string)row["KUNNR_ZH_OLD"],
-					NAME1_ZH_OLD = (string)row["NAME1_ZH_OLD"],
-					NAME2_ZH_OLD = (string)row["NAME2_ZH_OLD"],
-					CITY1_ZH_OLD = (string)row["CITY1_ZH_OLD"],
-					POST_CODE1_ZH_OLD = (string)row["POST_CODE1_ZH_OLD"],
-					STREET_ZH_OLD = (string)row["STREET_ZH_OLD"],
-					HOUSE_NUM1_ZH_OLD = (string)row["HOUSE_NUM1_ZH_OLD"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_DATEN> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_DATEN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_DATEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_DATEN).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_DATEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_DATEN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_DATEN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_DATEN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZANF_READ_DATEN_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_DATEN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_DATEN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_DATEN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_DATEN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_DATEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_DATEN>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZANF_READ_DATEN_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_DATEN> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_DATEN>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_ADRESS : IModelMappingApplied
@@ -360,6 +250,177 @@ namespace SapORM.Models
 			}
 		}
 
+		public partial class GT_DATEN : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ORDERID { get; set; }
+
+			public string VBELN { get; set; }
+
+			public string AKTION { get; set; }
+
+			public string KTEXT { get; set; }
+
+			public string ZZFAHRG { get; set; }
+
+			public string ZZREFNR { get; set; }
+
+			public string ZZKENN { get; set; }
+
+			public DateTime? ERDAT { get; set; }
+
+			public DateTime? ADATUM { get; set; }
+
+			public string PSTATUS { get; set; }
+
+			public string PKTEXT { get; set; }
+
+			public string EQUNR { get; set; }
+
+			public string ZUSER { get; set; }
+
+			public string KUNNR_ZH_OLD { get; set; }
+
+			public string NAME1_ZH_OLD { get; set; }
+
+			public string NAME2_ZH_OLD { get; set; }
+
+			public string CITY1_ZH_OLD { get; set; }
+
+			public string POST_CODE1_ZH_OLD { get; set; }
+
+			public string STREET_ZH_OLD { get; set; }
+
+			public string HOUSE_NUM1_ZH_OLD { get; set; }
+
+			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_DATEN
+				{
+					ORDERID = (string)row["ORDERID"],
+					VBELN = (string)row["VBELN"],
+					AKTION = (string)row["AKTION"],
+					KTEXT = (string)row["KTEXT"],
+					ZZFAHRG = (string)row["ZZFAHRG"],
+					ZZREFNR = (string)row["ZZREFNR"],
+					ZZKENN = (string)row["ZZKENN"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+					ADATUM = string.IsNullOrEmpty(row["ADATUM"].ToString()) ? null : (DateTime?)row["ADATUM"],
+					PSTATUS = (string)row["PSTATUS"],
+					PKTEXT = (string)row["PKTEXT"],
+					EQUNR = (string)row["EQUNR"],
+					ZUSER = (string)row["ZUSER"],
+					KUNNR_ZH_OLD = (string)row["KUNNR_ZH_OLD"],
+					NAME1_ZH_OLD = (string)row["NAME1_ZH_OLD"],
+					NAME2_ZH_OLD = (string)row["NAME2_ZH_OLD"],
+					CITY1_ZH_OLD = (string)row["CITY1_ZH_OLD"],
+					POST_CODE1_ZH_OLD = (string)row["POST_CODE1_ZH_OLD"],
+					STREET_ZH_OLD = (string)row["STREET_ZH_OLD"],
+					HOUSE_NUM1_ZH_OLD = (string)row["HOUSE_NUM1_ZH_OLD"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_DATEN> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_DATEN> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_DATEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_DATEN).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_DATEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_DATEN> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_DATEN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_DATEN>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZANF_READ_DATEN_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_DATEN> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_DATEN>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_DATEN> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_DATEN>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_DATEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_DATEN>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZANF_READ_DATEN_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_DATEN> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_DATEN>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class GT_KLAERFALLTEXT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -487,36 +548,21 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_DATEN> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
 		public static DataTable ToTable(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_ADRESS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_ADRESS> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_DATEN> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
 		public static DataTable ToTable(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_KLAERFALLTEXT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZANF_READ_DATEN_01.GT_KLAERFALLTEXT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

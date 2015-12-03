@@ -69,29 +69,38 @@ namespace GeneralTools.Models
             return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
         }
 
-        public static DataTable ToDataTable<T>(this IList<T> source)
+        public static DataTable ToExcelExportDataTable<T>(this IList<T> source)
+        {
+            return source.ToDataTable(pi => pi.GetCustomAttributes(true).None(p => p.GetType() == typeof (GridExportIgnoreAttribute)));
+        }
+
+        public static DataTable ToDataTable<T>(this IList<T> source, Func<PropertyInfo, bool> propertySelectorFunc = null)
         {
             var dt = new DataTable();
             var properties = TypeDescriptor.GetProperties(typeof(T));
             
             // Column Headers
-            for (int i = 0; i < properties.Count; i++)
+            for (var i = 0; i < properties.Count; i++)
             {
-                PropertyDescriptor property = properties[i];
+                var property = properties[i];
                 var propType = property.PropertyType;
                 if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof (Nullable<>))
                     propType = propType.GetGenericArguments()[0];
-                dt.Columns.Add(property.Name, propType);
+
+                var propertyInfo = property.ComponentType.GetProperty(property.Name);
+                if (propertySelectorFunc == null || (propertyInfo != null && propertySelectorFunc(propertyInfo)))
+                    dt.Columns.Add(property.Name, propType);
             }
 
             // Data
-            object[] values = new object[properties.Count];
+            var values = new object[dt.Columns.Count];
 
-            foreach (T item in source)
+            foreach (var item in source)
             {
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < dt.Columns.Count; i++)
                 {
-                    values[i] = properties[i].GetValue(item);
+                    var columnName = dt.Columns[i].ColumnName;
+                    values[i] = properties[columnName].GetValue(item);
                 }
                 dt.Rows.Add(values);
             }
@@ -573,6 +582,11 @@ namespace GeneralTools.Models
             return (stringValue.NotNullOrEmpty().ToUpper() == "X");
         }
 
+        public static bool XToBoolInverse(this string stringValue)
+        {
+            return (stringValue.NotNullOrEmpty().ToUpper() != "X");
+        }
+
         public static Int64 ToLong(this string stringValue, Int64 defaultValue = -1)
         {
             Int64 tmp;
@@ -996,6 +1010,11 @@ namespace GeneralTools.Models
         public static string BoolToX(this bool boolValue)
         {
             return boolValue.ToCustomString("X", "");
+        }
+
+        public static string BoolToXInverse(this bool boolValue)
+        {
+            return boolValue.ToCustomString("", "X");
         }
     }
 

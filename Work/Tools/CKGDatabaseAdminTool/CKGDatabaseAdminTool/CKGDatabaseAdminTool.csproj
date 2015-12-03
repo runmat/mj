@@ -43,7 +43,43 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>database.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Data.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Core.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Grid.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v11.2.Core, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Grid.v11.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2007Silver.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Themes.Office2007Silver.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2010Black.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Themes.Office2010Black.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.2">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.XtraEditors.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.2.Design">
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.XtraEditors.v11.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="DevXPressTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevXPressTools.dll</HintPath>
+    </Reference>
     <Reference Include="Fluent, Version=2.0.4807.24668, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Ribbon\Fluent.dll</HintPath>
@@ -68,15 +104,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucSapOrmModelGeneration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ucReportBapiApplications.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ucCheckBapis.xaml">
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ucGitBranchInfoItems.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ucManageGitBranches.xaml">
+    <Page Include="UserControls\ucManageGitBranchesDevX.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ucCheckBapis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -125,14 +172,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucSapOrmModelGeneration.xaml.cs">
+      <DependentUpon>ucSapOrmModelGeneration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucGitBranchInfoItems.xaml.cs">
+      <DependentUpon>ucGitBranchInfoItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucManageGitBranchesDevX.xaml.cs">
+      <DependentUpon>ucManageGitBranchesDevX.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucReportBapiApplications.xaml.cs">
       <DependentUpon>ucReportBapiApplications.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ucCheckBapis.xaml.cs">
       <DependentUpon>ucCheckBapis.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ucManageGitBranches.xaml.cs">
-      <DependentUpon>ucManageGitBranches.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ucApplicationDetails.xaml.cs">
       <DependentUpon>ucApplicationDetails.xaml</DependentUpon>
@@ -194,6 +247,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeneralTools\GeneralTools.csproj">
+      <Project>{a4f36243-8d89-460f-acb3-ef7df37d6fca}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WpfTools4\WpfTools4.csproj">
       <Project>{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}</Project>
       <Name>WpfTools4</Name>
@@ -222,7 +279,19 @@
   <ItemGroup>
     <Resource Include="Images\excel_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="splashscreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="database.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\info.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)\bin\debug" "C:\inst\CKGDatabaseAdminTool" /E /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

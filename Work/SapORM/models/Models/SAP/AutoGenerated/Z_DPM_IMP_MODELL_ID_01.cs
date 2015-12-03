@@ -21,6 +21,22 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_IMP_MODELL_ID_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_WEB_MAIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEB_MAIL", value);
+		}
+
+		public static void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEB_USER", value);
+		}
+
 		public partial class GT_IN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -185,7 +201,7 @@ namespace SapORM.Models
 					UNIT_NR = (string)row["UNIT_NR"],
 					ZMODELL = (string)row["ZMODELL"],
 					ZMODEL_ID = (string)row["ZMODEL_ID"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					BEM = (string)row["BEM"],
 
@@ -294,20 +310,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_IMP_MODELL_ID_01.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_IMP_MODELL_ID_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_IMP_MODELL_ID_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

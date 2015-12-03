@@ -2,6 +2,7 @@
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Controllers;
+using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -15,13 +16,15 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult FahrzeugHistorie()
         {
+            EquipmentHistorieViewModel.DataInit();
+
             return View(EquipmentHistorieViewModel);
         }
 
         [CkgApplication]
         public ActionResult FahrzeugHistorieZurFin(string fin)
         {
-            EquipmentHistorieViewModel.LoadHistorie(fin);
+            EquipmentHistorieViewModel.DataInitAndLoad(fin);
 
             return View(EquipmentHistorieViewModel);
         }
@@ -29,7 +32,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult GetFahrzeugHistoriePartial(string fahrgestellnummer)
         {
-            EquipmentHistorieViewModel.LoadHistorie(fahrgestellnummer);
+            EquipmentHistorieViewModel.DataInitAndLoad(fahrgestellnummer);
 
             return PartialView("Historie/HistorieDetail", EquipmentHistorieViewModel.EquipmentHistorie);
         }
@@ -63,6 +66,16 @@ namespace ServicesMvc.Controllers
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = "Historie.pdf" };
+        }
+
+        public ActionResult ArchivedDocumentsAsPdf()
+        {
+            var pdfBytes = EquipmentHistorieViewModel.GetDocumentsFromArchive();
+
+            if (pdfBytes == null)
+                return View("Historie/HistorieNoDocumentsFound");
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = string.Format("{0}_{1}.pdf", Localize.Documents, EquipmentHistorieViewModel.EquipmentHistorie.Fahrgestellnummer) };
         }
 
         [HttpPost]
