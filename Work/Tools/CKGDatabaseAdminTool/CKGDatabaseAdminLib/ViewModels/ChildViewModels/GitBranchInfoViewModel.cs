@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
@@ -91,7 +92,7 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         private DataTable GetGitBranchesAsDataTable()
         {
-            return (GitBranches != null ? GitBranches.ToDataTable() : new DataTable());
+            return (GitBranches != null ? GitBranches.ToExcelExportDataTable() : new DataTable());
         }
     }
 }

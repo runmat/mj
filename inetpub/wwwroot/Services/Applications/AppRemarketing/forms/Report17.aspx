@@ -248,6 +248,14 @@
                                                     <telerik:GridBoundColumn DataField="ZULDAT" SortExpression="ZULDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
+                                                    </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
                                         </telerik:RadGrid>

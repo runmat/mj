@@ -464,7 +464,8 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.TUEV_AU = s.Fahrzeugdaten.TuevAu;
 
                             // Halter
-                            d.ZZREFNR1 = s.HalterName.NotNullOrEmpty().ToUpper();
+                            var halterNameSap = s.HalterName.NotNullOrEmpty().ToUpper();
+                            d.ZZREFNR1 = halterNameSap.Substring(0, Math.Min(20, halterNameSap.Length));
 
                             // Zulassung
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);

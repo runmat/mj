@@ -15,7 +15,11 @@
     <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.Kennzeichen
     <span class="margin-left-10 margin-right-5 bold">@Localize.Status</span> @Model.Status
     <span class="margin-left-10 margin-right-5 bold">@Localize.StorageLocation</span>@Model.Lagerort
-    <a href='@Url.Action("FahrzeughistoriePdf", "Equi")' class="btn blue float-right"> @Localize.DownloadPdf <i class="icon-download-alt"></i></a>
+    <a href='@Url.Action("FahrzeughistoriePdf", "Equi")' class="btn blue pull-right"> @Localize.DownloadPdf <i class="icon-download-alt"></i></a>
+@if (Model.HasArchives)
+{
+    <a href='@Url.Action("ArchivedDocumentsAsPdf", "Equi")' target="_blank" class="btn blue pull-right margin-right-10"> @Localize.ArchivedDocuments <i class="icon-file"></i></a>
+}
 </h5>
 
 <div class="tabbable tabbable-custom margin-top-15">
