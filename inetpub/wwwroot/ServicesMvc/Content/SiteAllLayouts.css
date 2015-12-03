@@ -1414,8 +1414,12 @@ div.span-alert-placeholder .alert {
     opacity: 0.4!important;
 }
 
-
-
+.report-generator-buttons, .report-generator-wrapper {
+    display: inline-block;
+}
 .report-generator-wrapper li.persistable-form-dropdown-menu {
     text-align: left;
+}
+.report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
+    display: inline-block;
 }
