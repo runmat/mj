@@ -101,6 +101,7 @@
     <Compile Include="Services\ApplicationBapiDataServiceSql.cs" />
     <Compile Include="Services\ApplicationCopyDataServiceSql.cs" />
     <Compile Include="Services\SqlExecutionDataServiceSql.cs" />
+    <Compile Include="Services\Config.cs" />
     <Compile Include="Services\FieldTranslationCopyDataServiceSql.cs" />
     <Compile Include="Services\Bapi2Report4CsvExportDataServiceSql.cs" />
     <Compile Include="Services\BapiCheckDataService.cs" />

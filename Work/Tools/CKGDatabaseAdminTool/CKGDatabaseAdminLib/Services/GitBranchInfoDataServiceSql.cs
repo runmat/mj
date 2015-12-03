@@ -41,7 +41,7 @@ namespace CKGDatabaseAdminLib.Services
 
         private void LoadData(string connectionName)
         {
-            var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+            var sectionData = Config.GetAllDbConnections();
             _dataContext = new DatabaseContext(sectionData.Get(connectionName));
             _dataContext.GitBranchInfos.Load();
             

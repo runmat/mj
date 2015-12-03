@@ -169,14 +169,14 @@ namespace CKGDatabaseAdminLib.ViewModels
         private void LoadDbConnections()
         {
             DbConnections = new ObservableCollection<string>();
-            var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+            var sectionData = Config.GetAllDbConnections();
             foreach (var item in sectionData.AllKeys)
             {
                 DbConnections.Add(item);
             }
-            if (DbConnections.Count > 0)
+            if (DbConnections.Count > 1)
             {
-                ActualDatabase = DbConnections[0];
+                ActualDatabase = DbConnections[1];
             }
         }
 
@@ -203,7 +203,7 @@ namespace CKGDatabaseAdminLib.ViewModels
             }
 
             // Git-Branch Verwaltung nur in DAD-Datenbanken
-            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
+            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD")))
             {
                 GitBranchViewModel = new GitBranchInfoViewModel(this);
                 if (UseDefaultStartupView)
