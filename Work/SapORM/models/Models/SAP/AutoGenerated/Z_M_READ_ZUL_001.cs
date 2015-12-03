@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,37 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_READ_ZUL_001).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_DAT_FREIS_ZUL_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_FREIS_ZUL_BIS", value);
+		}
+
+		public static void SetImportParameter_I_DAT_FREIS_ZUL_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_FREIS_ZUL_VON", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_I_VERWENDUNGSZWECK(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERWENDUNGSZWECK", value);
+		}
+
+		public static void SetImportParameter_I_ZULDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ZULDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZULDAT_VON", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -100,6 +132,8 @@ namespace SapORM.Models
 
 			public string ZZCARPORT { get; set; }
 
+			public string STATIONSCODE { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -132,13 +166,14 @@ namespace SapORM.Models
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
 					ZKENNZEICHEN = (string)row["ZKENNZEICHEN"],
 					MVA_NUMMER = (string)row["MVA_NUMMER"],
-					ZZDAT_EIN = (string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString())) ? null : (DateTime?)row["ZZDAT_EIN"],
-					ZZDAT_BER = (string.IsNullOrEmpty(row["ZZDAT_BER"].ToString())) ? null : (DateTime?)row["ZZDAT_BER"],
-					DAT_FREIS_ZUL = (string.IsNullOrEmpty(row["DAT_FREIS_ZUL"].ToString())) ? null : (DateTime?)row["DAT_FREIS_ZUL"],
-					ZULDAT = (string.IsNullOrEmpty(row["ZULDAT"].ToString())) ? null : (DateTime?)row["ZULDAT"],
-					DAT_MEL_ZUL = (string.IsNullOrEmpty(row["DAT_MEL_ZUL"].ToString())) ? null : (DateTime?)row["DAT_MEL_ZUL"],
+					ZZDAT_EIN = string.IsNullOrEmpty(row["ZZDAT_EIN"].ToString()) ? null : (DateTime?)row["ZZDAT_EIN"],
+					ZZDAT_BER = string.IsNullOrEmpty(row["ZZDAT_BER"].ToString()) ? null : (DateTime?)row["ZZDAT_BER"],
+					DAT_FREIS_ZUL = string.IsNullOrEmpty(row["DAT_FREIS_ZUL"].ToString()) ? null : (DateTime?)row["DAT_FREIS_ZUL"],
+					ZULDAT = string.IsNullOrEmpty(row["ZULDAT"].ToString()) ? null : (DateTime?)row["ZULDAT"],
+					DAT_MEL_ZUL = string.IsNullOrEmpty(row["DAT_MEL_ZUL"].ToString()) ? null : (DateTime?)row["DAT_MEL_ZUL"],
 					EQUNR = (string)row["EQUNR"],
 					ZZCARPORT = (string)row["ZZCARPORT"],
+					STATIONSCODE = (string)row["STATIONSCODE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -163,7 +198,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -177,7 +212,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -192,7 +227,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_READ_ZUL_001", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -202,7 +237,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -212,7 +247,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -222,7 +257,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_READ_ZUL_001", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -232,7 +267,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -243,11 +278,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_READ_ZUL_001.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_READ_ZUL_001.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

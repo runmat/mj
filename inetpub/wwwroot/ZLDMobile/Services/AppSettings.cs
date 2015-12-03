@@ -19,6 +19,12 @@ namespace ZLDMobile.Services
 
         public string AppOwnerFullName { get; set; }
 
+        public string AppOwnerNameAndFullName { get; private set; }
+
+        public string AppOwnerImpressumPartialViewName { get; private set; }
+
+        public string AppOwnerKontaktPartialViewName { get; private set; }
+
         public string AppCopyRight { get; set; }
 
         public bool IsClickDummyMode { get { return ConfigurationManager.AppSettings["IsClickDummyMode"].NotNullOrEmpty().ToLower() == "true"; } }

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using GeneralTools.Contracts;
-using GeneralTools.Models;
 using GeneralTools.Services;
 using Microsoft.VisualBasic;
 using SapORM.Contracts;
-
 using ERPConnect;
-
 
 namespace SapORM.Services
 {
@@ -109,7 +108,7 @@ namespace SapORM.Services
         private byte[] _lastByteArrayImportParameter = null;
 
 
-        public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false)
+        public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null)
         {
             var itemsCollect = new RFCTableCollection();
 
@@ -369,8 +368,7 @@ namespace SapORM.Services
                         && !String.IsNullOrEmpty(erpEx.ABAPException)
                         && Array.IndexOf(_acceptableErpExceptions, erpEx.ABAPException.ToUpper()) > -1)
                     {
-                        if (!modelGenerationMode)
-                            return false;
+                        return false;
                     }
                     else
                     {
@@ -852,6 +850,23 @@ namespace SapORM.Services
             return null;
         }
 
+        public T GetExportParameter<T>(string name)
+        {
+            try
+            {
+                var expParamValue = ((DataTable) Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2];
+
+                if (expParamValue == DBNull.Value)
+                    return default(T);
+
+                return (T) expParamValue;
+            }
+            catch (Exception)
+            {
+                throw new Exception("ExportParameter mit dem Namen: " + name + " nicht vorhanden!");
+            }
+        }
+
 
 
         public DataTable GetExportTable(string name)
@@ -1040,7 +1055,7 @@ namespace SapORM.Services
         /// <summary>
         /// In bestimmten Fällen kann das Aufbewahen des Stacktrace fehlschlagen (wenn das Exception in einer anderen Routine ausgelöst wurde als die in der die Catch sich befindet)
         /// </summary>
-        /// <param name="exception">Ausnahme deren Stacktrace bewahrt werden soll</param>
+        /// <param name="e">Ausnahme deren Stacktrace bewahrt werden soll</param>
         private static void PreserveStackTrace(Exception e)
         {
             var ctx = new StreamingContext(StreamingContextStates.CrossAppDomain);
@@ -1050,6 +1065,207 @@ namespace SapORM.Services
             e.GetObjectData(si, ctx);
             mgr.RegisterObject(e, 1, si);
             mgr.DoFixups();
+        }
+
+        public BapiStructure GetBapiStructure()
+        {
+            var con = CreateErpConnection(_sapConnection);
+
+            try
+            {
+                var structure = new BapiStructure();
+
+                con.Open(false);
+
+                var func = con.CreateFunction(BapiName);
+
+                // Exports -> Daten zu SAP
+                foreach (RFCParameter impItem in func.Exports)
+                {
+                    var item = impItem;
+
+                    if (item.IsStructure())
+                    {
+                        if (!structure.ImportTables.ContainsKey(item.Name))
+                        {
+                            var rfcStructure = item.ToStructure();
+
+                            structure.ImportTables.Add(item.Name, new List<BapiField>());
+
+                            foreach (RFCTableColumn col in rfcStructure.Columns)
+                            {
+                                structure.ImportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else if (item.IsTable())
+                    {
+                        if (!structure.ImportTables.ContainsKey(item.Name))
+                        {
+                            var rfcTable = item.ToTable();
+
+                            structure.ImportTables.Add(item.Name, new List<BapiField>());
+
+                            foreach (RFCTableColumn col in rfcTable.Columns)
+                            {
+                                structure.ImportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        structure.ImportParameters.Add(new BapiField { Name = item.Name, Type = GetDotNetType(item.Type), Length = item.Length, Decimals = item.Decimals });
+                    }
+                }
+
+                // Imports -> Daten von SAP
+                foreach (RFCParameter expItem in func.Imports)
+                {
+                    var item = expItem;
+
+                    if (item.IsStructure())
+                    {
+                        if (!structure.ExportTables.ContainsKey(item.Name))
+                        {
+                            var rfcStructure = item.ToStructure();
+
+                            structure.ExportTables.Add(item.Name, new List<BapiField>());
+                            
+                            foreach (RFCTableColumn col in rfcStructure.Columns)
+                            {
+                                structure.ExportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else if (item.IsTable())
+                    {
+                        if (!structure.ExportTables.ContainsKey(item.Name))
+                        {
+                            var rfcTable = item.ToTable();
+
+                            structure.ExportTables.Add(item.Name, new List<BapiField>());
+
+                            foreach (RFCTableColumn col in rfcTable.Columns)
+                            {
+                                structure.ExportTables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        structure.ExportParameters.Add(new BapiField { Name = item.Name, Type = GetDotNetType(item.Type), Length = item.Length, Decimals = item.Decimals });
+                    }
+                }
+
+                foreach (RFCParameter chItem in func.Changings)
+                {
+                    var item = chItem;
+
+                    if (item.IsStructure())
+                    {
+                        if (!structure.Tables.ContainsKey(item.Name))
+                        {
+                            var rfcStructure = item.ToStructure();
+
+                            structure.Tables.Add(item.Name, new List<BapiField>());
+
+                            foreach (RFCTableColumn col in rfcStructure.Columns)
+                            {
+                                structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else if (item.IsTable())
+                    {
+                        if (!structure.Tables.ContainsKey(item.Name))
+                        {
+                            var rfcTable = item.ToTable();
+
+                            structure.Tables.Add(item.Name, new List<BapiField>());
+
+                            foreach (RFCTableColumn col in rfcTable.Columns)
+                            {
+                                structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        structure.Parameters.Add(new BapiField { Name = item.Name, Type = GetDotNetType(item.Type), Length = item.Length, Decimals = item.Decimals });
+                    }
+                }
+
+                foreach (RFCTable tblItem in func.Tables)
+                {
+                    var item = tblItem;
+
+                    if (!structure.Tables.ContainsKey(item.Name))
+                    {
+                        structure.Tables.Add(item.Name, new List<BapiField>());
+
+                        foreach (RFCTableColumn col in item.Columns)
+                        {
+                            structure.Tables[item.Name].Add(new BapiField { Name = col.Name, Type = GetDotNetType(col.Type), Length = col.Length, Decimals = col.Decimals });
+                        }
+                    }
+                }
+
+                return structure;
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                    con.Dispose();
+                }
+            }
+        }
+
+        public byte[] GetBapiStructureSerialized()
+        {
+            var bapiStructure = GetBapiStructure();
+
+            var ms = new MemoryStream();
+            var myFormatter = new BinaryFormatter();
+
+            myFormatter.Serialize(ms, bapiStructure);
+            ms.Close();
+
+            return ms.ToArray();
+        }
+
+        private static Type GetDotNetType(RFCTYPE rfcType)
+        {
+            switch (rfcType)
+            {
+                case RFCTYPE.INT1:
+                case RFCTYPE.INT2:
+                case RFCTYPE.INT:
+                    return typeof(int?);
+
+                case RFCTYPE.BCD:
+                    return typeof(decimal?);
+
+                case RFCTYPE.BYTE:
+                case RFCTYPE.XSTRING:
+                    return typeof(byte[]);
+
+                case RFCTYPE.FLOAT:
+                    return typeof(double?);
+
+                case RFCTYPE.CHAR:
+                case RFCTYPE.STRING:
+                case RFCTYPE.NUM:
+                case RFCTYPE.TIME:
+                    return typeof(string);
+
+                case RFCTYPE.DATE:
+                    return typeof(DateTime?);
+
+                default:
+                    return null;
+            }
         }
 
         #endregion
