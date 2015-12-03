@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_V_UEBERF_VERFUEGBARKEIT2).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER", value);
+		}
+
+		public static string GetExportParameter_O_MELDUNG(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("O_MELDUNG").NotNullOrEmpty().Trim();
+		}
+
 		public partial class GT_FAHRER : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -148,11 +159,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_VERFUEGBARKEIT2.GT_FAHRER> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_UEBERF_VERFUEGBARKEIT2.GT_FAHRER> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

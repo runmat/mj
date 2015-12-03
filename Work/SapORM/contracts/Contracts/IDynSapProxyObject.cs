@@ -27,7 +27,7 @@ namespace SapORM.Contracts
 
         DateTime? CallBapiForBapi(ref DataTable mExportTabelle, ref DataTable mImportTabelle, string bapiName, ISapConnection sapConnection);
 
-        bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false);
+        bool CallBapi(ILogService logService = null, ILogonContext logonContext = null);
 
 
         DataTable Import { get; set; }
@@ -44,6 +44,8 @@ namespace SapORM.Contracts
         DataTable Export { get; set; }
 
         string GetExportParameter(string name);
+
+        T GetExportParameter<T>(string name);
         
         byte[] GetExportParameterByte(string name);
         
@@ -52,6 +54,10 @@ namespace SapORM.Contracts
         IEnumerable<DataTable> GetExportTables();
 
         void Reset();
+
+        BapiStructure GetBapiStructure();
+
+        byte[] GetBapiStructureSerialized();
 
         #endregion
     }

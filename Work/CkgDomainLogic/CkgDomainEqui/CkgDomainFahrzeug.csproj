@@ -385,6 +385,10 @@
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
       <Name>WebTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CkgDomainArchive\CkgDomainArchive.csproj">
+      <Project>{F1C484BE-4B1D-465D-8761-E29DA430A53A}</Project>
+      <Name>CkgDomainArchive</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
       <Project>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</Project>
       <Name>CkgDomainAutohaus</Name>

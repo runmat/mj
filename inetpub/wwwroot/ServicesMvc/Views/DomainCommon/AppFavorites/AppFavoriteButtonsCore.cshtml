@@ -21,9 +21,19 @@
 
     foreach (var menuItem in Model.GetMenuItems(menuGroup.AppType).Where(a => a.AppIsMvcFavorite))
     {
-        <a class="btn black app-favorite-on-homepage" onclick="return OnMenuItemClick(this, @menuItem.AppID, true);" href="@Model.GetUserEncrytpedUrl(menuItem)">
-            <i class="@menuGroupClassName margin-right-5"></i>
-            @Model.TranslateMenuAppName(@menuItem)
-        </a>
+        if (menuItem.AppURL.ToLower().StartsWith("http"))
+        {
+            <a class="btn black app-favorite-on-homepage" onclick="return OnMenuItemClick(this, @menuItem.AppID, true);" href="@menuItem.AppURL" target="_blank">
+                <i class="@menuGroupClassName margin-right-5"></i>
+                @Model.TranslateMenuAppName(menuItem)
+            </a>
+        }
+        else
+        {
+            <a class="btn black app-favorite-on-homepage" onclick="return OnMenuItemClick(this, @menuItem.AppID, true);" href="@Model.GetUserEncrytpedUrl(menuItem)">
+                <i class="@menuGroupClassName margin-right-5"></i>
+                @Model.TranslateMenuAppName(menuItem)
+            </a>
+        }    
     }
 }

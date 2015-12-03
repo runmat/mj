@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -19,6 +20,7 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_DPM_UPD_COC_01).Name, inputParameterKeys, inputParameterValues);
 		}
+
 
 		public partial class GT_DAT : IModelMappingApplied
 		{
@@ -316,22 +318,22 @@ namespace SapORM.Models
 					VORG_NR = (string)row["VORG_NR"],
 					VIN = (string)row["VIN"],
 					AUFTR_NR_KD = (string)row["AUFTR_NR_KD"],
-					AUSLIEFER_DATUM = (string.IsNullOrEmpty(row["AUSLIEFER_DATUM"].ToString())) ? null : (DateTime?)row["AUSLIEFER_DATUM"],
+					AUSLIEFER_DATUM = string.IsNullOrEmpty(row["AUSLIEFER_DATUM"].ToString()) ? null : (DateTime?)row["AUSLIEFER_DATUM"],
 					LAND = (string)row["LAND"],
 					EQUNR = (string)row["EQUNR"],
 					KUNNR_AG = (string)row["KUNNR_AG"],
-					COC_ERF_DAT = (string.IsNullOrEmpty(row["COC_ERF_DAT"].ToString())) ? null : (DateTime?)row["COC_ERF_DAT"],
-					AUFTRAG_DAT = (string.IsNullOrEmpty(row["AUFTRAG_DAT"].ToString())) ? null : (DateTime?)row["AUFTRAG_DAT"],
+					COC_ERF_DAT = string.IsNullOrEmpty(row["COC_ERF_DAT"].ToString()) ? null : (DateTime?)row["COC_ERF_DAT"],
+					AUFTRAG_DAT = string.IsNullOrEmpty(row["AUFTRAG_DAT"].ToString()) ? null : (DateTime?)row["AUFTRAG_DAT"],
 					COC_KD_ORIG = (string)row["COC_KD_ORIG"],
 					COC_KD_KOPIE = (string)row["COC_KD_KOPIE"],
 					COC_DRUCK_ORIG = (string)row["COC_DRUCK_ORIG"],
 					COC_DRUCK_KOPIE = (string)row["COC_DRUCK_KOPIE"],
-					COC_DRUCK_DATUM = (string.IsNullOrEmpty(row["COC_DRUCK_DATUM"].ToString())) ? null : (DateTime?)row["COC_DRUCK_DATUM"],
+					COC_DRUCK_DATUM = string.IsNullOrEmpty(row["COC_DRUCK_DATUM"].ToString()) ? null : (DateTime?)row["COC_DRUCK_DATUM"],
 					COC_DRUCK_ZEIT = (string)row["COC_DRUCK_ZEIT"],
 					ZBII_DRUCK = (string)row["ZBII_DRUCK"],
-					ZBII_DRUCK_DATUM = (string.IsNullOrEmpty(row["ZBII_DRUCK_DATUM"].ToString())) ? null : (DateTime?)row["ZBII_DRUCK_DATUM"],
+					ZBII_DRUCK_DATUM = string.IsNullOrEmpty(row["ZBII_DRUCK_DATUM"].ToString()) ? null : (DateTime?)row["ZBII_DRUCK_DATUM"],
 					ZBII_DRUCK_ZEIT = (string)row["ZBII_DRUCK_ZEIT"],
-					ZBII_KBA_MELD = (string.IsNullOrEmpty(row["ZBII_KBA_MELD"].ToString())) ? null : (DateTime?)row["ZBII_KBA_MELD"],
+					ZBII_KBA_MELD = string.IsNullOrEmpty(row["ZBII_KBA_MELD"].ToString()) ? null : (DateTime?)row["ZBII_KBA_MELD"],
 					VERSAND = (string)row["VERSAND"],
 					ZUL_DEZ = (string)row["ZUL_DEZ"],
 					ZUL_AUSLAND = (string)row["ZUL_AUSLAND"],
@@ -475,7 +477,7 @@ namespace SapORM.Models
 
 			public static List<GT_DAT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_DAT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -489,7 +491,7 @@ namespace SapORM.Models
 
 			public static List<GT_DAT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DAT> ToList(ISapDataService sapDataService)
@@ -504,7 +506,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_UPD_COC_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DAT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -514,7 +516,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DAT> GetExportList(ISapDataService sapDataService)
@@ -524,7 +526,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DAT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -534,7 +536,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_UPD_COC_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DAT> GetImportList(ISapDataService sapDataService)
@@ -544,7 +546,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -555,11 +557,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_UPD_COC_01.GT_DAT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_UPD_COC_01.GT_DAT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

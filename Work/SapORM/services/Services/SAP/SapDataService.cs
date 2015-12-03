@@ -77,9 +77,13 @@ namespace SapORM.Services
             return DynSapProxyFactory.CreateProxyCache(sapFunction, SapConnection, DynSapProxyFactory).GetProxy();
         }
 
-        public void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure)
+        public byte[] GetSerializedBapiStructuresForBapiCheck(string sapFunction)
         {
-            DynSapProxyFactory.CreateProxyCache(sapFunction, SapConnection, DynSapProxyFactory).GetSerializedBapiStructuresForBapiCheck(sapFunction, ref importStructure, ref exportStructure);
+            sapFunction = sapFunction.NotNullOrEmpty().ToUpper();
+
+            var sapProxy = DynSapProxyFactory.CreateProxyCache(sapFunction, SapConnection, DynSapProxyFactory).GetEmptyProxy();
+
+            return sapProxy.GetBapiStructureSerialized();
         }
 
         private void PrepareBapi(string sapFunction, string inputParameterKeys, params object[] inputParameterValues)
@@ -207,6 +211,12 @@ namespace SapORM.Services
         {
             if (_sapProxy == null) return null;
             return _sapProxy.GetExportParameterByte(paramName);
+        }
+
+        public T GetExportParameter<T>(string paramName)
+        {
+            if (_sapProxy == null) return default(T);
+            return _sapProxy.GetExportParameter<T>(paramName);
         }
 
         #endregion

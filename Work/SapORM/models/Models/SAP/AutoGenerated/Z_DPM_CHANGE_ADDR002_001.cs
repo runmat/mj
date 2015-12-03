@@ -21,6 +21,92 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_CHANGE_ADDR002_001).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ADDRTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ADDRTYP", value);
+		}
+
+		public static void SetImportParameter_I_CITY1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CITY1", value);
+		}
+
+		public static void SetImportParameter_I_COUNTRY(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_COUNTRY", value);
+		}
+
+		public static void SetImportParameter_I_EX_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EX_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_FAXNUMBER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAXNUMBER", value);
+		}
+
+		public static void SetImportParameter_I_HOUSENUM1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HOUSENUM1", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME1", value);
+		}
+
+		public static void SetImportParameter_I_NAME2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME2", value);
+		}
+
+		public static void SetImportParameter_I_POSTCODE1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_POSTCODE1", value);
+		}
+
+		public static void SetImportParameter_I_SMTPADDR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SMTPADDR", value);
+		}
+
+		public static void SetImportParameter_I_STREET(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STREET", value);
+		}
+
+		public static void SetImportParameter_I_TELNUMBER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TELNUMBER", value);
+		}
+
+		public static void SetImportParameter_I_TYPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TYPE", value);
+		}
+
+		public static void SetImportParameter_I_WEBUSER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEBUSER", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -109,9 +195,9 @@ namespace SapORM.Models
 					MC_NAME1 = (string)row["MC_NAME1"],
 					MC_CITY1 = (string)row["MC_CITY1"],
 					MC_STREET = (string)row["MC_STREET"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					AENAM = (string)row["AENAM"],
 
 					SAPConnection = sapConnection,
@@ -217,11 +303,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_CHANGE_ADDR002_001.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_CHANGE_ADDR002_001.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

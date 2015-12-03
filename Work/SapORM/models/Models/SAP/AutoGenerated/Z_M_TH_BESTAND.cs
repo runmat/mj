@@ -21,6 +21,47 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_TH_BESTAND).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_EQTYP(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EQTYP", value);
+		}
+
+		public static void SetImportParameter_I_SPD_TAGESDAT_MINUS_TAGE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SPD_TAGESDAT_MINUS_TAGE", value);
+		}
+
+		public static void SetImportParameter_I_SPERRDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_SPERRDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_SPERRDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_SPERRDAT_VON", value);
+		}
+
+		public static void SetImportParameter_I_TG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TG", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_BESTAND : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -103,7 +144,7 @@ namespace SapORM.Models
 					TG_CITY1 = (string)row["TG_CITY1"],
 					ZZHERST_TEXT = (string)row["ZZHERST_TEXT"],
 					ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
-					SPERRDAT = (string.IsNullOrEmpty(row["SPERRDAT"].ToString())) ? null : (DateTime?)row["SPERRDAT"],
+					SPERRDAT = string.IsNullOrEmpty(row["SPERRDAT"].ToString()) ? null : (DateTime?)row["SPERRDAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -208,11 +249,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_TH_BESTAND.GT_BESTAND> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_TH_BESTAND.GT_BESTAND> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

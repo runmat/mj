@@ -1,0 +1,23 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.HaendlerAdressenViewModel
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title">Händler-Adressen<small> Pflege</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.HaendlerAdressenSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divGridItemDetails"></div>
+}
+
+
+
+
+
+
+

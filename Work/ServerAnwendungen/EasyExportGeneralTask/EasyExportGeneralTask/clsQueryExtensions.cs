@@ -690,11 +690,8 @@ namespace EasyExportGeneralTask
             if (taskConfig.MailsSenden)
             {
                 Helper.SendEMail(strSubj, "", row["EMAIL"].ToString(), row["Filepath"].ToString());
+                Thread.Sleep(2000);
             }
-            
-            Thread.Sleep(2000);
-
-            File.Delete(row["Filepath"].ToString());
         }
 
         public static void SavePictureLeasePlan(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, string betreff)
@@ -723,7 +720,8 @@ namespace EasyExportGeneralTask
             if (taskConfig.MailsSenden)
             {
                 Helper.SendEMail(betreff, "", taskConfig.MailEmpfaenger, row["Filepath"].ToString());
-            }            
+                Thread.Sleep(2000);
+            }
         }
 
         public static void SavePictureXLCheck(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, string titel)
@@ -956,6 +954,7 @@ namespace EasyExportGeneralTask
                     });
 
                 Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
+                Thread.Sleep(2000);
             }
         }
 
@@ -1004,6 +1003,7 @@ namespace EasyExportGeneralTask
                     });
 
                 Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
+                Thread.Sleep(2000);
             }
         }
 
@@ -1035,11 +1035,8 @@ namespace EasyExportGeneralTask
             if (taskConfig.MailsSenden)
             {
                 Helper.SendEMail(strSubj, "", item.EMAIL, row["Filepath"].ToString());
+                Thread.Sleep(2000);
             }
-
-            Thread.Sleep(2000);
-
-            File.Delete(row["Filepath"].ToString());
         }
 
         public static void SavePictureWKDA(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT item)
