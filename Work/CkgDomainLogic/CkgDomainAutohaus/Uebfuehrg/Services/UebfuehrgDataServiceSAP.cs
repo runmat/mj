@@ -194,12 +194,12 @@ namespace CkgDomainLogic.Uebfuehrg.Services
 
         public List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragSelector filter)
         {
-            var importList = Z_V_Ueberf_Auftr_Kund_Port.T_SELECT.GetImportListWithInit(SAP);
+            var importList = Z_V_UEBERF_AUFTR_KUND_PORT.T_SELECT.GetImportListWithInit(SAP);
             var sapFilter = AppModelMappings.Z_V_Ueberf_Auftr_Kund_Port_T_SELECT_To_HistoryAuftragSelector.CopyBack(filter);
             importList.Add(sapFilter);
             SAP.ApplyImport(importList);
             SAP.Execute();
-            var sapAuftraege = Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE.GetExportList(SAP);
+            var sapAuftraege = Z_V_UEBERF_AUFTR_KUND_PORT.T_AUFTRAEGE.GetExportList(SAP);
 
             return AppModelMappings.Z_V_Ueberf_Auftr_Kund_Port_T_AUFTRAEGE_To_HistoryAuftrag.Copy(sapAuftraege).ToList();
         }

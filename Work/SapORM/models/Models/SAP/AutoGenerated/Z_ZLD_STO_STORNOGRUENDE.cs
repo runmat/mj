@@ -21,6 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_STO_STORNOGRUENDE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
 		public partial class GT_GRUENDE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -163,11 +164,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_STO_STORNOGRUENDE.GT_GRUENDE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_STO_STORNOGRUENDE.GT_GRUENDE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

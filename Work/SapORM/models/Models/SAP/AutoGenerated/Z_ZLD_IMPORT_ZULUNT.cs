@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_IMPORT_ZULUNT).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GS_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -218,7 +229,7 @@ namespace SapORM.Models
 					MANDT = (string)row["MANDT"],
 					ZKBA1 = (string)row["ZKBA1"],
 					ZKBA2 = (string)row["ZKBA2"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					AENAM = (string)row["AENAM"],
 					PZUL_BRIEF = (string)row["PZUL_BRIEF"],
 					PUMSCHR_BRIEF = (string)row["PUMSCHR_BRIEF"],
@@ -327,11 +338,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<GS_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<GS_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GS_WEB).Name.ToLower());
@@ -339,46 +345,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<GS_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_WEB> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GS_WEB> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GS_WEB>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_IMPORT_ZULUNT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_WEB> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GS_WEB>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GS_WEB> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GS_WEB>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GS_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -409,11 +375,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_IMPORT_ZULUNT.GS_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_IMPORT_ZULUNT.GS_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

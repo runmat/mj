@@ -41,10 +41,15 @@ namespace GeneralTools.Services
 
         public static string FormatStreetAndHouseNo(IAddressStreetHouseNo addressModel)
         {
-            if (addressModel.HausNr.IsNullOrEmpty())
-                return addressModel.Strasse;
+            return FormatStreetAndHouseNo(addressModel.Strasse, addressModel.HausNr);
+        }
 
-            return string.Format("{0} {1}", addressModel.Strasse, addressModel.HausNr);
+        public static string FormatStreetAndHouseNo(string strasse, string hausNr)
+        {
+            if (hausNr.IsNullOrEmpty())
+                return strasse;
+
+            return string.Format("{0} {1}", strasse, hausNr);
         }
     }
 }

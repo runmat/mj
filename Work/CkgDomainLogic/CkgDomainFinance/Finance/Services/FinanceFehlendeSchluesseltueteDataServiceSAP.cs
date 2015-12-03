@@ -22,7 +22,7 @@ namespace CkgDomainLogic.Finance.Services
 
         public void DeleteFehlendeSchluesseltueteToSap(FehlendeSchluesseltuete item)
         {                        
-            Z_M_Schluesselverloren.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_M_SCHLUESSELVERLOREN.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
             item.KUNNR = LogonContext.KundenNr.ToSapKunnr();
             
             var lst = AppModelMappings.Z_M_Schluesselverloren_GT_WEB_IN_From_FehlendeSchluesseltuete.CopyBack(new List<FehlendeSchluesseltuete>() {item}).ToList();           

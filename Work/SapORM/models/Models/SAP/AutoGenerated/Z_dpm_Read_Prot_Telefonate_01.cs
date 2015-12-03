@@ -4,20 +4,52 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_dpm_Read_Prot_Telefonate_01
+	public partial class Z_DPM_READ_PROT_TELEFONATE_01
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_dpm_Read_Prot_Telefonate_01).Name);
+			sap.Init(typeof(Z_DPM_READ_PROT_TELEFONATE_01).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_dpm_Read_Prot_Telefonate_01).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_DPM_READ_PROT_TELEFONATE_01).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_ANRUFART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ANRUFART", value);
+		}
+
+		public static void SetImportParameter_I_ANRUFDATUM_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ANRUFDATUM_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ANRUFDATUM_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ANRUFDATUM_VON", value);
+		}
+
+		public static void SetImportParameter_I_ZVERT_ART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZVERT_ART", value);
+		}
+
+		public static string GetExportParameter_E_FOUND(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FOUND").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -67,7 +99,7 @@ namespace SapORM.Models
 					ZVERT_ART = (string)row["ZVERT_ART"],
 					TEL_NUMBER = (string)row["TEL_NUMBER"],
 					ANRUFART = (string)row["ANRUFART"],
-					ANRUFDATUM = (string.IsNullOrEmpty(row["ANRUFDATUM"].ToString())) ? null : (DateTime?)row["ANRUFDATUM"],
+					ANRUFDATUM = string.IsNullOrEmpty(row["ANRUFDATUM"].ToString()) ? null : (DateTime?)row["ANRUFDATUM"],
 					UZEIT_VON = (string)row["UZEIT_VON"],
 					UZEIT_BIS = (string)row["UZEIT_BIS"],
 					NAME_ANRUFER = (string)row["NAME_ANRUFER"],
@@ -97,7 +129,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_OUT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -111,7 +143,7 @@ namespace SapORM.Models
 
 			public static List<GT_OUT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> ToList(ISapDataService sapDataService)
@@ -124,9 +156,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_dpm_Read_Prot_Telefonate_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_PROT_TELEFONATE_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportListWithExecute(ISapDataService sapDataService)
@@ -136,7 +168,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetExportList(ISapDataService sapDataService)
@@ -146,7 +178,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -154,9 +186,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_dpm_Read_Prot_Telefonate_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_PROT_TELEFONATE_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_OUT> GetImportList(ISapDataService sapDataService)
@@ -166,7 +198,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -174,14 +206,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_dpm_Read_Prot_Telefonate_01.GT_OUT> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_PROT_TELEFONATE_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_dpm_Read_Prot_Telefonate_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

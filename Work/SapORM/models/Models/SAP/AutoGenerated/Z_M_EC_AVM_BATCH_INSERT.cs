@@ -21,118 +21,10 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_BATCH_INSERT).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_IN : IModelMappingApplied
+
+		public static void SetImportParameter_WEB_USER(ISapDataService sap, string value)
 		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string ZUNIT_NR { get; set; }
-
-			public static GT_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new GT_IN
-				{
-					ZUNIT_NR = (string)row["ZUNIT_NR"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<GT_IN> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<GT_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<GT_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_IN).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<GT_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_IN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<GT_IN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_EC_AVM_BATCH_INSERT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_IN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_IN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_IN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<GT_IN>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_EC_AVM_BATCH_INSERT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<GT_IN> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<GT_IN>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
+			sap.SetImportParameter("WEB_USER", value);
 		}
 
 		public partial class ZBATCH_IN : IModelMappingApplied
@@ -265,23 +157,23 @@ namespace SapORM.Models
 					ZLOEVM = (string)row["ZLOEVM"],
 					ZERNAM = (string)row["ZERNAM"],
 					ZEQUNR = (string)row["ZEQUNR"],
-					ZGW_DATUM = (string.IsNullOrEmpty(row["ZGW_DATUM"].ToString())) ? null : (DateTime?)row["ZGW_DATUM"],
+					ZGW_DATUM = string.IsNullOrEmpty(row["ZGW_DATUM"].ToString()) ? null : (DateTime?)row["ZGW_DATUM"],
 					ZGW_ZEIT = (string)row["ZGW_ZEIT"],
-					ZVERGDAT = (string.IsNullOrEmpty(row["ZVERGDAT"].ToString())) ? null : (DateTime?)row["ZVERGDAT"],
-					ZGW_DATUM_ZUL = (string.IsNullOrEmpty(row["ZGW_DATUM_ZUL"].ToString())) ? null : (DateTime?)row["ZGW_DATUM_ZUL"],
+					ZVERGDAT = string.IsNullOrEmpty(row["ZVERGDAT"].ToString()) ? null : (DateTime?)row["ZVERGDAT"],
+					ZGW_DATUM_ZUL = string.IsNullOrEmpty(row["ZGW_DATUM_ZUL"].ToString()) ? null : (DateTime?)row["ZGW_DATUM_ZUL"],
 					ZGW_ZEIT_ZUL = (string)row["ZGW_ZEIT_ZUL"],
 					ZLEASING = (string)row["ZLEASING"],
 					ZVERGZEIT = (string)row["ZVERGZEIT"],
 					ZUSER_SPERR = (string)row["ZUSER_SPERR"],
-					ZDAT_SPERR = (string.IsNullOrEmpty(row["ZDAT_SPERR"].ToString())) ? null : (DateTime?)row["ZDAT_SPERR"],
+					ZDAT_SPERR = string.IsNullOrEmpty(row["ZDAT_SPERR"].ToString()) ? null : (DateTime?)row["ZDAT_SPERR"],
 					ZBEM_SPERR = (string)row["ZBEM_SPERR"],
 					ZSONDERSERIE = (string)row["ZSONDERSERIE"],
 					ZNAVI = (string)row["ZNAVI"],
 					ZAHK = (string)row["ZAHK"],
-					DAT_UMSETZ = (string.IsNullOrEmpty(row["DAT_UMSETZ"].ToString())) ? null : (DateTime?)row["DAT_UMSETZ"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					DAT_UMSETZ = string.IsNullOrEmpty(row["DAT_UMSETZ"].ToString()) ? null : (DateTime?)row["DAT_UMSETZ"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					AENAM = (string)row["AENAM"],
-					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					AEDAT = string.IsNullOrEmpty(row["AEDAT"].ToString()) ? null : (DateTime?)row["AEDAT"],
 					BLUETOOTH = (string)row["BLUETOOTH"],
 					ANTR = (string)row["ANTR"],
 
@@ -306,11 +198,6 @@ namespace SapORM.Models
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<ZBATCH_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
 			public static IEnumerable<ZBATCH_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(ZBATCH_IN).Name.ToLower());
@@ -318,46 +205,6 @@ namespace SapORM.Models
 					return null;
 
 				return Select(tbl, sapConnection);
-			}
-
-			public static List<ZBATCH_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ZBATCH_IN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<ZBATCH_IN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ZBATCH_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_EC_AVM_BATCH_INSERT", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ZBATCH_IN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ZBATCH_IN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ZBATCH_IN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ZBATCH_IN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<ZBATCH_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -380,30 +227,134 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
+
+		public partial class GT_IN : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ZUNIT_NR { get; set; }
+
+			public static GT_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_IN
+				{
+					ZUNIT_NR = (string)row["ZUNIT_NR"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_IN> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_IN).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_IN> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_IN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_IN>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_EC_AVM_BATCH_INSERT", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_IN> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_IN>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_IN> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_IN>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_IN>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_EC_AVM_BATCH_INSERT", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_IN> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_IN>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
 	{
-
-		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_INSERT.GT_IN> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_INSERT.GT_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_INSERT.ZBATCH_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_BATCH_INSERT.ZBATCH_IN> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_BATCH_INSERT.GT_IN> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

@@ -20,6 +20,32 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_ZLD_SET_GRUPPE_KDZU).Name, inputParameterKeys, inputParameterValues);
 		}
+
+
+		public static void SetImportParameter_I_FUNC(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FUNC", value);
+		}
+
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPPE", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
 	}
 
 	public static partial class DataTableExtensions

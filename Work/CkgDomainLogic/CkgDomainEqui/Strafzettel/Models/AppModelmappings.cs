@@ -12,12 +12,12 @@ namespace CkgDomainLogic.Strafzettel.Models
         #region Load from Repository
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_DPM_CD_Strafzettel.GT_OUT, StrafzettelModel> Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_Strafzettel
+        static public ModelMapping<Z_DPM_CD_STRAFZETTEL.GT_OUT, StrafzettelModel> Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_Strafzettel
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_Strafzettel.GT_OUT, StrafzettelModel>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_STRAFZETTEL.GT_OUT, StrafzettelModel>(
                                                  new Dictionary<string, string>(),
                                                  //{
                                                  //    { "VERTRAGS_NR", "VertragsNr" },

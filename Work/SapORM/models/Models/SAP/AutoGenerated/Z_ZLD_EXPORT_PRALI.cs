@@ -21,6 +21,57 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_PRALI).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AUSGABE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AUSGABE", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ_BIS", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ_VON", value);
+		}
+
+		public static void SetImportParameter_I_SORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SORT", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_ZDELTA(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZDELTA", value);
+		}
+
+		public static void SetImportParameter_I_ZGESAMT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZGESAMT", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT", value);
+		}
+
+		public static string GetExportParameter_E_FILENAME(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FILENAME").NotNullOrEmpty().Trim();
+		}
+
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_PDF");
+		}
+
 		public partial class GT_BELEG : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -142,11 +193,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PRALI.GT_BELEG> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_PRALI.GT_BELEG> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
