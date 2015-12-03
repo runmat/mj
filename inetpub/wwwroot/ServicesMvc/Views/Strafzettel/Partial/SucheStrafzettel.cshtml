@@ -30,14 +30,11 @@
             @Html.FormRadioButtonListFor(m => m.FahrzeugStatus, StrafzettelSelektor.FahrzeugStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "auto" })
             @Html.FormDatePickerFor(m => m.RechnungsDatum, new { @class = "m-wrap small", col = "auto" })
 
-            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "auto" })
-            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap", col = "auto" })
-
 
             @Html.FormMultiColumnModeEnd("auto")
 
 
-            @Html.FormRequiredFieldsSummary()
+            @*@Html.FormRequiredFieldsSummary()*@
 
             <div class="form-actions">
                 <button type="submit" class='btn blue' accesskey="s"><i class='icon-search margin-right-5'></i>@Localize.SearchAsVerb</button>
