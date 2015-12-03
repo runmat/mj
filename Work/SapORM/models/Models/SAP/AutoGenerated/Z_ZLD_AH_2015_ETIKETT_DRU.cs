@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_AH_2015_ETIKETT_DRU).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_COMMIT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_COMMIT", value);
+		}
+
+		public static void SetImportParameter_I_DRUCK_KENNZEICHNEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_DRUCK_KENNZEICHNEN", value);
+		}
+
+		public static void SetImportParameter_I_DRU_POS_SPALTE(ISapDataService sap, int? value)
+		{
+			sap.SetImportParameter("I_DRU_POS_SPALTE", value);
+		}
+
+		public static void SetImportParameter_I_DRU_POS_ZEILE(ISapDataService sap, int? value)
+		{
+			sap.SetImportParameter("I_DRU_POS_ZEILE", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
+		{
+			return sap.GetExportParameter<byte[]>("E_PDF");
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class IT_BELN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -142,11 +178,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_2015_ETIKETT_DRU.IT_BELN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_AH_2015_ETIKETT_DRU.IT_BELN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
