@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_IMP_CARPORT_MELD_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEB_USER", value);
+		}
+
 		public partial class GT_WEB : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -81,7 +87,7 @@ namespace SapORM.Models
 					MVA_NUMMER = (string)row["MVA_NUMMER"],
 					BARCODE = (string)row["BARCODE"],
 					ANZ_KENNZ_CPL = (string)row["ANZ_KENNZ_CPL"],
-					DAT_DEMONT = (string.IsNullOrEmpty(row["DAT_DEMONT"].ToString())) ? null : (DateTime?)row["DAT_DEMONT"],
+					DAT_DEMONT = string.IsNullOrEmpty(row["DAT_DEMONT"].ToString()) ? null : (DateTime?)row["DAT_DEMONT"],
 					FZG_ABGEMELDET = (string)row["FZG_ABGEMELDET"],
 					ZB1_VORH = (string)row["ZB1_VORH"],
 					ZB2_VORH = (string)row["ZB2_VORH"],
@@ -196,11 +202,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

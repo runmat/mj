@@ -21,6 +21,32 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_M_EC_AVM_PDIWECHSEL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ZZCARPORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZCARPORT", value);
+		}
+
+		public static void SetImportParameter_I_ZZDATBEM(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZDATBEM", value);
+		}
+
+		public static void SetImportParameter_ZZCARPORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZZCARPORT", value);
+		}
+
+		public static void SetImportParameter_ZZKUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZZKUNNR", value);
+		}
+
+		public static void SetImportParameter_ZZQMNUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZZQMNUM", value);
+		}
+
 		public partial class ZZBEMERKUNG : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -145,11 +171,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_EC_AVM_PDIWECHSEL.ZZBEMERKUNG> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_EC_AVM_PDIWECHSEL.ZZBEMERKUNG> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

@@ -21,6 +21,72 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_CALC_DURCHLAUFZEIT_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_ABMART_KLAER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ABMART_KLAER", value);
+		}
+
+		public static void SetImportParameter_I_ABMART_STD(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ABMART_STD", value);
+		}
+
+		public static void SetImportParameter_I_ANLAGE_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ANLAGE_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ANLAGE_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ANLAGE_VON", value);
+		}
+
+		public static void SetImportParameter_I_ERLEDIGT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERLEDIGT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ERLEDIGT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERLEDIGT_VON", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_SELEKTION1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION1", value);
+		}
+
+		public static void SetImportParameter_I_SELEKTION2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION2", value);
+		}
+
+		public static void SetImportParameter_I_SELEKTION3(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_SELEKTION3", value);
+		}
+
+		public static void SetImportParameter_I_ZEIT_IN_WERKTAGEN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZEIT_IN_WERKTAGEN", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class ES_STATISTIK : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -31,61 +97,61 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public string DURCHSCHNITT_DAUER { get; set; }
+			public decimal? DURCHSCHNITT_DAUER { get; set; }
 
-			public string ANZ_GES { get; set; }
+			public int? ANZ_GES { get; set; }
 
-			public string ANZ_STD_LE_10 { get; set; }
+			public int? ANZ_STD_LE_10 { get; set; }
 
-			public string ANZ_STD_11_20 { get; set; }
+			public int? ANZ_STD_11_20 { get; set; }
 
-			public string ANZ_STD_21_30 { get; set; }
+			public int? ANZ_STD_21_30 { get; set; }
 
-			public string ANZ_STD_31_40 { get; set; }
+			public int? ANZ_STD_31_40 { get; set; }
 
-			public string ANZ_STD_GT_40 { get; set; }
+			public int? ANZ_STD_GT_40 { get; set; }
 
-			public string ANZ_KLAER_LE_10 { get; set; }
+			public int? ANZ_KLAER_LE_10 { get; set; }
 
-			public string ANZ_KLAER_11_20 { get; set; }
+			public int? ANZ_KLAER_11_20 { get; set; }
 
-			public string ANZ_KLAER_21_30 { get; set; }
+			public int? ANZ_KLAER_21_30 { get; set; }
 
-			public string ANZ_KLAER_31_40 { get; set; }
+			public int? ANZ_KLAER_31_40 { get; set; }
 
-			public string ANZ_KLAER_GT_40 { get; set; }
+			public int? ANZ_KLAER_GT_40 { get; set; }
 
-			public string ANZ_ALLE_LE_10 { get; set; }
+			public int? ANZ_ALLE_LE_10 { get; set; }
 
-			public string ANZ_ALLE_11_20 { get; set; }
+			public int? ANZ_ALLE_11_20 { get; set; }
 
-			public string ANZ_ALLE_21_30 { get; set; }
+			public int? ANZ_ALLE_21_30 { get; set; }
 
-			public string ANZ_ALLE_31_40 { get; set; }
+			public int? ANZ_ALLE_31_40 { get; set; }
 
-			public string ANZ_ALLE_GT_40 { get; set; }
+			public int? ANZ_ALLE_GT_40 { get; set; }
 
 			public static ES_STATISTIK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ES_STATISTIK
 				{
-					DURCHSCHNITT_DAUER = (string)row["DURCHSCHNITT_DAUER"],
-					ANZ_GES = (string)row["ANZ_GES"],
-					ANZ_STD_LE_10 = (string)row["ANZ_STD_LE_10"],
-					ANZ_STD_11_20 = (string)row["ANZ_STD_11_20"],
-					ANZ_STD_21_30 = (string)row["ANZ_STD_21_30"],
-					ANZ_STD_31_40 = (string)row["ANZ_STD_31_40"],
-					ANZ_STD_GT_40 = (string)row["ANZ_STD_GT_40"],
-					ANZ_KLAER_LE_10 = (string)row["ANZ_KLAER_LE_10"],
-					ANZ_KLAER_11_20 = (string)row["ANZ_KLAER_11_20"],
-					ANZ_KLAER_21_30 = (string)row["ANZ_KLAER_21_30"],
-					ANZ_KLAER_31_40 = (string)row["ANZ_KLAER_31_40"],
-					ANZ_KLAER_GT_40 = (string)row["ANZ_KLAER_GT_40"],
-					ANZ_ALLE_LE_10 = (string)row["ANZ_ALLE_LE_10"],
-					ANZ_ALLE_11_20 = (string)row["ANZ_ALLE_11_20"],
-					ANZ_ALLE_21_30 = (string)row["ANZ_ALLE_21_30"],
-					ANZ_ALLE_31_40 = (string)row["ANZ_ALLE_31_40"],
-					ANZ_ALLE_GT_40 = (string)row["ANZ_ALLE_GT_40"],
+					DURCHSCHNITT_DAUER = string.IsNullOrEmpty(row["DURCHSCHNITT_DAUER"].ToString()) ? null : (decimal?)row["DURCHSCHNITT_DAUER"],
+					ANZ_GES = string.IsNullOrEmpty(row["ANZ_GES"].ToString()) ? null : (int?)row["ANZ_GES"],
+					ANZ_STD_LE_10 = string.IsNullOrEmpty(row["ANZ_STD_LE_10"].ToString()) ? null : (int?)row["ANZ_STD_LE_10"],
+					ANZ_STD_11_20 = string.IsNullOrEmpty(row["ANZ_STD_11_20"].ToString()) ? null : (int?)row["ANZ_STD_11_20"],
+					ANZ_STD_21_30 = string.IsNullOrEmpty(row["ANZ_STD_21_30"].ToString()) ? null : (int?)row["ANZ_STD_21_30"],
+					ANZ_STD_31_40 = string.IsNullOrEmpty(row["ANZ_STD_31_40"].ToString()) ? null : (int?)row["ANZ_STD_31_40"],
+					ANZ_STD_GT_40 = string.IsNullOrEmpty(row["ANZ_STD_GT_40"].ToString()) ? null : (int?)row["ANZ_STD_GT_40"],
+					ANZ_KLAER_LE_10 = string.IsNullOrEmpty(row["ANZ_KLAER_LE_10"].ToString()) ? null : (int?)row["ANZ_KLAER_LE_10"],
+					ANZ_KLAER_11_20 = string.IsNullOrEmpty(row["ANZ_KLAER_11_20"].ToString()) ? null : (int?)row["ANZ_KLAER_11_20"],
+					ANZ_KLAER_21_30 = string.IsNullOrEmpty(row["ANZ_KLAER_21_30"].ToString()) ? null : (int?)row["ANZ_KLAER_21_30"],
+					ANZ_KLAER_31_40 = string.IsNullOrEmpty(row["ANZ_KLAER_31_40"].ToString()) ? null : (int?)row["ANZ_KLAER_31_40"],
+					ANZ_KLAER_GT_40 = string.IsNullOrEmpty(row["ANZ_KLAER_GT_40"].ToString()) ? null : (int?)row["ANZ_KLAER_GT_40"],
+					ANZ_ALLE_LE_10 = string.IsNullOrEmpty(row["ANZ_ALLE_LE_10"].ToString()) ? null : (int?)row["ANZ_ALLE_LE_10"],
+					ANZ_ALLE_11_20 = string.IsNullOrEmpty(row["ANZ_ALLE_11_20"].ToString()) ? null : (int?)row["ANZ_ALLE_11_20"],
+					ANZ_ALLE_21_30 = string.IsNullOrEmpty(row["ANZ_ALLE_21_30"].ToString()) ? null : (int?)row["ANZ_ALLE_21_30"],
+					ANZ_ALLE_31_40 = string.IsNullOrEmpty(row["ANZ_ALLE_31_40"].ToString()) ? null : (int?)row["ANZ_ALLE_31_40"],
+					ANZ_ALLE_GT_40 = string.IsNullOrEmpty(row["ANZ_ALLE_GT_40"].ToString()) ? null : (int?)row["ANZ_ALLE_GT_40"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -161,26 +227,6 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<ES_STATISTIK> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<ES_STATISTIK>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_CALC_DURCHLAUFZEIT_01", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_STATISTIK> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_STATISTIK>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 
 		public partial class ET_OUT : IModelMappingApplied
@@ -229,7 +275,7 @@ namespace SapORM.Models
 				{
 					KUNNR = (string)row["KUNNR"],
 					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
-					ERLEDIGT_DATUM = (string.IsNullOrEmpty(row["ERLEDIGT_DATUM"].ToString())) ? null : (DateTime?)row["ERLEDIGT_DATUM"],
+					ERLEDIGT_DATUM = string.IsNullOrEmpty(row["ERLEDIGT_DATUM"].ToString()) ? null : (DateTime?)row["ERLEDIGT_DATUM"],
 					ABMELDEART = (string)row["ABMELDEART"],
 					SELEKTION1 = (string)row["SELEKTION1"],
 					SELEKTION2 = (string)row["SELEKTION2"],
@@ -241,7 +287,7 @@ namespace SapORM.Models
 					KENNZ = (string)row["KENNZ"],
 					DURCHLAUFZEIT_STUNDEN = (string)row["DURCHLAUFZEIT_STUNDEN"],
 					DURCHLAUFZEIT_TAGE = (string)row["DURCHLAUFZEIT_TAGE"],
-					ANLAGEDATUM = (string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString())) ? null : (DateTime?)row["ANLAGEDATUM"],
+					ANLAGEDATUM = string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString()) ? null : (DateTime?)row["ANLAGEDATUM"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -348,20 +394,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_CALC_DURCHLAUFZEIT_01.ES_STATISTIK> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

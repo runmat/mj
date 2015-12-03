@@ -1,10 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports CKG.Base.Business
 Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
-Imports ErpBaseMvc
 Imports CKG.Base.Kernel.Security
 
 Partial Public Class ServicesMenue
@@ -17,33 +14,11 @@ Partial Public Class ServicesMenue
     Public MenuHelpDeskSource As DataView
     Public MenuReportSource As DataView
 
-
-
-
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         If Not Session("objUser") Is Nothing Then
 
             m_User = ErpBaseMvc.MVC.GetSessionUserObject()
-
-
-            'Dim customersWithoutPageVisitLog As String
-            'customersWithoutPageVisitLog = ConfigurationManager.AppSettings("SkipPageVisitLogForCustomerId")
-
-            'If String.IsNullOrEmpty(customersWithoutPageVisitLog) = False Then
-
-            '    Dim listOfCustomersWithoutPageVisitLog() As String
-            '    listOfCustomersWithoutPageVisitLog = customersWithoutPageVisitLog.Split(CChar(","))
-
-            '    ' Ich gehe davon aus dass wenn customersWithoutPageVisitLog nicht leer ist dass darin eine Liste von Komma separierten Werten drin ist
-            '    If listOfCustomersWithoutPageVisitLog.Contains(m_User.Customer.CustomerId.ToString()) Then
-            '        ' Script für die Erstellung von Log Nachrichten prueft diesen Wert ab
-            '        SkipPageVisitLog.Value = "true"
-            '    Else
-            '        SkipPageVisitLog.Value = "false"
-            '    End If
-            'End If
-
             m_App = New Security.App(m_User)
 
             Dim conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -55,7 +30,6 @@ Partial Public Class ServicesMenue
                 Dim blnReturn As Boolean = True
 
                 command.CommandText = "SELECT AppType,DisplayName FROM ApplicationType ORDER BY Rank"
-
 
                 Dim da As New SqlClient.SqlDataAdapter(command)
                 command.Connection = conn
@@ -71,18 +45,21 @@ Partial Public Class ServicesMenue
                     Else
                         dRow("AppURL") = GetUrlString(dRow("AppURL").ToString(), dRow("AppID").ToString())
                     End If
-                    dRow("AppURL") = dRow("AppURL").ToString() & "&cp=" & GetUserContextParams(dRow("AppID").ToString())
 
-                    ' PageVisit soll auf dem Server geloggt werden und nicht auf via JS
-                    ' Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
-                    Dim url As String = dRow("AppURL").ToString()
+                    If Not dRow("AppURL").ToString().ToLower().StartsWith("http") Then
+                        dRow("AppURL") = dRow("AppURL").ToString() & "&cp=" & GetUserContextParams(dRow("AppID").ToString())
 
-                    ' Url encoden für die Verwendung als Query Params
-                    url = HttpUtility.UrlEncode(url)
-                    url = Convert.ToBase64String(Encoding.UTF8.GetBytes(url.ToCharArray()))
+                        ' PageVisit soll auf dem Server geloggt werden und nicht auf via JS
+                        ' Umschreiben als Aufruf an Log.aspx der dann einen Redirect zu dieser Adresse erstellt
+                        Dim url As String = dRow("AppURL").ToString()
 
-                    ' Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
-                    dRow("AppURL") = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow("AppID"), "&url=", url)
+                        ' Url encoden für die Verwendung als Query Params
+                        url = HttpUtility.UrlEncode(url)
+                        url = Convert.ToBase64String(Encoding.UTF8.GetBytes(url.ToCharArray()))
+
+                        ' Jetzt besteht die neue url aus: appid, original url unverändert übernehmen
+                        dRow("AppURL") = String.Concat("../Start/Log.aspx?", "APP-ID=", dRow("AppID"), "&url=", url)
+                    End If
 
                 Next
 
@@ -102,7 +79,6 @@ Partial Public Class ServicesMenue
                 dvAppLinks.RowFilter = "AppType='Helpdesk' AND AppInMenu=1"
                 MenuHelpDeskSource = New DataView(appTable)
                 MenuHelpDeskSource.RowFilter = "AppType='Helpdesk' AND AppInMenu=1"
-
 
                 If m_User.PasswordExpired And Not m_User.InitialPassword = True Then
                     Try

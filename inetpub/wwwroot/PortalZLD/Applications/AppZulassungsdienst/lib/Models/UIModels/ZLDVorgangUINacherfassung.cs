@@ -7,11 +7,15 @@ namespace AppZulassungsdienst.lib.Models
     {
         public string Bemerkung { get; set; }
 
+        public string BemerkungShow { get { return String.Format("Bemerkung AH/ZLD: {0}", Bemerkung); } }
+
         public bool? Flieger { get; set; }
 
         public bool? Nachbearbeiten { get; set; }
 
         public string Infotext { get; set; }
+
+        public string InfotextShow { get { return String.Format("Bemerkung vom Tablet: {0}", Infotext); } }
 
         public string Name1 { get; set; }
 

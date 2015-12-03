@@ -19,6 +19,8 @@ namespace CKGDatabaseAdminLib.Services
 
         public ObservableCollection<GitBranchInfo> GitBranches { get; private set; }
 
+        public ObservableCollection<CkgEntwickler> CkgEntwickler { get { return _dataContext.CkgEntwickler.Local; } }
+
         private DatabaseContext _dataContext;
 
         public GitBranchInfoDataServiceSql(string connectionName)
@@ -42,6 +44,10 @@ namespace CKGDatabaseAdminLib.Services
             var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
             _dataContext = new DatabaseContext(sectionData.Get(connectionName));
             _dataContext.GitBranchInfos.Load();
+            
+            // ReSharper disable once EmptyGeneralCatchClause
+            try { _dataContext.CkgEntwickler.Load(); } catch { }
+
             FilterData();
         }
 

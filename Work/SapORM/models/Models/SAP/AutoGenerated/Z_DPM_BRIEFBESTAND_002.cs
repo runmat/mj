@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,22 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_DPM_BRIEFBESTAND_002).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_BESTAND(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BESTAND", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_TEMPVERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TEMPVERS", value);
 		}
 
 		public partial class GT_DATEN : IModelMappingApplied
@@ -80,6 +97,8 @@ namespace SapORM.Models
 
 			public string VERSGRU_TXT { get; set; }
 
+			public string KUNNR_ZH { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -93,10 +112,10 @@ namespace SapORM.Models
 					MSGRP = (string)row["MSGRP"],
 					STORT = (string)row["STORT"],
 					ZZVGRUND = (string)row["ZZVGRUND"],
-					DATAB = (string.IsNullOrEmpty(row["DATAB"].ToString())) ? null : (DateTime?)row["DATAB"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
-					EXPIRY_DATE = (string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString())) ? null : (DateTime?)row["EXPIRY_DATE"],
-					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
+					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
+					EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
+					PICKDAT = string.IsNullOrEmpty(row["PICKDAT"].ToString()) ? null : (DateTime?)row["PICKDAT"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 					NAME1_ZL = (string)row["NAME1_ZL"],
@@ -105,10 +124,11 @@ namespace SapORM.Models
 					HOUSE_NUM1_ZL = (string)row["HOUSE_NUM1_ZL"],
 					POST_CODE1_ZL = (string)row["POST_CODE1_ZL"],
 					CITY1_ZL = (string)row["CITY1_ZL"],
-					DAT_VERTR_BEG = (string.IsNullOrEmpty(row["DAT_VERTR_BEG"].ToString())) ? null : (DateTime?)row["DAT_VERTR_BEG"],
-					DAT_VERTR_END = (string.IsNullOrEmpty(row["DAT_VERTR_END"].ToString())) ? null : (DateTime?)row["DAT_VERTR_END"],
+					DAT_VERTR_BEG = string.IsNullOrEmpty(row["DAT_VERTR_BEG"].ToString()) ? null : (DateTime?)row["DAT_VERTR_BEG"],
+					DAT_VERTR_END = string.IsNullOrEmpty(row["DAT_VERTR_END"].ToString()) ? null : (DateTime?)row["DAT_VERTR_END"],
 					VERTRAGS_STAT = (string)row["VERTRAGS_STAT"],
 					VERSGRU_TXT = (string)row["VERSGRU_TXT"],
+					KUNNR_ZH = (string)row["KUNNR_ZH"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -133,7 +153,7 @@ namespace SapORM.Models
 
 			public static List<GT_DATEN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_DATEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -147,7 +167,7 @@ namespace SapORM.Models
 
 			public static List<GT_DATEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DATEN> ToList(ISapDataService sapDataService)
@@ -162,7 +182,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_BRIEFBESTAND_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DATEN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -172,7 +192,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DATEN> GetExportList(ISapDataService sapDataService)
@@ -182,7 +202,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DATEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -192,7 +212,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_BRIEFBESTAND_002", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_DATEN> GetImportList(ISapDataService sapDataService)
@@ -202,7 +222,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -213,11 +233,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_BRIEFBESTAND_002.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_BRIEFBESTAND_002.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
