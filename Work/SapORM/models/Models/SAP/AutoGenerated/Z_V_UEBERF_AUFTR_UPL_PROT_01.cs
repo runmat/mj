@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_V_UEBERF_AUFTR_UPL_PROT_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_FAHRER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FAHRER", value);
+		}
+
+		public static void SetImportParameter_I_VBELN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VBELN", value);
+		}
+
+		public static string GetExportParameter_E_CITY1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_CITY1").NotNullOrEmpty().Trim();
+		}
+
+		public static string GetExportParameter_E_FAHRER(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_FAHRER").NotNullOrEmpty().Trim();
+		}
+
+		public static string GetExportParameter_E_NAME1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_NAME1").NotNullOrEmpty().Trim();
+		}
+
+		public static string GetExportParameter_E_PSTCD1(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_PSTCD1").NotNullOrEmpty().Trim();
+		}
+
+		public static string GetExportParameter_E_STREET(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_STREET").NotNullOrEmpty().Trim();
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -74,7 +110,7 @@ namespace SapORM.Models
 					KUNNR_AG = (string)row["KUNNR_AG"],
 					VBELN = (string)row["VBELN"],
 					FAHRTNR = (string)row["FAHRTNR"],
-					WADAT = (string.IsNullOrEmpty(row["WADAT"].ToString())) ? null : (DateTime?)row["WADAT"],
+					WADAT = string.IsNullOrEmpty(row["WADAT"].ToString()) ? null : (DateTime?)row["WADAT"],
 					EQUNR = (string)row["EQUNR"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
@@ -193,11 +229,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

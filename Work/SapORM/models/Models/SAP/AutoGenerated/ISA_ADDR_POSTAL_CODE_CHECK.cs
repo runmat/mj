@@ -21,6 +21,311 @@ namespace SapORM.Models
 			sap.Init(typeof(ISA_ADDR_POSTAL_CODE_CHECK).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_COUNTRY(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("COUNTRY", value);
+		}
+
+		public static void SetImportParameter_POSTAL_CODE_CITY(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("POSTAL_CODE_CITY", value);
+		}
+
+		public static void SetImportParameter_POSTAL_CODE_COMPANY(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("POSTAL_CODE_COMPANY", value);
+		}
+
+		public static void SetImportParameter_POSTAL_CODE_PO_BOX(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("POSTAL_CODE_PO_BOX", value);
+		}
+
+		public static void SetImportParameter_PO_BOX(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("PO_BOX", value);
+		}
+
+		public static void SetImportParameter_REGION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("REGION", value);
+		}
+
+		public partial class POSTAL_ADDRESS : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string NAME_CO { get; set; }
+
+			public string STREET { get; set; }
+
+			public string HOUSE_NUM1 { get; set; }
+
+			public string HOUSE_NUM2 { get; set; }
+
+			public string STR_SUPPL1 { get; set; }
+
+			public string STR_SUPPL2 { get; set; }
+
+			public string STR_SUPPL3 { get; set; }
+
+			public string CITY1 { get; set; }
+
+			public string CITY2 { get; set; }
+
+			public string HOME_CITY { get; set; }
+
+			public string POST_CODE1 { get; set; }
+
+			public string POST_CODE2 { get; set; }
+
+			public string POST_CODE3 { get; set; }
+
+			public string PCODE1_EXT { get; set; }
+
+			public string PCODE2_EXT { get; set; }
+
+			public string PCODE3_EXT { get; set; }
+
+			public string PO_BOX { get; set; }
+
+			public string PO_BOX_NUM { get; set; }
+
+			public string PO_BOX_LOC { get; set; }
+
+			public string PO_BOX_REG { get; set; }
+
+			public string PO_BOX_CTY { get; set; }
+
+			public string LOCATION { get; set; }
+
+			public string REGION { get; set; }
+
+			public string COUNTRY { get; set; }
+
+			public string PO_BOX_LOBBY { get; set; }
+
+			public string DELI_SERV_TYPE { get; set; }
+
+			public string DELI_SERV_NUMBER { get; set; }
+
+			public string COUNTY { get; set; }
+
+			public string TOWNSHIP { get; set; }
+
+			public static POSTAL_ADDRESS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new POSTAL_ADDRESS
+				{
+					NAME_CO = (string)row["NAME_CO"],
+					STREET = (string)row["STREET"],
+					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
+					HOUSE_NUM2 = (string)row["HOUSE_NUM2"],
+					STR_SUPPL1 = (string)row["STR_SUPPL1"],
+					STR_SUPPL2 = (string)row["STR_SUPPL2"],
+					STR_SUPPL3 = (string)row["STR_SUPPL3"],
+					CITY1 = (string)row["CITY1"],
+					CITY2 = (string)row["CITY2"],
+					HOME_CITY = (string)row["HOME_CITY"],
+					POST_CODE1 = (string)row["POST_CODE1"],
+					POST_CODE2 = (string)row["POST_CODE2"],
+					POST_CODE3 = (string)row["POST_CODE3"],
+					PCODE1_EXT = (string)row["PCODE1_EXT"],
+					PCODE2_EXT = (string)row["PCODE2_EXT"],
+					PCODE3_EXT = (string)row["PCODE3_EXT"],
+					PO_BOX = (string)row["PO_BOX"],
+					PO_BOX_NUM = (string)row["PO_BOX_NUM"],
+					PO_BOX_LOC = (string)row["PO_BOX_LOC"],
+					PO_BOX_REG = (string)row["PO_BOX_REG"],
+					PO_BOX_CTY = (string)row["PO_BOX_CTY"],
+					LOCATION = (string)row["LOCATION"],
+					REGION = (string)row["REGION"],
+					COUNTRY = (string)row["COUNTRY"],
+					PO_BOX_LOBBY = (string)row["PO_BOX_LOBBY"],
+					DELI_SERV_TYPE = (string)row["DELI_SERV_TYPE"],
+					DELI_SERV_NUMBER = (string)row["DELI_SERV_NUMBER"],
+					COUNTY = (string)row["COUNTY"],
+					TOWNSHIP = (string)row["TOWNSHIP"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<POSTAL_ADDRESS> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static IEnumerable<POSTAL_ADDRESS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(POSTAL_ADDRESS).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<POSTAL_ADDRESS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<POSTAL_ADDRESS>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<POSTAL_ADDRESS> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<POSTAL_ADDRESS>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class RETURN : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string TYPE { get; set; }
+
+			public string ID { get; set; }
+
+			public string NUMBER { get; set; }
+
+			public string MESSAGE { get; set; }
+
+			public string LOG_NO { get; set; }
+
+			public string LOG_MSG_NO { get; set; }
+
+			public string MESSAGE_V1 { get; set; }
+
+			public string MESSAGE_V2 { get; set; }
+
+			public string MESSAGE_V3 { get; set; }
+
+			public string MESSAGE_V4 { get; set; }
+
+			public static RETURN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new RETURN
+				{
+					TYPE = (string)row["TYPE"],
+					ID = (string)row["ID"],
+					NUMBER = (string)row["NUMBER"],
+					MESSAGE = (string)row["MESSAGE"],
+					LOG_NO = (string)row["LOG_NO"],
+					LOG_MSG_NO = (string)row["LOG_MSG_NO"],
+					MESSAGE_V1 = (string)row["MESSAGE_V1"],
+					MESSAGE_V2 = (string)row["MESSAGE_V2"],
+					MESSAGE_V3 = (string)row["MESSAGE_V3"],
+					MESSAGE_V4 = (string)row["MESSAGE_V4"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<RETURN> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<RETURN> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<RETURN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(RETURN).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<RETURN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<RETURN> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<RETURN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<RETURN>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<RETURN> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<RETURN>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<RETURN> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<RETURN>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class T005_WA : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -143,9 +448,9 @@ namespace SapORM.Models
 
 			public string AFAPL { get; set; }
 
-			public string GWGWRT { get; set; }
+			public decimal? GWGWRT { get; set; }
 
-			public string UMRWRT { get; set; }
+			public decimal? UMRWRT { get; set; }
 
 			public string KZRBWB { get; set; }
 
@@ -221,8 +526,8 @@ namespace SapORM.Models
 					WAERS = (string)row["WAERS"],
 					KURST = (string)row["KURST"],
 					AFAPL = (string)row["AFAPL"],
-					GWGWRT = (string)row["GWGWRT"],
-					UMRWRT = (string)row["UMRWRT"],
+					GWGWRT = string.IsNullOrEmpty(row["GWGWRT"].ToString()) ? null : (decimal?)row["GWGWRT"],
+					UMRWRT = string.IsNullOrEmpty(row["UMRWRT"].ToString()) ? null : (decimal?)row["UMRWRT"],
 					KZRBWB = (string)row["KZRBWB"],
 					XANZUM = (string)row["XANZUM"],
 					CTNCONCEPT = (string)row["CTNCONCEPT"],
@@ -302,26 +607,6 @@ namespace SapORM.Models
 					return new List<T005_WA>();
 				 
 				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<T005_WA> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<T005_WA>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<T005_WA> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<T005_WA>();
-				 
-				var dts = sapDataService.GetImportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -449,9 +734,9 @@ namespace SapORM.Models
 
 			public string AFAPL { get; set; }
 
-			public string GWGWRT { get; set; }
+			public decimal? GWGWRT { get; set; }
 
-			public string UMRWRT { get; set; }
+			public decimal? UMRWRT { get; set; }
 
 			public string KZRBWB { get; set; }
 
@@ -527,8 +812,8 @@ namespace SapORM.Models
 					WAERS = (string)row["WAERS"],
 					KURST = (string)row["KURST"],
 					AFAPL = (string)row["AFAPL"],
-					GWGWRT = (string)row["GWGWRT"],
-					UMRWRT = (string)row["UMRWRT"],
+					GWGWRT = string.IsNullOrEmpty(row["GWGWRT"].ToString()) ? null : (decimal?)row["GWGWRT"],
+					UMRWRT = string.IsNullOrEmpty(row["UMRWRT"].ToString()) ? null : (decimal?)row["UMRWRT"],
 					KZRBWB = (string)row["KZRBWB"],
 					XANZUM = (string)row["XANZUM"],
 					CTNCONCEPT = (string)row["CTNCONCEPT"],
@@ -611,390 +896,15 @@ namespace SapORM.Models
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
-
-			public static List<T005_WA_PO_BOX> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<T005_WA_PO_BOX>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<T005_WA_PO_BOX> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<T005_WA_PO_BOX>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class RETURN : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string TYPE { get; set; }
-
-			public string ID { get; set; }
-
-			public string NUMBER { get; set; }
-
-			public string MESSAGE { get; set; }
-
-			public string LOG_NO { get; set; }
-
-			public string LOG_MSG_NO { get; set; }
-
-			public string MESSAGE_V1 { get; set; }
-
-			public string MESSAGE_V2 { get; set; }
-
-			public string MESSAGE_V3 { get; set; }
-
-			public string MESSAGE_V4 { get; set; }
-
-			public static RETURN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new RETURN
-				{
-					TYPE = (string)row["TYPE"],
-					ID = (string)row["ID"],
-					NUMBER = (string)row["NUMBER"],
-					MESSAGE = (string)row["MESSAGE"],
-					LOG_NO = (string)row["LOG_NO"],
-					LOG_MSG_NO = (string)row["LOG_MSG_NO"],
-					MESSAGE_V1 = (string)row["MESSAGE_V1"],
-					MESSAGE_V2 = (string)row["MESSAGE_V2"],
-					MESSAGE_V3 = (string)row["MESSAGE_V3"],
-					MESSAGE_V4 = (string)row["MESSAGE_V4"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<RETURN> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<RETURN> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<RETURN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(RETURN).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<RETURN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<RETURN> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<RETURN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<RETURN>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<RETURN> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<RETURN>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<RETURN> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<RETURN>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<RETURN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<RETURN>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<RETURN> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<RETURN>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-		}
-
-		public partial class POSTAL_ADDRESS : IModelMappingApplied
-		{
-			[SapIgnore]
-			[ScriptIgnore]
-			public ISapConnection SAPConnection { get; set; }
-
-			[SapIgnore]
-			[ScriptIgnore]
-			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
-
-			public string NAME_CO { get; set; }
-
-			public string STREET { get; set; }
-
-			public string HOUSE_NUM1 { get; set; }
-
-			public string HOUSE_NUM2 { get; set; }
-
-			public string STR_SUPPL1 { get; set; }
-
-			public string STR_SUPPL2 { get; set; }
-
-			public string STR_SUPPL3 { get; set; }
-
-			public string CITY1 { get; set; }
-
-			public string CITY2 { get; set; }
-
-			public string HOME_CITY { get; set; }
-
-			public string POST_CODE1 { get; set; }
-
-			public string POST_CODE2 { get; set; }
-
-			public string POST_CODE3 { get; set; }
-
-			public string PCODE1_EXT { get; set; }
-
-			public string PCODE2_EXT { get; set; }
-
-			public string PCODE3_EXT { get; set; }
-
-			public string PO_BOX { get; set; }
-
-			public string PO_BOX_NUM { get; set; }
-
-			public string PO_BOX_LOC { get; set; }
-
-			public string PO_BOX_REG { get; set; }
-
-			public string PO_BOX_CTY { get; set; }
-
-			public string LOCATION { get; set; }
-
-			public string REGION { get; set; }
-
-			public string COUNTRY { get; set; }
-
-			public string PO_BOX_LOBBY { get; set; }
-
-			public string DELI_SERV_TYPE { get; set; }
-
-			public string DELI_SERV_NUMBER { get; set; }
-
-			public string COUNTY { get; set; }
-
-			public string TOWNSHIP { get; set; }
-
-			public static POSTAL_ADDRESS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
-			{
-				var o = new POSTAL_ADDRESS
-				{
-					NAME_CO = (string)row["NAME_CO"],
-					STREET = (string)row["STREET"],
-					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
-					HOUSE_NUM2 = (string)row["HOUSE_NUM2"],
-					STR_SUPPL1 = (string)row["STR_SUPPL1"],
-					STR_SUPPL2 = (string)row["STR_SUPPL2"],
-					STR_SUPPL3 = (string)row["STR_SUPPL3"],
-					CITY1 = (string)row["CITY1"],
-					CITY2 = (string)row["CITY2"],
-					HOME_CITY = (string)row["HOME_CITY"],
-					POST_CODE1 = (string)row["POST_CODE1"],
-					POST_CODE2 = (string)row["POST_CODE2"],
-					POST_CODE3 = (string)row["POST_CODE3"],
-					PCODE1_EXT = (string)row["PCODE1_EXT"],
-					PCODE2_EXT = (string)row["PCODE2_EXT"],
-					PCODE3_EXT = (string)row["PCODE3_EXT"],
-					PO_BOX = (string)row["PO_BOX"],
-					PO_BOX_NUM = (string)row["PO_BOX_NUM"],
-					PO_BOX_LOC = (string)row["PO_BOX_LOC"],
-					PO_BOX_REG = (string)row["PO_BOX_REG"],
-					PO_BOX_CTY = (string)row["PO_BOX_CTY"],
-					LOCATION = (string)row["LOCATION"],
-					REGION = (string)row["REGION"],
-					COUNTRY = (string)row["COUNTRY"],
-					PO_BOX_LOBBY = (string)row["PO_BOX_LOBBY"],
-					DELI_SERV_TYPE = (string)row["DELI_SERV_TYPE"],
-					DELI_SERV_NUMBER = (string)row["DELI_SERV_NUMBER"],
-					COUNTY = (string)row["COUNTY"],
-					TOWNSHIP = (string)row["TOWNSHIP"],
-
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
-				o.OnInitFromSap();
-				return o;
-			}
-
-			partial void OnInitFromSap();
-
-			partial void OnInitFromExtern();
-
-			public void OnModelMappingApplied()
-			{
-				OnInitFromExtern();
-			}
-
-			public static IEnumerable<POSTAL_ADDRESS> Select(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
-			}
-
-			public static List<POSTAL_ADDRESS> ToList(DataTable dt, ISapConnection sapConnection = null)
-			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<POSTAL_ADDRESS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(POSTAL_ADDRESS).Name.ToLower());
-				if (tbl == null)
-					return null;
-
-				return Select(tbl, sapConnection);
-			}
-
-			public static List<POSTAL_ADDRESS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<POSTAL_ADDRESS> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<POSTAL_ADDRESS> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<POSTAL_ADDRESS>();
-				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<POSTAL_ADDRESS> GetExportListWithExecute(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<POSTAL_ADDRESS>();
-				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<POSTAL_ADDRESS> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<POSTAL_ADDRESS>();
-				 
-				var dts = sapDataService.GetExportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<POSTAL_ADDRESS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
-			{
-				if (sapDataService == null) 
-					return new List<POSTAL_ADDRESS>();
-				 
-				var dts = sapDataService.GetImportTablesWithInit("ISA_ADDR_POSTAL_CODE_CHECK", inputParameterKeys, inputParameterValues);
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<POSTAL_ADDRESS> GetImportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<POSTAL_ADDRESS>();
-				 
-				var dts = sapDataService.GetImportTables();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
 		}
 	}
 
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA> list)
+		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.POSTAL_ADDRESS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
-
-		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA_PO_BOX> list)
-		{
-			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA_PO_BOX> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 
@@ -1003,20 +913,16 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.RETURN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
 
-
-		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.POSTAL_ADDRESS> list)
+		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.POSTAL_ADDRESS> list, DataTable dtDst)
+
+		public static DataTable ToTable(this IEnumerable<ISA_ADDR_POSTAL_CODE_CHECK.T005_WA_PO_BOX> list)
 		{
-			SapDataServiceExtensions.Apply(list, dtDst);
+			return SapDataServiceExtensions.ToTable(list);
 		}
 
 	}

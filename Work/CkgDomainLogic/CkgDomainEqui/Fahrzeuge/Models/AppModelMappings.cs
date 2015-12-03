@@ -199,11 +199,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
 
-        static public ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug> Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug
+        static public ModelMapping<Z_M_ABM_ABGEMELDETE_KFZ.AUSGABE, AbgemeldetesFahrzeug> Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_ABM_ABGEMELDETE_KFZ.AUSGABE, AbgemeldetesFahrzeug>(
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {

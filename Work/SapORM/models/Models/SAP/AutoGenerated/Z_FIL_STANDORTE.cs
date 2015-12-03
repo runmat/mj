@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -19,6 +20,7 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_FIL_STANDORTE).Name, inputParameterKeys, inputParameterValues);
 		}
+
 
 		public partial class GT_STANDORTE : IModelMappingApplied
 		{
@@ -132,11 +134,11 @@ namespace SapORM.Models
 
 			public string SOBI23 { get; set; }
 
-			public Int32? FREQUENZ1 { get; set; }
+			public int? FREQUENZ1 { get; set; }
 
-			public Int32? FREQUENZ2 { get; set; }
+			public int? FREQUENZ2 { get; set; }
 
-			public Int32? FREQUENZ3 { get; set; }
+			public int? FREQUENZ3 { get; set; }
 
 			public string WOCHENTAG1 { get; set; }
 
@@ -205,9 +207,9 @@ namespace SapORM.Models
 					SOBI21 = (string)row["SOBI21"],
 					SOBI22 = (string)row["SOBI22"],
 					SOBI23 = (string)row["SOBI23"],
-					FREQUENZ1 = (string.IsNullOrEmpty(row["FREQUENZ1"].ToString())) ? null : (Int32?)Convert.ToInt32(row["FREQUENZ1"]),
-					FREQUENZ2 = (string.IsNullOrEmpty(row["FREQUENZ2"].ToString())) ? null : (Int32?)Convert.ToInt32(row["FREQUENZ2"]),
-					FREQUENZ3 = (string.IsNullOrEmpty(row["FREQUENZ3"].ToString())) ? null : (Int32?)Convert.ToInt32(row["FREQUENZ3"]),
+					FREQUENZ1 = string.IsNullOrEmpty(row["FREQUENZ1"].ToString()) ? null : (int?)row["FREQUENZ1"],
+					FREQUENZ2 = string.IsNullOrEmpty(row["FREQUENZ2"].ToString()) ? null : (int?)row["FREQUENZ2"],
+					FREQUENZ3 = string.IsNullOrEmpty(row["FREQUENZ3"].ToString()) ? null : (int?)row["FREQUENZ3"],
 					WOCHENTAG1 = (string)row["WOCHENTAG1"],
 					WOCHENTAG2 = (string)row["WOCHENTAG2"],
 					WOCHENTAG3 = (string)row["WOCHENTAG3"],
@@ -238,7 +240,7 @@ namespace SapORM.Models
 
 			public static List<GT_STANDORTE> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_STANDORTE> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -252,7 +254,7 @@ namespace SapORM.Models
 
 			public static List<GT_STANDORTE> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STANDORTE> ToList(ISapDataService sapDataService)
@@ -267,7 +269,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_FIL_STANDORTE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STANDORTE> GetExportListWithExecute(ISapDataService sapDataService)
@@ -277,7 +279,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STANDORTE> GetExportList(ISapDataService sapDataService)
@@ -287,7 +289,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STANDORTE> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -297,7 +299,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_FIL_STANDORTE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STANDORTE> GetImportList(ISapDataService sapDataService)
@@ -307,7 +309,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -318,11 +320,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_STANDORTE.GT_STANDORTE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_STANDORTE.GT_STANDORTE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

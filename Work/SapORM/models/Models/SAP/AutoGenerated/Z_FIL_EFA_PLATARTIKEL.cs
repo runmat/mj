@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_EFA_PLATARTIKEL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_FIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIL", value);
+		}
+
+		public static void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public static void SetImportParameter_I_RUECKS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_RUECKS", value);
+		}
+
+		public static void SetImportParameter_I_ZLD(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZLD", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_PLATART : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -70,8 +106,8 @@ namespace SapORM.Models
 					MATNR = (string)row["MATNR"],
 					VMEINS = (string)row["VMEINS"],
 					ZUSINFO = (string)row["ZUSINFO"],
-					UMREZ = (decimal?)row["UMREZ"],
-					UMREN = (decimal?)row["UMREN"],
+					UMREZ = string.IsNullOrEmpty(row["UMREZ"].ToString()) ? null : (decimal?)row["UMREZ"],
+					UMREN = string.IsNullOrEmpty(row["UMREN"].ToString()) ? null : (decimal?)row["UMREN"],
 					PREISPFLICHT = (string)row["PREISPFLICHT"],
 					TEXTPFLICHT = (string)row["TEXTPFLICHT"],
 
@@ -297,20 +333,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_FIL_EFA_PLATARTIKEL.GT_PLATART> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_PLATARTIKEL.GT_PLATRTR> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_PLATARTIKEL.GT_PLATRTR> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

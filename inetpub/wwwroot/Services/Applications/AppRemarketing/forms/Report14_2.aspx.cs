@@ -209,6 +209,30 @@ namespace AppRemarketing.forms
             VorschadenRepeater.DataSource = _mReport.Vorschaden;
             VorschadenRepeater.DataBind();
 
+            
+            // Model / Ausstattung
+
+            if (_mReport.ModelTable.Rows.Count == 1)
+            {
+                lbl_ModelCode.Text = _mReport.ModelTable.Rows[0]["PACKIDENT"].ToString();
+                lbl_ModelBezeichnung.Text = _mReport.ModelTable.Rows[0]["BEZ_PRNR"].ToString();
+            }
+
+            if (_mReport.AussenFarbeTable.Rows.Count == 1)
+            {
+                lbl_FarbCode_Aussen.Text = _mReport.AussenFarbeTable.Rows[0]["PACKIDENT"].ToString();
+                lbl_FarbBezeichnung_Aussen.Text = _mReport.AussenFarbeTable.Rows[0]["BEZ_PRNR"].ToString();
+            }
+
+            if (_mReport.InnenFarbeTable.Rows.Count == 1)
+            {
+                lbl_FarbCode_Innen.Text = _mReport.InnenFarbeTable.Rows[0]["PACKIDENT"].ToString();
+                lbl_FarbBezeichnung_Innen.Text = _mReport.InnenFarbeTable.Rows[0]["BEZ_PRNR"].ToString();
+            }
+
+            AusstattungRepeater.DataSource = _mReport.AusstattungTable;
+            AusstattungRepeater.DataBind();
+
             // -> im aspx gebundene Felder befüllen (z.B. Belastungsanzeige)
             Page.DataBind();
         }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,22 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_PARTNER_AUS_KNVP_LESEN).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_EIKTO(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("EIKTO", value);
+		}
+
+		public static void SetImportParameter_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("GRUPPE", value);
+		}
+
+		public static void SetImportParameter_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KUNNR", value);
 		}
 
 		public partial class AUSGABE : IModelMappingApplied
@@ -97,7 +114,7 @@ namespace SapORM.Models
 
 			public static List<AUSGABE> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<AUSGABE> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -111,7 +128,7 @@ namespace SapORM.Models
 
 			public static List<AUSGABE> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<AUSGABE> ToList(ISapDataService sapDataService)
@@ -126,7 +143,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_PARTNER_AUS_KNVP_LESEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<AUSGABE> GetExportListWithExecute(ISapDataService sapDataService)
@@ -136,7 +153,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<AUSGABE> GetExportList(ISapDataService sapDataService)
@@ -146,7 +163,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<AUSGABE> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -156,7 +173,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_PARTNER_AUS_KNVP_LESEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<AUSGABE> GetImportList(ISapDataService sapDataService)
@@ -166,7 +183,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -177,11 +194,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_PARTNER_AUS_KNVP_LESEN.AUSGABE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_PARTNER_AUS_KNVP_LESEN.AUSGABE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

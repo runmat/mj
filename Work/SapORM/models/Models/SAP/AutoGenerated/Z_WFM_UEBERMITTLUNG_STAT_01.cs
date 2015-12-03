@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_UEBERMITTLUNG_STAT_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_STATUSWERT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_STATUSWERT", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -157,11 +168,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
