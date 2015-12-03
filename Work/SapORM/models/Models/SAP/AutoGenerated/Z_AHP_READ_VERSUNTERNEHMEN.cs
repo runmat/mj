@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_AHP_READ_VERSUNTERNEHMEN).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_EVB2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EVB2", value);
+		}
+
+		public static void SetImportParameter_I_VSU_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VSU_NR", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -172,11 +183,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

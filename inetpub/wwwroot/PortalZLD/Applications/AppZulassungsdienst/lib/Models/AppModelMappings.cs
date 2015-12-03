@@ -911,7 +911,7 @@ namespace AppZulassungsdienst.lib.Models
                     , null
                     , (s, d) =>
                     {
-                        d.BETRAG = s.Betrag;
+                        d.BETRAG = s.Betrag.ToNullableDecimal();
                         d.DATUM = s.Datum;
                         d.EC_KARTE_NR = s.EcKarteNr;
                         d.NAME = s.Name;

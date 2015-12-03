@@ -9,12 +9,12 @@ namespace CkgDomainLogic.General.Models
         #region Common
 
         // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_M_Land_Plz_001.GT_WEB, Land> Z_M_Land_Plz_001_GT_WEB_To_Land
+        static public ModelMapping<Z_M_LAND_PLZ_001.GT_WEB, Land> Z_M_Land_Plz_001_GT_WEB_To_Land
         // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_Land_Plz_001.GT_WEB, Land>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_LAND_PLZ_001.GT_WEB, Land>(
                     new Dictionary<string, string> {
                         { "LAND1", "ID" },
                         { "LANDX", "Name" },

@@ -42,7 +42,6 @@ namespace CKGDatabaseAdminLib.Models
         }
 
         private byte[] _importStruktur;
-        [Required]
         public byte[] ImportStruktur
         {
             get { return _importStruktur; }
@@ -57,7 +56,6 @@ namespace CKGDatabaseAdminLib.Models
         }
 
         private byte[] _exportStruktur;
-        [Required]
         public byte[] ExportStruktur
         {
             get { return _exportStruktur; }
@@ -97,6 +95,20 @@ namespace CKGDatabaseAdminLib.Models
                 {
                     _updated = value;
                     OnPropertyChanged("Updated");
+                }
+            }
+        }
+
+        private byte[] _bapiStruktur;
+        public byte[] BapiStruktur
+        {
+            get { return _bapiStruktur; }
+            set
+            {
+                if (BapiStruktur == null || !_bapiStruktur.SequenceEqual(value))
+                {
+                    _bapiStruktur = value;
+                    OnPropertyChanged("BapiStruktur");
                 }
             }
         }

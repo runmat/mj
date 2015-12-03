@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System;
 using System.Data;
 using System.IO;
@@ -65,6 +64,20 @@ namespace SapORM.Services
 			}
 		    throw new Exception("Fehlende Parameter zum Abfragen eines ProxyObj");
 		}
+
+        public IDynSapProxyObject GetEmptyProxy()
+        {
+            if (!string.IsNullOrEmpty(BapiName.Trim(' ')) && (SapConnection != null))
+            {
+                var tmpProxyObj = DynSapProxyFactory.CreateProxyObject(BapiName.ToUpper(), DateTime.Now, new DataTable(), new DataTable());
+
+                if (tmpProxyObj != null)
+                    tmpProxyObj.SetSapConnection(SapConnection);
+
+                return tmpProxyObj;
+            }
+            throw new Exception("Fehlende Parameter zum Abfragen eines ProxyObj");
+        }
 
         public void GetSerializedBapiStructuresForBapiCheck(string sapFunction, ref byte[] importStructure, ref byte[] exportStructure)
         {

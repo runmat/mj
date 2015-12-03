@@ -21,6 +21,17 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_V_UEBERF_AUFTR_REFERENZ).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_AUFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("AUFNR", value);
+		}
+
+		public static void SetImportParameter_REFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("REFNR", value);
+		}
+
 		public partial class T_AUFTRAEGE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -90,7 +101,7 @@ namespace SapORM.Models
 					CITY1 = (string)row["CITY1"],
 					PSTCD1 = (string)row["PSTCD1"],
 					STREET = (string)row["STREET"],
-					WADAT = (string.IsNullOrEmpty(row["WADAT"].ToString())) ? null : (DateTime?)row["WADAT"],
+					WADAT = string.IsNullOrEmpty(row["WADAT"].ToString()) ? null : (DateTime?)row["WADAT"],
 					EQUNR = (string)row["EQUNR"],
 					ZZKENN = (string)row["ZZKENN"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
@@ -103,7 +114,7 @@ namespace SapORM.Models
 					ZZPROTKAT2 = (string)row["ZZPROTKAT2"],
 					ZZPROTKAT3 = (string)row["ZZPROTKAT3"],
 					VKORG = (string)row["VKORG"],
-					IUG_DAT = (string.IsNullOrEmpty(row["IUG_DAT"].ToString())) ? null : (DateTime?)row["IUG_DAT"],
+					IUG_DAT = string.IsNullOrEmpty(row["IUG_DAT"].ToString()) ? null : (DateTime?)row["IUG_DAT"],
 					SEITANZ_PROTKAT1 = (string)row["SEITANZ_PROTKAT1"],
 					SEITANZ_PROTKAT2 = (string)row["SEITANZ_PROTKAT2"],
 					SEITANZ_PROTKAT3 = (string)row["SEITANZ_PROTKAT3"],
@@ -333,20 +344,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_V_UEBERF_AUFTR_REFERENZ.T_AUFTRAEGE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_AUFTR_REFERENZ.T_SMTP> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_UEBERF_AUFTR_REFERENZ.T_SMTP> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
