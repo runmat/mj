@@ -10,12 +10,12 @@ namespace CkgDomainLogic.Fahrer.Models
         #region FromSap
 
 // ReSharper disable InconsistentNaming
-        static public ModelMapping<Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1, FahrerTagBelegung> Z_V_Ueberf_Verfuegbarkeit1_T_VERFUEG1_To_FahrerTagBelegung
+        static public ModelMapping<Z_V_UEBERF_VERFUEGBARKEIT1.T_VERFUEG1, FahrerTagBelegung> Z_V_Ueberf_Verfuegbarkeit1_T_VERFUEG1_To_FahrerTagBelegung
 // ReSharper restore InconsistentNaming
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1, FahrerTagBelegung>(
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_VERFUEGBARKEIT1.T_VERFUEG1, FahrerTagBelegung>(
                     new Dictionary<string, string> (),
                     // Copy
                     (sap, business) =>

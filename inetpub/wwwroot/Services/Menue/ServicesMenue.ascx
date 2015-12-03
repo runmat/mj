@@ -31,7 +31,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuAdminSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>" target="<%= IIf(row("AppUrl").ToString().ToLower().StartsWith("http"), "_blank", "_self") %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -49,7 +49,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuChangeSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"  target="<%= IIf(row("AppUrl").ToString().ToLower().StartsWith("http"), "_blank", "_self") %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -67,7 +67,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuReportSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"  target="<%= IIf(row("AppUrl").ToString().ToLower().StartsWith("http"), "_blank", "_self") %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>
@@ -85,7 +85,7 @@
                                 <% For Each row As System.Data.DataRowView In MenuHelpDeskSource%>
                                     <tr>
                                         <td class="MainmenuItemAlternate" align="left" style="white-space:nowrap;">
-                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"><%= row("AppFriendlyName")%></a>
+                                            <a class="MainmenuLink" href="<%= ResolveClientUrl(row("AppUrl").ToString()) %>"  target="<%= IIf(row("AppUrl").ToString().ToLower().StartsWith("http"), "_blank", "_self") %>"><%= row("AppFriendlyName")%></a>
                                         </td>
                                     </tr>
                                 <% Next %>

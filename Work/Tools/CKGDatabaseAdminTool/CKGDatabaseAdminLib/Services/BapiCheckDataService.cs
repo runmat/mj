@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.Entity;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using CKGDatabaseAdminLib.Contracts;
 using CkgDomainLogic.General.Services;
 using CKGDatabaseAdminLib.Models;
 using System.Linq;
-using SapORM.Contracts;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib.Services
 {
@@ -39,8 +36,7 @@ namespace CKGDatabaseAdminLib.Services
 
         public string PerformBapiCheck()
         {
-            byte[] impNeu = new byte[] { };
-            byte[] expNeu = new byte[] { };
+            var bapiStrukturNeu = new byte[] { };
 
             BapiCheckAbweichungen = new List<BapiCheckAbweichung>();
 
@@ -48,15 +44,17 @@ namespace CKGDatabaseAdminLib.Services
 
             foreach (var bapi in _dataContext.BapisSorted)
             {
-                var tmpAbw = new BapiCheckAbweichung { BapiName = bapi.BAPI };
+                var bapiName = bapi.BAPI.NotNullOrEmpty().ToUpper().Trim();
+
+                var tmpAbw = new BapiCheckAbweichung { BapiName = bapiName };
 
                 try
                 {
-                    S.AP.GetSerializedBapiStructuresForBapiCheck(bapi.BAPI, ref impNeu, ref expNeu);
+                    bapiStrukturNeu = S.AP.GetSerializedBapiStructuresForBapiCheck(bapiName);
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.Contains("FUNCTION_NOT_EXIST Execution failed"))
+                    if (ex.Message.Contains("FU_NOT_FOUND"))
                     {
                         tmpAbw.DoesNotExistInSap = true;
                     }
@@ -66,7 +64,7 @@ namespace CKGDatabaseAdminLib.Services
                     }
                 }
 
-                var strukturAlt = strukturen.Find(s => s.BapiName.ToUpper() == bapi.BAPI.ToUpper());
+                var strukturAlt = strukturen.FirstOrDefault(s => s.BapiName == bapiName);
 
                 if (strukturAlt == null)
                 {
@@ -74,15 +72,13 @@ namespace CKGDatabaseAdminLib.Services
                 }
                 else
                 {
-                    var impAlt = strukturAlt.ImportStruktur;
-                    var expAlt = strukturAlt.ExportStruktur;
+                    var bapiStrukturAlt = strukturAlt.BapiStruktur;
 
-                    if (impAlt != null || expAlt != null)
+                    if (bapiStrukturAlt != null)
                     {
                         if (!tmpAbw.DoesNotExistInSap)
                         {
-                            if ((impAlt != null && impNeu != null && !impAlt.SequenceEqual(impNeu))
-                                || (expAlt != null && expNeu != null && !expAlt.SequenceEqual(expNeu)))
+                            if (bapiStrukturNeu != null && !bapiStrukturAlt.SequenceEqual(bapiStrukturNeu))
                             {
                                 tmpAbw.HasChanged = true;
                             }
@@ -96,7 +92,7 @@ namespace CKGDatabaseAdminLib.Services
 
                     if (!tmpAbw.DoesNotExistInSap)
                     {
-                        _dataContext.SaveBapiCheckItem(bapi.BAPI, impNeu, expNeu, tmpAbw.IsNew, _testSap);
+                        _dataContext.SaveBapiCheckItem(bapiName, bapiStrukturNeu, tmpAbw.IsNew, _testSap);
                     }
                 }
             }

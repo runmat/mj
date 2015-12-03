@@ -17,45 +17,60 @@
 </div>
 
 <div id="divVorgangsliste" class="NotDisplayed">
-    <div class="VerticalSpacer10">&nbsp;</div>  
+    <div class="VerticalSpacer10">&nbsp;</div>
     <a id="lnkSelAmt" href="#"></a>
-    <b class="Margin-Left-20">
-        <label for="lblGebuehrGesamt" class="TextUnderline">Gesamtgebühr:&nbsp;</label>
-        <label id="lblGebuehrGesamt"></label>
-    </b> 
+        <b class="Margin-Left-20">
+            <label for="lblGebuehrGesamt" class="TextUnderline">Gesamtgebühr:&nbsp;</label>
+            <label id="lblGebuehrGesamt"></label>
+        </b>
     <div class="VerticalSpacer10">&nbsp;</div>
     <input type="search" name="suche" id="txtSuche" value="" placeholder="Suchen..." />
     <div class="VerticalSpacer5">&nbsp;</div>
 
-    <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
-        <colgroup>
-            <col class="TableColumn80"/>
-            <col />
-            <col />
-            <col class="TableColumn140"/>
-            <col class="TableColumn90"/>
-            <col class="TableColumn130"/>
-            <col class="TableColumn150"/>
-        </colgroup>
-        <thead>
-            <tr>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
-                <th class="TableGridCell">Referenz</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Kennzeichen"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenGroesse"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Bemerkung"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["VersandzulVkBur"]</th>
-            </tr>  
-        </thead>  
-        <tbody>
-        </tbody>
-    </table>
-    
+    <div class="StaticHeaderTableOuterContainer">
+        <div class="StaticHeaderTableHeaderRow"></div>
+        <div class="StaticHeaderTableContainer">
+            <table id="tblVorgaenge" class="table-vorgaenge-responsive table-stroke" data-role="table" data-mode="reflow">
+                <thead>
+                <tr>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-100">Vorgang</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">Kunde</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-80">Halter</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn110">@Model.PropertyDisplayNames["Kennzeichen"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn70">@Model.PropertyDisplayNames["Gebuehr"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn60">@Model.PropertyDisplayNames["Status"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn60">@Model.PropertyDisplayNames["Zahlart"]</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn100">Kennz.größe<br/>/ -anzahl</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumn60">R/W /<br/>Saison</div>
+                    </th>
+                    <th class="TableGridCellNarrow LessHorizontalPadding">
+                        <div class="StaticHeaderTableColumnHeader TableColumnAuto Min-Width-100">Bemerkung /<br/>Vers.zul. von</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <table class="table-buttons-responsive table-stroke" data-role="table" data-mode="reflow">
         <thead hidden="hidden">
             <tr>
@@ -171,6 +186,7 @@
             <col class="TableColumn80"/>
             <col class="TableColumnAuto"/>
             <col class="TableColumn110"/>
+            <col class="TableColumn40"/>
         </colgroup>
         <thead>
             <tr>

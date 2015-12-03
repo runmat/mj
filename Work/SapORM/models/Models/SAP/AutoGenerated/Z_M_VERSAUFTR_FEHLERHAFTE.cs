@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,32 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_VERSAUFTR_FEHLERHAFTE).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_FLAG_VERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("FLAG_VERS", value);
+		}
+
+		public static void SetImportParameter_FLAG_VERS_SPERR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("FLAG_VERS_SPERR", value);
+		}
+
+		public static void SetImportParameter_I_BEAUFTR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BEAUFTR", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_TREUGEBER_VERS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_TREUGEBER_VERS", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -96,7 +123,7 @@ namespace SapORM.Models
 					ZZHAUSNR_ZS = (string)row["ZZHAUSNR_ZS"],
 					ZZPSTLZ_ZS = (string)row["ZZPSTLZ_ZS"],
 					ZZORT01_ZS = (string)row["ZZORT01_ZS"],
-					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
+					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 					ZZFCODE = (string)row["ZZFCODE"],
 					ZZFCOD_TEXT = (string)row["ZZFCOD_TEXT"],
 					ZZNAME1_TG = (string)row["ZZNAME1_TG"],
@@ -133,7 +160,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -147,7 +174,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -162,7 +189,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_VERSAUFTR_FEHLERHAFTE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -172,7 +199,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -182,7 +209,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -192,7 +219,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_VERSAUFTR_FEHLERHAFTE", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -202,7 +229,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -213,11 +240,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_VERSAUFTR_FEHLERHAFTE.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

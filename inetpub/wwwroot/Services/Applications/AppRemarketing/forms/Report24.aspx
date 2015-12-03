@@ -232,6 +232,14 @@
                                                     <telerik:GridBoundColumn DataField="REFIN" SortExpression="REFIN" >
                                                         <HeaderStyle Width="80px" />
                                                     </telerik:GridBoundColumn>
+                                                   <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
+                                                        <HeaderStyle Width="140px" />
+                                                        <ItemStyle Wrap="false" />                                                        
+                                                    </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
                                         </telerik:RadGrid>
