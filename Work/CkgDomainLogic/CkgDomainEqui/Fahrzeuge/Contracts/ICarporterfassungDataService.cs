@@ -6,10 +6,12 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
     public interface ICarporterfassungDataService : ICkgGeneralDataService
     {
-        List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items, ref string errorMessage);
+        List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items, ref string errorMessage, bool nacherfassung);
 
         List<CarportInfo> GetCarportAdressen(string adressKennung);
 
         IDictionary<string, string> GetCarportPdis();
+
+        List<CarporterfassungModel> GetFahrzeuge(CarportnacherfassungSelektor selektor);
     }
 }

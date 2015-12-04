@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
@@ -10,6 +12,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
@@ -17,6 +20,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Organization)]
+        public string Organisation { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.User)]
         [XmlIgnore]
@@ -79,7 +85,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [Required]
         public string AnzahlKennzeichen { get; set; }
 
-        public static string AnzahlKennzeichenOptionen
+        [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
+        [RequiredConditional]
+        public string AnzahlKennzeichenText
+        {
+            get { return (AnzahlKennzeichenOptionen.Any(m => m.Value == AnzahlKennzeichen) ? AnzahlKennzeichenOptionen.First(m => m.Value == AnzahlKennzeichen).Text : AnzahlKennzeichen); }
+        }
+
+        public static SelectList AnzahlKennzeichenOptionen
         {
             get
             {
@@ -89,7 +102,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     Localize.OneLicensePlateAvailableTrailerBike,
                     Localize.BothLicensePlatesAvailable,
                     Localize.LicensePlateRearAvailable,
-                    Localize.LicensePlateFrontAvailable);
+                    Localize.LicensePlateFrontAvailable).ToSelectList();
             }
         }
 
@@ -103,31 +116,80 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [Required]
         public string Zb1Vorhanden { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Zb1Available)]
+        [RequiredConditional]
+        public string Zb1VorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == Zb1Vorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == Zb1Vorhanden).Text : Zb1Vorhanden); }
+        }
+
         [LocalizedDisplay(LocalizeConstants.Zb2Available)]
         [Required]
         public string Zb2Vorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Zb2Available)]
+        [RequiredConditional]
+        public string Zb2VorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == Zb2Vorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == Zb2Vorhanden).Text : Zb2Vorhanden); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.CocAvailable)]
         [Required]
         public string CocVorhanden { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        [RequiredConditional]
+        public string CocVorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == CocVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == CocVorhanden).Text : CocVorhanden); }
+        }
+
         [LocalizedDisplay(LocalizeConstants.ServiceRecordAvailable)]
         [Required]
         public string ServiceheftVorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ServiceRecordAvailable)]
+        [RequiredConditional]
+        public string ServiceheftVorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == ServiceheftVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == ServiceheftVorhanden).Text : ServiceheftVorhanden); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.HuAuReportAvailable)]
         [Required]
         public string HuAuBerichtVorhanden { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.HuAuReportAvailable)]
+        [RequiredConditional]
+        public string HuAuBerichtVorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == HuAuBerichtVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == HuAuBerichtVorhanden).Text : HuAuBerichtVorhanden); }
+        }
+
         [LocalizedDisplay(LocalizeConstants.SpareKeyAvailable)]
         [Required]
         public string ZweitschluesselVorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.SpareKeyAvailable)]
+        [RequiredConditional]
+        public string ZweitschluesselVorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == ZweitschluesselVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == ZweitschluesselVorhanden).Text : ZweitschluesselVorhanden); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.NaviCdAvailable)]
         [Required]
         public string NaviCdVorhanden { get; set; }
 
-        public static string MaterialVorhandenOptionen
+        [LocalizedDisplay(LocalizeConstants.NaviCdAvailable)]
+        [RequiredConditional]
+        public string NaviCdVorhandenText
+        {
+            get { return (MaterialVorhandenOptionen.Any(m => m.Value == NaviCdVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == NaviCdVorhanden).Text : NaviCdVorhanden); }
+        }
+
+        public static SelectList MaterialVorhandenOptionen
         {
             get
             {
@@ -135,7 +197,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     Localize.DropdownDefaultOptionPleaseChoose,
                     Localize.Available,
                     Localize.NotAvailable,
-                    Localize.WillBeDelivered);
+                    Localize.WillBeDelivered).ToSelectList();
             }
         }
 
@@ -156,6 +218,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public bool UserHasCarportId
         {
             get { return GetViewModel != null && !String.IsNullOrEmpty(GetViewModel().UserCarportId); }
+        }
+
+        public bool ModusNacherfassung
+        {
+            get { return GetViewModel != null && GetViewModel().ModusNacherfassung; }
         }
 
         public static string GetMaterialVorhandenOptionWeb(string sapWert)
@@ -191,7 +258,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
             var regexItem = new Regex("^[A-ZÄÖÜ]{1,3}-[A-ZÄÖÜ]{1,2}[0-9]{1,4}[hH]?$");
 
-            if (!Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().Trim().ToUpper()))
+            if (!ModusNacherfassung && !Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().Trim().ToUpper()))
                 yield return new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" });
         }
     }

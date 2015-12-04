@@ -25,6 +25,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [XmlIgnore]
         public ICarporterfassungDataService DataService { get { return CacheGet<ICarporterfassungDataService>(); } }
 
+        public CarportnacherfassungSelektor CarportnacherfassungSelektor
+        {
+            get { return PropertyCacheGet(() => new CarportnacherfassungSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
         public CarporterfassungModel AktuellesFahrzeug { get; set; }
 
         public CarporterfassungModel CarportSelectionModel { get; set; }
@@ -104,10 +110,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool EditMode { get; set; }
 
+        public bool ModusNacherfassung { get; set; }
+
         public int CurrentAppID { get; set; }
 
-        public void Init(List<CarporterfassungModel> fahrzeugePersisted)
+        public void Init(List<CarporterfassungModel> fahrzeugePersisted, bool nacherfassung = false)
         {
+            ModusNacherfassung = nacherfassung;
+
             FahrzeugeAlle = fahrzeugePersisted;
 
             GetCurrentAppID();
@@ -129,7 +139,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Func<CarporterfassungModel, bool> selector = 
                 e => CarportSelectionModel.CarportSelectionMode == "AllUsers"
                     ? e.CarportId == CarportSelectionModel.CarportIdPersisted
-                    : e.UserName == LogonContext.UserName;
+                    : (ModusNacherfassung ? e.CarportId == UserCarportId : e.UserName == LogonContext.UserName);
 
             Fahrzeuge = FahrzeugeAlle.Where(selector).ToListOrEmptyList();
 
@@ -143,17 +153,20 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (kennzeichen != null)
             {
                 AktuellesFahrzeug = Fahrzeuge.FirstOrDefault(f => f.Kennzeichen == kennzeichen);
-                if (AktuellesFahrzeug != null)
-                    return;
             }            
-
-            AktuellesFahrzeug = new CarporterfassungModel
+            else if (ModusNacherfassung && Fahrzeuge != null && Fahrzeuge.Any())
+            {
+                AktuellesFahrzeug = Fahrzeuge.FirstOrDefault();
+            }
+            else
+            {
+                AktuellesFahrzeug = new CarporterfassungModel
                 {
                     CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
                 };
-
+            }
 
             if (CarportSelectionModel != null)
                 return;
@@ -253,7 +266,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
 
             var saveErg = "";
-            Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge, ref saveErg);
+            Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge, ref saveErg, false);
 
             if (!String.IsNullOrEmpty(saveErg))
                 return String.Format("{0}: {1}", Localize.ErrorsOccuredOnSaving, saveErg);
@@ -521,6 +534,41 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var adressKennung = ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
 
             CarportAdressen = DataService.GetCarportAdressen(adressKennung);
-        } 
+        }
+
+        public void LoadNacherfassungFahrzeuge(ref CarportnacherfassungSelektor selektor, ModelStateDictionary state)
+        {
+            CarportnacherfassungSelektor = selektor;
+
+            FahrzeugeAlle = DataService.GetFahrzeuge(CarportnacherfassungSelektor);
+            SetFahrzeugeForCurrentMode();
+
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+
+            if (FahrzeugeAlle.None())
+                state.AddModelError("", Localize.NoDataFound);
+        }
+
+        public void UpdateAndSaveFahrzeug(CarporterfassungModel item, ModelStateDictionary state)
+        {
+            AktuellesFahrzeug = item;
+            UpdateFahrzeug(AktuellesFahrzeug);
+
+            EditMode = false;
+
+            var saveErg = "";
+            Fahrzeuge = DataService.SaveFahrzeuge(new List<CarporterfassungModel> { AktuellesFahrzeug }, ref saveErg, true);
+
+            if (!String.IsNullOrEmpty(saveErg))
+            {
+                state.AddModelError("", String.Format("{0}: {1}", Localize.ErrorsOccuredOnSaving, saveErg));
+                return;
+            }
+
+            FahrzeugeAlle.RemoveAll(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen);
+            SetFahrzeugeForCurrentMode();
+
+            DataMarkForRefresh();
+        }
     }
 }

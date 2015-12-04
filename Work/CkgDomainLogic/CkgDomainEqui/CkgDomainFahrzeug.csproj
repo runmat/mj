@@ -245,6 +245,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
+    <Compile Include="Fahrzeuge\Models\CarportnacherfassungSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\UploadAvisdaten.cs" />
     <Compile Include="Fahrzeuge\Models\CarporterfassungModel.cs" />
     <Compile Include="Fahrzeuge\Models\CarportInfo.cs" />

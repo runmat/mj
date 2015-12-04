@@ -1,24 +1,6 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.Models
 @model CarporterfassungModel
 
-<script type="text/javascript">
-
-    function ApplySelection(applyAbgemeldetSelection) {
-        if (applyAbgemeldetSelection && $("#Abgemeldet").is(":checked")) {
-            $("#AnzahlKennzeichen").val("0");
-        }
-
-        if ($("#AnzahlKennzeichen").val() == "0") {
-            $("#DemontageDatum").val("");
-            $("#DemontageDatum").attr("disabled", "disabled");
-        }
-        else {
-            $("#DemontageDatum").removeAttr("disabled");
-        }
-    }
-
-</script>
-
 <div id="DivFahrzeugerfassung" class="margin-top-20">
     @using (Ajax.BeginForm("FahrzeugerfassungForm", "Fahrzeuge", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugerfassung", OnComplete = "AjaxFormFahrzeugerfassungComplete();" },
@@ -47,35 +29,34 @@
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap uppercase"},
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase" },
             postControlHtml: @<text>
                                     @Html.CheckBoxFor(m => m.Ausland)<label for="Ausland">@Localize.LicenseNoForeignCountries</label>
                               </text>)
 
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", maxlength = 17 },
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 },
             postControlHtml: @<text>
                                 @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1 })
                                 <span>@Localize.CheckDigit</span>
                               </text>)
 
         @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
-
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
-        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right", onchange = "ApplySelection(false)" })
+        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false)" })
         
         @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true)" }, labelHidden: true)
-        @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
-        @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
-        @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
-        @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen.ToSelectList(), new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
         
         
         @Html.FormRequiredFieldsSummary()

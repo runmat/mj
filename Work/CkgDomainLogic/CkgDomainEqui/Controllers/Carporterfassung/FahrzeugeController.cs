@@ -34,6 +34,17 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult Carportnacherfassung()
+        {
+            _dataContextKey = typeof(CarporterfassungViewModel).Name;
+
+            LastCarportIdInit();
+            CarporterfassungViewModel.Init(new List<CarporterfassungModel>(), true);
+
+            return View(CarporterfassungViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult CarportUpsLabel()
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
@@ -223,6 +234,46 @@ namespace ServicesMvc.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Nacherfassung
+
+        [HttpPost]
+        public ActionResult LoadCarportnacherfassungFahrzeuge(CarportnacherfassungSelektor model)
+        {
+            if (ModelState.IsValid)
+                CarporterfassungViewModel.LoadNacherfassungFahrzeuge(ref model, ModelState);
+
+            return PartialView("Carporterfassung/NacherfassungSuche", model);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugNachbearbeiten(string kennzeichen)
+        {
+            CarporterfassungViewModel.LoadFahrzeugModel(kennzeichen);
+
+            return PartialView("Carporterfassung/FahrzeugnacherfassungForm", CarporterfassungViewModel.AktuellesFahrzeug);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugnacherfassungForm(CarporterfassungModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CarporterfassungViewModel.PrepareCarportModel(ref model);
+
+                if (ModelState.IsValid)
+                {
+                    CarporterfassungViewModel.UpdateAndSaveFahrzeug(model, ModelState);
+
+                    CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
+                    LogonContext.DataContextPersist(CarporterfassungViewModel);
+                }
+            }
+
+            return PartialView("Carporterfassung/FahrzeugnacherfassungForm", model);
         }
 
         #endregion
