@@ -3,7 +3,7 @@
 
 <div id="divCarportnacherfassungSuche">
     @using (Ajax.BeginForm("LoadCarportnacherfassungFahrzeuge", "Fahrzeuge", null,
-        new MvcAjaxOptions("divCarportnacherfassungSuche") { OnComplete = "ShowCarportnacherfassungFahrzeuge();" }, new { id = "NacherfassungForm" }))
+        new MvcAjaxOptions("divCarportnacherfassungSuche") { OnComplete = "ShowCarportnacherfassungFahrzeuge(true);" }, new { id = "NacherfassungForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             

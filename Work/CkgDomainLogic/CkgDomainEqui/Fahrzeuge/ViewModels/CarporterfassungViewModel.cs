@@ -552,12 +552,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void UpdateAndSaveFahrzeug(CarporterfassungModel item, ModelStateDictionary state)
         {
             AktuellesFahrzeug = item;
-            UpdateFahrzeug(AktuellesFahrzeug);
 
             EditMode = false;
 
             var saveErg = "";
-            Fahrzeuge = DataService.SaveFahrzeuge(new List<CarporterfassungModel> { AktuellesFahrzeug }, ref saveErg, true);
+            DataService.SaveFahrzeuge(new List<CarporterfassungModel> { AktuellesFahrzeug }, ref saveErg, true);
 
             if (!String.IsNullOrEmpty(saveErg))
             {
@@ -565,10 +564,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 return;
             }
 
-            FahrzeugeAlle.RemoveAll(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen);
+            FahrzeugeAlle = DataService.GetFahrzeuge(CarportnacherfassungSelektor);
             SetFahrzeugeForCurrentMode();
 
-            DataMarkForRefresh();
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
     }
 }

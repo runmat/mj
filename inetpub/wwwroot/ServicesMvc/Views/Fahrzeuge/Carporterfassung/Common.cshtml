@@ -193,7 +193,7 @@
 
     // Nacherfassung
 
-    function ShowCarportnacherfassungFahrzeuge() {
+    function ShowCarportnacherfassungFahrzeuge(autoRedirectToEdit) {
 
         FormPreparePrivateAjax();
 
@@ -208,7 +208,7 @@
                 if (_modelStateValid) {
                     ShowCarportnacherfassungFahrzeugeSearchResult(result);
 
-                    if (_anzahlTreffer == 1) {
+                    if (autoRedirectToEdit && _anzahlTreffer == 1) {
                         FahrzeugNachbearbeiten();
                     }
                 }
@@ -240,7 +240,7 @@
     }
 
     function CloseCarportnacherfassungDetail() {
-        ShowCarportnacherfassungFahrzeuge();
+        ShowCarportnacherfassungFahrzeuge(false);
     }
 
     function AjaxFormFahrzeugnacherfassungComplete() {
@@ -248,7 +248,7 @@
 
         if (_modelIsValid) {
             SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
-            ShowCarportnacherfassungFahrzeuge();
+            ShowCarportnacherfassungFahrzeuge(false);
         }
     }
 
