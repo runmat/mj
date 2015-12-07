@@ -68,6 +68,12 @@ namespace GeneralTools.Models
             list.Add(new KeyValuePair<string, string>(key, value));
             return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
         }
+        public static IDictionary<string, string> InsertAtTop(this IEnumerable<KeyValuePair<string, string>> source, string key, string value)
+        {
+            var list = source.ToDictionary(x => x.Key, x => x.Value);
+            list.Add(key, value);
+            return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+        }
 
         public static DataTable ToExcelExportDataTable<T>(this IList<T> source)
         {

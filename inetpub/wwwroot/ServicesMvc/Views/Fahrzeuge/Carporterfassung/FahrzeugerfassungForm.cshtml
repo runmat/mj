@@ -16,7 +16,18 @@
         @Html.HiddenFor(m => m.CarportName)
         @Html.HiddenFor(m => m.LieferscheinNr)
         @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.UiUpdateOnly)
 
+
+        if (Model.UserHasAllOrganizations)
+        {
+            @Html.FormDropDownListFor(m => m.Organisation, Model.Organizations.ToSelectList(), new { @class = "m-wrap medium", onchange = "OnOrganizationChanged()" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.Organisation)
+            @Html.FormTextBlockFor(m => m.OrganisationText, new { @class = "m-wrap medium" })
+        }
 
         if (Model.UserHasCarportId)
         {
@@ -25,7 +36,7 @@
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+            @Html.FormDropDownListFor(m => m.CarportId, Model.AllCarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 
@@ -67,7 +78,7 @@
         </div>
         
         <script type="text/javascript">       
-            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
 
             ApplySelection(true);
         </script>

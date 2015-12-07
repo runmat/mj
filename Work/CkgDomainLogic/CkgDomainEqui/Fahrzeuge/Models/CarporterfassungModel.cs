@@ -21,8 +21,17 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Organization)]
+        [LocalizedDisplay(LocalizeConstants.Region)]
         public string Organisation { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Region)]
+        public string OrganisationText
+        {
+            get { return (Organizations.Any(m => m.Key == Organisation) ? Organizations.First(m => m.Key == Organisation).Value : Organisation); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Region)]
+        public string SelectedOrganizationId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.User)]
         [XmlIgnore]
@@ -42,14 +51,19 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string CarportName { get; set; }
 
-        public IDictionary<string, string> CarportPdis
+        public IDictionary<string, string> AllCarportPdis
         {
-            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPdis; }
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().AllCarportPdis; }
         }
 
         public IDictionary<string, string> CarportPersistedPdis
         {
             get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPersistedPdis; }
+        }
+
+        public IDictionary<string, string> Organizations
+        {
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().Organizations; }
         }
 
         [Required]
@@ -220,10 +234,19 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get { return GetViewModel != null && !String.IsNullOrEmpty(GetViewModel().UserCarportId); }
         }
 
+        public bool UserHasAllOrganizations
+        {
+            get { return GetViewModel != null && GetViewModel().UserAllOrganizations; }
+        }
+
         public bool ModusNacherfassung
         {
             get { return GetViewModel != null && GetViewModel().ModusNacherfassung; }
         }
+
+        public bool UiUpdateOnly { get; set; }
+
+        public bool IsValid { get; set; }
 
         public static string GetMaterialVorhandenOptionWeb(string sapWert)
         {

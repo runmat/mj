@@ -9,6 +9,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string CarportId { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Region)]
+        public string CarportRegion { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CarportName)]
         public string CarportName { get; set; }
 

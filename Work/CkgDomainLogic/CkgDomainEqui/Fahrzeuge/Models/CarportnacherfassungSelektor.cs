@@ -46,5 +46,15 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get { return (GetViewModel != null ? GetViewModel().UserCarportId : ""); }
         }
+
+        public string UserOrganization
+        {
+            get { return (GetViewModel != null ? GetViewModel().UserOrganization : ""); }
+        }
+
+        public bool UserAllOrganizations
+        {
+            get { return (GetViewModel != null && GetViewModel().UserAllOrganizations); }
+        }
     }
 }

@@ -17,7 +17,9 @@
         @Html.HiddenFor(m => m.LieferscheinNr)
         @Html.HiddenFor(m => m.Status)
 
-
+        @Html.HiddenFor(m => m.Organisation)
+        @Html.FormTextBlockFor(m => m.OrganisationText, new { @class = "m-wrap medium" })
+        
         @Html.HiddenFor(m => m.CarportId)
         @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })

@@ -83,9 +83,20 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         [XmlIgnore]
-        public IDictionary<string, string> CarportPdis
+        public IDictionary<string, string> AllCarportPdis
         {
-            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose)); }
+            get { return PropertyCacheGet(() => DataService.GetCarportPdis(AdressKennung).InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose)); }
+        }
+
+        [XmlIgnore]
+        public IDictionary<string, string> OrganizationCarportPdis
+        {
+            get
+            {
+                return AllCarportPdis
+                    .Where(p => CarportAdressen.AnyAndNotNull(a => a.CarportId == p.Key && (a.CarportRegion == SelectedOrganizationName || !UserAllOrganizations)))
+                        .InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose);
+            }
         }
 
         [XmlIgnore]
@@ -96,16 +107,57 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 if (FahrzeugeAlle == null)
                     return new Dictionary<string, string>();
 
-                return CarportPdis
+                return OrganizationCarportPdis
                             .Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key) || c.Key == LastCarportId)
                                 .ToDictionary(c => c.Key, c => c.Value);
             }
         }
 
         [XmlIgnore]
+        public IDictionary<string, string> Organizations
+        {
+            get { return PropertyCacheGet(() => DataService.GetCustomerOrganizations().InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose)); }
+        }
+
+        public string UserOrganization
+        {
+            get
+            {
+                if (LogonContext == null || LogonContext.Organization == null)
+                    return "";
+
+                return LogonContext.Organization.OrganizationReference;
+            }
+        }
+
+        public bool UserAllOrganizations
+        {
+            get
+            {
+                if (LogonContext == null || LogonContext.Organization == null)
+                    return false;
+
+                return LogonContext.Organization.AllOrganizations;
+            }
+        }
+
+        public string SelectedOrganizationId { get; set; }
+
+        public string SelectedOrganizationName
+        {
+            get { return Organizations.FirstOrDefault(o => o.Key == SelectedOrganizationId).Value; }
+        }
+
+        [XmlIgnore]
         public List<CarportInfo> CarportAdressen {
             get { return PropertyCacheGet(() => new List<CarportInfo>()); }
             protected set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public string AdressKennung
+        {
+            get { return ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID); }
         }
 
         public bool EditMode { get; set; }
@@ -131,7 +183,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
-            PropertyCacheClear(this, m => m.CarportPdis);
+            PropertyCacheClear(this, m => m.Organizations);
+            PropertyCacheClear(this, m => m.AllCarportPdis);
         }
 
         void SetFahrzeugeForCurrentMode()
@@ -162,6 +215,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 AktuellesFahrzeug = new CarporterfassungModel
                 {
+                    Organisation = SelectedOrganizationId,
                     CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
@@ -177,18 +231,20 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 CarportSelectionMode = "AllUsers"
             };
 
-            SetCarportIdPersisted(LastCarportId);
+            SetOrganizationAndCarportIdPersisted(SelectedOrganizationId, LastCarportId);
         }
 
-        public void SetCarportIdPersisted(string carportId)
+        public void SetOrganizationAndCarportIdPersisted(string organization, string carportId)
         {
+            CarportSelectionModel.SelectedOrganizationId = organization.NotNullOr(Organizations.Keys.FirstOrDefault());
             CarportSelectionModel.CarportIdPersisted = carportId.NotNullOr(CarportPersistedPdis.Keys.FirstOrDefault());
 
             SetFahrzeugeForCurrentMode();
         }
 
-        public void LastCarportIdInit(string lastCarportId)
+        public void LastOrganizationAndCarportIdInit(string lastOrganization, string lastCarportId)
         {
+            SelectedOrganizationId = UserOrganization.NotNullOr(lastOrganization);
             LastCarportId = UserCarportId.NotNullOr(lastCarportId);
         }
 
@@ -233,7 +289,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             model.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().Trim().ToUpper().Replace("O", "0").Replace("I", "1");
 
             string carportName;
-            if (CarportPdis.TryGetValue(model.CarportId, out carportName))
+            if (AllCarportPdis.TryGetValue(model.CarportId, out carportName))
                 model.CarportName = carportName;
         }
 
@@ -247,8 +303,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void SaveCarportSelectionModel(CarporterfassungModel model)
         {
+            var organizationChanged = (CarportSelectionModel.SelectedOrganizationId != model.SelectedOrganizationId);
             CarportSelectionModel = model;
-            SetCarportIdPersisted(model.CarportIdPersisted);
+            SelectedOrganizationId = CarportSelectionModel.SelectedOrganizationId;
+            SetOrganizationAndCarportIdPersisted(SelectedOrganizationId, (organizationChanged ? null : model.CarportIdPersisted));
         }
 
         public string SaveFahrzeuge(Action<string, string> outerClearListFunction)
@@ -531,9 +589,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         private void LoadCarportAdressen()
         {
-            var adressKennung = ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
-
-            CarportAdressen = DataService.GetCarportAdressen(adressKennung);
+            CarportAdressen = DataService.GetCarportAdressen(AdressKennung);
         }
 
         public void LoadNacherfassungFahrzeuge(ref CarportnacherfassungSelektor selektor, ModelStateDictionary state)

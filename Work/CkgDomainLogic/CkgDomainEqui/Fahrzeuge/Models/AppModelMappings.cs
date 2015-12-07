@@ -547,6 +547,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Zb2Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB2_VORH);
                         d.ZweitschluesselVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZWEITSCHLUE_VORH);
                         d.Status = s.BEM;
+                        d.Organisation = s.ORGANISATION;
                     }));
             }
         }
@@ -566,6 +567,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Name2 = s.NAME2;
                         d.Ort = s.ORT01;
                         d.Plz = s.PSTLZ;
+                        d.CarportRegion = s.POS_TEXT;
                         d.StrasseHausnummer = s.STRAS;
                         d.Telefon = s.TELNR;
                     }));
@@ -953,6 +955,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             d.ZB1_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb1Vorhanden);
                             d.ZB2_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb2Vorhanden);
                             d.ZWEITSCHLUE_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.ZweitschluesselVorhanden);
+                            d.ORGANISATION = s.Organisation;
                         }
                     ));
             }

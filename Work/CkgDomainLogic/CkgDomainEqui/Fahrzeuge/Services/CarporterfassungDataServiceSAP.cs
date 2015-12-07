@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using CkgDomainLogic.General.Database.Services;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
@@ -17,13 +20,15 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
 
-        public IDictionary<string, string> GetCarportPdis()
+        public IDictionary<string, string> GetCarportPdis(string adressKennung)
         {
             Z_DPM_READ_CARPID_01.Init(SAP);
 
             Z_DPM_READ_CARPID_01.SetImportParameter_I_AG(SAP, LogonContext.KundenNr.ToSapKunnr());
 
-            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).ToDictionary(s => s.KUNPDI, s => string.Format("{0} - {1}", s.KUNPDI, s.NAME1));
+            var liste = Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).OrderBy(s => s.KUNPDI.NotNullOrEmpty().Replace(adressKennung, "").ToInt(0)).ToList();
+            return liste
+                .ToDictionary(s => s.KUNPDI, s => string.Format("{0} - {1}", s.KUNPDI, s.NAME1));
         }
 
         public List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items, ref string errorMessage, bool nacherfassung)
@@ -79,6 +84,9 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             Z_DPM_READ_CARPORT_MELD_01.SetImportParameter_I_CARPORT_ID_AG(SAP, selektor.UserCarportId);
             Z_DPM_READ_CARPORT_MELD_01.SetImportParameter_I_NUR_OFF_NL(SAP, "X");
 
+            if (!selektor.UserAllOrganizations)
+                Z_DPM_READ_CARPORT_MELD_01.SetImportParameter_I_ORGANISATION(SAP, selektor.UserOrganization);
+
             if (!string.IsNullOrEmpty(selektor.BestandsNr))
                 Z_DPM_READ_CARPORT_MELD_01.SetImportParameter_I_MVA_NUMMER(SAP, selektor.BestandsNr);
 
@@ -92,6 +100,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                 Z_DPM_READ_CARPORT_MELD_01.SetImportParameter_I_LICENSE_NUM(SAP, selektor.Kennzeichen);
 
             return AppModelMappings.Z_DPM_READ_CARPORT_MELD_01_GT_WEB_To_CarporterfassungModel.Copy(Z_DPM_READ_CARPORT_MELD_01.GT_WEB.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public IDictionary<string, string> GetCustomerOrganizations()
+        {
+            using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
+            {
+                return dbContext.Organizations.Where(o => o.CustomerID == LogonContext.User.CustomerID).OrderBy(o => o.OrganizationName).ToDictionary(o => o.OrganizationReference, o => o.OrganizationName);
+            }
         }
     }
 }

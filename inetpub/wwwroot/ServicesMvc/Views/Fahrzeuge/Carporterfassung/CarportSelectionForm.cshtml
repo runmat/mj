@@ -12,6 +12,15 @@
 
         if (Model.CarportSelectionMode == "AllUsers" && String.IsNullOrEmpty(CarporterfassungModel.GetViewModel().UserCarportId))
         {
+            if (Model.UserHasAllOrganizations)
+            {
+                @Html.FormDropDownListFor(m => m.SelectedOrganizationId, Model.Organizations.ToSelectList(), new { @class = "m-wrap large" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.SelectedOrganizationId)
+            }
+            
             @Html.FormDropDownListFor(m => m.CarportIdPersisted, Model.CarportPersistedPdis.ToSelectList(), new { @class = "m-wrap large" })
         }
         else
@@ -23,7 +32,7 @@
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
             _selectionModeAllUsers = @Model.UserHasCarportId.ToString().ToLower();
 
-            $("#CarportSelectionMode, #CarportIdPersisted").on("change", function() {
+            $("#CarportSelectionMode, #SelectedOrganizationId, #CarportIdPersisted").on("change", function() {
                 $("#AjaxFormCarportSelection").submit();
             });
         </script>

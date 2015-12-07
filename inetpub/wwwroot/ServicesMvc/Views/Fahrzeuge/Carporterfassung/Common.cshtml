@@ -191,6 +191,11 @@
         }
     }
 
+    function OnOrganizationChanged() {
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormFahrzeugerfassung").submit();
+    }
+
     // Nacherfassung
 
     function ShowCarportnacherfassungFahrzeuge(autoRedirectToEdit) {
