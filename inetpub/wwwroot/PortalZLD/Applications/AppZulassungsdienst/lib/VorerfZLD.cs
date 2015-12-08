@@ -173,6 +173,8 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Vorerfassungsdatum = DateTime.Now;
                 kopfdaten.Vorerfasser = userName;
 
+                var anzahlPositionen = AktuellerVorgang.Positionen.Count;
+
                 if (isNewVorgang)
                 {
                     zldDataContext.ZLDVorgangKopf.InsertOnSubmit(ModelMapping.Copy<ZLDKopfdaten, ZLDVorgangKopf>(kopfdaten));
@@ -223,6 +225,9 @@ namespace AppZulassungsdienst.lib
                 // Liste aktualisieren
                 Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
                 AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Positionen, kundenStamm);
+
+                if (anzahlPositionen != Vorgangsliste.Count(v => v.SapId == AktuellerVorgang.Kopfdaten.SapId))
+                    RaiseError(9999, "Fehler beim Speichern: Anzahl der Positionen in SQL nicht korrekt");
 			}
 			catch (Exception ex)
 			{

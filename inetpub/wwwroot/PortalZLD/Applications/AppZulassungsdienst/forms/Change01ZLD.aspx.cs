@@ -1477,6 +1477,12 @@ namespace AppZulassungsdienst.forms
                 if (!neuerVorgang && objVorerf.AktuellerVorgang.Positionen.All(p => String.IsNullOrEmpty(p.WebBearbeitungsStatus)))
                     objVorerf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "B");
 
+                if (objVorerf.AktuellerVorgang.Positionen.None())
+                {
+                    lblError.Text = "Fehler beim anlegen des Datensatzes: keine Positionen zum Speichern vorhanden";
+                    return;
+                }
+
                 objVorerf.SaveVorgangToSql(objCommon.KundenStamm, m_User.UserName);
 
                 if (!neuerVorgang && !objVorerf.ErrorOccured)
