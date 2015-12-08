@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string CarportId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
-        public string CarportIdPersisted { get; set; }
+        public string SelectedCarportId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Selection)]
         public string CarportSelectionMode { get; set; }
@@ -61,9 +61,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().OrganizationCarportPdis; }
         }
 
-        public IDictionary<string, string> CarportPersistedPdis
+        public IDictionary<string, string> AllCarportPdis
         {
-            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPersistedPdis; }
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().AllCarportPdis; }
+        }
+
+        public IDictionary<string, string> CarportPdisForListFilter
+        {
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPdisForListFilter; }
         }
 
         [Required]

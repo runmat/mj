@@ -21,18 +21,18 @@
                 @Html.HiddenFor(m => m.SelectedOrganizationId)
             }
             
-            @Html.FormDropDownListFor(m => m.CarportIdPersisted, Model.CarportPersistedPdis.ToSelectList(), new { @class = "m-wrap large" })
+            @Html.FormDropDownListFor(m => m.SelectedCarportId, Model.CarportPdisForListFilter.ToSelectList(), new { @class = "m-wrap large" })
         }
         else
         {
-            @Html.HiddenFor(m => m.CarportIdPersisted)
+            @Html.HiddenFor(m => m.SelectedCarportId)
         }
 
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
             _selectionModeAllUsers = @Model.UserHasCarportId.ToString().ToLower();
 
-            $("#CarportSelectionMode, #SelectedOrganizationId, #CarportIdPersisted").on("change", function() {
+            $("#CarportSelectionMode, #SelectedOrganizationId, #SelectedCarportId").on("change", function() {
                 $("#AjaxFormCarportSelection").submit();
             });
         </script>

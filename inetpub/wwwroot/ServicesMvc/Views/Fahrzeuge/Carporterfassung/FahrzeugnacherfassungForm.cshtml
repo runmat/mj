@@ -32,8 +32,16 @@
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
-        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false)" })
-        
+        if (Model.AnzahlKennzeichen == "2")
+        {
+            @Html.HiddenFor(m => m.AnzahlKennzeichen)
+            @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false)" })
+        }
+
         @Html.HiddenFor(m => m.Abgemeldet)
         @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", disabled = "disabled" }, labelHidden: true)
         if (Model.Zb1Vorhanden == "1")

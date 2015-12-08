@@ -27,8 +27,9 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastOrganizationAndCarportIdInit();
-            LoadPersistedObjects();
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+
+            CarporterfassungViewModel.Init(PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL"), false, vmStored == null ? null : vmStored.LastOrganizationId, vmStored == null ? null : vmStored.LastCarportId);
 
             return View(CarporterfassungViewModel);
         }
@@ -38,8 +39,9 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastOrganizationAndCarportIdInit();
-            CarporterfassungViewModel.Init(new List<CarporterfassungModel>(), true);
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+
+            CarporterfassungViewModel.Init(new List<CarporterfassungModel>(), true, vmStored == null ? null : vmStored.LastOrganizationId, vmStored == null ? null : vmStored.LastCarportId);
 
             return View(CarporterfassungViewModel);
         }
@@ -49,23 +51,11 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastOrganizationAndCarportIdInit();
-            CarporterfassungViewModel.Init(new List<CarporterfassungModel>());
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+
+            CarporterfassungViewModel.Init(new List<CarporterfassungModel>(), false, vmStored == null ? null : vmStored.LastOrganizationId, vmStored == null ? null : vmStored.LastCarportId);
 
             return View(CarporterfassungViewModel);
-        }
-
-        void LastOrganizationAndCarportIdInit()
-        {
-            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
-            CarporterfassungViewModel.LastOrganizationAndCarportIdInit(vmStored == null ? null : vmStored.SelectedOrganizationId, vmStored == null ? null : vmStored.LastCarportId);
-        }
-
-        void LoadPersistedObjects()
-        {
-            // get shopping cart items
-            var fahrzeugePersisted = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL");
-            CarporterfassungViewModel.Init(fahrzeugePersisted);
         }
 
         [HttpPost]
@@ -73,7 +63,7 @@ namespace ServicesMvc.Controllers
         {
             if (model.UiUpdateOnly)
             {
-                CarporterfassungViewModel.SelectedOrganizationId = model.Organisation;
+                CarporterfassungViewModel.CarportSelectionModel.SelectedOrganizationId = model.Organisation;
                 model.UiUpdateOnly = false;
 
                 ModelState.Clear();
@@ -99,7 +89,7 @@ namespace ServicesMvc.Controllers
                     else
                         CarporterfassungViewModel.UpdateFahrzeug(model);
 
-                    CarporterfassungViewModel.LastOrganizationAndCarportIdInit(model.Organisation, model.CarportId);
+                    CarporterfassungViewModel.SetLastOrganizationIdAndCarportId(model.Organisation, model.CarportId);
                     LogonContext.DataContextPersist(CarporterfassungViewModel);
                 }
             }
@@ -112,8 +102,6 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ListeAnzeigen()
         {
-            CarporterfassungViewModel.SetOrganizationAndCarportIdPersisted(CarporterfassungViewModel.SelectedOrganizationId, CarporterfassungViewModel.LastCarportId);
-
             return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
         }
 
@@ -173,7 +161,7 @@ namespace ServicesMvc.Controllers
             if (!String.IsNullOrEmpty(saveErg))
                 return Json(new { message = saveErg });
 
-            LoadPersistedObjects();
+            CarporterfassungViewModel.Init(PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL"), false);
 
             return PartialView("Carporterfassung/GridForConfirmation", CarporterfassungViewModel);
         }
@@ -281,7 +269,7 @@ namespace ServicesMvc.Controllers
                 {
                     CarporterfassungViewModel.UpdateAndSaveFahrzeug(model, ModelState);
 
-                    CarporterfassungViewModel.LastOrganizationAndCarportIdInit(model.Organisation, model.CarportId);
+                    CarporterfassungViewModel.SetLastOrganizationIdAndCarportId(model.Organisation, model.CarportId);
                     LogonContext.DataContextPersist(CarporterfassungViewModel);
                 }
             }

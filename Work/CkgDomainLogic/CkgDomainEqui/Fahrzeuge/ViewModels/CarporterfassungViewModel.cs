@@ -69,6 +69,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        public string LastOrganizationId { get; set; }
+
         public string LastCarportId { get; set; }
 
         public string UserCarportId
@@ -94,13 +96,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get
             {
                 return AllCarportPdis
-                    .Where(p => CarportAdressen.AnyAndNotNull(a => a.CarportId == p.Key && (a.CarportRegion == SelectedOrganizationName || !UserAllOrganizations)))
+                    .Where(p => CarportAdressen.AnyAndNotNull(a => a.CarportId == p.Key && (a.CarportRegion == SelectedOrganizationName || SelectedOrganizationName == "Zentrale" || !UserAllOrganizations)))
                         .InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose);
             }
         }
 
         [XmlIgnore]
-        public IDictionary<string, string> CarportPersistedPdis
+        public IDictionary<string, string> CarportPdisForListFilter
         {
             get
             {
@@ -108,7 +110,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     return new Dictionary<string, string>();
 
                 return OrganizationCarportPdis
-                            .Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key) || c.Key == LastCarportId)
+                            .Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key))
                                 .ToDictionary(c => c.Key, c => c.Value);
             }
         }
@@ -141,11 +143,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
         }
 
-        public string SelectedOrganizationId { get; set; }
-
         public string SelectedOrganizationName
         {
-            get { return Organizations.FirstOrDefault(o => o.Key == SelectedOrganizationId).Value; }
+            get { return Organizations.FirstOrDefault(o => o.Key == CarportSelectionModel.SelectedOrganizationId).Value; }
         }
 
         [XmlIgnore]
@@ -174,17 +174,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public int CurrentAppID { get; set; }
 
-        public void Init(List<CarporterfassungModel> fahrzeugePersisted, bool nacherfassung = false)
+        public void Init(List<CarporterfassungModel> fahrzeugePersisted, bool nacherfassung, string organizationId = null, string carportId = null)
         {
             ModusNacherfassung = nacherfassung;
-
             FahrzeugeAlle = fahrzeugePersisted;
+
+            if (CarportSelectionModel == null)
+                CarportSelectionModel = new CarporterfassungModel { KundenNr = LogonContext.KundenNr.ToSapKunnr(), CarportSelectionMode = "AllUsers" };
 
             GetCurrentAppID();
             DataMarkForRefresh();
             LoadCarportAdressen();
-            LoadFahrzeugModel();
 
+            SetLastOrganizationIdAndCarportId(organizationId, carportId);
+            SetSelectedOrganizationIdAndCarportId(organizationId, carportId);
+
+            LoadFahrzeugModel();
             SetFahrzeugeForCurrentMode();
         }
 
@@ -199,8 +204,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             Func<CarporterfassungModel, bool> selector = 
                 e => CarportSelectionModel.CarportSelectionMode == "AllUsers"
-                    ? e.CarportId == CarportSelectionModel.CarportIdPersisted
-                    : (ModusNacherfassung ? e.CarportId == UserCarportId : e.UserName == LogonContext.UserName);
+                    ? e.CarportId == CarportSelectionModel.SelectedCarportId
+                    : e.UserName == LogonContext.UserName;
 
             Fahrzeuge = FahrzeugeAlle.Where(selector).ToListOrEmptyList();
 
@@ -223,45 +228,42 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 AktuellesFahrzeug = new CarporterfassungModel
                 {
-                    Organisation = SelectedOrganizationId,
+                    Organisation = LastOrganizationId,
                     CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
                 };
             }
-
-            if (CarportSelectionModel != null)
-                return;
-
-            CarportSelectionModel = new CarporterfassungModel
-            {
-                KundenNr = LogonContext.KundenNr.ToSapKunnr(),
-                CarportSelectionMode = "AllUsers"
-            };
-
-            SetOrganizationAndCarportIdPersisted(SelectedOrganizationId, LastCarportId);
         }
 
-        public void SetOrganizationAndCarportIdPersisted(string organization, string carportId)
+        public void SetLastOrganizationIdAndCarportId(string organizationId, string carportId)
         {
-            CarportSelectionModel.SelectedOrganizationId = organization.NotNullOr(Organizations.Keys.FirstOrDefault());
-            CarportSelectionModel.CarportIdPersisted = carportId.NotNullOr(CarportPersistedPdis.Keys.FirstOrDefault());
-
-            SetFahrzeugeForCurrentMode();
-        }
-
-        public void LastOrganizationAndCarportIdInit(string lastOrganization, string lastCarportId)
-        {
-            GetCurrentAppID(); // notwendig, da z.T. vor dem Init aufgerufen
-
-            SelectedOrganizationId = lastOrganization.NotNullOr(UserOrganization);
-
-            if (UserCarportId.IsNotNullOrEmpty() && OrganizationCarportPdis.Any(p => p.Key == UserCarportId))
-                LastCarportId = UserCarportId;
-            else if (OrganizationCarportPdis.Any(p => p.Key == lastCarportId))
-                LastCarportId = lastCarportId;
+            if (!UserAllOrganizations)
+                LastOrganizationId = UserOrganization;
+            else if (organizationId.IsNotNullOrEmpty() && Organizations.ContainsKey(organizationId))
+                LastOrganizationId = organizationId;
             else
-                LastCarportId = "";
+                LastOrganizationId = Organizations.Keys.FirstOrDefault();
+
+            if (carportId.IsNotNullOrEmpty() && OrganizationCarportPdis.ContainsKey(carportId))
+                LastCarportId = carportId;
+            else
+                LastCarportId = OrganizationCarportPdis.Keys.FirstOrDefault();
+        }
+
+        public void SetSelectedOrganizationIdAndCarportId(string organizationId, string carportId)
+        {
+            if (!UserAllOrganizations)
+                CarportSelectionModel.SelectedOrganizationId = UserOrganization;
+            else if (organizationId.IsNotNullOrEmpty() && Organizations.ContainsKey(organizationId))
+                CarportSelectionModel.SelectedOrganizationId = organizationId;
+            else
+                CarportSelectionModel.SelectedOrganizationId = Organizations.Keys.FirstOrDefault();
+
+            if (carportId.IsNotNullOrEmpty() && CarportPdisForListFilter.ContainsKey(carportId))
+                CarportSelectionModel.SelectedCarportId = carportId;
+            else
+                CarportSelectionModel.SelectedCarportId = CarportPdisForListFilter.Keys.FirstOrDefault();
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
@@ -321,8 +323,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             var organizationChanged = (CarportSelectionModel.SelectedOrganizationId != model.SelectedOrganizationId);
             CarportSelectionModel = model;
-            SelectedOrganizationId = CarportSelectionModel.SelectedOrganizationId;
-            SetOrganizationAndCarportIdPersisted(SelectedOrganizationId, (organizationChanged ? null : model.CarportIdPersisted));
+            SetSelectedOrganizationIdAndCarportId(model.SelectedOrganizationId, (organizationChanged ? null : model.SelectedCarportId));
+            SetFahrzeugeForCurrentMode();
         }
 
         public string SaveFahrzeuge(Action<string, string> outerClearListFunction)
@@ -369,7 +371,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         private void ClearList(Action<string, string> outerClearListFunction)
         {
             var ownerMultiKey = "ALL";
-            var additionalFilter = string.Format(" and ObjectData like '%<CarportId>{0}</CarportId>%'", CarportSelectionModel.CarportIdPersisted);
+            var additionalFilter = string.Format(" and ObjectData like '%<CarportId>{0}</CarportId>%'", CarportSelectionModel.SelectedCarportId);
             if (CarportSelectionModel.CarportSelectionMode.NotNullOrEmpty() != "AllUsers")
             {
                 ownerMultiKey = null;
