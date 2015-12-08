@@ -35,7 +35,6 @@ namespace CkgDomainLogic.Autohaus.Models
         public string FahrgestellNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2)]
-        [RequiredConditional]
         public string Zb2Nr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.HasEtikett)]

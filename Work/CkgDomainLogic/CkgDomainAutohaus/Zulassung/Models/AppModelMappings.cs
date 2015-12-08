@@ -304,7 +304,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZEL;
                         d.Fahrzeugdaten.Kostenstelle = s.ZZREFNR3;
                         d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
-                        d.Fahrzeugdaten.TuevAu = s.TUEV_AU;
+                        d.Fahrzeugdaten.TuevAu = (s.TUEV_AU == "0000" ? null : s.TUEV_AU);
 
                         // Zulassung
                         d.Zulassungsdaten.ModusAbmeldung = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper().Contains("ABMELDUNG");
