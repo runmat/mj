@@ -95,17 +95,24 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return DataConnections;
         }
 
-        public string AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
+        // public Processor AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
+        public Processor AddProcessor()
         {
             var newProcessor = new Processor();
             Processors.Add(newProcessor);
-            if (guid != null)
-            {
-                newProcessor.Guid = guid;
-                newProcessor.PosLeft = posLeft;
-                newProcessor.PosTop = posTop;
-            }
-            return newProcessor.Guid;         
+            newProcessor.Number = Processors.Count;
+            newProcessor.Title = "Processor " + newProcessor.Number;
+            //if (guid != null)
+            //{
+            //    newProcessor.Guid = guid;
+            //    newProcessor.PosLeft = posLeft;
+            //    newProcessor.PosTop = posTop;
+            //    newProcessor.Number = Processors.Count + 1;
+            //    newProcessor.Title = "Processor " + newProcessor.Number;
+            //}
+
+            return newProcessor;         
+            // return newProcessor.Guid;         
         }
 
         public string RemoveProcessor(string processorId)

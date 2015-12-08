@@ -12,10 +12,6 @@
 
     <div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
 
-    @*<select id="GlobalDtFormat" name="GlobalDtFormat" size="5" style="width: 120px !important;">
-        <option value="1">5. Januar 2015 -> 05.01.2015</option>
-        <option value="2">Abmeldung</option>
-    </select>*@
     <span class="float-left">
         <button class="btn white" onclick="GotoRecord('first');">
             <<
@@ -67,14 +63,14 @@
         </button>
     </span>
     
-    <div class="float-left margin-left-10">
+@*    <div class="float-left margin-left-10">
         @Html.DropDownListFor(m => m.Konfiguration.GlobalDateTransformation, Model.GlobalViewData.DateTransformations.ToSelectList(), new {@class = "small margin-left-20"})
-    </div>
+    </div>*@
 
     <span class="clearfix"></span>
     <div id="processorTemplate" class="processor hidden">
         <div class="title">
-            <div id="name" class="float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
+            <div class="processortitle float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
             <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
         </div>
         <div class="content" style="">
@@ -83,8 +79,8 @@
                 <option value="Split">Splitten</option>
                 <option value="Merge">Zusammenfassen</option>
             </select>
-            <input type="text" name="Title" value=""/>
-            <input type="text" name="Number" value=""/>
+            <input type="hidden" name="Title" value=""/>
+            <input type="hidden" name="Number" value=""/>
             <input type="text" name="ProcessorPara1" value="X" style="width: 60px; float: left; margin-bottom: 2px;" onchange="RecalcProcessor(this);"/>
             <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;display: none;" onchange="RecalcProcessor(this);"/>
             <br style="clear: both;"/> 
@@ -307,15 +303,12 @@
         jsPlumb.repaintEverything();
     }
     
-    // Show new Processor in UI
+    // Show Processor in UI
     function ShowProcessor(processorId, number, title, posLeft, posTop, type, para1, para2) {
 
-        alert("ShowProcessor-number: " + number);
+        alert("title: " + title);
 
         var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
-
-        if (title == undefined)
-            title = "Prozessor " + number;
 
         clone.id = processorId;
         document.body.appendChild(clone);
@@ -324,20 +317,15 @@
         newProcessor.addClass("processorobj");
         newProcessor.removeClass("hidden");
 
-        var top = newProcessor.position().top;
-        var left = newProcessor.position().left;
-        top = top + Math.floor((Math.random() * 30) + 1) + 300;
-        left = left + Math.floor((Math.random() * 30) + 1);
+        newProcessor.offset({ left: posLeft, top: posTop });
 
-        if (posTop != undefined)
-            top = posTop;
+        $(newProcessor).find('.processortitle').html(title);
+        $(newProcessor).find(('[name="Title"]')).val(title);
+        $(newProcessor).find(('[name="Number"]')).val(number);
 
-        if (posLeft != undefined)
-            left = posLeft;
-
-        newProcessor.offset({ top: top, left: left });
-
-        $(newProcessor).find("#name").html(title);
+        $(newProcessor).find(('[name="ProcessorType"]')).val(type);
+        $(newProcessor).find(('[name="ProcessorPara1"]')).val(para1);
+        $(newProcessor).find(('[name="ProcessorPara2"]')).val(para2);
 
         var prozin = $(newProcessor).find("#tmpprozin");
         var prozout = $(newProcessor).find("#tmpprozout");
@@ -355,15 +343,15 @@
         });
     }
 
-    // Add Processor to UI and controller
-    function AddProcessor(processorId, number, title, posLeft, posTop, type, para1, para2) {
+    // Add Processor via controller and refresh UI via uiResult
+    function AddProcessor() {
         $.ajax({
             type: "POST",
             url: "Admin/AddProcessor",
-            data: { guid: processorId, posLeft: posLeft, posTop: posTop },   
+            data: { processors: UiProcessors, connections: UiConnections },
             loadingShow: false,
-            success: function (result) {
-                ShowProcessor(result.NewGuid, result.Number, title, posLeft, posTop, type, para1, para2);
+            success: function (uiResult) {
+                RefreshUi(uiResult);
             }
         });
     }
@@ -380,17 +368,15 @@
         jsPlumb.repaintEverything();
     }
 
-    function SaveUiData() {
+    function UiProcessors() {
         jsonProcessors = [];
-        jsonConnections = [];
-
-        // processors...
         $(".processorobj").each(function () {
             var processor = $(this);
             var processorId = $(processor).attr("id");
-            // var name = $(processor).find("#name").html();
-            var title = $(processor).find(('[name="Title"]')).html();
+            var title = $(processor).find('.processortitle').html();
+
             var number = $(processor).find(('[name="Number"]')).html();
+            if (number == "") { number = 0; }
             var posTop = Math.round($(processor).position().top);
             var posLeft = Math.round($(processor).position().left);
             var processorType = $(processor).find('[name="ProcessorType"]').val();
@@ -398,8 +384,11 @@
             var processorPara2 = $(processor).find('[name="ProcessorPara2"]').val();
             jsonProcessors.push({ Guid: processorId, Title: title, Number: number, Operation: processorType, OperationPara1: processorPara1, OperationPara2: processorPara2, PosLeft: posLeft, PosTop: posTop });
         });
+        return JSON.stringify(jsonProcessors);
+    }
 
-        // connections...
+    function UiConnections() {
+        jsonConnections = [];
         var connectionList = jsPlumb.getConnections();
         connectionList.forEach(function (item) {
             var id = item.id;
@@ -408,12 +397,18 @@
             jsonConnections.push({ "ConnectionId": id, GuidSource: source, GuidDest: dest });
             console.log("jsonConnections: " + jsonConnections[jsonConnections.length - 1]);
         });
+        return JSON.stringify(jsonConnections);
+    }
+
+    function SaveUiData() {
+        jsonProcessors = [];
+        jsonConnections = [];
 
         $.ajax({
             type: "POST",
             url: "Admin/SaveUiData",
             loadingShow: false,
-            data: { processors: JSON.stringify(jsonProcessors), connections: JSON.stringify(jsonConnections) },
+            data: { processors: UiProcessors, connections: UiConnections },
             dataType: 'json',
             success: function (result) {
                 RefreshUi(result);
@@ -433,34 +428,6 @@
                 RefreshUi(result);
             }
         });
-
-//        // Fill jsonProcessors and jsonConnections with server data and show in ui
-//        $.ajax({
-//            type: "POST",
-//            url: "Admin/LoadUiData",
-//            loadingShow: false,
-//            success: function (result) {                
-//                jsonProcessors = result.ProcessorList;
-//                jsonConnections = result.ConnectionList;
-//                // return Json(new { ProcessorList = processorList, ConnectionList = connectionList });
-//            }
-//        });
-
-//        jsonProcessors.forEach(function (item) {
-//            if (item.ProcessorId !== "processorTemplate") {
-//                console.log("jsonProcessor: " + item.PosLeft);
-//                // AddProcessor(item.Guid, item.Title, item.PosLeft, item.PosTop, item.Type);
-//                ShowProcessor(item.Guid, item.Number, item.Title, item.PosLeft, item.PosTop, item.Type, item.Para1, item.Para2);
-//            }
-//        });
-
-//        jsonConnections.forEach(function (item) {
-//            console.log("Load jsonConnections: " + item.ConnectionId + " -> " + item.SourceId + " -> " + item.DestId);
-//            AddConnection(item.ConnectionId, item.SourceId, item.DestId);
-//            jsPlumb.repaint(item.ConnectionId);
-//        });
-
-//        jsPlumb.repaintEverything();
     }
 
     function Export() {

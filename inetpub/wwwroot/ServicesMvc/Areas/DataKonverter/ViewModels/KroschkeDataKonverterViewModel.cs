@@ -40,7 +40,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                 {
                     { "Prozessauswahl", "Prozessauswahl" },         // Localize.Vehicle
                     { "Admin/Konfiguration", "Konfiguration" },
-                    { "Admin/Testimport", "Testimport" },
+                    //{ "Admin/Testimport", "Testimport" },
                     { "Admin/Abschluss", Localize.Ready + "!" },
                 });
             }

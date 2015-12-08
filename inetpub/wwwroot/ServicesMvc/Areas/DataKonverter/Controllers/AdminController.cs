@@ -95,16 +95,6 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         [HttpPost]
         [CkgApplication]
-        public ActionResult Testimport()
-        {
-            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-            //    model = ViewModel.Auftraggeber;
-
-            return PartialView("Partial/Testimport", ViewModel);
-        }
-
-        [HttpPost]
-        [CkgApplication]
         public ActionResult Abschluss()
         {
             //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
@@ -116,11 +106,30 @@ namespace ServicesMvc.DataKonverter.Controllers
         #region Ajax
         [HttpPost]
         // public JsonResult AddProcessor()
-        public JsonResult AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
+        // public JsonResult AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
+        public JsonResult AddProcessor(string processors, string connections)
         {
-            var processorGuid = ViewModel.DataMapper.AddProcessor(guid, posLeft, posTop);
-            var number = ViewModel.DataMapper.Processors.Count;
-            return Json(new { NewGuid = processorGuid, Number = number });
+            // Aktuelle UI-Infos ins Viewmodel überführen...
+            if (processors != "undefined")
+            {
+                var processorList = JSon.Deserialize<Processor[]>(processors);
+                ViewModel.DataMapper.Processors = new List<Processor>(processorList);
+            }
+            if (connections != "undefined")
+            {
+                var connectionList = JSon.Deserialize<DataConnection[]>(connections);
+                ViewModel.DataMapper.DataConnections = new List<DataConnection>(connectionList);
+            }
+
+            // var newProcessor = ViewModel.DataMapper.AddProcessor(guid, posLeft, posTop);
+            var newProcessor = ViewModel.DataMapper.AddProcessor();
+            
+            return RefreshUi();
+
+            // return Json(new { Processor = newProcessor });
+
+            // var number = ViewModel.DataMapper.Processors.Count;
+            // return Json(new { NewGuid = processorGuid, Number = number });
         }
 
         [HttpPost]

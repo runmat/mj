@@ -7,6 +7,10 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class Processor
     {
+
+        private int _defaultLeft= 700;
+        private int _defaultTop = 350;
+
         public string Guid { get; set; }
         public int Number { get; set; }
         public string Title { get; set; }
@@ -23,11 +27,24 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public int PosLeft { get; set; }
         public int PosTop { get; set; }
 
-        public Processor()
+        public Processor(int number = 0, Operation operation = Operation.Fix, string para1 = "X", string para2 = "", int posLeft = 0, int posTop = 0)
         {
+            var rnd = new Random();
+
             Guid = System.Guid.NewGuid().ToString();
-            Operation = Operation.Fix;    // Default
-            OperationPara1 = "X";            
+            Number = number;
+            Operation = operation;
+            OperationPara1 = para1;
+            OperationPara2 = para2;
+
+            if (posLeft == 0)
+                posLeft = _defaultLeft + rnd.Next(-20, 20);
+
+            if (posTop == 0)
+                posTop = _defaultTop + rnd.Next(-20, 20);
+
+            PosLeft = posLeft;
+            PosTop = posTop;
         }
 
         private string CalcOutput()
