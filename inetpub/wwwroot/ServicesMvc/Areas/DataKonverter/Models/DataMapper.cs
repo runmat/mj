@@ -28,7 +28,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public string RecordInfoText
         {
-            get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
+            get { return String.Format("{0}/{1}", RecordNo, RecordCount); } 
         }
 
         public DataMapper()
@@ -137,57 +137,112 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return processor;
         }
 
+        #region TEST
+        public static XmlDocument ToXmlDocument(XDocument xdoc)
+        {
+            var xmlDocument = new XmlDocument();
+            using (var reader = xdoc.CreateReader())
+            {
+                xmlDocument.Load(reader);
+            }
+            return xmlDocument;
+        }
+        public static XDocument ToXDocument(XmlDocument xmlDoc)
+        {
+            using (var reader = new XmlNodeReader(xmlDoc))
+            {
+                reader.MoveToContent();
+                return XDocument.Load(reader);
+            }
+        }
+        #endregion
+
         public string ExportToXml()
         {
+            var doc = new XmlDocument();
+            var newElem = doc.CreateNode("element", "pages", "");  
+
             var xmlFileContent = new XmlDocument();
 
             var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
 
             var destFields = RecalcDestFields();
 
-            var xml = XDocument.Parse(xmlSingleRecord.InnerXml);
+            // var xmlComplete = new XDocument();
+            // ar xmlComplete = new XmlDocument();
+            xmlFileContent.CreateNode("element", "pages", "");
 
-            // Alle Felder durchlaufen, die über einen Inhalt verfügen...
-            foreach (var field in DestinationFile.Fields.Where(x => x.IsUsed))
+            var xmlComplete = new XDocument();
+
+            // Alle vorhandenen Datensätze aus Sourcefile durchlaufen...
+            foreach (var record in SourceFile.Fields[0].Records)
             {
-                var id = field.Guid.Replace("Dest-","");
+                var xmlRecord = XDocument.Parse(xmlSingleRecord.InnerXml);
 
-                // Element in leerem XmlDokument finden...
-                var found = xml.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
-                if (found)
+                // Alle Felder durchlaufen, die über einen Inhalt verfügen...
+                foreach (var field in DestinationFile.Fields.Where(x => x.IsUsed))
                 {
-                    var element = xml.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == id);
-                    var content = destFields.FirstOrDefault(x => x.Beschreibung == "Dest-" + id);
-                    // element.Value = field.Records[0];
-                    if (content != null)
+                    var id = field.Guid.Replace("Dest-", "");
+
+                    // Element in Template-XmlDokument finden...
+                    var found = xmlRecord.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
+                    if (found)
                     {
-                        element.Value = content.Wert;    
+                        var element = xmlRecord.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == id);
+                        var content = destFields.FirstOrDefault(x => x.Beschreibung == "Dest-" + id);
+                        // element.Value = field.Records[0];
+                        if (content != null)
+                        {
+                            element.Value = content.Wert;
+                        }
                     }
                 }
+
+                //var elementToInsert = xmlRecord.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
+
+                //var bigDoc = new XmlDocument();
+                //bigDoc.LoadXml("<Data></Data>");
+                //var targetNode = bigDoc.FirstChild;
+
+                //XmlDocument doc1 = (XmlDocument)DestinationFile.XmlDocument.Clone();
+                //var doc2 = ToXmlDocument(xmlRecord);
+                //XmlNode copiedNode = doc2.ImportNode(doc1.SelectSingleNode("/IMPORT"), true);
+                //doc2.DocumentElement.AppendChild(copiedNode);
+
+                ////var newElement = xmlFileContent.CreateNode("element", "pages", "");
+                ////newElement.InnerText = "100";
+                ////var root = xmlFileContent.DocumentElement;
+                ////root.AppendChild(newElement);
+
+                //// var newNode = xmlComplete.Add(new object());
+                
+                //// xdocument habe ich
+                //// xmlnode brauche ich für AppendChild
+
+                //var found2 = xmlRecord.Descendants("IMPORT").FirstOrDefault(); // .Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
+
+                //xmlComplete.AppendChild(found2.FirstNode);
+
+                var test1 = xmlRecord.Root.Element("IMPORT");
+                var test2 = xmlRecord.Root;
+                var test3 = test2.ElementsBeforeSelf();
+                var test4 = test2.ElementsAfterSelf();
+                // var test5 = test2.Element("").Elements();
+                // var toAdd = xmlRecord.Root.Element("IMPORT").Elements();
+                
+                // xmlComplete.Root.Add(xmlRecord.Root.Element("IMPORT").Elements());
+                xmlComplete.Root.Add(test3.Elements());
+
+                xmlComplete.Add(xmlRecord);
+
+                // xmlComplete.Add(xmlRecord);
+                
             }
 
-            //// Alle Knoten der noch leeren Output-XML durchlaufen...
-            //xmlSingleRecord.IterateThroughAllNodes(delegate(XmlNode node)
-            //{
-            //    try
-            //    {
-            //        var nodeId = "Dest-" + node.Attributes["id"].Value;
-            //        var fieldContent = destFields.FirstOrDefault(x => x.Beschreibung == nodeId);
-            //        if (fieldContent != null)
-            //        {
-            //            node.InnerText = fieldContent.Wert;
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //    }
-            //});
+            // xmlRecord.Save(@"C:\tmp\TestOutput.xml");
+            xmlComplete.Save(@"C:\tmp\TestOutput.xml");
 
-            // xmlFileContent.Add(xmlSingleRecord);
-
-            xml.Save(@"C:\tmp\TestOutput.xml");
-
-            return xmlSingleRecord.ToString();
+            return "OK";
         }
 
         // Alle DatenRecords der Quellfelder ermitteln...
