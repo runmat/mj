@@ -96,7 +96,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get
             {
                 return AllCarportPdis
-                    .Where(p => CarportAdressen.AnyAndNotNull(a => a.CarportId == p.Key && (a.CarportRegion == SelectedOrganizationName || SelectedOrganizationName == "Zentrale" || !UserAllOrganizations)))
+                    .Where(p => CarportAdressen.AnyAndNotNull(a => a.CarportId == p.Key && (a.CarportRegion == SelectedOrganizationName || CarportSelectionModel.SelectedOrganizationId == "999")))
                         .InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose);
             }
         }
@@ -245,7 +245,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             else
                 LastOrganizationId = Organizations.Keys.FirstOrDefault();
 
-            if (carportId.IsNotNullOrEmpty() && OrganizationCarportPdis.ContainsKey(carportId))
+            if (UserCarportId.IsNotNullOrEmpty())
+                LastCarportId = UserCarportId;
+            else if (carportId.IsNotNullOrEmpty() && OrganizationCarportPdis.ContainsKey(carportId))
                 LastCarportId = carportId;
             else
                 LastCarportId = OrganizationCarportPdis.Keys.FirstOrDefault();
@@ -260,7 +262,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             else
                 CarportSelectionModel.SelectedOrganizationId = Organizations.Keys.FirstOrDefault();
 
-            if (carportId.IsNotNullOrEmpty() && CarportPdisForListFilter.ContainsKey(carportId))
+            if (UserCarportId.IsNotNullOrEmpty())
+                CarportSelectionModel.SelectedCarportId = UserCarportId;
+            else if (carportId.IsNotNullOrEmpty() && CarportPdisForListFilter.ContainsKey(carportId))
                 CarportSelectionModel.SelectedCarportId = carportId;
             else
                 CarportSelectionModel.SelectedCarportId = CarportPdisForListFilter.Keys.FirstOrDefault();
