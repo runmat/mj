@@ -47,7 +47,7 @@ Partial Public Class Report01
 
     Private Sub responseBack()
         mObjoffBestellungen.currentApplikationPage = Nothing
-        Response.Redirect("../Selection.aspx")
+        Response.Redirect("../Forms/WarenwirtschaftSelection.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
