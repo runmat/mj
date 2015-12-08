@@ -389,7 +389,7 @@ Namespace Common
                                 rfcT = it.ToTable
                                 If rfcT.Name = CType(tmpRow(0), DataTable).TableName Then
 
-                                    Dim tblTemp As DataTable = rfcT.ToADOTable
+                                    Dim tblTemp As DataTable = rfcT.ToADOTableLocaleDe
 
                                     For Each col As RFCTableColumn In rfcT.Columns
 
@@ -440,8 +440,8 @@ Namespace Common
                         If rfcT.Name = CType(tmpRow(0), DataTable).TableName Then
 
 
-                            Dim tblTemp As DataTable = rfcT.ToADOTable
-                            Dim tblTempResult As DataTable = rfcT.ToADOTable.Clone
+                            Dim tblTemp As DataTable = rfcT.ToADOTableLocaleDe
+                            Dim tblTempResult As DataTable = rfcT.ToADOTableLocaleDe.Clone
                             Dim NewRow As DataRow
 
                             'Datentyp auf DateTime ändern
