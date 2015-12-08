@@ -14,14 +14,14 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using ServicesMvc.Areas.DataKonverter.Models;
 using MvcTools.Web;
-using Newtonsoft.Json.Linq;
 using ServicesMvc.Areas.DataKonverter;
+using ServicesMvc.Areas.DataKonverter.ActionFilters;
 
 namespace ServicesMvc.DataKonverter.Controllers
 {
 
     [DataKonverterInjectGlobalData]
-    public class AdminController : CkgDomainController 
+    public class AdminController : CkgDomainController
     {
         public override string DataContextKey { get { return GetDataContextKey<KroschkeDataKonverterViewModel>(); } }
 
@@ -104,117 +104,27 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         #region Ajax
+
+
         [HttpPost]
-        // public JsonResult AddProcessor()
-        // public JsonResult AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
+        [StoreUi]
         public JsonResult AddProcessor(string processors, string connections)
         {
-            // Aktuelle UI-Infos ins Viewmodel überführen...
-            if (processors != "undefined")
-            {
-                var processorList = JSon.Deserialize<Processor[]>(processors);
-                ViewModel.DataMapper.Processors = new List<Processor>(processorList);
-            }
-            if (connections != "undefined")
-            {
-                var connectionList = JSon.Deserialize<DataConnection[]>(connections);
-                ViewModel.DataMapper.DataConnections = new List<DataConnection>(connectionList);
-            }
-
-            // var newProcessor = ViewModel.DataMapper.AddProcessor(guid, posLeft, posTop);
-            var newProcessor = ViewModel.DataMapper.AddProcessor();
-            
-            return RefreshUi();
-
-            // return Json(new { Processor = newProcessor });
-
-            // var number = ViewModel.DataMapper.Processors.Count;
-            // return Json(new { NewGuid = processorGuid, Number = number });
-        }
-
-        [HttpPost]
-        public JsonResult AddConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
-        {
-            var newConnection = ViewModel.DataMapper.AddConnection(idSource, idDest, sourceIsProcessor, destIsProcessor);
-
-            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
-            var processorList = ViewModel.DataMapper.RecalcProcessors();
-
-            // Alle DatenRecords der Quellfelder ermitteln...
-            var sourceFieldList = ViewModel.DataMapper.RecalcSourceFields();
-
-            // Alle DatenRecords der Zielfelder ermitteln...
-            var destFieldList = ViewModel.DataMapper.RecalcDestFields();
-
-            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
-        }
-
-        [HttpPost]
-        public JsonResult RemoveConnection(string idSource, string idDest)
-        {
-            ViewModel.DataMapper.RemoveConnection(idSource, idDest);
-
+            ViewModel.DataMapper.AddProcessor();
             return RefreshUi();
         }
 
         [HttpPost]
-        public JsonResult GetConnections()
+        [StoreUi]
+        public JsonResult SyncUiData()
         {
-            var result = ViewModel.DataMapper.GetConnections();
-
-            return Json(result);
-        }
-
-        [HttpPost]
-        public JsonResult SaveLocations(string connectionData, string processorData)
-        {
-            var processorList = JSon.Deserialize<Processor[]>(processorData);
-
-            foreach (var processor in processorList)
-            {
-                var processorToChange = ViewModel.DataMapper.Processors.FirstOrDefault(x => x.Guid == processor.Guid);
-                if (processorToChange != null)
-                {
-                    processorToChange.PosLeft = processor.PosLeft;
-                    processorToChange.PosTop = processor.PosTop;
-                }
-            }
-
-            return null;
-        }
-
-        [HttpPost]
-        public JsonResult SaveUiData(string processors, string connections)
-        {
-            var processorList = JSon.Deserialize<Processor[]>(processors);
-            var connectionList = JSon.Deserialize<DataConnection[]>(connections);
-
-            ViewModel.DataMapper.Processors = new List<Processor>(processorList);
-            ViewModel.DataMapper.DataConnections = new List<DataConnection>(connectionList);
-
-            //foreach (var processor in processorList)
-            //{
-            //    var processorToChange = ViewModel.DataMapper.Processors.FirstOrDefault(x => x.Guid == processor.Guid);
-            //    if (processorToChange != null)
-            //    {
-            //        processorToChange.PosLeft = processor.PosLeft;
-            //        processorToChange.PosTop = processor.PosTop;
-            //    }
-            //}
-
             return RefreshUi();
-            // return Json(new { Message = "" });
         }
 
         [HttpPost]
         public JsonResult LoadUiData()
         {
-            var processorList = ViewModel.DataMapper.Processors;
-            var connectionList = ViewModel.DataMapper.DataConnections;
-
             return RefreshUi();
-
-            // return Json(new { ProcessorList = processorList, ConnectionList = connectionList });
         }
 
         [HttpPost]
@@ -225,6 +135,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
+        [StoreUi]
         public JsonResult RefreshUi(string recordOffset = null)
         {
             switch (recordOffset)

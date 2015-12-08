@@ -95,24 +95,13 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return DataConnections;
         }
 
-        // public Processor AddProcessor(string guid = null, int posLeft = 0, int posTop = 0)
         public Processor AddProcessor()
         {
             var newProcessor = new Processor();
             Processors.Add(newProcessor);
             newProcessor.Number = Processors.Count;
             newProcessor.Title = "Processor " + newProcessor.Number;
-            //if (guid != null)
-            //{
-            //    newProcessor.Guid = guid;
-            //    newProcessor.PosLeft = posLeft;
-            //    newProcessor.PosTop = posTop;
-            //    newProcessor.Number = Processors.Count + 1;
-            //    newProcessor.Title = "Processor " + newProcessor.Number;
-            //}
-
             return newProcessor;         
-            // return newProcessor.Guid;         
         }
 
         public string RemoveProcessor(string processorId)
@@ -125,10 +114,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Processor GetProcessorResult(Processor processor)
         {
             // Alle eingehenden Connections ermitteln...
-            var connectionsIn = DataConnections.Where(x => x.GuidDest == processor.Guid).ToList();
-
-            // Alle ausgehenden Connections ermitteln...
-            // var connectionsOut = DataConnections.Where(x => x.GuidSource == processor.Guid).ToList();
+            var connectionsIn = DataConnections.Where(x => x.GuidDest == "prozin-" + processor.Guid).ToList();
 
             // Input-String ermitteln...
             var input = new StringBuilder();
@@ -244,7 +230,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 var connection = DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
                 if (connection != null)
                 {
-                    if (connection.SourceIsProcessor)
+                    var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);    // Wenn Sourcefeld kein Prozessor ist
+                    if (sourceItem == null)
                     {
                         var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
                         value = processor.Output;
@@ -252,10 +239,25 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     }
                     else
                     {
-                        var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
                         value = sourceItem.Records[RecordNo - 1];
-                        field.IsUsed = true;
+                        field.IsUsed = true;    
                     }
+
+                    //if (connection.SourceIsProcessor)
+                    //{
+                    //    var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
+                    //    value = processor.Output;
+                    //    field.IsUsed = true;
+                    //}
+                    //else
+                    //{
+                    //    var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
+                    //    if (sourceItem != null)
+                    //    {
+                    //        value = sourceItem.Records[RecordNo - 1];
+                    //    }
+                    //    field.IsUsed = true;
+                    //}
                 }
 
                 destFieldList.Add(new Domaenenfestwert

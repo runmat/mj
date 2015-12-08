@@ -727,6 +727,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\DataKonverter\ActionFilters\DataKonverterGlobalDataAttribute.cs" />
+    <Compile Include="Areas\DataKonverter\ActionFilters\StoreUiAttribute.cs" />
     <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
     <Compile Include="Areas\DataKonverter\Contracts\IDataProcessor.cs" />

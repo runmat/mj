@@ -9,7 +9,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     {
 
         private int _defaultLeft= 700;
-        private int _defaultTop = 350;
+        private int _defaultTop = 320;
 
         public string Guid { get; set; }
         public int Number { get; set; }
