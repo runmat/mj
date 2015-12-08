@@ -36,7 +36,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         public int AnzahlTreffer
         {
-            get { return (GetViewModel != null ? GetViewModel().FahrzeugeAlle.Count : 0); }
+            get { return (GetViewModel != null && GetViewModel().FahrzeugeAlle != null ? GetViewModel().FahrzeugeAlle.Count : 0); }
         }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]

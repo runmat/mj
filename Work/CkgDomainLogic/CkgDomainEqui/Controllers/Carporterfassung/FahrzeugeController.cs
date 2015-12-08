@@ -27,7 +27,7 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastCarportIdInit();
+            LastOrganizationAndCarportIdInit();
             LoadPersistedObjects();
 
             return View(CarporterfassungViewModel);
@@ -38,7 +38,7 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastCarportIdInit();
+            LastOrganizationAndCarportIdInit();
             CarporterfassungViewModel.Init(new List<CarporterfassungModel>(), true);
 
             return View(CarporterfassungViewModel);
@@ -49,13 +49,13 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            LastCarportIdInit();
+            LastOrganizationAndCarportIdInit();
             CarporterfassungViewModel.Init(new List<CarporterfassungModel>());
 
             return View(CarporterfassungViewModel);
         }
 
-        void LastCarportIdInit()
+        void LastOrganizationAndCarportIdInit()
         {
             var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
             CarporterfassungViewModel.LastOrganizationAndCarportIdInit(vmStored == null ? null : vmStored.SelectedOrganizationId, vmStored == null ? null : vmStored.LastCarportId);

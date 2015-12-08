@@ -157,7 +157,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [XmlIgnore]
         public string AdressKennung
         {
-            get { return ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID); }
+            get
+            {
+                var adrKennung = ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+
+                if (string.IsNullOrEmpty(adrKennung))
+                    return "DUMMYADRESSKENNUNG";
+
+                return adrKennung;
+            }
         }
 
         public bool EditMode { get; set; }
@@ -244,8 +252,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LastOrganizationAndCarportIdInit(string lastOrganization, string lastCarportId)
         {
-            SelectedOrganizationId = UserOrganization.NotNullOr(lastOrganization);
-            LastCarportId = UserCarportId.NotNullOr(lastCarportId);
+            GetCurrentAppID(); // notwendig, da z.T. vor dem Init aufgerufen
+
+            SelectedOrganizationId = lastOrganization.NotNullOr(UserOrganization);
+
+            if (UserCarportId.IsNotNullOrEmpty() && OrganizationCarportPdis.Any(p => p.Key == UserCarportId))
+                LastCarportId = UserCarportId;
+            else if (OrganizationCarportPdis.Any(p => p.Key == lastCarportId))
+                LastCarportId = lastCarportId;
+            else
+                LastCarportId = "";
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)

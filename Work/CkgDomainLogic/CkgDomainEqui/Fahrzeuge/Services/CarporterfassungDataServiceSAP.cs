@@ -26,8 +26,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             Z_DPM_READ_CARPID_01.SetImportParameter_I_AG(SAP, LogonContext.KundenNr.ToSapKunnr());
 
-            var liste = Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).OrderBy(s => s.KUNPDI.NotNullOrEmpty().Replace(adressKennung, "").ToInt(0)).ToList();
-            return liste
+            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).OrderBy(s => s.KUNPDI.NotNullOrEmpty().Replace(adressKennung, "").ToInt(0))
                 .ToDictionary(s => s.KUNPDI, s => string.Format("{0} - {1}", s.KUNPDI, s.NAME1));
         }
 

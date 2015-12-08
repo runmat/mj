@@ -32,11 +32,11 @@
         if (Model.UserHasCarportId)
         {
             @Html.HiddenFor(m => m.CarportId)
-            @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap large", col = "left" })
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.CarportId, Model.AllCarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+            @Html.FormDropDownListFor(m => m.CarportId, Model.OrganizationCarportPdis.ToSelectList(), new { @class = "m-wrap large", col = "left" })
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 

@@ -51,19 +51,19 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string CarportName { get; set; }
 
-        public IDictionary<string, string> AllCarportPdis
+        public IDictionary<string, string> Organizations
         {
-            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().AllCarportPdis; }
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().Organizations; }
+        }
+
+        public IDictionary<string, string> OrganizationCarportPdis
+        {
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().OrganizationCarportPdis; }
         }
 
         public IDictionary<string, string> CarportPersistedPdis
         {
             get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPersistedPdis; }
-        }
-
-        public IDictionary<string, string> Organizations
-        {
-            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().Organizations; }
         }
 
         [Required]
