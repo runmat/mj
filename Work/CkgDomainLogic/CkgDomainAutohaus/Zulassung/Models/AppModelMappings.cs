@@ -305,11 +305,16 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZEL;
                         d.Fahrzeugdaten.Kostenstelle = s.ZZREFNR3;
                         d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
+                        d.Fahrzeugdaten.TuevAu = (s.TUEV_AU == "0000" ? null : s.TUEV_AU);
 
                         // Zulassung
-                        d.Zulassungsdaten.ModusAbmeldung = (s.BEAUFTRAGUNGSART == "ABMELDUNG" || s.BEAUFTRAGUNGSART == "MASSENABMELDUNG");
+                        d.Zulassungsdaten.ModusAbmeldung = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper().Contains("ABMELDUNG");
+                        d.Zulassungsdaten.IsSchnellabmeldung = (s.BEAUFTRAGUNGSART == "SCHNELLABMELDUNG");
                         d.Zulassungsdaten.ModusVersandzulassung = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNG");
                         d.Zulassungsdaten.ModusSonderzulassung = (s.BEAUFTRAGUNGSART == "SONDERZULASSUNG");
+
+                        if (d.Zulassungsdaten.IsSchnellabmeldung)
+                            d.Zulassungsdaten.HalterNameSchnellabmeldung = s.ZZREFNR1;
 
                         d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
                         d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;
@@ -457,6 +462,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.VK_KUERZEL = s.Fahrzeugdaten.VerkaeuferKuerzel;
                             d.ZZREFNR3 = s.Fahrzeugdaten.Kostenstelle;
                             d.ZZREFNR4 = s.Fahrzeugdaten.BestellNr;
+                            d.TUEV_AU = s.Fahrzeugdaten.TuevAu;
 
                             // Halter
                             var halterNameSap = s.HalterName.NotNullOrEmpty().ToUpper();

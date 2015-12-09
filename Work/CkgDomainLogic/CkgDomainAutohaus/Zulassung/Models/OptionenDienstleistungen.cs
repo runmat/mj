@@ -174,13 +174,13 @@ namespace CkgDomainLogic.Autohaus.Models
 
             s += String.Format("<br/>{0}: {1}", Localize.Comment, Bemerkung);
 
-            if (Zulassungsdaten.IstGebrauchtzulassung(ZulassungsartMatNr))
+            if (Zulassungsdaten.IstGebrauchtzulassung(ZulassungsartMatNr) && KennzeichenVorhanden)
             {
-                s += String.Format("<br/>{0}: {1}", Localize.LicensePlatesAvailable, KennzeichenVorhanden);
+                s += String.Format("<br/>{0}", Localize.LicensePlatesAvailable);
             }
-            else if (Zulassungsdaten.IstAbmeldung(ZulassungsartMatNr))
+            else if (Zulassungsdaten.IstAbmeldung(ZulassungsartMatNr) && VorhandenesKennzeichenReservieren)
             {
-                s += String.Format("<br/>{0}: {1}", Localize.ReserveExistingLicenseNo, VorhandenesKennzeichenReservieren);
+                s += String.Format("<br/>{0}", Localize.ReserveExistingLicenseNo);
             }
             else if (Zulassungsdaten.IstFirmeneigeneZulassung(ZulassungsartMatNr))
             {
