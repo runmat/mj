@@ -74,47 +74,7 @@ namespace CkgDomainLogic.Equi.Models
         public DateTime? Versanddatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.StorageLocation)]
-        public string Lagerort
-        {
-            get
-            {
-                string erg = "";
-
-                var bukrsName = (GetViewModel != null ? GetViewModel().LogonContext.Customer.AccountingAreaName : "DAD");
-
-                switch (AbcKennzeichen)
-                {
-                    case "":
-                        erg = bukrsName;
-                        break;
-                    case "0":
-                        erg = bukrsName;
-                        break;
-                    case "1":
-                        if ((Versanddatum == null) || (Versanddatum == DateTime.MinValue))
-                        {
-                            erg = "temporär angefordert";
-                        }
-                        else
-                        {
-                            erg = "temporär versendet";
-                        }
-                        break;
-                    case "2":
-                        if ((Versanddatum == null) || (Versanddatum == DateTime.MinValue))
-                        {
-                            erg = "endgültig angefordert";
-                        }
-                        else
-                        {
-                            erg = "endgültig versendet";
-                        }
-                        break;
-                }
-
-                return erg;
-            }
-        }
+        public string Lagerort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string Hersteller { get; set; }
