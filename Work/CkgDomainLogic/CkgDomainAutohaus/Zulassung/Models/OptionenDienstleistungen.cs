@@ -178,10 +178,6 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 s += String.Format("<br/>{0}", Localize.LicensePlatesAvailable);
             }
-            else if (Zulassungsdaten.IstAbmeldung(ZulassungsartMatNr) && VorhandenesKennzeichenReservieren)
-            {
-                s += String.Format("<br/>{0}", Localize.ReserveExistingLicenseNo);
-            }
             else if (Zulassungsdaten.IstFirmeneigeneZulassung(ZulassungsartMatNr))
             {
                 s += String.Format("<br/>{0}: {1}", Localize.HoldingPeriodUntil, (HaltedauerBis.HasValue ? HaltedauerBis.Value.ToShortDateString() : ""));

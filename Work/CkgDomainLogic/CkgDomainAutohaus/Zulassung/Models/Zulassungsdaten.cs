@@ -261,6 +261,9 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 s += string.Format("<br/>{0}: {1}", Localize.CancellationDate, (Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : ""));
                 s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+
+                if (VorhandenesKennzeichenReservieren)
+                    s += string.Format("<br/>{0}", Localize.ReserveExistingLicenseNo);
             }
             else
             {

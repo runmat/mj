@@ -306,7 +306,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
-                            (Zulassungsdaten.ModusAbmeldung
+                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -314,7 +314,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = Fahrzeugdaten.GetSummaryString(),
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung
+                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
                                     ? null :
                                     new GeneralEntity
                                     {

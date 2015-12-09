@@ -1410,8 +1410,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (fahrzeugdatenModel.Zb2Nr.IsNullOrEmpty())
                     addModelError("Zb2Nr", string.Format("{0} {1}", Localize.ZB2, Localize.Required.ToLower()));
 
+                var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
+
                 if (fahrzeugdatenModel.TuevAu.IsNullOrEmpty())
                     addModelError("TuevAu", string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Required.ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+                else if (!regexTuevAu.IsMatch(fahrzeugdatenModel.TuevAu))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower()));
             }
         }
 
