@@ -105,7 +105,10 @@ namespace AppRemarketing.forms
         protected void ibtnSperren_Click(object sender, ImageClickEventArgs e)
         {
             lblError.Text = "";
-            m_Report.Fahrgestellnummer = ((ImageButton)sender).CommandArgument;
+            var fzg = m_Report.tblFahrzeuge.Select("Fahrgestellnummer='" + ((ImageButton) sender).CommandArgument + "'")[0];
+            m_Report.Fahrgestellnummer = fzg["Fahrgestellnummer"].ToString();
+            m_Report.Debitor = fzg["Debitor"].ToString();
+            m_Report.Haendler = fzg["Haendler"].ToString();
             m_Report.Sperren((string)Session["AppID"], (string)Session.SessionID, this);
 
             if (m_Report.Status != 0)
@@ -125,7 +128,10 @@ namespace AppRemarketing.forms
         protected void ibtnEntsperren_Click(object sender, ImageClickEventArgs e)
         {
             lblError.Text = "";
-            m_Report.Fahrgestellnummer = ((ImageButton)sender).CommandArgument;
+            var fzg = m_Report.tblFahrzeuge.Select("Fahrgestellnummer='" + ((ImageButton)sender).CommandArgument + "'")[0];
+            m_Report.Fahrgestellnummer = fzg["Fahrgestellnummer"].ToString();
+            m_Report.Debitor = fzg["Debitor"].ToString();
+            m_Report.Haendler = fzg["Haendler"].ToString();
             m_Report.Entsperren((string)Session["AppID"], (string)Session.SessionID, this);
 
             if (m_Report.Status != 0)
