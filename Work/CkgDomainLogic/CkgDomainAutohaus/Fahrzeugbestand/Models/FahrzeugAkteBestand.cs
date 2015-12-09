@@ -74,8 +74,28 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         #endregion
 
         #region Massenabmeldung
+
         [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
         public bool VorhandenesKennzReservieren { get; set; }
+
+        #endregion
+
+        #region Schnellabmeldung
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
+        public string BestellNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
+        public string Kostenstelle { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TuevAu)]
+        public string TuevAu { get; set; }
+
+        public bool IsSchnellabmeldungSpeicherrelevant
+        {
+            get { return (FIN.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || Halter.IsNotNullOrEmpty() || AuftragsNummer.IsNotNullOrEmpty() || BestellNr.IsNotNullOrEmpty() || Kostenstelle.IsNotNullOrEmpty()); }
+        }
+
         #endregion
 
         #region Fahrzeug Akte
@@ -130,8 +150,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         #endregion
 
-
-
         #region Fahrzeug Bestand
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
@@ -142,7 +160,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.CarTaxPayer)]
         public string ZahlerKfzSteuer { get; set; }
-
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
         [Length(1)]
@@ -248,7 +265,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [Length(15)]
         public string FahrzeugNummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         [Length(15)]
         public string AuftragsNummer { get; set; }
 
@@ -259,7 +276,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.CompanyRef2)]
         [Length(10)]
         public string FirmenReferenz2 { get; set; }
-
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public Adresse SelectedHalter
@@ -289,6 +305,5 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         }
 
         #endregion
-
     }
 }

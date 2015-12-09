@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using AppRemarketing.lib;
 using CKG.Base.Kernel.Security;
 using System.Configuration;
-using System.IO;
 using System.Data.OleDb;
 
 namespace AppRemarketing.forms
 {
     public partial class Change02 : System.Web.UI.Page 
     {
-
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private VersandStorno m_reportNewReport;
         private FzgSperren m_report;
         private HaendlerSperrenPublic objSuche;
@@ -26,7 +19,6 @@ namespace AppRemarketing.forms
         private String FilterPlz = "";
         private String FilterOrt = "";
         private String FilterNummer = "";
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,9 +34,6 @@ namespace AppRemarketing.forms
 
             try
             {
-
-
-
                 if (!IsPostBack)
                 {
                     String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
@@ -55,9 +44,6 @@ namespace AppRemarketing.forms
                     m_report.SessionID = this.Session.SessionID;
                     m_report.AppID = (string)Session["AppID"];
                     LoadHaendler();
-                    
-
-
                 }
                 else
                 {
@@ -78,6 +64,7 @@ namespace AppRemarketing.forms
                 //lblNoData.Text = "Keine Dokumente zur Anzeige gefunden.";
             }
         }
+
         private void LoadHaendler()
         {
 
@@ -100,28 +87,22 @@ namespace AppRemarketing.forms
             lblErgebnissAnzahl.Text = objSuche.AnzahlHaendler.ToString();
             Session["obj_SucheModus"] = "DropDown";
             Session["objNewHaendlerSuche"] = objSuche;
-
-
         }
 
-
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
-
 
         protected void lbCreate_Click(object sender, EventArgs e)
         {
-
             if (txtFin.Text.Length > 0)
             {
-                
                 m_report.tblUpload = new DataTable();
 
                 m_report.tblUpload.Columns.Add("F1", typeof(System.String));
@@ -129,55 +110,21 @@ namespace AppRemarketing.forms
                 m_report.tblUpload.Rows.Add(m_report.tblUpload.NewRow());
                 m_report.tblUpload.Rows[0][0] = txtFin.Text;
 
+                m_report.SelHaendler = ""; // Suche über tblUpload, wenn nicht gesetzt
+
                 DoSubmit();
                 return;
             }
 
-
-            if (rb_Haendler.Checked == true)
+            if (rb_Haendler.Checked)
             {
-                
-
                 if (lbHaendler.SelectedIndex > -1)
                 {
+                    DataRow[] selRow = objSuche.Haendler.Table.Select("Debitor = '" + lbHaendler.SelectedValue + "'");
 
-                   
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
+                    m_report.SelHaendler = selRow[0]["Referenz"].ToString();
 
-                    m_reportNewReport = new VersandStorno(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
-
-                    m_reportNewReport.SelectionType = "Haendler";
-                    m_reportNewReport.Debitor = lbHaendler.SelectedValue;
-                    m_reportNewReport.GetVersAnf((string)Session["AppID"], (string)Session.SessionID, this);
-                    if (m_report.Status != 0)
-                    {
-                        lblError.Visible = true;
-                        lblError.Text = objSuche.Message;
-                        return;
-
-                    }
-                    else
-                    {
-                        DataRow NewRow;
-
-                        m_report.tblUpload = new DataTable();
-
-                        m_report.tblUpload.Columns.Add("F1", typeof(System.String));
-
-                        foreach (DataRow dr in m_reportNewReport.tblAnforderungen.Rows)
-                        {
-                            NewRow = m_report.tblUpload.NewRow();
-
-                            NewRow[0] = dr["Fahrgestellnummer"];
-                            m_report.tblUpload.Rows.Add(NewRow);
-
-                        }
-
-                        DoSubmit();
-                        return;
-                        
-                    }
-
+                    DoSubmit();
                 }
                 else
                 {
@@ -185,48 +132,45 @@ namespace AppRemarketing.forms
                     lblError.Text = "Wählen Sie einen Händler aus!";
                 }
 
-
-
                 return;
             }
-
             
             lblError.Text = "";
-                m_report.tblUpload = LoadUploadFile(upFile1);
-            if (m_report.tblUpload != null){
+
+            m_report.tblUpload = LoadUploadFile(upFile1);
+            if (m_report.tblUpload != null)
+            {
                 if (m_report.tblUpload.Rows.Count < 1)
                 {
                     lblError.Text = "Fehler beim Lesen der Datei!";
                 }
-                else { DoSubmit(); }
+                else
+                {
+                    m_report.SelHaendler = ""; // Suche über tblUpload, wenn nicht gesetzt
+
+                    DoSubmit();
+                }
             }
             else if (lblError.Text != "")
             {
                 lblError.Text = "Fehler beim Lesen der Datei!";
             }
-
        }
-
 
         private DataTable LoadUploadFile(System.Web.UI.HtmlControls.HtmlInputFile upFile)
         {
-
-
             //Prüfe Fehlerbedingung
             if (((upFile.PostedFile != null)) && (!(upFile.PostedFile.FileName == string.Empty)))
             {
-
                 if ((upFile.PostedFile.FileName.ToUpper().Substring(upFile.PostedFile.FileName.Length - 4) != ".XLS") && upFile.PostedFile.FileName.ToUpper().Substring(upFile.PostedFile.FileName.Length - 5) != ".XLSX")
                 {
                     lblError.Text = "Es können nur Dateien im .XLS .bzw .XLSX - Format verarbeitet werden.";
                     return null;
-
                 }
                 if ((upFile.PostedFile.ContentLength > Convert.ToInt32(ConfigurationManager.AppSettings["MaxUploadSize"])))
                 {
                     lblError.Text = "Datei '" + upFile.PostedFile.FileName + "' ist zu gross (>300 KB).";
                     return null;
-
                 }
                 //Lade Datei
                 return getData(upFile.PostedFile);
@@ -257,7 +201,6 @@ namespace AppRemarketing.forms
                 else if (uFile.FileName.ToUpper().Substring(uFile.FileName.Length - 5) == ".XLSX")
                 {
                     filename = m_User.UserName + "_" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
-
                 }
 
                 if ((uFile != null))
@@ -286,7 +229,6 @@ namespace AppRemarketing.forms
 
         }
 
-
         private DataTable getDataTableFromExcel(string filepath, string filename)
         {
 
@@ -302,8 +244,6 @@ namespace AppRemarketing.forms
                 sConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + filename + ";Extended Properties=\"Excel 12.0 Xml;HDR=No\"";
 
             }
-
-
 
             OleDbConnection objConn = new OleDbConnection(sConnectionString);
             objConn.Open();
@@ -333,20 +273,19 @@ namespace AppRemarketing.forms
 
         private void DoSubmit()
         {
-            
-                m_report.Show((string)Session["AppID"], (string)Session.SessionID, this);
+            m_report.Show((string)Session["AppID"], (string)Session.SessionID, this);
 
-                if (m_report.Status != 0 && m_report.Status != 101)
-                {
-                    lblError.Visible = true;
-                    lblError.Text = m_report.Message;
-                }
-                else
-                {
-                    Session["objReport"] = m_report;
-                    Response.Redirect("Change02_2.aspx?AppID=" + (string)Session["AppID"]);
-                }
+            if (m_report.Status != 0 && m_report.Status != 101)
+            {
+                lblError.Visible = true;
+                lblError.Text = m_report.Message;
             }
+            else
+            {
+                Session["objReport"] = m_report;
+                Response.Redirect("Change02_2.aspx?AppID=" + (string)Session["AppID"]);
+            }
+        }
 
         protected void lbBack_Click(object sender, EventArgs e)
         {
@@ -362,9 +301,6 @@ namespace AppRemarketing.forms
             tr_upload.Visible = true;
         }
 
-
-
-
         protected void lbHaendler_SelectedIndexChanged(object sender, EventArgs e)
         {
             objSuche = (HaendlerSperrenPublic)Session["objNewHaendlerSuche"];
@@ -377,7 +313,6 @@ namespace AppRemarketing.forms
             lblHaendlerOrt.Text = selRow[0]["ORT01"].ToString();
             lblHalter.Text = strHalter.TrimStart('0');
             //cmdWeiter.Visible = true;
-
         }
 
         protected void txtPLZ_TextChanged(object sender, EventArgs e)
@@ -412,6 +347,7 @@ namespace AppRemarketing.forms
             if (txtNummerDetail.Text.Length > 0) { FilterNummer = "Referenz LIKE '" + txtNummerDetail.Text.Replace("*", "%") + "'"; }
             Search("");
         }
+
         protected void txtNummerDetail_TextChanged(object sender, EventArgs e)
         {
             String strFilter;
@@ -422,8 +358,6 @@ namespace AppRemarketing.forms
             if (txtOrt.Text.Length > 0) { FilterOrt = "ORT01 LIKE '" + txtOrt.Text.Replace("*", "%") + "'"; }
             Search("");
         }
-
-
 
         private void Search(String Filter)
         {
@@ -530,20 +464,15 @@ namespace AppRemarketing.forms
 
         private void Search()
         {
-
-
-
             if (Session["objNewHaendlerSuche"] == null)
             {
                 String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
                 objSuche = new HaendlerSperrenPublic(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
                 Session["objNewHaendlerSuche"] = objSuche;
-
             }
             else
             {
                 objSuche = (HaendlerSperrenPublic)Session["objNewHaendlerSuche"];
-
             }
 
             try
@@ -554,64 +483,17 @@ namespace AppRemarketing.forms
 
                 if (objSuche.Haendler.Count == 1)
                 {
-                    objSuche.Kennung = txtNummerDetail.Text.Trim();
-                    DataRow[] dRow = objSuche.Haendler.Table.Select("REFERENZ='" + objSuche.Kennung + "'");
-
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
-
-                    m_reportNewReport = new VersandStorno(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
-
-                    m_reportNewReport.SelectionType = "Haendler";
-                    m_reportNewReport.Debitor = dRow[0]["Debitor"].ToString();
-                    m_reportNewReport.GetVersAnf((string)Session["AppID"], (string)Session.SessionID, this);
-                    if (m_report.Status != 0)
-                    {
-                        lblError.Visible = true;
-                        lblError.Text = objSuche.Message;
-                        return;
-                    }
-                    else
-                    {
-                        DataRow NewRow;
-
-                        m_report.tblUpload = new DataTable();
-
-                        m_report.tblUpload.Columns.Add("F1", typeof(System.String));
-
-                        foreach (DataRow dr in m_reportNewReport.tblAnforderungen.Rows)
-                        {
-                            NewRow = m_report.tblUpload.NewRow();
-
-                            NewRow[0] = dr["Fahrgestellnummer"];
-                            m_report.tblUpload.Rows.Add(NewRow);
-
-                        }
-
-                        DoSubmit();
-                        return;
-                        
-                    }
+                    objSuche.Kennung = txtNummerDetail.Text.Trim(); 
                 }
-                else if (objSuche.Haendler.Count == 0)
-                {
-                    Session["obj_SucheModus"] = "DropDown";
-                    Session["objNewHaendlerSuche"] = objSuche;
-                    trName1.Visible = true;
-                    trPLz.Visible = true;
-                    trOrt.Visible = true;
-                    trNummerDetail.Visible = true;
-                    trHaendlerAuswahl.Visible = true;
-                    trSelectionButton.Visible = true;
-                    lblError.Visible = true;
-                    objSuche.Haendler.RowFilter = "";
-                    lblError.Text = "Es wurden keine Ergebnisse gefunden, bitte versuchen Sie über die Detailsuche!";
-                }
+
+                m_report.SelHaendler = txtNummerDetail.Text.Trim();
+
+                DoSubmit();
             }
             catch (Exception ex)
             {
                 lblError.Text = "Es ist ein Fehler aufgetreten: " + ex.Message;
             }
-
         }
 
         private void fillDropDown()
@@ -622,8 +504,6 @@ namespace AppRemarketing.forms
             lbHaendler.DataTextField = "Adresse";
             lbHaendler.DataValueField = "Debitor";
             lbHaendler.DataBind();
-
-
         }
 
         protected void cmdSearch_Click(object sender, EventArgs e)
@@ -633,7 +513,6 @@ namespace AppRemarketing.forms
 
         protected void lbSelektionZurueckSetzen_Click1(object sender, EventArgs e)
         {
-            
             lbHaendler.Items.Clear();
             lblHaendlerName1.Text = "";
             lblHaendlerName2.Text = "";
@@ -658,9 +537,7 @@ namespace AppRemarketing.forms
                 rbFin_CheckedChanged(sender, e);
             }
             Session["objNewHaendlerSuche"] = objSuche;
-
         }
-
 
         protected void rb_Haendler_CheckedChanged(object sender, EventArgs e)
         {
@@ -668,9 +545,9 @@ namespace AppRemarketing.forms
             cmdSearch.Visible = true;
             lbSelektionZurueckSetzen.Visible = true;
             tblSuche.Visible = true;
-            trName1.Visible = true;
-            trPLz.Visible = true;
-            trOrt.Visible = true;
+            //trName1.Visible = true;
+            //trPLz.Visible = true;
+            //trOrt.Visible = true;
             trNummerDetail.Visible = true;
             trHaendlerAuswahl.Visible = true;
             trSelectionButton.Visible = true;
@@ -680,11 +557,5 @@ namespace AppRemarketing.forms
             tr_Fin.Visible = false;
             tr_upload.Visible = false;
         }
-
-
-
-
-
-          }
- }
-
+    }
+}

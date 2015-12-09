@@ -63,6 +63,8 @@
         
         @Html.FormCheckBoxFor(m => m.VersandSperre, new { @class = "m-wrap medium" }, labelHidden: true)
 
+        @Html.FormRadioButtonListFor(m => m.SpracheAnschreiben, HaendlerAdresse.SprachenAnschreiben)
+        
         
         <h4 class="address-divider">@Localize.Equi_Briefversand</h4>
                 

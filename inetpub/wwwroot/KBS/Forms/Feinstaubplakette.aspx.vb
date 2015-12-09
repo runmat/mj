@@ -59,4 +59,8 @@ Public Class Feinstaubplakette
 
     End Sub
 
+    Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
+        Response.Redirect("../Selection.aspx")
+    End Sub
+
 End Class
