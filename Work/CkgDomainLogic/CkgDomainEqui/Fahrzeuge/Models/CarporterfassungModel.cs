@@ -100,11 +100,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [Required, Numeric, Length(8, forceExactLength: true)]
         public string Barcode { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [Required]
         public string AnzahlKennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [RequiredConditional]
         public string AnzahlKennzeichenText
         {
@@ -131,77 +131,77 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.SelfDeregistrator)]
         public bool Abgemeldet { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Zb1Available)]
+        [LocalizedDisplay(LocalizeConstants.ZB1)]
         [Required]
         public string Zb1Vorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Zb1Available)]
+        [LocalizedDisplay(LocalizeConstants.ZB1)]
         [RequiredConditional]
         public string Zb1VorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == Zb1Vorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == Zb1Vorhanden).Text : Zb1Vorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.Zb2Available)]
+        [LocalizedDisplay(LocalizeConstants.ZB2)]
         [Required]
         public string Zb2Vorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Zb2Available)]
+        [LocalizedDisplay(LocalizeConstants.ZB2)]
         [RequiredConditional]
         public string Zb2VorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == Zb2Vorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == Zb2Vorhanden).Text : Zb2Vorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        [LocalizedDisplay(LocalizeConstants.Coc)]
         [Required]
         public string CocVorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CocAvailable)]
+        [LocalizedDisplay(LocalizeConstants.Coc)]
         [RequiredConditional]
         public string CocVorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == CocVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == CocVorhanden).Text : CocVorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.ServiceRecordAvailable)]
+        [LocalizedDisplay(LocalizeConstants.ServiceRecord)]
         [Required]
         public string ServiceheftVorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ServiceRecordAvailable)]
+        [LocalizedDisplay(LocalizeConstants.ServiceRecord)]
         [RequiredConditional]
         public string ServiceheftVorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == ServiceheftVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == ServiceheftVorhanden).Text : ServiceheftVorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.HuAuReportAvailable)]
+        [LocalizedDisplay(LocalizeConstants.HuAuReport)]
         [Required]
         public string HuAuBerichtVorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.HuAuReportAvailable)]
+        [LocalizedDisplay(LocalizeConstants.HuAuReport)]
         [RequiredConditional]
         public string HuAuBerichtVorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == HuAuBerichtVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == HuAuBerichtVorhanden).Text : HuAuBerichtVorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.SpareKeyAvailable)]
+        [LocalizedDisplay(LocalizeConstants.SpareKey)]
         [Required]
         public string ZweitschluesselVorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.SpareKeyAvailable)]
+        [LocalizedDisplay(LocalizeConstants.SpareKey)]
         [RequiredConditional]
         public string ZweitschluesselVorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == ZweitschluesselVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == ZweitschluesselVorhanden).Text : ZweitschluesselVorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.NaviCdAvailable)]
+        [LocalizedDisplay(LocalizeConstants.NaviCd)]
         [Required]
         public string NaviCdVorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.NaviCdAvailable)]
+        [LocalizedDisplay(LocalizeConstants.NaviCd)]
         [RequiredConditional]
         public string NaviCdVorhandenText
         {
