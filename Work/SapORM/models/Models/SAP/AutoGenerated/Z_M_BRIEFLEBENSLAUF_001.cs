@@ -1027,6 +1027,8 @@ namespace SapORM.Models
 
 			public string ZZREFERENZ2 { get; set; }
 
+			public string STANDORT_VERSSTAT_TEXT { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -1137,6 +1139,7 @@ namespace SapORM.Models
 					DADPDI_ORT = (string)row["DADPDI_ORT"],
 					ZZFINART_TXT = (string)row["ZZFINART_TXT"],
 					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
+					STANDORT_VERSSTAT_TEXT = (string)row["STANDORT_VERSSTAT_TEXT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

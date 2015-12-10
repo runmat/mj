@@ -131,4 +131,8 @@ Public Class Zulassungsdienstsuche
         cmdCreate.Visible = Not cmdCreate.Visible
     End Sub
 
+    Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
+        Response.Redirect("../Forms/ZulassungSelection.aspx")
+    End Sub
+
 End Class
