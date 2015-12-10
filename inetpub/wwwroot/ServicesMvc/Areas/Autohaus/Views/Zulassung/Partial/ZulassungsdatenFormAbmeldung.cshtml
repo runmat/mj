@@ -2,7 +2,7 @@
 @using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 
-<script>
+<script type="text/javascript">
     function OnDataBound_GridFahrzeugAuswahlAbmeldung() {
         App.initUniform();
     }
@@ -24,16 +24,54 @@
                 .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
                 .Columns(columns =>
                 {
+                    columns.XBound(c => c.FinID).Visible(false);
                     columns.XBound(c => c.FIN);
                     columns.XBound(c => c.FahrzeugArt);
                     columns.XBound(c => c.HandelsName);
-                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
                     columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzres' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='True' />").Filterable(false);
                 })
                 .XAutoColumnConfiguration()
                 .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName))
                 .XPageSize(10)
-                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                .XSort(sortOrder => sortOrder.Add(c => c.FinID).Ascending())
+        )
+    }
+}
+else if (Model.IsSchnellabmeldung)
+{
+    if (Model.AnzahlAbmeldungenAenderbar)
+    {
+        @Html.FormTextBoxFor(m => m.AnzahlAbmeldungen, new { @class = "m-wrap tiny", maxlength = 3, @onkeypress = "return NumbersOnly(false);", @onblur = "UpdateAnzahlAbmeldungen()" })
+    }
+    else
+    {
+        @Html.FormTextBoxFor(m => m.AnzahlAbmeldungen, new { @class = "m-wrap tiny", maxlength = 3, @readonly = "readonly" })
+    }
+    
+    @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
+
+    using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAuswahlAbmeldung";
+        @(Html.Telerik()
+                .Grid<FahrzeugAkteBestand>()
+                .Name(gridName)
+                .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+                .Columns(columns =>
+                {
+                    columns.XBound(c => c.FinID).Visible(false);
+                    columns.XBound(c => c.FIN).ClientTemplate("<input id='FIN_<#= data.FinID #>' type='text' class='inputwidth-large uppercase editfinabm' data-fieldname='FIN' value='<#= data.FIN #>' />");
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' /><span class='requiredField requiredFieldMarker'>*</span>");
+                    columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzres' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='True' />").Filterable(false);
+                    columns.XBound(c => c.Halter).ClientTemplate("<input id='Halter_<#= data.FinID #>' type='text' class='inputwidth-large edithalterabm' data-fieldname='Halter' value='<#= data.Halter #>' /><span class='requiredField requiredFieldMarker'>*</span>");
+                    columns.XBound(c => c.TuevAu).ClientTemplate("<input id='TuevAu_<#= data.FinID #>' type='text' maxlength='4' class='inputwidth-small edittuevauabm' data-fieldname='TuevAu' value='<#= data.TuevAu #>' />");
+                    columns.XBound(c => c.Briefnummer).ClientTemplate("<input id='Briefnummer_<#= data.FinID #>' type='text' class='inputwidth editbriefnummerabm' data-fieldname='Briefnummer' value='<#= data.Briefnummer #>' />");
+                })
+                .XAutoColumnConfiguration()
+                .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName))
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.FinID).Ascending())
         )
     }
 }

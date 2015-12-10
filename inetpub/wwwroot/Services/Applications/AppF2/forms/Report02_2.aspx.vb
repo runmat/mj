@@ -189,116 +189,101 @@ Partial Public Class Report02_2
 #Region "Methods"
 
     Private Sub FillUebersicht()
-        lblKennzeichenShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN").ToString
-        lblEhemaligesKennzeichenShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN_OLD").ToString
-        lblBriefnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF").ToString
-        lblEhemaligeBriefnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF_OLD").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF_A").ToString = "X" Then
+        Dim row As DataRow = BRIEFLEBENSLAUF_LPTable.Rows(0)
+
+        lblKennzeichenShow.Text = row("ZZKENN").ToString
+        lblEhemaligesKennzeichenShow.Text = row("ZZKENN_OLD").ToString
+        lblBriefnummerShow.Text = row("ZZBRIEF").ToString
+        lblEhemaligeBriefnummerShow.Text = row("ZZBRIEF_OLD").ToString
+        If row("ZZBRIEF_A").ToString = "X" Then
             chkBriefaufbietung.Checked = True
         Else
             chkBriefaufbietung.Checked = False
         End If
-        lblFahrgestellnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZFAHRG").ToString
+        lblFahrgestellnummerShow.Text = row("ZZFAHRG").ToString
 
-        lblOrdernummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREF1").ToString
+        lblOrdernummerShow.Text = row("ZZREF1").ToString
 
-        lblErstzulassungsdatumShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE").ToString)
+        lblErstzulassungsdatumShow.Text = FormatToDate(row("REPLA_DATE").ToString)
 
-        lblAbmeldedatumShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString)
+        lblAbmeldedatumShow.Text = FormatToDate(row("EXPIRY_DATE").ToString)
 
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ZUB").ToString = "X" Then
+        If row("ZZSTATUS_ZUB").ToString = "X" Then
             lblStatusShow.Text = "Zulassungsfähig"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ZUL").ToString = "X" Then
+        If row("ZZSTATUS_ZUL").ToString = "X" Then
             lblStatusShow.Text = "Zugelassen"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ABG").ToString = "X" Then
+        If row("ZZSTATUS_ABG").ToString = "X" Then
             lblStatusShow.Text = "Abgemeldet"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_BAG").ToString = "X" Then
+        If row("ZZSTATUS_BAG").ToString = "X" Then
             lblStatusShow.Text = "Bei Abmeldung"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_OZU").ToString = "X" Then
+        If row("ZZSTATUS_OZU").ToString = "X" Then
             lblStatusShow.Text = "Ohne Zulassung"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZAKTSPERRE").ToString = "X" Then
+        If row("ZZAKTSPERRE").ToString = "X" Then
             lblStatusShow.Text = "Gesperrt"
         End If
 
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZCOCKZ").ToString = "X" Then   'COC?
+        If row("ZZCOCKZ").ToString = "X" Then   'COC?
             cbxCOC.Checked = True
         End If
-        lblStandortShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME1_VS").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= "<br>" & BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_VS").ToString
+        lblStandortShow.Text = row("NAME1_VS").ToString
+        If row("NAME2_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= "<br>" & row("NAME2_VS").ToString
         End If
         lblStandortShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_VS").ToString
+        If row("STRAS_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= row("STRAS_VS").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_VS").ToString
+        If row("HSNR_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= " " & row("HSNR_VS").ToString
         End If
         lblStandortShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_VS").ToString
+        If row("PSTLZ_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= row("PSTLZ_VS").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_VS").ToString
+        If row("ORT01_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= " " & row("ORT01_VS").ToString
         End If
-        lblFahrzeughalterShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME1_ZH").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= "<br>" & BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_ZH").ToString
-        End If
-        lblFahrzeughalterShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_ZH").ToString
-        End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_ZH").ToString
+        lblFahrzeughalterShow.Text = row("NAME1_ZH").ToString
+        If row("NAME2_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= "<br>" & row("NAME2_ZH").ToString
         End If
         lblFahrzeughalterShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_ZH").ToString
+        If row("STRAS_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= row("STRAS_ZH").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_ZH").ToString
+        If row("HSNR_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= " " & row("HSNR_ZH").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZFINART_TXT").ToString.Length > 0 Then
-            lblFinanzierungsartShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZFINART_TXT").ToString
+        lblFahrzeughalterShow.Text &= "<br>"
+        If row("PSTLZ_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= row("PSTLZ_ZH").ToString
+        End If
+        If row("ORT01_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= " " & row("ORT01_ZH").ToString
+        End If
+        If row("ZZFINART_TXT").ToString.Length > 0 Then
+            lblFinanzierungsartShow.Text = row("ZZFINART_TXT").ToString
         End If
 
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("KUNNR_ZF").ToString.Length > 0 Then
-            lblHaendlernrShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("KUNNR_ZF").ToString
+        If row("KUNNR_ZF").ToString.Length > 0 Then
+            lblHaendlernrShow.Text = row("KUNNR_ZF").ToString
         End If
 
-        Select Case BRIEFLEBENSLAUF_LPTable.Rows(0)("ABCKZ").ToString
-            Case ""
-                lblLagerortShow.Text = "DAD"
-            Case "0"
-                lblLagerortShow.Text = "DAD"
-            Case "1"
-                If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT").ToString = "" OrElse BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT").ToString = "00000000" Then
-                    lblLagerortShow.Text = "temporär angefordert"
-                Else
-                    lblLagerortShow.Text = "temporär versendet"
-                End If
-            Case "2"
-                If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT").ToString = "" OrElse BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT").ToString = "00000000" Then
-                    lblLagerortShow.Text = "endgültig angefordert"
-                Else
-                    lblLagerortShow.Text = "endgültig versendet"
-                End If
-        End Select
+        lblLagerortShow.Text = row("STANDORT_VERSSTAT_TEXT").ToString
 
-        lblUmgemeldetAmShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE").ToString)
+        lblUmgemeldetAmShow.Text = FormatToDate(row("UDATE").ToString)
 
-        lblFahrzeugmodellShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHANDELSNAME").ToString
+        lblFahrzeugmodellShow.Text = row("ZZHANDELSNAME").ToString
 
-        lblHerstellerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERST_TEXT").ToString
-        lblHerstellerSchluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERSTELLER_SCH").ToString
-        lblTypschluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTYP_SCHL").ToString
-        lblVarianteVersionShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVVS_SCHLUESSEL").ToString
+        lblHerstellerShow.Text = row("ZZHERST_TEXT").ToString
+        lblHerstellerSchluesselShow.Text = row("ZZHERSTELLER_SCH").ToString
+        lblTypschluesselShow.Text = row("ZZTYP_SCHL").ToString
+        lblVarianteVersionShow.Text = row("ZZVVS_SCHLUESSEL").ToString
 
         'Bemerkungen in die Übersicht eintragen
 
@@ -309,18 +294,18 @@ Partial Public Class Report02_2
 
         Dim GetVersandgrund As New TempZuEndg(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
 
-        If Len(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVGRUND").ToString) > 0 Then
-            lblVersandgrundShow.Text = GetVersandgrund.Abrufgrund(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVGRUND").ToString).ToString
+        If Len(row("ZZVGRUND").ToString) > 0 Then
+            lblVersandgrundShow.Text = GetVersandgrund.Abrufgrund(row("ZZVGRUND").ToString).ToString
         End If
-        lblRef1Show.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREFERENZ1").ToString
-        lblRef2Show.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREFERENZ2").ToString
+        lblRef1Show.Text = row("ZZREFERENZ1").ToString
+        lblRef2Show.Text = row("ZZREFERENZ2").ToString
 
-        lblCarportEingangShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZCARPORT_EING").ToString())
-        lblKennzeichenEingangShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN_EING").ToString())
-        lblCheckInShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("CHECK_IN").ToString())
-        cbxFahrzeugschein.Checked = (BRIEFLEBENSLAUF_LPTable.Rows(0)("SCHEIN_PHY").ToString() = "X")
-        cbxBeideKennzVorhanden.Checked = (BRIEFLEBENSLAUF_LPTable.Rows(0)("SCHILDER_PHY").ToString() = "X")
-        lblStilllegungShow.Text = FormatToDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString())
+        lblCarportEingangShow.Text = FormatToDate(row("ZZCARPORT_EING").ToString())
+        lblKennzeichenEingangShow.Text = FormatToDate(row("ZZKENN_EING").ToString())
+        lblCheckInShow.Text = FormatToDate(row("CHECK_IN").ToString())
+        cbxFahrzeugschein.Checked = (row("SCHEIN_PHY").ToString() = "X")
+        cbxBeideKennzVorhanden.Checked = (row("SCHILDER_PHY").ToString() = "X")
+        lblStilllegungShow.Text = FormatToDate(row("EXPIRY_DATE").ToString())
 
     End Sub
 

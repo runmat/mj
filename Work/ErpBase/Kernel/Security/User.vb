@@ -1,6 +1,7 @@
 Imports System.Configuration
 Imports System.Web
 Imports GeneralTools.Models
+Imports GeneralTools.Services
 Imports WebTools.Services
 
 
@@ -1934,6 +1935,7 @@ Namespace Kernel.Security
                 Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                 Dim subject As String = String.Format("Link zum {0} Ihres Passworts", verb)
                 Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                Dim companyName As String = GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName")
                 Dim textBuilder As New Text.StringBuilder()
                 With textBuilder
                     .AppendLine(String.Format("Guten Tag {0},", userSalutation))
@@ -1945,7 +1947,7 @@ Namespace Kernel.Security
                     .Append(Environment.NewLine)
                     .Append(Environment.NewLine)
                     .AppendLine("Mit freundlichen Grüßen")
-                    .AppendLine("Deutscher Auto Dienst GmbH")
+                    .AppendLine(companyName)
                 End With
 
                 Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
@@ -1963,6 +1965,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr persönlicher Benutzername"
+                        Dim companyName As String = GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName")
                         Dim textBuilder As New Text.StringBuilder()
 
                         With textBuilder
@@ -1978,8 +1981,7 @@ Namespace Kernel.Security
                             .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
-                            .AppendLine("Christoph Kroschke GmbH /")
-                            .AppendLine("Deutscher Auto Dienst GmbH")
+                            .AppendLine(companyName)
 
                         End With
 
@@ -2005,6 +2007,7 @@ Namespace Kernel.Security
                         Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
                         Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                         Dim subject As String = "Ihr Benutzername wurde geändert"
+                        Dim companyName As String = GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName")
                         Dim textBuilder As New Text.StringBuilder()
                         With textBuilder
                             .AppendLine("Guten Tag,")
@@ -2020,8 +2023,7 @@ Namespace Kernel.Security
                             .AppendLine("Hinweis!: Den Link zum Generieren Ihres persönlichen Passworts erhalten Sie in einer separaten E-mail.")
                             .Append(Environment.NewLine)
                             .AppendLine("Mit freundlichen Grüßen")
-                            .AppendLine("Christoph Kroschke GmbH /")
-                            .AppendLine("Deutscher Auto Dienst GmbH")
+                            .AppendLine(companyName)
                         End With
 
                         Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
@@ -2069,6 +2071,7 @@ Namespace Kernel.Security
                     Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
                     Dim subject As String = "Ihr persönlicher Benutzername"
                     Dim userSalutation As String = String.Format("{0} {1}", Title, LastName)
+                    Dim companyName As String = GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName")
                     Dim textBuilder As New Text.StringBuilder()
                     With textBuilder
                         .AppendLine(String.Format("Guten Tag {0},", userSalutation))
@@ -2089,7 +2092,7 @@ Namespace Kernel.Security
                         .Append(Environment.NewLine)
                         .Append(Environment.NewLine)
                         .AppendLine("Mit freundlichen Grüßen")
-                        .AppendLine("Deutscher Auto Dienst GmbH")
+                        .AppendLine(companyName)
                     End With
 
                     Dim client As New System.Net.Mail.SmtpClient(smtpMailServer)
