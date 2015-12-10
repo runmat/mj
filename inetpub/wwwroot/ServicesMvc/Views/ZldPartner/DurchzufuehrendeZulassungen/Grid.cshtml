@@ -32,7 +32,7 @@
         columns.XBound(c => c.Gebuehr).Visible(!Model.EditMode);
         columns.XBound(c => c.Gebuehr).Visible(Model.EditMode)
             .ClientTemplate(
-                Html.TextBox("Gebuehr", "<#= data.Gebuehr #>", new { @class = "m-wrap xsmall", @onkeypress = "return NumbersOnly($(this), true);", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Gebuehr',$(this).val());" }).ToHtmlString()
+                Html.TextBox("Gebuehr", "<#= data.Gebuehr #>", new { @class = "m-wrap xsmall <# if (!data.Gebuehrenrelevant) { #>" + "hide" + "<# } #>", @onkeypress = "return NumbersOnly($(this), true);", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Gebuehr',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.Preis);
         columns.XBound(c => c.BeauftragtVon);
