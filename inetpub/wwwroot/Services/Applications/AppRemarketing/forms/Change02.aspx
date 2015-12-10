@@ -91,7 +91,7 @@
                                                     OnTextChanged="txtNummerDetail_TextChanged"></asp:TextBox>
                                             </td>
                                         </tr>
-                                        <tr id="trName1" runat="server" class="formquery">
+                                        <tr id="trName1" runat="server" class="formquery" Visible="False">
                                             <td class="firstLeft active">
                                                 <asp:Label runat="server" ID="lbl_Name1">Name:</asp:Label>
                                             </td>
@@ -99,7 +99,7 @@
                                                 <asp:TextBox ID="txtName1" runat="server" MaxLength="35" AutoPostBack="True" OnTextChanged="txtName1_TextChanged"></asp:TextBox>
                                             </td>
                                         </tr>
-                                        <tr id="trPLz" runat="server" class="formquery">
+                                        <tr id="trPLz" runat="server" class="formquery" Visible="False">
                                             <td class="firstLeft active">
                                                 PLZ:
                                             </td>
@@ -107,7 +107,7 @@
                                                 <asp:TextBox ID="txtPLZ" runat="server" MaxLength="35" AutoPostBack="True" OnTextChanged="txtPLZ_TextChanged"></asp:TextBox>
                                             </td>
                                         </tr>
-                                        <tr id="trOrt"  runat="server" class="formquery">
+                                        <tr id="trOrt"  runat="server" class="formquery" Visible="False">
                                             <td class="firstLeft active">
                                                 Ort:
                                             </td>

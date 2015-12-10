@@ -336,7 +336,7 @@ namespace Leasing.forms
 			return m_string;
 		}
 
-		private void btnSave_Click(object sender, EventArgs e) //Handles btnSave.Click
+		protected void btnSave_Click(object sender, EventArgs e) //Handles btnSave.Click
 		{
 			string strFileName = DateTime.Now.ToString() + m_User.UserName + ".xls";
 			LP_03 m_Report = new LP_03(m_User, m_App, strFileName);
