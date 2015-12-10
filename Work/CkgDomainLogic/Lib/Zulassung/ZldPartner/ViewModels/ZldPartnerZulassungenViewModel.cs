@@ -79,24 +79,27 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             {
                 item.ValidationErrorList.Clear();
 
-                if (!String.IsNullOrEmpty(item.ZulassungsDatum))
+                var gebuehrInvalid = false;
+
+                if (item.Gebuehrenrelevant && !String.IsNullOrEmpty(item.Gebuehr) && !item.Gebuehr.IsDecimal())
                 {
-                    if (!item.ZulassungsDatum.IsDate())
+                    item.ValidationErrorList.Add(new ValidationResult(Localize.FeeInvalid, new[] { "Gebuehr" }));
+                    gebuehrInvalid = true;
+                }
+
+                if (item.Hauptposition)
+                {
+                    if (!String.IsNullOrEmpty(item.ZulassungsDatum) && !item.ZulassungsDatum.IsDate())
                         item.ValidationErrorList.Add(new ValidationResult(Localize.RegistrationDateInvalid, new[] { "ZulassungsDatum" }));
-                }
 
-                if (item.Status == "DGF" && !nurSpeichern && !Regex.IsMatch(item.Kennzeichen, KennzeichenRegexString))
-                    item.ValidationErrorList.Add(new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" }));
+                    if (item.Status == "DGF" && !nurSpeichern)
+                    {
+                        if (!Regex.IsMatch(item.Kennzeichen, KennzeichenRegexString))
+                            item.ValidationErrorList.Add(new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" }));
 
-                if (item.Status == "DGF" && !nurSpeichern)
-                {
-                    if (item.Gebuehr.ToDouble(0) < 0.02)
-                        item.ValidationErrorList.Add(new ValidationResult("Gebühr darf nicht 0,00 EUR oder 0,01 EUR sein", new[] { "Gebuehr" }));
-                }
-                else if (!String.IsNullOrEmpty(item.Gebuehr))
-                {
-                    if (!item.Gebuehr.IsDecimal())
-                        item.ValidationErrorList.Add(new ValidationResult(Localize.FeeInvalid, new[] { "Gebuehr" }));
+                        if (!gebuehrInvalid && item.Gebuehr.ToDouble(0) < 0.02)
+                            item.ValidationErrorList.Add(new ValidationResult("Gebühr darf nicht 0,00 EUR oder 0,01 EUR sein", new[] { "Gebuehr" }));
+                    }
                 }
             }
 
