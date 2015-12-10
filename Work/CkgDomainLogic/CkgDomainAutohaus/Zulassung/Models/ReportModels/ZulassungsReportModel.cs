@@ -30,9 +30,6 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.OrderDate)]
         public DateTime? ErfassungsDatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CreateUser)]
-        public string ErfassungsUser { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.RegistrationArea)]
         public string ZulassungsKreis { get; set; }
 
@@ -76,17 +73,20 @@ namespace CkgDomainLogic.Autohaus.Models
         [GridExportIgnore]
         public bool DokumentNameIsValid { get { return DokumentName.IsNotNullOrEmpty(); } }
 
-        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        [LocalizedDisplay(LocalizeConstants.CarOwner)]
         public string Referenz1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        [LocalizedDisplay(LocalizeConstants.VIN)]
         public string Referenz2 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference3)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
         public string Referenz3 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference4)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
         public string Referenz4 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
+        public string Referenz5 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Price)]
         public decimal? Preis { get; set; }
@@ -99,5 +99,8 @@ namespace CkgDomainLogic.Autohaus.Models
         
         [LocalizedDisplay(LocalizeConstants.PriceLicenseNo)]
         public decimal? PreisKz { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Precollector)]
+        public string Vorerfasser { get; set; }
     }
 }

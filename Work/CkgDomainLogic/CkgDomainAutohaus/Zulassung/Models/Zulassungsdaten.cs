@@ -25,8 +25,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusAbmeldung { get; set; }
 
-        public bool IsMassenzulassung { get; set; }     
-        public bool IsMassenabmeldung { get; set; }     
+        public bool IsMassenzulassung { get; set; }
+        public bool IsMassenabmeldung { get; set; }
+
+        public bool IsSchnellabmeldung { get; set; }
 
         public bool ModusVersandzulassung { get; set; }
 
@@ -69,6 +71,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
         public DateTime? Abmeldedatum { get; set; }
 
@@ -155,6 +158,14 @@ namespace CkgDomainLogic.Autohaus.Models
         public bool Expressversand { get; set; }
 
         public bool UiUpdateOnly { get; set; }
+
+        [RequiredConditional]
+        [LocalizedDisplay(LocalizeConstants.NumberOfCancellations)]
+        public int AnzahlAbmeldungen { get; set; }
+
+        public bool AnzahlAbmeldungenAenderbar { get; set; }
+
+        public string HalterNameSchnellabmeldung { get; set; }
 
         public bool IsValid { get; set; }
 
@@ -250,6 +261,9 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 s += string.Format("<br/>{0}: {1}", Localize.CancellationDate, (Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : ""));
                 s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+
+                if (VorhandenesKennzeichenReservieren)
+                    s += string.Format("<br/>{0}", Localize.ReserveExistingLicenseNo);
             }
             else
             {

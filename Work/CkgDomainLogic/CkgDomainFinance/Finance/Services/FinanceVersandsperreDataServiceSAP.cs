@@ -4,6 +4,7 @@ using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Models;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Finance.Models.AppModelMappings;
@@ -54,7 +55,11 @@ namespace CkgDomainLogic.Finance.Services
 
             foreach (var item in sapList)
             {
-                var sapList2 = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KUNNR, I_ZZREF1", LogonContext.KundenNr.ToSapKunnr(), item.PAID);
+                var sapList2 = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KUNNR, I_ZZREF1", LogonContext.KundenNr.ToSapKunnr(), item.PAID.NotNullOrEmpty().TrimStart('0'));
+
+                if (sapList2 == null || sapList2.None())
+                    sapList2 = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KUNNR, I_ZZREF1", LogonContext.KundenNr.ToSapKunnr(), item.PAID);
+
                 if (sapList2 != null && sapList2.Count > 0)
                 {
                     liste.Add(new VorgangVersandsperre

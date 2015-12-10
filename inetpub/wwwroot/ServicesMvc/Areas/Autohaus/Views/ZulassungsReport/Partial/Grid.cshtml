@@ -47,6 +47,7 @@
             columns.XBound(c => c.Referenz2);
             columns.XBound(c => c.Referenz3);
             columns.XBound(c => c.Referenz4);
+            columns.XBound(c => c.Referenz5);
             columns.XBound(c => c.EvbNummmer);
             columns.XBound(c => c.Kennzeichen);
             columns.XBound(c => c.ErfassungsDatum);
@@ -58,7 +59,7 @@
             columns.XBound(c => c.VkUser);
             columns.XBound(c => c.KundenReferenz);
             columns.XBound(c => c.KundenNotiz);
-            columns.XBound(c => c.ErfassungsUser);
+            columns.XBound(c => c.Vorerfasser);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

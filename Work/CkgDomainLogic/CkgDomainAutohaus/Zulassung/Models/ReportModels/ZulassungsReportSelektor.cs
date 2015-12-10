@@ -39,21 +39,24 @@ namespace CkgDomainLogic.Autohaus.Models
         [FormPersistable]
         public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days, true)); } set { PropertyCacheSet(value); } }
 
-        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        [LocalizedDisplay(LocalizeConstants.CarOwner)]
         [FormPersistable]
         public string Referenz1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        [LocalizedDisplay(LocalizeConstants.VIN)]
         [FormPersistable]
         public string Referenz2 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference3)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
         [FormPersistable]
         public string Referenz3 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference4)]
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
         [FormPersistable]
         public string Referenz4 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
+        public string Referenz5 { get; set; }
 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

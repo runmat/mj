@@ -1,16 +1,10 @@
 ﻿using System.Linq;
-// ReSharper disable RedundantUsingDirective
+using AppModelMappings = CkgDomainLogic.DomainCommon.Models.AppModelMappings;
 using CkgDomainLogic.DomainCommon.Contracts;
-using System;
 using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.DomainCommon.Services;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.DomainCommon.Models;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using SapORM.Contracts;
 using SapORM.Models;
 
@@ -23,17 +17,17 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
         }
 
-        public List<SelectItem> GetLaenderList()
+        public List<LandExt> GetLaenderList()
         {
             Z_DPM_READ_LAND_02.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
             SAP.Execute();
 
             var sapItems = Z_DPM_READ_LAND_02.GT_OUT.GetExportList(SAP);
-            var webItems = AppModelMappings.Z_DPM_READ_LAND_02__GT_OUT_To_SelectItem
+            var webItems = AppModelMappings.Z_DPM_READ_LAND_02__GT_OUT_To_LandExt
                             .Copy(sapItems)
-                                .Where(s => s.Key.ToInt() != -1)
-                                    .OrderBy(s => s.Text)
+                                .Where(s => s.CodeExt.ToInt() != -1)
+                                    .OrderBy(s => s.LandAsText)
                                         .ToList();
 
             return webItems;
