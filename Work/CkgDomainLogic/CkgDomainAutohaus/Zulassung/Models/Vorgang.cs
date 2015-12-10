@@ -33,6 +33,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "SONDERZULASSUNG")
                     return "?sonderzulassung=1";
 
+                if (BeauftragungsArt == "SCHNELLABMELDUNG")
+                    return "?schnellabmeldung=1";
+
                 if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
@@ -99,6 +102,9 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
+                if (Zulassungsdaten.IsSchnellabmeldung)
+                    return Zulassungsdaten.HalterNameSchnellabmeldung;
+
                 if (Halter != null)
                     return Halter.Name;
 
@@ -120,10 +126,10 @@ namespace CkgDomainLogic.Autohaus.Models
         public Zulassungsdaten Zulassungsdaten { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Zulassungsdatum { get { return (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG" ? null : Zulassungsdaten.Zulassungsdatum); } }
+        public DateTime? Zulassungsdatum { get { return (BeauftragungsArt.NotNullOrEmpty().ToUpper().Contains("ABMELDUNG") ? null : Zulassungsdaten.Zulassungsdatum); } }
 
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
-        public DateTime? Abmeldedatum { get { return (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG" ? Zulassungsdaten.Zulassungsdatum : null); } }
+        public DateTime? Abmeldedatum { get { return (BeauftragungsArt.NotNullOrEmpty().ToUpper().Contains("ABMELDUNG") ? Zulassungsdaten.Zulassungsdatum : null); } }
 
         public OptionenDienstleistungen OptionenDienstleistungen { get; set; }
 
@@ -300,17 +306,21 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
-                            new GeneralEntity
-                            {
-                                Title = Localize.VehicleData,
-                                Body = Fahrzeugdaten.GetSummaryString(),
-                            },
+                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.VehicleData,
+                                        Body = Fahrzeugdaten.GetSummaryString(),
+                                    }),
 
-                            new GeneralEntity
-                            {
-                                Title = Localize.Holder,
-                                Body = Halter.Adresse.GetPostLabelString(),
-                            },
+                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.Holder,
+                                        Body = Halter.Adresse.GetPostLabelString(),
+                                    }),
 
                             (Zulassungsdaten.ModusAbmeldung
                                     ? null :

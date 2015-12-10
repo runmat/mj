@@ -125,6 +125,7 @@
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
     <Compile Include="DomainCommon\Models\HaendlerAdresse.cs" />
     <Compile Include="DomainCommon\Models\HaendlerAdressenSelektor.cs" />
+    <Compile Include="DomainCommon\Models\LandExt.cs" />
     <Compile Include="DomainCommon\Models\VersandAuftragsAnlage.cs">
       <SubType>Code</SubType>
     </Compile>
