@@ -115,10 +115,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                return string.Format(",{0};0,{1};1,{2};2,{3};H,{4};V,{5}",
+                return string.Format(",{0};0,{1};2,{2};H,{3};V,{4}",
                     Localize.DropdownDefaultOptionPleaseChoose,
                     Localize.NoLicensePlatesAvailable,
-                    Localize.OneLicensePlateAvailableTrailerBike,
                     Localize.BothLicensePlatesAvailable,
                     Localize.LicensePlateRearAvailable,
                     Localize.LicensePlateFrontAvailable).ToSelectList();
