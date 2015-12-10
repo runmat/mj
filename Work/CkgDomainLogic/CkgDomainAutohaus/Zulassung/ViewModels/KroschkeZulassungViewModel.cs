@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -84,9 +85,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
 
-                if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
-                    return Localize.MassCancellation;
-
                 return Localize.Registration;
             }
         }
@@ -115,6 +113,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer" || entry.Key == "AuslieferAdressen")
                                 return;
 
+                            if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && (entry.Key == "HalterAdresse" || entry.Key == "Fahrzeugdaten"))
+                                return;
+
                             abmeldungsDict.Add(entry.Key, entry.Value);
                         });
 
@@ -139,11 +140,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string SaveErrorMessage { get; set; }
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
-
-        //public bool FahrzeugdatenKostenstelleIsVisible
-        //{
-        //    get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
-        //}
 
         public void SetParamFahrzeugAkte(string fin)
         {
@@ -183,7 +179,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
         }
- 
+
  
         #region Rechnungsdaten
 
@@ -227,10 +223,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             allCount = FinListFiltered.Count;
         }
 
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        public void SelectFahrzeug(string vinId, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = FinList.FirstOrDefault(f => f.FIN == vin);
+            var fzg = FinList.FirstOrDefault(f => f.FinID == vinId);
             if (fzg == null)
                 return;
             fzg.IsSelected = select;
@@ -243,8 +239,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// Fahrzeug-Properties identische Werte haben.
         /// </summary>
         /// <param name="finList"></param>
+        /// <param name="keepZulassungsart">wenn true, kein automatisches Setzen des Modus Massenzulassung/-abmeldung</param>
         /// <returns>True, wenn FinList mit Fahrzeugen vorhanden</returns>
-        public bool SetFinList(object finList)
+        public bool SetFinList(object finList, bool keepZulassungsart = false)
         {
             FinList = (List<FahrzeugAkteBestand>)finList;
             if (FinList == null)
@@ -261,7 +258,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var isEqual = true;
             foreach (var fahrzeugAkteBestand in FinList)
             {
-                if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
+                if (fahrzeugAkteBestand.SelectedHalter == null || firstFahrzeug.SelectedHalter == null || ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
                 {
                     isEqual = false;
                     break;
@@ -273,16 +270,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             #endregion
 
-            // Zulassung.Zulassungsdaten.IsMassenzulassung = true;
-            if (ModusAbmeldung)     // 20150723
+            if (!keepZulassungsart)
             {
-                Zulassung.Zulassungsdaten.IsMassenzulassung = false;
-                Zulassung.Zulassungsdaten.IsMassenabmeldung = true;
-            }
-            else
-            {
-                Zulassung.Zulassungsdaten.IsMassenzulassung = true;
-                Zulassung.Zulassungsdaten.IsMassenabmeldung = false;
+                Zulassung.Zulassungsdaten.IsMassenzulassung = !ModusAbmeldung;
+                Zulassung.Zulassungsdaten.IsMassenabmeldung = ModusAbmeldung;
             }
 
             return true;
@@ -315,10 +306,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// <summary>
         /// Setzt die evb für ein einzelnes Fahrzeug oder für alle in der aktuellen FinList
         /// </summary>
-        /// <param name="fin"></param>
+        /// <param name="finId"></param>
         /// <param name="evb"></param>
         /// <returns>Null = gespeichert</returns>
-        public string SetEvb(string fin, string evb)
+        public string SetEvb(string finId, string evb)
         {
             if (!Zulassung.Zulassungsdaten.IsMassenzulassung)   // Funktion nur für Massenzulassung benötigt
                 return null;
@@ -328,7 +319,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             try
             {
-                if (fin.IsNullOrEmpty())
+                if (finId.IsNullOrEmpty())
                 {
                     // evb für ALLE Fahrzeuge setzen
                     FinList.ToList().ForEach(x => x.Evb = evb);
@@ -336,7 +327,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 else
                 {
                     // evb nur für ein Fahrzeug setzen
-                    FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Evb = evb);
+                    FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Evb = evb);
                 }
                 
                 return null; 
@@ -350,57 +341,85 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// <summary>
         /// Setzt eine Variable für ein angegebenes Fahrzeug
         /// </summary>
-        /// <param name="fin"></param>
+        /// <param name="finId"></param>
         /// <param name="field"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string SetFinValue(string fin, string field, string value)
+        public string SetFinValue(string finId, string field, string value)
         {
             try
             {
                 switch (field.ToLower())
                 {
                     case "wunschkennz1":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz1 = value);
                         break;
 
                     case "wunschkennz2":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz2 = value);
                         break;
 
                     case "wunschkennz3":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz3 = value);
                         break;
 
-                    case "kennzeichen": // Massenabmeldung
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = value);
+                    case "kennzeichen": // Massen-/Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Kennzeichen = value);
                         break;
 
-                    case "vorhandeneskennzreservieren": // Massenabmeldung                        
+                    case "vorhandeneskennzreservieren": // Massen-/Schnellabmeldung
                         var boolValue = Convert.ToBoolean(value);
-                        FinList.Where(x => x.FIN == fin)
+                        FinList.Where(x => x.FinID == finId)
                                .ToList()
                                .ForEach(x => x.VorhandenesKennzReservieren = boolValue);
                         break;
 
                     case "fzgmodell":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.FzgModell = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.FzgModell = value);
                         break;
 
                     case "farbe":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Farbe = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Farbe = value);
                         break;
 
                     case "reskennz":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ResKennz = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.ResKennz = value);
                         break;
 
                     case "reservationnr":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ReservationNr = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.ReservationNr = value);
                         break;
 
                     case "reservationname":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ReservationName = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.ReservationName = value);
+                        break;
+
+                    case "fin": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.FIN = value);
+                        break;
+
+                    case "halter": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Halter = value);
+                        break;
+
+                    case "auftragsnummer": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.AuftragsNummer = value);
+                        break;
+
+                    case "bestellnr": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.BestellNr = value);
+                        break;
+
+                    case "kostenstelle": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Kostenstelle = value);
+                        break;
+
+                    case "tuevau": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.TuevAu = value);
+                        break;
+
+                    case "briefnummer": // Schnellabmeldung
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Briefnummer = value);
                         break;
                 }
                 return null;
@@ -886,6 +905,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
+            Zulassung.Fahrzeugdaten.TuevAu = model.TuevAu;
 
             // 20150826 MMA
             Zulassung.Fahrzeugdaten.HasEtikett = model.HasEtikett;
@@ -1086,7 +1106,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool AuftragslisteAvailable { get; set; }
 
-        public void DataInit(string zulassungFromShoppingCart = "")
+        public void DataInit(string zulassungFromShoppingCart = "", string schnellAbmeldung = "")
         {
             if (zulassungFromShoppingCart.IsNullOrEmpty())
             {
@@ -1104,11 +1124,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 ModusVersandzulassung = ModusVersandzulassung,
                                 ModusSonderzulassung = ModusSonderzulassung,
                                 ZulassungsartMatNr = null,
-                                Zulassungskreis = null,
+                                Zulassungskreis = null
                             },
                         Fahrzeugdaten = new Fahrzeugdaten
                             {
-                                FahrzeugartId = "1",
+                                FahrzeugartId = "1"
                             }
                     };
             }
@@ -1122,6 +1142,40 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
 
                 Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
+            }
+
+            if (schnellAbmeldung.IsNotNullOrEmpty())
+            {
+                Zulassung.Zulassungsdaten.IsSchnellabmeldung = true;
+                Zulassung.Zulassungsdaten.AnzahlAbmeldungen = 1;
+
+                if (zulassungFromShoppingCart.IsNullOrEmpty())
+                {
+                    Zulassung.Zulassungsdaten.AnzahlAbmeldungenAenderbar = true;
+                    SetFinList(new List<FahrzeugAkteBestand> { new FahrzeugAkteBestand { FinID = "001" } }, true);
+                }
+                else
+                {
+                    Zulassung.Zulassungsdaten.AnzahlAbmeldungenAenderbar = false;
+                    SetFinList(new List<FahrzeugAkteBestand>
+                    {
+                        new FahrzeugAkteBestand
+                        {
+                            FinID = "001",
+                            FIN = Zulassung.FahrgestellNr,
+                            Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen,
+                            VorhandenesKennzReservieren = Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren,
+                            Halter = Zulassung.HalterName,
+                            AuftragsNummer = Zulassung.Fahrzeugdaten.AuftragsNr,
+                            BestellNr = Zulassung.Fahrzeugdaten.BestellNr,
+                            Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle,
+                            TuevAu = Zulassung.Fahrzeugdaten.TuevAu,
+                            Briefnummer = Zulassung.Fahrzeugdaten.Zb2Nr
+                        }
+                    }, true);
+                }
+
+                LoadZulassungsAbmeldeArten();
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
@@ -1196,6 +1250,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
+                                              : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
                                               : ModusSonderzulassung ? "SONDERZULASSUNG"
                                               : "ZULASSUNG");
@@ -1204,11 +1259,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung || Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
                 foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => x.IsSelected))
                 {
+                    if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && !fahrzeugAkteBestand.IsSchnellabmeldungSpeicherrelevant)
+                        continue;
+
                     var singleZulassung = ModelMapping.Copy(Zulassung);     // Achtung: Kopiert nicht zuverlässig, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
                     singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
                     singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
@@ -1227,25 +1285,36 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zusatzformulare = new List<PdfFormular>();
 
                     singleZulassung.Fahrzeugdaten.FahrgestellNr = fahrzeugAkteBestand.FIN;
+                    singleZulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren = fahrzeugAkteBestand.VorhandenesKennzReservieren;
 
-                    singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
-                    singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
-                    singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
-                    singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
-
-                    if (!fahrzeugAkteBestand.ResKennz.IsNullOrEmpty() ||
-                        !fahrzeugAkteBestand.ReservationNr.IsNullOrEmpty() ||
-                        !fahrzeugAkteBestand.ReservationName.IsNullOrEmpty())
-                    {                        
-                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.ResKennz;
-                        singleZulassung.Zulassungsdaten.ReservierungsNr = fahrzeugAkteBestand.ReservationNr;
-                        singleZulassung.Zulassungsdaten.ReservierungsName = fahrzeugAkteBestand.ReservationName;
-                        singleZulassung.Zulassungsdaten.KennzeichenReserviert = true;
+                    if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+                    {
+                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;
+                        singleZulassung.Zulassungsdaten.HalterNameSchnellabmeldung = fahrzeugAkteBestand.Halter;
+                        singleZulassung.Fahrzeugdaten.TuevAu = fahrzeugAkteBestand.TuevAu;
+                        singleZulassung.Fahrzeugdaten.Zb2Nr = fahrzeugAkteBestand.Briefnummer;
                     }
+                    else
+                    {
+                        singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
+                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
+                        singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
+                        singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
 
-                    // 20150826 MMA                    
-                    singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
-                    singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
+                        if (!fahrzeugAkteBestand.ResKennz.IsNullOrEmpty() ||
+                            !fahrzeugAkteBestand.ReservationNr.IsNullOrEmpty() ||
+                            !fahrzeugAkteBestand.ReservationName.IsNullOrEmpty())
+                        {
+                            singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.ResKennz;
+                            singleZulassung.Zulassungsdaten.ReservierungsNr = fahrzeugAkteBestand.ReservationNr;
+                            singleZulassung.Zulassungsdaten.ReservierungsName = fahrzeugAkteBestand.ReservationName;
+                            singleZulassung.Zulassungsdaten.KennzeichenReserviert = true;
+                        }
+
+                        // 20150826 MMA                    
+                        singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
+                        singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
+                    }
 
                     zulassungenToSave.Add(singleZulassung);
                 }
@@ -1317,22 +1386,34 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-            if (fahrzeugdatenModel.HasEtikett && Zulassung.Zulassungsdaten.IsMassenzulassung)
+            if (fahrzeugdatenModel.HasEtikett)
             {
-                if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       
+                if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+                {
+                    if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
+                        addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
 
-                if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));   
+                    if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
+                        addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower())); 
+                }
+                else
+                {
+                    if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
+                        addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+
+                    if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
+                        addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+                }
             }
 
-            if (fahrzeugdatenModel.HasEtikett && !Zulassung.Zulassungsdaten.IsMassenzulassung)
+            if (ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
-                if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
-                    addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       
+                var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
 
-                if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
-                    addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    
+                if (fahrzeugdatenModel.TuevAu.IsNullOrEmpty())
+                    addModelError("TuevAu", string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Required.ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+                else if (!regexTuevAu.IsMatch(fahrzeugdatenModel.TuevAu))
+                    addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
             }
         }
 
@@ -1341,16 +1422,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 var zulkreis = string.Format("{0}{1}",fahrzeugdatenModel.Zulassungskreis, "-");
-                var tmpFinList = FinList.Where(x => x.IsSelected);
-     
-                tmpFinList = tmpFinList.Where(x => ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) || (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) || (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis)));
-                tmpFinList = tmpFinList.Where(x => (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() || !x.ReservationName.IsNullOrEmpty()));
 
+                var tmpFinList = FinList.Where(x => x.IsSelected
+                                                    && ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) || (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) || (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis))
+                                                    && (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() || !x.ReservationName.IsNullOrEmpty()));
+     
                 if (tmpFinList.Any())
                 {
-                    addModelError(string.Empty,
-                                  string.Format("{0}",
-                                                "Bitte nur Wunschkennzeichen oder Reservierungs-Informationen eintragen."));
+                    addModelError(string.Empty, Localize.PleaseEnterOnlyPersonalisedLicenseOrReservationInformation);
                 }
                 else
                 {
@@ -1364,6 +1443,21 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         }
                     }
                 }
+            }
+            else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            {
+                if (FinList.None(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant))
+                    addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
+
+                if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+
+                if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarOwner, Localize.Required.NotNullOrEmpty().ToLower()));
+
+                var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
+                if (FinList.Any(x => x.IsSelected && x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
+                    addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
             }
         }
 
@@ -1411,20 +1505,30 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return false;
 
             return true;
-
-            //if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
-            //{
-            //    model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
-            //    isValid = false;
-            //}
-
-            //if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
-            //{
-            //    model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
-            //    isValid = false;
-            //}
-
         }
 
+        public void UpdateAnzahlAbmeldungen(string anzAbmeldungen)
+        {
+            var anzahlInt = anzAbmeldungen.ToInt(0);
+
+            Zulassung.Zulassungsdaten.AnzahlAbmeldungen = anzahlInt;
+
+            if (FinList.Count != anzahlInt)
+            {
+                while (FinList.Count < anzahlInt)
+                {
+                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
+                    FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3"), IsSelected = true });
+                }
+
+                while (FinList.Count > anzahlInt)
+                {
+                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
+                    FinList.RemoveAll(f => f.FinID == maxId.ToString("D3"));
+                }
+
+                PropertyCacheClear(this, m => m.FinListFiltered);
+            }
+        }
     }
 }

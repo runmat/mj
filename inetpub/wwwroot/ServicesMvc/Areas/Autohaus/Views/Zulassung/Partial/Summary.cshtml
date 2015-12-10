@@ -1,9 +1,11 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
 @model GeneralSummary
 
-@{ var isMassenzulassung = (bool)TempData["IsMassenzulassung"];
-   var isMassenabmeldung = (bool) TempData["IsMassenabmeldung"];
-   }
+@{
+    var isMassenzulassung = (bool)TempData["IsMassenzulassung"];
+    var isMassenabmeldung = (bool) TempData["IsMassenabmeldung"];
+    var isSchnellabmeldung = (bool) TempData["IsSchnellabmeldung"];
+}
 
 <h4>@Model.Header</h4>
 
@@ -22,7 +24,6 @@
     }
 </div>
 
-@*@if (isMassenzulassung)*@
 @if (isMassenzulassung)
 {
 <div id="divPortletFahrzeugauswahl">
@@ -35,6 +36,7 @@
               .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
               .Columns(columns =>
                   {
+                      columns.XBound(c => c.FinID).Visible(false);
                       columns.XBound(c => c.FIN);
                       columns.XBound(c => c.FahrzeugArt);
                       columns.XBound(c => c.HandelsName);
@@ -47,13 +49,12 @@
                   })
               .XAutoColumnConfiguration()
               .XPageSize(10)
-              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-              )
+              .XSort(sortOrder => sortOrder.Add(c => c.FinID).Ascending())
+         )
     }
 </div>
 }
-
-@if (isMassenabmeldung)
+else if (isMassenabmeldung)
 {
 <div id="divPortletFahrzeugauswahl">
     @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
@@ -65,6 +66,7 @@
               .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
               .Columns(columns =>
                   {
+                      columns.XBound(c => c.FinID).Visible(false);
                       columns.XBound(c => c.FIN);
                       columns.XBound(c => c.FahrzeugArt);
                       columns.XBound(c => c.HandelsName);
@@ -72,8 +74,35 @@
                   })
               .XAutoColumnConfiguration()
               .XPageSize(10)
-              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-              )
+              .XSort(sortOrder => sortOrder.Add(c => c.FinID).Ascending())
+         )
+    }
+</div>
+}
+else if (isSchnellabmeldung)
+{
+<div id="divPortletFahrzeugauswahl">
+    @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAnzeige";
+        @(Html.Telerik()
+              .Grid<FahrzeugAkteBestand>()
+              .Name(gridName)
+              .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+              .Columns(columns =>
+              {
+                  columns.XBound(c => c.FinID).Visible(false);
+                  columns.XBound(c => c.FIN);
+                  columns.XBound(c => c.Kennzeichen);
+                  columns.XBound(c => c.VorhandenesKennzReservieren);
+                  columns.XBound(c => c.Halter);
+                  columns.XBound(c => c.TuevAu);
+                  columns.XBound(c => c.Briefnummer);
+              })
+              .XAutoColumnConfiguration()
+              .XPageSize(10)
+              .XSort(sortOrder => sortOrder.Add(c => c.FinID).Ascending())
+         )
     }
 </div>
 }
@@ -81,4 +110,3 @@
 <script type="text/javascript">
     FormWizardShowHideSaveButton(true);
 </script>
-

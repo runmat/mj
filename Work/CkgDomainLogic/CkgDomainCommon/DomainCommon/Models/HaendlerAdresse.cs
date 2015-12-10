@@ -32,11 +32,11 @@ namespace CkgDomainLogic.DomainCommon.Models
                 if (GetViewModel == null) 
                     return "";
 
-                var landName = GetViewModel().LaenderList.FirstOrDefault(l => l.Key == LaenderCode);
+                var landName = GetViewModel().LaenderList.FirstOrDefault(l => l.CodeExt == LaenderCode);
                 if (landName == null)
                     return "";
 
-                return landName.Text;
+                return landName.LandAsText;
             }
         }
 
@@ -49,6 +49,12 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         [LocalizedDisplay(LocalizeConstants.ClientName)]
         public string ClientName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LanguageCoverNote)]
+        public string SpracheAnschreiben { get; set; }
+
+        [XmlIgnore]
+        public static string SprachenAnschreiben { get { return "DE;EN;FR"; } }
 
 
         //
@@ -148,9 +154,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         }
 
         [XmlIgnore, GridHidden, NotMapped]
-        public List<SelectItem> LaenderListWithDefaultOption
+        public List<LandExt> LaenderListWithDefaultOption
         {
-            get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().LaenderListWithOptionPleaseChoose; }
+            get { return GetViewModel == null ? new List<LandExt>() : GetViewModel().LaenderListWithOptionPleaseChoose; }
         }
 
 

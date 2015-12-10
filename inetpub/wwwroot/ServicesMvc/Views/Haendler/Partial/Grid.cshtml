@@ -20,6 +20,8 @@
             columns.XBound(c => c.LandAsText);
             columns.XBound(c => c.HaendlerNr);
 
+            columns.XBound(c => c.VersandSperre);
+
             columns.XBound(c => c.Name1Brief);
             columns.XBound(c => c.StrasseHausNrBrief);
             columns.XBound(c => c.PlzBrief);
@@ -38,5 +40,3 @@
     .XSort(sortOrder => sortOrder.Add(c => c.HaendlerNr).Ascending())
     .XToolBar("Haendler")
 )
-
-
