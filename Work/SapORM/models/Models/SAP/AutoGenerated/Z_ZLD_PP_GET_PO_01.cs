@@ -47,6 +47,8 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
+			public string HAUPT_POSITION { get; set; }
+
 			public string EBELN { get; set; }
 
 			public string EBELP { get; set; }
@@ -109,6 +111,7 @@ namespace SapORM.Models
 			{
 				var o = new GT_BESTELLUNGEN
 				{
+					HAUPT_POSITION = (string)row["HAUPT_POSITION"],
 					EBELN = (string)row["EBELN"],
 					EBELP = (string)row["EBELP"],
 					LIFNR = (string)row["LIFNR"],

@@ -29,6 +29,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.Gebuehr = s.GEBUEHR.ToString();
                         d.Gebuehrenrelevant = s.GEB_RELEVANT.XToBool();
                         d.Halter = s.ZH_NAME1;
+                        d.Hauptposition = s.HAUPT_POSITION.XToBool();
                         d.Herkunft = s.HERK;
                         d.Kennzeichen = s.ZZKENN;
                         d.Lieferant = s.LIFNR;
@@ -98,6 +99,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.GEBUEHR = s.Gebuehr.ToNullableDecimal();
                         d.GEB_EBELP = s.BelegGebuehrenPosition;
                         d.GEB_RELEVANT = s.Gebuehrenrelevant.BoolToX();
+                        d.HAUPT_POSITION = s.Hauptposition.BoolToX();
                         d.HERK = s.Herkunft;
                         d.KREISKZ = s.ZulassungsKreis;
                         d.LIFNR = s.Lieferant;

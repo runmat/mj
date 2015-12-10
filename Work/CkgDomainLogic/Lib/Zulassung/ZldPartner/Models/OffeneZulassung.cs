@@ -19,6 +19,8 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.VoucherPosition)]
         public string BelegPosition { get; set; }
 
+        public bool Hauptposition { get; set; }
+
         public string DatensatzId { get { return BelegNr.NotNullOrEmpty().PadLeft(10, '0') + BelegPosition.NotNullOrEmpty().PadLeft(5, '0'); } }
 
         [LocalizedDisplay(LocalizeConstants.MaterialNo)]
