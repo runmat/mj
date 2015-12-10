@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_PP_GET_ZULASSUNGEN_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AUSWAHL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AUSWAHL", value);
+		}
+
+		public static void SetImportParameter_I_HALTER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_HALTER", value);
+		}
+
+		public static void SetImportParameter_I_KUNDE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNDE", value);
+		}
+
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZKENN", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_VON", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_BESTELL_LISTE : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -76,15 +122,15 @@ namespace SapORM.Models
 					EBELP = (string)row["EBELP"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					EINDT = (string.IsNullOrEmpty(row["EINDT"].ToString())) ? null : (DateTime?)row["EINDT"],
+					EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
 					ZH_NAME1 = (string)row["ZH_NAME1"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
 					ZZBRIEF = (string)row["ZZBRIEF"],
 					KREISKZ = (string)row["KREISKZ"],
 					ZZKENN = (string)row["ZZKENN"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
-					GEBUEHR = (decimal?)row["GEBUEHR"],
-					DL_PREIS = (decimal?)row["DL_PREIS"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+					GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
+					DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
 					PP_STATUS = (string)row["PP_STATUS"],
 					GEB_RELEVANT = (string)row["GEB_RELEVANT"],
 					HERK = (string)row["HERK"],
@@ -193,11 +239,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

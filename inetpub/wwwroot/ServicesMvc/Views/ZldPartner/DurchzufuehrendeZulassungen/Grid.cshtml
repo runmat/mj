@@ -12,7 +12,6 @@
     .XAjaxDataBinding("OffeneZulassungenAjaxBinding", "ZldPartner")
     .Columns(columns =>
     {
-        columns.XBound(c => c.DatensatzId).Visible(false);
         columns.XBound(c => c.BelegNr);
         columns.XBound(c => c.BelegPosition);
         columns.XBound(c => c.Halter);
@@ -36,6 +35,12 @@
                 Html.TextBox("Gebuehr", "<#= data.Gebuehr #>", new { @class = "m-wrap xsmall", @onkeypress = "return NumbersOnly($(this), true);", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Gebuehr',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.Preis);
+        columns.XBound(c => c.BeauftragtVon);
+        columns.XBound(c => c.Telefon);
+        columns.XBound(c => c.Email)
+                .ClientTemplate(
+                    "<a href='mailto:<#= data.Email #>'><#= data.Email #></a>"
+            );
         columns.XBound(c => c.StatusText).Visible(!Model.EditMode);
         columns.XBound(c => c.Status).Visible(Model.EditMode)
             .ClientTemplate(

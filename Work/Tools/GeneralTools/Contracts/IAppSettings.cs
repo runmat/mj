@@ -60,5 +60,11 @@ namespace GeneralTools.Contracts
         IEnumerable<string> GetAddressPostcodeCityMappings(string plz);
 
         int TokenExpirationMinutes { get; }
+
+        string CustomCssFile { get; }
+
+        string PortalWelcomeMessageStartLocalized { get; }
+
+        string PortalWelcomeMessageEndLocalized { get; }
     }
 }

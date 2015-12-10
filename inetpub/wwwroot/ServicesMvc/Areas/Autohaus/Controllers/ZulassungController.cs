@@ -51,11 +51,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string partnerportal = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
             ViewModel.SetParamSonderzulassung(sonderzulassung);
+            ViewModel.SetParamPartnerportal(partnerportal);
 
             ViewModel.DataInit(zulassungFromShoppingCart, schnellabmeldung);
 
@@ -78,6 +79,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
             ViewModel.SetParamSonderzulassung("");
+            ViewModel.SetParamPartnerportal("");
 
             ViewModel.DataInit();
 
@@ -185,6 +187,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamAbmeldung("x");
             ViewModel.SetParamVersandzulassung("");
             ViewModel.SetParamSonderzulassung("");
+            ViewModel.SetParamPartnerportal("");
 
             ViewModel.DataInit();
 
@@ -221,6 +224,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult VersandzulassungPartner(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, versandzulassung: "1", partnerportal: "1");
+        }
+
+        [CkgApplication]
         public ActionResult Sonderzulassung(string fin, string halterNr)
         {
             return Index(fin, halterNr, sonderzulassung: "1");
@@ -236,6 +245,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            CkgDomainLogic.Autohaus.Models.Rechnungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -586,6 +596,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
             ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
             ViewData["ModusAbmeldung"] = ViewModel.ModusAbmeldung;
+            ViewData["ModusPartnerportal"] = ViewModel.ModusPartnerportal;
             ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
@@ -935,9 +946,9 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "")
+        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "", string partnerportal = "")
         {
-            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung);
+            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung, partnerportal: partnerportal);
         }
 
         [HttpPost]

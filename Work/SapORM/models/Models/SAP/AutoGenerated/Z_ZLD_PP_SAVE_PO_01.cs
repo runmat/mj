@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_PP_SAVE_PO_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_MODUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MODUS", value);
+		}
+
 		public partial class GT_BESTELLUNGEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -43,6 +49,16 @@ namespace SapORM.Models
 
 			public DateTime? EINDT { get; set; }
 
+			public string EKORG { get; set; }
+
+			public string BUKRS { get; set; }
+
+			public string WERKS { get; set; }
+
+			public string LGORT { get; set; }
+
+			public string BEZ_WERK_LGORT { get; set; }
+
 			public string ZH_NAME1 { get; set; }
 
 			public string ZZFAHRG { get; set; }
@@ -59,6 +75,8 @@ namespace SapORM.Models
 
 			public string VBELP { get; set; }
 
+			public string KUNNR { get; set; }
+
 			public decimal? GEBUEHR { get; set; }
 
 			public decimal? DL_PREIS { get; set; }
@@ -73,6 +91,10 @@ namespace SapORM.Models
 
 			public string MESSAGE { get; set; }
 
+			public string TELF1 { get; set; }
+
+			public string SMTP_ADDR { get; set; }
+
 			public static GT_BESTELLUNGEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BESTELLUNGEN
@@ -82,22 +104,30 @@ namespace SapORM.Models
 					LIFNR = (string)row["LIFNR"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
-					EINDT = (string.IsNullOrEmpty(row["EINDT"].ToString())) ? null : (DateTime?)row["EINDT"],
+					EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
+					EKORG = (string)row["EKORG"],
+					BUKRS = (string)row["BUKRS"],
+					WERKS = (string)row["WERKS"],
+					LGORT = (string)row["LGORT"],
+					BEZ_WERK_LGORT = (string)row["BEZ_WERK_LGORT"],
 					ZH_NAME1 = (string)row["ZH_NAME1"],
 					ZZFAHRG = (string)row["ZZFAHRG"],
 					ZZBRIEF = (string)row["ZZBRIEF"],
 					KREISKZ = (string)row["KREISKZ"],
 					ZZKENN = (string)row["ZZKENN"],
-					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
+					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
 					VBELN = (string)row["VBELN"],
 					VBELP = (string)row["VBELP"],
-					GEBUEHR = (decimal?)row["GEBUEHR"],
-					DL_PREIS = (decimal?)row["DL_PREIS"],
+					KUNNR = (string)row["KUNNR"],
+					GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
+					DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
 					PP_STATUS = (string)row["PP_STATUS"],
 					GEB_RELEVANT = (string)row["GEB_RELEVANT"],
 					HERK = (string)row["HERK"],
 					GEB_EBELP = (string)row["GEB_EBELP"],
 					MESSAGE = (string)row["MESSAGE"],
+					TELF1 = (string)row["TELF1"],
+					SMTP_ADDR = (string)row["SMTP_ADDR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -202,11 +232,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_PP_SAVE_PO_01.GT_BESTELLUNGEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_PP_SAVE_PO_01.GT_BESTELLUNGEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

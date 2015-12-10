@@ -65,6 +65,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusSonderzulassung { get; set; }
 
+        public bool ModusPartnerportal { get; set; }
+
         [XmlIgnore]
         public string ApplicationTitle
         {
@@ -98,11 +100,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsKroschkeZulassung.xml"));
 
-                    if (!ModusAbmeldung)
-                        return dict;
-
-                    var abmeldungsDict = new XmlDictionary<string, string>();
-                    dict.ToList().ForEach(entry =>
+                    if (ModusAbmeldung)
+                    {
+                        var abmeldungsDict = new XmlDictionary<string, string>();
+                        dict.ToList().ForEach(entry =>
                         {
                             if (entry.Key == "Zulassungsdaten")
                             {
@@ -119,7 +120,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             abmeldungsDict.Add(entry.Key, entry.Value);
                         });
 
-                    return abmeldungsDict;
+                        return abmeldungsDict;
+                    }
+
+                    if (ModusPartnerportal)
+                    {
+                        var partnerDict = new XmlDictionary<string, string>();
+                        dict.ToList().ForEach(entry =>
+                        {
+                            if (entry.Key == "ZahlerKfzSteuer")
+                                return;
+
+                            partnerDict.Add(entry.Key, entry.Value);
+                        });
+
+                        return partnerDict;
+                    }
+
+                    return dict;
                 });
             }
         }
@@ -178,6 +196,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamSonderzulassung(string sonderzulassung)
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
+        }
+
+        public void SetParamPartnerportal(string partnerportal)
+        {
+            ModusPartnerportal = partnerportal.IsNotNullOrEmpty();
         }
 
  
@@ -1123,6 +1146,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
                                 ModusSonderzulassung = ModusSonderzulassung,
+                                ModusPartnerportal = ModusPartnerportal,
                                 ZulassungsartMatNr = null,
                                 Zulassungskreis = null
                             },
@@ -1137,6 +1161,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
                 ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
+                ModusPartnerportal = Zulassung.Zulassungsdaten.ModusPartnerportal;
 
                 var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
                 Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
@@ -1247,7 +1272,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     z.Aenderer = LogonContext.UserName;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
                     {
-                        z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
+                        z.BeauftragungsArt = (ModusVersandzulassung ? (ModusPartnerportal ? "VERSANDZULASSUNGPARTNER" : "VERSANDZULASSUNG")
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
@@ -1329,7 +1354,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
             
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusPartnerportal);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

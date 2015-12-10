@@ -20,9 +20,11 @@ namespace CkgDomainLogic.ZldPartner.Models
                     {
                         d.AuftragsNr = s.VBELN;
                         d.AuftragsPosition = s.VBELP;
+                        d.BeauftragtVon = s.BEZ_WERK_LGORT;
                         d.BelegGebuehrenPosition = s.GEB_EBELP;
                         d.BelegNr = s.EBELN;
                         d.BelegPosition = s.EBELP;
+                        d.Email = s.SMTP_ADDR;
                         d.FahrgestellNr = s.ZZFAHRG;
                         d.Gebuehr = s.GEBUEHR.ToString();
                         d.Gebuehrenrelevant = s.GEB_RELEVANT.XToBool();
@@ -35,6 +37,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.MaterialText = s.MAKTX;
                         d.Preis = s.DL_PREIS.ToString();
                         d.Status = s.PP_STATUS.NotNullOrEmpty();
+                        d.Telefon = s.TELF1;
                         d.Zb2Nr = s.ZZBRIEF;
                         d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
                         d.ZulassungsKreis = s.KREISKZ;
@@ -87,6 +90,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                     , null
                     , (s, d) =>
                     {
+                        d.BEZ_WERK_LGORT = s.BeauftragtVon;
                         d.DL_PREIS = s.Preis.ToNullableDecimal();
                         d.EBELN = s.BelegNr;
                         d.EBELP = s.BelegPosition;
@@ -100,6 +104,8 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.MAKTX = s.MaterialText;
                         d.MATNR = s.MaterialNr;
                         d.PP_STATUS = s.Status;
+                        d.SMTP_ADDR = s.Email;
+                        d.TELF1 = s.Telefon;
                         d.VBELN = s.AuftragsNr;
                         d.VBELP = s.AuftragsPosition;
                         d.ZH_NAME1 = s.Halter;

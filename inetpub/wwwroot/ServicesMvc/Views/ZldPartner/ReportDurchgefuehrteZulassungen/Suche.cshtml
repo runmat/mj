@@ -13,7 +13,7 @@
             @Html.FormRadioButtonListFor(m => m.Kunde, Model.Kunden.ToSelectList())
 
             @Html.FormDateRangePickerFor(m => m.ZulassungsDatumRange, new {@class = "m-wrap"})
-            @Html.FormTextBlockFor(m => m.ZulassungsDatumRangeHinweis)
+            @Html.FormTextBlockFor(m => m.ZulassungsDatumRangeHinweis, labelHidden: true)
 
             @Html.FormRadioButtonListFor(m => m.Auswahl, Model.AuswahlOptionen.ToSelectList())
 

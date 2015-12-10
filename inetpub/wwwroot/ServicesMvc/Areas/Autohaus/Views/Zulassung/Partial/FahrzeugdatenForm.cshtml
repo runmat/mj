@@ -8,6 +8,7 @@
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
     var isMassenabmeldung = Convert.ToBoolean(ViewData["IsMassenabmeldung"]) || Convert.ToBoolean(Request["IsMassenabmeldung"]);
     var modusAbmeldung = Convert.ToBoolean(ViewData["ModusAbmeldung"]) || Convert.ToBoolean(Request["ModusAbmeldung"]);
+    var modusPartnerportal = Convert.ToBoolean(ViewData["ModusPartnerportal"]) || Convert.ToBoolean(Request["ModusPartnerportal"]);
 
     if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
@@ -223,13 +224,16 @@
             {
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
             }
-            
-            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
-            <div id="ValidationMsgHasEtikett"></div>
-            <div id="KennzeichenLabelFields">
-                @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete", col = "left" })
-                @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap medium", col = "right" })
-            </div>
+
+            if (!modusPartnerportal)
+            {
+                @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
+                <div id="ValidationMsgHasEtikett"></div>
+                <div id="KennzeichenLabelFields">
+                    @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete", col = "left" })
+                    @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap medium", col = "right" })
+                </div>
+            }
         }
     }
     

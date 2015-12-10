@@ -32,6 +32,11 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_FORMULAR", value);
 		}
 
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
 		public static void SetImportParameter_I_SPEICHERN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SPEICHERN", value);

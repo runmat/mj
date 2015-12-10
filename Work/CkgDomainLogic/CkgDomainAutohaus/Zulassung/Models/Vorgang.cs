@@ -39,6 +39,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
+                if (BeauftragungsArt == "VERSANDZULASSUNGPARTNER")
+                    return "?versandzulassung=1&partnerportal=1";
+
                 return "";
             }
         }
@@ -322,7 +325,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = Halter.Adresse.GetPostLabelString(),
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung
+                            (Zulassungsdaten.ModusAbmeldung || Zulassungsdaten.ModusPartnerportal
                                     ? null :
                                     new GeneralEntity
                                     {

@@ -96,6 +96,15 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.VoucherFeePosition)]
         public string BelegGebuehrenPosition { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.InstructedBy)]
+        public string BeauftragtVon { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Phone)]
+        public string Telefon { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Email)]
+        public string Email { get; set; }
+
         public string ValidationMessage
         {
             get

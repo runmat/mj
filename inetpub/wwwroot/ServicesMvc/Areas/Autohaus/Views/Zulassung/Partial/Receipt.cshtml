@@ -109,6 +109,7 @@ else
         var isVersandzulassung = '@Model.ModusVersandzulassung';
         var isSonderzulassung = '@Model.ModusSonderzulassung';
         var isAbmeldung = '@Model.ModusAbmeldung';
+        var isPartnerportal = '@Model.ModusPartnerportal';
 
         if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
             window.location = "../Fahrzeugbestand/index";
@@ -118,7 +119,11 @@ else
             if (isSchnellabmeldung == "True") {
                 replaceAction = "Schnellabmeldung";
             } else if (isVersandzulassung == "True") {
-                replaceAction = "Versandzulassung";
+                if (isPartnerportal == "True") {
+                    replaceAction = "VersandzulassungPartner";
+                } else {
+                    replaceAction = "Versandzulassung";
+                }
             } else if (isSonderzulassung == "True") {
                 replaceAction = "Sonderzulassung";
             } else if (isAbmeldung == "True") {

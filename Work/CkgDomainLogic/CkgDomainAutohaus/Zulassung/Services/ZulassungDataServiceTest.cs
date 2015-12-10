@@ -199,7 +199,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return ct.GetKennzeichengroessen();
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal)
         {
             return "";
         }
