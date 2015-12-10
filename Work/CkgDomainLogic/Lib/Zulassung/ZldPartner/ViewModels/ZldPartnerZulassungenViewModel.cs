@@ -113,6 +113,8 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == datensatzId);
             if (zul != null)
             {
+                var sonstigePositionen = OffeneZulassungen.Where(z => z.BelegNr == zul.BelegNr && z.BelegPosition != zul.BelegPosition).ToList();
+
                 switch (property)
                 {
                     case "ZulassungsDatum":
@@ -121,6 +123,8 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                             zul.ZulassungsDatum = value;
                             zul.LieferDatum = value;
                             zul.IsChanged = true;
+
+                            sonstigePositionen.ForEach(z => z.IsChanged = true);
                         }
                         break;
                     case "Kennzeichen":
@@ -129,6 +133,8 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         {
                             zul.Kennzeichen = kennz;
                             zul.IsChanged = true;
+
+                            sonstigePositionen.ForEach(z => z.IsChanged = true);
                         }
                         break;
                     case "Gebuehr":
@@ -136,6 +142,8 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         {
                             zul.Gebuehr = value;
                             zul.IsChanged = true;
+
+                            sonstigePositionen.ForEach(z => z.IsChanged = true);
                         }
                         break;
                     case "Status":
@@ -143,6 +151,12 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         {
                             zul.Status = value;
                             zul.IsChanged = true;
+
+                            sonstigePositionen.ForEach(z =>
+                            {
+                                z.Status = value;
+                                z.IsChanged = true;
+                            });
                         }
                         break;
                 }
