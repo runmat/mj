@@ -36,16 +36,16 @@
                 Html.TextBox("Gebuehr", "<#= data.Gebuehr #>", new { @class = "m-wrap xsmall <# if (!data.Gebuehrenrelevant) { #>" + "hide" + "<# } #>", @onkeypress = "return NumbersOnly($(this), true);", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Gebuehr',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.Preis);
+        columns.XBound(c => c.StatusText).Visible(!Model.EditMode);
+        columns.XBound(c => c.Status).Visible(Model.EditMode)
+            .ClientTemplate(
+                Html.DropDownList("Status", Model.StatusWerte.ToSelectList(), new { @class = "m-wrap small <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>", @onchange = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Status',$(this).val());" }).ToHtmlString()
+            );
         columns.XBound(c => c.BeauftragtVon);
         columns.XBound(c => c.Telefon);
         columns.XBound(c => c.Email)
                 .ClientTemplate(
                     "<a href='mailto:<#= data.Email #>'><#= data.Email #></a>"
-            );
-        columns.XBound(c => c.StatusText).Visible(!Model.EditMode);
-        columns.XBound(c => c.Status).Visible(Model.EditMode)
-            .ClientTemplate(
-                Html.DropDownList("Status", Model.StatusWerte.ToSelectList(), new { @class = "m-wrap small <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>", @onchange = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Status',$(this).val());" }).ToHtmlString()
             );
         columns.XBound(c => c.BearbeitungsStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
     })
