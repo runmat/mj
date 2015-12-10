@@ -4,8 +4,7 @@
     <div id="site">
         <div id="content">
             <div id="navigationSubmenu">
-                <asp:LinkButton ID="lb_zurueck" Style="padding-left: 15px" runat="server" class="firstLeft active"
-                    Text="Zurück"></asp:LinkButton>
+                <asp:LinkButton ID="lb_zurueck" CausesValidation="false" runat="server" Visible="True">zurück</asp:LinkButton>
             </div>
             <div id="innerContent">
                 <div id="innerContentRight" style="width: 100%">

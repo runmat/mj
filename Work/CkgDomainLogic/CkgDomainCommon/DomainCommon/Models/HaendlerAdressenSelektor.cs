@@ -19,6 +19,12 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.Country)]
         public string LandCode { get; set; }
 
+        [XmlIgnore, GridHidden, NotMapped]
+        public LandExt Land
+        {
+            get { return LaenderListWithDefaultOption.FirstOrDefault(l => l.CodeExt == LandCode, null); }
+        }
+
         [LocalizedDisplay(LocalizeConstants.AddressType)]
         public string AdressenTyp { get; set; }
 
@@ -42,9 +48,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         public static Func<HaendlerAdressenViewModel> GetViewModel { get; set; }
 
         [XmlIgnore, GridHidden, NotMapped]
-        public List<SelectItem> LaenderListWithDefaultOption
+        public List<LandExt> LaenderListWithDefaultOption
         {
-            get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().LaenderListWithOptionAll; }
+            get { return GetViewModel == null ? new List<LandExt>() : GetViewModel().LaenderListWithOptionAll; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
