@@ -11,6 +11,6 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 
         string SaveHaendlerAdresse(HaendlerAdresse haendlerAdresse);
 
-        List<SelectItem> GetLaenderList();
+        List<LandExt> GetLaenderList();
     }
 }
