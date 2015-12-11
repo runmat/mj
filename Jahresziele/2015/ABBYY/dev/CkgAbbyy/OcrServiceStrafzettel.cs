@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FCEngine;
 
 namespace CkgAbbyy
 {
-    public class OcrServiceZb2 : IOcrService
+    public class OcrServiceStrafzettel : IOcrService
     {
-        const string RootFolder = @"C:\Backup\ABBYY\ZBII";
+        const string RootFolder = @"C:\Backup\ABBYY\Strafzettel";
 
         public void CreateDefinitionFromTrainingImages()
         {
-            var batchFolder = Path.Combine(RootFolder, "_TrainingBatch");
+            string batchFolder = RootFolder + @"\_TrainingBatch";
             if (Directory.Exists(batchFolder))
                 Directory.Delete(batchFolder, true);
 
@@ -22,24 +20,19 @@ namespace CkgAbbyy
             ITrainingBatch trainingBatch = engine.CreateTrainingBatch(batchFolder, "German");
             try
             {
-                ITrainingDefinition newDefinition = trainingBatch.Definitions.AddNew("ZBII");
+                ITrainingDefinition newDefinition = trainingBatch.Definitions.AddNew("AZ");
 
                 var trainingImagFileNames = new[]
                 {
-                    "VF1FDC1HH38365655.jpg",
-                    "JMZBK14Z261351772.jpg",
-                    "JTKLC16420J001979.jpg",
-                    //"VF1JPOCO532739479.jpg",
-                    //"TMADB81CACJ076808.jpg",
-                    //"0007-a.jpg",
+                    "STUT_505-52-122567-4.jpg",
+                    "BB_140-11-0027822-1.jpg",
+                    "VAIHI_505-79-231367-6.jpg",
+                    //"KS_966-523472-7.jpg",
+                    "KARL_505-27-012371-0.jpg",
+                    //"OSNABR_515-49-104859-0.jpg",
+                    //"LEASEPLAN_01-11241-101779-9.jpg",
                 };
                 trainingImagFileNames.ToList().ForEach(f => trainingBatch.AddImageFile(Path.Combine(RootFolder, f)));
-
-                var dict = new Dictionary<string, OcrField>
-                {
-                    { "VIN", new OcrField() },
-                };
-                string fieldKey;
 
                 ITrainingPage firstPage = trainingBatch.Pages[0];
                 // Each page must be prepared before trying to work with its layout. At this stage the page is analyzed
@@ -52,56 +45,29 @@ namespace CkgAbbyy
                 {
                     var obj = firstPage.ImageObjects[i];
 
-                    var text = obj.RecognizedText;
-
-                    // Data
-                    if (text != null && text.ToUpper() == trainingImagFileNames[0].Replace(".jpg", ""))
+                    string text = obj.RecognizedText;
+                    if (text != null)
                     {
-                        fieldKey = "VIN";
-                        var entry = dict[fieldKey];
-                        if (entry.Image == null)
-                            entry.Image = obj;
-                        entry.Ofset = new Rectangle(0,-10,50,20);
-                        entry.Sort = 10;
-                    }
-
-                    // References
-                    text = obj.RecognizedText;
-                    if (text != null && text == "E")
-                    {
-                        fieldKey = "VIN";
-                        var entry = dict[fieldKey];
-                        if (entry.RefImage == null)
-                            entry.RefImage = obj;
+                        if (Helper.KeyMatchesFileNames(trainingImagFileNames, text))
+                        {
+                            // We want to extact this field. Create a data field and define its geometry on the current page.
+                            ITrainingField isbnField = newDefinition.Fields.AddNew("AZ", TrainingFieldTypeEnum.TFT_Field);
+                            firstPage.SetFieldBlock(isbnField, obj.Region);
+                            break;
+                        }
                     }
                 }
-
-
-                foreach (var entry in dict.OrderBy(e => e.Value.Sort))
+                foreach (ITrainingImageObject obj in firstPage.ImageObjects)
                 {
-                    var key = entry.Key;
-                    var obj = entry.Value.Image;
-                    var objRef = entry.Value.RefImage;
-                    var ofs = entry.Value.Ofset;
-
-                    if (obj == null)
-                        continue;
-
-                    // Data field:
-                    ITrainingField field = newDefinition.Fields.AddNew(key, TrainingFieldTypeEnum.TFT_Field);
-                    IRegion r = obj.Region;
-                    IRegion newRegion = engine.CreateRegion();
-                    newRegion.AddRect(r.get_Left(0) + ofs.X, r.get_Top(0) + ofs.Y, r.get_Right(0) + ofs.Width, r.get_Bottom(0) + ofs.Height);
-                    firstPage.SetFieldBlock(field, newRegion);
-
-                    // Reference-Field:
-                    if (objRef != null)
+                    string text = obj.RecognizedText;
+                    if (text != null && text.ToLower() == "aktenzeichen:")
                     {
-                        ITrainingField tag = newDefinition.Fields.AddNew(key + "_Ref", TrainingFieldTypeEnum.TFT_ReferenceText);
-                        firstPage.SetFieldBlock(tag, objRef.Region);
+                        // We want to use this text for reference. Create a reference element and define its geometry on the current page.
+                        ITrainingField isbnTag = newDefinition.Fields.AddNew("AZ_Ref", TrainingFieldTypeEnum.TFT_ReferenceText);
+                        firstPage.SetFieldBlock(isbnTag, obj.Region);
+                        break;
                     }
                 }
-
                 // Now that we are done with this page, mark it as verified and ready for training.
                 trainingBatch.SubmitPageForTraining(firstPage);
 
@@ -114,7 +80,7 @@ namespace CkgAbbyy
                     trainingBatch.SubmitPageForTraining(page);
                 }
 
-                var documentDefinitionFileName = Path.Combine(RootFolder, "ZBII.afl");
+                var documentDefinitionFileName = Path.Combine(RootFolder, "Strafzettel.afl");
 
                 newDefinition.ExportToAFL(documentDefinitionFileName);
             }
@@ -126,9 +92,9 @@ namespace CkgAbbyy
 
         public void ParseImagesFromDefinition()
         {
-            const string key = "_VIN";
+            const string key = "_AZ;_AZ_Alternating";
 
-            var documentDefinitionFileName = Path.Combine(RootFolder, "ZBII.afl");
+            var documentDefinitionFileName = Path.Combine(RootFolder, "Strafzettel.afl");
 
             var engineLoader = new InprocLoader();
             var engine = engineLoader.Load(FceConfig.GetDeveloperSn(), "");
@@ -143,7 +109,7 @@ namespace CkgAbbyy
 
             var imageSource = new CustomPreprocessingImageSource(engine);
             var imageFiles = Directory.GetFiles(RootFolder, "*.jpg");
-            for (var i = 0; i < imageFiles.Length - 0; i++)
+            for (var i = 0; i < imageFiles.Length; i++)
                 imageSource.AddImageFile(imageFiles[i]);
 
             processor.SetCustomImageSource(imageSource);

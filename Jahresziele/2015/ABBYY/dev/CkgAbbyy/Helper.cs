@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml;
+using GeneralTools.Models;
 
 namespace CkgAbbyy
 {
@@ -11,20 +12,33 @@ namespace CkgAbbyy
         {
             try
             {
+                string[] keys = { key };
+                if (key.Contains(";"))
+                    keys = key.Split(';');
+
                 var xmlDocument = new XmlDocument();
                 xmlDocument.Load(xmlFileName);
                 if (xmlDocument.DocumentElement == null)
                     return false;
 
-                var keyObjects = xmlDocument.DocumentElement.ChildNodes[0].ChildNodes.OfType<XmlNode>().ToList();
-                var keyObject = keyObjects.FirstOrDefault(e => e.Name == key);
-                if (keyObject == null || keyObject.LastChild == null)
+                var keyValue = "";
+                foreach (var k in keys)
+                {
+                    var keyObjects = xmlDocument.DocumentElement.ChildNodes[0].ChildNodes.OfType<XmlNode>().ToList();
+                    var keyObject = keyObjects.FirstOrDefault(e => e.Name == k);
+                    if (keyObject == null || keyObject.LastChild == null)
+                        continue;
+                    if (keyObject.LastChild.Value == null)
+                        continue;
+
+                    keyValue = keyObject.LastChild.Value;
+
+                    if (keyValue.IsNotNullOrEmpty())
+                        break;
+                }
+                if (keyValue.IsNullOrEmpty())
                     return false;
 
-                if (keyObject.LastChild.Value == null)
-                    return false;
-
-                var keyValue = keyObject.LastChild.Value;
                 var nakedFileName = Path.GetFileNameWithoutExtension(xmlFileName);
 
                 keyValue = ReplaceNoideChars(keyValue).ToLower();
@@ -37,7 +51,7 @@ namespace CkgAbbyy
 
         static readonly string[] Separators = { "/", "-", "." };
 
-        static string ReplaceNoideChars(string text)
+        public static string ReplaceNoideChars(string text)
         {
             foreach (var t in Separators)
                 text = text.Replace(t, "");
@@ -47,7 +61,7 @@ namespace CkgAbbyy
             return text;
         }
 
-        static bool KeyMatchesFileNames(string[] azFileNames, string text)
+        public static bool KeyMatchesFileNames(string[] azFileNames, string text)
         {
             foreach (var azFileName in azFileNames)
             {

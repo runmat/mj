@@ -13,8 +13,10 @@ namespace AbbyyTest
 
         static void PdfToImages()
         {
-            OcrServiceZb2.CreateDefinitionFromTrainingImages();
-            OcrServiceZb2.ParseImagesFromDefinition("_VIN");
+            IOcrService ocr = new OcrServiceZb2();
+
+            //ocr.CreateDefinitionFromTrainingImages();
+            ocr.ParseImagesFromDefinition();
         }
     }
 }

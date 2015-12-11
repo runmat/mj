@@ -6,11 +6,11 @@ using FCEngine;
 
 namespace CkgAbbyy
 {
-    public class OcrServiceRg
+    public class OcrServiceRg : IOcrService
     {
         const string RootFolder = @"C:\Backup\ABBYY\Lieferantenrechnung";
 
-        public static void CreateDefinitionFromTrainingImages()
+        public void CreateDefinitionFromTrainingImages()
         {
             var batchFolder = Path.Combine(RootFolder, "_TrainingBatch");
             if (Directory.Exists(batchFolder))
@@ -240,8 +240,10 @@ namespace CkgAbbyy
             }
         }
 
-        public static void ParseImagesFromDefinition(string key)
+        public void ParseImagesFromDefinition()
         {
+            const string key = "_RG_NR";
+
             var documentDefinitionFileName = Path.Combine(RootFolder, "Lieferantenrechnung.afl");
 
             var engineLoader = new InprocLoader();
