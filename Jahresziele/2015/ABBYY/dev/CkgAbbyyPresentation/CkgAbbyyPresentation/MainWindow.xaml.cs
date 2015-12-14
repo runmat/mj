@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Interop;
 using Microsoft.Office.Core;
 using Powerpoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -34,6 +25,7 @@ namespace CkgAbbyyPresentation
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+
         private bool _isActivated;
 
         public MainWindow()
@@ -49,7 +41,7 @@ namespace CkgAbbyyPresentation
                 return;
 
             _isActivated = true;
-            PreparePresentation();
+            //PreparePresentation();
         }
 
         void PreparePresentation()
@@ -57,17 +49,29 @@ namespace CkgAbbyyPresentation
             var powerpnt = new Powerpoint.Application();
             var presentation = powerpnt.Presentations.Open(@"C:\Users\JenzenM\Documents\Test.pptx", MsoTriState.msoCTrue, MsoTriState.msoCTrue, MsoTriState.msoFalse);
 
-            //presentation.SlideShowSettings.SlideShowName = Title;
-            var window = presentation.SlideShowSettings.Run();
+            var powerPointProcess = Process.GetProcessesByName("powerpnt")[0];
 
-            SetParent((IntPtr)window.HWND, Process.GetCurrentProcess().MainWindowHandle);
-            SetWindowPos((IntPtr)window.HWND, (IntPtr)0, 0, 0, (int)WindowsFormsHost.Width, (int)WindowsFormsHost.Height, 0);
+            //presentation.SlideShowSettings.SlideShowName = Title;
+            presentation.SlideShowSettings.ShowType = Powerpoint.PpSlideShowType.ppShowTypeWindow;
+            presentation.SlideShowSettings.ShowScrollbar = MsoTriState.msoFalse;
+            var window = presentation.SlideShowSettings.Run();
+            ShowWindow(powerPointProcess.MainWindowHandle, 6);
+
+            var hostWindow = Process.GetCurrentProcess().MainWindowHandle;
+            
+
+            SetParent((IntPtr)window.HWND, hostWindow);
+            SetWindowPos((IntPtr)window.HWND, (IntPtr)0, 0, 0, (int)600, (int)400, 0);
+            ShowWindow((IntPtr)window.HWND, 3);
+
+            //SetWindowPos(hostWindow, (IntPtr)0, (int)Left, (int)Top, (int)1000, (int)800, 0);
 
             while (presentation.SlideShowWindow.View.State != Powerpoint.PpSlideShowState.ppSlideShowDone)
                 Thread.Sleep(50);
 
             presentation.Close();
             powerpnt.Quit();
+            powerPointProcess.Kill();
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
