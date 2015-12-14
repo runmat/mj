@@ -21,6 +21,52 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_LS).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_GRUPPE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_GRUPPE", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ_BIS", value);
+		}
+
+		public static void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ_VON", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_BIS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_BIS", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_VON(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_VON", value);
+		}
+
+		public static void SetImportParameter_I_LS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LS", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ZZZLDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ZZZLDAT_VON", value);
+		}
+
 		public partial class GT_FILENAME : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -148,11 +194,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_LS.GT_FILENAME> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_LS.GT_FILENAME> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

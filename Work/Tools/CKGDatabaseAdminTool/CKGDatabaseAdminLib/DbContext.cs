@@ -24,6 +24,8 @@ namespace CKGDatabaseAdminLib
 
         public DbSet<GitBranchInfo> GitBranchInfos { get; set; }
 
+        public DbSet<CkgEntwickler> CkgEntwickler { get; set; }
+
         public DbSet<Application> Applications { get; set; }
 
         public ObservableCollection<Application> ApplicationsInMenuOnly
@@ -136,7 +138,7 @@ namespace CKGDatabaseAdminLib
             return liste;
         }
 
-        public void SaveBapiCheckItem(string bapi, byte[] impStruktur, byte[] expStruktur, bool neu, bool testSap)
+        public void SaveBapiCheckItem(string bapi, byte[] bapiStruktur, bool neu, bool testSap)
         {
             BapiCheckItem itemToSave;
 
@@ -151,8 +153,7 @@ namespace CKGDatabaseAdminLib
                 itemToSave = BapiCheckItems.First(b => b.BapiName == bapi && b.TestSap == testSap);
             }
 
-            itemToSave.ImportStruktur = impStruktur;
-            itemToSave.ExportStruktur = expStruktur;
+            itemToSave.BapiStruktur = bapiStruktur;
             itemToSave.Updated = DateTime.Now;
 
             if (neu)

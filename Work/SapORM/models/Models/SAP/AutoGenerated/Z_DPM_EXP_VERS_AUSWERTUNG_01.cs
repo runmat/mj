@@ -21,6 +21,47 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_EXP_VERS_AUSWERTUNG_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_DAT_ANGEL_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_ANGEL_BIS", value);
+		}
+
+		public static void SetImportParameter_I_DAT_ANGEL_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_ANGEL_VON", value);
+		}
+
+		public static void SetImportParameter_I_DAT_VERSAUFTR_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_VERSAUFTR_BIS", value);
+		}
+
+		public static void SetImportParameter_I_DAT_VERSAUFTR_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_DAT_VERSAUFTR_VON", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_BEIM_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_BEIM_AG", value);
+		}
+
+		public static void SetImportParameter_I_VERSANDART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERSANDART", value);
+		}
+
+		public static void SetImportParameter_I_VERT_ART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERT_ART", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -153,7 +194,7 @@ namespace SapORM.Models
 					CIN = (string)row["CIN"],
 					PAID = (string)row["PAID"],
 					SICHERHEITSIDCMS = (string)row["SICHERHEITSIDCMS"],
-					DAT_ANGEL = (string.IsNullOrEmpty(row["DAT_ANGEL"].ToString())) ? null : (DateTime?)row["DAT_ANGEL"],
+					DAT_ANGEL = string.IsNullOrEmpty(row["DAT_ANGEL"].ToString()) ? null : (DateTime?)row["DAT_ANGEL"],
 					ZBRIEF = (string)row["ZBRIEF"],
 					VERS_ART = (string)row["VERS_ART"],
 					EMPF_ART = (string)row["EMPF_ART"],
@@ -174,9 +215,9 @@ namespace SapORM.Models
 					ORT_ANF = (string)row["ORT_ANF"],
 					LAND_ANF = (string)row["LAND_ANF"],
 					CLIENTLD = (string)row["CLIENTLD"],
-					DAT_GEAEND = (string.IsNullOrEmpty(row["DAT_GEAEND"].ToString())) ? null : (DateTime?)row["DAT_GEAEND"],
-					DAT_VERSAUFTR = (string.IsNullOrEmpty(row["DAT_VERSAUFTR"].ToString())) ? null : (DateTime?)row["DAT_VERSAUFTR"],
-					DAT_UEBERM_1 = (string.IsNullOrEmpty(row["DAT_UEBERM_1"].ToString())) ? null : (DateTime?)row["DAT_UEBERM_1"],
+					DAT_GEAEND = string.IsNullOrEmpty(row["DAT_GEAEND"].ToString()) ? null : (DateTime?)row["DAT_GEAEND"],
+					DAT_VERSAUFTR = string.IsNullOrEmpty(row["DAT_VERSAUFTR"].ToString()) ? null : (DateTime?)row["DAT_VERSAUFTR"],
+					DAT_UEBERM_1 = string.IsNullOrEmpty(row["DAT_UEBERM_1"].ToString()) ? null : (DateTime?)row["DAT_UEBERM_1"],
 					VERS_STORNO = (string)row["VERS_STORNO"],
 					ANREDE_EMPF = (string)row["ANREDE_EMPF"],
 					VERSANDGRUND = (string)row["VERSANDGRUND"],
@@ -194,8 +235,8 @@ namespace SapORM.Models
 					VORNAME_ANSP = (string)row["VORNAME_ANSP"],
 					USER_AUTOR = (string)row["USER_AUTOR"],
 					ZVERT_ART = (string)row["ZVERT_ART"],
-					ENDG_VERS = (string.IsNullOrEmpty(row["ENDG_VERS"].ToString())) ? null : (DateTime?)row["ENDG_VERS"],
-					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					ENDG_VERS = string.IsNullOrEmpty(row["ENDG_VERS"].ToString()) ? null : (DateTime?)row["ENDG_VERS"],
+					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					ANFORDERUNGSWEG = (string)row["ANFORDERUNGSWEG"],
 					KUNNR_BEIM_AG = (string)row["KUNNR_BEIM_AG"],
 					NAME = (string)row["NAME"],
@@ -429,20 +470,10 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT_SUM> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT_SUM> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

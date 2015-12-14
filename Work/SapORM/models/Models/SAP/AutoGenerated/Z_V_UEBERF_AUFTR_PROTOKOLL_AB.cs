@@ -21,6 +21,67 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_V_UEBERF_AUFTR_PROTOKOLL_AB).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_ABHOL_DAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("ABHOL_DAT", value);
+		}
+
+		public static void SetImportParameter_ABHOL_ZEIT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ABHOL_ZEIT", value);
+		}
+
+		public static void SetImportParameter_AUFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("AUFNR", value);
+		}
+
+		public static void SetImportParameter_FAHRTNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("FAHRTNR", value);
+		}
+
+		public static void SetImportParameter_IUG_ZEIT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("IUG_ZEIT", value);
+		}
+
+		public static void SetImportParameter_KMSTAND(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("KMSTAND", value);
+		}
+
+		public static void SetImportParameter_UEBERGABE_DAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("UEBERGABE_DAT", value);
+		}
+
+		public static void SetImportParameter_UNTERSCHR_VORH(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("UNTERSCHR_VORH", value);
+		}
+
+		public static void SetImportParameter_VERARBEITUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("VERARBEITUNG", value);
+		}
+
+		public static void SetImportParameter_WADAT_IST(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("WADAT_IST", value);
+		}
+
+		public static void SetImportParameter_ZZKATEGORIE(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("ZZKATEGORIE", value);
+		}
+
+		public static string GetExportParameter_UPDATE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("UPDATE").NotNullOrEmpty().Trim();
+		}
+
 		public partial class GT_IMP_QM : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -154,11 +215,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_V_UEBERF_AUFTR_PROTOKOLL_AB.GT_IMP_QM> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_V_UEBERF_AUFTR_PROTOKOLL_AB.GT_IMP_QM> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

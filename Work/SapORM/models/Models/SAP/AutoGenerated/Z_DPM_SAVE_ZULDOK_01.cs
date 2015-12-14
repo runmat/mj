@@ -21,6 +21,27 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_DPM_SAVE_ZULDOK_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_AG", value);
+		}
+
+		public static void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_WEB_USER", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DATEN : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -52,9 +73,9 @@ namespace SapORM.Models
 					HALTER = (string)row["HALTER"],
 					STANDORT = (string)row["STANDORT"],
 					EVB_NUM = (string)row["EVB_NUM"],
-					EVB_VON = (string.IsNullOrEmpty(row["EVB_VON"].ToString())) ? null : (DateTime?)row["EVB_VON"],
-					EVB_BIS = (string.IsNullOrEmpty(row["EVB_BIS"].ToString())) ? null : (DateTime?)row["EVB_BIS"],
-					DAT_LOE = (string.IsNullOrEmpty(row["DAT_LOE"].ToString())) ? null : (DateTime?)row["DAT_LOE"],
+					EVB_VON = string.IsNullOrEmpty(row["EVB_VON"].ToString()) ? null : (DateTime?)row["EVB_VON"],
+					EVB_BIS = string.IsNullOrEmpty(row["EVB_BIS"].ToString()) ? null : (DateTime?)row["EVB_BIS"],
+					DAT_LOE = string.IsNullOrEmpty(row["DAT_LOE"].ToString()) ? null : (DateTime?)row["DAT_LOE"],
 					RET = (string)row["RET"],
 
 					SAPConnection = sapConnection,
@@ -160,11 +181,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_DPM_SAVE_ZULDOK_01.GT_DATEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_DPM_SAVE_ZULDOK_01.GT_DATEN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

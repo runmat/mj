@@ -21,6 +21,37 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_CJ2_GET_ALL_DOCS).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_BEG_DATE(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_BEG_DATE", value);
+		}
+
+		public static void SetImportParameter_I_EIN_AUS(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EIN_AUS", value);
+		}
+
+		public static void SetImportParameter_I_END_DATE(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_END_DATE", value);
+		}
+
+		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_DOCS : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -87,11 +118,11 @@ namespace SapORM.Models
 					TRANSACT_NUMBER = (string)row["TRANSACT_NUMBER"],
 					TRANSACT_NAME = (string)row["TRANSACT_NAME"],
 					WAERS = (string)row["WAERS"],
-					BUDAT = (string.IsNullOrEmpty(row["BUDAT"].ToString())) ? null : (DateTime?)row["BUDAT"],
-					H_RECEIPTS = (decimal?)row["H_RECEIPTS"],
-					H_PAYMENTS = (decimal?)row["H_PAYMENTS"],
-					H_NET_AMOUNT = (decimal?)row["H_NET_AMOUNT"],
-					H_TAX_AMOUNT = (decimal?)row["H_TAX_AMOUNT"],
+					BUDAT = string.IsNullOrEmpty(row["BUDAT"].ToString()) ? null : (DateTime?)row["BUDAT"],
+					H_RECEIPTS = string.IsNullOrEmpty(row["H_RECEIPTS"].ToString()) ? null : (decimal?)row["H_RECEIPTS"],
+					H_PAYMENTS = string.IsNullOrEmpty(row["H_PAYMENTS"].ToString()) ? null : (decimal?)row["H_PAYMENTS"],
+					H_NET_AMOUNT = string.IsNullOrEmpty(row["H_NET_AMOUNT"].ToString()) ? null : (decimal?)row["H_NET_AMOUNT"],
+					H_TAX_AMOUNT = string.IsNullOrEmpty(row["H_TAX_AMOUNT"].ToString()) ? null : (decimal?)row["H_TAX_AMOUNT"],
 					TAX_CODE = (string)row["TAX_CODE"],
 					KOKRS = (string)row["KOKRS"],
 					KOSTL = (string)row["KOSTL"],
@@ -259,10 +290,10 @@ namespace SapORM.Models
 					POSITION_NUMBER = (string)row["POSITION_NUMBER"],
 					TRANSACT_NUMBER = (string)row["TRANSACT_NUMBER"],
 					TRANSACT_NAME = (string)row["TRANSACT_NAME"],
-					P_RECEIPTS = (decimal?)row["P_RECEIPTS"],
-					P_PAYMENTS = (decimal?)row["P_PAYMENTS"],
-					P_NET_AMOUNT = (decimal?)row["P_NET_AMOUNT"],
-					P_TAX_AMOUNT = (decimal?)row["P_TAX_AMOUNT"],
+					P_RECEIPTS = string.IsNullOrEmpty(row["P_RECEIPTS"].ToString()) ? null : (decimal?)row["P_RECEIPTS"],
+					P_PAYMENTS = string.IsNullOrEmpty(row["P_PAYMENTS"].ToString()) ? null : (decimal?)row["P_PAYMENTS"],
+					P_NET_AMOUNT = string.IsNullOrEmpty(row["P_NET_AMOUNT"].ToString()) ? null : (decimal?)row["P_NET_AMOUNT"],
+					P_TAX_AMOUNT = string.IsNullOrEmpty(row["P_TAX_AMOUNT"].ToString()) ? null : (decimal?)row["P_TAX_AMOUNT"],
 					TAX_CODE = (string)row["TAX_CODE"],
 					KOKRS = (string)row["KOKRS"],
 					KOSTL = (string)row["KOSTL"],
@@ -516,31 +547,16 @@ namespace SapORM.Models
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_CJ2_GET_ALL_DOCS.GT_DOCS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_CJ2_GET_ALL_DOCS.GT_DOCS_P> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_ZLD_CJ2_GET_ALL_DOCS.GT_DOCS_P> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
-		}
-
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_CJ2_GET_ALL_DOCS.GT_TRANSACTIONS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_CJ2_GET_ALL_DOCS.GT_TRANSACTIONS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

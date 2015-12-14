@@ -481,18 +481,6 @@ Public Class Historie
 
                 'bearbeitung der EQUI Tabelle für die Ausgabe
                 If Not mGT_EQUI Is Nothing Then
-
-                    For Each tmprow As DataRow In mGT_EQUI.Rows
-                        Select Case tmprow("ABCKZ").ToString
-                            Case "1"
-                                tmprow("ABCKZ") = "temporär versendet"
-                            Case "2"
-                                tmprow("ABCKZ") = "endgültig versendet"
-                            Case Else
-                                tmprow("ABCKZ") = "eingelagert"
-                        End Select
-                    Next
-                    mGT_EQUI.AcceptChanges()
                     CreateOutPut(mGT_EQUI, strAppID)
                     mGT_EQUI = m_tblResult
                 End If

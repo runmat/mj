@@ -21,6 +21,12 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_ZLD_EXPORT_INFOPOOL).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_KREISKZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KREISKZ", value);
+		}
+
 		public partial class GT_EX_ZUSTLIEF : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -103,7 +109,7 @@ namespace SapORM.Models
 					ZTXT2 = (string)row["ZTXT2"],
 					ZTXT3 = (string)row["ZTXT3"],
 					REMARK = (string)row["REMARK"],
-					KBETR = (decimal?)row["KBETR"],
+					KBETR = string.IsNullOrEmpty(row["KBETR"].ToString()) ? null : (decimal?)row["KBETR"],
 					KNUMH = (string)row["KNUMH"],
 					KREISKZ = (string)row["KREISKZ"],
 					KBANR = (string)row["KBANR"],
@@ -211,11 +217,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

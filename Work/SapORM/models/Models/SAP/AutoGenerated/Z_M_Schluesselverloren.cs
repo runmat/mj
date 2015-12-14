@@ -4,20 +4,27 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Schluesselverloren
+	public partial class Z_M_SCHLUESSELVERLOREN
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Schluesselverloren).Name);
+			sap.Init(typeof(Z_M_SCHLUESSELVERLOREN).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Schluesselverloren).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_SCHLUESSELVERLOREN).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
 		}
 
 		public partial class GT_WEB_IN : IModelMappingApplied
@@ -101,7 +108,7 @@ namespace SapORM.Models
 					EQTYP = (string)row["EQTYP"],
 					EQFNR = (string)row["EQFNR"],
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
+					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
 					TIDNR = (string)row["TIDNR"],
 					LIZNR = (string)row["LIZNR"],
 					ABCKZ = (string)row["ABCKZ"],
@@ -120,9 +127,9 @@ namespace SapORM.Models
 					EMPTY = (string)row["EMPTY"],
 					OBJNR = (string)row["OBJNR"],
 					AUSNAHME = (string)row["AUSNAHME"],
-					MELDDAT = (string.IsNullOrEmpty(row["MELDDAT"].ToString())) ? null : (DateTime?)row["MELDDAT"],
-					MAHN_1 = (string.IsNullOrEmpty(row["MAHN_1"].ToString())) ? null : (DateTime?)row["MAHN_1"],
-					MAHN_2 = (string.IsNullOrEmpty(row["MAHN_2"].ToString())) ? null : (DateTime?)row["MAHN_2"],
+					MELDDAT = string.IsNullOrEmpty(row["MELDDAT"].ToString()) ? null : (DateTime?)row["MELDDAT"],
+					MAHN_1 = string.IsNullOrEmpty(row["MAHN_1"].ToString()) ? null : (DateTime?)row["MAHN_1"],
+					MAHN_2 = string.IsNullOrEmpty(row["MAHN_2"].ToString()) ? null : (DateTime?)row["MAHN_2"],
 					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
 
 					SAPConnection = sapConnection,
@@ -148,7 +155,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -162,7 +169,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_IN> ToList(ISapDataService sapDataService)
@@ -175,9 +182,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB_IN>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Schluesselverloren", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_SCHLUESSELVERLOREN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_IN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -187,7 +194,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_IN> GetExportList(ISapDataService sapDataService)
@@ -197,7 +204,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -205,9 +212,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB_IN>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Schluesselverloren", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_SCHLUESSELVERLOREN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB_IN> GetImportList(ISapDataService sapDataService)
@@ -217,7 +224,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -225,14 +232,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Schluesselverloren.GT_WEB_IN> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_SCHLUESSELVERLOREN.GT_WEB_IN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Schluesselverloren.GT_WEB_IN> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

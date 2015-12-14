@@ -104,7 +104,13 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public string AuftragsFahrtTypen { get { return string.Format("H,{0};R,{1}", Localize._FahrtHin, Localize._FahrtRueck); } }
 
-        public IFahrerAuftragsFahrt SelectedFahrerAuftrag { get { return FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); } }
+
+        private IFahrerAuftragsFahrt _selectedFahrerAuftrag;
+        public IFahrerAuftragsFahrt SelectedFahrerAuftrag
+        {
+            get { return _selectedFahrerAuftrag ?? FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); }
+            private set { _selectedFahrerAuftrag = value; }
+        }
 
 
         public void LoadFahrerAuftraege(string status = null)
@@ -219,10 +225,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (ModeProtokoll)
             {
                 FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsProtokolle().ToList();
-                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES" });
+                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES", ProtokollName = "SONSTIGES" });
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
 
-                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.NotNullOrEmpty().Contains("_")))
+                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollName.NotNullOrEmpty().Contains("_")))
                     return Localize.ErrorNoUnderscoresAllowedInProtocolTypes;
             }
             else
@@ -507,6 +513,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                     KundenNr = teile[0],
                     AuftragsNr = teile[1],
                     ProtokollArt = protArt,
+                    ProtokollName = protArt,
                     Fahrt = teile[teile.Length - 1]
                 });
             }
@@ -625,6 +632,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
                 FahrerProtokolle.RemoveAll(p => p.Filename == ProtokollEditFileName);
                 PropertyCacheClear(this, m => m.FahrerProtokolleFiltered);
+
+                SelectedFahrerAuftrag = prot;
+                PropertyCacheClear(this, e => e.UploadedImageFiles);
+                ProtokollDeleteUploadedImagesAndPdf();
+                SelectedFahrerAuftrag = null;
 
                 return "";
             }

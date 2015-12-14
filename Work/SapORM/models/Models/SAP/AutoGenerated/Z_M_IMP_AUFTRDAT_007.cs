@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -18,6 +19,42 @@ namespace SapORM.Models
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
 			sap.Init(typeof(Z_M_IMP_AUFTRDAT_007).Name, inputParameterKeys, inputParameterValues);
+		}
+
+
+		public static void SetImportParameter_I_KENNUNG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KENNUNG", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_LAND1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LAND1", value);
+		}
+
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME1", value);
+		}
+
+		public static void SetImportParameter_I_ORT01(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORT01", value);
+		}
+
+		public static void SetImportParameter_I_POS_KURZTEXT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_POS_KURZTEXT", value);
+		}
+
+		public static void SetImportParameter_I_PSTLZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PSTLZ", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -70,6 +107,10 @@ namespace SapORM.Models
 
 			public string AD_PRUEF { get; set; }
 
+			public DateTime? DATAB { get; set; }
+
+			public DateTime? DATBI { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -91,9 +132,11 @@ namespace SapORM.Models
 					INTNR = (string)row["INTNR"],
 					SAPNR = (string)row["SAPNR"],
 					LOEVM = (string)row["LOEVM"],
-					AENDT = (string.IsNullOrEmpty(row["AENDT"].ToString())) ? null : (DateTime?)row["AENDT"],
+					AENDT = string.IsNullOrEmpty(row["AENDT"].ToString()) ? null : (DateTime?)row["AENDT"],
 					AENUS = (string)row["AENUS"],
 					AD_PRUEF = (string)row["AD_PRUEF"],
+					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
+					DATBI = string.IsNullOrEmpty(row["DATBI"].ToString()) ? null : (DateTime?)row["DATBI"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -118,7 +161,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_WEB> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -132,7 +175,7 @@ namespace SapORM.Models
 
 			public static List<GT_WEB> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> ToList(ISapDataService sapDataService)
@@ -147,7 +190,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_IMP_AUFTRDAT_007", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportListWithExecute(ISapDataService sapDataService)
@@ -157,7 +200,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetExportList(ISapDataService sapDataService)
@@ -167,7 +210,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -177,7 +220,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_M_IMP_AUFTRDAT_007", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_WEB> GetImportList(ISapDataService sapDataService)
@@ -187,7 +230,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -198,11 +241,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_M_IMP_AUFTRDAT_007.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_IMP_AUFTRDAT_007.GT_WEB> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

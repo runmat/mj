@@ -1,0 +1,107 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model HaendlerAdresse
+
+<div id="DivHaendlerAdresse">
+    @using (Ajax.BeginForm("HaendlerAdresseDetailsFormSave", "Haendler", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivHaendlerAdresse", OnComplete = "HaendlerAdresseAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "HaendlerAdresseAjaxForm" }))
+    {
+
+        @Html.FormValidationSummary()
+
+        
+        @Html.HiddenFor(m => m.InsertModeTmp)
+
+        @Html.HiddenFor(m => m.LandBrief)
+        @Html.HiddenFor(m => m.LandSchluessel)
+
+
+        <h4 class="address-divider">@Localize.DealerData</h4>
+        
+        if (Model.InsertModeTmp)
+        {
+            if (Model.LaenderCode.IsNullOrEmpty())
+            {
+                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.LaenderCode)
+                @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "left" })
+            }
+            
+            if (Model.HaendlerAdressenModus)
+            {
+                @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
+            }
+            else
+            {
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.LaenderCode)
+            @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "left" })
+
+            if (Model.HaendlerAdressenModus)
+            {
+                @Html.HiddenFor(m => m.HaendlerNr)
+                @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
+            }
+            else
+            {
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+        }
+
+        if (Model.HaendlerAdressenModus)
+        {
+            @Html.FormTextBoxFor(m => m.ClientNr, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.ClientName, new { @class = "m-wrap medium", col = "right" })
+        }
+        
+        @Html.FormCheckBoxFor(m => m.VersandSperre, new { @class = "m-wrap medium" }, labelHidden: true)
+
+        @Html.FormRadioButtonListFor(m => m.SpracheAnschreiben, HaendlerAdresse.SprachenAnschreiben)
+        
+        
+        <h4 class="address-divider">@Localize.Equi_Briefversand</h4>
+                
+        @Html.FormTextBoxFor(m => m.Name1Brief, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2Brief, new { @class = "m-wrap medium", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.StrasseBrief, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.HausNrBrief, new { @class = "m-wrap xsmall", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.PlzBrief, new { @class = "m-wrap xsmall", col = "left" })
+        @Html.FormTextBoxFor(m => m.OrtBrief, new { @class = "m-wrap medium", col = "right" })
+
+        
+        <h4 class="address-divider">@Localize.Equi_Schluesselversand</h4>
+        @Html.FormCheckBoxFor(m => m.SchluesselAdresseVerfuegbar, new { @class = "m-wrap xsmall", onchange = "SchluesselAdresseVerfuegbarChange()" }, labelHidden: true)
+        <div id="div-schluessel-adresse" class="@(Model.SchluesselAdresseVerfuegbar ? "" : "hide")">
+            @Html.FormTextBoxFor(m => m.Name1Schluessel, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.Name2Schluessel, new { @class = "m-wrap medium", col = "right" })
+        
+            @Html.FormTextBoxFor(m => m.StrasseSchluessel, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.HausNrSchluessel, new { @class = "m-wrap xsmall", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.PlzSchluessel, new { @class = "m-wrap xsmall", col = "left" })
+            @Html.FormTextBoxFor(m => m.OrtSchluessel, new { @class = "m-wrap medium", col = "right" })
+        </div>
+        
+        
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

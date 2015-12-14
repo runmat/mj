@@ -83,6 +83,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -110,6 +111,7 @@
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\HaendlerController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserReportingController.cs" />
     <Compile Include="Controllers\XarisController.cs" />
@@ -117,9 +119,13 @@
     <Compile Include="DomainCommon\Contracts\IBriefVersandDataService.cs" />
     <Compile Include="DomainCommon\Contracts\ICustomerDocumentDataService.cs" />
     <Compile Include="DomainCommon\Contracts\IInfoCenterDataService.cs" />
+    <Compile Include="DomainCommon\Contracts\IHaendlerAdressenDataService.cs" />
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
+    <Compile Include="DomainCommon\Models\HaendlerAdresse.cs" />
+    <Compile Include="DomainCommon\Models\HaendlerAdressenSelektor.cs" />
+    <Compile Include="DomainCommon\Models\LandExt.cs" />
     <Compile Include="DomainCommon\Models\VersandAuftragsAnlage.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -129,9 +135,11 @@
     <Compile Include="DomainCommon\Services\BriefVersand\BriefVersandDataServiceSAP.cs" />
     <Compile Include="DomainCommon\Services\CustomerDocumentDataService.cs" />
     <Compile Include="DomainCommon\Services\InfoCenterDataService.cs" />
+    <Compile Include="DomainCommon\Services\HaendlerAdressenDataServiceSAP.cs" />
     <Compile Include="DomainCommon\Services\TranslationFormatService.cs" />
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\HaendlerAdressenViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\XarisViewModel.cs" />
     <Compile Include="Logs\Contracts\ILogsDataService.cs" />
     <Compile Include="Logs\Models\Data\CustomerApplication.cs" />

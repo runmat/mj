@@ -21,6 +21,57 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_FIL_EFA_PO_CREATE).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_BEDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_BEDAT", value);
+		}
+
+		public static void SetImportParameter_I_BSTNR_PARK(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_BSTNR_PARK", value);
+		}
+
+		public static void SetImportParameter_I_EEIND(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_EEIND", value);
+		}
+
+		public static void SetImportParameter_I_KOSTL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KOSTL", value);
+		}
+
+		public static void SetImportParameter_I_LIEF_KZ(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIEF_KZ", value);
+		}
+
+		public static void SetImportParameter_I_LIEF_NR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIEF_NR", value);
+		}
+
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
+		public static void SetImportParameter_I_VERKAEUFER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VERKAEUFER", value);
+		}
+
+		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_MESSAGE").NotNullOrEmpty().Trim();
+		}
+
+		public static int? GetExportParameter_E_SUBRC(ISapDataService sap)
+		{
+			return sap.GetExportParameter<int?>("E_SUBRC");
+		}
+
 		public partial class GT_POS : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -46,9 +97,9 @@ namespace SapORM.Models
 				var o = new GT_POS
 				{
 					ARTLIF = (string)row["ARTLIF"],
-					MENGE = (decimal?)row["MENGE"],
+					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
 					ZUSINFO_TXT = (string)row["ZUSINFO_TXT"],
-					PREIS = (decimal?)row["PREIS"],
+					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
 					LTEXT_NR = (string)row["LTEXT_NR"],
 
 					SAPConnection = sapConnection,
@@ -154,11 +205,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_FIL_EFA_PO_CREATE.GT_POS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_FIL_EFA_PO_CREATE.GT_POS> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}
