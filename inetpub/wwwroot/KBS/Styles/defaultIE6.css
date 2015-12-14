@@ -53,12 +53,12 @@ div, thead, li, ul, a { behavior: url(/Services/Images/iepngfix.htc) } /* IE PNG
     border-style: solid solid solid none;
     border-width: 1px; 
     border-color: #CCCCCC; 
-    width: 450px;font-size: 12px; 
+    font-size: 12px; 
     background-color: #ffffff;  
     padding: 5px; 
+    padding-bottom: 10px;
     margin-left: 26px; 
     display: none; 
-    height: 535px;
 }
 
 * html div#sidebar div#btnCloseParent

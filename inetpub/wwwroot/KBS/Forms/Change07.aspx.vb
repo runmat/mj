@@ -313,7 +313,7 @@ Partial Public Class Change07
     Private Sub responseBack()
         Session("mBestellung") = Nothing
         Session("mUmlagerung") = Nothing
-        Response.Redirect("../Forms/WarenwirtschaftSelection.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click

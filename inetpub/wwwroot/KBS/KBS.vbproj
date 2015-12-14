@@ -128,10 +128,6 @@
     <Content Include="Forms\AuftraegeOnline.aspx" />
     <Content Include="Forms\DownloadFile2.aspx" />
     <Content Include="Forms\BestaetigungZulassungen.aspx" />
-    <Content Include="Forms\InventurSelection.aspx" />
-    <Content Include="Forms\BestellungenSelection.aspx" />
-    <Content Include="Forms\ZulassungSelection.aspx" />
-    <Content Include="Forms\WarenwirtschaftSelection.aspx" />
     <Content Include="Forms\VerbBuchReport.aspx" />
     <Content Include="Forms\VerbBuchErfassung.aspx" />
     <Content Include="Forms\Verbandbuch.aspx" />
@@ -434,34 +430,6 @@
     </Compile>
     <Compile Include="Forms\BestaetigungZulassungen.aspx.vb">
       <DependentUpon>BestaetigungZulassungen.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forms\InventurSelection.aspx.designer.vb">
-      <DependentUpon>InventurSelection.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\InventurSelection.aspx.vb">
-      <DependentUpon>InventurSelection.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forms\BestellungenSelection.aspx.designer.vb">
-      <DependentUpon>BestellungenSelection.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\BestellungenSelection.aspx.vb">
-      <DependentUpon>BestellungenSelection.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forms\ZulassungSelection.aspx.designer.vb">
-      <DependentUpon>ZulassungSelection.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ZulassungSelection.aspx.vb">
-      <DependentUpon>ZulassungSelection.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forms\WarenwirtschaftSelection.aspx.designer.vb">
-      <DependentUpon>WarenwirtschaftSelection.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\WarenwirtschaftSelection.aspx.vb">
-      <DependentUpon>WarenwirtschaftSelection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Forms\VerbBuchReport.aspx.designer.vb">

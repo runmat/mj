@@ -551,7 +551,7 @@ Public Class Bestellung_Platinen
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
-        Response.Redirect("../Forms/BestellungenSelection.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
    
     Protected Function proofFileExist(ByVal Path As String) As Boolean
