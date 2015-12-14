@@ -1,10 +1,9 @@
 Imports CKG.Base.Business
-Imports CKG.Base.Kernel
 Imports CKG.Portal.PageElements
 Imports CKG.Base.Kernel.Common.Common
 
 Public Class Report46_2
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region " Vom Web Form Designer generierter Code "
 
@@ -13,11 +12,171 @@ Public Class Report46_2
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Init
         'CODEGEN: Diese Methode ist für den Web Form-Designer erforderlich
         'Verwenden Sie nicht den Code-Editor zur Bearbeitung.
         InitializeComponent()
     End Sub
+
+#End Region
+
+#Region "Form Controls"
+
+    Protected WithEvents lblError As Label
+    Protected WithEvents lnkKreditlimit As HyperLink
+    Protected WithEvents ucHeader As Header
+    Protected WithEvents lnkSchluesselinformationen As HyperLink
+    Protected WithEvents lblPageTitle As Label
+    Protected WithEvents lblHead As Label
+    Protected WithEvents cbxCOC As CheckBox
+    Protected WithEvents trUebersicht As HtmlTableRow
+    Protected WithEvents trTypdaten As HtmlTableRow
+    Protected WithEvents trLebenslauf As HtmlTableRow
+    Protected WithEvents trUebermittlung As HtmlTableRow
+    Protected WithEvents trPartnerdaten As HtmlTableRow
+    Protected WithEvents chkBriefaufbietung As CheckBox
+    Protected WithEvents lbError As Label
+    Protected WithEvents lbl_30 As Label
+    Protected WithEvents lbl_27 As Label
+    Protected WithEvents lbl_25 As Label
+    Protected WithEvents lbl_24 As Label
+    Protected WithEvents lbl_23 As Label
+    Protected WithEvents lbl_22 As Label
+    Protected WithEvents lbl_18 As Label
+    Protected WithEvents lbl_17 As Label
+    Protected WithEvents lbl_21 As Label
+    Protected WithEvents lbl_16 As Label
+    Protected WithEvents lbl_15 As Label
+    Protected WithEvents lbl_20 As Label
+    Protected WithEvents lbl_19 As Label
+    Protected WithEvents lbl_12 As Label
+    Protected WithEvents lbl_14 As Label
+    Protected WithEvents lbl_13 As Label
+    Protected WithEvents lbl_11 As Label
+    Protected WithEvents lbl_33 As Label
+    Protected WithEvents lbl_32 As Label
+    Protected WithEvents lbl_31 As Label
+    Protected WithEvents lbl_28 As Label
+    Protected WithEvents lbl_26 As Label
+    Protected WithEvents lbl_10 As Label
+    Protected WithEvents lbl_9 As Label
+    Protected WithEvents lbl_8 As Label
+    Protected WithEvents lbl_29 As Label
+    Protected WithEvents lbl_0 As Label
+    Protected WithEvents lbl_4 As Label
+    Protected WithEvents lbl_5 As Label
+    Protected WithEvents lbl_00 As Label
+    Protected WithEvents lbl_99 As Label
+    Protected WithEvents lbl_98 As Label
+    Protected WithEvents lbl_97 As Label
+    Protected WithEvents lbl_96 As Label
+    Protected WithEvents lbl_95 As Label
+    Protected WithEvents lbl_94 As Label
+    Protected WithEvents lbl_93 As Label
+    Protected WithEvents lbl_92 As Label
+    Protected WithEvents lbl_91 As Label
+    Protected WithEvents lbl_55 As Label
+    Protected WithEvents lbl_3 As Label
+    Protected WithEvents lbl_2 As Label
+    Protected WithEvents lbl_1 As Label
+    Protected WithEvents lbl_7 As Label
+    Protected WithEvents lbl_6 As Label
+    Protected WithEvents DataGrid1 As DataGrid
+    Protected WithEvents Datagrid2 As DataGrid
+    Protected WithEvents lbl_155 As Label
+    Protected WithEvents lbl_191 As Label
+    Protected WithEvents lbl_192 As Label
+    Protected WithEvents lbl_193 As Label
+    Protected WithEvents lbl_194 As Label
+    Protected WithEvents lbl_195 As Label
+    Protected WithEvents lbl_196 As Label
+    Protected WithEvents lbl_197 As Label
+    Protected WithEvents lbl_198 As Label
+    Protected WithEvents lbl_199 As Label
+    Protected WithEvents lbl_200 As Label
+    Protected WithEvents lbl_Fahrzeugdaten As Label
+    Protected WithEvents lblFahrgestellnummerShow As Label
+    Protected WithEvents lbl_Fahrgestellnummer As Label
+    Protected WithEvents tr_Fahrgestellnummer As HtmlTableRow
+    Protected WithEvents lblKennzeichenShow As Label
+    Protected WithEvents lblStatusShow As Label
+    Protected WithEvents lbl_Kennzeichen As Label
+    Protected WithEvents tr_Kennzeichen As HtmlTableRow
+    Protected WithEvents lblLagerortShow As Label
+    Protected WithEvents lbl_Status As Label
+    Protected WithEvents tr_Status As HtmlTableRow
+    Protected WithEvents lblHerstellerShow As Label
+    Protected WithEvents lbl_Lagerort As Label
+    Protected WithEvents lblHerstellerSchluesselShow As Label
+    Protected WithEvents lbl_Hersteller As Label
+    Protected WithEvents lblBriefnummerShow As Label
+    Protected WithEvents lbl_HerstellerSchluessel As Label
+    Protected WithEvents lbl_Briefdaten As Label
+    Protected WithEvents lblOrdernummerShow As Label
+    Protected WithEvents lbl_Briefnummer As Label
+    Protected WithEvents lblUmgemeldetAmShow As Label
+    Protected WithEvents lbl_Ordernummer As Label
+    Protected WithEvents lbl_CoC As Label
+    Protected WithEvents lbl_Aenderungsdaten As Label
+    Protected WithEvents lblFahrzeugmodellShow As Label
+    Protected WithEvents lbl_UmgemeldetAm As Label
+    Protected WithEvents lbl_Briefaufbietung As Label
+    Protected WithEvents lblTypschluesselShow As Label
+    Protected WithEvents lbl_Fahrzeugmodell As Label
+    Protected WithEvents lblErstzulassungsdatumShow As Label
+    Protected WithEvents lbl_Typschluessel As Label
+    Protected WithEvents lblFahrzeughalterShow As Label
+    Protected WithEvents lbl_Erstzulassungsdatum As Label
+    Protected WithEvents lblEhemaligesKennzeichenShow As Label
+    Protected WithEvents lbl_Fahrzeughalter As Label
+    Protected WithEvents lblEhemaligeBriefnummerShow As Label
+    Protected WithEvents lbl_EhemaligesKennzeichen As Label
+    Protected WithEvents lblVarianteVersionShow As Label
+    Protected WithEvents lbl_EhemaligeBriefnummer As Label
+    Protected WithEvents lbl_Farbe As Label
+    Protected WithEvents lblAbmeldedatumShow As Label
+    Protected WithEvents lbl_VarianteVersion As Label
+    Protected WithEvents lblStandortShow As Label
+    Protected WithEvents lbl_Abmeldedatum As Label
+    Protected WithEvents lb_Uebersicht As LinkButton
+    Protected WithEvents lbl_Standort As Label
+    Protected WithEvents lb_Typdaten As LinkButton
+    Protected WithEvents lb_Lebenslauf As LinkButton
+    Protected WithEvents lb_Uebermittlung As LinkButton
+    Protected WithEvents tr_Lagerort As HtmlTableRow
+    Protected WithEvents lblVersanddatumShow As Label
+    Protected WithEvents ucStyles As Styles
+    Protected WithEvents lb_Drucken As LinkButton
+    Protected WithEvents lb_Partnerdaten As LinkButton
+    Protected WithEvents dtgPartner As DataGrid
+    Protected WithEvents cmdBack As LinkButton
+    'pdiMeldung
+    Protected WithEvents lb_PDIMeldung As LinkButton
+    Protected WithEvents trPDIMeldung As HtmlTableRow
+    Protected WithEvents lbl_StandortPDI As Label
+    Protected WithEvents lblStandortPDIValue As Label
+    Protected WithEvents lbl_Lieferant As Label
+    Protected WithEvents lblLieferantValue As Label
+    Protected WithEvents lbl_Navi As Label
+    Protected WithEvents lblNaviValue As Label
+    Protected WithEvents lbl_Bereifung As Label
+    Protected WithEvents lblBereifungValue As Label
+    Protected WithEvents lbl_Kraftstoff As Label
+    Protected WithEvents lblKraftstoffValue As Label
+    Protected WithEvents lbl_Getriebe As Label
+    Protected WithEvents lblGetriebeValue As Label
+    Protected WithEvents lbl_Eingangsdatum As Label
+    Protected WithEvents lblEingangsdatumValue As Label
+    Protected WithEvents lbl_Bereitdatum As Label
+    Protected WithEvents lblBereitdatumValue As Label
+
+    Protected WithEvents lbl_Versandgrund As Label
+    Protected WithEvents lblVersandgrundShow As Label
+    Protected WithEvents lbl_UebBemerkungen As Label
+    Protected WithEvents lbl_AnzBemerkungen As Label
+    Protected WithEvents lblAnzBemerkungenShow As Label
+    Protected WithEvents lbl_Referenz2 As Label
+    Protected WithEvents lblReferenz2Show As Label
 
 #End Region
 
@@ -28,197 +187,33 @@ Public Class Report46_2
     Private QMEL_DATENTable As DataTable
     Private objPDIs As Base.Business.ABEDaten
     Private mAddressdaten As DataTable
-
-
-
-    Protected WithEvents lblError As System.Web.UI.WebControls.Label
-    'Protected WithEvents Hyperlink2 As System.Web.UI.WebControls.HyperLink
-    Protected WithEvents lnkKreditlimit As System.Web.UI.WebControls.HyperLink
-    Protected WithEvents ucHeader As Header
-    Protected WithEvents lnkSchluesselinformationen As System.Web.UI.WebControls.HyperLink
-    Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
-    Protected WithEvents lblHead As System.Web.UI.WebControls.Label
-    Protected WithEvents cbxCOC As System.Web.UI.WebControls.CheckBox
-    Protected WithEvents trUebersicht As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents trTypdaten As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents trLebenslauf As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents trUebermittlung As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents trPartnerdaten As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents chkBriefaufbietung As System.Web.UI.WebControls.CheckBox
-    Protected WithEvents lbError As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_30 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_27 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_25 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_24 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_23 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_22 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_18 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_17 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_21 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_16 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_15 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_20 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_19 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_12 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_14 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_13 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_11 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_33 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_32 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_31 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_28 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_26 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_10 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_9 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_8 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_29 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_0 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_4 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_5 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_00 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_99 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_98 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_97 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_96 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_95 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_94 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_93 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_92 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_91 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_55 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_3 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_2 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_1 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_7 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_6 As System.Web.UI.WebControls.Label
-    Protected WithEvents DataGrid1 As System.Web.UI.WebControls.DataGrid
-    Protected WithEvents Datagrid2 As System.Web.UI.WebControls.DataGrid
-    Protected WithEvents lbl_155 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_191 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_192 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_193 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_194 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_195 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_196 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_197 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_198 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_199 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_200 As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Fahrzeugdaten As System.Web.UI.WebControls.Label
-    Protected WithEvents lblFahrgestellnummerShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Fahrgestellnummer As System.Web.UI.WebControls.Label
-    Protected WithEvents tr_Fahrgestellnummer As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents lblKennzeichenShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lblStatusShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Kennzeichen As System.Web.UI.WebControls.Label
-    Protected WithEvents tr_Kennzeichen As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents lblLagerortShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Status As System.Web.UI.WebControls.Label
-    Protected WithEvents tr_Status As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents lblHerstellerShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Lagerort As System.Web.UI.WebControls.Label
-    Protected WithEvents lblHerstellerSchluesselShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Hersteller As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBriefnummerShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_HerstellerSchluessel As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Briefdaten As System.Web.UI.WebControls.Label
-    Protected WithEvents lblOrdernummerShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Briefnummer As System.Web.UI.WebControls.Label
-    Protected WithEvents lblUmgemeldetAmShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Ordernummer As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_CoC As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Aenderungsdaten As System.Web.UI.WebControls.Label
-    Protected WithEvents lblFahrzeugmodellShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_UmgemeldetAm As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Briefaufbietung As System.Web.UI.WebControls.Label
-    Protected WithEvents lblTypschluesselShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Fahrzeugmodell As System.Web.UI.WebControls.Label
-    Protected WithEvents lblErstzulassungsdatumShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Typschluessel As System.Web.UI.WebControls.Label
-    Protected WithEvents lblFahrzeughalterShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Erstzulassungsdatum As System.Web.UI.WebControls.Label
-    Protected WithEvents lblEhemaligesKennzeichenShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Fahrzeughalter As System.Web.UI.WebControls.Label
-    Protected WithEvents lblEhemaligeBriefnummerShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_EhemaligesKennzeichen As System.Web.UI.WebControls.Label
-    Protected WithEvents lblVarianteVersionShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_EhemaligeBriefnummer As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Farbe As System.Web.UI.WebControls.Label
-    Protected WithEvents lblAbmeldedatumShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_VarianteVersion As System.Web.UI.WebControls.Label
-    Protected WithEvents lblStandortShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Abmeldedatum As System.Web.UI.WebControls.Label
-    Protected WithEvents lb_Uebersicht As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lbl_Standort As System.Web.UI.WebControls.Label
-    Protected WithEvents lb_Typdaten As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lb_Lebenslauf As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lb_Uebermittlung As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents tr_Lagerort As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents lblVersanddatumShow As System.Web.UI.WebControls.Label
-    Protected WithEvents ucStyles As Styles
-    Protected WithEvents lb_Drucken As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents lb_Partnerdaten As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents dtgPartner As System.Web.UI.WebControls.DataGrid
-    Protected WithEvents cmdBack As System.Web.UI.WebControls.LinkButton
-    'pdiMeldung
-    Protected WithEvents lb_PDIMeldung As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents trPDIMeldung As System.Web.UI.HtmlControls.HtmlTableRow
-    Protected WithEvents lbl_StandortPDI As System.Web.UI.WebControls.Label
-    Protected WithEvents lblStandortPDIValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Lieferant As System.Web.UI.WebControls.Label
-    Protected WithEvents lblLieferantValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Navi As System.Web.UI.WebControls.Label
-    Protected WithEvents lblNaviValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Bereifung As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBereifungValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Kraftstoff As System.Web.UI.WebControls.Label
-    Protected WithEvents lblKraftstoffValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Getriebe As System.Web.UI.WebControls.Label
-    Protected WithEvents lblGetriebeValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Eingangsdatum As System.Web.UI.WebControls.Label
-    Protected WithEvents lblEingangsdatumValue As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Bereitdatum As System.Web.UI.WebControls.Label
-    Protected WithEvents lblBereitdatumValue As System.Web.UI.WebControls.Label
-
-    Protected WithEvents lbl_Versandgrund As System.Web.UI.WebControls.Label
-    Protected WithEvents lblVersandgrundShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_UebBemerkungen As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_AnzBemerkungen As System.Web.UI.WebControls.Label
-    Protected WithEvents lblAnzBemerkungenShow As System.Web.UI.WebControls.Label
-    Protected WithEvents lbl_Referenz2 As System.Web.UI.WebControls.Label
-    Protected WithEvents lblReferenz2Show As System.Web.UI.WebControls.Label
-
     Private mObjFin_14 As fin_14
 
-
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'cmdSave.Enabled = False
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
         m_User = GetUser(Me)
         ucHeader.InitUser(m_User)
         FormAuth(Me, m_User)
-       
 
-            m_App = New Base.Kernel.Security.App(m_User)
-            If (Session("BRIEFLEBENSLAUF_LPTable") Is Nothing) Then
-                Response.Redirect(Request.UrlReferrer.ToString & "?AppID=" & Session("AppID").ToString)
+        m_App = New Base.Kernel.Security.App(m_User)
+        If (Session("BRIEFLEBENSLAUF_LPTable") Is Nothing) Then
+            Response.Redirect(Request.UrlReferrer.ToString & "?AppID=" & Session("AppID").ToString)
+        Else
+            BRIEFLEBENSLAUF_LPTable = CType(Session("BRIEFLEBENSLAUF_LPTable"), DataTable)
+        End If
+        lnkKreditlimit.NavigateUrl = Request.UrlReferrer.ToString & "?AppID=" & Session("AppID").ToString
+
+        lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
+        ucStyles.TitleText = lblHead.Text
+
+        If mObjFin_14 Is Nothing Then
+            If Session("objReport") Is Nothing Then
+                Throw New Exception("benötigtiges SessionObjekt nicht vorhanden")
             Else
-                BRIEFLEBENSLAUF_LPTable = CType(Session("BRIEFLEBENSLAUF_LPTable"), DataTable)
+                mObjFin_14 = CType(Session("objReport"), fin_14)
             End If
-            lnkKreditlimit.NavigateUrl = Request.UrlReferrer.ToString & "?AppID=" & Session("AppID").ToString
+        End If
 
-            lblHead.Text = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
-            ucStyles.TitleText = lblHead.Text
-
-            If mObjFin_14 Is Nothing Then
-                If Session("objReport") Is Nothing Then
-                    Throw New Exception("benötigtiges SessionObjekt nicht vorhanden")
-                Else
-                    mObjFin_14 = CType(Session("objReport"), fin_14)
-                End If
-            End If
-
-
-            If Not IsPostBack Then
+        If Not IsPostBack Then
 
             If Request.UrlReferrer.OriginalString.Contains("Report46.aspx") Then
                 cmdBack.Visible = True
@@ -228,127 +223,124 @@ Public Class Report46_2
                 End If
             End If
 
+            'Fülle Übersicht
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            FillUebersicht()
 
+            'Fülle Typdaten
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            FillABEDaten()
 
+            'Fülle Lebenslauf
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            FillGrid2(0)
 
-                'Fülle Übersicht
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                FillUebersicht()
+            'Fülle Übermittlung
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            FillGrid(0)
 
-                'Fülle Typdaten
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                FillABEDaten()
+            'Fülle Partnerdaten
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            FillPartnerdaten(0)
 
-                'Fülle Lebenslauf
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                FillGrid2(0)
+            'Fülle PDIMeldung
+            '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            fillPDIMeldung()
 
-                'Fülle Übermittlung
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                FillGrid(0)
+            'am anfang soll die übersicht sein
+            HideAllTRs()
+            ShowUebersicht()
 
-                'Fülle Partnerdaten
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                FillPartnerdaten(0)
-
-                'Fülle PDIMeldung
-                '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-                fillPDIMeldung()
-
-                'am anfang soll die übersicht sein
-                HideAllTRs()
-                ShowUebersicht()
-
-
-
-            End If
+        End If
     End Sub
 
     Private Sub FillUebersicht()
-        lblKennzeichenShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN").ToString
-        lblEhemaligesKennzeichenShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZKENN_OLD").ToString
-        lblBriefnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF").ToString
-        lblEhemaligeBriefnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF_OLD").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZBRIEF_A").ToString = "X" Then
+        Dim row As DataRow = BRIEFLEBENSLAUF_LPTable.Rows(0)
+
+        lblKennzeichenShow.Text = row("ZZKENN").ToString
+        lblEhemaligesKennzeichenShow.Text = row("ZZKENN_OLD").ToString
+        lblBriefnummerShow.Text = row("ZZBRIEF").ToString
+        lblEhemaligeBriefnummerShow.Text = row("ZZBRIEF_OLD").ToString
+        If row("ZZBRIEF_A").ToString = "X" Then
             chkBriefaufbietung.Checked = True
         Else
             chkBriefaufbietung.Checked = False
         End If
-        lblFahrgestellnummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZFAHRG").ToString
+        lblFahrgestellnummerShow.Text = row("ZZFAHRG").ToString
         lnkSchluesselinformationen.NavigateUrl &= lblFahrgestellnummerShow.Text
-        lblOrdernummerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREF1").ToString
-        lblReferenz2Show.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZREFERENZ2").ToString
-        If TypeOf BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE") Is DBNull Then
+        lblOrdernummerShow.Text = row("ZZREF1").ToString
+        lblReferenz2Show.Text = row("ZZREFERENZ2").ToString
+        If TypeOf row("REPLA_DATE") Is DBNull Then
             lblErstzulassungsdatumShow.Text = ""
         Else
-            lblErstzulassungsdatumShow.Text = CDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("REPLA_DATE").ToString).ToShortDateString()
+            lblErstzulassungsdatumShow.Text = CDate(row("REPLA_DATE").ToString).ToShortDateString()
         End If
-        If TypeOf BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE") Is DBNull Then
+        If TypeOf row("EXPIRY_DATE") Is DBNull Then
             lblAbmeldedatumShow.Text = ""
         Else
-            lblAbmeldedatumShow.Text = CDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("EXPIRY_DATE").ToString).ToShortDateString()
+            lblAbmeldedatumShow.Text = CDate(row("EXPIRY_DATE").ToString).ToShortDateString()
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ZUB").ToString = "X" Then
+        If row("ZZSTATUS_ZUB").ToString = "X" Then
             lblStatusShow.Text = "Zulassungsfähig"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ZUL").ToString = "X" Then
+        If row("ZZSTATUS_ZUL").ToString = "X" Then
             lblStatusShow.Text = "Zugelassen"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_ABG").ToString = "X" Then
+        If row("ZZSTATUS_ABG").ToString = "X" Then
             lblStatusShow.Text = "Abgemeldet"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_BAG").ToString = "X" Then
+        If row("ZZSTATUS_BAG").ToString = "X" Then
             lblStatusShow.Text = "Bei Abmeldung"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZSTATUS_OZU").ToString = "X" Then
+        If row("ZZSTATUS_OZU").ToString = "X" Then
             lblStatusShow.Text = "Ohne Zulassung"
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZAKTSPERRE").ToString = "X" Then
+        If row("ZZAKTSPERRE").ToString = "X" Then
             lblStatusShow.Text = "Gesperrt"
         End If
 
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZCOCKZ").ToString <> "" Then   'COC?
+        If row("ZZCOCKZ").ToString <> "" Then   'COC?
             cbxCOC.Checked = True
         End If
-        lblStandortShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME1_VS").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= "<br>" & BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_VS").ToString
+        lblStandortShow.Text = row("NAME1_VS").ToString
+        If row("NAME2_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= "<br>" & row("NAME2_VS").ToString
         End If
         lblStandortShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_VS").ToString
+        If row("STRAS_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= row("STRAS_VS").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_VS").ToString
+        If row("HSNR_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= " " & row("HSNR_VS").ToString
         End If
         lblStandortShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_VS").ToString
+        If row("PSTLZ_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= row("PSTLZ_VS").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_VS").ToString.Length > 0 Then
-            lblStandortShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_VS").ToString
+        If row("ORT01_VS").ToString.Length > 0 Then
+            lblStandortShow.Text &= " " & row("ORT01_VS").ToString
         End If
-        lblFahrzeughalterShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME1_ZH").ToString
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= "<br>" & BRIEFLEBENSLAUF_LPTable.Rows(0)("NAME2_ZH").ToString
-        End If
-        lblFahrzeughalterShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("STRAS_ZH").ToString
-        End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("HSNR_ZH").ToString
+        lblFahrzeughalterShow.Text = row("NAME1_ZH").ToString
+        If row("NAME2_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= "<br>" & row("NAME2_ZH").ToString
         End If
         lblFahrzeughalterShow.Text &= "<br>"
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= BRIEFLEBENSLAUF_LPTable.Rows(0)("PSTLZ_ZH").ToString
+        If row("STRAS_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= row("STRAS_ZH").ToString
         End If
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_ZH").ToString.Length > 0 Then
-            lblFahrzeughalterShow.Text &= " " & BRIEFLEBENSLAUF_LPTable.Rows(0)("ORT01_ZH").ToString
+        If row("HSNR_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= " " & row("HSNR_ZH").ToString
+        End If
+        lblFahrzeughalterShow.Text &= "<br>"
+        If row("PSTLZ_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= row("PSTLZ_ZH").ToString
+        End If
+        If row("ORT01_ZH").ToString.Length > 0 Then
+            lblFahrzeughalterShow.Text &= " " & row("ORT01_ZH").ToString
         End If
 
-        If BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT") Is DBNull.Value OrElse BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT") Is Nothing Then
-            Select Case BRIEFLEBENSLAUF_LPTable.Rows(0)("ABCKZ").ToString
+        If row("ZZTMPDT") Is DBNull.Value OrElse row("ZZTMPDT") Is Nothing Then
+            Select Case row("ABCKZ").ToString
                 Case "1"
                     lblLagerortShow.Text = "temporär angefordert"
                 Case "2"
@@ -362,7 +354,7 @@ Public Class Report46_2
                     lblLagerortShow.Text = "eingelagert"
             End Select
         Else
-            Select Case BRIEFLEBENSLAUF_LPTable.Rows(0)("ABCKZ").ToString
+            Select Case row("ABCKZ").ToString
                 Case "1"
                     lblLagerortShow.Text = "temporär versendet"
                 Case "2"
@@ -378,64 +370,54 @@ Public Class Report46_2
             End Select
         End If
 
-
-
-        If TypeOf BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT") Is DBNull Then
+        If TypeOf row("ZZTMPDT") Is DBNull Then
             lblVersanddatumShow.Text = ""
         Else
-            lblVersanddatumShow.Text = CDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTMPDT").ToString).ToShortDateString()
+            lblVersanddatumShow.Text = CDate(row("ZZTMPDT").ToString).ToShortDateString()
         End If
-        
-        If TypeOf BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE") Is DBNull Then
+
+        If TypeOf row("UDATE") Is DBNull Then
             lblUmgemeldetAmShow.Text = ""
         Else
-            lblUmgemeldetAmShow.Text = CDate(BRIEFLEBENSLAUF_LPTable.Rows(0)("UDATE").ToString).ToShortDateString()
+            lblUmgemeldetAmShow.Text = CDate(row("UDATE").ToString).ToShortDateString()
         End If
 
-        lblFahrzeugmodellShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHANDELSNAME").ToString
+        lblFahrzeugmodellShow.Text = row("ZZHANDELSNAME").ToString
 
-        lblHerstellerShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERST_TEXT").ToString
-        lblHerstellerSchluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZHERSTELLER_SCH").ToString
-        lblTypschluesselShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZTYP_SCHL").ToString
-        'lblFarbe.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZFARBE").ToString
-        lblVarianteVersionShow.Text = BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVVS_SCHLUESSEL").ToString
+        lblHerstellerShow.Text = row("ZZHERST_TEXT").ToString
+        lblHerstellerSchluesselShow.Text = row("ZZHERSTELLER_SCH").ToString
+        lblTypschluesselShow.Text = row("ZZTYP_SCHL").ToString
+        lblVarianteVersionShow.Text = row("ZZVVS_SCHLUESSEL").ToString
 
         'Bemerkungen in die Übersicht eintragen
-
         If Not Session("AnzBemerkungen") Is Nothing Then
             lblAnzBemerkungenShow.Text = CType(Session("AnzBemerkungen"), String)
         End If
 
-
         Dim GetVersandgrund As New fin_05(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
 
-
-        If Len(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVGRUND").ToString) > 0 Then
-            lblVersandgrundShow.Text = GetVersandgrund.getAbrufgrund(BRIEFLEBENSLAUF_LPTable.Rows(0)("ZZVGRUND").ToString).ToString
+        If Len(row("ZZVGRUND").ToString) > 0 Then
+            lblVersandgrundShow.Text = GetVersandgrund.getAbrufgrund(row("ZZVGRUND").ToString).ToString
         End If
-
-
 
     End Sub
 
     Private Sub fillPDIMeldung()
+        Dim row As DataRow = BRIEFLEBENSLAUF_LPTable.Rows(0)
 
-        With BRIEFLEBENSLAUF_LPTable
-            lblStandortPDIValue.Text = .Rows(0)("DADPDI_NAME1").ToString & " " & .Rows(0)("DADPDI_ORT").ToString
-            lblNaviValue.Text = .Rows(0)("ZZNAVI").ToString
-            lblBereifungValue.Text = .Rows(0)("ZZREIFEN").ToString
-            lblKraftstoffValue.Text = .Rows(0)("ZZANTR").ToString
-            lblGetriebeValue.Text = .Rows(0)("ZZSIPP3").ToString
-            lblEingangsdatumValue.Text = MakeStandardDateString(.Rows(0)("ZZDAT_EIN").ToString)
-            lblBereitdatumValue.Text = MakeStandardDateString(.Rows(0)("ZZDAT_BER").ToString)
-        End With
+        lblStandortPDIValue.Text = row("DADPDI_NAME1").ToString & " " & row("DADPDI_ORT").ToString
+        lblNaviValue.Text = row("ZZNAVI").ToString
+        lblBereifungValue.Text = row("ZZREIFEN").ToString
+        lblKraftstoffValue.Text = row("ZZANTR").ToString
+        lblGetriebeValue.Text = row("ZZSIPP3").ToString
+        lblEingangsdatumValue.Text = MakeStandardDateString(row("ZZDAT_EIN").ToString)
+        lblBereitdatumValue.Text = MakeStandardDateString(row("ZZDAT_BER").ToString)
 
         If mObjFin_14.GT_ADDR.Select("ADDRTYP='ZP'").Length > 0 Then
             lblLieferantValue.Text = mObjFin_14.GT_ADDR.Select("ADDRTYP='ZP'")(0)("LieferantAdresse").ToString
         End If
 
     End Sub
-
 
     Private Sub FillABEDaten()
         'Farben erstmal ausblenden
@@ -468,7 +450,7 @@ Public Class Report46_2
                 lblError.Text = "Fehler: Die Daten enthalten keine Fahrzeugnummer."
             Else
                 'TrimStart("0"c)
-                objPDIs.FillDatenABE(Session("AppID").ToString, Session.SessionID.ToString, Me.Page, CType(BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR"), String))
+                objPDIs.FillDatenABE(Session("AppID").ToString, Session.SessionID.ToString, Page, CType(BRIEFLEBENSLAUF_LPTable.Rows(0)("EQUNR"), String))
                 If objPDIs.Status = 0 Then
                     With objPDIs.ABE_Daten
                         'lbl_00.Text = .Farbziffer
@@ -569,7 +551,6 @@ Public Class Report46_2
                             Case 9
                                 lbl_55.Visible = True
                                 lbl_155.Visible = True
-                            Case Else
 
                         End Select
                         Session.Add("objPDIs", objPDIs)
@@ -586,8 +567,7 @@ Public Class Report46_2
             QMMIDATENTable = CType(Session("QMMIDATENTable"), DataTable)
 
             If QMMIDATENTable.Rows.Count > 0 Then
-                Dim tmpDataView As New DataView()
-                tmpDataView = QMMIDATENTable.DefaultView
+                Dim tmpDataView As DataView = QMMIDATENTable.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -659,9 +639,7 @@ Public Class Report46_2
                 mAddressdaten.Columns.Remove("ADDRTYP")
                 mAddressdaten.AcceptChanges()
 
-
-                Dim tmpDataView As New DataView()
-                tmpDataView = mAddressdaten.DefaultView
+                Dim tmpDataView As DataView = mAddressdaten.DefaultView
 
                 If Not tmpDataView.Count = 0 Then
                     Dim intTempPageIndex As Int32 = intPageIndex
@@ -728,8 +706,7 @@ Public Class Report46_2
             QMEL_DATENTable = CType(Session("QMEL_DATENTable"), DataTable)
 
             If QMEL_DATENTable.Rows.Count > 0 Then
-                Dim tmpDataView As New DataView()
-                tmpDataView = QMEL_DATENTable.DefaultView
+                Dim tmpDataView As DataView = QMEL_DATENTable.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -854,14 +831,10 @@ Public Class Report46_2
     End Sub
 
     Protected Sub lb_Drucken_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_Drucken.Click
-
-        'Response.Write("<script>window.open('UeberfPrint.aspx?AppID=" & Session("AppID").ToString & "')</script>")
-
         Try
 
             Dim imageHt As New Hashtable()
-            Dim mReport As fin_14
-            mReport = CType(Session("objReport"), fin_14)
+            Dim mReport As fin_14 = CType(Session("objReport"), fin_14)
             imageHt.Add("Logo", m_User.Customer.LogoImage)
             If objPDIs Is Nothing Then
                 objPDIs = CType(Session("objPDIs"), Base.Business.ABEDaten)
@@ -882,16 +855,18 @@ Public Class Report46_2
                 .ZBIINummerBEZ = lbl_Briefnummer.Text
                 .ZBIINummer = lblBriefnummerShow.Text
                 .Erstzulassungsdatum = lblErstzulassungsdatumShow.Text
-                .Abmeldedatum = lblAbmeldedatumShow.Text
                 .Finanzierungsnummer = lblOrdernummerShow.Text
                 .FinanzierungsnummerBEZ = lbl_Ordernummer.Text
-                'traurig aber wahr, nach string "<br>" splittet er nicht richtig JJU2008.07.01
-                .FahrzeughalterName1Name2 = lblFahrzeughalterShow.Text.Replace("<br>", ";").Split(CStr(";"))(0)
-                .FahrzeughalterStrasseNummer = lblFahrzeughalterShow.Text.Replace("<br>", ";").Split(CStr(";"))(1)
-                .FahrzeughalterPLZOrt = lblFahrzeughalterShow.Text.Replace("<br>", ";").Split(CStr(";"))(2)
-                .VersandadresseName1Name2 = lblStandortShow.Text.Replace("<br>", ";").Split(CStr(";"))(0)
-                .VersandadresseStrasseNummer = lblStandortShow.Text.Replace("<br>", ";").Split(CStr(";"))(1)
-                .VersandadressePLZOrt = lblStandortShow.Text.Replace("<br>", ";").Split(CStr(";"))(2)
+
+                'Adressdetails aus DataTable holen
+                Dim row As DataRow = BRIEFLEBENSLAUF_LPTable.Rows(0)
+                .FahrzeughalterName1Name2 = (row("NAME1_ZH").ToString & " " & row("NAME2_ZH").ToString).Trim()
+                .FahrzeughalterStrasseNummer = (row("STRAS_ZH").ToString & " " & row("HSNR_ZH").ToString).Trim()
+                .FahrzeughalterPLZOrt = (row("PSTLZ_ZH").ToString & " " & row("ORT01_ZH").ToString).Trim()
+                .VersandadresseName1Name2 = (row("NAME1_VS").ToString & " " & row("NAME2_VS").ToString).Trim()
+                .VersandadresseStrasseNummer = (row("STRAS_VS").ToString & " " & row("HSNR_VS").ToString).Trim()
+                .VersandadressePLZOrt = (row("PSTLZ_VS").ToString & " " & row("ORT01_VS").ToString).Trim()
+
                 .VersandadresseBEZ = lbl_Standort.Text
                 .AusdruckDatumUhrzeit = Date.Now.ToShortDateString & " / " & Date.Now.ToShortTimeString
                 .Username = m_User.UserName
@@ -913,8 +888,6 @@ Public Class Report46_2
                 .Referenz2 = lblReferenz2Show.Text
             End With
 
-
-
             Dim tblData As DataTable = Base.Kernel.Common.DataTableHelper.ObjectToDataTable(mReport)
 
             Dim docFactory As New Base.Kernel.DocumentGeneration.WordDocumentFactory(tblData, imageHt)
@@ -923,26 +896,23 @@ Public Class Report46_2
 
             dataTables(0) = createLebenslaufTable()
             dataTables(1) = createUebermittlungsTable()
-            docFactory.CreateDocument("Fahrzeughistorie_" & lblFahrgestellnummerShow.Text, Me.Page, "\Applications\appffe\docu\FahrzeughistoriePrint.doc", "Tabelle", dataTables)
+            docFactory.CreateDocument("Fahrzeughistorie_" & lblFahrgestellnummerShow.Text, Page, "\Applications\appffe\docu\FahrzeughistoriePrint.doc", "Tabelle", dataTables)
 
         Catch ex As Exception
-
             lbError.Visible = True
             lbError.Text = ex.Message
-
         End Try
     End Sub
 
     Private Function createLebenslaufTable() As DataTable
         Dim tmpTable As DataTable = CType(Session("QMEL_DATENTable"), DataTable)
         Dim Lebenslauf As New DataTable
-        'Dim tmpRow As DataRow
 
-        Lebenslauf.Columns.Add("Vorgang", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Durchführungsdatum", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Versandadresse", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Versandart", System.Type.GetType("System.String"))
-        Lebenslauf.Columns.Add("Beauftragt durch", System.Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Vorgang", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Durchführungsdatum", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Versandadresse", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Versandart", Type.GetType("System.String"))
+        Lebenslauf.Columns.Add("Beauftragt durch", Type.GetType("System.String"))
 
         For Each tmpRow As DataRow In tmpTable.Rows
 
@@ -961,18 +931,16 @@ Public Class Report46_2
         Lebenslauf.TableName = "Lebenslauf"
         Return Lebenslauf
 
-
     End Function
 
     Private Function createUebermittlungsTable() As DataTable
         Dim tmpTable As DataTable = CType(Session("QMMIDATENTable"), DataTable)
         Dim Uebersicht As New DataTable
-        'Dim tmpRow As DataRow
 
-        Uebersicht.Columns.Add("Aktionscode", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Vorgang", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Statusdatum", System.Type.GetType("System.String"))
-        Uebersicht.Columns.Add("Übermittlungsdatum", System.Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Aktionscode", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Vorgang", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Statusdatum", Type.GetType("System.String"))
+        Uebersicht.Columns.Add("Übermittlungsdatum", Type.GetType("System.String"))
 
         For Each tmpRow As DataRow In tmpTable.Rows
 
@@ -983,7 +951,6 @@ Public Class Report46_2
             tmpUebersichtsRow.Item("Statusdatum") = tmpRow("PSTER").ToString
             tmpUebersichtsRow.Item("Übermittlungsdatum") = tmpRow("ZZUEBER").ToString
 
-
             Uebersicht.Rows.Add(tmpUebersichtsRow)
             Uebersicht.AcceptChanges()
 
@@ -991,56 +958,53 @@ Public Class Report46_2
         Uebersicht.TableName = "Übermittlung"
         Return Uebersicht
 
-
     End Function
-
-
 
     Private Function MakeStandardDateString(ByVal strSAPDate As String) As String
         Return Right(strSAPDate, 2) & "." & Mid(strSAPDate, 5, 2) & "." & Left(strSAPDate, 4)
     End Function
 
-    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
+    Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
         FillGrid(e.NewPageIndex)
     End Sub
 
-    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
+    Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
         FillGrid(DataGrid1.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub Datagrid2_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Datagrid2.PageIndexChanged
+    Private Sub Datagrid2_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles Datagrid2.PageIndexChanged
         FillGrid2(e.NewPageIndex)
     End Sub
 
-    Private Sub Datagrid2_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Datagrid2.SortCommand
+    Private Sub Datagrid2_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles Datagrid2.SortCommand
         FillGrid2(Datagrid2.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub lb_Uebersicht_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_Uebersicht.Click
+    Private Sub lb_Uebersicht_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_Uebersicht.Click
         ShowUebersicht()
     End Sub
 
-    Private Sub lb_Typdaten_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_Typdaten.Click
+    Private Sub lb_Typdaten_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_Typdaten.Click
         HideAllTRs()
         trTypdaten.Visible = True
         lb_Typdaten.Enabled = False
     End Sub
 
-    Private Sub lb_Lebenslauf_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_Lebenslauf.Click
+    Private Sub lb_Lebenslauf_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_Lebenslauf.Click
         HideAllTRs()
         trLebenslauf.Visible = True
         lb_Lebenslauf.Enabled = False
     End Sub
 
-    Private Sub lb_Uebermittlung_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_Uebermittlung.Click
+    Private Sub lb_Uebermittlung_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_Uebermittlung.Click
         HideAllTRs()
         trUebermittlung.Visible = True
         lb_Uebermittlung.Enabled = False
@@ -1050,19 +1014,19 @@ Public Class Report46_2
         ShowPartnerdaten()
     End Sub
 
-    Private Sub dtgPartner_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles dtgPartner.PageIndexChanged
+    Private Sub dtgPartner_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles dtgPartner.PageIndexChanged
         FillPartnerdaten(e.NewPageIndex)
     End Sub
 
-    Private Sub dtgPartner_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles dtgPartner.SortCommand
+    Private Sub dtgPartner_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles dtgPartner.SortCommand
         FillPartnerdaten(dtgPartner.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Private Sub dtgPartner_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dtgPartner.ItemDataBound
+    Private Sub dtgPartner_ItemDataBound(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles dtgPartner.ItemDataBound
         Dim intItem As Int32
 
         For intItem = 0 To mAddressdaten.Columns.Count - 1
-            If mAddressdaten.Columns(intItem).DataType Is System.Type.GetType("System.DateTime") Then
+            If mAddressdaten.Columns(intItem).DataType Is Type.GetType("System.DateTime") Then
                 If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
                     e.Item.Cells(intItem).Text = DataBinder.Eval(e.Item.DataItem, mAddressdaten.Columns(intItem).ColumnName, "{0:dd.MM.yyyy}")
                 End If
@@ -1077,122 +1041,5 @@ Public Class Report46_2
     Protected Sub cmdBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBack.Click
         Response.Redirect("Report46.aspx?AppID=" & Session("AppID").ToString)
     End Sub
-End Class
 
-' ************************************************
-' $History: Report46_2.aspx.vb $
-' 
-' *****************  Version 22  *****************
-' User: Fassbenders  Date: 5.10.10    Time: 14:16
-' Updated in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 21  *****************
-' User: Fassbenders  Date: 10.03.10   Time: 16:51
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA: 2918
-' 
-' *****************  Version 20  *****************
-' User: Rudolpho     Date: 29.10.09   Time: 15:14
-' Updated in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 19  *****************
-' User: Rudolpho     Date: 28.10.09   Time: 16:46
-' Updated in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 18  *****************
-' User: Fassbenders  Date: 26.10.09   Time: 17:13
-' Updated in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 7.10.09    Time: 17:53
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA: 3114
-' 
-' *****************  Version 16  *****************
-' User: Fassbenders  Date: 4.09.09    Time: 9:55
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA: 3050
-' 
-' *****************  Version 15  *****************
-' User: Jungj        Date: 5.06.09    Time: 15:58
-' Updated in $/CKAG/Components/ComCommon/Finance
-' mögliche try catches entfernt
-' 
-' *****************  Version 14  *****************
-' User: Jungj        Date: 30.03.09   Time: 14:13
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2760 
-' 
-' *****************  Version 13  *****************
-' User: Jungj        Date: 23.03.09   Time: 17:35
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2679
-' 
-' *****************  Version 12  *****************
-' User: Jungj        Date: 27.02.09   Time: 10:54
-' Updated in $/CKAG/Components/ComCommon/Finance
-' Bugfix Briefanforderung partnerdaten
-' 
-' *****************  Version 11  *****************
-' User: Fassbenders  Date: 26.02.09   Time: 17:57
-' Updated in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 10  *****************
-' User: Jungj        Date: 19.02.09   Time: 13:57
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2549 testfertig
-' 
-' *****************  Version 9  *****************
-' User: Jungj        Date: 16.02.09   Time: 17:29
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITa 2413
-' 
-' *****************  Version 8  *****************
-' User: Jungj        Date: 2.02.09    Time: 13:47
-' Updated in $/CKAG/Components/ComCommon/Finance
-' unfertig
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 2.02.09    Time: 13:02
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2549 unfertig
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 20.10.08   Time: 17:49
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2287 testfertig
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 31.07.08   Time: 11:50
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 2154
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 29.07.08   Time: 15:05
-' Updated in $/CKAG/Components/ComCommon/Finance
-' Nachbesserung LagerOrt=DAD wenn kein fall zutrifft
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 28.04.08   Time: 16:25
-' Updated in $/CKAG/Components/ComCommon/Finance
-' ITA 1811
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 11.04.08   Time: 13:43
-' Updated in $/CKAG/Components/ComCommon/Finance
-' Migration
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 4.04.08    Time: 13:32
-' Created in $/CKAG/Components/ComCommon/Finance
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 4.04.08    Time: 10:48
-' Created in $/CKAG/portal/Components/ComCommon/Finance
-' 
-' *****************  Version 1  *****************
-' User: Uha          Date: 20.12.07   Time: 11:16
-' Created in $/CKG/Components/ComCommon/ComCommonWeb/Finance
-' ITA 1505 Fahrzeughistorie in Testversion
-' 
-' ************************************************
+End Class

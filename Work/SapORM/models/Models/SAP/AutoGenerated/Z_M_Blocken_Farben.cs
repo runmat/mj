@@ -4,21 +4,23 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_M_Blocken_Farben
+	public partial class Z_M_BLOCKEN_FARBEN
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_M_Blocken_Farben).Name);
+			sap.Init(typeof(Z_M_BLOCKEN_FARBEN).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_M_Blocken_Farben).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_M_BLOCKEN_FARBEN).Name, inputParameterKeys, inputParameterValues);
 		}
+
 
 		public partial class FARBE : IModelMappingApplied
 		{
@@ -85,7 +87,7 @@ namespace SapORM.Models
 
 			public static List<FARBE> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<FARBE> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -99,7 +101,7 @@ namespace SapORM.Models
 
 			public static List<FARBE> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<FARBE> ToList(ISapDataService sapDataService)
@@ -112,9 +114,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<FARBE>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_Blocken_Farben", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_M_BLOCKEN_FARBEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<FARBE> GetExportListWithExecute(ISapDataService sapDataService)
@@ -124,7 +126,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<FARBE> GetExportList(ISapDataService sapDataService)
@@ -134,7 +136,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<FARBE> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -142,9 +144,9 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<FARBE>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_M_Blocken_Farben", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_M_BLOCKEN_FARBEN", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<FARBE> GetImportList(ISapDataService sapDataService)
@@ -154,7 +156,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
@@ -162,14 +164,9 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_M_Blocken_Farben.FARBE> list)
+		public static DataTable ToTable(this IEnumerable<Z_M_BLOCKEN_FARBEN.FARBE> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_M_Blocken_Farben.FARBE> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

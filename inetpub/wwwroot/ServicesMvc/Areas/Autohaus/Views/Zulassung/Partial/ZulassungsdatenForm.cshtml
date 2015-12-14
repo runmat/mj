@@ -10,6 +10,14 @@
         width: 100px;
     }
     
+    .inputwidth-large {
+        width: 150px;
+    }
+    
+    .inputwidth-small {
+        width: 50px;
+    }
+    
     .blockdisabled {
         background-color: #F0F0F0 !important;
         color: gray !important;
@@ -22,19 +30,23 @@
         line-height: 20px;
         width: 360px;
     }
+    
+    .m-wrap.tiny {
+        width: 30px !Important;
+    }
 
 </style>
 
-<script>
+<script type="text/javascript">
     _modelIsValid = @Model.IsValid.ToString().ToLower();
     
     var _selectedItemsCount = 0;
     
-    function SetEvb(fin, evb, tagObj) { 
+    function SetEvb(finId, evb, tagObj) { 
         $.ajax({
             type: "POST",
             url: "SetEvb",
-            data: { fin: fin, evb: evb.toUpperCase() },
+            data: { finId: finId, evb: evb.toUpperCase() },
             loadingShow: false,
             success: function(result) {
                     
@@ -44,7 +56,7 @@
                 $(tagObj).removeClass("input-validation-error");
                     
                 // wenn fin = null, dann wurde für jedes Fahrzeug soeben die selbe evb vergeben. Dies jetzt noch visualisieren...
-                if (result.ok == true && fin == "") {
+                if (result.ok == true && finId == "") {
                     $('.editevb').val(evb);
                     $('#GridFahrzeugAuswahlZulassung .editevb').removeClass("input-validation-error");
                 }
@@ -94,9 +106,47 @@
         InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
     });
 
-    @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
+    function UpdateAnzahlAbmeldungen() {
+        var anzAbm = $("#AnzahlAbmeldungen").val();
+
+        $.ajax({
+            type: "POST",
+            url: "UpdateAnzahlAbmeldungen",
+            data: { anzAbmeldungen: anzAbm },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
+                    grid.ajaxRequest();
+                }
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function SetFinValue_Textbox(gridname, classselector, toupper) {
+        $(document).off('change', classselector);
+        $(document).on('change', classselector, function () {            // Auswirkung auf ein Fahrzeug
+            var tr = $(this).closest('tr');
+            var grid = $("#" + gridname).data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var finId = dataItem["FinID"];
+            var field = $(this).data('fieldname');
+            var value = $(this).val();
+            if (toupper == true) {
+                value = value.toUpperCase();
+            }
+            SetFinValue(finId, field, value);
+        });
+    }
+
+    @if (Model.IsMassenzulassung || Model.IsMassenabmeldung || Model.IsSchnellabmeldung)
     {
-        <text>                        
+        <text>
             $(function () {
                 $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
                     var tagObj = $(this);
@@ -105,50 +155,32 @@
                 });
 
                 $(document).off('change', '.editevb');
-                $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
+                $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug
                     var tagObj = $(this);
                     var evb = $(this).val();
                     var tr = $(this).closest('tr');
                     var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
                     var dataItem = grid.dataItem(tr);
-                    var fin = dataItem["FIN"];
-                    SetEvb(fin, evb, tagObj);
+                    var finId = dataItem["FinID"];
+                    SetEvb(finId, evb, tagObj);
                 });
         
                 // Kennzeichenänderung bei Massenzulassung
-                $(document).off('change', '.editkennz');
-                $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
-                    var tr = $(this).closest('tr');
-                    var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-                    var dataItem = grid.dataItem(tr);
-                    var fin = dataItem["FIN"];
-                    var field = $(this).data('fieldname');
-                    var wkennz = $(this).val();
-                    SetFinValue(fin, field, wkennz.toUpperCase());
-                });
+                SetFinValue_Textbox("GridFahrzeugAuswahlZulassung", '.editkennz', true);
         
-                // Kennzeichenänderung bei Massenabmeldung
-                $(document).off('change', '.editkennzabm');
-                $(document).on('change', '.editkennzabm', function () {            // Auswirkung auf ein Fahrzeug
-                    var tr = $(this).closest('tr');
-                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
-                    var dataItem = grid.dataItem(tr);
-                    var fin = dataItem["FIN"];
-                    var field = $(this).data('fieldname');
-                    var wkennz = $(this).val();
-                    SetFinValue(fin, field, wkennz.toUpperCase());
-                });
+                // Kennzeichenänderung bei Massen-/Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editkennzabm', true);
         
-                // "Vorhandenes Kennzeichen reservieren"-Checkbox bei Massenabmeldung
+                // "Vorhandenes Kennzeichen reservieren"-Checkbox bei Massen-/Schnellabmeldung
                 $(document).off('change', '.editkennzres');
                 $(document).on('change', '.editkennzres', function () {            // Auswirkung auf ein Fahrzeug
                     var tr = $(this).closest('tr');
                     var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
                     var dataItem = grid.dataItem(tr);
-                    var fin = dataItem["FIN"];
+                    var finId = dataItem["FinID"];
                     var field = $(this).data('fieldname');
                     var value = $(this).prop('checked');
-                    SetFinValue(fin, field, value);
+                    SetFinValue(finId, field, value);
                 });
 
                 // Kennzeichenänderung bei Massenabmeldung
@@ -163,6 +195,23 @@
                     var tr = $(this).closest('tr');
                     tr.find('.blockrk').removeClass('blockdisabled');
                     tr.find('.blockwk').addClass('blockdisabled');
+                });
+
+                // FIN-Änderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editfinabm', true);
+
+                // Halteränderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.edithalterabm', false);
+
+                // TÜV/AU-Änderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.edittuevauabm', false);
+
+                // Briefnummer-Änderung bei Schnellabmeldung
+                SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editbriefnummerabm', false);
+
+                $(document).off('keypress', '.edittuevauabm');
+                $(document).on('keypress', '.edittuevauabm', function (e) {    
+                    return NumbersOnly(e, false);
                 });
         });      
           
@@ -180,6 +229,7 @@
             $('#ReservationName_' + fin).removeClass('blockdisabled');
         }
     }           
+        
         </text>
     }
 
@@ -202,7 +252,9 @@
         @Html.HiddenFor(m => m.WunschkennzeichenReservierenUrl) 
         @Html.HiddenFor(m => m.ZulassungsartAutomatischErmitteln) 
         @Html.HiddenFor(m => m.Versandzulassung) 
-        @Html.HiddenFor(m => m.ExpressversandMoeglich) 
+        @Html.HiddenFor(m => m.ExpressversandMoeglich)
+        @Html.HiddenFor(m => m.IsSchnellabmeldung)
+        @Html.HiddenFor(m => m.AnzahlAbmeldungenAenderbar)
 
         if (Model.ModusAbmeldung)
         {
@@ -217,5 +269,3 @@
         
     }
 </div>
-
-

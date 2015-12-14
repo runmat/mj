@@ -128,6 +128,7 @@ namespace CkgDomainLogic.Equi.Models
                             d.Kennzeichen = s.ZZKENN;
                             d.KennzeichenAlt = s.ZZKENN_OLD;
                             d.KennzeichenEingang = s.ZZKENN_EING;
+                            d.Lagerort = s.STANDORT_VERSSTAT_TEXT;
                             d.Ordernummer = s.ZZREF1;
                             d.Referenz1 = s.ZZREFERENZ1;
                             d.Referenz2 = s.ZZREFERENZ2;

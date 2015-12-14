@@ -51,20 +51,18 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
             ViewModel.SetParamSonderzulassung(sonderzulassung);
 
-            ViewModel.DataInit(zulassungFromShoppingCart);
+            ViewModel.DataInit(zulassungFromShoppingCart, schnellabmeldung);
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
 
             ShoppingCartLoadAndCacheItems();
-
-            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
             TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
@@ -156,17 +154,16 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetEvb(string fin, string evb)
+        public JsonResult SetEvb(string finId, string evb)
         {
-            // var result = ViewModel.SetEvb(fin, evb.ToUpper());
-            var result = ViewModel.SetEvb(fin, evb);
+            var result = ViewModel.SetEvb(finId, evb);
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
-        [HttpPost]        
-        public JsonResult SetFinValue(string fin, string field, string value)
-        {            
-            var result = ViewModel.SetFinValue(fin, field, value);
+        [HttpPost]
+        public JsonResult SetFinValue(string finId, string field, string value)
+        {
+            var result = ViewModel.SetFinValue(finId, field, value);
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
@@ -227,6 +224,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Sonderzulassung(string fin, string halterNr)
         {
             return Index(fin, halterNr, sonderzulassung: "1");
+        }
+
+        [CkgApplication]
+        public ActionResult Schnellabmeldung()
+        {
+            return Index("", "", abmeldung: "1", schnellabmeldung: "1");
         }
 
         void InitModelStatics()
@@ -582,6 +585,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
             ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            ViewData["ModusAbmeldung"] = ViewModel.ModusAbmeldung;
             ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
@@ -677,6 +681,14 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/ZulassungsdatenForm", ViewModel.Zulassung.Zulassungsdaten);
         }
 
+        [HttpPost]
+        public ActionResult UpdateAnzahlAbmeldungen(string anzAbmeldungen)
+        {
+            ViewModel.UpdateAnzahlAbmeldungen(anzAbmeldungen);
+
+            return Json(new { ok = true });
+        }
+
         #endregion
 
         #region OptionenDienstleistungen
@@ -729,6 +741,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
             TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            TempData["IsSchnellabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung;
 
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
@@ -736,12 +749,6 @@ namespace ServicesMvc.Autohaus.Controllers
         #region KundenformularAsPdf
         public FileContentResult KundenformularAsPdf(string id)
         {
-            // 20150528 MMA Folgender Block auskommentiert...
-            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            //if (zulassung == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var formularPdfBytes = zulassung.KundenformularPdf;
-
             var formularPdfBytes = KundenformularAsPdfGetPdfBytes(id);
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
@@ -802,15 +809,6 @@ namespace ServicesMvc.Autohaus.Controllers
         #region AuftragslisteAsPdf
         public FileContentResult AuftragslisteAsPdf()
         {
-            // 20150528 MMA Folgender Block auskommentiert...
-            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
-            //if (zulassung == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
-            //if (auftragslisteFormular == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
-
             var auftragPdfBytes = AuftragslisteGetPdfBytes();
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
@@ -937,9 +935,9 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult ZulassungFromShoppingCart(string id, string abmeldung = "", string versandzulassung = "")
+        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "")
         {
-            return Index("", "", zulassungFromShoppingCart: "1");
+            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung);
         }
 
         [HttpPost]

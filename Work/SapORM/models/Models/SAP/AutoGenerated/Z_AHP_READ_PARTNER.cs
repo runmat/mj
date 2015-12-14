@@ -21,6 +21,42 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_AHP_READ_PARTNER).Name, inputParameterKeys, inputParameterValues);
 		}
 
+
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EMAIL", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_PARVW(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_PARVW", value);
+		}
+
+		public static void SetImportParameter_I_NAME1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NAME1", value);
+		}
+
+		public static void SetImportParameter_I_ORT(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORT", value);
+		}
+
+		public static void SetImportParameter_I_PARTART(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PARTART", value);
+		}
+
+		public static void SetImportParameter_I_PLZNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_PLZNR", value);
+		}
+
 		public partial class GT_OUT : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -91,13 +127,12 @@ namespace SapORM.Models
 					REFKUNNR = (string)row["REFKUNNR"],
 					REFKUNNR2 = (string)row["REFKUNNR2"],
 					EVBNR = (string)row["EVBNR"],
-					SEPA_STICHTAG = (string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString())) ? null : (DateTime?)row["SEPA_STICHTAG"],
+					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
 				};
 				o.OnInitFromSap();
-
 				return o;
 			}
 
@@ -197,11 +232,6 @@ namespace SapORM.Models
 		public static DataTable ToTable(this IEnumerable<Z_AHP_READ_PARTNER.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
-		}
-
-		public static void Apply(this IEnumerable<Z_AHP_READ_PARTNER.GT_OUT> list, DataTable dtDst)
-		{
-			SapDataServiceExtensions.Apply(list, dtDst);
 		}
 
 	}

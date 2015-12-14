@@ -518,7 +518,7 @@
                         </div>
                     </div>
                         <div id="dataFooter" style="float:right; padding-left:15px;">
-                            <asp:LinkButton ID="btnSave" runat="server" CssClass="Tablebutton" Width="78px" Height="16px">Speichern</asp:LinkButton>
+                            <asp:LinkButton ID="btnSave" runat="server" CssClass="Tablebutton" Width="78px" Height="16px" OnClick="btnSave_Click">Speichern</asp:LinkButton>
                         </div>
                     </div>
                 </div>
