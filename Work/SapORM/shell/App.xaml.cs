@@ -113,13 +113,13 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_M_Abm_Fehl_Unterl_Sixt_Leas");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_ABMELDUNG_SIXT_LEASING");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SIXT_PG_KLAERFALL");
-
+           
             //// ZLD Mobile MVC
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_USER_GET_VG");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_USER_PUT_VG");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_STAMMD");
 
-            //// Autohaus MVC
+            ////Autohaus MVC
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_003");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_IMP_AUFTRDAT_007");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_Land_Plz_001");
@@ -224,7 +224,7 @@ namespace SapORM
 
             //// Dokumente ohne Daten
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_DOKUMENT_OHNE_DAT_01");
-
+            
             //// Mahnsperre
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_TEMP_VERS_EQUI_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_CHANGE_MAHNSP_EQUI_01");
@@ -235,7 +235,7 @@ namespace SapORM
             //// Mahnstop setzen
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_MAHN_EQSTL_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_MAHN_EQSTL_01");
-
+            
             //// Webbearbeitung Prüfschritte
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_PRUEFPUNKTE_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_PRUEFSCHRITTE_03");
@@ -439,7 +439,10 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_REM_VERS_VORG_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_REM_VERS_VORG_01");
 
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
+
             #endregion
+
 
             //CoCTest();
             //TeslaTest();
@@ -493,7 +496,7 @@ namespace SapORM
             //ZulassungsServicesTest();
 
 
-
+            
             //CardocuTest();
 
             //CardocuEquiTest();
@@ -512,7 +515,7 @@ namespace SapORM
             //ErpBulkCopySqlTest_FeinstaubPlaketten();
             //ErpBulkCopySqlTest_KennzeichenVerkauf();
 
-
+            
             //CsiTest();
 
             //TargoTest3();
@@ -641,8 +644,8 @@ namespace SapORM
         //    //var avisListListCount = avisList.Count;
 
         //    var exportTables = Sap.GetExportTablesWithInitExecute("Z_M_SCHLUESSELDIFFERENZEN",
-        //                        "I_KUNNR",
-        //                        "0000314582");
+            //                                                    "I_KUNNR",
+            //                                                    "0000314582");
         //}
 
         //static void AvisZulassungsTest()
@@ -713,7 +716,7 @@ namespace SapORM
         //{
         //    //var kredNr = "0000900153";
         //    //var kostSt = "[vkbur]";
-        //    var kredNr = "0000900153";
+            //var kredNr = "0000900153";
         //    var kostSt = "4359";
 
         //    var artikelList = Z_FIL_EFA_PLATARTIKEL.GT_PLATART.GetExportListWithInitExecute(Sap,
@@ -737,7 +740,7 @@ namespace SapORM
         //static void BpLgTest()
         //{
         //    var list = Z_M_Brief_3mal_Gemahnt.EXP_BRIEFE.GetExportListWithInitExecute(Sap, "I_AG", "0000343537");
-        //    var listCount = list.Count();
+            //var listCount = list.Count();
 
 
         //    //var list = Z_ZLD_MOB_USER_GET_VG.GT_VG_KOPF.GetExportListWithInitExecute(Sap, "I_Vkorg,I_Vkbur,I_Mobuser", 
@@ -832,7 +835,7 @@ namespace SapORM
         //                                                        "I_KUNNR, I_KENNUNG, I_NAME1, I_PSTLZ, I_ORT01",
         //                                                        "0010000649", "AUSLIEFERUNG", "", "", ""
         //                                                        );
-        //    var listCount = list.Count();
+            //var listCount = list.Count();
         //}
 
         //static void CardocuTest()
@@ -871,34 +874,34 @@ namespace SapORM
         //{
         //    var kuNr = "0010000649".ToSapKunnr();
 
-        //    var importListAG = Z_DPM_READ_LV_001.GT_IN_AG.GetImportListWithInit(Sap, "I_VWAG", "X");
-        //    importListAG.Add(new Z_DPM_READ_LV_001.GT_IN_AG { AG = kuNr });
-        //    Sap.ApplyImport(importListAG);
+            //var importListAG = Z_DPM_READ_LV_001.GT_IN_AG.GetImportListWithInit(Sap, "I_VWAG", "X");
+            //importListAG.Add(new Z_DPM_READ_LV_001.GT_IN_AG { AG = kuNr });
+            //Sap.ApplyImport(importListAG);
 
-        //    var importListProcess = Z_DPM_READ_LV_001.GT_IN_PROZESS.GetImportList(Sap);
-        //    importListProcess.Add(new Z_DPM_READ_LV_001.GT_IN_PROZESS { SORT1 = "7" });
-        //    Sap.ApplyImport(importListProcess);
-
-
-        //    Sap.Execute();
+            //var importListProcess = Z_DPM_READ_LV_001.GT_IN_PROZESS.GetImportList(Sap);
+            //importListProcess.Add(new Z_DPM_READ_LV_001.GT_IN_PROZESS { SORT1 = "7" });
+            //Sap.ApplyImport(importListProcess);
 
 
-        //    // TransportTypen (5 Stück)
-        //    var listTransportTypen = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(Sap).Where(d => string.IsNullOrEmpty(d.ASNUM) && string.IsNullOrEmpty(d.KTEXT1_H2)).ToList();
+            //Sap.Execute();
 
 
-        //    // alle Dienstleistungen
-        //    var listAll = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(Sap).Where(d => !string.IsNullOrEmpty(d.ASNUM) && string.IsNullOrEmpty(d.KTEXT1_H2));
+            //// TransportTypen (5 Stück)
+            //var listTransportTypen = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(Sap).Where(d => string.IsNullOrEmpty(d.ASNUM) && string.IsNullOrEmpty(d.KTEXT1_H2)).ToList();
 
-        //    // Dienstleistungen für Transporttyp 1
-        //    var preisSumme = listAll.Sum(n => n.TBTWR);
 
-        //    listAll = listAll.Where(d => d.EXTGROUP == "1");
+            //// alle Dienstleistungen
+            //var listAll = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(Sap).Where(d => !string.IsNullOrEmpty(d.ASNUM) && string.IsNullOrEmpty(d.KTEXT1_H2));
 
-        //    var listStandard = listAll.Where(d => d.VW_AG == "X").ToList();
-        //    var listNonStandard = listAll.Where(d => d.VW_AG != "X").ToList();
+            //// Dienstleistungen für Transporttyp 1
+            //var preisSumme = listAll.Sum(n => n.TBTWR);
+
+            //listAll = listAll.Where(d => d.EXTGROUP == "1");
+
+            //var listStandard = listAll.Where(d => d.VW_AG == "X").ToList();
+            //var listNonStandard = listAll.Where(d => d.VW_AG != "X").ToList();
         //}
-        
+
         //static void AhÜberführungTest3()
         //{
         //    var kuNr = "0010000649".ToSapKunnr();
@@ -917,8 +920,8 @@ namespace SapORM
 
 
         //    //Sap.Execute();
-
-
+                                    
+                                    
         //    //// TransportTypen (5 Stück)
         //    //var listTransportTypen = Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(Sap).Where(d => string.IsNullOrEmpty(d.ASNUM) && string.IsNullOrEmpty(d.KTEXT1_H2)).ToList();
 
@@ -970,7 +973,7 @@ namespace SapORM
         //                            //COC_0_2_TYP_2 = "",
         //                            //COC_0_2_TYP_3 = "",
         //                            //COC_0_2_TYP_4 = "",
-                                    
+
         //                            COC_0_2_VAR = "A3",
         //                            //COC_0_2_VAR_2 = "",
         //                            //COC_0_2_VAR_3 = "",
@@ -978,7 +981,7 @@ namespace SapORM
         //                            //COC_0_2_VAR_5 = "",
         //                            //COC_0_2_VAR_6 = "",
         //                            //COC_0_2_VAR_7 = "",
-                                    
+            
         //                            COC_0_2_VERS = "SPORT",
         //                            //COC_0_2_VERS_2 = "",
         //                            //COC_0_2_VERS_3 = "",
@@ -1039,7 +1042,7 @@ namespace SapORM
         //    //var sap = new SapDataServiceFromConfigNoCacheFactory().Create();
         //    //var sap = SapDataService.DefaultInstance;
         //    var sap = Sap;
-            
+
         //    Z_DPM_COC_TYPDATEN.Init(sap);
         //    sap.SetImportParameter("I_KUNNR", KUNNR);
         //    sap.SetImportParameter("I_VERKZ", "U");
@@ -1113,7 +1116,7 @@ namespace SapORM
         //            //ZBII_DRUCK = "Z",
         //            //VORG_NR = "0000000031",
         //            VIN = VIN,
-
+            
         //            //COC_DRUCK_ORIG = "X",
         //            //COC_KD_ORIG = "X",
         //            AUFTRAG_DAT = DateTime.Now.AddDays(7),
@@ -1178,7 +1181,7 @@ namespace SapORM
         ////}
 
         //static void AvisTest5()
-        //{
+        //        {
         //    var list = Z_M_READ_ZUL_001.GT_WEB.GetExportListWithInitExecute(Sap,
         //                    "I_KUNNR_AG, I_ZULDAT_VON, I_ZULDAT_BIS, I_DAT_FREIS_ZUL_VON, I_DAT_FREIS_ZUL_BIS, I_VERWENDUNGSZWECK",
         //                    "314582".ToSapKunnr(), new DateTime(2013, 8, 1), new DateTime(2013, 8, 31), null, null, null);
@@ -1187,7 +1190,7 @@ namespace SapORM
         //}
 
         //static void SilvergreenTest()
-        //{
+        //    {
         //    //var list = Z_DPM_TYPDATEN_02.GT_WEB.GetExportListWithInitExecute(Sap,
         //    //                "I_ZZHERSTELLER_SCH, I_ZZTYP_SCHL, I_ZZVVS_SCHLUESSEL",
         //    //                "1480", "AAC", "00003");
@@ -1250,7 +1253,7 @@ namespace SapORM
         //    var sss = xx.NotNullOrEmptyToString();
 
         //    Z_DPM_CD_READ_GRUEQUIDAT_02.Init(Sap, "I_AG", "0010051385");
-
+            
         //    Sap.Execute();
 
         //    //var sapItemsEquisTable = Sap.GetExportTable("GT_OUT");
@@ -1262,7 +1265,7 @@ namespace SapORM
         //    var webItemsEquis = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_OUT_To_GrunddatenEqui.Copy(sapItemsEquis).ToList(); //.OrderBy(w => w.Fahrgestellnummer).ToList();
         //}
 
-
+            
 
         ////static void FehlteilEtikettTestOld()
         ////{
@@ -1274,7 +1277,7 @@ namespace SapORM
         ////    // read:
         ////    func.Exports["I_AG"].ParamValue = "314582";
         ////    func.Exports["I_VERART"].ParamValue = "L";
-        ////    func.Exports["I_POSITION"].ParamValue = "1";
+        //    //func.Exports["I_POSITION"].ParamValue = "1";
         ////    //func.Exports["I_PREVIEW"].ParamValue = "X";
 
         ////    var changeParam = (RFCStructure)func.Changings["IO_ETIKETT"].ParamValue;
@@ -1288,7 +1291,7 @@ namespace SapORM
         ////    var header1 = changeParam["UEBERSCHRIFT_1"];
         ////    var content1 = changeParam["INHALT_1"];
 
-            
+
         ////    // save:
         ////    func = con.CreateFunction("Z_DPM_DRUCK_FEHLTEILETIK");
         ////    func.Exports["I_AG"].ParamValue = "314582";
@@ -1301,7 +1304,7 @@ namespace SapORM
         ////    changeParam["INHALT_1"] = content1 + ".";
         ////    changeParam.EndEdit();
         ////    func.Execute();
-
+            
         ////    var pdf = func.Imports["E_PDF"].ParamValue;
         ////}
 
@@ -1321,12 +1324,12 @@ namespace SapORM
         //    var importList = Z_DPM_DRUCK_FEHLTEILETIK.GT_ETIKETT.GetImportList(Sap);
         //    importList.Add(new Z_DPM_DRUCK_FEHLTEILETIK.GT_ETIKETT { CHASSIS_NUM = "DE87654323" });
         //    Sap.ApplyImport(importList);
-            
+
         //    Sap.Execute();
 
         //    var exportList = Z_DPM_DRUCK_FEHLTEILETIK.GT_ETIKETT.GetExportList(Sap);
         //    if (exportList.Any())
-        //    {
+        //{
         //        var item = exportList[0];
         //        item.INHALT_1 += ".";
 
@@ -1339,7 +1342,7 @@ namespace SapORM
         //        Sap.ApplyImport(importList);
 
         //        Sap.Execute();
-        //    }
+        //}
 
         //    var eSubrc = Sap.GetExportParameter("E_SUBRC");
         //    var eMessage = Sap.GetExportParameter("E_MESSAGE");
@@ -1415,12 +1418,12 @@ namespace SapORM
 
         //static void FahrerVerfuegbarkeitTestRead()
         //{
-        //    var fahrerNr = "499930";
-        //    var list = Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1.GetExportListWithInitExecute(Sap,
-        //        "I_FAHRER, I_VONDAT, I_BISDAT",
-        //        fahrerNr.ToSapKunnr(), "10022014", "14122099");
+            //var fahrerNr = "499930";
+            //var list = Z_V_Ueberf_Verfuegbarkeit1.T_VERFUEG1.GetExportListWithInitExecute(Sap,
+            //    "I_FAHRER, I_VONDAT, I_BISDAT",
+            //    fahrerNr.ToSapKunnr(), "10022014", "14122099");
 
-        //    var count = list.Count;
+            //var count = list.Count;
         //}
 
         //static void FahrerVerfuegbarkeitTestUpd()
@@ -1440,7 +1443,7 @@ namespace SapORM
         //    var xxx = DateTime.Now.ToString("yyyyMMdd");
 
         //    var result = Sap.ResultCode;
-        //}
+            //}
 
 
 
@@ -1537,7 +1540,7 @@ namespace SapORM
         //        KunnrCsi.ToSapKunnr(),
         //        "U",
         //        "0000000014");
-
+        
         //    list.Add(new Z_DPM_TAB_ZEVENT_KONFIG_01.GT_EVENT
         //    {
         //        EVENT = "0000000014",
@@ -1589,9 +1592,9 @@ namespace SapORM
         //    var list = Z_dpm_Read_Prot_Telefonate_01.GT_OUT.GetExportListWithInitExecute(Sap,
         //                "I_AG",
         //                KunnrTargo.ToSapKunnr()
-        //                );
+            //            );
 
-        //    var listCount = list.Count;
+            //var listCount = list.Count;
         //}
 
         //static readonly string KunnrLueg = "240042"; // 0000329245
@@ -1601,7 +1604,7 @@ namespace SapORM
         //    var list2 = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(Sap);
 
         //    var hhs = list2.Where(l => l.ZKREIS.ToUpper().StartsWith("HAMBURG")).ToList();
-
+        
         //    //var list = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportListWithInitExecute(Sap,
         //    //            "I_KUNNR, I_GRUPPE, I_VKORG, I_VKBUR, I_ZZZLDAT_VON, I_ZZZLDAT_BIS, I_LISTE",
         //    //                "",
