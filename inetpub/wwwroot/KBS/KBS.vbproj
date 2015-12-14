@@ -136,7 +136,6 @@
     <Content Include="Forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="Forms\ReportLetztePlatinenbestellungen.aspx" />
     <Content Include="Forms\KVPBewertung.aspx" />
-    <Content Include="Forms\KVPSelection.aspx" />
     <Content Include="Forms\KVPErfassung.aspx" />
     <Content Include="Forms\Verpraegungsliste.aspx" />
     <Content Include="Forms\MitarbeiterPostfach.htm" />
@@ -486,13 +485,6 @@
     </Compile>
     <Compile Include="Forms\KVPBewertung.aspx.vb">
       <DependentUpon>KVPBewertung.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Forms\KVPSelection.aspx.designer.vb">
-      <DependentUpon>KVPSelection.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\KVPSelection.aspx.vb">
-      <DependentUpon>KVPSelection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Forms\KVPErfassung.aspx.designer.vb">

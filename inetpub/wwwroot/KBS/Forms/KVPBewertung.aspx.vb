@@ -261,7 +261,7 @@ Public Class KVPBewertung
 
     Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
         Session("ObjKVP") = Nothing
-        Response.Redirect("../Forms/KVPSelection.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Private Sub ShowPopUp(ByVal HeaderText As String, ByVal Text As String, Optional ByVal TextType As MessageType = MessageType.FlatText)
