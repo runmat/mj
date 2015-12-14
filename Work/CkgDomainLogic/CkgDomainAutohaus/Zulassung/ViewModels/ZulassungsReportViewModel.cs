@@ -83,29 +83,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         private List<ZulassungsReportModel> GetAllItems(ZulassungsReportSelektor selector, Action<string, string> addModelError)
         {
-            var items = new List<ZulassungsReportModel>();
-            if (selector.KundenNr.IsNotNullOrEmpty())
-                items = DataService.GetZulassungsReportItems(selector, Kunden, addModelError);
-            else
-            {
-                var kundenPos = 0;
-                foreach (var kunde in Kunden)
-                {
-                    if (addModelError == null && new List<string> { "10032428", "10044115", "350514" }.Contains(kunde.KundenNr.Trim('0')))
-                        continue;
-
-                    selector.KundenNr = kunde.KundenNr;
-                    items =
-                        items.Concat(DataService.GetZulassungsReportItems(selector, Kunden, addModelError))
-                             .ToListOrEmptyList();
-
-                    if (addModelError == null && items.Any())
-                        if (++kundenPos > 4)
-                            break;
-                }
-            }
-
-            return items;
+            return DataService.GetZulassungsReportItems(selector, Kunden, addModelError);
         }
 
         public void LoadZulassungsReport(Action<string, string> addModelError)

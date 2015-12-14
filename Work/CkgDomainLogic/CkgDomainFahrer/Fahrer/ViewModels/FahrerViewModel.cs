@@ -335,7 +335,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 return new List<string>();
 
             var existingImageFiles = Directory.GetFiles(FotoUploadPath, string.Format("{0}.{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", "*", auftrag.Fahrt, auftrag.ProtokollName),
                                                "*"));
 
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();

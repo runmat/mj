@@ -1,43 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using StatusDefault.lib;
 
-namespace StatusDefault
+namespace StatusDienste
 {
-    public partial class _Default : System.Web.UI.Page
+    public partial class Default : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            bool DbConnect = false;
-            bool SAPConnect = false;
-            Interface ConnInterface = new Interface();
+            Interface connInterface = new Interface();
 
-            DbConnect=ConnInterface.CheckSQLConnection();
-            if (DbConnect  == true) 
+            var dbConnect = connInterface.CheckSQLConnection();
+            if (dbConnect) 
             {
                 lblStatusSQL.Text = "SQL-Connection: OK";
             }
             else
             {
                 lblStatusSQL.Text = "SQL-Connection: CRITICAL";
-                lblErrorSQL.Text = ConnInterface.ErrorSql;
+                lblErrorSQL.Text = connInterface.ErrorSql;
             }
             
-            SAPConnect =ConnInterface.CheckSAPConnection() ;
-            if (SAPConnect == true)
+            var sapConnect = connInterface.CheckSAPConnection();
+            if (sapConnect)
             {
                 lblStatusSAP.Text = "SAP-Connection: OK";
             }
             else
             {
                 lblStatusSAP.Text = "SAP-Connection: CRITICAL";
-                lblErrorSAP.Text = ConnInterface.ErrorSap;
+                lblErrorSAP.Text = connInterface.ErrorSap;
             }
-            if (SAPConnect == true && DbConnect == true)
+            if (sapConnect && dbConnect)
             {
                 lblStatus.Text = "Status Applikation: OK";
 

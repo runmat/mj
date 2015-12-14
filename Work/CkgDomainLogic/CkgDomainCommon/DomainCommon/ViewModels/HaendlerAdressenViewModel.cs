@@ -1,27 +1,14 @@
-﻿// ReSharper disable RedundantUsingDirective
-// ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+﻿// ReSharper disable RedundantEmptyObjectOrCollectionInitializer
 using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.DomainCommon.ViewModels;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.DomainCommon.Services;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Resources;
-using GeneralTools.Services;
-using SapORM.Contracts;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
 {
@@ -53,21 +40,21 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         }
 
         [XmlIgnore]
-        public List<SelectItem> LaenderList
+        public List<LandExt> LaenderList
         {
             get { return PropertyCacheGet(() => DataService.GetLaenderList()); }
         }
 
         [XmlIgnore]
-        public List<SelectItem> LaenderListWithOptionAll
+        public List<LandExt> LaenderListWithOptionAll
         {
-            get { return LaenderList.CopyAndInsertAtTop(new SelectItem { Key = "", Text = Localize.DropdownDefaultOptionAll }); }
+            get { return LaenderList.CopyAndInsertAtTop(new LandExt { Code = "", CodeExt = "", Bezeichnung = Localize.DropdownDefaultOptionAll }); }
         }
 
         [XmlIgnore]
-        public List<SelectItem> LaenderListWithOptionPleaseChoose
+        public List<LandExt> LaenderListWithOptionPleaseChoose
         {
-            get { return LaenderList.CopyAndInsertAtTop(new SelectItem { Key = "", Text = Localize.DropdownDefaultOptionPleaseChoose }); }
+            get { return LaenderList.CopyAndInsertAtTop(new LandExt { Code = "", CodeExt = "", Bezeichnung = Localize.DropdownDefaultOptionPleaseChoose }); }
         }
 
         public bool LandAdressenModus { get { return HaendlerAdressenSelektor.LandAdressenModus; } }
@@ -89,7 +76,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (HaendlerAdressenModus)
                 list = list.Where(a => a.HaendlerNr.IsNotNullOrEmpty()).ToListOrEmptyList();
 
-            list = list.Where(a => LaenderList.Any(land => land.Key == a.LaenderCode)).ToListOrEmptyList();
+            list = list.Where(a => LaenderList.Any(land => land.CodeExt == a.LaenderCode)).ToListOrEmptyList();
 
             HaendlerAdressen = list;
 
@@ -119,11 +106,14 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public HaendlerAdresse NewItem()
         {
+            var selectedLand = HaendlerAdressenSelektor.Land;
+
             return new HaendlerAdresse
             {
                 LaenderCode = HaendlerAdressenSelektor.LandCode,
-                LandBrief = "DE",
-                LandSchluessel = "DE",
+                LandBrief = (selectedLand != null ? selectedLand.Code : "DE"),
+                LandSchluessel = (selectedLand != null ? selectedLand.Code : "DE"),
+                SpracheAnschreiben = "DE"
             };
         }
 
@@ -150,6 +140,20 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             if (HaendlerAdressenModus && model.ClientNr.IsNullOrEmpty())
                 addModelError(m => m.ClientNr, Localize.FieldIsRequired);
+
+            if (!String.IsNullOrEmpty(model.PlzBrief))
+            {
+                var plzBriefErg = DataService.CountryPlzValidate(model.LandBrief, model.PlzBrief);
+                if (!String.IsNullOrEmpty(plzBriefErg))
+                    addModelError(m => m.PlzBrief, plzBriefErg);
+            }
+
+            if (!String.IsNullOrEmpty(model.PlzSchluessel))
+            {
+                var plzSchluesselErg = DataService.CountryPlzValidate(model.LandSchluessel, model.PlzSchluessel);
+                if (!String.IsNullOrEmpty(plzSchluesselErg))
+                    addModelError(m => m.PlzSchluessel, plzSchluesselErg);
+            }
         }
 
         public void FilterHaendlerAdressen(string filterValue, string filterProperties)

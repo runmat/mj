@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CKG.Base.Kernel;
 using CKG.Base.Business;
 using CKG.Base.Common;
-using CKG.Base;
 using System.Data;
 
 namespace AppRemarketing.lib
 {
     public class FzgSperren : BankBase
     {
-       #region "Declaclarations"
+        #region "Declaclarations"
 
         String m_strFilename2;
         String m_strFahrgestellnummer;
+        String m_selHaendler;
+        String m_debitor;
+        String m_haendler;
         DataTable m_tblFahrzeuge;
         DataTable m_tblFehlerFahrzeuge;
         DataTable m_tblUpload;
@@ -24,7 +22,9 @@ namespace AppRemarketing.lib
         String mE_MESSAGE;
 
         #endregion
+
         #region "Properties"
+
         public String E_SUBRC
         {
             get { return mE_SUBRC; }
@@ -54,20 +54,39 @@ namespace AppRemarketing.lib
             get { return m_tblFehlerFahrzeuge; }
             set { m_tblFehlerFahrzeuge = value; }
         }
+
         public String Fahrgestellnummer
         {
             get { return m_strFahrgestellnummer; }
             set { m_strFahrgestellnummer = value; }
         }
 
+        public String SelHaendler
+        {
+            get { return m_selHaendler; }
+            set { m_selHaendler = value; }
+        }
+
+        public String Debitor
+        {
+            get { return m_debitor; }
+            set { m_debitor = value; }
+        }
+
+        public String Haendler
+        {
+            get { return m_haendler; }
+            set { m_haendler = value; }
+        }
+
         #endregion
+
         public FzgSperren(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
                                         : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
 	    {
             this.m_strFilename2 = strFilename;
 
 	    }
-
 
         public override void Change()
         {
@@ -78,6 +97,7 @@ namespace AppRemarketing.lib
         {
 
         }
+
         public void Show(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.FILL";
@@ -94,8 +114,13 @@ namespace AppRemarketing.lib
 
                 myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
 
-
-
+                // Selektion nach Händler oder Upload-Tabelle/FIN-Liste
+                if (!String.IsNullOrEmpty(m_selHaendler))
+                {
+                    myProxy.setImportParameter("I_RDEALER", m_selHaendler);
+                }
+                else if (m_tblUpload != null)
+                {
                     DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
                     DataRow rowUpload = null;
                     foreach (DataRow rowUpload_loopVariable in m_tblUpload.Rows)
@@ -110,7 +135,7 @@ namespace AppRemarketing.lib
                         SapTable.Rows.Add(tmpSAPRow);
                         SapTable.AcceptChanges();
                     }
-
+                }
 
                 myProxy.callBapi();
 
@@ -197,6 +222,7 @@ namespace AppRemarketing.lib
             }
 
         }
+
         public void ShowAll(String strAppID, String strSessionID, System.Web.UI.Page page, String OhneHaendlerSperre)
         {
             m_strClassAndMethod = "FzgSperren.ShowAll";
@@ -316,6 +342,7 @@ namespace AppRemarketing.lib
             }
 
         }
+
         public void Sperren(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.Sperren";
@@ -330,22 +357,26 @@ namespace AppRemarketing.lib
             {
                 DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_SPERR_HAEND_FZG_01", ref m_objApp, ref m_objUser, ref page);
 
-                myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+                if (!string.IsNullOrEmpty(m_debitor))
+                    myProxy.setImportParameter("I_KUNNR_AG", m_debitor.PadLeft(10, '0'));
+                else
+                    myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
 
+                if (!string.IsNullOrEmpty(m_haendler))
+                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
 
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 
+                DataRow tmpSAPRow = SapTable.NewRow();
 
-                    DataRow tmpSAPRow = SapTable.NewRow();
+                {
+                    tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
+                }
 
-                    {
-                        tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
-                    }
-
-                    SapTable.Rows.Add(tmpSAPRow);
-                    SapTable.AcceptChanges();
-     
+                SapTable.Rows.Add(tmpSAPRow);
+                SapTable.AcceptChanges();
                 
                 myProxy.callBapi();
                 
@@ -361,7 +392,6 @@ namespace AppRemarketing.lib
                 {
                     WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblFahrzeuge);
                 }
-
             }
             catch (Exception ex)
             {
@@ -374,10 +404,9 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
+
         public void Entsperren(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "FzgSperren.Sperren";
@@ -391,21 +420,27 @@ namespace AppRemarketing.lib
             try
             {
                 DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_ENTSP_HAEND_FZG_01", ref m_objApp, ref m_objUser, ref page);
-                myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
+                if (!string.IsNullOrEmpty(m_debitor))
+                    myProxy.setImportParameter("I_KUNNR_AG", m_debitor.PadLeft(10, '0'));
+                else
+                    myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
+
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
 
+                if (!string.IsNullOrEmpty(m_haendler))
+                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
 
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 
-                    DataRow tmpSAPRow = SapTable.NewRow();
+                DataRow tmpSAPRow = SapTable.NewRow();
 
-                    {
-                        tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
-                    }
+                {
+                    tmpSAPRow["CHASSIS_NUM"] = m_strFahrgestellnummer;
+                }
 
-                    SapTable.Rows.Add(tmpSAPRow);
-                    SapTable.AcceptChanges();
-         
+                SapTable.Rows.Add(tmpSAPRow);
+                SapTable.AcceptChanges();
 
                 myProxy.callBapi();
 
@@ -421,7 +456,6 @@ namespace AppRemarketing.lib
                 {
                     WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblFahrzeuge);
                 }
-
             }
             catch (Exception ex)
             {
@@ -434,9 +468,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
     }
 }

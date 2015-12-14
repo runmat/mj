@@ -105,8 +105,28 @@ else
     function LocationReloadWithoutQueryString() {
         var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
         var isMassenabmeldung = '@Model.Zulassung.Zulassungsdaten.IsMassenabmeldung';
+        var isSchnellabmeldung = '@Model.Zulassung.Zulassungsdaten.IsSchnellabmeldung';
+        var isVersandzulassung = '@Model.ModusVersandzulassung';
+        var isSonderzulassung = '@Model.ModusSonderzulassung';
+        var isAbmeldung = '@Model.ModusAbmeldung';
+
         if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
             window.location = "../Fahrzeugbestand/index";
+        } else if (window.location.pathname.indexOf("ZulassungFromShoppingCart") > -1) {
+            var replaceAction = "Index";
+
+            if (isSchnellabmeldung == "True") {
+                replaceAction = "Schnellabmeldung";
+            } else if (isVersandzulassung == "True") {
+                replaceAction = "Versandzulassung";
+            } else if (isSonderzulassung == "True") {
+                replaceAction = "Sonderzulassung";
+            } else if (isAbmeldung == "True") {
+                replaceAction = "Abmeldung";
+            }
+
+            window.location = window.location.pathname.replace("ZulassungFromShoppingCart", replaceAction);
+
         } else {
             window.location = window.location.pathname;
         }

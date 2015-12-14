@@ -29,8 +29,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
         void GetZulassungsKennzeichen(string kreis, out string kennzeichen);
 
         Adresse GetLieferantZuKreis(string kreis);
-        string GetZulassungsstelleWkzUrl(string kreis);
 
+        string GetZulassungsstelleWkzUrl(string kreis);
 
         string Check48hExpress(Vorgang zulassung);
 
