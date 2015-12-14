@@ -1,11 +1,11 @@
 ﻿<%@ Page Title="Startseite" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
-    CodeBehind="Default.aspx.cs" Inherits="StatusDefault._Default" %>
+    CodeBehind="Default.aspx.cs" Inherits="StatusDienste.Default" %>
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <p>
-       <asp:Label ID="Label1" runat="server" Text="BaseService, npa, npaService, Validation"></asp:Label>
+       <asp:Label ID="Label1" runat="server" Text="ServicesMvc"></asp:Label>
     </p>
     <p>
         <asp:Label ID="lblStatus" runat="server" Text="Label"></asp:Label>
