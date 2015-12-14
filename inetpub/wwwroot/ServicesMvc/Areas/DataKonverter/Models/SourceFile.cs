@@ -12,13 +12,13 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     public class SourceFile
     {
         public string Guid { get; set; }
-
-        public string Filename { get; set; }
-
-        public bool FirstRowIsCaption { get; set; }
-        public Encoding Encoding { get; set; }
+        public string FilenameOrig { get; set; }    // Original file name
+        public string FilenameCsv { get; set; }     // Internal file name -> {guid}.csv
         public List<Field> Fields { get; set; }
-        public string Content { get; set; }
+
+        public Encoding Encoding { get; set; }
+        public bool FirstRowIsCaption { get; set; }
+        public char Delimiter { get; set; }
 
         public int RowCount
         {
@@ -33,11 +33,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public SourceFile()
         {
             Guid = System.Guid.NewGuid().ToString();
-            //    public Guid Guid { get { return Guid.NewGuid(); } }
-            //    public string Caption { get; set; }
-            //    public DataType DataType { get; set; }
-            //    public bool IsUsed { get; set; }
-            //    public List<string> Content { get; set; }
+            Delimiter = ';';
+            FirstRowIsCaption = true;
         }
     }
 }

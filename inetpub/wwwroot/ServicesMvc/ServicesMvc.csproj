@@ -289,6 +289,7 @@
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Prozessauswahl.cshtml" />
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Konfiguration.cshtml" />
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Abschluss.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\Admin\Partial\DestinationDiv.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

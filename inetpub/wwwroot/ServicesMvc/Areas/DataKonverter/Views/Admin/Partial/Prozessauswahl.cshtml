@@ -40,9 +40,8 @@
             alert(e.response.message);
             return;
         }
-
-        $('#UploadFileName').val(e.response.uploadFileName);
-        $('#Filename').val(e.response.uploadFileName);
+        
+        $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
     }
 
     function UploadError(e) {
@@ -88,7 +87,7 @@
                     </div>
                 </div>
 
-                @Html.TextBoxFor(m => m.SourceFile.Filename)                
+                @Html.TextBoxFor(m => m.SourceFile.FilenameOrig)                
 
             </div>
             <div class="span6">

@@ -104,7 +104,9 @@
         </div>
 
         <div id="destination">
-            @{
+            @*@Html.Action("ShowDestinationDiv", Model.DataMapper.DestinationFile.XmlDocument.DocumentElement)*@
+            @Html.Action("ShowDestinationDiv", Model.DataMapper.DestinationFile.XmlDocument)
+            @*@{
                 var node = "";
                 foreach (XmlElement parent in Model.DataMapper.DestinationFile.XmlDocument.DocumentElement)
                 {
@@ -123,11 +125,10 @@
                         if (!child.HasChildNodes)
                         {
                            <div class="w ept" id="Dest-@id">
-                            <div class="ep">
-                            </div>
-                            <div class="field">@child.Name</div>
-                            <span class="data "></span>
-                        </div> 
+                                <div class="ep"></div>
+                                <div class="field">@child.Name</div>
+                                <span class="data"></span>
+                            </div> 
                         }
 
                         if (child.HasChildNodes)
@@ -151,7 +152,7 @@
                         }
                     }
                 }
-                }
+                }*@
         </div>
     </div>
 

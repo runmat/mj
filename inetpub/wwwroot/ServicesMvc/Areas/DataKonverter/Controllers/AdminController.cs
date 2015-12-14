@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Configuration;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 using CkgDomainLogic.DataKonverter.Contracts;
 using CkgDomainLogic.DataKonverter.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
@@ -55,10 +56,15 @@ namespace ServicesMvc.DataKonverter.Controllers
         {
             ViewModel.DataInit();
 
-            //var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
-            //var destFilename = "";
-            //ViewModel.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
-            //ViewModel.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn.xsd");
+            // var csvFilename = ViewModel.ConvertExcelToCsv("Import1 Excel2007.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            // var csvFilename = ViewModel.ConvertExcelToCsv(  "Import1 Excel2007.xlsx", Guid.NewGuid() + "-Testfile.csv");
+            var destFilename = "";
+
+            // ViewModel.DataMapper.SourceFile.Filename = csvFilename; // ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
+            // ViewModel.DataMapper.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  //  ViewModel.FillDestinationObj("KroschkeOn.xsd");
+            var csvFilename = "";
+
+            // ViewModel.DataMapper.Init(ViewModel.GetUploadPathTemp(), csvFilename, true, ';', @"C:\tmp\KroschkeOn2.xml", null, null);
 
             return View(ViewModel);
         }
@@ -67,28 +73,26 @@ namespace ServicesMvc.DataKonverter.Controllers
         [CkgApplication]
         public ActionResult Prozessauswahl(KroschkeDataKonverterViewModel.WizardProzessauswahl model)
         {
+            var firstRequest = Request["firstRequest"];
+
             //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
             //    model = ViewModel.Auftraggeber;
+
+            var test0 = ViewModel;
+
+            var test = model.SourceFile.FilenameOrig;
 
             return PartialView("Partial/Prozessauswahl", model);
         }
 
         [HttpPost]
         [CkgApplication]
+        // public ActionResult Konfiguration()
         public ActionResult Konfiguration()
         {
-            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-            //    model = ViewModel.Auftraggeber;
-
-            // ##removeme##
-            if (ViewModel.DataMapper.SourceFile.Fields == null)
-            {
-                // var csvFilename = ViewModel.ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
-                var csvFilename = @"C:\\dev\\inetpub\\wwwroot\\ServicesMvc\\App_Data\\FileUpload\\Temp\\Testfile3.csv";
-                ViewModel.DataMapper.SourceFile.Filename = csvFilename;
-                ViewModel.DataMapper.SourceFile = ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
-                // ViewModel.DataMapper.DestinationFile = ViewModel.FillDestinationObj("KroschkeOn2.xml");
-            }
+            ViewModel.DataMapper.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
+            ViewModel.DataMapper.ReadSourceFile();
+            ViewModel.DataMapper.ReadDestinationObj();
 
             return PartialView("Partial/Konfiguration", ViewModel);
         }
@@ -185,7 +189,6 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         #endregion
 
-
         #region Upload
 
         [HttpPost]
@@ -197,13 +200,10 @@ namespace ServicesMvc.DataKonverter.Controllers
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
-            //if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
-            //    return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
-
             if (!ViewModel.UploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
-            ViewModel.DataMapper.SourceFile.Filename = file.FileName;
+            ViewModel.DataMapper.SourceFile.FilenameOrig = file.FileName;
 
             return Json(new
             {
@@ -214,29 +214,30 @@ namespace ServicesMvc.DataKonverter.Controllers
         }
 
         [HttpPost]
-        //public ActionResult Upload(Upload model)
         public ActionResult Upload(SourceFile model)
         {
             var sdf = ViewModel.DataMapper.SourceFile;
 
             if (Request["firstRequest"] == "ok")                // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-                // model = ViewModel.Upload;
                 model = ViewModel.DataMapper.SourceFile;
 
             if (ModelState.IsValid)
             {
-                //if (model.DeleteUploadedPdf)
-                //{
-                //    ViewModel.Overview.PdfUploaded = null;
-                //    ViewModel.Overview.PdfCreateDt = null;
-                //}
-
-                //ViewModel.Upload = model;
                 ViewModel.DataMapper.SourceFile = model;
             }
 
-            // return PartialView("Partial/Upload", model);
             return PartialView("Partial/Prozessauswahl", model);
+        }
+
+        #endregion
+
+        #region Show Xml as div content
+
+        public ActionResult ShowDestinationDiv(XmlDocument destXmlDocument)
+        {
+            var divContent = ViewModel.GetDestinationDiv(destXmlDocument);
+
+            return Content(divContent);
         }
 
         #endregion
@@ -254,9 +255,7 @@ namespace ServicesMvc.DataKonverter.Controllers
 
             return Content(xmlContent);
         }
-        
 
         #endregion
-
     }
 }

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using CkgDomainLogic.DomainCommon.Models;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using SapORM.Models;
+using Telerik.Web.Mvc.UI.Fluent;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
@@ -28,7 +31,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public string RecordInfoText
         {
-            get { return String.Format("{0}/{1}", RecordNo, RecordCount); } 
+            get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
         }
 
         public DataMapper()
@@ -41,58 +44,132 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             Processors = new List<Processor>();
         }
 
-        public DataConnection AddConnection(DataConnection dataConnection)
+        public void Init(string sourceFile, bool firstRowIsCaption, char delimiter, string destinationFileXml, List<DataConnection> dataConnections, List<Processor> processors)
         {
-            // Prüfen, ob Verbindung bereits besteht...
-            if (DataConnections.Count(x => x.GuidSource == dataConnection.GuidSource && x.GuidDest == dataConnection.GuidDest) > 0)
-            {
-                return null;
-            }
-            
-            // Verbindung hinzufügen
-            // var newConnection = new DataConnection();
-            DataConnections.Add(dataConnection);
+            // Convert Excel to csv if needed...
 
-            return dataConnection;
-        }
+            // TempFolder = tempFolder;
+            SourceFile.FilenameOrig = sourceFile;
+            DestinationFile.Filename = destinationFileXml;
+            DataConnections = dataConnections;
+            Processors = Processors;
 
-        public DataConnection AddConnection(string idSource, string idDest, bool sourceIsProcessor, bool destIsProcessor)
-        {
-
-            var newConnection = new DataConnection
-            {
-                GuidSource = idSource,
-                GuidDest = idDest,
-                SourceIsProcessor = sourceIsProcessor,
-                DestIsProcessor = destIsProcessor
-            };
-
-            // Prüfen, ob Verbindung bereits besteht...
-            if (DataConnections.Count(x => x.GuidSource == newConnection.GuidSource && x.GuidDest == newConnection.GuidDest) > 0)
-            {
-                return null;
-            }
-            
-            // Verbindung hinzufügen
-            DataConnections.Add(newConnection);
-
-            return newConnection;
-        }
-
-        public string RemoveConnection(string idSource, string idDest)
-        {
-            idDest = idDest.Replace("prozin-","");
-            var connection = DataConnections.FirstOrDefault(x => x.GuidSource == idSource && x.GuidDest == idDest);
-            if (connection == null)
-                return null;
-
-            DataConnections.Remove(connection);            
-            return null;
+            // ReadSourceFile(sourceFile, firstRowIsCaption, delimiter);
+            ReadSourceFile();
+            ReadDestinationObj();
         }
 
         public List<DataConnection> GetConnections()
         {
             return DataConnections;
+        }
+
+        public void ReadDestinationObj()
+        {
+            var filename = Path.GetFileName(DestinationFile.Filename);
+            string xmlContent;
+
+            using (var sr = new StreamReader(DestinationFile.Filename))
+            {
+                xmlContent = sr.ReadToEnd();
+            }
+
+            //var destinationFileObj = new DestinationFile
+            //{
+            DestinationFile.Filename = filename;
+            DestinationFile.XmlRaw = xmlContent;
+            DestinationFile.XmlDocument = StringToXmlDoc(xmlContent);
+            DestinationFile.Fields = new List<FieldXml>();
+            //};
+
+            var doc = new XmlDocument();
+            doc.Load(DestinationFile.Filename);
+
+            doc.IterateThroughAllNodes(delegate(XmlNode node)
+            {
+                try
+                {
+                    var nodeId = node.Attributes["id"].Value;
+
+                    var newField = new FieldXml
+                    {
+                        Guid = "Dest-" + nodeId,
+                        Records = new List<string>()
+                    };
+                    newField.Records.Add("test");
+
+                    // destinationFileObj.Fields.Add(newField);
+                    DestinationFile.Fields.Add(newField);
+                }
+                catch (Exception)
+                {
+                }
+            });
+
+            // return destinationFileObj;
+        }
+
+        /// <summary>
+        /// Gibt SourceFile-Objekt zurück
+        /// </summary>
+        /// <returns></returns>
+        // public SourceFile ReadSourceFile(string filename, bool firstRowIsCaption, char delimiter = ';')
+        public void ReadSourceFile()
+        {
+            var csvObj = CsvReaderFactory.GetCsvObj(SourceFile.FilenameCsv, SourceFile.FirstRowIsCaption, SourceFile.Delimiter);
+
+            var fieldCount = csvObj.FieldCount;
+            var headers = csvObj.GetFieldHeaders();
+            var fields = new List<Field>();
+            
+            for (var i = 0; i < headers.Length; i++)
+            {
+                if (!SourceFile.FirstRowIsCaption)  // Falls keine Überschriften, Spaltennamen selbst erstellen..
+                    headers[i] = "Spalte" + i ;
+
+                var newField = new Field
+                {
+                    Caption = headers[i],
+                    FieldType = FieldType.String,  // DefaultType
+                    IsUsed = true
+                };
+
+                fields.Add(newField);
+            }
+
+            // Daten jeder Column zuordnen...
+            while (csvObj.ReadNextRecord())
+            {
+                for (var j = 0; j < fieldCount; j++)
+                {
+                    var value = csvObj[j];
+                    fields[j].Records.Add(value);
+                }
+            }
+
+            //var sourceFile = new SourceFile
+            //{
+            //    FilenameOrig = SourceFile.FilenameOrig,
+            //    FirstRowIsCaption = SourceFile.FirstRowIsCaption,
+            //    Fields = fields
+            //};
+
+            SourceFile.Fields = fields;
+
+        }
+
+        protected DataItem.DataType GetDataType(IEnumerable<string> values)
+        {
+            var dataType = DataItem.DataType.String;
+
+            return dataType;
+        }
+
+        private static XmlDocument StringToXmlDoc(string xml)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(xml);
+            return doc;
         }
 
         public Processor AddProcessor()
@@ -135,6 +212,22 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             processor.Input = input.ToString();
 
             return processor;
+        }
+        
+        public string ConvertToCsvIfNeeded(string filenameOrigFull, string filenameCsvFull, char delimeter = ';')
+        {
+            SourceFile.FilenameOrig = filenameOrigFull;
+            SourceFile.FilenameCsv = filenameCsvFull;
+
+
+            var extension = Path.GetExtension(filenameOrigFull).ToLower();
+            if (extension == ".xls" || extension == ".xlsx")
+            {
+                SpireXlsFactory.ConvertExcelToCsv(filenameOrigFull, filenameCsvFull, delimeter);
+                File.Delete(filenameOrigFull);
+            }
+
+            return filenameCsvFull;
         }
 
         #region TEST

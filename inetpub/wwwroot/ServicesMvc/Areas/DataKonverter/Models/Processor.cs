@@ -9,7 +9,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
     {
 
         private int _defaultLeft= 700;
-        private int _defaultTop = 320;
+        private int _defaultTop = 340;
 
         public string Guid { get; set; }
         public int Number { get; set; }
@@ -37,6 +37,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             OperationPara1 = para1;
             OperationPara2 = para2;
 
+            // Set first X/Y position of HTML div container
             if (posLeft == 0)
                 posLeft = _defaultLeft + rnd.Next(-20, 20);
 
@@ -74,6 +75,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     {
                         return Input;
                     }
+                default:
+                    return Input;
             }
             return null;
         }

@@ -16,7 +16,7 @@ namespace DocumentTools.Services
     public class CsvReaderFactory : AbstractDocumentFactory
     {
 
-        public static CsvReader GetCsvObj(string filename, bool firstRowIsCaption, char delimiter)
+        public static CsvReader GetCsvObj(string filename, bool firstRowIsCaption, char delimiter = ';')
         {
             // var encoding = GetFileEncoding(filename, Encoding.UTF8);
             var encoding = GetFileEncoding(filename, Encoding.Default);

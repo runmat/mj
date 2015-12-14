@@ -10,10 +10,6 @@ namespace DocumentTools.Services
     {
         public static string ConvertExcelToCsv(string excelFilename, string csvFilename, char delimeter = ';')
         {
-            //var workbook = new SpireXls.Workbook();
-            //workbook.LoadFromFile(excelFilename);
-            //workbook.SaveToFile(csvFilename, delimeter.ToString());
-
             using (var workbook = new SpireXls.Workbook())
             {
                 workbook.LoadFromFile(excelFilename);
@@ -21,11 +17,6 @@ namespace DocumentTools.Services
 
                 return csvFilename;
             }
-
-            //using (var workbook = new SpireXls.Workbook())
-            //{
-            //    workbook.SaveToFile(csvFilename, delimeter.ToString());
-            //}
         }
     }
 }

@@ -9,6 +9,6 @@ namespace CkgDomainLogic.DataKonverter.Contracts
 {
     public interface IDataKonverterDataService : ICkgGeneralDataService
     {
-        SourceFile FillSourceFile(string filename, bool firstRowIsCaption, char delimiter = ';');
+        // SourceFile FillSourceFile(string filename, bool firstRowIsCaption, char delimiter = ';');
     }
 }
