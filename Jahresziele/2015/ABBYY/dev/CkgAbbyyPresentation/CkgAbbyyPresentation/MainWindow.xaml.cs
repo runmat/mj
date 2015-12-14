@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Office.Core;
+using Powerpoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace CkgAbbyyPresentation
 {
@@ -52,29 +54,27 @@ namespace CkgAbbyyPresentation
 
         void PreparePresentation()
         {
-            var pi = new ProcessStartInfo
-            {
-                FileName = @"powerpnt.exe",
-                WorkingDirectory = @"C:\Users\JenzenM\Documents",
-                Arguments = "/S Test.pptx",
-           };
-            var process = Process.Start(pi);
-            if (process == null)
-                return;
+            var powerpnt = new Powerpoint.Application();
+            var presentation = powerpnt.Presentations.Open(@"C:\Users\JenzenM\Documents\Test.pptx", MsoTriState.msoCTrue, MsoTriState.msoCTrue, MsoTriState.msoFalse);
 
-            process.WaitForInputIdle(5000);
-            var pWnd = process.MainWindowHandle;
-            ShowWindow(pWnd, 0);
+            //presentation.SlideShowSettings.SlideShowName = Title;
+            var window = presentation.SlideShowSettings.Run();
 
-            SetParent(pWnd, Process.GetCurrentProcess().MainWindowHandle);
-            SetWindowPos(pWnd, (IntPtr)0, 0, 0, (int)WindowsFormsHost.Width, (int)WindowsFormsHost.Height, 0);
+            SetParent((IntPtr)window.HWND, Process.GetCurrentProcess().MainWindowHandle);
+            SetWindowPos((IntPtr)window.HWND, (IntPtr)0, 0, 0, (int)WindowsFormsHost.Width, (int)WindowsFormsHost.Height, 0);
 
-            ShowWindow(pWnd, 1);
+            while (presentation.SlideShowWindow.View.State != Powerpoint.PpSlideShowState.ppSlideShowDone)
+                Thread.Sleep(50);
 
-            Thread.Sleep(1000);
-            process.WaitForInputIdle(5000);
+            presentation.Close();
+            powerpnt.Quit();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
             MessageBox.Show("OK");
-            process.Kill();
         }
 
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

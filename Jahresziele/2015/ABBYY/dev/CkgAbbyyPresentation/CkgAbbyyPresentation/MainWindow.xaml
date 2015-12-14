@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CkgAbbyyPresentation"
         mc:Ignorable="d" MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" 
         Title="CKG Abbyy Präsentation" Height="483.204" Width="825">
     <Grid>
         
