@@ -1,5 +1,4 @@
-﻿using GeneralTools.Contracts;
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
 using System.Collections.Generic;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -181,16 +180,17 @@ namespace CkgDomainLogic.DomainCommon.Models
         #region Haendler Adressen
 
 
-        static public ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem> Z_DPM_READ_LAND_02__GT_OUT_To_SelectItem
+        static public ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, LandExt> Z_DPM_READ_LAND_02__GT_OUT_To_LandExt
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, LandExt>(
                                                  new Dictionary<string, string>(),
                                                  (s, d) =>
                                                  {
-                                                     d.Key = s.LAND1_EXT;
-                                                     d.Text = string.Format("{0}, {1} ({2})", s.LAND1, s.LANDX50, s.LAND1_EXT);
+                                                     d.Code = s.LAND1;
+                                                     d.CodeExt = s.LAND1_EXT;
+                                                     d.Bezeichnung = s.LANDX50;
                                                  }));
             }
         }
@@ -214,7 +214,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      d.HausNrBrief = s.HAUSNR_B;
                                                      d.PlzBrief = s.PLZ_B;
                                                      d.OrtBrief = s.ORT_B;
-                                                     d.LandBrief = "DE";
+                                                     d.LandBrief = s.LAND1_B;
 
                                                      d.Name1Schluessel = s.NAME1_T;
                                                      d.Name2Schluessel = s.NAME2_T;
@@ -222,11 +222,12 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      d.HausNrSchluessel = s.HAUSNR_T;
                                                      d.PlzSchluessel = s.PLZ_T;
                                                      d.OrtSchluessel = s.ORT_T;
-                                                     d.LandSchluessel = "DE";
+                                                     d.LandSchluessel = s.LAND1_T;
 
                                                      d.VersandSperre = s.VERSANDSPERRE.XToBool();
                                                      d.ClientNr = s.CLIENT_NR;
                                                      d.ClientName = s.CLIENTNAME;
+                                                     d.SpracheAnschreiben = s.FORM_SPRAS;
                                                  }));
             }
         }
@@ -262,6 +263,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      d.VERSANDSPERRE = s.VersandSperre.BoolToX();
                                                      d.CLIENT_NR = s.ClientNr;
                                                      d.CLIENTNAME = s.ClientName;
+                                                     d.FORM_SPRAS = s.SpracheAnschreiben;
                                                  }));
             }
         }

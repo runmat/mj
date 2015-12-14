@@ -499,7 +499,7 @@ Public Class Zeiterfassung
     Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
         Session("TimeReg") = Nothing
         Session("TimeRegUser") = Nothing
-        Response.Redirect("Zeiterfassung.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Private Sub lvZeitnachweis_ItemCommand(sender As Object, e As ListViewCommandEventArgs) Handles lvZeitnachweis.ItemCommand
