@@ -50,6 +50,8 @@ namespace CarDocu.Models
             set { _pdfIsSynchronized = value; SendPropertyChanged("PdfIsSynchronized"); }
         }
 
+        public bool FinNumberUppercase { get { return SelectedDocumentType.InputRuleObject.AllowedLengths.Any(); } }
+
         [XmlIgnore]
         public bool ValidFinNumber
         {
