@@ -202,7 +202,7 @@
                                                 cellpadding="0" width="100%" border="0">
                                                 <tr>
                                                     <td colspan="2">
-                                                        <table id="tblLeft" style="padding-right: 50px; border-color: #FFFFFF;">
+                                                        <table id="tblLeft" style="margin-right: 30px; border-color: #FFFFFF;">
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active">
                                                                     Firmenname:
@@ -238,7 +238,7 @@
                                                                     </asp:DropDownList>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" id="tr1" runat="server">
+                                                            <tr class="formquery">
                                                                 <td class="firstLeft active">
                                                                     Portallink:
                                                                 </td>
@@ -246,6 +246,24 @@
                                                                     <span>
                                                                         <asp:DropDownList ID="ddlPortalLink" runat="server" />
                                                                     </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Ausschließlich Login über<br/>o.g. Link erlauben:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:CheckBox ID="cbxForceSpecifiedLoginLink" runat="server"/>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Redirect-URL nach Logout:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtLogoutLink" runat="server" CssClass="InputTextbox"/>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery" id="trPortalType" runat="server">
@@ -338,10 +356,18 @@
                                                             </tr>
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active">
-                                                                    Referenz 4 (bool -> Checkbox):
+                                                                    Referenz 4<br/>(bool -> Checkbox):
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:DropDownList ID="ddlReferenzTyp4" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">

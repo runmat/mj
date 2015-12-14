@@ -59,6 +59,8 @@ Namespace Kernel.Security
         Private m_ReferenceType2Name As String
         Private m_ReferenceType3Name As String
         Private m_ReferenceType4Name As String
+        Private m_blnForceSpecifiedLoginLink As Boolean
+        Private m_strLogoutLink As String
 
 #End Region
 
@@ -114,6 +116,8 @@ Namespace Kernel.Security
                                ByVal blnUsernameDontSendEmail As Boolean, _
                                ByVal intLoginLinkID As Integer, _
                                ByVal strPortalType As String, _
+                               ByVal blnForceSpecifiedLoginLink As Boolean, _
+                               ByVal strLogoutLink As String, _
                                ByVal strReferenzTyp1 As String, _
                                ByVal strReferenzTyp2 As String, _
                                ByVal strReferenzTyp3 As String, _
@@ -164,6 +168,8 @@ Namespace Kernel.Security
             m_intLoginLinkID = intLoginLinkID
             m_DcDatCredentials = New DatCredentials(strSDCustomerNumber, strSDUserName, strSDPassword, strSDUserLogin, strSDSignatur, strSDSignatur2)
             m_PortalType = strPortalType
+            m_blnForceSpecifiedLoginLink = blnForceSpecifiedLoginLink
+            m_strLogoutLink = strLogoutLink
             m_ReferenceType1 = strReferenzTyp1
             m_ReferenceType2 = strReferenzTyp2
             m_ReferenceType3 = strReferenzTyp3
@@ -572,6 +578,24 @@ Namespace Kernel.Security
             End Get
         End Property
 
+        Public Property ForceSpecifiedLoginLink As Boolean
+            Get
+                Return m_blnForceSpecifiedLoginLink
+            End Get
+            Set(value As Boolean)
+                m_blnForceSpecifiedLoginLink = value
+            End Set
+        End Property
+
+        Public Property LogoutLink As String
+            Get
+                Return m_strLogoutLink
+            End Get
+            Set(value As String)
+                m_strLogoutLink = value
+            End Set
+        End Property
+
 #End Region
 
 #Region " Functions "
@@ -741,6 +765,12 @@ Namespace Kernel.Security
                     Else
                         m_intLoginLinkID = 0
                     End If
+                    If Not TypeOf dr("ForceSpecifiedLoginLink") Is System.DBNull Then
+                        m_blnForceSpecifiedLoginLink = CBool(dr("ForceSpecifiedLoginLink"))
+                    Else
+                        m_blnForceSpecifiedLoginLink = False
+                    End If
+                    m_strLogoutLink = dr("LogoutLink").ToString
                 End While
             Catch ex As Exception
                 Throw ex
@@ -956,6 +986,8 @@ Namespace Kernel.Security
                                                "UserDontSendEmail, " & _
                                                "LoginLinkID, " & _
                                                "PortalType, " & _
+                                               "ForceSpecifiedLoginLink, " & _
+                                               "LogoutLink, " & _
                                                "Userreferenzfeld1, " & _
                                                "Userreferenzfeld2, " & _
                                                "Userreferenzfeld3, " & _
@@ -1008,6 +1040,8 @@ Namespace Kernel.Security
                                  "@UserDontSendEmail, " & _
                                  "@LoginLinkID, " & _
                                  "@PortalType, " & _
+                                 "@ForceSpecifiedLoginLink, " & _
+                                 "@LogoutLink, " & _
                                  "@Userreferenzfeld1, " & _
                                  "@Userreferenzfeld2, " & _
                                  "@Userreferenzfeld3, " & _
@@ -1064,6 +1098,8 @@ Namespace Kernel.Security
                                               "UserDontSendEmail=@UserDontSendEmail, " & _
                                               "LoginLinkID=@LoginLinkID, " & _
                                               "PortalType=@PortalType, " & _
+                                              "ForceSpecifiedLoginLink=@ForceSpecifiedLoginLink, " & _
+                                              "LogoutLink=@LogoutLink, " & _
                                               "Userreferenzfeld1=@Userreferenzfeld1, " & _
                                               "Userreferenzfeld2=@Userreferenzfeld2, " & _
                                               "Userreferenzfeld3=@Userreferenzfeld3, " & _
@@ -1161,6 +1197,8 @@ Namespace Kernel.Security
                     .AddWithValue("@UserDontSendEmail", m_UrCustomerUsernameRules.DontSendEmail)
                     .AddWithValue("@LoginLinkID", m_intLoginLinkID)
                     .AddWithValue("@PortalType", m_PortalType)
+                    .AddWithValue("@ForceSpecifiedLoginLink", m_blnForceSpecifiedLoginLink)
+                    .AddWithValue("@LogoutLink", m_strLogoutLink)
                     .AddWithValue("@Userreferenzfeld1", m_ReferenceType1)
                     .AddWithValue("@Userreferenzfeld2", m_ReferenceType2)
                     .AddWithValue("@Userreferenzfeld3", m_ReferenceType3)
