@@ -45,5 +45,7 @@
         void AppUrlQueryAndStore();
 
         void Clear();
+
+        void TrySetLogoutLink();
     }
 }

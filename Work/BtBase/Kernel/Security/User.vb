@@ -817,7 +817,7 @@ Namespace Kernel.Security
             Return tblReturn
         End Function
 
-        Public Function Login(ByVal strUsername As String, ByVal strSessionID As String) As Boolean
+        Public Function Login(ByVal strUsername As String, ByVal strSessionID As String, ByVal strUrl As String) As Boolean
             Dim blnReturn As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
 
@@ -932,6 +932,22 @@ Namespace Kernel.Security
                     End If
                 End If
 
+                'Ggf. prüfen, ob User den richtigen Portal-Link benutzt
+                If m_customer.ForceSpecifiedLoginLink Then
+                    Dim specifiedLoginLink As String = m_customer.LoginLink.ToLower().Replace("http://", "").Replace("https://", "")
+                    If specifiedLoginLink.Contains("/"c) Then
+                        specifiedLoginLink = specifiedLoginLink.Split("/"c)(0)
+                    End If
+
+                    Dim currentLoginLink As String = strUrl.ToLower().Replace("http://", "").Replace("https://", "")
+                    If currentLoginLink.Contains("/"c) Then
+                        currentLoginLink = currentLoginLink.Split("/"c)(0)
+                    End If
+
+                    If Not String.IsNullOrEmpty(currentLoginLink) AndAlso Not currentLoginLink.StartsWith("localhost") AndAlso specifiedLoginLink <> currentLoginLink Then
+                        Throw New Exception("Bitte melden Sie sich künftig über die Adresse https://" & specifiedLoginLink & " im Portal an.<br/>Sie erreichen die Seite auch über die DAD Homepage www.dad.de => Kunden-Login")
+                    End If
+                End If
 
                 'Logonstatus des Accounts pruefen und setzen
                 If Not m_customer.AllowMultipleLogin Then
@@ -964,7 +980,7 @@ Namespace Kernel.Security
         End Function
 
         Public Function Login(ByVal strUsername As String, ByVal strPassword As String, _
-                              ByVal strSessionID As String, Optional ByVal blnPasswdlink As Boolean = False) As Boolean
+                              ByVal strSessionID As String, ByVal strUrl As String, Optional ByVal blnPasswdlink As Boolean = False) As Boolean
             Dim blnReturn As Boolean
             Dim cn As New SqlClient.SqlConnection(m_strConnectionstring)
 
@@ -1098,6 +1114,22 @@ Namespace Kernel.Security
                     End If
                 End If
 
+                'Ggf. prüfen, ob User den richtigen Portal-Link benutzt
+                If m_customer.ForceSpecifiedLoginLink Then
+                    Dim specifiedLoginLink As String = m_customer.LoginLink.ToLower().Replace("http://", "").Replace("https://", "")
+                    If specifiedLoginLink.Contains("/"c) Then
+                        specifiedLoginLink = specifiedLoginLink.Split("/"c)(0)
+                    End If
+
+                    Dim currentLoginLink As String = strUrl.ToLower().Replace("http://", "").Replace("https://", "")
+                    If currentLoginLink.Contains("/"c) Then
+                        currentLoginLink = currentLoginLink.Split("/"c)(0)
+                    End If
+
+                    If Not String.IsNullOrEmpty(currentLoginLink) AndAlso Not currentLoginLink.StartsWith("localhost") AndAlso specifiedLoginLink <> currentLoginLink Then
+                        Throw New Exception("Bitte melden Sie sich künftig über die Adresse https://" & specifiedLoginLink & " im Portal an.<br/>Sie erreichen die Seite auch über die DAD Homepage www.dad.de => Kunden-Login")
+                    End If
+                End If
 
                 'Logonstatus des Accounts pruefen und setzen
                 If Not m_customer.AllowMultipleLogin Then

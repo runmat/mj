@@ -77,6 +77,9 @@ namespace CkgDomainLogic.General.Database.Services
                 var accArea = AccountingAreas.FirstOrDefault(a => a.Area == cust.AccountingArea);
                 if (accArea != null)
                     cust.AccountingAreaName = accArea.Description;
+
+                if (cust.LoginLinkID.HasValue && cust.LoginLinkID.Value > 0)
+                    cust.LoginLink = GetLoginLink(cust.LoginLinkID.Value);
             }
 
             return cust;
@@ -85,6 +88,11 @@ namespace CkgDomainLogic.General.Database.Services
         public List<Customer> GetAllCustomer()
         {
             return Database.SqlQuery<Customer>("SELECT * FROM Customer").ToListOrEmptyList();
+        }
+
+        public string GetLoginLink(int loginLinkId)
+        {
+            return Database.SqlQuery<string>("SELECT Text FROM WebUserUploadLoginLink WHERE ID = {0}", loginLinkId).FirstOrDefault();
         }
 
         public string GetEmailAddressFromUserName(string userName)

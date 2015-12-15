@@ -61,6 +61,7 @@ Namespace Kernel.Security
         Private m_ReferenceType4Name As String
         Private m_blnForceSpecifiedLoginLink As Boolean
         Private m_strLogoutLink As String
+        Private m_strLoginLink As String
 
 #End Region
 
@@ -194,6 +195,9 @@ Namespace Kernel.Security
                 blnCloseOnEnd = True
             End If
             GetCustomer(cn)
+            If m_intLoginLinkID > 0 Then
+                GetPortalLoginLink(cn)
+            End If
             If blnCloseOnEnd Then
                 cn.Close()
             End If
@@ -596,6 +600,15 @@ Namespace Kernel.Security
             End Set
         End Property
 
+        Public Property LoginLink As String
+            Get
+                Return m_strLoginLink
+            End Get
+            Set(value As String)
+                m_strLoginLink = value
+            End Set
+        End Property
+
 #End Region
 
 #Region " Functions "
@@ -781,6 +794,12 @@ Namespace Kernel.Security
             GetIpAddresses(cn)
             GetSDCredentials(cn)
             GetReferenceTypeNames(cn)
+        End Sub
+
+        Private Sub GetPortalLoginLink(ByVal cn As SqlClient.SqlConnection)
+            Dim cmdGetLink As New SqlClient.SqlCommand("SELECT Text FROM WebUserUploadLoginLink WHERE ID=@ID", cn)
+            cmdGetLink.Parameters.AddWithValue("@ID", m_intLoginLinkID)
+            m_strLoginLink = cmdGetLink.ExecuteScalar().ToString()
         End Sub
 
         Public Sub GetIpAddresses(ByVal cn As SqlClient.SqlConnection)

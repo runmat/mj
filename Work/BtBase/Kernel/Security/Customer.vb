@@ -6,6 +6,7 @@ Namespace Kernel.Security
         REM § Dient der Haltung und Bearbeitung von Kundendaten aus der SQL DB
 
 #Region " Membervariables "
+
         Private m_strConnectionstring As String
         Private m_intCustomerID As Integer
         Private m_strCustomerName As String
@@ -37,131 +38,22 @@ Namespace Kernel.Security
         Private m_intDaysUntilLock As Integer
         Private m_intDaysUntilDelete As Integer
         Private m_UrCustomerUsernameRules As UsernameRules = New UsernameRules(True)
-        'Private m_blnUsernameDontSendEmail As Boolean = False
         Private m_blnTVShow As Boolean
         Private m_intLoginLinkID As Integer
         Private m_strHeaderBackgroundPath As String
         Private m_PortalType As String
+        Private m_blnForceSpecifiedLoginLink As Boolean
+        Private m_strLogoutLink As String
+        Private m_strLoginLink As String
 
 #End Region
 
 #Region " Constructor "
-        Private _intCustomerId As Integer
-        Private _p2 As String
-        Private _p3 As String
-        Private _p4 As Boolean
-        Private _p5 As Boolean
-        Private _p6 As String
-        Private _p7 As String
-        Private _p8 As String
-        Private _p9 As String
-        Private _p10 As String
-        Private _p11 As String
-        Private _p12 As String
-        Private _p13 As String
-        Private _p14 As String
-        Private _p15 As Integer
-        Private _p16 As Integer
-        Private _p17 As Integer
-        Private _p18 As Integer
-        Private _p19 As Integer
-        Private _p20 As Integer
-        Private _p21 As Integer
-        Private _p22 As String
-        Private _p23 As String
-        Private _p24 As String
-        Private _p25 As String
-        Private _p26 As Boolean
-        Private _p27 As Integer
-        Private _p28 As Boolean
-        Private _p29 As Boolean
-        Private _p30 As Boolean
-        Private _p31 As Boolean
-        Private _p32 As Boolean
-        Private _p33 As Boolean
-        Private _p34 As Boolean
-        Private _p35 As String
-        Private _p36 As Integer
-        Private _kundenAdministration As Integer
-        Private _p38 As String
-        Private _p39 As Boolean
-        Private _p40 As Boolean
 
         Public Sub New(ByVal intCustomerID As Integer)
             m_intCustomerID = intCustomerID
         End Sub
-        '§§§ JVE 18.09.2006: Parameterliste um "strLogoPath2" erweitert.
-        'Public Sub New(ByVal intCustomerID As Integer, _
-        '               ByVal strCustomerName As String, _
-        '               ByVal strKUNNR As String, _
-        '               ByVal blnMaster As Boolean, _
-        '               ByVal blnReadDealer As Boolean, _
-        '               ByVal strCName As String, _
-        '               ByVal strCAddress As String, _
-        '               ByVal strCMailDisplay As String, _
-        '               ByVal strCMail As String, _
-        '               ByVal strKundePostf As String, _
-        '               ByVal strKundeHotl As String, _
-        '               ByVal strKundeFax As String, _
-        '               ByVal strCWebDisplay As String, _
-        '               ByVal strCWeb As String, _
-        '               ByVal intNewPwdAfterNDays As Integer, _
-        '               ByVal intLockedAfterNLogins As Integer, _
-        '               ByVal intPwdNNumeric As Integer, _
-        '               ByVal intPwdLength As Integer, _
-        '               ByVal intPwdNCapitalLetter As Integer, _
-        '               ByVal intPwdNSpecialCharacter As Integer, _
-        '               ByVal intPwdHistoryNEntries As Integer, _
-        '               ByVal strLogoPath As String, _
-        '               ByVal strLogoPath2 As String, _
-        '               ByVal strDocuPath As String, _
-        '               ByVal strCssPath As String, _
-        '               ByVal blnAllowMultipleLogin As Boolean, _
-        '               ByVal intMaxUser As Integer, _
-        '               ByVal blnShowOrganization As Boolean, _
-        '               ByVal blnOrgAdminRestrictToCustomerGroup As Boolean, _
-        '               ByVal blnPwdDontSendEmail As Boolean, _
-        '               ByVal blnNameInputOptional As Boolean, _
-        '               ByVal blnShowDistrikte As Boolean, _
-        '               ByVal blnForcePasswordQuestion As Boolean, _
-        '               ByVal blnIpRestriction As Boolean, _
-        '               ByVal strIpStandardUser As String, _
-        '               ByVal intAccountingArea As Integer, _
-        '               ByVal intSelfAdministration As Integer, _
-        '               ByVal strSelfAdministrationInfo As String, _
-        '               ByVal blnLocked As Boolean, _
-        '               ByVal blnTVShow As Boolean, _
-        '               Optional ByVal blnUsernameDontSendEmail As Boolean = False)
-
-        '    m_intCustomerID = intCustomerID
-        '    m_strCustomerName = strCustomerName
-        '    m_strDocuPath = strDocuPath
-        '    m_strKUNNR = strKUNNR
-        '    m_blnReadDealer = blnReadDealer
-        '    m_blnMaster = blnMaster
-        '    m_CustomerContact = New Contact(strCName, strCAddress, strCMailDisplay, strCMail, strCWebDisplay, strCWeb, strKundePostf, strKundeHotl, strKundeFax)
-        '    m_CustomerPasswordRules = New PasswordRules(intPwdNNumeric, intPwdLength, intPwdNCapitalLetter, intPwdNSpecialCharacter, intPwdHistoryNEntries, blnPwdDontSendEmail, blnNameInputOptional)
-        '    m_CustomerLoginRules = New LoginRules(intLockedAfterNLogins, intNewPwdAfterNDays)
-        '    m_CustomerStyle = New Style(strLogoPath, strCssPath)
-        '    m_strLogoPath2 = strLogoPath2
-        '    m_blnAllowMultipleLogin = blnAllowMultipleLogin
-        '    m_intMaxUser = intMaxUser
-        '    m_blnShowOrganization = blnShowOrganization
-        '    m_blnOrgAdminRestrictToCustomerGroup = blnOrgAdminRestrictToCustomerGroup
-        '    m_blnPwdDontSendEmail = blnPwdDontSendEmail
-        '    m_blnNameInputOptional = blnNameInputOptional
-        '    m_blnShowDistrikte = blnShowDistrikte
-        '    m_blnForcePasswordQuestion = blnForcePasswordQuestion
-        '    m_blnIpRestriction = blnIpRestriction
-        '    m_strIpStandardUser = strIpStandardUser
-        '    m_intAccountingArea = intAccountingArea
-        '    m_selfAdministration = intSelfAdministration
-        '    m_selfAdministrationInfo = Left(strSelfAdministrationInfo, 200)
-        '    m_Locked = blnLocked
-        '    m_blnTVShow = blnTVShow
-        '    m_UrCustomerUsernameRules = New UsernameRules(blnUsernameDontSendEmail)
-        '    m_blnUsernameDontSendEmail = blnUsernameDontSendEmail
-        'End Sub
+        
         Public Sub New(ByVal intCustomerID As Integer, _
                                ByVal strCustomerName As String, _
                                ByVal strKUNNR As String, _
@@ -238,12 +130,15 @@ Namespace Kernel.Security
             m_UrCustomerUsernameRules = New UsernameRules(blnUsernameDontSendEmail)
             m_intLoginLinkID = intLoginLinkID
         End Sub
+
         Public Sub New(ByVal intCustomerID As Integer, ByVal _user As User)
             Me.New(intCustomerID, _user.App.Connectionstring)
         End Sub
+
         Public Sub New(ByVal intCustomerID As Integer, ByVal strConnectionString As String)
             Me.New(intCustomerID, New SqlClient.SqlConnection(strConnectionString))
         End Sub
+
         Public Sub New(ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
             Dim blnCloseOnEnd As Boolean = False
             m_intCustomerID = intCustomerID
@@ -252,56 +147,17 @@ Namespace Kernel.Security
                 blnCloseOnEnd = True
             End If
             GetCustomer(cn)
+            If m_intLoginLinkID > 0 Then
+                GetPortalLoginLink(cn)
+            End If
             If blnCloseOnEnd Then
                 cn.Close()
             End If
         End Sub
+
 #End Region
 
 #Region " Properties "
-
-        'Sub New(intCustomerId As Integer, p2 As String, p3 As String, p4 As Boolean, p5 As Boolean, p6 As String, p7 As String, p8 As String, p9 As String, p10 As String, p11 As String, p12 As String, p13 As String, p14 As String, p15 As Integer, p16 As Integer, p17 As Integer, p18 As Integer, p19 As Integer, p20 As Integer, p21 As Integer, p22 As String, p23 As String, p24 As String, p25 As String, p26 As Boolean, p27 As Integer, p28 As Boolean, p29 As Boolean, p30 As Boolean, p31 As Boolean, p32 As Boolean, p33 As Boolean, p34 As Boolean, p35 As String, p36 As Integer, KundenAdministration As Integer, p38 As String, p39 As Boolean)
-        '    ' TODO: Complete member initialization 
-        '    _intCustomerId = intCustomerId
-        '    _p2 = p2
-        '    _p3 = p3
-        '    _p4 = p4
-        '    _p5 = p5
-        '    _p6 = p6
-        '    _p7 = p7
-        '    _p8 = p8
-        '    _p9 = p9
-        '    _p10 = p10
-        '    _p11 = p11
-        '    _p12 = p12
-        '    _p13 = p13
-        '    _p14 = p14
-        '    _p15 = p15
-        '    _p16 = p16
-        '    _p17 = p17
-        '    _p18 = p18
-        '    _p19 = p19
-        '    _p20 = p20
-        '    _p21 = p21
-        '    _p22 = p22
-        '    _p23 = p23
-        '    _p24 = p24
-        '    _p25 = p25
-        '    _p26 = p26
-        '    _p27 = p27
-        '    _p28 = p28
-        '    _p29 = p29
-        '    _p30 = p30
-        '    _p31 = p31
-        '    _p32 = p32
-        '    _p33 = p33
-        '    _p34 = p34
-        '    _p35 = p35
-        '    _p36 = p36
-        '    _kundenAdministration = KundenAdministration
-        '    _p38 = p38
-        '    _p39 = p39
-        'End Sub
 
         Public Property AccountingArea() As Integer
             Get
@@ -543,17 +399,6 @@ Namespace Kernel.Security
                 Return m_blnShowDistrikte
             End Get
         End Property
-        '28.9. herausgenommen durch Seidel. Kann spaeter geloescht
-        'werden, wenn Report20 mit der anderen Loesung (siehe dort)
-        'funktioniert:
-        'Public Property Applications() As DataTable
-        '    Get
-        '        Return m_tblApplications
-        '    End Get
-        '    Set(ByVal Value As DataTable)
-        '        m_tblApplications = Value
-        '    End Set
-        'End Property
 
         Public ReadOnly Property OrgAdminRestrictToCustomerGroup() As Boolean
             Get
@@ -594,6 +439,33 @@ Namespace Kernel.Security
             End Get
             Set(value As Integer)
                 m_intLoginLinkID = value
+            End Set
+        End Property
+
+        Public Property ForceSpecifiedLoginLink As Boolean
+            Get
+                Return m_blnForceSpecifiedLoginLink
+            End Get
+            Set(value As Boolean)
+                m_blnForceSpecifiedLoginLink = value
+            End Set
+        End Property
+
+        Public Property LogoutLink As String
+            Get
+                Return m_strLogoutLink
+            End Get
+            Set(value As String)
+                m_strLogoutLink = value
+            End Set
+        End Property
+
+        Public Property LoginLink As String
+            Get
+                Return m_strLoginLink
+            End Get
+            Set(value As String)
+                m_strLoginLink = value
             End Set
         End Property
 #End Region
@@ -724,6 +596,12 @@ Namespace Kernel.Security
                     Else
                         m_intLoginLinkID = 0
                     End If
+                    If Not TypeOf dr("ForceSpecifiedLoginLink") Is System.DBNull Then
+                        m_blnForceSpecifiedLoginLink = CBool(dr("ForceSpecifiedLoginLink"))
+                    Else
+                        m_blnForceSpecifiedLoginLink = False
+                    End If
+                    m_strLogoutLink = dr("LogoutLink").ToString
                 End While
             Catch ex As Exception
                 Throw ex
@@ -732,6 +610,12 @@ Namespace Kernel.Security
             End Try
 
             GetIpAddresses(cn)
+        End Sub
+
+        Private Sub GetPortalLoginLink(ByVal cn As SqlClient.SqlConnection)
+            Dim cmdGetLink As New SqlClient.SqlCommand("SELECT Text FROM WebUserUploadLoginLink WHERE ID=@ID", cn)
+            cmdGetLink.Parameters.AddWithValue("@ID", m_intLoginLinkID)
+            m_strLoginLink = cmdGetLink.ExecuteScalar().ToString()
         End Sub
 
         Public Sub GetIpAddresses(ByVal cn As SqlClient.SqlConnection)
