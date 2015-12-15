@@ -30,7 +30,6 @@
     <Image x:Shared="False" x:Key="image/16x16/down" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/down_bottom" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down_bottom.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/refresh" Source="pack://application:,,,/WpfTools4;component/Images/16x16/refresh.png" SnapsToDevicePixels="True" Width="16" Height="16" />
-    <Image x:Shared="False" x:Key="image/16x16/deactivate" Source="pack://application:,,,/WpfTools4;component/Images/16x16/deactivate.png" SnapsToDevicePixels="True" Width="16" Height="16" />
 
     <Image x:Shared="False" x:Key="image/16x16/file_new" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_new.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/file_edit" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_edit.png" SnapsToDevicePixels="True" Width="16" Height="16" />
@@ -41,7 +40,6 @@
 
     <Image x:Shared="False" x:Key="image/16x16/add" Source="pack://application:,,,/WpfTools4;component/Images/16x16/add.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/delete" Source="pack://application:,,,/WpfTools4;component/Images/16x16/delete.png" SnapsToDevicePixels="True" Width="16" Height="16" />
-    <Image x:Shared="False" x:Key="image/16x16/delete_black" Source="pack://application:,,,/WpfTools4;component/Images/16x16/delete_black.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/info" Source="pack://application:,,,/WpfTools4;component/Images/16x16/info.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/save" Source="pack://application:,,,/WpfTools4;component/Images/16x16/save.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/alert" Source="pack://application:,,,/WpfTools4;component/Images/16x16/alert.png" SnapsToDevicePixels="True" Width="16" Height="16" />
@@ -71,16 +69,24 @@
     <Image x:Shared="False" x:Key="image/22x22/address" Source="pack://application:,,,/WpfTools4;component/Images/22x22/address.png" SnapsToDevicePixels="True" Width="22" Height="22" />
 
     <Image x:Shared="False" x:Key="image/24x24/OK" Source="pack://application:,,,/WpfTools4;component/Images/24x24/OK.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/warning" Source="pack://application:,,,/WpfTools4;component/Images/24x24/warning.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/save" Source="pack://application:,,,/WpfTools4;component/Images/24x24/save.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/delete" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window2.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/cancel" Source="pack://application:,,,/WpfTools4;component/Images/24x24/cancel.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/apply" Source="pack://application:,,,/WpfTools4;component/Images/24x24/apply.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/edit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/edit.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/exit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/exit.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/close_window" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/close_window2" Source="pack://application:,,,/WpfTools4;component/Images/24x24/close_window2.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/info" Source="pack://application:,,,/WpfTools4;component/Images/24x24/info.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/24x24/internet" Source="pack://application:,,,/WpfTools4;component/Images/24x24/internet.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/email" Source="pack://application:,,,/WpfTools4;component/Images/24x24/email.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/zip" Source="pack://application:,,,/WpfTools4;component/Images/24x24/zip.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/file_copy" Source="pack://application:,,,/WpfTools4;component/Images/24x24/file_copy.png" SnapsToDevicePixels="True" Width="24" Height="24" />
 
     <Image x:Shared="False" x:Key="image/32x32/new" Source="pack://application:,,,/WpfTools4;component/Images/32x32/new.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/save" Source="pack://application:,,,/WpfTools4;component/Images/32x32/save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/explorer" Source="pack://application:,,,/WpfTools4;component/Images/32x32/Explorer.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/mailmerge_start" Source="pack://application:,,,/WpfTools4;component/Images/32x32/mailmerge_start.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/users_copy" Source="pack://application:,,,/WpfTools4;component/Images/32x32/users_copy.png" SnapsToDevicePixels="True" Width="32" Height="32" />
@@ -100,11 +106,20 @@
     <Image x:Shared="False" x:Key="image/32x32/note_delete" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/note_save" Source="pack://application:,,,/WpfTools4;component/Images/32x32/note_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/pdf" Source="pack://application:,,,/WpfTools4;component/Images/32x32/pdf.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/git" Source="pack://application:,,,/WpfTools4;component/Images/32x32/git.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/message" Source="pack://application:,,,/WpfTools4;component/Images/32x32/message.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/app_copy" Source="pack://application:,,,/WpfTools4;component/Images/32x32/app_copy.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/translate" Source="pack://application:,,,/WpfTools4;component/Images/32x32/translate.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_check" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_check.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_manage" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_manage.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_usages" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_usages.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sap_models" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_models.png" SnapsToDevicePixels="True" Width="32" Height="32" />
 
     <Image x:Shared="False" x:Key="image/48x48/excel_add" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_add.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/excel_delete" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_delete.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/excel_edit" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_edit.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/apply" Source="pack://application:,,,/WpfTools4;component/Images/48x48/apply.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/cancel" Source="pack://application:,,,/WpfTools4;component/Images/48x48/cancel.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/warning" Source="pack://application:,,,/WpfTools4;component/Images/48x48/warning.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/open" Source="pack://application:,,,/WpfTools4;component/Images/48x48/open.png" SnapsToDevicePixels="True" Width="48" Height="48" />
 

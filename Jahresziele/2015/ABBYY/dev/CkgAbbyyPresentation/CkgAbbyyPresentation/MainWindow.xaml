@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         WindowStartupLocation="CenterScreen" 
-        Title="CKG Abbyy Präsentation" Height="600" Width="807">
+        Title="CKG Abbyy Präsentation" Height="Auto" Width="1200">
     <StackPanel>
 
-        <StackPanel Width="800" Height="400"></StackPanel>
-        <WindowsFormsHost Name="WindowsFormsHost" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black"  />
-        
-        <StackPanel Name="TestPanel">
-            <TextBlock Margin="50">Dies ist ein Test</TextBlock>
+        <Border BorderBrush="Blue" BorderThickness="0">
+            <MediaElement LoadedBehavior="Manual"  Source="C:\Users\JenzenM\Documents\Moyea\PPT to Video Converter\Test.mp4" 
+                          Height="260" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Margin="0,-85,0,0">
+            </MediaElement>
+        </Border>
+        <StackPanel Width="800" Height="100">
+            <WindowsFormsHost Name="WindowsFormsHost" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black"  />
         </StackPanel>
 
     </StackPanel>

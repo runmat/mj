@@ -45,11 +45,14 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="PresentationFramework.Royale" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -85,7 +88,6 @@
     <Compile Include="Resources\Styles.xaml.cs" />
     <Compile Include="Services\ProgressBarOperation.cs" />
     <Compile Include="Services\Tools.cs" />
-    <Compile Include="Services\WaitCursor.cs" />
     <Compile Include="UserControls\ucBusyCircle.xaml.cs">
       <DependentUpon>ucBusyCircle.xaml</DependentUpon>
     </Compile>
@@ -215,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\16x16\excel.psd" />
+    <Resource Include="Images\16x16\Thumbs.db" />
     <Resource Include="Images\16x16\undo.psd" />
     <Resource Include="Images\48x48\worddoc.psd" />
   </ItemGroup>
@@ -321,7 +324,36 @@
     <Resource Include="Images\24x24\zip.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\16x16\delete_black.png" />
+    <Resource Include="Images\24x24\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\git.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\message.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\app_copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\translate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\sap_check.png" />
+    <Resource Include="Images\32x32\sap_manage.png" />
+    <Resource Include="Images\32x32\sap_usages.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\24x24\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\24x24\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\24x24\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\sap_models.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
