@@ -24,19 +24,6 @@ namespace CkgAbbyyPresentation.Views
         public XmlViewer()
         {
             InitializeComponent();
-
-            var xmlDocument = new XmlDocument();
-            try
-            {
-                xmlDocument.Load(System.IO.Path.Combine(@"C:\Backup\ABBYY\ZBII\export", "JMZBK14Z261351772.xml"));
-            }
-            catch (XmlException)
-            {
-                MessageBox.Show("The XML file is invalid");
-                return;
-            }
-
-            XmlDocument = xmlDocument;
         }
 
         public XmlDocument XmlDocument
@@ -47,6 +34,24 @@ namespace CkgAbbyyPresentation.Views
                 _xmldocument = value;
                 BindXmlDocument();
             }
+        }
+
+        protected override void OnContentStringFormatChanged(string oldContentStringFormat, string newContentStringFormat)
+        {
+            base.OnContentStringFormatChanged(oldContentStringFormat, newContentStringFormat);
+
+            var xmlDocument = new XmlDocument();
+            try
+            {
+                xmlDocument.Load(newContentStringFormat);
+            }
+            catch (XmlException)
+            {
+                MessageBox.Show("Die XML Datei ist ungültig");
+                return;
+            }
+
+            XmlDocument = xmlDocument;
         }
 
         private void BindXmlDocument()

@@ -87,7 +87,7 @@
         </ScrollViewer>
 
         <Border Grid.Row="2" Grid.Column="0" DataContext="{Binding SelectedCategoryViewModel.SelectedItem}" Margin="10">
-            <views:XmlViewer Margin="5,0,0,0" />
+            <views:XmlViewer Margin="5,0,0,0" ContentStringFormat="{Binding XmlFileName}" />
         </Border>
 
     </Grid>
