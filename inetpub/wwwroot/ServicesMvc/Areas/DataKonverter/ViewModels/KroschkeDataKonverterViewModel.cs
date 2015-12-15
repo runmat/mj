@@ -187,15 +187,21 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         public string GetDestinationDiv(XmlDocument destXmlDocument)
         {
             var content = "";
-            var doc = new XmlDocument();
-            doc = destXmlDocument;
-            TraverseNodes(doc.ChildNodes, ref content);
+            var test1 = destXmlDocument.ChildNodes;
+            var test2 = destXmlDocument.ChildNodes[1].ChildNodes;
+            var test3 = destXmlDocument.FirstChild;
+            var test4 = destXmlDocument.ChildNodes;
 
-            return content.ToString();
-        }
-        private static void TraverseNodes(XmlNodeList nodes, ref string content)
-        {
+            // TraverseNodes(doc.ChildNodes, ref content);
             var sb = new StringBuilder();
+            TraverseNodes(test2, ref sb);
+
+            return sb.ToString();
+        }
+        // private static void TraverseNodes(XmlNodeList nodes, ref string content)
+        private static void TraverseNodes(XmlNodeList nodes, ref StringBuilder sb)
+        {
+            // var sb = new StringBuilder();
             foreach (XmlNode node in nodes)
             {
                 if (node.NodeType == XmlNodeType.XmlDeclaration)
@@ -213,7 +219,8 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
                 if (node.HasChildNodes)
                 {
-                    sb.Append("<div class='nodetitle'>" + node.ParentNode.Name + " > " + node.FirstChild.Name + "</div>");
+                    // sb.Append("<div class='nodetitle'>" + node.ParentNode.Name + " > " + node.FirstChild.Name + "</div>");
+                    sb.Append("<div class='nodetitle'>" + node.Name + "</div>");
                 }
                 else
                 {
@@ -223,13 +230,17 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
                     sb.Append("<span class='data'></span></div>");
                 }
 
-                content += sb.ToString();
+                // content += sb.ToString();
 
                 if (node.HasChildNodes)
                 {
-                    TraverseNodes(node.ChildNodes, ref content);
+                    TraverseNodes(node.ChildNodes, ref sb);
                 }
+
+                // content += sb.ToString();
             }
+
+            // content += sb.ToString();
         }
 
         public string CreateXmlContent()
