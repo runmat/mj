@@ -76,7 +76,8 @@ namespace CkgAbbyyPresentation
 
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            PreparePresentation();
+            MediaElement.Position = new TimeSpan();
+            MediaElement.Play();
         }
     }
 }

@@ -3,34 +3,92 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:CkgAbbyyPresentation.Views"
         mc:Ignorable="d" MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         WindowStartupLocation="CenterScreen" 
-        Title="CKG Abbyy Präsentation" Height="Auto" Width="1200">
+        WindowState="Maximized"
+        Title="CKG Abbyy Präsentation, entwickelt von Matthias Jenzen, Dezember 2015">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
+            <RowDefinition Height="360" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="460" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-            <StackPanel Width="460">
-                
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10">
+            <StackPanel Margin="0,5,0,0">
+                <TextBlock Text="Dokumenten-Typ:" FontWeight="Bold" VerticalAlignment="Top" Margin="0,0,0,7" />
+                <StackPanel>
+                    <ListBox Style="{StaticResource lbRadioButtonListHorizontalSmall}" ItemsSource="{Binding CategoryViewModels}" SelectedItem="{Binding SelectedCategoryViewModel}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter Content="{StaticResource image/16x16/paperclip}" Margin="3,0,3,0" />
+                                    <TextBlock Text="{Binding Name}" Padding="1,0,1,0" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <TextBlock Text="Dieses Programm wurde entwickelt von Matthias Jenzen, Dezember 2015" VerticalAlignment="Top" Margin="0,35,0,7" Foreground="Gray" />
             </StackPanel>
-            <Border BorderBrush="Blue" BorderThickness="1">
-                <MediaElement LoadedBehavior="Play"  Source="C:\Users\JenzenM\Documents\Moyea\PPT to Video Converter\Test.mp4" 
-                              Height="260" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Margin="0,-85,0,0">
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Background="White">
+            <Border BorderBrush="Blue" BorderThickness="0" Background="White">
+                <MediaElement Name="MediaElement" LoadedBehavior="Manual"  Source="C:\Users\JenzenM\Documents\Moyea\PPT to Video Converter\Test.mp4" 
+                              Height="260" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Margin="0,-90,0,0">
                 </MediaElement>
             </Border>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
-            <StackPanel Width="460">
+        <StackPanel Grid.Row="1" Grid.Column="0" DataContext="{Binding SelectedCategoryViewModel}" Margin="10,10,10,0">
+            <StackPanel>
+                <TextBlock FontWeight="Bold" Text="Verarbeitete Dokumente:" VerticalAlignment="Top" Margin="0,0,0,7" />
+                <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Style="{StaticResource GradientDataGrid}" 
+                          VerticalScrollBarVisibility="Visible"
+                          Height="300" Background="White" Margin="5,0,0,0">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsError}" Value="True">
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="" Width="50">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <ContentPresenter ToolTip="OCR Erkennung erfolgreich" Content="{StaticResource image/16x16/OK}" Visibility="{Binding IsError, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
+                                        <ContentPresenter ToolTip="OCR Erkennung mit Fehlern!" Content="{StaticResource image/16x16/alert}" Visibility="{Binding IsError, Converter={StaticResource BooleanVisibilityConverter}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="365"  />
+                    </DataGrid.Columns>
+                </DataGrid>
 
             </StackPanel>
-            <StackPanel>
-                <TextBlock>Dies ist ein Test</TextBlock>
-            </StackPanel>
+
+            <TextBlock Text="XML Output:" FontWeight="Bold" Margin="0,10,0,0" />
         </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" DataContext="{Binding SelectedCategoryViewModel.SelectedItem}" Margin="10">
+            <StackPanel>
+                <Image Stretch="UniformToFill" Source="{Binding SelectedImageSource}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Grid.Column="0" DataContext="{Binding SelectedCategoryViewModel.SelectedItem}" Margin="10">
+            <views:XmlViewer Margin="5,0,0,0" />
+        </Border>
 
     </Grid>
 </Window>
