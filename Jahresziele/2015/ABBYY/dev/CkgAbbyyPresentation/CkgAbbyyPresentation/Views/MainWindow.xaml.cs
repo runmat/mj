@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using CkgAbbyyPresentation.ViewModels;
 using Microsoft.Office.Core;
 using Powerpoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -26,22 +27,14 @@ namespace CkgAbbyyPresentation
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 
-        private bool _isActivated;
+        const string RootFolder = @"C:\Backup\ABBYY\ZBII";
+
 
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-
-            if (_isActivated)
-                return;
-
-            _isActivated = true;
-            //PreparePresentation();
+            DataContext = new MainViewModel();
         }
 
         void PreparePresentation()

@@ -1,0 +1,55 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Image x:Shared="False" x:Key="image/16x16/location" Source="/Images/16x16/location.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/compress" Source="/Images/16x16/compress.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/hourglass" Source="/Images/16x16/hourglass.png" SnapsToDevicePixels="True" Width="32" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/empty" Source="/Images/16x16/empty.png" SnapsToDevicePixels="True" Width="32" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/paperclip" Source="/Images/16x16/paperclip.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/note" Source="/Images/16x16/note.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/16x16/page_copy" Source="/Images/16x16/page_copy.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/warning" Source="/Images/16x16/error.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/barcode" Source="/Images/16x16/barcode.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/information" Source="/Images/16x16/information.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/error" Source="/Images/16x16/exclamation.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/32x16/email_sendout" Source="/Images/16x16/email_sendout.png" SnapsToDevicePixels="True" Width="32" Height="16" />
+
+    <Image x:Shared="False" x:Key="image/32x32/scan_new" Source="/Images/32x32/scan_new.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_new_batch" Source="/Images/32x32/scan_new_batch.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_open" Source="/Images/32x32/scan_open.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_save" Source="/Images/32x32/scan_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_delete" Source="/Images/32x32/scan_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_archive" Source="/Images/32x32/scan_archive.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    
+    <Image x:Shared="False" x:Key="image/32x32/scan_settings" Source="/Images/32x32/scan_settings.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/location_new" Source="/Images/32x32/location_new.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/location_save" Source="/Images/32x32/location_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/location_delete" Source="/Images/32x32/location_delete.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/scan" Source="/Images/32x32/scan.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/scan_closed" Source="/Images/32x32/scan_closed.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/domainsettings_save" Source="/Images/32x32/domainsettings_save.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/domainsettings_folder" Source="/Images/32x32/domainsettings_folder.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/pdf_folder" Source="/Images/32x32/pdf_folder.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/zip_archive" Source="/Images/32x32/zip_archive.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/zip_recycle" Source="/Images/32x32/zip_recycle.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/settings_import" Source="/Images/32x32/settings_import.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/settings_export" Source="/Images/32x32/settings_export.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/32x32/paperclip" Source="/Images/32x32/paperclip.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/note" Source="/Images/32x32/note.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+
+    <Image x:Shared="False" x:Key="image/48x48/paperclip" Source="/Images/48x48/paperclip.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/note" Source="/Images/48x48/note.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+
+    <Image x:Shared="False" x:Key="image/logo_transparent" Source="/logo_cardocu.jpg" SnapsToDevicePixels="True" Width="865" Height="322" />
+    
+</ResourceDictionary>
