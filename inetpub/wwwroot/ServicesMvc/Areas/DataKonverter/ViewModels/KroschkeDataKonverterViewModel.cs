@@ -194,7 +194,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             return sb.ToString();
         }
 
-        private static void TraverseNodes(XmlNodeList nodes, ref StringBuilder sb, int divId = 0)
+        private static void TraverseNodes(XmlNodeList nodes, ref StringBuilder sb)
         {
             foreach (XmlNode node in nodes)
             {
@@ -213,30 +213,19 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
                 if (node.HasChildNodes)
                 {
-                    // var buffer = Guid.NewGuid().ToByteArray();
-                    // divId = BitConverter.ToInt64(buffer, 0).ToString().Substring(0,10);
-                    var rnd = new Random();
-                    divId = rnd.Next(1, 9999999);
+                    sb.Append("<div class='nodetitle-div'>");
+                    sb.Append("<div class='nodetitle'>" + node.Name + "<button class='btn btn-xs white float-right' onclick='ShowHideLines(this);'><i class='updown icon-angle-up'></i></button></div>");
 
-                    // sb.Append("<div class='nodetitle'>" + node.ParentNode.Name + " > " + node.FirstChild.Name + "</div>");
-                    // sb.Append("<div class='nodetitle'>" + node.Name + "<button class='btn white float-right' onclick='ShowHideLines(" + divId + ");'><i class='icon-bell'></i></button></div>");
-                    sb.Append("<div class='nodetitle'>" + node.Name + "<button class='btn white float-right' onclick='ShowHideLines(this);'><i class='icon-bell'></i></button>");
-
-                    TraverseNodes(node.ChildNodes, ref sb, divId);
+                    TraverseNodes(node.ChildNodes, ref sb);
 
                     sb.Append("</div>");
                 }
                 else
                 {
-                    sb.Append("<div class='w ept' id='Dest-" + id + "' data-guid='" + divId + "'>");
+                    sb.Append("<div class='w ept' id='Dest-" + id + "'>");
                     sb.Append("<div class='ep'></div>");
                     sb.Append("<div class='field'>" + node.Name + "</div>");
                     sb.Append("<span class='data'></span></div>");
-                }
-
-                if (node.HasChildNodes)
-                {
-                    // TraverseNodes(node.ChildNodes, ref sb, divId);
                 }
             }
         }

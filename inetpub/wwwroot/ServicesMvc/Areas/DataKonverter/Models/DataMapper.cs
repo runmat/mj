@@ -10,8 +10,6 @@ using System.Xml.Linq;
 using CkgDomainLogic.DomainCommon.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using SapORM.Models;
-using Telerik.Web.Mvc.UI.Fluent;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
@@ -67,20 +65,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public void ReadDestinationObj()
         {
             var filename = Path.GetFileName(DestinationFile.Filename);
-            //string xmlContent;
-
-            //using (var sr = new StreamReader(DestinationFile.Filename))
-            //{
-            //    xmlContent = sr.ReadToEnd();
-            //}
-
-            ////var destinationFileObj = new DestinationFile
-            ////{
-            //DestinationFile.Filename = filename;
-            //DestinationFile.XmlRaw = xmlContent;
-            //DestinationFile.XmlDocument = StringToXmlDoc(xmlContent);
-            // DestinationFile.Fields = new List<FieldXml>();
-            ////};
 
             var doc = new XmlDocument();
             doc.Load(DestinationFile.Filename);
@@ -115,7 +99,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         /// Gibt SourceFile-Objekt zurück
         /// </summary>
         /// <returns></returns>
-        // public SourceFile ReadSourceFile(string filename, bool firstRowIsCaption, char delimiter = ';')
         public void ReadSourceFile()
         {
             var csvObj = CsvReaderFactory.GetCsvObj(SourceFile.FilenameCsv, SourceFile.FirstRowIsCaption, SourceFile.Delimiter);
@@ -149,15 +132,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 }
             }
 
-            //var sourceFile = new SourceFile
-            //{
-            //    FilenameOrig = SourceFile.FilenameOrig,
-            //    FirstRowIsCaption = SourceFile.FirstRowIsCaption,
-            //    Fields = fields
-            //};
-
             SourceFile.Fields = fields;
-
         }
 
         protected DataItem.DataType GetDataType(IEnumerable<string> values)
@@ -263,8 +238,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
             var destFields = RecalcDestFields();
 
-            // var xmlComplete = new XDocument();
-            // ar xmlComplete = new XmlDocument();
             xmlFileContent.CreateNode("element", "pages", "");
 
             var xmlComplete = new XDocument();
@@ -293,48 +266,17 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     }
                 }
 
-                //var elementToInsert = xmlRecord.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
-
-                //var bigDoc = new XmlDocument();
-                //bigDoc.LoadXml("<Data></Data>");
-                //var targetNode = bigDoc.FirstChild;
-
-                //XmlDocument doc1 = (XmlDocument)DestinationFile.XmlDocument.Clone();
-                //var doc2 = ToXmlDocument(xmlRecord);
-                //XmlNode copiedNode = doc2.ImportNode(doc1.SelectSingleNode("/IMPORT"), true);
-                //doc2.DocumentElement.AppendChild(copiedNode);
-
-                ////var newElement = xmlFileContent.CreateNode("element", "pages", "");
-                ////newElement.InnerText = "100";
-                ////var root = xmlFileContent.DocumentElement;
-                ////root.AppendChild(newElement);
-
-                //// var newNode = xmlComplete.Add(new object());
-                
-                //// xdocument habe ich
-                //// xmlnode brauche ich für AppendChild
-
-                //var found2 = xmlRecord.Descendants("IMPORT").FirstOrDefault(); // .Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
-
-                //xmlComplete.AppendChild(found2.FirstNode);
-
                 var test1 = xmlRecord.Root.Element("IMPORT");
                 var test2 = xmlRecord.Root;
                 var test3 = test2.ElementsBeforeSelf();
                 var test4 = test2.ElementsAfterSelf();
-                // var test5 = test2.Element("").Elements();
-                // var toAdd = xmlRecord.Root.Element("IMPORT").Elements();
-                
-                // xmlComplete.Root.Add(xmlRecord.Root.Element("IMPORT").Elements());
+
                 xmlComplete.Root.Add(test3.Elements());
 
                 xmlComplete.Add(xmlRecord);
-
-                // xmlComplete.Add(xmlRecord);
                 
             }
 
-            // xmlRecord.Save(@"C:\tmp\TestOutput.xml");
             xmlComplete.Save(@"C:\tmp\TestOutput.xml");
 
             return "OK";
@@ -384,30 +326,17 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     if (sourceItem == null)
                     {
                         var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
-                        value = processor.Output;
-                        field.IsUsed = true;
+                        if (processor != null)
+                        {
+                            value = processor.Output;
+                            field.IsUsed = true;
+                        }
                     }
                     else
                     {
                         value = sourceItem.Records[RecordNo - 1];
                         field.IsUsed = true;    
                     }
-
-                    //if (connection.SourceIsProcessor)
-                    //{
-                    //    var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
-                    //    value = processor.Output;
-                    //    field.IsUsed = true;
-                    //}
-                    //else
-                    //{
-                    //    var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);
-                    //    if (sourceItem != null)
-                    //    {
-                    //        value = sourceItem.Records[RecordNo - 1];
-                    //    }
-                    //    field.IsUsed = true;
-                    //}
                 }
 
                 destFieldList.Add(new Domaenenfestwert
