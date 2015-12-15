@@ -67,12 +67,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             {
                 
             };
-            
-            //var csvFilename = ConvertExcelToCsv("Testfile.xlsx", Guid.NewGuid() + "-Testfile.csv");
-            //var destFilename = "";
-            // DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(csvFilename, true);
 
-            DataMapper.DestinationFile = FillDestinationObj("KroschkeOn2.xml");
+            //var fileNameFull = GetUploadPathTemp() + @"\KroschkeOn2.xml";
+            // DataMapper.DestinationFile = DataMapper.ReadDestinationObj(fileNameFull);
+            // DataMapper.DestinationFile = DataMapper.ReadDestinationObj();
             Prozessauswahl = new WizardProzessauswahl();
 
             #endregion
@@ -87,7 +85,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         {
             public SourceFile SourceFile { get; set; }
 
-            [LocalizedDisplay("Prozess")]  // LocalizeConstants.Customer
+            [LocalizedDisplay("Prozess")]                   // LocalizeConstants.Customer
             public string SelectedProcess { get; set; }
 
             [SelectListText]            
@@ -113,113 +111,25 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #region File converter
 
-        public string ConvertExcelToCsv(string excelFilename, string csvFilename, char delimeter = ';')
-        {
-            var tempFolder = GetUploadPathTemp();
-            var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
-            var tmpDestFile = Path.Combine(tempFolder, csvFilename);
+        //public string ConvertExcelToCsv(string excelFilename, string csvFilename, char delimeter = ';')
+        //{
+        //    var tempFolder = GetUploadPathTemp();
+        //    var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
+        //    var tmpDestFile = Path.Combine(tempFolder, csvFilename);
 
-            tmpDestFile = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
-            // tmpDestFile = @"C:\dev\inetpub\wwwroot\ServicesMvc\App_Data\FileUpload\Temp\Testfile3.csv";
-
-            return tmpDestFile;
-        }
+        //    tmpDestFile = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
+            
+        //    return tmpDestFile;
+        //}
 
         public string GetUploadPathTemp()
         {
             return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
         }
 
-        //protected byte[] GetCsvFileContent(string fileName)
-        //{
-        //    var sb = new StringBuilder();
-        //    using (var sr = new StreamReader(fileName, Encoding.Default, true))
-        //    {
-        //        string line;
-        //        // Read and display lines from the file until the end of the file is reached.
-        //        while ((line = sr.ReadLine()) != null)
-        //        {
-        //            sb.AppendLine(line);
-        //        }
-        //    }
-        //    var allines = sb.ToString();
-        //    var utf8 = new UTF8Encoding();
-        //    var preamble = utf8.GetPreamble();
-        //    var data = utf8.GetBytes(allines);
-        //    return data;
-        //}
-
         #endregion
 
-        //public string GetSourceFile(string csvFilename)
-        //{
-        //    var result = DataKonverterDataService.FillSourceFile(csvFilename, true);
-        //    return null;
-        //}
-
         #region XML/XSD-Handling
-
-        public DestinationFile FillDestinationObj(string filename)
-        {
-            var folder = GetUploadPathTemp();
-            var filenameFull = Path.Combine(folder, filename);
-            string xmlContent;
-
-            using (var sr = new StreamReader(filenameFull))
-            {
-                xmlContent = sr.ReadToEnd();
-            }
-
-            var destinationFileObj = new DestinationFile
-            {
-                Filename = filename,
-                XmlRaw = xmlContent,
-                XmlDocument = StringToXmlDoc(xmlContent),
-                Fields = new List<FieldXml>()
-            };
-
-            var doc = new XmlDocument();
-            doc.Load(filenameFull);
-
-            doc.IterateThroughAllNodes( delegate(XmlNode node)
-            {
-                try
-                {
-                    var nodeId = node.Attributes["id"].Value;
-
-                    var newField = new FieldXml
-                    {
-                        Guid = "Dest-" + nodeId,
-                        Records = new List<string>()
-                    };
-                    // newField.Records.Add("test");
-                    newField.Records.Add("test");
-
-                    destinationFileObj.Fields.Add(newField);
-                }
-                catch (Exception)
-                {
-                }
-            });
-
-            return destinationFileObj;
-        }
-
-        private XmlDocument StringToXmlDoc(string xml)
-        {
-            var doc = new XmlDocument();
-            doc.LoadXml(xml);
-            // var xmlTest = XDocument.Parse(doc.InnerXml);
-            return doc;
-        }
-
-        //private string XsdToJson(string xsd)
-        //{
-        //    var doc = new XmlDocument();
-        //    doc.LoadXml(xsd);
-        //    var json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
-        //    return json;
-        //}
 
         #endregion
 
@@ -246,7 +156,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         #region Upload source file
         public bool UploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
-            var extension = Path.GetExtension(fileName).ToLower(); 
+            var extension = Path.GetExtension(fileName).ToLower();
 
             var randomfilename = Guid.NewGuid().ToString();
 
@@ -258,16 +168,9 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var tmpFilenameOrig = GetUploadPathTemp() + @"\" + nameSaved + extension;
             var tmpFilenameCsv = GetUploadPathTemp() + @"\" + nameSaved + ".csv";
 
-            var bytes = File.ReadAllBytes(tmpFilenameOrig);
-            // Overview.PdfUploaded = bytes;
+            DataMapper.ConvertToCsvIfNeeded(tmpFilenameOrig, tmpFilenameCsv);
 
-            if (extension == ".xls" || extension == ".xlsx")
-            {
-                tmpFilenameCsv = ConvertExcelToCsv(tmpFilenameOrig, tmpFilenameCsv);
-                File.Delete(tmpFilenameOrig);
-            }
-
-            DataMapper.SourceFile = DataKonverterDataService.FillSourceFile(tmpFilenameCsv, true);
+            DataMapper.SourceFile.FilenameOrig = fileName;
 
             return true;
         }
@@ -279,6 +182,54 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         #endregion
 
         #region XML-Output
+
+        public string GetDestinationDiv(XmlDocument destXmlDocument)
+        {
+            var content = "";
+            var doc = new XmlDocument();
+            doc = destXmlDocument;
+            TraverseNodes(doc.ChildNodes, ref content);
+
+            return content.ToString();
+        }
+        private static void TraverseNodes(XmlNodeList nodes, ref string content)
+        {
+            var sb = new StringBuilder();
+            foreach (XmlNode node in nodes)
+            {
+                if (node.NodeType == XmlNodeType.XmlDeclaration)
+                {
+                    continue;
+                }
+
+                string id = null;
+
+                if (node.Attributes != null)
+                {
+                    if (node.Attributes["id"] != null)
+                        id = node.Attributes["id"].Value;
+                }
+
+                if (node.HasChildNodes)
+                {
+                    sb.Append("<div class='nodetitle'>" + node.ParentNode.Name + " > " + node.FirstChild.Name + "</div>");
+                }
+                else
+                {
+                    sb.Append("<div class='w ept' id='Dest-" + id + "'>");  
+                    sb.Append("<div class='ep'></div>");
+                    sb.Append("<div class='field'>" + node.Name + "</div>");
+                    sb.Append("<span class='data'></span></div>");
+                }
+
+                content += sb.ToString();
+
+                if (node.HasChildNodes)
+                {
+                    TraverseNodes(node.ChildNodes, ref content);
+                }
+            }
+        }
 
         public string CreateXmlContent()
         {
