@@ -7,9 +7,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 {
     public class Processor
     {
-
-        private int _defaultLeft= 700;
-        private int _defaultTop = 340;
+        private const int _defaultLeft = 700;
+        private const int _defaultTop = 340;
 
         public string Guid { get; set; }
         public int Number { get; set; }
@@ -52,26 +51,26 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         {
             switch (Operation)
             {
-                    case Operation.Fix:
+                case Operation.Fix:
                     return OperationPara1;
 
-                    case Operation.Merge:
+                case Operation.Merge:
                     try
                     {
                         return Input.Replace("|", OperationPara1);
                     }
-                    catch (Exception e)
+                catch (Exception e)
                     {
                         return Input;
                     }
 
-                    case Operation.Split:
+                case Operation.Split:
                     try
                     {
                         var arrString = Input.Split(Convert.ToChar(OperationPara1));
                         return arrString[Convert.ToInt32(OperationPara2)];
                     }
-                    catch (Exception e)
+                catch (Exception e)
                     {
                         return Input;
                     }

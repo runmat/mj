@@ -732,7 +732,6 @@
     <Compile Include="Areas\DataKonverter\ActionFilters\StoreUiAttribute.cs" />
     <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
-    <Compile Include="Areas\DataKonverter\Contracts\IDataProcessor.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataConnection.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataItem.cs" />
     <Compile Include="Areas\DataKonverter\Models\DestinationFile.cs" />

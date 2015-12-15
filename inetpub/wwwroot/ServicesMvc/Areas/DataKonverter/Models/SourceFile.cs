@@ -16,7 +16,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public string FilenameCsv { get; set; }     // Internal file name -> {guid}.csv
         public List<Field> Fields { get; set; }
 
-        public Encoding Encoding { get; set; }
+        //public Encoding Encoding { get; set; }
         public bool FirstRowIsCaption { get; set; }
         public char Delimiter { get; set; }
 

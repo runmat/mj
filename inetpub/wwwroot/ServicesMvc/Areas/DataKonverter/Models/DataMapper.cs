@@ -45,14 +45,11 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public void Init(string sourceFile, bool firstRowIsCaption, char delimiter, string destinationFileXml, List<DataConnection> dataConnections, List<Processor> processors)
         {
             // Convert Excel to csv if needed...
-
-            // TempFolder = tempFolder;
             SourceFile.FilenameOrig = sourceFile;
             DestinationFile.Filename = destinationFileXml;
             DataConnections = dataConnections;
             Processors = Processors;
 
-            // ReadSourceFile(sourceFile, firstRowIsCaption, delimiter);
             ReadSourceFile();
             ReadDestinationObj();
         }
@@ -70,7 +67,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             doc.Load(DestinationFile.Filename);
             DestinationFile.XmlRaw = doc.InnerXml;
             DestinationFile.XmlDocument = doc;
-            DestinationFile.Fields = new List<FieldXml>();
+            //DestinationFile.Fields = new List<FieldXml>();
+            DestinationFile.Fields = new List<Field>();
 
             doc.IterateThroughAllNodes(delegate(XmlNode node)
             {
@@ -78,12 +76,14 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 {
                     var nodeId = node.Attributes["id"].Value;
 
-                    var newField = new FieldXml
+                    // var newField = new FieldXml
+                    var newField = new Field
                     {
                         Guid = "Dest-" + nodeId,
                         Records = new List<string>()
                     };
-                    newField.Records.Add("test");
+
+                    // newField.Records.Add("test");
 
                     DestinationFile.Fields.Add(newField);
                 }
@@ -135,12 +135,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             SourceFile.Fields = fields;
         }
 
-        protected DataItem.DataType GetDataType(IEnumerable<string> values)
-        {
-            var dataType = DataItem.DataType.String;
+        //protected DataItem.DataType GetDataType(IEnumerable<string> values)
+        //{
+        //    var dataType = DataItem.DataType.String;
 
-            return dataType;
-        }
+        //    return dataType;
+        //}
 
         private static XmlDocument StringToXmlDoc(string xml)
         {
