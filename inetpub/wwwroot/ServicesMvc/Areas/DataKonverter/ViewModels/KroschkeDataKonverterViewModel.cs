@@ -186,22 +186,16 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         public string GetDestinationDiv(XmlDocument destXmlDocument)
         {
-            var content = "";
-            var test1 = destXmlDocument.ChildNodes;
-            var test2 = destXmlDocument.ChildNodes[1].ChildNodes;
-            var test3 = destXmlDocument.FirstChild;
-            var test4 = destXmlDocument.ChildNodes;
-
-            // TraverseNodes(doc.ChildNodes, ref content);
+            var nodeList = destXmlDocument.ChildNodes[1].ChildNodes;
+            
             var sb = new StringBuilder();
-            TraverseNodes(test2, ref sb);
+            TraverseNodes(nodeList, ref sb);    // TraverseNodes(doc.ChildNodes, ref content);
 
             return sb.ToString();
         }
-        // private static void TraverseNodes(XmlNodeList nodes, ref string content)
-        private static void TraverseNodes(XmlNodeList nodes, ref StringBuilder sb)
+
+        private static void TraverseNodes(XmlNodeList nodes, ref StringBuilder sb, int divId = 0)
         {
-            // var sb = new StringBuilder();
             foreach (XmlNode node in nodes)
             {
                 if (node.NodeType == XmlNodeType.XmlDeclaration)
@@ -219,28 +213,32 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
                 if (node.HasChildNodes)
                 {
+                    // var buffer = Guid.NewGuid().ToByteArray();
+                    // divId = BitConverter.ToInt64(buffer, 0).ToString().Substring(0,10);
+                    var rnd = new Random();
+                    divId = rnd.Next(1, 9999999);
+
                     // sb.Append("<div class='nodetitle'>" + node.ParentNode.Name + " > " + node.FirstChild.Name + "</div>");
-                    sb.Append("<div class='nodetitle'>" + node.Name + "</div>");
+                    // sb.Append("<div class='nodetitle'>" + node.Name + "<button class='btn white float-right' onclick='ShowHideLines(" + divId + ");'><i class='icon-bell'></i></button></div>");
+                    sb.Append("<div class='nodetitle'>" + node.Name + "<button class='btn white float-right' onclick='ShowHideLines(this);'><i class='icon-bell'></i></button>");
+
+                    TraverseNodes(node.ChildNodes, ref sb, divId);
+
+                    sb.Append("</div>");
                 }
                 else
                 {
-                    sb.Append("<div class='w ept' id='Dest-" + id + "'>");  
+                    sb.Append("<div class='w ept' id='Dest-" + id + "' data-guid='" + divId + "'>");
                     sb.Append("<div class='ep'></div>");
                     sb.Append("<div class='field'>" + node.Name + "</div>");
                     sb.Append("<span class='data'></span></div>");
                 }
 
-                // content += sb.ToString();
-
                 if (node.HasChildNodes)
                 {
-                    TraverseNodes(node.ChildNodes, ref sb);
+                    // TraverseNodes(node.ChildNodes, ref sb, divId);
                 }
-
-                // content += sb.ToString();
             }
-
-            // content += sb.ToString();
         }
 
         public string CreateXmlContent()

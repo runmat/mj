@@ -404,6 +404,14 @@
         SyncUiData();
     }
 
+    function ShowHideLines(obj) {
+        jsPlumb.hide(obj, true);
+        // $(obj).hide();
+        $(obj).parent().find(".ept").toggle();
+        // $("[data-guid='" + obj + "']").hide();
+        // alert(obj);
+    }
+
     function ShowHideProcessors(value) {
         $(".processorobj").each(function (index) {
             $(this).find(".content").toggle(value);
