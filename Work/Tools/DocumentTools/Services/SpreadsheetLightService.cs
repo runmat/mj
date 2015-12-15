@@ -56,11 +56,13 @@ namespace DocumentTools.Services
             for (var dc = groupCol; dc <= dt.Columns.Count; dc++)
             {
                 var dataColumn = dt.Columns[dc - 1];
-                
+
                 // apply column formatting (currency , etc)
                 if (dataColumn.DataType == typeof(Decimal))
                     sl.SetColumnStyle(dc, new SLStyle { FormatCode = "#,##0.00" });
-                
+                if (dataColumn.DataType == typeof(DateTime) || dataColumn.DataType == typeof(DateTime?))
+                    sl.SetColumnStyle(dc, new SLStyle { FormatCode = "dd.MM.yyyy" });
+
                 // set header cells to localized values
                 var header = (!string.IsNullOrEmpty(dataColumn.Caption) ? dataColumn.Caption : dataColumn.ColumnName.Replace("-<br>", ""));
                 sl.SetCellValue(1, dc, header);
