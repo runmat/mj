@@ -45,14 +45,14 @@
             if (dataGroups[i] != '') {
                 $('table').filter(function (inputs) {
                     return ($(this).data('group') == dataGroups[i]);
-                }).wrapAll("<div class='accordion' style='width: 100%'>");
+                }).wrapAll("<div class='accordion' style='top: 0; left: 0; bottom: 0; right: 0'>");
             }
         }
         var accordions = $('.accordion');
-        $(accordions).wrapInner("<div>").prepend('<h4 class="MainmenuItemAlternate" style="height: 24px; margin-top: 0; margin-bottom: 0"><a class="MainmenuLink" href="#">Handle</a></h4>');
+        $(accordions).wrapInner("<div>").prepend('<div class="MainmenuItemAlternate MenuGroup" style="top: 0; left: 0; bottom: 0; right: 0"><b><a class="MainmenuLink" href="#">Handle</a></b></div>');
 
         for (var i = 0; i < accordions.length; i++) {
-            $(accordions[i]).find('h4 a').text('+ ' + $(accordions[i]).find('table:first').data('group'));
+            $(accordions[i]).find('.MenuGroup a').text('+ ' + $(accordions[i]).find('table:first').data('group'));
         }
 
         $('.accordion').accordion({ active: false, collapsible: true, autoHeight: false });
