@@ -6,6 +6,7 @@ using System.Reflection;
 using CarDocu.Models;
 using GeneralTools.Services;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Windows.Input;
 using WebTools.Services;
 
@@ -126,9 +127,18 @@ namespace CarDocu.Services
             return new SmtpMailService(Repository.GlobalSettings.SmtpSettings).SendMail(to, subject, body, filesToAttach); 
         }
 
-        public static bool SendTestMail()
+        public static bool CheckOnlineState()
         {
-            return true;
+            try
+            {
+                using (var client = new WebClient())
+                    using (client.OpenRead("http://www.google.com"))
+                        return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

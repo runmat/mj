@@ -25,12 +25,9 @@ namespace CarDocu.Services
                 if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
                     isOnline = true;
                 else
-                    isOnline = Service.IsOnline();
+                    isOnline = DomainService.CheckOnlineState();
             }
-            catch(Exception)
-            {
-                isOnline = false;
-            }
+            catch { isOnline = false; }
 
             return isOnline;
         }

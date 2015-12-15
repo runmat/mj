@@ -16,9 +16,8 @@
 
                 <TextBox Text="{Binding FinNumber, UpdateSourceTrigger=PropertyChanged}"  
                          IsEnabled="{Binding ValidDocumentType}" IsEnabledChanged="TextBoxIsEnabledChanged"
-                         MaxLength="17" Padding="5,0,0,0"
-                         Background="{Binding FinNumberBackground}" Foreground="{Binding FinNumberForeground}" 
-                         CharacterCasing="Upper" FontSize="16" Height="27" Width="180" />
+                         Padding="5,0,0,0" Background="{Binding FinNumberBackground}" Foreground="{Binding FinNumberForeground}" 
+                         CharacterCasing="{Binding CharacterCasing}" FontSize="16" Height="27" Width="180" />
 
                 <StackPanel Margin="5,0,5,0" Width="24">
                     <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding FinNumberInputHintVisible, Converter={StaticResource BooleanVisibilityConverter}}" />
