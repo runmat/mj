@@ -42,6 +42,7 @@
         }
         
         $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
+        $('#SourceFile_FilenameCsv').val(e.response.uploadFileNameCsv);
     }
 
     function UploadError(e) {
@@ -50,9 +51,6 @@
         alert('@Localize.ErrorFileCouldNotBeSaved');
     }
 
-    function RemovePdfFile() {
-        $('#UploadFileName').val("");
-    }
 
 </script>
 <div id="DivProzessauswahl" class="margin-top-20">
@@ -87,7 +85,8 @@
                     </div>
                 </div>
 
-                @Html.TextBoxFor(m => m.SourceFile.FilenameOrig)                
+                @Html.TextBoxFor(m => m.SourceFile.FilenameOrig)      
+                @Html.TextBoxFor(m => m.SourceFile.FilenameCsv)      
 
             </div>
             <div class="span6">

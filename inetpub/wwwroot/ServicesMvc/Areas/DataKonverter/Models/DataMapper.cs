@@ -67,23 +67,26 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public void ReadDestinationObj()
         {
             var filename = Path.GetFileName(DestinationFile.Filename);
-            string xmlContent;
+            //string xmlContent;
 
-            using (var sr = new StreamReader(DestinationFile.Filename))
-            {
-                xmlContent = sr.ReadToEnd();
-            }
-
-            //var destinationFileObj = new DestinationFile
+            //using (var sr = new StreamReader(DestinationFile.Filename))
             //{
-            DestinationFile.Filename = filename;
-            DestinationFile.XmlRaw = xmlContent;
-            DestinationFile.XmlDocument = StringToXmlDoc(xmlContent);
-            DestinationFile.Fields = new List<FieldXml>();
-            //};
+            //    xmlContent = sr.ReadToEnd();
+            //}
+
+            ////var destinationFileObj = new DestinationFile
+            ////{
+            //DestinationFile.Filename = filename;
+            //DestinationFile.XmlRaw = xmlContent;
+            //DestinationFile.XmlDocument = StringToXmlDoc(xmlContent);
+            // DestinationFile.Fields = new List<FieldXml>();
+            ////};
 
             var doc = new XmlDocument();
             doc.Load(DestinationFile.Filename);
+            DestinationFile.XmlRaw = doc.InnerXml;
+            DestinationFile.XmlDocument = doc;
+            DestinationFile.Fields = new List<FieldXml>();
 
             doc.IterateThroughAllNodes(delegate(XmlNode node)
             {
@@ -98,7 +101,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     };
                     newField.Records.Add("test");
 
-                    // destinationFileObj.Fields.Add(newField);
                     DestinationFile.Fields.Add(newField);
                 }
                 catch (Exception)

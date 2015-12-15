@@ -75,8 +75,13 @@ namespace ServicesMvc.DataKonverter.Controllers
         {
             var firstRequest = Request["firstRequest"];
 
-            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-            //    model = ViewModel.Auftraggeber;
+            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+                model = ViewModel.Prozessauswahl;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.Prozessauswahl = model;
+            }
 
             var test0 = ViewModel;
 
@@ -87,9 +92,18 @@ namespace ServicesMvc.DataKonverter.Controllers
 
         [HttpPost]
         [CkgApplication]
-        // public ActionResult Konfiguration()
-        public ActionResult Konfiguration()
+        public ActionResult Konfiguration(KroschkeDataKonverterViewModel.WizardKonfiguration model)
         {
+            var firstRequest = Request["firstRequest"];
+
+            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+                model = ViewModel.Konfiguration;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.Konfiguration = model;
+            }
+
             ViewModel.DataMapper.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
             ViewModel.DataMapper.ReadSourceFile();
             ViewModel.DataMapper.ReadDestinationObj();
@@ -203,13 +217,12 @@ namespace ServicesMvc.DataKonverter.Controllers
             if (!ViewModel.UploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
-            ViewModel.DataMapper.SourceFile.FilenameOrig = file.FileName;
-
             return Json(new
             {
                 success = true,
                 message = "ok",
                 uploadFileName = file.FileName,
+                uploadFileNameCsv = ViewModel.DataMapper.SourceFile.FilenameCsv
             }, "text/plain");
         }
 

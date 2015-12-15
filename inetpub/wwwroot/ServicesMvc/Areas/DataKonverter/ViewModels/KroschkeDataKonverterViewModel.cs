@@ -171,6 +171,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             DataMapper.ConvertToCsvIfNeeded(tmpFilenameOrig, tmpFilenameCsv);
 
             DataMapper.SourceFile.FilenameOrig = fileName;
+            DataMapper.SourceFile.FilenameCsv = tmpFilenameCsv;
 
             return true;
         }
