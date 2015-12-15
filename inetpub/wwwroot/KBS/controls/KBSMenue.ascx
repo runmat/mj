@@ -49,15 +49,15 @@
             }
         }
         var accordions = $('.accordion');
-        $(accordions).wrapInner("<div>").prepend('<h3 class="MainmenuItemAlternate" style="height: 24px; margin-top: 0; margin-bottom: 0"><a class="MainmenuLink" href="#">Handle</a></h3>');
+        $(accordions).wrapInner("<div>").prepend('<h4 class="MainmenuItemAlternate" style="height: 24px; margin-top: 0; margin-bottom: 0"><a class="MainmenuLink" href="#">Handle</a></h4>');
 
         for (var i = 0; i < accordions.length; i++) {
-            $(accordions[i]).find('h3 a').text($(accordions[i]).find('table:first').data('group'));
+            $(accordions[i]).find('h4 a').text('+ ' + $(accordions[i]).find('table:first').data('group'));
         }
 
         $('.accordion').accordion({ active: false, collapsible: true, autoHeight: false });
 
-        $('.ui-accordion-content a').css('padding-left', '15px');
+        $('.ui-accordion-content a').css('padding-left', '20px');
     });
 
     // Move an element directly on top of another element (and optionally
