@@ -43,6 +43,8 @@
         
         $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
         $('#SourceFile_FilenameCsv').val(e.response.uploadFileNameCsv);
+
+        $("#AjaxFormProzessauswahl").submit();
     }
 
     function UploadError(e) {
@@ -50,7 +52,6 @@
         setTimeout("LoadingHide()", 1000);
         alert('@Localize.ErrorFileCouldNotBeSaved');
     }
-
 
 </script>
 <div id="DivProzessauswahl" class="margin-top-20">
@@ -63,9 +64,13 @@
     {
         @Html.FormValidationSummary()
 
-        <div class="row-fluid">
+        <div class="row-fluid margin-top-40">
+            <div class="span6">
+                @Html.FormDropDownListFor(m => m.SelectedProcess, Model.ProcessList.ToSelectList(), new {@class = "m-wrap"})
+            </div>
             <div class="span6">
                 <div class="control-group">
+                    <label class="control-label">Quelldatei</label>
                     <div class="controls">
                         @(Html.Telerik().Upload()
                               .Name("fileUpload")
@@ -84,13 +89,8 @@
                               )
                     </div>
                 </div>
-
-                @Html.TextBoxFor(m => m.SourceFile.FilenameOrig)      
-                @Html.HiddenFor(m => m.SourceFile.FilenameCsv)      
-
-            </div>
-            <div class="span6">
-                @Html.FormDropDownListFor(m => m.SelectedProcess, Model.ProcessList.ToSelectList(), new { @class = "m-wrap" })
+                @Html.HiddenFor(m => m.SourceFile.FilenameOrig)      
+                @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
             </div>
         </div>
     }
