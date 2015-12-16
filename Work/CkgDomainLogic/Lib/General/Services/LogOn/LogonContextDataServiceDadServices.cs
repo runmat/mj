@@ -248,7 +248,7 @@ namespace CkgDomainLogic.General.Services
                     if (specifiedLoginLink.Contains('/'))
                         specifiedLoginLink = specifiedLoginLink.Split('/')[0];
 
-                    var currentLoginLink = HttpContext.Current.Request.RawUrl.NotNullOrEmpty().ToLower().Replace("http://", "").Replace("https://", "");
+                    var currentLoginLink = HttpContext.Current.Request.Url.AbsoluteUri.NotNullOrEmpty().ToLower().Replace("http://", "").Replace("https://", "");
                     if (currentLoginLink.Contains('/'))
                         currentLoginLink = currentLoginLink.Split('/')[0];
 

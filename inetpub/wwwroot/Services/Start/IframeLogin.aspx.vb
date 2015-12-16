@@ -36,7 +36,7 @@ Partial Public Class IframeLogin
                 Exit Sub
             End If
 
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.RawUrl, False) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, False) Then
                 '    If m_User.Login(txtUsername.Text, Session.SessionID.ToString) Then
 
                 Session("UrlRemoteLogin_LogoutUrl") = m_User.Customer.LogoutLink

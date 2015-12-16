@@ -43,7 +43,7 @@ Partial Public Class FirstLogin
                     .btnChange.Enabled = False
                     .lblMessage.Text = ""
                 End With
-                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID.ToString, Request.RawUrl)
+                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri)
                 Session("UrlRemoteLogin_LogoutUrl") = m_User.Customer.LogoutLink
                 Log(m_User.UserID.ToString, "Eigenes Passwort ändern")
 

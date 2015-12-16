@@ -126,7 +126,7 @@ Public Class Login
 
                     Else
                         'Melde Standard-Benutzer an und geh' weiter
-                        If m_User.Login(strIpStandardUser, Session.SessionID, Request.RawUrl) Then
+                        If m_User.Login(strIpStandardUser, Session.SessionID, Request.Url.AbsoluteUri) Then
                             System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                         Else
                             lblError.Text = strIpError & "<br>(" & m_User.ErrorMessage & ")"
@@ -372,7 +372,7 @@ Public Class Login
             End If
             lnkPasswortVergessen.Text = "Passwort vergessen?"
             trPasswortVergessen.Visible = False
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.RawUrl, blnPasswdlink) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, blnPasswdlink) Then
                 '    If m_User.Login(txtUsername.Text, Session.SessionID.ToString) Then
 
                 'Prüfe IP-Adress-Regelung
@@ -480,7 +480,7 @@ Public Class Login
             'End If
             lnkPasswortVergessen.Text = "Passwort vergessen?"
             trPasswortVergessen.Visible = False
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.RawUrl, blnPasswdlink) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, blnPasswdlink) Then
                 '    If m_User.Login(txtUsername.Text, Session.SessionID.ToString) Then
 
                 'Prüfe IP-Adress-Regelung

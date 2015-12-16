@@ -47,7 +47,7 @@ Partial Public Class FirstLogin
                     .btnChange.Enabled = False
                     .lblMessage.Text = ""
                 End With
-                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID.ToString, Request.RawUrl)
+                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri)
                 Log(m_User.UserID.ToString, "Eigenes Kennwort ändern")
 
                 If m_User.Customer.ForcePasswordQuestion = True Then

@@ -28,7 +28,7 @@ namespace ErpBaseMvc
                 var decryptedUserName = CryptoMd5.Decrypt(requestUserName);
 
                 user = new User();
-                user.Login(decryptedUserName, context.Session.SessionID, rawUrl);
+                user.Login(decryptedUserName, context.Session.SessionID, context.Request.Url.AbsoluteUri);
                 context.Session["objUser"] = user;
             }
 
