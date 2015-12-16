@@ -76,8 +76,14 @@ namespace CkgAbbyyPresentation
 
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            MediaElement.Visibility = Visibility.Visible;
             MediaElement.Position = new TimeSpan();
             MediaElement.Play();
+        }
+
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            MediaElement.Visibility = Visibility.Collapsed;
         }
     }
 }

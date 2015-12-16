@@ -217,7 +217,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\16x16\excel.psd" />
-    <Resource Include="Images\16x16\Thumbs.db" />
     <Resource Include="Images\16x16\undo.psd" />
     <Resource Include="Images\48x48\worddoc.psd" />
   </ItemGroup>
