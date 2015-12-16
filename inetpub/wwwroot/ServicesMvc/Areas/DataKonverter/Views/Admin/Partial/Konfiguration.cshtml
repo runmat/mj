@@ -1,7 +1,7 @@
 ﻿@using System.Xml
 @model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
 
-<style>
+@*<style>
     .nodetitle-div {
         margin-left: 0px !important;
     }
@@ -15,7 +15,7 @@
         padding-right: 10px;
         padding-bottom: 4px;
     }
-</style>
+</style>*@
 
 <div id="DivKonfiguration" class="margin-top-20" style="height: 550px;">
     <h4>Konfiguration</h4>
@@ -53,28 +53,17 @@
             <i class="icon-remove"></i>
         </button>
 
-        @*<button class="btn white margin-left-10" onclick="SyncUiData();">
-            Save
-        </button>
-        <button class="btn white" onclick="LoadUiData();">
-            Load
-        </button>*@
-
         <button class="btn white margin-left-10" onclick="ShowHideProcessors(false);">
-            Hide
+            <i class="halflings-icon eye-close"></i>
         </button>
         <button class="btn white" onclick="ShowHideProcessors(true);">
-            Show
+            <i class="halflings-icon eye-open"></i>
         </button>
         
         <button class="btn white margin-left-10" onclick="Export();">
-            Export
+            Test-Export
         </button>
     </span>
-    
-@*    <div class="float-left margin-left-10">
-        @Html.DropDownListFor(m => m.Konfiguration.GlobalDateTransformation, Model.GlobalViewData.DateTransformations.ToSelectList(), new {@class = "small margin-left-20"})
-    </div>*@
 
     <span class="clearfix"></span>
     <div id="processorTemplate" class="processor hidden">

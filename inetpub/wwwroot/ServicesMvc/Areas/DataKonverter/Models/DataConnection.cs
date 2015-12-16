@@ -11,11 +11,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public string GuidSource { get; set; }
         public string GuidDest { get; set; }
-        //public bool SourceIsProcessor { get; set; }
-        //public bool DestIsProcessor { get; set; }
-
-        //public string ValueSource { get; set; }
-        //public string ValueDest { get; set; }
 
         public DataConnection()
         {

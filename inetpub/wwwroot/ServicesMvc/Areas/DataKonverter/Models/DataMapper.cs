@@ -20,14 +20,14 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public DestinationFile DestinationFile { get; set; }
         public List<DataConnection> DataConnections { get; set; }
         public List<Processor> Processors { get; set; }
-        
-        public int RecordNo { get; set; }
 
+        public string XmlOutput { get; set; }
+
+        public int RecordNo { get; set; }
         public int RecordCount
         {
             get { return SourceFile.RowCount; }
         }
-
         public string RecordInfoText
         {
             get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
@@ -62,13 +62,10 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public void ReadDestinationObj()
         {
-            var filename = Path.GetFileName(DestinationFile.Filename);
-
             var doc = new XmlDocument();
             doc.Load(DestinationFile.Filename);
             DestinationFile.XmlRaw = doc.InnerXml;
             DestinationFile.XmlDocument = doc;
-            //DestinationFile.Fields = new List<FieldXml>();
             DestinationFile.Fields = new List<Field>();
 
             doc.IterateThroughAllNodes(delegate(XmlNode node)
@@ -77,14 +74,11 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 {
                     var nodeId = node.Attributes["id"].Value;
 
-                    // var newField = new FieldXml
                     var newField = new Field
                     {
                         Guid = "Dest-" + nodeId,
                         Records = new List<string>()
                     };
-
-                    // newField.Records.Add("test");
 
                     DestinationFile.Fields.Add(newField);
                 }
@@ -92,8 +86,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 {
                 }
             });
-
-            // return destinationFileObj;
         }
 
         /// <summary>
@@ -136,20 +128,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             SourceFile.Fields = fields;
         }
 
-        //protected DataItem.DataType GetDataType(IEnumerable<string> values)
-        //{
-        //    var dataType = DataItem.DataType.String;
-
-        //    return dataType;
-        //}
-
-        private static XmlDocument StringToXmlDoc(string xml)
-        {
-            var doc = new XmlDocument();
-            doc.LoadXml(xml);
-            return doc;
-        }
-
         public Processor AddProcessor()
         {
             var newProcessor = new Processor();
@@ -159,12 +137,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return newProcessor;         
         }
 
-        public string RemoveProcessor(string processorId)
-        {
-            var processor = Processors.FirstOrDefault(x => x.Guid == processorId);
-            Processors.Remove(processor);
-            return processorId.ToString();
-        }
+        //public string RemoveProcessor(string processorId)
+        //{
+        //    var processor = Processors.FirstOrDefault(x => x.Guid == processorId);
+        //    Processors.Remove(processor);
+        //    return processorId;
+        //}
 
         public Processor GetProcessorResult(Processor processor)
         {
@@ -173,7 +151,6 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
             // Input-String ermitteln...
             var input = new StringBuilder();
-
             foreach (var dataConnection in connectionsIn)
             {
                 var sourceField = SourceFile.Fields.FirstOrDefault(x => x.Guid == dataConnection.GuidSource);
@@ -208,42 +185,20 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return filenameCsvFull;
         }
 
-        #region TEST
-        public static XmlDocument ToXmlDocument(XDocument xdoc)
+        /// <summary>
+        /// Speichert ein XML-Dokument mit allen vorhandenen Datensätzen in einer Datei, falls xmlOutputFilename gesetzt.
+        /// </summary>
+        /// <param name="xmlOutputFilename"></param>
+        /// <returns>XML-Dokument als String</returns>
+        public string ExportToXml(string xmlOutputFilename = null)
         {
-            var xmlDocument = new XmlDocument();
-            using (var reader = xdoc.CreateReader())
-            {
-                xmlDocument.Load(reader);
-            }
-            return xmlDocument;
-        }
-        public static XDocument ToXDocument(XmlDocument xmlDoc)
-        {
-            using (var reader = new XmlNodeReader(xmlDoc))
-            {
-                reader.MoveToContent();
-                return XDocument.Load(reader);
-            }
-        }
-        #endregion
-
-        public string ExportToXml()
-        {
-            var doc = new XmlDocument();
-            var xmlFileContent = new XmlDocument();
-            
-            xmlFileContent.CreateNode("element", "pages", "");
             var xmlComplete = new XDocument();
             xmlComplete.Add(new XElement("IMPORTS"));
 
-            // In SourceFiele.Fields[] sind alle Felder der Quelldatei
-            // Zu jedem Field gibt es eine Liste mit 
+            // In SourceFiele.Fields[] sind alle Felder der Quelldatei und jeweils alle Original-Datensätze
             var records = SourceFile.Fields[0].Records;
 
-            // var recordNo = 0;
-            // Alle Datensätze durchlaufen, die es im SourceFile gibt
-
+            // Alle Datensätze durchlaufen
             for (int recordNo = 1; recordNo < records.Count + 1; recordNo++)
             {
                 // XML-Document für einen Datensatz zum späteren Füllen holen
@@ -260,34 +215,27 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     var value = field.Wert;             // Wert des Feldes ermitteln...
 
                     // In XML-Dokument das passende Feld suchen
-                    var fieldIdToFind = fieldId.Substring(5);   // Im Model wird der OriginalId (gem. XML-Datei) immer "Dest-" hinzugefügt. Damit Eintrag gefunden werden kann, hier entfernen.
+                    var fieldIdToFind = fieldId.Substring(5);   // ***refactor me*** Im Model wird der OriginalId (gem. XML-Datei) immer "Dest-" hinzugefügt. Damit Eintrag gefunden werden kann, hier entfernen.
                     var element = xmlRecord.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == fieldIdToFind);
                     if (element != null) {
                         element.Value = value;
                     }
                 }
-
-                xmlRecord.Save(@"C:\tmp\TestOutput11.xml");
-
-                // Dem Inhalt kann kein Knoten vom Typ 'Document' hinzugefügt werden.
-                var contentToAdd = xmlRecord.DescendantNodes();
-                var contentToAdd2 = xmlRecord.DescendantNodes().FirstOrDefault();
-                var contentToAdd3 = xmlRecord.DescendantNodes();
-                var contentToAdd4 = xmlRecord.DescendantNodes();
-
-                // var contentToAdd2 = xmlRecord.Root.DescendantNodes();
-                xmlComplete.Descendants().FirstOrDefault().Add(contentToAdd2);
-                // xmlComplete.Add(xmlRecord.FirstNode.NodesAfterSelf()); // Dem Inhalt können keine Nichtleerzeichen hinzugefügt werden.
-
-                // xmlComplete.Add(xmlRecord.Root.DescendantNodesAndSelf()); // Dem Inhalt können keine Nichtleerzeichen hinzugefügt werden.
+                
+                var contentToAdd = xmlRecord.DescendantNodes().FirstOrDefault();
+                xmlComplete.Descendants().FirstOrDefault().Add(contentToAdd);
             }
 
-            xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
-
-            return "OK";
+            // xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
+            if (xmlOutputFilename != null)
+            {
+                xmlComplete.Save(xmlOutputFilename);
+            }
+            
+            return xmlComplete.ToString();
         }
 
-        // Alle DatenRecords der Quellfelder ermitteln...
+        // Alle DatenRecords der Quellfelder (z.B. zur "Live-Anzeige" im UI) ermitteln...
         public List<Domaenenfestwert> RecalcSourceFields()
         {
             var sourceFieldList = new List<Domaenenfestwert>();

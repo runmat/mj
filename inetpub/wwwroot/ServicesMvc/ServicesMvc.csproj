@@ -290,7 +290,6 @@
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Prozessauswahl.cshtml" />
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Konfiguration.cshtml" />
     <Content Include="Areas\DataKonverter\Views\Admin\Partial\Abschluss.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Partial\DestinationDiv.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -733,11 +732,9 @@
     <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
     <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataConnection.cs" />
-    <Compile Include="Areas\DataKonverter\Models\DataItem.cs" />
     <Compile Include="Areas\DataKonverter\Models\DestinationFile.cs" />
     <Compile Include="Areas\DataKonverter\Models\Field.cs" />
     <Compile Include="Areas\DataKonverter\Models\FieldType.cs" />
-    <Compile Include="Areas\DataKonverter\Models\FieldXml.cs" />
     <Compile Include="Areas\DataKonverter\Models\GlobalViewData.cs" />
     <Compile Include="Areas\DataKonverter\Models\DataMapper.cs" />
     <Compile Include="Areas\DataKonverter\Models\Operation.cs" />

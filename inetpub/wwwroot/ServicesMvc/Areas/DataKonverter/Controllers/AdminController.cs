@@ -260,11 +260,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         [HttpPost]
         public ActionResult ExportXml()
         {
-            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-            //    model = ViewModel.Auftraggeber;
-            // return PartialView("Partial/Testimport", ViewModel);
-
-            var xmlContent = ViewModel.DataMapper.ExportToXml();
+            var xmlContent = ViewModel.DataMapper.ExportToXml(@"C:\tmp\TestOutputComplete.xml");
 
             return Content(xmlContent);
         }

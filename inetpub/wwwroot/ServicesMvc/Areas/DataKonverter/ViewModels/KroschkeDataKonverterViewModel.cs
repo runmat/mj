@@ -182,7 +182,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #endregion
 
-        #region XML-Output
+        #region Visual XML Output
 
         public string GetDestinationDiv(XmlDocument destXmlDocument)
         {
