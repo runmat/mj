@@ -24,7 +24,7 @@
         </span>
     </span>
 
-        <span class="float-left">
+    <div class="float-left">
         <button class="btn white" onclick="AddProcessor();">
             Prozessor
             <i class="halflings-icon  plus"></i>
@@ -45,11 +45,30 @@
         <button class="btn white margin-left-10" onclick="Export();">
             Test-Export
         </button>
-    </span>
+    </div>
 
     <div style="clear:both"></div>
 
-    <div id="processorTemplate" class="processor hidden">
+    <div id="DataKonverterContainer">
+        <div id="source" style="padding: 0px;">
+            @foreach (var item in Model.DataMapper.SourceFile.Fields)
+            {
+                <div class="w" id="@item.Guid">
+                    <div class="field">@item.Caption</div>
+                    <div class="data">@item.Records[0]</div>
+                    <div class="sp"></div>
+                </div>
+            }
+        </div>
+
+        <div id="destination">
+            @Html.Action("ShowDestinationDiv", Model.DataMapper.DestinationFile.XmlDocument)
+        </div>
+    </div>
+
+</div>
+
+<div id="processorTemplate" class="processor hidden">
         <div class="title">
             <div class="processortitle float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
             <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
@@ -71,26 +90,6 @@
         <div id="tmpprozin" class="prozin"></div>
         <div id="tmpprozout" class="prozout"></div>
     </div>
-
-    <div id="DataKonverterContainer2x" style="width: 650px;">
-        <div id="source" style="padding: 0px;">
-            @foreach (var item in Model.DataMapper.SourceFile.Fields)
-            {
-                <div class="w" id="@item.Guid">
-                    <div class="field">@item.Caption</div>
-                    <div class="data">@item.Records[0]</div>
-                    <div class="sp"></div>
-                </div>
-            }
-        </div>
-
-        <div id="destination">
-            @Html.Action("ShowDestinationDiv", Model.DataMapper.DestinationFile.XmlDocument)
-        </div>
-    </div>
-
-</div>
-
 <script>
 
     var jsonProcessors; 
@@ -142,10 +141,10 @@
                     }
                 ]
             ],
-            Container: $('#DataKonverterContainer2x')
+            Container: $('#DataKonverterContainer')
         });
 
-        jsPlumb.Defaults.Container = $('#DataKonverterContainer2x');
+        jsPlumb.Defaults.Container = $('#DataKonverterContainer');
 
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);
