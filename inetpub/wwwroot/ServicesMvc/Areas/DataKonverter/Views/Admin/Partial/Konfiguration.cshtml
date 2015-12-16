@@ -1,21 +1,4 @@
-﻿@using System.Xml
-@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
-
-@*<style>
-    .nodetitle-div {
-        margin-left: 0px !important;
-    }
-
-    .nodetitle {
-        font-size: 12px;margin-top: 2px;margin-bottom: -3px;background-color: #add8e6;padding-left: 4px;font-weight: bold;border: 1px solid gray;
-    }
-    
-    .btn-xs {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 4px;
-    }
-</style>*@
+﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
 
 <div id="DivKonfiguration" class="margin-top-20" style="height: 550px;">
     <h4>Konfiguration</h4>
@@ -141,7 +124,6 @@
     $(function () {
         $('.processorobj').show();        
         $('#SelectedDateTransformation').chosen();
-//        $('#Konfiguration_GlobalDateTransformation').chosen();
     });
 
     jsPlumb.ready(function () {
@@ -199,6 +181,8 @@
     
     // Show Processor in UI
     function ShowProcessor(processorId, number, title, posLeft, posTop, type, para1, para2) {
+        
+        // Clone template div...
         var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
 
         clone.id = processorId;

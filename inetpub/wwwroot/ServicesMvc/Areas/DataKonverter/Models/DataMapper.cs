@@ -205,8 +205,10 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
                 var xmlRecord = XDocument.Parse(xmlSingleRecord.InnerXml);
 
-                // Alle Ergebnisse des aktuellen Datensatzes ermitteln und nur Zielfelder zurückgeben, die nicht leer sind
                 RecordNo = recordNo;
+
+                // Alle Ergebnisse des aktuellen Datensatzes ermitteln und nur Zielfelder zurückgeben, die nicht leer sind
+                RecalcProcessors();
                 var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Wert));
 
                 foreach (var field in destFields)
@@ -226,7 +228,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 xmlComplete.Descendants().FirstOrDefault().Add(contentToAdd);
             }
 
-            // xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
+            xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
             if (xmlOutputFilename != null)
             {
                 xmlComplete.Save(xmlOutputFilename);
