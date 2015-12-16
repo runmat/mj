@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using CkgDomainLogic.DomainCommon.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace ServicesMvc.Areas.DataKonverter.Models
 {
@@ -230,54 +231,58 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public string ExportToXml()
         {
             var doc = new XmlDocument();
-            var newElem = doc.CreateNode("element", "pages", "");  
-
             var xmlFileContent = new XmlDocument();
-
-            var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
-
-            var destFields = RecalcDestFields();
-
+            
             xmlFileContent.CreateNode("element", "pages", "");
-
             var xmlComplete = new XDocument();
+            xmlComplete.Add(new XElement("IMPORTS"));
 
-            // Alle vorhandenen Datensätze aus Sourcefile durchlaufen...
-            foreach (var record in SourceFile.Fields[0].Records)
+            // In SourceFiele.Fields[] sind alle Felder der Quelldatei
+            // Zu jedem Field gibt es eine Liste mit 
+            var records = SourceFile.Fields[0].Records;
+
+            // var recordNo = 0;
+            // Alle Datensätze durchlaufen, die es im SourceFile gibt
+
+            for (int recordNo = 1; recordNo < records.Count + 1; recordNo++)
             {
+                // XML-Document für einen Datensatz zum späteren Füllen holen
+                var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
                 var xmlRecord = XDocument.Parse(xmlSingleRecord.InnerXml);
 
-                // Alle Felder durchlaufen, die über einen Inhalt verfügen...
-                foreach (var field in DestinationFile.Fields.Where(x => x.IsUsed))
-                {
-                    var id = field.Guid.Replace("Dest-", "");
+                // Alle Ergebnisse des aktuellen Datensatzes ermitteln und nur Zielfelder zurückgeben, die nicht leer sind
+                RecordNo = recordNo;
+                var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Wert));
 
-                    // Element in Template-XmlDokument finden...
-                    var found = xmlRecord.Descendants().Attributes("id").Any(attribute => attribute.Value.Contains("Passwort"));
-                    if (found)
-                    {
-                        var element = xmlRecord.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == id);
-                        var content = destFields.FirstOrDefault(x => x.Beschreibung == "Dest-" + id);
-                        // element.Value = field.Records[0];
-                        if (content != null)
-                        {
-                            element.Value = content.Wert;
-                        }
+                foreach (var field in destFields)
+                {
+                    var fieldId = field.Beschreibung;
+                    var value = field.Wert;             // Wert des Feldes ermitteln...
+
+                    // In XML-Dokument das passende Feld suchen
+                    var fieldIdToFind = fieldId.Substring(5);   // Im Model wird der OriginalId (gem. XML-Datei) immer "Dest-" hinzugefügt. Damit Eintrag gefunden werden kann, hier entfernen.
+                    var element = xmlRecord.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == fieldIdToFind);
+                    if (element != null) {
+                        element.Value = value;
                     }
                 }
 
-                var test1 = xmlRecord.Root.Element("IMPORT");
-                var test2 = xmlRecord.Root;
-                var test3 = test2.ElementsBeforeSelf();
-                var test4 = test2.ElementsAfterSelf();
+                xmlRecord.Save(@"C:\tmp\TestOutput11.xml");
 
-                xmlComplete.Root.Add(test3.Elements());
+                // Dem Inhalt kann kein Knoten vom Typ 'Document' hinzugefügt werden.
+                var contentToAdd = xmlRecord.DescendantNodes();
+                var contentToAdd2 = xmlRecord.DescendantNodes().FirstOrDefault();
+                var contentToAdd3 = xmlRecord.DescendantNodes();
+                var contentToAdd4 = xmlRecord.DescendantNodes();
 
-                xmlComplete.Add(xmlRecord);
-                
+                // var contentToAdd2 = xmlRecord.Root.DescendantNodes();
+                xmlComplete.Descendants().FirstOrDefault().Add(contentToAdd2);
+                // xmlComplete.Add(xmlRecord.FirstNode.NodesAfterSelf()); // Dem Inhalt können keine Nichtleerzeichen hinzugefügt werden.
+
+                // xmlComplete.Add(xmlRecord.Root.DescendantNodesAndSelf()); // Dem Inhalt können keine Nichtleerzeichen hinzugefügt werden.
             }
 
-            xmlComplete.Save(@"C:\tmp\TestOutput.xml");
+            xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
 
             return "OK";
         }

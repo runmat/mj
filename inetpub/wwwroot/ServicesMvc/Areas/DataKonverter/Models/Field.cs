@@ -12,7 +12,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public FieldType FieldType { get; set; }
         public bool IsUsed { get; set; }
 
-        public List<string> Records { get; set; }
+        public List<string> Records { get; set; }   // All values (records) of this field
 
         public Field()
         {
