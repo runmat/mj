@@ -619,7 +619,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             CarportnacherfassungSelektor = selektor;
 
             FahrzeugeAlle = DataService.GetFahrzeuge(CarportnacherfassungSelektor);
-            SetFahrzeugeForCurrentMode();
+            
+            SetSelectedOrganizationIdAndCarportId(null, null);
 
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
 

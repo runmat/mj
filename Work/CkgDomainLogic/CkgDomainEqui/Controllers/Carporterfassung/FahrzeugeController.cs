@@ -122,8 +122,9 @@ namespace ServicesMvc.Controllers
         public ActionResult CarportSelectionForm(CarporterfassungModel model)
         {
             CarporterfassungViewModel.SaveCarportSelectionModel(model);
+            ModelState.Clear();
 
-            return PartialView("Carporterfassung/CarportSelectionForm", model);
+            return PartialView("Carporterfassung/CarportSelectionForm", CarporterfassungViewModel.CarportSelectionModel);
         }
 
         [HttpPost]
