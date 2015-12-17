@@ -115,12 +115,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                return string.Format(",{0};0,{1};2,{2};H,{3};V,{4}",
+                return string.Format(",{0};0,{1};2,{2}",
                     Localize.DropdownDefaultOptionPleaseChoose,
                     Localize.NoLicensePlatesAvailable,
-                    Localize.BothLicensePlatesAvailable,
-                    Localize.LicensePlateRearAvailable,
-                    Localize.LicensePlateFrontAvailable).ToSelectList();
+                    Localize.BothLicensePlatesAvailable).ToSelectList();
             }
         }
 
@@ -130,22 +128,22 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.SelfDeregistrator)]
         public bool Abgemeldet { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ZB1)]
+        [LocalizedDisplay(LocalizeConstants.ZBI)]
         [Required]
         public string Zb1Vorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ZB1)]
+        [LocalizedDisplay(LocalizeConstants.ZBI)]
         [RequiredConditional]
         public string Zb1VorhandenText
         {
             get { return (MaterialVorhandenOptionen.Any(m => m.Value == Zb1Vorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == Zb1Vorhanden).Text : Zb1Vorhanden); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.ZB2)]
+        [LocalizedDisplay(LocalizeConstants.ZBII)]
         [Required]
         public string Zb2Vorhanden { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ZB2)]
+        [LocalizedDisplay(LocalizeConstants.ZBII)]
         [RequiredConditional]
         public string Zb2VorhandenText
         {
