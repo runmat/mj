@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:CkgAbbyyPresentation.Views"
-        mc:Ignorable="d" MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
+        mc:Ignorable="d" 
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized"
         Title="CKG Abbyy Präsentation, entwickelt von Matthias Jenzen, Dezember 2015">
@@ -35,12 +35,32 @@
                     </ListBox>
                 </StackPanel>
 
-                <TextBlock Text="Dieses Programm wurde entwickelt von Matthias Jenzen, Dezember 2015" VerticalAlignment="Top" Margin="0,35,0,7" Foreground="Gray" />
+                <StackPanel Orientation="Horizontal" Margin="5,7,0,15">
+                    <TextBlock Text="{Binding SelectedCategoryPresentationLabel}" Foreground="DarkRed" FontWeight="Bold" Margin="0,0,5,0" />
+                    <Button Style="{StaticResource HyperLinkSmallImage}" 
+                            ToolTip="{Binding SelectedCategoryPresentationTooltip}"
+                            Command="{Binding SelectedCategoryPresentationStartCommand}"
+                            Content="{StaticResource image/24x24/play}" />
+
+                    <TextBlock Text="Gesamt-Fazit:" Foreground="DarkRed" FontWeight="Bold" Margin="25,0,5,0" />
+                    <Button Style="{StaticResource HyperLinkSmallImage}" 
+                            ToolTip="Gesamt-Fazit, Präsentation starten"
+                            Command="{Binding TotalPresentationStartCommand}"
+                            Content="{StaticResource image/24x24/play}" />
+
+                    <TextBlock Text="Intro:" Foreground="DarkRed" FontWeight="Bold" Margin="25,0,5,0" />
+                    <Button Style="{StaticResource HyperLinkSmallImage}" 
+                            ToolTip="Intro Präsentation starten"
+                            Command="{Binding IntroPresentationStartCommand}"
+                            Content="{StaticResource image/24x24/play}" />
+                </StackPanel>
+
+                <TextBlock Text="Dieses Programm wurde entwickelt von Matthias Jenzen im Dezember 2015" VerticalAlignment="Top" Margin="0,0,0,0" Foreground="Gray" />
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Background="White">
             <Border BorderBrush="Blue" BorderThickness="0" Background="White" Margin="25,0,0,0">
-                <MediaElement Name="MediaElement" LoadedBehavior="Manual" MediaEnded="MediaElement_MediaEnded"   Source="C:\Backup\ABBYY\Fazit-Strafzettel.mp4" 
+                <MediaElement Name="MediaElement" LoadedBehavior="Manual" MediaEnded="MediaElement_MediaEnded"   
                               Height="260" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Margin="0,-90,0,0">
                 </MediaElement>
             </Border>

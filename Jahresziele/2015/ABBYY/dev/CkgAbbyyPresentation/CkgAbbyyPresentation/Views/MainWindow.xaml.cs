@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interop;
 using CkgAbbyyPresentation.ViewModels;
-using Microsoft.Office.Core;
-using Powerpoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace CkgAbbyyPresentation
 {
-    /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
-    /// </summary>
     public partial class MainWindow 
     {
         public MainWindow()
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(StartPresentation);
         }
 
-        private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void StartPresentation(string presentationName)
         {
+            MediaElement.Source = new Uri(presentationName);
             MediaElement.Visibility = Visibility.Visible;
             MediaElement.Position = new TimeSpan();
             MediaElement.Play();

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GeneralTools.Models;
 using GeneralTools.Services;
-using Size = System.Windows.Size;
 using Media = System.Windows.Media;
 using WpfTools4.ViewModels;
 
