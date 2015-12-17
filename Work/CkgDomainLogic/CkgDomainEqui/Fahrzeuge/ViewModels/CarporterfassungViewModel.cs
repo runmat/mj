@@ -190,7 +190,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             SetSelectedOrganizationIdAndCarportId(organizationId, carportId);
 
             LoadFahrzeugModel();
-            SetFahrzeugeForCurrentMode();
         }
 
         public void DataMarkForRefresh()
@@ -268,6 +267,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 CarportSelectionModel.SelectedCarportId = carportId;
             else
                 CarportSelectionModel.SelectedCarportId = CarportPdisForListFilter.Keys.FirstOrDefault();
+
+            SetFahrzeugeForCurrentMode();
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
@@ -328,7 +329,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var organizationChanged = (CarportSelectionModel.SelectedOrganizationId != model.SelectedOrganizationId);
             CarportSelectionModel = model;
             SetSelectedOrganizationIdAndCarportId(model.SelectedOrganizationId, (organizationChanged ? null : model.SelectedCarportId));
-            SetFahrzeugeForCurrentMode();
         }
 
         public string SaveFahrzeuge(Action<string, string> outerClearListFunction)

@@ -191,7 +191,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [RequiredConditional]
         public string ZweitschluesselVorhandenText
         {
-            get { return (MaterialVorhandenOptionen.Any(m => m.Value == ZweitschluesselVorhanden) ? MaterialVorhandenOptionen.First(m => m.Value == ZweitschluesselVorhanden).Text : ZweitschluesselVorhanden); }
+            get { return (ZweitschluesselVorhandenOptionen.Any(m => m.Value == ZweitschluesselVorhanden) ? ZweitschluesselVorhandenOptionen.First(m => m.Value == ZweitschluesselVorhanden).Text : ZweitschluesselVorhanden); }
         }
 
         [LocalizedDisplay(LocalizeConstants.NaviCd)]
@@ -213,6 +213,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     Localize.DropdownDefaultOptionPleaseChoose,
                     Localize.Available,
                     Localize.NotAvailable,
+                    Localize.WillBeDelivered).ToSelectList();
+            }
+        }
+
+        public static SelectList ZweitschluesselVorhandenOptionen
+        {
+            get
+            {
+                return string.Format(",{0};0,0;1,1;2,2;3,3;N,{1}",
+                    Localize.DropdownDefaultOptionPleaseChoose,
                     Localize.WillBeDelivered).ToSelectList();
             }
         }
@@ -268,6 +278,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             switch (webWert)
             {
                 case "1":
+                case "2":
+                case "3":
                     return "X";
                 case "N":
                     return "N";

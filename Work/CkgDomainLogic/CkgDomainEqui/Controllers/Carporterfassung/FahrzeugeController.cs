@@ -90,6 +90,7 @@ namespace ServicesMvc.Controllers
                         CarporterfassungViewModel.UpdateFahrzeug(model);
 
                     CarporterfassungViewModel.SetLastOrganizationIdAndCarportId(model.Organisation, model.CarportId);
+                    CarporterfassungViewModel.SetSelectedOrganizationIdAndCarportId(model.Organisation, model.CarportId);
                     LogonContext.DataContextPersist(CarporterfassungViewModel);
                 }
             }
