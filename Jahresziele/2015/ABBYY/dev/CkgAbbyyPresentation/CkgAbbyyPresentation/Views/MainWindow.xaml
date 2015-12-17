@@ -40,7 +40,7 @@
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Background="White">
             <Border BorderBrush="Blue" BorderThickness="0" Background="White" Margin="25,0,0,0">
-                <MediaElement Name="MediaElement" LoadedBehavior="Manual" MediaEnded="MediaElement_MediaEnded"   Source="C:\Backup\ABBYY\Intro.mp4" 
+                <MediaElement Name="MediaElement" LoadedBehavior="Manual" MediaEnded="MediaElement_MediaEnded"   Source="C:\Backup\ABBYY\Fazit-Strafzettel.mp4" 
                               Height="260" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="None" Margin="0,-90,0,0">
                 </MediaElement>
             </Border>
