@@ -35,7 +35,7 @@
         if (Model.AnzahlKennzeichen == "2" || Model.Abgemeldet)
         {
             @Html.HiddenFor(m => m.AnzahlKennzeichen)
-            @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+            @Html.FormTextBoxFor(m => m.AnzahlKennzeichenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
         }
         else
         {
