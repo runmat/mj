@@ -12,9 +12,15 @@
     .XAjaxDataBinding("VersendungenSummiertAjaxBinding", "Finance")
     .Columns(columns =>
     {
+        columns.XBound(c => c.HaendlerNr);
+        columns.XBound(c => c.HaendlerName);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Anforderungsweg);
         columns.XBound(c => c.Anforderungsart);
         columns.XBound(c => c.Versandgrund);
         columns.XBound(c => c.Summe);
+        columns.XBound(c => c.BestandHaendler);
+        columns.XBound(c => c.AnteilInProzent);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
