@@ -600,6 +600,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Zb2Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB2_VORH);
                         d.ZweitschluesselVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZWEITSCHLUE_VORH);
                         d.Organisation = s.ORGANISATION;
+                        d.UserName = s.WEB_USER;
                     }));
             }
         }

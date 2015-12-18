@@ -34,8 +34,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string SelectedOrganizationId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.User)]
-        [XmlIgnore]
-        public string UserName { get { return EditUser.NotNullOr(GetViewModel == null ? "" : GetViewModel().LogonContext.UserName); } }
+        public string UserName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
         [Required]
@@ -297,6 +296,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
             if (!ModusNacherfassung && !Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().Trim().ToUpper()))
                 yield return new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" });
+
+            if (DemontageDatum.HasValue && DemontageDatum.Value.Date > DateTime.Now.Date)
+                yield return new ValidationResult(string.Format("{0} {1}", Localize.DisassemblyDate, Localize.Invalid.NotNullOrEmpty().ToLower()), new[] { "DemontageDatum" });
         }
     }
 }

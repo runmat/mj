@@ -108,6 +108,8 @@ namespace SapORM.Models
 
 			public string FZG_ABGEMELDET { get; set; }
 
+			public string WEB_USER { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -130,6 +132,7 @@ namespace SapORM.Models
 					ORGANISATION = (string)row["ORGANISATION"],
 					DAT_DEMONT = string.IsNullOrEmpty(row["DAT_DEMONT"].ToString()) ? null : (DateTime?)row["DAT_DEMONT"],
 					FZG_ABGEMELDET = (string)row["FZG_ABGEMELDET"],
+					WEB_USER = (string)row["WEB_USER"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

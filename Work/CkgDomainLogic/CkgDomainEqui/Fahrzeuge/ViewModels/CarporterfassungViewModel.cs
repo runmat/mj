@@ -227,6 +227,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 AktuellesFahrzeug = new CarporterfassungModel
                 {
+                    UserName = LogonContext.UserName,
                     Organisation = LastOrganizationId,
                     CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
