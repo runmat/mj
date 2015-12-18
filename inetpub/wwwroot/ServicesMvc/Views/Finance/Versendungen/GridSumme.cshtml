@@ -25,10 +25,13 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Anforderungsart).Ascending())
+    .Sortable(s => s.Enabled(false))
+    .Filterable(f => f.Enabled(false))
+    .Groupable(g => g.Enabled(false))
+    .Reorderable(r => r.Columns(false))
     .ToolBar(commands =>
     {
-        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance");
-        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance");
+        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance").HtmlAttributes(new { @class = "btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance").HtmlAttributes(new { @class = "btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
     })
 )
