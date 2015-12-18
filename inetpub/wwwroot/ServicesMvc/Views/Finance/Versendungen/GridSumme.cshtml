@@ -31,7 +31,7 @@
     .Reorderable(r => r.Columns(false))
     .ToolBar(commands =>
     {
-        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance").HtmlAttributes(new { @class = "btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
-        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance").HtmlAttributes(new { @class = "btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance");
     })
 )

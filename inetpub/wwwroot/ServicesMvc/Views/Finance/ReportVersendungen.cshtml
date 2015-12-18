@@ -49,6 +49,8 @@
         $("#divSuche").slideUp();
         $("#divGrid").slideDown();
         $("#divGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridVersendungen");
+        $(".dataTables_filter").hide();
     }
 
     function CloseVersendungenSearchResult() {
