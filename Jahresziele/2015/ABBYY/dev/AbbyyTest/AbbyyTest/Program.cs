@@ -13,7 +13,7 @@ namespace AbbyyTest
 
         static void PdfToImages()
         {
-            IOcrService ocr = new OcrServiceZb2();
+            IOcrService ocr = new OcrServiceRg();
 
             //ocr.CreateDefinitionFromTrainingImages();
             ocr.ParseImagesFromDefinition();
