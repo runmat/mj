@@ -41,6 +41,8 @@ namespace CkgAbbyyPresentation.ViewModels
             get { return (_items ?? (_items = GetItems())); }
         }
 
+        public int ItemsCount { get { return Items.Count; } }
+
         private CategoryItem _selectedItem;
 
         public CategoryItem SelectedItem
@@ -84,8 +86,19 @@ namespace CkgAbbyyPresentation.ViewModels
             }
 
             xmlFileName = Path.Combine(xmlPath, string.Format("_ERROR_{0}.xml", item.Name));
-            item.XmlFileName = xmlFileName;
-            item.IsError = true;
+            if (File.Exists(xmlFileName))
+            {
+                item.IsError = true;
+                item.XmlFileName = xmlFileName;
+                return;
+            }
+
+            xmlFileName = Path.Combine(xmlPath, string.Format("_WARNING_{0}.xml", item.Name));
+            if (File.Exists(xmlFileName))
+            {
+                item.IsWarning = true;
+                item.XmlFileName = xmlFileName;
+            }
         }
     }
 }

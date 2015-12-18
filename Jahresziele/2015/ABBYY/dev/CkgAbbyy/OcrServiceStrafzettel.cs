@@ -48,7 +48,7 @@ namespace CkgAbbyy
                     string text = obj.RecognizedText;
                     if (text != null)
                     {
-                        if (Helper.KeyMatchesFileNames(trainingImagFileNames, text))
+                        if (Helper.KeyValueMatchesFileNames(trainingImagFileNames, text))
                         {
                             // We want to extact this field. Create a data field and define its geometry on the current page.
                             ITrainingField isbnField = newDefinition.Fields.AddNew("AZ", TrainingFieldTypeEnum.TFT_Field);

@@ -8,7 +8,7 @@ namespace CkgAbbyy
 {
     public class Helper
     {
-        public static bool KeyIsValid(string xmlFileName, string key)
+        public static bool KeyIsValid(string xmlFileName, string key, Func<string, string, bool> additionalCompareFunc = null)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace CkgAbbyy
                 keyValue = ReplaceNoideChars(keyValue).ToLower();
                 nakedFileName = ReplaceNoideChars(nakedFileName).ToLower();
 
-                return KeyMatchesFileNames(new[] { nakedFileName }, keyValue);
+                return KeyValueMatchesFileNames(new[] { nakedFileName }, keyValue, additionalCompareFunc);
             }
             catch { return false; }
         }
@@ -61,7 +61,7 @@ namespace CkgAbbyy
             return text;
         }
 
-        public static bool KeyMatchesFileNames(string[] azFileNames, string text)
+        public static bool KeyValueMatchesFileNames(string[] azFileNames, string keyValue, Func<string, string, bool>additionalCompareFunc = null)
         {
             foreach (var azFileName in azFileNames)
             {
@@ -72,7 +72,9 @@ namespace CkgAbbyy
                 foreach (var t in Separators)
                 {
                     var azProcessed = az.Replace("-", t).ToLower();
-                    if (azProcessed == text)
+                    if (azProcessed == keyValue)
+                        return true;
+                    if (additionalCompareFunc != null && additionalCompareFunc(azProcessed, keyValue))
                         return true;
                 }
             }

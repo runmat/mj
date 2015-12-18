@@ -79,6 +79,20 @@ namespace CkgAbbyyPresentation.ViewModels
             }
         }
 
+        private bool _isWarning;
+
+        public bool IsWarning
+        {
+            get { return _isWarning; }
+            set
+            {
+                _isWarning = value;
+                SendPropertyChanged("IsWarning");
+            }
+        }
+
+        public bool IsValid { get { return !IsError && !IsWarning; } }
+
         public Media.ImageSource SelectedImageSource
         {
             get { return GetCachedImageSource(true); }

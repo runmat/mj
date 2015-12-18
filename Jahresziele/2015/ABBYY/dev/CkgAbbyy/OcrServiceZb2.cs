@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using FCEngine;
+using GeneralTools.Models;
 
 namespace CkgAbbyy
 {
@@ -161,9 +164,13 @@ namespace CkgAbbyy
                 var xmlFileName = Path.Combine(RootFolder, "export", fileNameWithoutExtension + ".xml");
                 processor.ExportDocumentEx(document, Path.Combine(RootFolder, "export"), fileNameWithoutExtension);
 
-                if (!Helper.KeyIsValid(xmlFileName, key))
+                var valid = Helper.KeyIsValid(xmlFileName, key, VinMatches);
+                var fName = Path.GetFileNameWithoutExtension(xmlFileName).NotNullOrEmpty().ToLower();
+                var errorPrefix = (_vinMatchDict.ContainsKey(fName) && _vinMatchDict[fName]) ? "_WARNING_" : "_ERROR_";
+
+                if (!valid || errorPrefix == "_WARNING_")
                 {
-                    var errorXmlFileName = Path.Combine(RootFolder, "export", "_ERROR_" + fileNameWithoutExtension + ".xml");
+                    var errorXmlFileName = Path.Combine(RootFolder, "export", errorPrefix + fileNameWithoutExtension + ".xml");
                     if (File.Exists(errorXmlFileName))
                         File.Delete(errorXmlFileName);
                     File.Move(xmlFileName, errorXmlFileName);
@@ -171,6 +178,18 @@ namespace CkgAbbyy
 
                 pos++;
             }
+        }
+
+        readonly Dictionary<string, bool> _vinMatchDict = new Dictionary<string, bool>();
+
+        bool VinMatches(string fileName, string keyValue)
+        {
+            keyValue = keyValue.Replace("o", "0");
+
+            var val = fileName.Equals(keyValue, StringComparison.InvariantCultureIgnoreCase);
+            _vinMatchDict.Add(fileName, val);
+
+            return val;
         }
     }
 }
