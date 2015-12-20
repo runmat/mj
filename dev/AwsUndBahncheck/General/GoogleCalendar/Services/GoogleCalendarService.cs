@@ -13,8 +13,8 @@ namespace GoogleCalendar.Services
 {
     public class GoogleCalendarService : ICalendarService
     {
-        private const string ClientId = "918356784225-2670dckabsph9k4h8964p20ick7k1m10.apps.googleusercontent.com";
-        private const string ClientSecret = "NB59fLniRTvdSsRs5sMlA7-R";
+        private const string ClientId = "1011254458932-nkqvlaicfiev9t7qmmtkk2ov09d3tr06.apps.googleusercontent.com";
+        private const string ClientSecret = "2-tw_L9f6k1b0OjUEN6TtkLI";
         private const string ApplicationName = "AwsAbfuhrkalender";
         private string _abfallCalendarId = "";
 
@@ -113,7 +113,8 @@ namespace GoogleCalendar.Services
 
         public void ImportCalendarItems(List<CalendarItem> items)
         {
-            DeleteAllItems(items.First().Date.Year);
+            if (items.Any())
+                DeleteAllItems(items.First().Date.Year);
 
             items.ForEach(item => ImportDayAction(item.Date.Year, item.Date.Month, item.Date.Day, item.ItemType));
         }
