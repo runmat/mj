@@ -7,7 +7,7 @@
                 htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormCarportUpsLabelSelection" }))
     {
 
-        @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.CarportId, Model.AllCarportPdis.ToSelectList(), new { @class = "m-wrap large" })
 
         @Html.FormPlaceHolder(@<text>
                                     <a id="GenerateUpsShippingOrder" href="GenerateUpsShippingOrder" target="_blank" class="btn blue"> @Localize.GenerateUpsShippingOrder</a>
