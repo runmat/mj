@@ -1,0 +1,121 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CarporterfassungModel
+
+<div id="DivFahrzeugnacherfassung" class="margin-top-20">
+    @using (Ajax.BeginForm("FahrzeugnacherfassungForm", "Fahrzeuge", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugnacherfassung", OnComplete = "AjaxFormFahrzeugnacherfassungComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormFahrzeugnacherfassung" }))
+    {
+        @Html.FormValidationSummary()
+
+
+        @Html.HiddenFor(m => m.ObjectKey)
+
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.UserName)
+        @Html.HiddenFor(m => m.CarportName)
+        @Html.HiddenFor(m => m.LieferscheinNr)
+        @Html.HiddenFor(m => m.Status)
+
+        @Html.HiddenFor(m => m.Organisation)
+        @Html.FormTextBlockFor(m => m.OrganisationText, new { @class = "m-wrap medium" })
+        
+        @Html.HiddenFor(m => m.CarportId)
+        @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @readonly = "readonly" })
+
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", @readonly = "readonly" })
+
+        @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+
+        @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
+        @Html.HiddenFor(m => m.AnzahlKennzeichen)
+        @Html.FormTextBoxFor(m => m.AnzahlKennzeichenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+
+        @Html.HiddenFor(m => m.Abgemeldet)
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", disabled = "disabled" }, labelHidden: true)
+        if (Model.Zb1Vorhanden == "1" || Model.Zb1Vorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.Zb1Vorhanden)
+            @Html.FormTextBoxFor(m => m.Zb1VorhandenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        }
+
+        if (Model.Zb2Vorhanden == "1" || Model.Zb2Vorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.Zb2Vorhanden)
+            @Html.FormTextBoxFor(m => m.Zb2VorhandenText, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        }
+        if (Model.CocVorhanden == "1" || Model.CocVorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.CocVorhanden)
+            @Html.FormTextBoxFor(m => m.CocVorhandenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        }
+
+        if (Model.ServiceheftVorhanden == "1" || Model.ServiceheftVorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.ServiceheftVorhanden)
+            @Html.FormTextBoxFor(m => m.ServiceheftVorhandenText, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        }
+        if (Model.HuAuBerichtVorhanden == "1" || Model.HuAuBerichtVorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.HuAuBerichtVorhanden)
+            @Html.FormTextBoxFor(m => m.HuAuBerichtVorhandenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        }
+
+        if (Model.ZweitschluesselVorhanden == "1" || Model.ZweitschluesselVorhanden == "2" || Model.ZweitschluesselVorhanden == "3" || Model.ZweitschluesselVorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.ZweitschluesselVorhanden)
+            @Html.FormTextBoxFor(m => m.ZweitschluesselVorhandenText, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.ZweitschluesselVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
+        }
+        if (Model.NaviCdVorhanden == "1" || Model.NaviCdVorhanden == "0")
+        {
+            @Html.HiddenFor(m => m.NaviCdVorhanden)
+            @Html.FormTextBoxFor(m => m.NaviCdVorhandenText, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        }
+        
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseCarportnacherfassungDetail();">@Localize.BackToList</button>
+        </div>
+        
+        <script type="text/javascript">       
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            ApplySelection(true, true);
+        </script>
+    }
+</div>
