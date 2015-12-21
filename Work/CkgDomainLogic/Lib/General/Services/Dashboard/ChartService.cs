@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.General.Services
 {
@@ -85,7 +87,7 @@ namespace CkgDomainLogic.General.Services
         }
 
 
-        public static ChartItemsPackage PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate, string chartJsonDataCustomizingScriptFunction)
+        public static ChartItemsPackage PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate, IDashboardItemOptions itemOptions, string chartJsonDataCustomizingScriptFunction)
         {
             var chartOptionsFileName = Path.Combine(dataPath, "DashBoard", "ChartTemplates", string.Format("{0}.txt", chartTemplate));
             if (!File.Exists(chartOptionsFileName))
@@ -114,6 +116,7 @@ namespace CkgDomainLogic.General.Services
                     }
             }
 
+            data.dashboardItemOptions = JSon.Serialize(itemOptions);
             data.options = optionsAsText;
             data.customscriptfunction = chartJsonDataCustomizingScriptFunction.NotNullOrEmpty();
 

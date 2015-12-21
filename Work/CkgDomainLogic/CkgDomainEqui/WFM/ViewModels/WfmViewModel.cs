@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -658,7 +659,8 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             var data = GetBarChartGroupedItemsWithLabels(items);
 
-            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", "WfmDurchlaufzeiten");
+            var itemOptions = DependencyResolver.Current.GetService<IDashboardItemOptions>();
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", itemOptions, "WfmDurchlaufzeiten");
         }
 
         private ChartItemsPackage GetExpliciteChartDataForDashboard(string abmeldeArt)

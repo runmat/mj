@@ -1,6 +1,5 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
-using CkgDomainLogic.DomainCommon.Contracts;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;

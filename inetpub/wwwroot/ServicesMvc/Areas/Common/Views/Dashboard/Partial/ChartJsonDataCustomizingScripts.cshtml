@@ -4,10 +4,12 @@
 
     var _chartData = null;
     var _chartOptions = null;
+    var _dashboardItemOptions = null;
 
     function _ChartPrepareJsonResult(result, widgetKey) {
         _chartData = result.data;
         _chartOptions = jQuery.parseJSON(result.options);
+        _dashboardItemOptions = jQuery.parseJSON(result.dashboardItemOptions);
 
         if (result.customscriptfunction != "")
             eval(result.customscriptfunction + "('" + widgetKey + "');");

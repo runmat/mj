@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CkgDomainLogic.General.Contracts;
+using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Database.Models
 {
@@ -24,6 +26,13 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string ChartJsonDataCustomizingScriptFunction { get; set; }
 
+        public string ItemOptions { get; set; }
+
+        public IDashboardItemOptions Options
+        {
+            get { return ItemOptions.IsNullOrEmpty() ? new DashboardItemOptions() : XmlService.XmlDeserializeFromString<DashboardItemOptions>(ItemOptions); }
+        }
+
         [NotMapped]
         public int UserSort { get { return ItemAnnotator == null ? 0 : ItemAnnotator.UserSort; } }
 
@@ -32,5 +41,16 @@ namespace CkgDomainLogic.General.Database.Models
  
         [NotMapped]
         public IDashboardItemAnnotator ItemAnnotator { get; set; }
+    }
+
+    public class DashboardItemOptions : IDashboardItemOptions
+    {
+        private int _columnSpan = 1;
+
+        public int ColumnSpan
+        {
+            get { return _columnSpan; }
+            set { _columnSpan = value; }
+        }
     }
 }

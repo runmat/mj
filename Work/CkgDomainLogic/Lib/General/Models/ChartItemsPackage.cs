@@ -1,5 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using CkgDomainLogic.General.Contracts;
+
 namespace CkgDomainLogic.General.Models
 {
     public class ChartItemsPackage 
@@ -11,6 +13,8 @@ namespace CkgDomainLogic.General.Models
         public ChartItemsTick[] ticks { get; set; }
 
         public string options { get; set; }
+
+        public string dashboardItemOptions { get; set; }
 
         public string customscriptfunction { get; set; }
     }

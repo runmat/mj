@@ -93,6 +93,7 @@
     <Compile Include="DomainCommon\Models\CommonSummary.cs" />
     <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
     <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
+    <Compile Include="General\Contracts\DashboardItem\IDashboardItemOptions.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItem.cs" />
     <Compile Include="General\Contracts\IKennzeichenAttribute.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />

@@ -16,6 +16,10 @@
 
         string ChartJsonDataCustomizingScriptFunction { get; set; }
 
+        string ItemOptions { get; set; }
+
+        IDashboardItemOptions Options { get; }
+
         int? InitialSort { get; set; }
 
         int UserSort { get; }
