@@ -146,7 +146,7 @@ Public Class ReportLetztePlatinenbestellungen
     End Sub
 
     Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
-        Response.Redirect("../Forms/BestellungenSelection.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Private Function ApplyKst(Optional ByVal skipIfNotChanged As Boolean = False) As Boolean

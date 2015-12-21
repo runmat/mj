@@ -360,7 +360,7 @@ Partial Public Class Change12
     End Sub
 
     Private Sub responseBack()
-        Response.Redirect("../Forms/WarenwirtschaftSelection.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click

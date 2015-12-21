@@ -13,30 +13,36 @@
     .XAjaxDataBinding("CarporterfassungAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        columns.XBound(c => c.Action).Width(145).Title("").Filterable(false).Sortable(false)
+        columns.XBound(c => c.Action).Width(145).Title("").Filterable(false).Sortable(false).Visible(!Model.ModusNacherfassung)
             .ClientTemplate(
                 "<a href='#' onclick='return FahrzeugBearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
                   + "&nbsp;" +
                 "<a href='#' onclick='return FahrzeugDelete(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Delete + "' data-placement='right'><i class='halflings-icon white remove'></i></a>"
             );
 
-        columns.XBound(c => c.CarportName);
+        columns.XBound(c => c.Action).Width(75).Title("").Filterable(false).Sortable(false).Visible(Model.ModusNacherfassung)
+            .ClientTemplate(
+                "<a href='#' onclick='return FahrzeugNachbearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
+            );
+
+        columns.XBound(c => c.CarportName).Visible(!Model.ModusNacherfassung);
+        columns.XBound(c => c.CarportId).Visible(Model.ModusNacherfassung);
         columns.XBound(c => c.UserName);
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.FahrgestellNr);
         columns.XBound(c => c.AuftragsNr);
         columns.XBound(c => c.BestandsNr);
         columns.XBound(c => c.Barcode);
-        columns.XBound(c => c.AnzahlKennzeichen);
+        columns.XBound(c => c.AnzahlKennzeichenText);
         columns.XBound(c => c.DemontageDatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Abgemeldet);
-        columns.XBound(c => c.Zb1Vorhanden);
-        columns.XBound(c => c.Zb2Vorhanden);
-        columns.XBound(c => c.CocVorhanden);
-        columns.XBound(c => c.ServiceheftVorhanden);
-        columns.XBound(c => c.HuAuBerichtVorhanden);
-        columns.XBound(c => c.ZweitschluesselVorhanden);
-        columns.XBound(c => c.NaviCdVorhanden);
+        columns.XBound(c => c.Zb1VorhandenText);
+        columns.XBound(c => c.Zb2VorhandenText);
+        columns.XBound(c => c.CocVorhandenText);
+        columns.XBound(c => c.ServiceheftVorhandenText);
+        columns.XBound(c => c.HuAuBerichtVorhandenText);
+        columns.XBound(c => c.ZweitschluesselVorhandenText);
+        columns.XBound(c => c.NaviCdVorhandenText);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
@@ -49,7 +55,10 @@
     })
 )
 
-<div class="form-actions">
-    <button type="button" class="btn blue" onclick="FahrzeugeSpeichern();">@Localize.Save</button>
-    <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(false);">@Localize.ToAcquisition</button>
-</div>
+@if (!Model.ModusNacherfassung)
+{
+    <div class="form-actions">
+        <button type="button" class="btn blue" onclick="FahrzeugeSpeichern();">@Localize.Save</button>
+        <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(false);">@Localize.ToAcquisition</button>
+    </div>
+}
