@@ -438,6 +438,8 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_LAND_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_REM_VERS_VORG_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_REM_VERS_VORG_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_CARPORT_MELD_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_INS_CARPORT_NACHLIEF_01");
 
             // CKG Partner-Portal
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_PO_01");

@@ -878,10 +878,6 @@ span.m-wrap {
 span.m-wrap.font-normal { font-weight: normal!important; }
 .font-bold { font-weight: bold; }
 
-.checker.disabled {
-    padding-top: 7px;
-}
-
 .portlet span.m-wrap {
     margin-top: 1px;
 }
