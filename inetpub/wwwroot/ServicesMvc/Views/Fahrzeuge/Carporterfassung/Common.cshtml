@@ -177,9 +177,19 @@
         });
     }
 
-    function ApplySelection(applyAbgemeldetSelection) {
-        if (applyAbgemeldetSelection && $("#Abgemeldet").is(":checked")) {
-            $("#AnzahlKennzeichen").val("0");
+    function ApplySelection(applyAbgemeldetSelection, nacherfassung) {
+        if (applyAbgemeldetSelection) {
+            if ($("#Abgemeldet").is(":checked")) {
+                $("#AnzahlKennzeichen").val("0");
+                if (!nacherfassung) {
+                    $("#AnzahlKennzeichen").attr("disabled", "disabled");
+                }
+            }
+            else {
+                if (!nacherfassung) {
+                    $("#AnzahlKennzeichen").removeAttr("disabled");
+                }
+            }
         }
 
         if ($("#AnzahlKennzeichen").val() == "0") {

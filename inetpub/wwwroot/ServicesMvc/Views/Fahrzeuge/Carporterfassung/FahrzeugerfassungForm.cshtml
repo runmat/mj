@@ -55,9 +55,9 @@
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
-        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false)" })
+        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false, false)" })
         
-        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true)" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true, false)" }, labelHidden: true)
         @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
@@ -80,7 +80,7 @@
         <script type="text/javascript">       
             _modelIsValid = @Model.IsValid.ToString().ToLower();
 
-            ApplySelection(true);
+            ApplySelection(true, false);
         </script>
     }
 </div>

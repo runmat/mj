@@ -61,6 +61,14 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FahrzeugerfassungForm(CarporterfassungModel model)
         {
+            if (string.IsNullOrEmpty(model.AnzahlKennzeichen))
+            {
+                if (model.Abgemeldet)
+                    model.AnzahlKennzeichen = "0";
+                else
+                    ModelState.AddModelError("AnzahlKennzeichen", Localize.FieldIsRequired);
+            }
+
             if (model.UiUpdateOnly)
             {
                 CarporterfassungViewModel.CarportSelectionModel.SelectedOrganizationId = model.Organisation;

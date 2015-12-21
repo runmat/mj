@@ -100,7 +100,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Barcode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
-        [Required]
+        [RequiredConditional]
         public string AnzahlKennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
