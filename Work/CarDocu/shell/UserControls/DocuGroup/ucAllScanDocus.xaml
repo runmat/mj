@@ -43,6 +43,9 @@
 
         <StackPanel Visibility="{Binding ItemsAvailable, Converter={StaticResource BooleanVisibilityConverter}}">
             <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Style="{StaticResource GradientDataGrid}" MaxHeight="600">
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding ScanDocuDeleteCommand}" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="E-Mail" Width="80">
                         <DataGridTemplateColumn.CellTemplate>

@@ -364,9 +364,6 @@ namespace AppRemarketing.lib
 
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
 
-                if (!string.IsNullOrEmpty(m_haendler))
-                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
-
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 
                 DataRow tmpSAPRow = SapTable.NewRow();
@@ -427,9 +424,6 @@ namespace AppRemarketing.lib
                     myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
 
                 myProxy.setImportParameter("I_WEB_USER", m_objUser.UserName.PadLeft(40));
-
-                if (!string.IsNullOrEmpty(m_haendler))
-                    myProxy.setImportParameter("I_KUNNR_ZF", m_haendler.PadLeft(10, '0'));
 
                 DataTable SapTable = myProxy.getImportTable("GT_FIN_IN");
 

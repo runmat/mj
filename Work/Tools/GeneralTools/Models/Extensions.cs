@@ -56,17 +56,26 @@ namespace GeneralTools.Models
             copiedList.Insert(0, itemToInsert);
             return copiedList;
         }
-        public static IEnumerable<string> InsertAtTop(this IEnumerable<string> source, string itemToInsert)
+
+        public static IEnumerable<T> InsertAtTop<T>(this IEnumerable<T> source, T itemToInsert)
         {
             var list = source.ToListOrEmptyList();
             list.Insert(0, itemToInsert);
             return list;
         }
-        public static IDictionary<string, string> InsertAtTop(this IDictionary<string, string> source, string key, string value)
+
+        public static IDictionary<T1, T2> InsertAtTop<T1, T2>(this IDictionary<T1, T2> source, T1 key, T2 value)
         {
-            var list = source;
-            list.Add(new KeyValuePair<string, string>(key, value));
-            return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+            var list = source.ToList();
+            list.Insert(0, new KeyValuePair<T1, T2>(key, value));
+            return list.ToDictionary(s => s.Key, s => s.Value);
+        }
+
+        public static IDictionary<T1, T2> InsertAtTop<T1, T2>(this IEnumerable<KeyValuePair<T1, T2>> source, T1 key, T2 value)
+        {
+            var list = source.ToList();
+            list.Insert(0, new KeyValuePair<T1, T2>(key, value));
+            return list.ToDictionary(s => s.Key, s => s.Value);
         }
 
         public static DataTable ToExcelExportDataTable<T>(this IList<T> source)

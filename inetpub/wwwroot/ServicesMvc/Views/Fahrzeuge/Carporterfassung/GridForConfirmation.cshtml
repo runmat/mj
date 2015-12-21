@@ -17,16 +17,16 @@
         columns.XBound(c => c.AuftragsNr);
         columns.XBound(c => c.BestandsNr);
         columns.XBound(c => c.Barcode);
-        columns.XBound(c => c.AnzahlKennzeichen);
+        columns.XBound(c => c.AnzahlKennzeichenText);
         columns.XBound(c => c.DemontageDatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Abgemeldet);
-        columns.XBound(c => c.Zb1Vorhanden);
-        columns.XBound(c => c.Zb2Vorhanden);
-        columns.XBound(c => c.CocVorhanden);
-        columns.XBound(c => c.ServiceheftVorhanden);
-        columns.XBound(c => c.HuAuBerichtVorhanden);
-        columns.XBound(c => c.ZweitschluesselVorhanden);
-        columns.XBound(c => c.NaviCdVorhanden);
+        columns.XBound(c => c.Zb1VorhandenText);
+        columns.XBound(c => c.Zb2VorhandenText);
+        columns.XBound(c => c.CocVorhandenText);
+        columns.XBound(c => c.ServiceheftVorhandenText);
+        columns.XBound(c => c.HuAuBerichtVorhandenText);
+        columns.XBound(c => c.ZweitschluesselVorhandenText);
+        columns.XBound(c => c.NaviCdVorhandenText);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
