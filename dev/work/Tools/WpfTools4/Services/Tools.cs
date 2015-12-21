@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -79,6 +80,14 @@ namespace WpfTools4.Services
                 }
             }
             return child;
+        }
+
+        public static void ShowDesktop()
+        {
+            var typeShell = Type.GetTypeFromProgID("Shell.Application");
+            var objShell = Activator.CreateInstance(typeShell);
+            typeShell.InvokeMember("MinimizeAll", System.Reflection.BindingFlags.InvokeMethod, null, objShell, null);
+
         }
     }
 }

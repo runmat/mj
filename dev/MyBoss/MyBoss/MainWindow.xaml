@@ -9,11 +9,13 @@
         Loaded="Window_Loaded" Closing="Window_Closing" 
         Topmost="True"
         mc:Ignorable="d"
-        Title="My Boss" Width="300" Height="65">
+        Title="My Boss" Width="400" Height="65">
     <Grid Margin="5">
 
         <TextBlock Foreground="Blue" HorizontalAlignment="Center">
             Window will close again in a few seconds ...
+            <Button Style="{StaticResource HyperLinkSmall}" Margin="10,0,0,0" Click="RehookKeyboard" >Hook</Button>
+            <Button Style="{StaticResource HyperLinkSmall}" Margin="10,0,0,0" Click="Quit" >Quit</Button>
         </TextBlock>
         
     </Grid>

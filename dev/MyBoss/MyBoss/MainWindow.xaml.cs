@@ -28,9 +28,7 @@ namespace MyBoss
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _listener = new LowLevelKeyboardListener();
-            _listener.OnKeyPressed += _listener_OnKeyPressed;
-            _listener.HookKeyboard();
+            HookKeyboard();
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += notifyIcon_Click;
@@ -40,6 +38,13 @@ namespace MyBoss
 
             _notifyIcon.Visible = true;
             Hide();
+        }
+
+        private void HookKeyboard()
+        {
+            _listener = new LowLevelKeyboardListener();
+            _listener.OnKeyPressed += _listener_OnKeyPressed;
+            _listener.HookKeyboard();
         }
 
         const string OutlookProcessFullName = "outlook";
@@ -168,6 +173,15 @@ namespace MyBoss
 
             _t.Stop();
             _t.Dispose();
+        }
+
+        private void RehookKeyboard(object sender, RoutedEventArgs e)
+        {
+            HookKeyboard();
+        }
+        private void Quit(object sender, RoutedEventArgs e)
+        {
+            Process.GetCurrentProcess().Kill();
         }
     }
 }
