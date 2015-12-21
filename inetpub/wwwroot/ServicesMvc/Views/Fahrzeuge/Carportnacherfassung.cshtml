@@ -1,6 +1,6 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
 
-<h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carporterfassung<small></small></h3>
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carportnacherfassung<small></small></h3>
 
 @section LayoutScript { _controlGroupValidationType = "individual"; }
 
@@ -10,12 +10,16 @@
     @Html.SpanAlert("Message")
 </div>
 
-<div id="divCarporterfassungEdit">
-    @Html.Partial("Carporterfassung/FahrzeugerfassungForm", Model.AktuellesFahrzeug)
-</div>
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Carporterfassung/NacherfassungSuche", Model.CarportnacherfassungSelektor)
+}
 
-<div id="divCarporterfassungGrid">
-</div>
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divCarporterfassungGrid"></div>
+    <div id="divCarporterfassungEdit"></div>
+}
 
 <script type="text/javascript">
 
@@ -31,17 +35,8 @@
     function TryInitDropDownCarportId() {
         if (!_userCarportId) {
             try {
-                setTimeout(function() {
-                    $('#CarportId').select2({
-                        allowClear: true
-                    });
-                }, 100);
-            } catch (e) {
-            }
-
-            try {
                 if (_selectionModeAllUsers) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('#SelectedCarportId').select2({
                             allowClear: true
                         });

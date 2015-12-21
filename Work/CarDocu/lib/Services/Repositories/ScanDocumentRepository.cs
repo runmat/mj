@@ -44,19 +44,14 @@ namespace CarDocu.Services
         {
             var itemToDelete = scanDocument;
 
-            try { Directory.Delete(itemToDelete.GetDocumentPrivateDirectoryName(), true); }
-            catch
-            {
-                //Tools.AlertError("Das Scan-Document kann nicht gelöscht werden!\r\n\r\nIst das Verzeichnis '" + itemToDelete.GetDocumentDirectoryName() + "' ist in u. U. Bearbeitung ?!?");
-                //return false;
-            }
+            scanDocument.EnsureDocumentType();
+            var pdfFileNames = scanDocument.GetPdfFileNames();
 
-            if (!ScanDocuments.Remove(itemToDelete))
-            {
-                var sdStored = ScanDocuments.FirstOrDefault(sd => sd.DocumentID == scanDocument.DocumentID);
-                if (sdStored != null)
-                    ScanDocuments.Remove(sdStored);
-            }
+            try { Directory.Delete(itemToDelete.GetDocumentPrivateDirectoryName(), true); }
+            catch { /**/ }
+
+            if (ScanDocuments.Remove(itemToDelete))
+                new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames);
 
             if (OnDeleteScanDocument != null)
                 OnDeleteScanDocument(itemToDelete);
@@ -67,7 +62,7 @@ namespace CarDocu.Services
         public void Save(string directoryName, string fileName=null)
         {
             if (fileName == null)
-                fileName = this.GetType().Name;
+                fileName = GetType().Name;
 
             XmlService.XmlSerializeToPath(this, directoryName, fileName);
             ScanDocuments.ForEach(sd => sd.XmlSaveScanImages());

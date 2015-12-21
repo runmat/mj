@@ -41,13 +41,22 @@ Partial Public Class KBSMenue
     Protected WithEvents btnClose As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''GridChange-Steuerelement
+    '''dataGroups-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents GridChange As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents dataGroups As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
+    '''repeater1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents repeater1 As Global.System.Web.UI.WebControls.Repeater
 
     '''<summary>
     '''OpenAnimation-Steuerelement

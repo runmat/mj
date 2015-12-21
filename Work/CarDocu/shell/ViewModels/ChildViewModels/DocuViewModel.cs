@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CarDocu.Services;
@@ -236,6 +237,7 @@ namespace CarDocu.ViewModels
                 DomainService.Repository.UserSettingsSave();
 
                 SendPropertyChangedFin();
+                SendPropertyChanged("CharacterCasing");
             }
         }
 
@@ -251,6 +253,11 @@ namespace CarDocu.ViewModels
                 ScanDocument.FinNumber = value;
                 SendPropertyChangedFin();
             }
+        }
+
+        public CharacterCasing CharacterCasing
+        {
+            get { return ScanDocument.FinNumberUppercase ? CharacterCasing.Upper : CharacterCasing.Normal; }
         }
 
         public bool ValidDocumentType
