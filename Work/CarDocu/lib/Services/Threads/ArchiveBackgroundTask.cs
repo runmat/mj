@@ -34,13 +34,12 @@ namespace CarDocu.Services.Threads
             if (!NativeThreadLoopIsEnabled)
                 return true;
 
+            var isOnline = GetOnlineStatus();
+            TaskService.StartUiTask(() => IsOnline = isOnline);
+
             CurrentQueuedItem = Dequeue();
             if (CurrentQueuedItem == null)
                 return true;
-
-            // because we don't peek "GetOnlineStatus" for e-mail automatically (this is because OnlineStatusIntervalSeconds is set very high to avoid sending test-mails for our online check)
-            // ==> we set the Online Flag manually here only if we have a valid new job:
-            IsOnline = GetOnlineStatus();
 
             TaskService.StartUiTask(() => IsBusy = true);
 
