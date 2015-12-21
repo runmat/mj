@@ -533,20 +533,21 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Barcode = s.BARCODE;
                         d.CarportId = s.CARPORT_ID_AG;
                         d.FahrgestellNr = s.CHASSIS_NUM;
-                        d.CocVorhanden = s.COC_VORH.XToBool();
+                        d.CocVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.COC_VORH);
                         d.DemontageDatum = s.DAT_DEMONT;
                         d.Abgemeldet = s.FZG_ABGEMELDET.XToBool();
-                        d.HuAuBerichtVorhanden = s.HU_AU_BER_VORH.XToBool();
+                        d.HuAuBerichtVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.HU_AU_BER_VORH);
                         d.KundenNr = s.KUNNR_AG;
                         d.Kennzeichen = s.LICENSE_NUM;
                         d.LieferscheinNr = s.LSNUMMER;
                         d.BestandsNr = s.MVA_NUMMER;
-                        d.NaviCdVorhanden = s.NAVI_CD_VORH.XToBool();
-                        d.ServiceheftVorhanden = s.SERVICEH_VORH.XToBool();
-                        d.Zb1Vorhanden = s.ZB1_VORH.XToBool();
-                        d.Zb2Vorhanden = s.ZB2_VORH.XToBool();
-                        d.ZweitschluesselVorhanden = s.ZWEITSCHLUE_VORH.XToBool();
+                        d.NaviCdVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.NAVI_CD_VORH);
+                        d.ServiceheftVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.SERVICEH_VORH);
+                        d.Zb1Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB1_VORH);
+                        d.Zb2Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB2_VORH);
+                        d.ZweitschluesselVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZWEITSCHLUE_VORH);
                         d.Status = s.BEM;
+                        d.Organisation = s.ORGANISATION;
                     }));
             }
         }
@@ -566,11 +567,75 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Name2 = s.NAME2;
                         d.Ort = s.ORT01;
                         d.Plz = s.PSTLZ;
+                        d.CarportRegion = s.POS_TEXT;
                         d.StrasseHausnummer = s.STRAS;
                         d.Telefon = s.TELNR;
                     }));
             }
         }
+
+        static public ModelMapping<Z_DPM_READ_CARPORT_MELD_01.GT_WEB, CarporterfassungModel> Z_DPM_READ_CARPORT_MELD_01_GT_WEB_To_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_CARPORT_MELD_01.GT_WEB, CarporterfassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        // Barcode wird hier bewusst nicht mitgelesen
+                        d.AnzahlKennzeichen = s.ANZ_KENNZ_CPL;
+                        d.AuftragsNr = s.AUFTRAGS_NR;
+                        d.CarportId = s.CARPORT_ID_AG;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.CocVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.COC_VORH);
+                        d.DemontageDatum = s.DAT_DEMONT;
+                        d.Abgemeldet = s.FZG_ABGEMELDET.XToBool();
+                        d.HuAuBerichtVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.HU_AU_BER_VORH);
+                        d.KundenNr = s.KUNNR_AG;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.BestandsNr = s.MVA_NUMMER;
+                        d.NaviCdVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.NAVI_CD_VORH);
+                        d.ServiceheftVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.SERVICEH_VORH);
+                        d.Zb1Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.VORLAGE_ZB1_CPL);
+                        d.Zb2Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB2_VORH);
+                        d.ZweitschluesselVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZWEITSCHLUE_VORH);
+                        d.Organisation = s.ORGANISATION;
+                        d.UserName = s.WEB_USER;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_INS_CARPORT_NACHLIEF_01.GT_WEB, CarporterfassungModel> Z_DPM_INS_CARPORT_NACHLIEF_01_GT_WEB_To_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_INS_CARPORT_NACHLIEF_01.GT_WEB, CarporterfassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AnzahlKennzeichen = s.ANZ_KENNZ_CPL;
+                        d.AuftragsNr = s.AUFTRAGS_NR;
+                        d.Barcode = s.BARCODE;
+                        d.CarportId = s.CARPORT_ID_AG;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.CocVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.COC_VORH);
+                        d.DemontageDatum = s.DAT_DEMONT;
+                        d.Abgemeldet = s.FZG_ABGEMELDET.XToBool();
+                        d.HuAuBerichtVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.HU_AU_BER_VORH);
+                        d.KundenNr = s.KUNNR_AG;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.LieferscheinNr = s.LSNUMMER;
+                        d.BestandsNr = s.MVA_NUMMER;
+                        d.NaviCdVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.NAVI_CD_VORH);
+                        d.ServiceheftVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.SERVICEH_VORH);
+                        d.Zb1Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.VORLAGE_ZB1_CPL);
+                        d.Zb2Vorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZB2_VORH);
+                        d.ZweitschluesselVorhanden = CarporterfassungModel.GetMaterialVorhandenOptionWeb(s.ZWEITSCHLUE_VORH);
+                        d.Organisation = s.ORGANISATION;
+                        d.Status = s.BEM;
+                    }));
+            }
+        } 
 
         #endregion
 
@@ -879,19 +944,51 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             d.BARCODE = s.Barcode;
                             d.CARPORT_ID_AG = s.CarportId;
                             d.CHASSIS_NUM = s.FahrgestellNr;
-                            d.COC_VORH = s.CocVorhanden.BoolToX();
+                            d.COC_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.CocVorhanden);
                             d.DAT_DEMONT = s.DemontageDatum;
                             d.FZG_ABGEMELDET = s.Abgemeldet.BoolToX();
-                            d.HU_AU_BER_VORH = s.HuAuBerichtVorhanden.BoolToX();
+                            d.HU_AU_BER_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.HuAuBerichtVorhanden);
                             d.KUNNR_AG = s.KundenNr;
                             d.LICENSE_NUM = s.Kennzeichen;
-                            d.LSNUMMER = s.LieferscheinNr;
                             d.MVA_NUMMER = s.BestandsNr;
-                            d.NAVI_CD_VORH = s.NaviCdVorhanden.BoolToX();
-                            d.SERVICEH_VORH = s.ServiceheftVorhanden.BoolToX();
-                            d.ZB1_VORH = s.Zb1Vorhanden.BoolToX();
-                            d.ZB2_VORH = s.Zb2Vorhanden.BoolToX();
-                            d.ZWEITSCHLUE_VORH = s.ZweitschluesselVorhanden.BoolToX();
+                            d.NAVI_CD_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.NaviCdVorhanden);
+                            d.SERVICEH_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.ServiceheftVorhanden);
+                            d.ZB1_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb1Vorhanden);
+                            d.ZB2_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb2Vorhanden);
+                            d.ZWEITSCHLUE_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.ZweitschluesselVorhanden);
+                            d.ORGANISATION = s.Organisation;
+                        }
+                    ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_INS_CARPORT_NACHLIEF_01.GT_WEB, CarporterfassungModel> Z_DPM_INS_CARPORT_NACHLIEF_01_GT_WEB_From_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_INS_CARPORT_NACHLIEF_01.GT_WEB, CarporterfassungModel>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (s, d) =>
+                        {
+                            d.ANZ_KENNZ_CPL = s.AnzahlKennzeichen;
+                            d.AUFTRAGS_NR = s.AuftragsNr;
+                            d.BARCODE = s.Barcode;
+                            d.CARPORT_ID_AG = s.CarportId;
+                            d.CHASSIS_NUM = s.FahrgestellNr;
+                            d.COC_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.CocVorhanden);
+                            d.DAT_DEMONT = s.DemontageDatum;
+                            d.FZG_ABGEMELDET = s.Abgemeldet.BoolToX();
+                            d.HU_AU_BER_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.HuAuBerichtVorhanden);
+                            d.KUNNR_AG = s.KundenNr;
+                            d.LICENSE_NUM = s.Kennzeichen;
+                            d.MVA_NUMMER = s.BestandsNr;
+                            d.NAVI_CD_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.NaviCdVorhanden);
+                            d.SERVICEH_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.ServiceheftVorhanden);
+                            d.VORLAGE_ZB1_CPL = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb1Vorhanden);
+                            d.ZB2_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.Zb2Vorhanden);
+                            d.ZWEITSCHLUE_VORH = CarporterfassungModel.GetMaterialVorhandenOptionSap(s.ZweitschluesselVorhanden);
+                            d.ORGANISATION = s.Organisation;
                         }
                     ));
             }
