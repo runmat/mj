@@ -9,22 +9,57 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_DPM_IMP_CARPORT_MELD_01
+	public partial class Z_DPM_READ_CARPORT_MELD_01
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_DPM_IMP_CARPORT_MELD_01).Name);
+			sap.Init(typeof(Z_DPM_READ_CARPORT_MELD_01).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_DPM_IMP_CARPORT_MELD_01).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_DPM_READ_CARPORT_MELD_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
 
-		public static void SetImportParameter_I_WEB_USER(ISapDataService sap, string value)
+		public static void SetImportParameter_I_AUFTRAGS_NR(ISapDataService sap, string value)
 		{
-			sap.SetImportParameter("I_WEB_USER", value);
+			sap.SetImportParameter("I_AUFTRAGS_NR", value);
+		}
+
+		public static void SetImportParameter_I_CARPORT_ID_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CARPORT_ID_AG", value);
+		}
+
+		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_CHASSIS_NUM", value);
+		}
+
+		public static void SetImportParameter_I_KUNNR_AG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR_AG", value);
+		}
+
+		public static void SetImportParameter_I_LICENSE_NUM(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LICENSE_NUM", value);
+		}
+
+		public static void SetImportParameter_I_MVA_NUMMER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_MVA_NUMMER", value);
+		}
+
+		public static void SetImportParameter_I_NUR_OFF_NL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_NUR_OFF_NL", value);
+		}
+
+		public static void SetImportParameter_I_ORGANISATION(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ORGANISATION", value);
 		}
 
 		public partial class GT_WEB : IModelMappingApplied
@@ -41,11 +76,11 @@ namespace SapORM.Models
 
 			public string CARPORT_ID_AG { get; set; }
 
-			public string LICENSE_NUM { get; set; }
-
 			public string CHASSIS_NUM { get; set; }
 
-			public string AUFNR_AG { get; set; }
+			public string LICENSE_NUM { get; set; }
+
+			public string AUFTRAGS_NR { get; set; }
 
 			public string MVA_NUMMER { get; set; }
 
@@ -53,11 +88,7 @@ namespace SapORM.Models
 
 			public string ANZ_KENNZ_CPL { get; set; }
 
-			public DateTime? DAT_DEMONT { get; set; }
-
-			public string FZG_ABGEMELDET { get; set; }
-
-			public string ZB1_VORH { get; set; }
+			public string VORLAGE_ZB1_CPL { get; set; }
 
 			public string ZB2_VORH { get; set; }
 
@@ -71,11 +102,13 @@ namespace SapORM.Models
 
 			public string NAVI_CD_VORH { get; set; }
 
-			public string LSNUMMER { get; set; }
-
-			public string BEM { get; set; }
-
 			public string ORGANISATION { get; set; }
+
+			public DateTime? DAT_DEMONT { get; set; }
+
+			public string FZG_ABGEMELDET { get; set; }
+
+			public string WEB_USER { get; set; }
 
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
@@ -83,24 +116,23 @@ namespace SapORM.Models
 				{
 					KUNNR_AG = (string)row["KUNNR_AG"],
 					CARPORT_ID_AG = (string)row["CARPORT_ID_AG"],
-					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					AUFNR_AG = (string)row["AUFNR_AG"],
+					LICENSE_NUM = (string)row["LICENSE_NUM"],
+					AUFTRAGS_NR = (string)row["AUFTRAGS_NR"],
 					MVA_NUMMER = (string)row["MVA_NUMMER"],
 					BARCODE = (string)row["BARCODE"],
 					ANZ_KENNZ_CPL = (string)row["ANZ_KENNZ_CPL"],
-					DAT_DEMONT = string.IsNullOrEmpty(row["DAT_DEMONT"].ToString()) ? null : (DateTime?)row["DAT_DEMONT"],
-					FZG_ABGEMELDET = (string)row["FZG_ABGEMELDET"],
-					ZB1_VORH = (string)row["ZB1_VORH"],
+					VORLAGE_ZB1_CPL = (string)row["VORLAGE_ZB1_CPL"],
 					ZB2_VORH = (string)row["ZB2_VORH"],
 					COC_VORH = (string)row["COC_VORH"],
 					SERVICEH_VORH = (string)row["SERVICEH_VORH"],
 					HU_AU_BER_VORH = (string)row["HU_AU_BER_VORH"],
 					ZWEITSCHLUE_VORH = (string)row["ZWEITSCHLUE_VORH"],
 					NAVI_CD_VORH = (string)row["NAVI_CD_VORH"],
-					LSNUMMER = (string)row["LSNUMMER"],
-					BEM = (string)row["BEM"],
 					ORGANISATION = (string)row["ORGANISATION"],
+					DAT_DEMONT = string.IsNullOrEmpty(row["DAT_DEMONT"].ToString()) ? null : (DateTime?)row["DAT_DEMONT"],
+					FZG_ABGEMELDET = (string)row["FZG_ABGEMELDET"],
+					WEB_USER = (string)row["WEB_USER"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -152,7 +184,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_IMP_CARPORT_MELD_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_CARPORT_MELD_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -182,7 +214,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_WEB>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_IMP_CARPORT_MELD_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_CARPORT_MELD_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -202,7 +234,7 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_CARPORT_MELD_01.GT_WEB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}

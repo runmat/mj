@@ -6,8 +6,8 @@
 </div>
 <div id="flyout">
 </div>
-<div id="info">
-    <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" HorizontalAlign="Center" Height="525px">
+<div id="info" style="width: 450px">
+    <asp:Panel ID="Panel1" runat="server" ScrollBars="Auto" HorizontalAlign="Center">
         <div id="btnCloseParent">
             schliessen
             <asp:LinkButton ID="btnClose" runat="server" OnClientClick="return false;" Text="X"
@@ -15,25 +15,51 @@
                 text-decoration: none; border: outset thin #FFFFFF; padding: 2px;" />
         </div>
         <br style="margin-top: 10px" />
-        <div style="margin-top: 5px;" align="center">
-            <asp:GridView Width="395px" HeaderStyle-CssClass="menuehead" ID="GridChange" runat="server"
-                AutoGenerateColumns="False" CellPadding="0" AlternatingRowStyle-BackColor="#DEE1E0"
-                BackColor="White">
-                <Columns>
-                    <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-CssClass="MainmenuItemAlternate"
-                        ItemStyle-Wrap="False" ControlStyle-CssClass="MainmenuLink">
-                        <ItemTemplate>
-                            <asp:LinkButton Width="100%" ID="lbApplication" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.AppFriendlyName") %>'
-                                CommandArgument='<%# DataBinder.Eval(Container, "DataItem.AppUrl") %>' CommandName="goTo" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
+        <div style="margin-top: 5px; margin-left: 20px; margin-right: 20px; text-align: left; border-color: black; border-width: 1px; border-style: solid">
+            <div style="height: 15px; border-bottom-color: black; border-bottom-width: 1px; border-bottom-style: solid"></div>
+            <asp:HiddenField ID="dataGroups" runat="server" />
+            <asp:Repeater ID="repeater1" runat="server" OnItemDataBound="repeater1_OnItemDataBound" >
+                <ItemTemplate>
+                    <table id="tableItem" runat="server" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td class="MainmenuItemAlternate">
+                                <div style="width: 95%">
+                                    <asp:LinkButton ID="lbApplication" runat="server" Text='<%# Eval("AppFriendlyName") %>'
+                                        CommandArgument='<%# Eval("AppUrl") %>' OnClick="lbApplication_OnClick" CssClass="MainmenuLink" Width="100%" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </ItemTemplate>
+            </asp:Repeater>
         </div>
     </asp:Panel>
 </div>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var dataGroups = $('#<%=dataGroups.ClientID%>').val().split(';');
+
+        for (var i = 0; i < dataGroups.length; i++) {
+            if (dataGroups[i] != '') {
+                $('table').filter(function (inputs) {
+                    return ($(this).data('group') == dataGroups[i]);
+                }).wrapAll("<div class='accordion' style='top: 0; left: 0; bottom: 0; right: 0'>");
+            }
+        }
+        var accordions = $('.accordion');
+        $(accordions).wrapInner("<div>").prepend('<div class="MainmenuItemAlternate MenuGroup" style="top: 0; left: 0; bottom: 0; right: 0"><b><a class="MainmenuLink" href="#">Handle</a></b></div>');
+
+        for (var i = 0; i < accordions.length; i++) {
+            $(accordions[i]).find('.MenuGroup a').text('+ ' + $(accordions[i]).find('table:first').data('group'));
+        }
+
+        $('.accordion').accordion({ active: false, collapsible: true, autoHeight: false });
+
+        $('.ui-accordion-content a').css('padding-left', '20px');
+    });
+
     // Move an element directly on top of another element (and optionally
     // make it the same size)
     function Cover(bottom, top, ignoreSize) {
@@ -46,6 +72,7 @@
             top.style.width = bottom.offsetWidth + 'px';
         }
     }
+
 </script>
 
 <ajaxToolkit:AnimationExtender ID="OpenAnimation" runat="server" TargetControlID="ibtnInfo">
