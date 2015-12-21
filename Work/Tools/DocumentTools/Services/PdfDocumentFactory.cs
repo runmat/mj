@@ -138,21 +138,8 @@ namespace DocumentTools.Services
         /// <returns>PDF-Datei als byte[]</returns>
         public static byte[] MergePdfDocuments(List<byte[]> pdfBytes)
         {
-            byte[] mergedPdf = null;
-            mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
+            var mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
             return mergedPdf;
-
-            #region Example
-            //var subDoc1 = PdfDocumentFactory.HtmlToPdf("test 1");
-            //var subDoc2 = PdfDocumentFactory.HtmlToPdf("test 22222");
-            //var docList = new List<byte[]>
-            //    {
-            //        subDoc1, subDoc2
-            //    };
-            //// MergePdfDocuments
-            //var foo1 = PdfDocumentFactory.MergePdfDocuments(docList);
-            #endregion
-
         }
     }
 }

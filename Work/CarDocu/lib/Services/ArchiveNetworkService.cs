@@ -20,7 +20,7 @@ namespace CarDocu.Services
                 if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
                     isOnline = true;
                 else
-                    isOnline = DomainService.SendTestMail();
+                    isOnline = DomainService.CheckOnlineState();
             }
             catch { isOnline = false; }
 
@@ -166,6 +166,25 @@ namespace CarDocu.Services
             DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, End ...");
 
             return true;
+        }
+
+        public void DeletePdfFilesFor(ScanDocument scanDocument, IEnumerable<string> pdfFileNames)
+        {
+            var archive = scanDocument.GetArchive();
+
+            if (archive == null)
+                return ;
+
+            var archiveFolder = archive.Path;
+            scanDocument.EnsureDocumentType();
+            pdfFileNames.ToList().ForEach(srcFileName =>
+            {
+                var srcFileInfo = new FileInfo(srcFileName);
+                var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
+
+                FileService.TryFileDelete(srcFileName);
+                FileService.TryFileDelete(dstFileName);
+            });
         }
 
         static bool MailDeliveryToUser(ScanDocument scanDocument, IEnumerable<string> pdfFileNames, out int mailItemCount)

@@ -2878,6 +2878,10 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\ATest.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieNoDocumentsFound.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\Common.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carportnacherfassung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugnacherfassungForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
