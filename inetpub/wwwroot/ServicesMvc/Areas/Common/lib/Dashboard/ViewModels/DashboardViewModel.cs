@@ -45,7 +45,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             return (LogonContext.UserApps == null) 
                             ? items.ToList() 
-                            : items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+                            : items.Where(item => 
+                                item.Options.IsAuthorized || LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl)) 
+                        ).ToList();
         }
 
         static bool UserAppUrlContainsUrl(string userAppUrl, string url)
@@ -67,6 +69,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             if (dashboardItem == null)
                 return new { };
+
+            if (dashboardItem.ChartJsonOptions.NotNullOrEmpty().ToLower() == "view")
+                return dashboardItem;
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             

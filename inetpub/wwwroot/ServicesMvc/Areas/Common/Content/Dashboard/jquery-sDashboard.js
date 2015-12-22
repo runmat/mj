@@ -405,14 +405,14 @@
             } else {
                 this.options.dashboardData.unshift(widgetDefinition);
                 var widget = this._constructWidget(widgetDefinition);
-                this.element.prepend(widget);
+                this.element.append(widget);
                 this._renderChart(widgetDefinition);
                 this._renderTable(widgetDefinition);
                 this._trigger("stateChanged", null, {
                     triggerAction: 'widgetAdded',
                     affectedWidget: widgetDefinition
-                }
-					);
+                    }
+                );
             }
 
             //console.log("added widget " + widgetDefinition.widgetId);

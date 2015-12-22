@@ -52,5 +52,7 @@ namespace CkgDomainLogic.General.Database.Models
             get { return _columnSpan; }
             set { _columnSpan = value; }
         }
+
+        public bool IsAuthorized { get; set; }
     }
 }

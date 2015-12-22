@@ -42,7 +42,11 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetChartData(string id)
         {
-            return Json(ViewModel.GetChartData(id));
+            var itemData = ViewModel.GetChartData(id);
+            if (itemData is IDashboardItem)
+                return PartialView("Partial/Test");
+
+            return Json(itemData);
         }
 
         [HttpPost]

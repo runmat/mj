@@ -18,8 +18,8 @@
             @foreach (var dashBoardItem in Model.DashboardItems)
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
-                
-                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title', '@JSon.Serialize(dashBoardItem.Options)')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
 
         </ul>
@@ -120,14 +120,23 @@
                 loadingShow: false,
                 success: function (result) {
 
-                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
-                    _dashboardData.data = _chartData;
-                    _dashboardData.options = _chartOptions;
+                    var isChart = (typeof (result.data) !== "undefined");
+
+                    if (!isChart) {
+                        $(widgetId + " .sDashboardChart").html(result);
+                    }
+                    else {
+                        _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                        _dashboardData.data = _chartData;
+                        _dashboardData.options = _chartOptions;
+                    }
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
 
-                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    if (isChart) 
+                        $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    
                     SetupWidgetToolbar(widgetId);
 
                     _dashboardChainIndex++;
@@ -167,14 +176,16 @@
         return false;
     }
 
-    function ShowDashboardItem(id, key, title) {
+    function ShowDashboardItem(id, key, title, wWidgetOptionsAsString) {
 
-        AddWidget(id, key, title);
+        AddWidget(id, key, title, wWidgetOptionsAsString);
 
         return false;
     }
 
-    function AddWidget(rawWidgetId, widgetKey, widgetTitle) {
+    function AddWidget(rawWidgetId, widgetKey, widgetTitle, wWidgetOptionsAsString) {
+
+        var widgetOptions = jQuery.parseJSON(wWidgetOptionsAsString);
 
         $("#myDashboard").sDashboard("addWidget",
             {
@@ -186,6 +197,7 @@
                 refreshCallBack: function () {
                     return _dashboardData;
                 },
+                widgetOptions: widgetOptions,
                 widgetContent: {
                     data: null,
                     options: null,
@@ -205,12 +217,22 @@
                 loadingShow: false,
                 success: function (result) {
 
-                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
-                    _dashboardData.data = _chartData;
-                    _dashboardData.options = _chartOptions;
+                    var isChart = (typeof (result.data) !== "undefined");
 
-                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    if (!isChart) {
+                        $(widgetId + " .sDashboardChart").html(result);
+                    }
+                    else {
+                        _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                        _dashboardData.data = _chartData;
+                        _dashboardData.options = _chartOptions;
+                    }
+
+                    if (isChart)
+                        $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+
                     SetupWidgetToolbar(widgetId);
+
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
                 }
