@@ -70,7 +70,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             
-            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.Options, dashboardItem.ChartJsonDataCustomizingScriptFunction);
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
         }
     }
 }

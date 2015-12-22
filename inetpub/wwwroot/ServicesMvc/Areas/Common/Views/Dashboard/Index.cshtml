@@ -123,8 +123,6 @@
                     _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
                     _dashboardData.data = _chartData;
                     _dashboardData.options = _chartOptions;
-                    //_dashboardData.dashboardItemOptions = _dashboardItemOptions;
-                    //alert(_dashboardData.dashboardItemOptions.ColumnSpan);
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
@@ -210,7 +208,6 @@
                     _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
                     _dashboardData.data = _chartData;
                     _dashboardData.options = _chartOptions;
-                    //_dashboardData.dashboardItemOptions = _dashboardItemOptions;
 
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
                     SetupWidgetToolbar(widgetId);

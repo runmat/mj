@@ -233,11 +233,6 @@
             //create a widget content
             //console.log(widgetDefinition.widgetOptions.ColumnSpan);
             var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
-            var colSpan = widgetDefinition.widgetOptions.ColumnSpan;
-            if (colSpan > 1) {
-                widget.addClass("height" + colSpan);
-                widgetContent.addClass("height" + colSpan);
-            }
 
             if (widgetDefinition.widgetType === 'table') {
                 var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
@@ -257,11 +252,20 @@
             //add widgetHeader to widgetContainer
             widgetContainer.append(widgetHeader);
             //add widgetContent to widgetContainer
-            widgetContent.prepend($("<div></div>").addClass("sDashboardWidgetContentBusyHint"));
+            var busyHint = $("<div></div>");
+            busyHint.addClass("sDashboardWidgetContentBusyHint");
+            widgetContent.prepend(busyHint);
             widgetContainer.append(widgetContent);
 
             //append the widgetContainer to the widget
             widget.append(widgetContainer);
+
+            var colSpan = widgetDefinition.widgetOptions.ColumnSpan;
+            if (colSpan > 1) {
+                widget.addClass("height" + colSpan);
+                widgetContent.addClass("height" + colSpan);
+                busyHint.addClass("height" + colSpan);
+            }
 
             //return widget
             return widget;

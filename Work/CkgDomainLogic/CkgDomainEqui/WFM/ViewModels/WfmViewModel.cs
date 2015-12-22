@@ -659,8 +659,7 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             var data = GetBarChartGroupedItemsWithLabels(items);
 
-            var itemOptions = DependencyResolver.Current.GetService<IDashboardItemOptions>();
-            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", itemOptions, "WfmDurchlaufzeiten");
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", "WfmDurchlaufzeiten");
         }
 
         private ChartItemsPackage GetExpliciteChartDataForDashboard(string abmeldeArt)

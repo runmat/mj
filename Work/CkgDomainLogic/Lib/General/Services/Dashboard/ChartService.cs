@@ -87,7 +87,7 @@ namespace CkgDomainLogic.General.Services
         }
 
 
-        public static ChartItemsPackage PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate, IDashboardItemOptions itemOptions, string chartJsonDataCustomizingScriptFunction)
+        public static ChartItemsPackage PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate, string chartJsonDataCustomizingScriptFunction)
         {
             var chartOptionsFileName = Path.Combine(dataPath, "DashBoard", "ChartTemplates", string.Format("{0}.txt", chartTemplate));
             if (!File.Exists(chartOptionsFileName))
@@ -116,7 +116,6 @@ namespace CkgDomainLogic.General.Services
                     }
             }
 
-            data.dashboardItemOptions = JSon.Serialize(itemOptions);
             data.options = optionsAsText;
             data.customscriptfunction = chartJsonDataCustomizingScriptFunction.NotNullOrEmpty();
 
