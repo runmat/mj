@@ -40,6 +40,11 @@
 @foreach (var dashBoardItem in Model.VisibleSortedDashboardItems)
 {
     <script type="text/javascript">
+
+        var wWidgetOptionsAsString = "@JSon.Serialize(dashBoardItem.Options)";
+        wWidgetOptionsAsString = wWidgetOptionsAsString.replace(/&quot;/g, "\"");
+        var widgetOptions = jQuery.parseJSON(wWidgetOptionsAsString);
+
         _dashboardJson.push(
             {
                 widgetKey: "@dashBoardItem.ItemKey",
@@ -50,6 +55,7 @@
                 refreshCallBack: function (widgetId) {
                     return _dashboardData;
                 },
+                widgetOptions: widgetOptions,
                 widgetContent: {
                     data: null,
                     options: null
@@ -117,8 +123,8 @@
                     _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
                     _dashboardData.data = _chartData;
                     _dashboardData.options = _chartOptions;
-                    _dashboardData.dashboardItemOptions = _dashboardItemOptions;
-                    alert(_dashboardData.dashboardItemOptions.ColumnSpan);
+                    //_dashboardData.dashboardItemOptions = _dashboardItemOptions;
+                    //alert(_dashboardData.dashboardItemOptions.ColumnSpan);
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
@@ -184,7 +190,8 @@
                 },
                 widgetContent: {
                     data: null,
-                    options: null
+                    options: null,
+                    dashboardItemOptions: null
                 }
             });
 
@@ -203,7 +210,7 @@
                     _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
                     _dashboardData.data = _chartData;
                     _dashboardData.options = _chartOptions;
-                    _dashboardData.dashboardItemOptions = _dashboardItemOptions;
+                    //_dashboardData.dashboardItemOptions = _dashboardItemOptions;
 
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
                     SetupWidgetToolbar(widgetId);

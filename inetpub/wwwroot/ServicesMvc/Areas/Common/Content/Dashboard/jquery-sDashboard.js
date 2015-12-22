@@ -63,7 +63,7 @@
                 },
                 update: function (event, ui) {
                     var newPosition = ui.item.index();
-                    console.log(_dashboardData[newPosition].widgetId.replace);
+                    //console.log(_dashboardData[newPosition].widgetId.replace);
                     try {
                         DashboardWidgetEventOrderChanged(_dashboardData[newPosition].widgetId.replace(/id_/g, ""));
                     }
@@ -174,7 +174,7 @@
                     self._removeWidgetFromWidgetDefinitions(this.id);
                     $(this).remove();
                     $(".sDashboard-overlay").hide();
-                    console.log("remove widget " + this.id);
+                    //console.log("remove widget " + this.id);
                     try {
                         DashboardWidgetEventRemove(this.id.replace(/id_/g, ""));
                     }
@@ -231,7 +231,13 @@
             widgetHeader.append(widgetDefinition.widgetTitle);
 
             //create a widget content
+            //console.log(widgetDefinition.widgetOptions.ColumnSpan);
             var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
+            var colSpan = widgetDefinition.widgetOptions.ColumnSpan;
+            if (colSpan > 1) {
+                widget.addClass("height" + colSpan);
+                widgetContent.addClass("height" + colSpan);
+            }
 
             if (widgetDefinition.widgetType === 'table') {
                 var dataTable = $('<table cellpadding="0" cellspacing="0" border="0" class="display sDashboardTableView table table-bordered"></table>');
@@ -405,7 +411,7 @@
 					);
             }
 
-            console.log("added widget " + widgetDefinition.widgetId);
+            //console.log("added widget " + widgetDefinition.widgetId);
             try {
                 DashboardWidgetEventAdd(widgetDefinition.widgetId.replace(/id_/g, ""));
             }
