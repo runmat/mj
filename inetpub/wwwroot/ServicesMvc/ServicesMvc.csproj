@@ -279,7 +279,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Partial\Test.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1020,8 +1019,8 @@
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
     <Content Include="Views\Equi\ReportErweiterterBriefbestand.cshtml" />
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefErweitertSuche.cshtml" />
-    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtons.cshtml" />
-    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+    <Content Include="Views\Shared\AppFavorites\AppFavoriteButtons.cshtml" />
+    <Content Include="Views\Shared\AppFavorites\AppFavoriteButtonsCore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />

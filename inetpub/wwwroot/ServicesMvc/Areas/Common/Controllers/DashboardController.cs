@@ -43,8 +43,9 @@ namespace ServicesMvc.Common.Controllers
         public ActionResult GetChartData(string id)
         {
             var itemData = ViewModel.GetChartData(id);
-            if (itemData is IDashboardItem)
-                return PartialView("Partial/Test");
+            var dashBoardItem = (itemData as IDashboardItem);
+            if (dashBoardItem != null)
+                return PartialView(dashBoardItem.RelatedAppUrl);
 
             return Json(itemData);
         }
