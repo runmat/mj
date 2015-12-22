@@ -4,16 +4,51 @@
     <name>Microsoft.Web.Infrastructure</name>
   </assembly>
   <members>
-    <member name="T:Microsoft.Web.Infrastructure.HttpContextHelper"></member>
-    <member name="M:Microsoft.Web.Infrastructure.HttpContextHelper.ExecuteInNullContext(System.Action)"></member>
-    <member name="T:Microsoft.Web.Infrastructure.InfrastructureHelper"></member>
-    <member name="M:Microsoft.Web.Infrastructure.InfrastructureHelper.IsCodeDomDefinedExtension(System.String)"></member>
-    <member name="M:Microsoft.Web.Infrastructure.InfrastructureHelper.UnloadAppDomain"></member>
-    <member name="T:Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility"></member>
-    <member name="M:Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(System.Type)"></member>
-    <member name="T:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility"></member>
-    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.EnableDynamicValidation(System.Web.HttpContext)"></member>
-    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.GetUnvalidatedCollections(System.Web.HttpContext,System.Func`1@,System.Void)"></member>
-    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.IsValidationEnabled(System.Web.HttpContext)"></member>
+    <member name="T:Microsoft.Web.Infrastructure.HttpContextHelper">
+      <summary>Enthält Methoden, die zum Ausführen eines Aktionsdelegaten in einem null-Kontext verwendet wird.</summary>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.HttpContextHelper.ExecuteInNullContext(System.Action)">
+      <summary>Legt den HTTP-Kontext auf null fest, führt den angegebenen Aktionsdelegaten aus, und stellt dann den vorherigen HTTP-Kontext wieder her.</summary>
+      <param name="action">Die Delegataktion.</param>
+    </member>
+    <member name="T:Microsoft.Web.Infrastructure.InfrastructureHelper">
+      <summary>Stellt Hilfsmethoden für Infrastrukturmethodenaufrufe zur Verfügung.</summary>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.InfrastructureHelper.IsCodeDomDefinedExtension(System.String)">
+      <summary>Definiert eine Hilfsmethode, die zum Aufrufen der Methode <see cref="M:System.CodeDom.Compiler.CodeDomProvider.IsDefinedExtension" /> aus einer Anwendung verwendet wird, die nicht vollständig vertrauenswürdig ist.</summary>
+      <returns>true, wenn eine <see cref="T:System.CodeDom.Compiler.CodeDomProvider" />-Implementierung für die angegebene Dateinamenerweiterung konfiguriert ist, andernfalls false.</returns>
+      <param name="extension">Eine Dateinamenerweiterung.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="extension" /> ist null.</exception>
+      <exception cref="T:System.Security.SecurityException">Der Aufrufer verfügt nicht über die erforderliche Berechtigung.</exception>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.InfrastructureHelper.UnloadAppDomain">
+      <summary>Definiert eine Hilfsmethode, die zum Aufrufen der Methode <see cref="M:System.Web.HttpRuntime.UnloadAppDomain" /> aus einer Anwendung verwendet wird, die nicht vollständig vertrauenswürdig ist.</summary>
+    </member>
+    <member name="T:Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility">
+      <summary>Definiert eine Klasse, die eine Methode zum dynamischen Registrieren von Modulen zur Verfügung stellt.</summary>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(System.Type)">
+      <summary>Registriert dynamisch ein <see cref="T:System.Web.IHttpModule" />-Modul.</summary>
+      <param name="moduleType">Der Typ des zu registrierenden Moduls.</param>
+    </member>
+    <member name="T:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility">
+      <summary>Stellt Hilfsmethoden für die dynamische Anforderungsüberprüfung zur Verfügung.</summary>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.EnableDynamicValidation(System.Web.HttpContext)">
+      <summary>Ermöglicht die dynamische Anforderungsüberprüfung für den angegebenen HTTP-Kontext.</summary>
+      <param name="context">Der HTTP-Kontext.</param>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.GetUnvalidatedCollections(System.Web.HttpContext,System.Func`1@,System.Void)">
+      <summary>Ruft Delegaten zum Abrufen nicht überprüfter Formularauflistungen und nicht überprüfter Abfrageauflistungen ab.</summary>
+      <param name="context">Der HTTP-Kontext.</param>
+      <param name="formGetter">Der Rückgabewert dieser Methode ist ein Delegat, der Name-Wert-Auflistungen aus dem Formular im HTTP-Kontext zurückgibt. Dieser Parameter wird uninitialisiert übergeben.</param>
+      <param name="queryStringGetter">Der Rückgabewert dieser Methode ist ein Delegat, der Name-Wert-Auflistungen aus der Abfragezeichenfolge im HTTP-Kontext zurückgibt. Dieser Parameter wird uninitialisiert übergeben.</param>
+    </member>
+    <member name="M:Microsoft.Web.Infrastructure.DynamicValidationHelper.ValidationUtility.IsValidationEnabled(System.Web.HttpContext)">
+      <summary>Gibt einen Wert zurück, der angibt, ob die dynamische Abfrageüberprüfung für diesen HTTP-Kontext aktiviert ist.</summary>
+      <returns>true, wenn die dynamische Abfrageüberprüfung für diesen HTTP-Kontext aktiviert ist, andernfalls false.</returns>
+      <param name="context">Der HTTP-Kontext.</param>
+    </member>
   </members>
 </doc>

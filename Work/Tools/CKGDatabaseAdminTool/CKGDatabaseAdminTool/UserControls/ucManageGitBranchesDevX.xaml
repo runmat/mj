@@ -38,9 +38,10 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition Width="35px"/>
+            <ColumnDefinition Width="35px"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
 
             <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
                 <RadioButton Content="nur aktive" Style="{StaticResource CustomRadioButtonStyle}"
@@ -69,14 +70,14 @@
                 Content="{StaticResource image/32x32/delete}" ToolTip="Änderungen verwerfen" />
         </StackPanel>
 
-        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
+        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
                          Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" ShowBorder="False" Margin="0" Padding="0" 
                          dx:ThemeManager.ThemeName="Office2007Silver">
             <dxg:GridControl.Resources>
-                <DataTemplate x:Key="GitBranchInfoItemsTemplatePortalListe" DataType="{x:Type models:GitBranchInfoListItems}">
+                <DataTemplate x:Key="GitBranchInfoItemsTemplatePortalListe" DataType="{x:Type models:SelectableListItem}">
                     <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.PortalBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </DataTemplate>
-                <DataTemplate x:Key="GitBranchInfoItemsTemplateServerListe" DataType="{x:Type models:GitBranchInfoListItems}">
+                <DataTemplate x:Key="GitBranchInfoItemsTemplateServerListe" DataType="{x:Type models:SelectableListItem}">
                     <local:ucGitBranchInfoItems DataContext="{Binding Path=RowData.Row.ServerBoolListe, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                 </DataTemplate>
             </dxg:GridControl.Resources>
@@ -109,6 +110,10 @@
         
         <Button Grid.Row="2" Grid.Column="2" Width="25px" HorizontalAlignment="Right" Margin="5,2" Name="btnExportToExcel" Click="btnExportToExcel_OnClick" ToolTip="Excel-Export">
             <Image Source="/CKGDatabaseAdminTool;component/Images/excel_icon.png"/>
+        </Button>
+
+        <Button Grid.Row="2" Grid.Column="3" Width="25px" HorizontalAlignment="Right" Margin="5,2" Name="btnSendMail" Click="btnSendMail_OnClick" ToolTip="Transport-EMail">
+            <Image Source="/CKGDatabaseAdminTool;component/Images/Mail.png"/>
         </Button>
     </Grid>
 

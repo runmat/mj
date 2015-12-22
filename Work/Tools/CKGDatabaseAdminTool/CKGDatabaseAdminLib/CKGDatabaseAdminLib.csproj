@@ -59,6 +59,7 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <Compile Include="Contracts\ISqlExecutionDataService.cs" />
     <Compile Include="Contracts\ILoginUserMessageDataService.cs" />
     <Compile Include="Contracts\IApplicationBapiDataService.cs" />
     <Compile Include="Contracts\IApplicationCopyDataService.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Models\Bapi2Report4CsvExport.cs" />
     <Compile Include="Models\BapiCheckAbweichung.cs" />
     <Compile Include="Models\CkgEntwickler.cs" />
+    <Compile Include="Models\DatabaseSelectionItem.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -92,10 +95,12 @@
     <Compile Include="Models\DbModels\GitBranchInfo.cs" />
     <Compile Include="Models\DbModels\ApplicationConfig.cs" />
     <Compile Include="Models\DbModels\LoginUserMessage.cs" />
+    <Compile Include="Models\SelectableListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sap.cs" />
     <Compile Include="Services\ApplicationBapiDataServiceSql.cs" />
     <Compile Include="Services\ApplicationCopyDataServiceSql.cs" />
+    <Compile Include="Services\SqlExecutionDataServiceSql.cs" />
     <Compile Include="Services\FieldTranslationCopyDataServiceSql.cs" />
     <Compile Include="Services\Bapi2Report4CsvExportDataServiceSql.cs" />
     <Compile Include="Services\BapiCheckDataService.cs" />
@@ -108,6 +113,7 @@
     <Compile Include="ViewModels\ChildViewModels\BapiCheckViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\GitBranchInfoViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\BapiApplicationViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModels\SqlExecutionViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\SapOrmModelGenerationViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\LoginUserMessageViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

@@ -1,9 +1,12 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CKGDatabaseAdminLib;
 using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.Xpf.Grid;
 using Microsoft.Win32;
@@ -44,6 +47,13 @@ namespace CKGDatabaseAdminTool.UserControls
             }
         }
 
+        private void btnSendMail_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gitBranchInfoViewModel = DataContext as GitBranchInfoViewModel;
+            if (gitBranchInfoViewModel != null)
+                gitBranchInfoViewModel.SendTransportMail();
+        }
+
         private void Control_OnLoaded(object sender, RoutedEventArgs e)
         {
             Control_OnItemsSourceChanged(sender, null);
@@ -52,11 +62,19 @@ namespace CKGDatabaseAdminTool.UserControls
         private void Control_OnItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
         {
             ((TableView)Control.View).BestFitColumn(Control.Columns["Bemerkung"]);
-            Control.Columns[0].GroupIndex = 1;
 
             ((TableView)Control.View).ShowGroupedColumns = true;
 
-            TryExpandGroupRowFoarActiveDeveloper();
+            var gitBranchInfoViewModel = DataContext as GitBranchInfoViewModel;
+            if (gitBranchInfoViewModel == null || gitBranchInfoViewModel.AnzeigeFilter != GitBranchViewFilter.aktiveMitFreigabe)
+            {
+                Control.Columns[0].GroupIndex = 1;
+                TryExpandGroupRowFoarActiveDeveloper();
+            }
+            else
+            {
+                Control.Columns[0].GroupIndex = -1;
+            }
         }
 
         void TryExpandGroupRowFoarActiveDeveloper() 

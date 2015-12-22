@@ -89,6 +89,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _sapOrmModelGenerationViewModel = value; SendPropertyChanged("SapOrmModelGenerationViewModel"); }
         }
 
+        private SqlExecutionViewModel _sqlExecutionViewModel;
+        public SqlExecutionViewModel SqlExecutionViewModel
+        {
+            get { return _sqlExecutionViewModel; }
+            set { _sqlExecutionViewModel = value; SendPropertyChanged("SqlExecutionViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -192,6 +199,7 @@ namespace CKGDatabaseAdminLib.ViewModels
                 FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
                 BapiCheckViewModel = new BapiCheckViewModel(this);
                 SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
+                SqlExecutionViewModel = new SqlExecutionViewModel(this);
             }
 
             // Git-Branch Verwaltung nur in DAD-Datenbanken

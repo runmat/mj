@@ -88,6 +88,11 @@ namespace CKGDatabaseAdminLib.Services
             GitBranches.CollectionChanged += GitBranchesFilteredOnCollectionChanged;
         }
 
+        public List<GitBranchInfo> GetBranchesForTransportMail()
+        {
+            return GitBranchesAll.Where(g => !g.Erledigt && !String.IsNullOrEmpty(g.FreigegebenDurch)).OrderBy(g => g.Name).ToList();
+        } 
+
         private void GitBranchesFilteredOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
