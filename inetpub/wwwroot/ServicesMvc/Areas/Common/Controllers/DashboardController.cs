@@ -45,7 +45,10 @@ namespace ServicesMvc.Common.Controllers
             var itemData = ViewModel.GetChartData(id);
             var dashBoardItem = (itemData as IDashboardItem);
             if (dashBoardItem != null)
+            {
+                ViewBag.IsDashboard = true;
                 return PartialView(dashBoardItem.RelatedAppUrl);
+            }
 
             return Json(itemData);
         }
