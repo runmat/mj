@@ -42,12 +42,15 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult GetChartData(string id)
         {
-            var itemData = ViewModel.GetChartData(id);
-            var dashBoardItem = (itemData as IDashboardItem);
-            if (dashBoardItem != null)
+            IDashboardItem dashboardItem;
+            var itemData = ViewModel.GetChartData(id, out dashboardItem);
+            if (dashboardItem == null)
+                return Json(itemData);
+
+            if (dashboardItem.IsPartialView)
             {
                 ViewBag.IsDashboard = true;
-                return PartialView(dashBoardItem.RelatedAppUrl);
+                return PartialView(dashboardItem.RelatedAppUrl);
             }
 
             return Json(itemData);

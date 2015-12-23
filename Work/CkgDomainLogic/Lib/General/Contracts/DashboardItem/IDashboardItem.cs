@@ -26,6 +26,10 @@
 
         bool IsUserVisible { get; }
 
+        bool IsChart { get; }
+
+        bool IsPartialView { get; }
+
         IDashboardItemAnnotator ItemAnnotator { get; set; }
     }
 }

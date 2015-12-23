@@ -62,16 +62,16 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
-        public object GetChartData(string id)
+        public object GetChartData(string id, out IDashboardItem dashboardItem)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
-            var dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+            dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
 
             if (dashboardItem == null)
                 return new { };
 
-            if (dashboardItem.ChartJsonOptions.NotNullOrEmpty().ToLower() == "view")
-                return dashboardItem;
+            if (dashboardItem.IsPartialView)
+                return new { };
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             

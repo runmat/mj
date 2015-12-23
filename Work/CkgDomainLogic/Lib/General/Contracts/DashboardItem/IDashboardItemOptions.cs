@@ -5,5 +5,13 @@
         int ColumnSpan { get; set; }
 
         bool IsAuthorized { get; set; }
+
+        string ItemType { get; set; }
+
+        int JsonDataCacheExpirationMinutes { get; set; }
+
+        bool IsChart { get; }
+
+        bool IsPartialView { get; }
     }
 }

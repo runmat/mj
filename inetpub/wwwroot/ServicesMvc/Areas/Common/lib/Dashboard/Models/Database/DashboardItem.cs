@@ -38,21 +38,12 @@ namespace CkgDomainLogic.General.Database.Models
 
         [NotMapped]
         public bool IsUserVisible { get { return ItemAnnotator != null && ItemAnnotator.IsUserVisible; } }
- 
+
+        public bool IsChart { get { return Options.IsChart; } }
+
+        public bool IsPartialView { get { return Options.IsPartialView; } }
+
         [NotMapped]
         public IDashboardItemAnnotator ItemAnnotator { get; set; }
-    }
-
-    public class DashboardItemOptions : IDashboardItemOptions
-    {
-        private int _columnSpan = 1;
-
-        public int ColumnSpan
-        {
-            get { return _columnSpan; }
-            set { _columnSpan = value; }
-        }
-
-        public bool IsAuthorized { get; set; }
     }
 }
