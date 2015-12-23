@@ -1,12 +1,18 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using CkgDomainLogic.General.Contracts;
+using System.Xml.Serialization;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Models
 {
-    public class ChartItemsPackage 
+    public class ChartItemsPackage : Store
     {
+        public string ID { get; set; }
+
+        [XmlIgnore]
         public object data { get; set; }
+
+        public string dataAsText { get; set; }
 
         public string[] labels { get; set; }
 

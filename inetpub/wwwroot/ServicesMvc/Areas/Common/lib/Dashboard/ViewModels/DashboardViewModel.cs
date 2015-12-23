@@ -3,6 +3,7 @@ using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 
@@ -62,16 +63,16 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
-        public object GetChartData(string id, out IDashboardItem dashboardItem)
+        public IDashboardItem GetDashboardItem(string id)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
-            dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+            return DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+        }
 
-            if (dashboardItem == null)
-                return new { };
-
+        public ChartItemsPackage GetChartData(string id, IDashboardItem dashboardItem)
+        {
             if (dashboardItem.IsPartialView)
-                return new { };
+                return new ChartItemsPackage();
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             

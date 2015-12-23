@@ -53,7 +53,8 @@ namespace GeneralTools.Services
                 var p = (o as IPersistableObject);
                 p.ObjectKey = objectContainer.ObjectKey;
                 p.EditUser = objectContainer.EditUser;
-                p.EditDate = objectContainer.EditDate;
+                if (objectContainer.EditDate != null && objectContainer.EditDate.GetValueOrDefault().Hour > 0 && objectContainer.EditDate.GetValueOrDefault().Minute > 0 && objectContainer.EditDate.GetValueOrDefault().Second > 0)
+                    p.EditDate = objectContainer.EditDate;
             }
 
             return o;
@@ -69,11 +70,13 @@ namespace GeneralTools.Services
         public void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2)
         {
             o = o ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
+            if (o.EditDate == null) o.EditDate = DateTime.Now;
             var type = o.GetType();
             var typeName = type.GetFullTypeName();
             var objectData = XmlService.XmlSerializeToString(o);
 
             o2 = o2 ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
+            if (o2.EditDate == null) o2.EditDate = DateTime.Now;
             var type2 = o2.GetType();
             var typeName2 = type2.GetFullTypeName();
             var objectData2 = XmlService.XmlSerializeToString(o2);
