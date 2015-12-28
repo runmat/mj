@@ -18,5 +18,10 @@
 		"min": 0,
 		"autoscaleMargin": 1,
 		"tickDecimals": 0
+	},
+	"grid": 
+	{
+		"horizontalLines": false,
+		"verticalLines": false
 	}
 }

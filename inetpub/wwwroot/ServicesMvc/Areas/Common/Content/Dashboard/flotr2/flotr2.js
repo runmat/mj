@@ -3776,7 +3776,7 @@ Flotr.addType('bars', {
 
   options: {
     show: false,           // => setting to true will show bars, false will hide
-    lineWidth: 2,          // => in pixels
+    lineWidth: 0,          // => in pixels
     barWidth: 1,           // => in units of the x axis
     fill: true,            // => true to fill the area from the line to the x axis, false for (transparent) no fill
     fillColor: null,       // => fill color
@@ -3845,6 +3845,14 @@ Flotr.addType('bars', {
       if (options.lineWidth) {
         context.strokeRect(left, top, width, height);
       }
+
+      if (options.showBarLabelsInside) {
+            var label = data[i][1];
+            var x = left + (width / 2) - (3 * label.toString().length);
+            var y = top + (height / 2) - 5;
+            if (height < 10) y -= 3;
+            Flotr.drawText(context, label, x, y, { textBaseline: 'top', textAlign: 'left', size: options.fontSize, color: "#333333" });
+        }
     }
   },
 
@@ -4683,7 +4691,7 @@ Flotr.addType('markers', {
     
       x = data[i][0];
       y = data[i][1];
-        
+
       if (stack) {
         if (stackType == 'b') {
           if (options.horizontal) y = stackPos(y, x);
