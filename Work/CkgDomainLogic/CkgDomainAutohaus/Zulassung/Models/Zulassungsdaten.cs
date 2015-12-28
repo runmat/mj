@@ -110,9 +110,9 @@ namespace CkgDomainLogic.Autohaus.Models
             return kennzeichen.NotNullOrEmpty().ToUpper().RemoveDigits().AppendIfNotNull("-");
         }
 
-        public static bool KennzeichenIsValid(string kennnzeichen)
+        public static bool KennzeichenIsValid(string kennzeichen)
         {
-            return kennnzeichen.IsNotNullOrEmpty() && !kennnzeichen.LastCharIs('-');
+            return kennzeichen.IsNotNullOrEmpty() && !kennzeichen.LastCharIs('-');
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]

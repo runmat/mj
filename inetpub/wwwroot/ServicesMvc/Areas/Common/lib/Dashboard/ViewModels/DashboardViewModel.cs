@@ -47,7 +47,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return (LogonContext.UserApps == null) 
                             ? items.ToList() 
                             : items.Where(item => 
-                                item.Options.IsAuthorized || LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl)) 
+                                item.Options.IsAuthorized
+                                || LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))
+                                || LogonContext.UserApps.Any(userApp => item.Options.AuthorizedIfAppUrlsAuth.NotNullOrEmpty().Split(';')
+                                                            .Any(authorizedApp => UserAppUrlContainsUrl(userApp.AppURL, authorizedApp)))
                         ).ToList();
         }
 

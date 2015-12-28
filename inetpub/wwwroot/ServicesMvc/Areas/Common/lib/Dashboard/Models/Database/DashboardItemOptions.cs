@@ -17,6 +17,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool IsAuthorized { get; set; }
 
+        public string AuthorizedIfAppUrlsAuth { get; set; }
+
         public string ItemType
         {
             get { return _itemType; }

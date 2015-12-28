@@ -23,6 +23,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
+    [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
@@ -560,9 +561,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen);
         }
 
-        static bool KennzeichenIsValid(string kennnzeichen)
+        static bool KennzeichenIsValid(string kennzeichen)
         {
-            return Zulassungsdaten.KennzeichenIsValid(kennnzeichen);
+            return Zulassungsdaten.KennzeichenIsValid(kennzeichen);
         }
 
         public void DataMarkForRefreshHalterAdressen()
@@ -1535,5 +1536,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 PropertyCacheClear(this, m => m.FinListFiltered);
             }
         }
+
+
+        #region Dashboard functionality
+
+        [DashboardItemsLoadMethod("ZulassungShoppingCart")]
+        public ChartItemsPackage NameNotRelevant01()
+        {
+            var items = LoadZulassungenFromShoppingCart().ToListOrEmptyList();
+
+            Func<Vorgang, string> xAxisKeyModel = (groupKey => groupKey.BeauftragungsArt);
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKeyModel
+                );
+        }
+
+        #endregion
     }
 }
