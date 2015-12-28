@@ -197,7 +197,7 @@ namespace GeneralTools.Services
         {
             get
             {
-                var type = this.GetType();
+                var type = GetType();
 
                 var propertiesWithFormPersistableAttribute = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .Where(property => property.GetCustomAttributes(typeof(FormPersistableAttribute), true).Any());

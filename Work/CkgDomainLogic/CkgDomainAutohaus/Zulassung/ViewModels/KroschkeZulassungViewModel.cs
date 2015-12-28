@@ -61,6 +61,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusAbmeldung { get; set; }
 
+        public bool ShoppingCartInitialShow { get; set; }
+
         public bool ModusVersandzulassung { get; set; }
 
         public bool ModusSonderzulassung { get; set; }
@@ -168,6 +170,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamAbmeldung(string abmeldung)
         {
             ModusAbmeldung = abmeldung.IsNotNullOrEmpty();
+        }
+        public void SetParamShowShoppingCart(string showShoppingcart)
+        {
+            ShoppingCartInitialShow = showShoppingcart.NotNullOrEmpty() == "1";
         }
 
         public void SetParamVersandzulassung(string versandzulassung)

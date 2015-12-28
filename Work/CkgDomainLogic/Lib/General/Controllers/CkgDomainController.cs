@@ -537,6 +537,11 @@ namespace CkgDomainLogic.General.Controllers
             return null;
         }
 
+        protected virtual void ShoppingCartOnShow()
+        {
+            
+        }
+
         protected virtual void ShoppingCartEditItem(string objectKey)
         {
         }
@@ -607,6 +612,7 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult ShoppingCartGridShow()
         {
+            ShoppingCartOnShow();
             ShoppingCartLoadAndCacheItems();
 
             return PartialView("ShoppingCart/PortletGrid");
