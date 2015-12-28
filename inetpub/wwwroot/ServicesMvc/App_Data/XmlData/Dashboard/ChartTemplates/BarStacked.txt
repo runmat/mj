@@ -21,7 +21,7 @@
 	},
 	"grid": 
 	{
-		"horizontalLines": false,
+		"horizontalLines": true,
 		"verticalLines": false
 	}
 }
