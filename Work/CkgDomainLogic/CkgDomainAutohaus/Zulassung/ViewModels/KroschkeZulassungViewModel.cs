@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -1540,16 +1541,35 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Dashboard functionality
 
+        static KeyValuePair<int, string> GetChartShoppingCartStackedKey(Vorgang item)
+        {
+            var date = (item.BeauftragungsArt.NotNullOrEmpty() == "ABMELDUNG" ? item.Abmeldedatum : item.Zulassungsdatum).GetValueOrDefault();
+            var today = DateTime.Today;
+
+            if (date <= today)
+                return new KeyValuePair<int, string>(1, "überfällig");
+            if (date.Year == today.Year && date.GetWeekNumber() == today.GetWeekNumber())
+                return new KeyValuePair<int, string>(2, "fällig");
+
+            return new KeyValuePair<int, string>(3, "geplant");
+        }
+
+
         [DashboardItemsLoadMethod("ZulassungShoppingCart")]
         public ChartItemsPackage NameNotRelevant01()
         {
+            DataInit();
+
             var items = LoadZulassungenFromShoppingCart().ToListOrEmptyList();
 
+            items = items.OrderBy(item => GetChartShoppingCartStackedKey(item).Key).ToListOrEmptyList();
             Func<Vorgang, string> xAxisKeyModel = (groupKey => groupKey.BeauftragungsArt);
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items,
-                    xAxisKeyModel
+                    xAxisKeyModel,
+                    null,
+                    item => GetChartShoppingCartStackedKey(item).Value
                 );
         }
 

@@ -11,7 +11,7 @@
         _chartOptions = jQuery.parseJSON(result.options);
         _dashboardItemOptions = jQuery.parseJSON(result.dashboardItemOptions);
 
-        if (result.customscriptfunction != "")
+        if (result.customscriptfunction !== "")
             eval(result.customscriptfunction + "('" + widgetKey + "');");
     }
 
@@ -63,6 +63,12 @@
                 return point.y.replace(/\.0/g, "") + "";
             return "";
         };
+    }
+
+    function ZulassungShoppingCart(widgetKey) {
+
+        _chartOptions.colors = ["#BB0000", "#00BB00", "#0000BB"];
+        console.log(_chartOptions);
     }
 
     function ZBIIEinAusgaenge(widgetKey) {
