@@ -3,6 +3,13 @@
 	{
 		"show" : true
 	},
+	"legend" : {
+		"show": true
+    },
+	    "mouse": {
+        "track": true,
+        "relative": true
+    },
 	"xaxis": 
 	{
 		"showLabels": false

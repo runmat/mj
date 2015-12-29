@@ -4859,22 +4859,30 @@ Flotr.addType('pie', {
     };
 
     if (label) {
-      if (options.htmlText || !options.textEnabled) {
-        divStyle = 'position:absolute;' + textBaseline + ':' + (height / 2 + (textBaseline === 'top' ? distY : -distY)) + 'px;';
-        divStyle += textAlign + ':' + (width / 2 + (textAlign === 'right' ? -distX : distX)) + 'px;';
-        html.push('<div style="', divStyle, '" class="flotr-grid-label">', label, '</div>');
-      }
-      else {
-        style.textAlign = textAlign;
-        style.textBaseline = textBaseline;
-        Flotr.drawText(context, label, distX, distY, style);
-      }
+        var floatThreshold = _chartOptions.PieLabelValueThreshold || 0;
+        var floatVal = 100;
+        try {
+            floatVal = parseFloat(label.replace(/%/g, ""));
+        } catch (e) {
+            floatVal = 100;
+        }
+        if (floatVal >= floatThreshold) {
+            if (options.htmlText || !options.textEnabled) {
+                divStyle = 'position:absolute;' + textBaseline + ':' + (height / 2 + (textBaseline === 'top' ? distY : -distY)) + 'px;';
+                divStyle += textAlign + ':' + (width / 2 + (textAlign === 'right' ? -distX : distX)) + 'px;';
+                html.push('<div style="', divStyle, '" class="flotr-grid-label">', label, '</div>');
+            } else {
+                style.textAlign = textAlign;
+                style.textBaseline = textBaseline;
+                Flotr.drawText(context, label, distX, distY, style);
+            }
+        }
     }
-    
+
     if (options.htmlText || !options.textEnabled) {
-      var div = Flotr.DOM.node('<div style="color:' + options.fontColor + '" class="flotr-labels"></div>');
-      Flotr.DOM.insert(div, html.join(''));
-      Flotr.DOM.insert(options.element, div);
+        var div = Flotr.DOM.node('<div style="color:' + options.fontColor + '" class="flotr-labels"></div>');
+        Flotr.DOM.insert(div, html.join(''));
+        Flotr.DOM.insert(options.element, div);
     }
     
     context.restore();

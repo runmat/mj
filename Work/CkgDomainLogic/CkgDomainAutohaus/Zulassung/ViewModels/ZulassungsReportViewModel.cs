@@ -194,6 +194,26 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 );
         }
 
+        [DashboardItemsLoadMethod("ZulassungenProMaterialLetzte30TagePie")]
+        public ChartItemsPackage NameNotRelevant08()
+        {
+            var selector = new ZulassungsReportSelektor
+            {
+                ZulassungsDatumRange = new DateRange(DateRangeType.Last30Days, true)
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            var items = GetAllItems(selector, null);
+
+
+            Func<ZulassungsReportModel, string> xAxisKeyModel = (groupKey => groupKey.MaterialKurztext);
+
+            return ChartService.GetPieChartGroupedItemsWithLabels(
+                    items,
+                    xAxisKeyModel
+                );
+        }
+
         [DashboardItemsLoadMethod("ZulassungenProKundeGesamtBar")]
         public ChartItemsPackage NameNotRelevant06()
         {
