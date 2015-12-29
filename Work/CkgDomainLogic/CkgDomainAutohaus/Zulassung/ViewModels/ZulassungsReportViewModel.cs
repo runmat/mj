@@ -263,25 +263,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 );
         }
 
-        [DashboardItemsLoadMethod("ZulassungenAlleKunden")]
+        [DashboardItemsLoadMethod("ZulassungenAlleKunden2015")]
         public ChartItemsPackage NameNotRelevant04()
         {
             var selector = new ZulassungsReportSelektor
                 {
-                    ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+                    ZulassungsDatumRange = new DateRange(new DateTime(2015, 01, 01), new DateTime(2015, 12, 31), true)
                 };
             DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
-
+            items = items.OrderBy(item => item.ZulassungDatum).ToListOrEmptyList();
 
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items, 
-                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
-                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
+                    //, xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
                 );
         }
 

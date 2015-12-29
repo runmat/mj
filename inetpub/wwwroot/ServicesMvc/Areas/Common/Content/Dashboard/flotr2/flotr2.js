@@ -2739,7 +2739,7 @@ Graph.prototype = {
   },
   drawTooltip: function(content, x, y, options) {
     var mt = this.getMouseTrack(),
-        style = 'opacity:0.7;background-color:#000;color:#fff;display:none;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;',
+        style = 'opacity:1.0;background-color:#000;color:#fff;display:none;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;',
         p = options.position,
         m = options.margin,
         plotOffset = this.plotOffset;
@@ -3846,7 +3846,7 @@ Flotr.addType('bars', {
         context.strokeRect(left, top, width, height);
       }
 
-      if (options.showBarLabelsInside) {
+      if (options.ShowBarLabelsInside) {
             var label = data[i][1];
             var x = left + (width / 2) - (3 * label.toString().length);
             var y = top + (height / 2) - 5;
@@ -4832,7 +4832,7 @@ Flotr.addType('pie', {
     context.scale(1, vScale);
 
     x = Math.cos(bisection) * explode;
-    y = Math.sin(bisection) * explode;
+    y = Math.sin(bisection) * explode + (_chartOptions.OffsetY || 0); //((globalOptions && globalOptions.OffsetY) || 0)
 
     // Shadows
     if (shadowSize > 0) {
@@ -4867,6 +4867,7 @@ Flotr.addType('pie', {
             floatVal = 100;
         }
         if (floatVal >= floatThreshold) {
+            distY += (_chartOptions.OffsetY || 0);
             if (options.htmlText || !options.textEnabled) {
                 divStyle = 'position:absolute;' + textBaseline + ':' + (height / 2 + (textBaseline === 'top' ? distY : -distY)) + 'px;';
                 divStyle += textAlign + ':' + (width / 2 + (textAlign === 'right' ? -distX : distX)) + 'px;';
@@ -4908,6 +4909,7 @@ Flotr.addType('pie', {
   },
   hit : function (options) {
 
+    //console.log(_globalOptions);
     var
       data      = options.data[0],
       args      = options.args,
@@ -4916,7 +4918,7 @@ Flotr.addType('pie', {
       n         = args[1],
       slice     = this.slices[index],
       x         = mouse.relX - options.width / 2,
-      y         = mouse.relY - options.height / 2,
+      y         = mouse.relY - options.height / 2 - (_globalOptions.OffsetY || 0),
       r         = Math.sqrt(x * x + y * y),
       theta     = Math.atan(y / x),
       circle    = Math.PI * 2,
@@ -5653,18 +5655,20 @@ Flotr.addPlugin('graphGrid', {
 
 })();
 
+var _globalOptions = null;
+
 (function () {
 
 var
   D = Flotr.DOM,
   _ = Flotr._,
   flotr = Flotr,
-  S_MOUSETRACK = 'opacity:0.7;background-color:#000;color:#fff;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;';
+  S_MOUSETRACK = 'opacity:1.0;background-color:#000;color:#fff;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;';
 
 Flotr.addPlugin('hit', {
   callbacks: {
     'flotr:mousemove': function(e, pos) {
-      this.hit.track(pos);
+        this.hit.track(pos);
     },
     'flotr:click': function(pos) {
       var
@@ -5683,9 +5687,10 @@ Flotr.addPlugin('hit', {
       this.mouseTrack = null;
     }
   },
-  track : function (pos) {
-    if (this.options.mouse.track || _.any(this.series, function(s){return s.mouse && s.mouse.track;})) {
-      return this.hit.hit(pos);
+  track: function (pos) {
+      if (this.options.mouse.track || _.any(this.series, function (s) { return s.mouse && s.mouse.track; })) {
+          _globalOptions = this.options;
+          return this.hit.hit(pos);
     }
   },
   /**

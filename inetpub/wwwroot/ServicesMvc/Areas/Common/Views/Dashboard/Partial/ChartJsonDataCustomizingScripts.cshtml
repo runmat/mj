@@ -68,22 +68,33 @@
     function ZulassungShoppingCart(widgetKey) {
 
         _chartOptions.grid.horizontalLines = false;
-        _chartOptions.bars.showBarLabelsInside = true;
+        _chartOptions.bars.ShowBarLabelsInside = true;
         _chartOptions.colors = ["#BB0000", "#00BB00", "#0000BB"];
 
     }
 
     function ZulassungenWithBarLabelsInside(widgetKey) {
 
-        _chartOptions.bars.showBarLabelsInside = true;
+        _chartOptions.bars.ShowBarLabelsInside = true;
 
     }
 
     function ZulassungenProMaterialLetzte30TagePie(widgetKey) {
 
-        _chartOptions.legend.position = 'sw';
-        _chartOptions.PieLabelValueThreshold = 1.5;
+        _chartOptions.OffsetY = -95;
 
+        _chartOptions.legend.position = 'sw';
+        _chartOptions.legend.noColumns = 2;
+        _chartOptions.PieLabelValueThreshold = 1.5;
+        _chartOptions.pie.sizeRatio = 0.4;
+
+        _chartOptions.mouse.track = true;
+        _chartOptions.mouse.position = 'ne';
+        _chartOptions.mouse.trackFormatter = function (point) {
+            //console.log(point.series);
+            var groupLabel = point.series.label;
+            return groupLabel;
+        };
     }
 
     function ZBIIEinAusgaenge(widgetKey) {

@@ -1568,7 +1568,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items,
                     xAxisKeyModel,
-                    null,
+                    xAxisList => xAxisList.Insert(0, ""),
                     item => GetChartShoppingCartStackedKey(item).Value
                 );
         }
