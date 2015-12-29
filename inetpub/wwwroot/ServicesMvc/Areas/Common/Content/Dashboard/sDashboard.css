@@ -328,3 +328,10 @@ a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
     font-style: normal!important;
     text-decoration: none!important;
 }
+
+.flotr-grid-label {
+    font-size: 0.75em;
+}
+.flotr-grid-label.flotr-grid-label-x {
+    font-size: 1.0em;
+}

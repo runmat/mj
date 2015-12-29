@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.General.Contracts
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+    bool isDashBoard = ViewBag.IsDashboard ?? false;
+}
+
+@if (isDashBoard)
+{
+    <style type="text/css">
+        h4 {
+             font-size: 1.0em;
+        }
+        .alert-block {
+            padding: 3px !important;
+        }
+    </style>
+}
+
+
+@Html.Partial("Partial/UserMessagesDetails", logonContext.MaintenanceInfo)
+
+
+

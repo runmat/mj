@@ -1563,7 +1563,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var items = LoadZulassungenFromShoppingCart().ToListOrEmptyList();
 
             items = items.OrderBy(item => GetChartShoppingCartStackedKey(item).Key).ToListOrEmptyList();
-            Func<Vorgang, string> xAxisKeyModel = (groupKey => groupKey.BeauftragungsArt);
+            Func<Vorgang, string> xAxisKeyModel = (groupKey => groupKey.BeauftragungsArt.ToLowerFirstUpper());
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items,

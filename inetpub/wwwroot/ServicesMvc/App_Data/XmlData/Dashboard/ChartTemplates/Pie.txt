@@ -21,6 +21,7 @@
 	"grid" : 
 	{
 		"verticalLines" : false,
-		"horizontalLines" : false
+		"horizontalLines" : false,
+		"outlineWidth" : 0
 	}
 }
