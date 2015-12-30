@@ -34,8 +34,7 @@ namespace CarDocu.Services
                 return false;
 
             ScanDocuments.Add(scanDocument);
-            if (OnAddScanDocument != null)
-                OnAddScanDocument(scanDocument);
+            OnAddScanDocument?.Invoke(scanDocument);
 
             return true;
         }
@@ -47,14 +46,16 @@ namespace CarDocu.Services
             scanDocument.EnsureDocumentType();
             var pdfFileNames = scanDocument.GetPdfFileNames();
 
-            try { Directory.Delete(itemToDelete.GetDocumentPrivateDirectoryName(), true); }
+            try
+            {
+                FileService.TryDirectoryDelete(itemToDelete.GetDocumentPrivateDirectoryName()); 
+
+                if (ScanDocuments.Remove(itemToDelete))
+                    new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames);
+
+                OnDeleteScanDocument?.Invoke(itemToDelete);
+            }
             catch { /**/ }
-
-            if (ScanDocuments.Remove(itemToDelete))
-                new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames);
-
-            if (OnDeleteScanDocument != null)
-                OnDeleteScanDocument(itemToDelete);
 
             return true;
         }
