@@ -327,12 +327,12 @@ namespace CarDocu.Services
             return ScanDocumentRepository.TryAddScanDocument(scanDocument);
         }
 
-        public bool ScanDocumentRepositoryTryDeleteScanDocument(ScanDocument scanDocument)
+        public bool ScanDocumentRepositoryTryDeleteScanDocument(ScanDocument scanDocument, bool deleteAlsoNetworkDeliveryPdfFiles)
         {
             if (scanDocument.IsTemplate)
-                return ScanTemplateRepository.TryDeleteScanDocument(scanDocument);
+                return ScanTemplateRepository.TryDeleteScanDocument(scanDocument, deleteAlsoNetworkDeliveryPdfFiles);
 
-            return ScanDocumentRepository.TryDeleteScanDocument(scanDocument);
+            return ScanDocumentRepository.TryDeleteScanDocument(scanDocument, deleteAlsoNetworkDeliveryPdfFiles);
         }
 
         #endregion
@@ -353,11 +353,6 @@ namespace CarDocu.Services
         public bool ScanTemplateRepositoryTryAddScanTemplate(ScanDocument scanTemplate)
         {
             return ScanTemplateRepository.TryAddScanDocument(scanTemplate);
-        }
-
-        public bool ScanTemplateRepositoryTryDeleteScanTemplate(ScanDocument scanTemplate)
-        {
-            return ScanTemplateRepository.TryDeleteScanDocument(scanTemplate);
         }
 
         #endregion
@@ -582,7 +577,7 @@ namespace CarDocu.Services
                     {
                         var sdOrg = ScanDocumentRepository.ScanDocuments.FirstOrDefault(s => s.DocumentID == scanDocument.DocumentID);
                         if (sdOrg != null)
-                            ScanDocumentRepository.TryDeleteScanDocument(sdOrg);
+                            ScanDocumentRepository.TryDeleteScanDocument(sdOrg, false);
                     });
                     if (!task.Wait(10000))
                         throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
