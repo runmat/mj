@@ -576,13 +576,20 @@ namespace CarDocu.Services
                     progressBarOperation.Details = string.Format("Lösche temporäres Verzeichnis '{0}'", directoryName);
 
                     // ScanDocument aus Repository löschen  +  ScanDocument temp. Verzeichnis löschen
-                    var task = TaskService.StartLongRunningTask(() => ScanDocumentRepository.TryDeleteScanDocument(scanDocument));
+                    var task = TaskService.StartLongRunningTask(() =>
+                    {
+                        var sdOrg = ScanDocumentRepository.ScanDocuments.FirstOrDefault(s => s.DocumentID == scanDocument.DocumentID);
+                        if (sdOrg != null)
+                            ScanDocumentRepository.TryDeleteScanDocument(sdOrg);
+                    });
                     if (!task.Wait(10000))
                         throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
 
                     progressBarOperation.Current++;
                     Thread.Sleep(50);
                 }
+
+                ScanDocumentRepositorySave();
 
                 if (progressBarOperation.IsCancellationPending)
                     return false;
