@@ -243,10 +243,19 @@
 
     function SetupWidgetToolbar(widgetId) {
         var rawId = widgetId.replace(/#id_/g, "");
-        var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-print'></i></a>");
+
+        var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-stack-overflow'></i></a>");
         printButton.attr("href", $("#report_href_" + rawId).attr("href"));
         printButton.attr("target", $("#report_href_" + rawId).attr("target"));
-        printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-circle-remove-icon"));
+        printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+
+        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetRefresh(" + rawId + ")' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
+        refreshButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+    }
+
+    function DashboardWidgetRefresh(id) {
+        alert(id);
+        return false;
     }
 
     function DashboardWidgetEventAdd(id) {

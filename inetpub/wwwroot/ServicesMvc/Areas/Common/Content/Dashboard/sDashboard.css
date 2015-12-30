@@ -186,7 +186,7 @@ li.ui-sortable-placeholder {
 .sDashboard-icon {
 	margin: 0 5px 0 5px;
 	float: right;
-	background: url('icon-sprite.PNG') no-repeat;
+	background: url('icon-sprite.PNG?x=3') no-repeat;
 	width: 20px;
 	height: 20px;
 }
@@ -212,7 +212,7 @@ li.ui-sortable-placeholder {
 	background-position: -2px -109px;
 }
 .sDashboard-icon.sDashboard-remove-icon {
-	background-position: -3px -135px;
+	background-position: -3px -133px;
 }
 
 
@@ -335,3 +335,9 @@ a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
 .flotr-grid-label.flotr-grid-label-x {
     font-size: 1.0em;
 }
+
+.icon-refresh {
+    opacity: 0.65;
+}
+
+ 

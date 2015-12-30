@@ -167,7 +167,7 @@
             });
 
             //delete widget by clicking the 'x' icon on the widget
-            this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-remove-icon ", function (e) {
+            this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-remove-icon ", function (e) {
                 var widget = $(e.currentTarget).parents("li:first");
                 //show hide effect
                 widget.hide("fold", {}, 300, function () {
@@ -204,17 +204,20 @@
         },
 
         _constructWidget: function (widgetDefinition) {
+            //@dashBoardItem.ItemKey
+            //console.log(widgetDefinition.widgetKey);
+
             //create an outer list item
             var widget = $("<li/>").attr("id", widgetDefinition.widgetId);
             widget.data("widgetDefinition", widgetDefinition);
             //create a widget container
-            var widgetContainer = $("<div/>").addClass("sDashboardWidget");
+            var widgetContainer = $("<div/>").addClass("sDashboardWidget").addClass(widgetDefinition.widgetKey);
 
             //create a widget header
             var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader sDashboard-clearfix");
             var maximizeButton = $('<div title="Maximize" class="sDashboard-icon sDashboard-circle-plus-icon "></span>');
 
-            var deleteButton = $('<div title="Chart verbergen" class="sDashboard-icon sDashboard-circle-remove-icon"></div>');
+            var deleteButton = $('<div title="Chart verbergen" class="sDashboard-icon sDashboard-remove-icon"></div>');
 
             //add delete button
             widgetHeader.append(deleteButton);

@@ -89,12 +89,23 @@
         _chartOptions.pie.sizeRatio = 0.4;
 
         _chartOptions.mouse.track = true;
-        _chartOptions.mouse.position = 'ne';
+        _chartOptions.mouse.position = 'nw';
         _chartOptions.mouse.trackFormatter = function (point) {
             //console.log(point.series);
             var groupLabel = point.series.label;
             return groupLabel;
         };
+
+        //setTimeout(function () {
+        //    $("." + widgetKey + " .flotr-legend").css("left", "0");
+        //    $("." + widgetKey + " .flotr-legend .flotr-legend-label").css("width", "45%");
+        //    $("." + widgetKey + " .flotr-legend-bg").css("left","0").css("width", "100%");
+        //}, 10);
+        var style = document.createElement("style");
+        document.head.appendChild(style);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend { left: 0!important; }", 0);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend .flotr-legend-label { width: 45%; }", 0);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend-bg { left:0!important; width: 100%; }", 0);
     }
 
     function ZBIIEinAusgaenge(widgetKey) {
