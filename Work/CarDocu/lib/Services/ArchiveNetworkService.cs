@@ -113,6 +113,7 @@ namespace CarDocu.Services
 
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
+                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
 
                     if (docType.UseExternalCommandline)
                     {
@@ -141,6 +142,12 @@ namespace CarDocu.Services
                     {
                         FileService.TryFileDelete(dstFileName);
                         File.Copy(srcFileName, dstFileName, true);
+
+                        if (dstFileName2.IsNotNullOrEmpty())
+                        {
+                            FileService.TryFileDelete(dstFileName2);
+                            File.Copy(srcFileName, dstFileName2, true);
+                        }
                     }
 
                     if (docType.DeleteAndBackupFileAfterDelivery)
@@ -177,13 +184,18 @@ namespace CarDocu.Services
 
             var archiveFolder = archive.Path;
             scanDocument.EnsureDocumentType();
+            var docType = scanDocument.SelectedDocumentType;
+
             pdfFileNames.ToList().ForEach(srcFileName =>
             {
                 var srcFileInfo = new FileInfo(srcFileName);
                 var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
+                var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
 
                 FileService.TryFileDelete(srcFileName);
                 FileService.TryFileDelete(dstFileName);
+                if(dstFileName2.IsNotNullOrEmpty())
+                    FileService.TryFileDelete(dstFileName2);
             });
         }
 

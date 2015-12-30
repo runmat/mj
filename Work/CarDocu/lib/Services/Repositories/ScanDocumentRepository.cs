@@ -48,7 +48,7 @@ namespace CarDocu.Services
 
             try
             {
-                Directory.Delete(itemToDelete.GetDocumentPrivateDirectoryName(), true); 
+                FileService.TryDirectoryDelete(itemToDelete.GetDocumentPrivateDirectoryName()); 
 
                 if (ScanDocuments.Remove(itemToDelete))
                     new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames);

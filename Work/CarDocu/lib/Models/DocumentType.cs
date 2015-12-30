@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
 using CarDocu.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using Media = System.Windows.Media;
 
 namespace CarDocu.Models
@@ -271,6 +273,28 @@ namespace CarDocu.Models
             {
                 _externalCommandlineArguments = value;
                 SendPropertyChanged("ExternalCommandlineArguments");
+            }
+        }
+
+        private string _inlineNetworkDeliveryArchiveFolder;
+
+        public static bool IsCurrentylLoadingFromRepository { get; set; }
+
+        public string InlineNetworkDeliveryArchiveFolder
+        {
+            get { return _inlineNetworkDeliveryArchiveFolder; }
+            set
+            {
+                if (!IsCurrentylLoadingFromRepository && value.IsNotNullOrEmpty() && !FileService.TryDirectoryCreate(value))
+                {
+                    Tools.AlertError("Das Verzeichnis existiert nicht und konnte auch nicht erstellt werden!");
+                    
+                    SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
+                    return;
+                }
+
+                _inlineNetworkDeliveryArchiveFolder = value;
+                SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
             }
         }
 
