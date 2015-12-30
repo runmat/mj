@@ -48,7 +48,7 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetChartData(string id)
+        public ActionResult GetChartData(string id, bool clearDataCache)
         {
             var dashboardItem = ViewModel.GetDashboardItem(id);
             if (dashboardItem == null)
@@ -72,7 +72,7 @@ namespace ServicesMvc.Common.Controllers
                 storedDashboardItemExpired = itemData.EditDate < (DateTime.Now.AddMinutes(-1 * dashboardItem.Options.JsonDataCacheExpirationMinutes));
             }
 
-            if (itemData == null || storedDashboardItemExpired)
+            if (itemData == null || storedDashboardItemExpired || clearDataCache)
             {
                 // no cached json data available  or  cached data has expired
                 var storedObjectKey = itemData == null ? null : itemData.ObjectKey;

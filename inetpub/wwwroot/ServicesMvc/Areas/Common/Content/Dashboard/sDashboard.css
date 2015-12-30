@@ -340,4 +340,15 @@ a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
     opacity: 0.65;
 }
 
- 
+ .dashboard-widget-hint {
+     font-size: 1.0em;
+     padding: 5px !important;
+     text-align: center;
+     display: inline;
+     float: right;
+     position: relative;
+     left: 0;
+     top: 0;
+     z-index: 99999;
+     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+}

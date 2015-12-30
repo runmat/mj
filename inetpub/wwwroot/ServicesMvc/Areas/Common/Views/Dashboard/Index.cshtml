@@ -116,7 +116,7 @@
             {
                 type: "POST",
                 url: "GetChartData",
-                data: { id: widgetId },
+                data: { id: widgetId, clearDataCache: false },
                 loadingShow: false,
                 success: function (result) {
 
@@ -205,15 +205,25 @@
                 }
             });
 
+        ShowWidget(rawWidgetId);
+
+        return false;
+    }
+
+    function ShowWidget(rawWidgetId, clearDataCache, afterRefreshFunction) {
+
+        clearDataCache = clearDataCache || false;
+
         var widgetId = "#id_" + rawWidgetId;
         var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+        busyHintDiv.show();
         showBusy(busyHintDiv, 0, 0);
 
         $.ajax(
             {
                 type: "POST",
                 url: "GetChartData",
-                data: { id: "id_" + rawWidgetId },
+                data: { id: "#id_" + rawWidgetId, clearDataCache: clearDataCache },
                 loadingShow: false,
                 success: function (result) {
 
@@ -231,14 +241,16 @@
                     if (isChart)
                         $(widgetId + " .sDashboard-refresh-icon").trigger("click");
 
-                    SetupWidgetToolbar(widgetId);
+                    if (!clearDataCache)
+                        SetupWidgetToolbar(widgetId);
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
-                }
-            });
 
-        return false;
+                    if (typeof(afterRefreshFunction) !== 'undefined')
+                        afterRefreshFunction();
+                }
+            });    
     }
 
     function SetupWidgetToolbar(widgetId) {
@@ -249,12 +261,20 @@
         printButton.attr("target", $("#report_href_" + rawId).attr("target"));
         printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
 
-        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetRefresh(" + rawId + ")' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
+        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetClearCacheAndReload(" + rawId + ")' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
         refreshButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
     }
 
-    function DashboardWidgetRefresh(id) {
-        alert(id);
+    function DashboardWidgetClearCacheAndReload(id) {
+        ShowWidget(id, true, function() {
+            var anchor = $("#id_" + id + " .sDashboardWidgetContent .sDashboardWidgetContentBusyHint");
+            var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Widget erfolgreich aktualisiert!");
+            hint.insertBefore(anchor);
+            setTimeout(function() {
+                hint.remove();
+            }, 2000);
+        });
+
         return false;
     }
 
