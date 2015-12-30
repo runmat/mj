@@ -159,10 +159,13 @@ namespace MyBoss
             Show();
             WindowState = WindowState.Normal;
 
+            if (sender != null)
+                HookKeyboard();
+
             _t = new System.Windows.Forms.Timer
             {
                 Enabled = true,
-                Interval = 2000
+                Interval = 4000
             };
             _t.Tick += T_Tick;
         }
