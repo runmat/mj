@@ -48,4 +48,4 @@ using System.Windows;
 //
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
-[assembly: AssemblyVersion("2.07.*")]
+[assembly: AssemblyVersion("2.08.*")]

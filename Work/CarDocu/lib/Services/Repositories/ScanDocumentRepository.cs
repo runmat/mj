@@ -39,7 +39,7 @@ namespace CarDocu.Services
             return true;
         }
 
-        public bool TryDeleteScanDocument(ScanDocument scanDocument) 
+        public bool TryDeleteScanDocument(ScanDocument scanDocument, bool deleteAlsoNetworkDeliveryPdfFiles)
         {
             var itemToDelete = scanDocument;
 
@@ -51,7 +51,7 @@ namespace CarDocu.Services
                 FileService.TryDirectoryDelete(itemToDelete.GetDocumentPrivateDirectoryName()); 
 
                 if (ScanDocuments.Remove(itemToDelete))
-                    new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames);
+                    new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames, deleteAlsoNetworkDeliveryPdfFiles);
 
                 OnDeleteScanDocument?.Invoke(itemToDelete);
             }

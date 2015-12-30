@@ -175,7 +175,7 @@ namespace CarDocu.Services
             return true;
         }
 
-        public void DeletePdfFilesFor(ScanDocument scanDocument, IEnumerable<string> pdfFileNames)
+        public void DeletePdfFilesFor(ScanDocument scanDocument, IEnumerable<string> pdfFileNames, bool deleteAlsoNetworkDeliveryPdfFiles)
         {
             var archive = scanDocument.GetArchive();
 
@@ -189,12 +189,16 @@ namespace CarDocu.Services
             pdfFileNames.ToList().ForEach(srcFileName =>
             {
                 var srcFileInfo = new FileInfo(srcFileName);
+                FileService.TryFileDelete(srcFileName);
+
+                if (!deleteAlsoNetworkDeliveryPdfFiles)
+                    return;
+
                 var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
                 var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
 
-                FileService.TryFileDelete(srcFileName);
                 FileService.TryFileDelete(dstFileName);
-                if(dstFileName2.IsNotNullOrEmpty())
+                if (dstFileName2.IsNotNullOrEmpty())
                     FileService.TryFileDelete(dstFileName2);
             });
         }
