@@ -1546,7 +1546,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var date = (item.BeauftragungsArt.NotNullOrEmpty() == "ABMELDUNG" ? item.Abmeldedatum : item.Zulassungsdatum).GetValueOrDefault();
             var today = DateTime.Today;
 
-            if (date <= today)
+            if (date < today)
                 return new KeyValuePair<int, string>(1, "überfällig");
             if (date.Year == today.Year && date.GetWeekNumber() == today.GetWeekNumber())
                 return new KeyValuePair<int, string>(2, "fällig");
