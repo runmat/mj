@@ -9,7 +9,7 @@ namespace WpfComboboxAutocomplete
     /// <summary>
     /// Interaktionslogik für AutoCompleteTagCloud.xaml
     /// </summary>
-    public partial class AutoCompleteTagCloud : UserControl
+    public partial class AutoCompleteTagCloud 
     {
         public AutoCompleteTagCloud()
         {

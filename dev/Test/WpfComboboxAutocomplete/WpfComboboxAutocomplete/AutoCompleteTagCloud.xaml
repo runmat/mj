@@ -9,14 +9,28 @@
 
         <TextBlock Text="{Binding SelectedTag}" Margin="10" Foreground="Blue" />
         
-        <ListBox Height="100" ItemsSource="{Binding SelectedTags}" DisplayMemberPath="Name" SelectedValuePath="Name" Margin="10" />
+        <ListBox    ItemsSource="{Binding SelectedTags}" 
+                    DisplayMemberPath="Name" SelectedValuePath="Name" 
+                    Style="{StaticResource LbListBoxHorizontalSmall}"
+                    Margin="10" />
 
         <ComboBox   Name="DropDown" Height="25" Margin="10"
                     IsEditable="True" StaysOpenOnEdit="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False"
-                    ItemsSource="{Binding Tags}" DisplayMemberPath="Name" SelectedValuePath="Name"
+                    ItemsSource="{Binding Tags}" SelectedValuePath="Name"
                     SelectedValue="{Binding SelectedTag}"
                     KeyDown="ComboBox_KeyDown"
-                    GotFocus="ComboBox_GotFocus" />
+                    GotFocus="ComboBox_GotFocus">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="150" Text="{Binding Name}" />
+                        <Button Style="{StaticResource HyperLinkSmallDELETE}" 
+                                                Command="{Binding DeleteCommand}"
+                                                Margin="7,2,0,0" />
+                    </StackPanel>        
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
     </StackPanel>
 </UserControl>

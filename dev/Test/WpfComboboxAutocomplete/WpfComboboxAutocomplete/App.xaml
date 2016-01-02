@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:WpfComboboxAutocomplete"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Images.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/ControlStyles/DocumentViewer.xaml" />
+                <ResourceDictionary Source="/Resources/LocalStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Images.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

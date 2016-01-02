@@ -34,7 +34,7 @@ namespace WpfComboboxAutocomplete
                     _text.Split(' ')
                     .Where(t => t.Trim().Length > 0)
                     .GroupBy(g => g)
-                    .Select(t => new Tag { Name = t.Key.Trim(' ', '\t', '\r', '\n') }));
+                    .Select(t => new Tag { Name = t.Key.Trim(' ', '\t', '\r', '\n'), Parent = this}));
 
                 var source = CollectionViewSource.GetDefaultView(_tags);
                 source.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
@@ -65,10 +65,32 @@ namespace WpfComboboxAutocomplete
                 return;
 
             if (Tags.None(t => t.Name.ToLower() == tagText.ToLower()))
-                Tags.Add(new Tag { Name = tagText.ToLowerFirstUpper() });
+            {
+                Tags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Parent = this });
+                TagsSave();
+            }
 
             if (SelectedTags.None(t => t.Name.ToLower() == tagText.ToLower()))
-                SelectedTags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Sort = SelectedTags.Count });
+                SelectedTags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Sort = SelectedTags.Count, Parent = this });
+        }
+
+        public void OnDeleteTag(string tagText)
+        {
+            var selectedTag = SelectedTags.FirstOrDefault(t => t.Name == tagText);
+            if (selectedTag != null)
+            { 
+                SelectedTags.Remove(selectedTag);
+                TagsSave();
+            }
+
+            var tag = Tags.FirstOrDefault(t => t.Name == tagText);
+            if (tag != null)
+                Tags.Remove(tag);
+        }
+
+        void TagsSave()
+        {
+            
         }
     }
 }

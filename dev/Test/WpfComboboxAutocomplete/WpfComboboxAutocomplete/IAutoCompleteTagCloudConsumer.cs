@@ -9,5 +9,7 @@ namespace WpfComboboxAutocomplete
     public interface IAutoCompleteTagCloudConsumer
     {
         void OnDropDownTabKey(string tagText);
+
+        void OnDeleteTag(string tagText);
     }
 }
