@@ -16,7 +16,9 @@
 
         <ComboBox   Name="DropDown" Height="25" Margin="10"
                     IsEditable="True" StaysOpenOnEdit="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False"
-                    ItemsSource="{Binding Tags}" SelectedValuePath="Name"
+                    ItemsSource="{Binding Tags}" 
+                    SelectedValuePath="Name" 
+                    TextSearch.TextPath="Name" 
                     SelectedValue="{Binding SelectedTag}"
                     KeyDown="ComboBox_KeyDown"
                     GotFocus="ComboBox_GotFocus">
