@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WpfComboboxAutocomplete
 {
@@ -41,7 +42,7 @@ namespace WpfComboboxAutocomplete
 
         private void ComboBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Tab)
+            if (e.Key == Key.Tab)
             {
                 var cb = (ComboBox)sender;
 
@@ -56,6 +57,11 @@ namespace WpfComboboxAutocomplete
                     DrowDownSetFocusDelayed();
                 }
             }
+        }
+
+        private void ComboBox_TextBox_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DrowDownSetFocusDelayed();
         }
     }
 }

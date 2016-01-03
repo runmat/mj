@@ -20,12 +20,13 @@
                     SelectedValuePath="Name" 
                     TextSearch.TextPath="Name" 
                     SelectedValue="{Binding SelectedTag}"
+                    PreviewMouseUp="ComboBox_TextBox_OnMouseDown"
                     KeyDown="ComboBox_KeyDown"
                     GotFocus="ComboBox_GotFocus">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="150" Text="{Binding Name}" />
+                        <TextBlock Width="150" Text="{Binding Name}"  />
                         <Button Style="{StaticResource HyperLinkSmallDELETE}" 
                                                 Command="{Binding DeleteCommand}"
                                                 Margin="7,2,0,0" />
