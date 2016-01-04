@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using CkgDomainLogic.DataKonverter.ViewModels;
+using GeneralTools.Models;
 using MvcTools.Web;
-using ServicesMvc.Areas.DataKonverter.Models;
-using ServicesMvc.DataKonverter.Controllers;
+using ServicesMvc.DataConverter.Controllers;
 
-namespace ServicesMvc.Areas.DataKonverter.ActionFilters
+namespace ServicesMvc.Areas.DataConverter.ActionFilters
 {
     /// <summary>
     /// Evtl. mit übermittelte UI-Daten ins Viewmodel überführen...
@@ -17,7 +13,7 @@ namespace ServicesMvc.Areas.DataKonverter.ActionFilters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext) 
         {
-            var dataMapper = ((AdminController)filterContext.Controller).ViewModel.DataMapper;
+            var dataMapping = ((AdminController)filterContext.Controller).ViewModel.DataConverter.DataMapping;
 
             var processors = filterContext.RequestContext.HttpContext.Request["processors"];
             var connections = filterContext.RequestContext.HttpContext.Request["connections"];
@@ -26,12 +22,12 @@ namespace ServicesMvc.Areas.DataKonverter.ActionFilters
             if (!string.IsNullOrEmpty(processors))
             {
                 var processorList = JSon.Deserialize<Processor[]>(processors);
-                dataMapper.Processors = new List<Processor>(processorList);
+                dataMapping.Processors = new List<Processor>(processorList);
             }
             if (!string.IsNullOrEmpty(connections))
             {
                 var connectionList = JSon.Deserialize<DataConnection[]>(connections);
-                dataMapper.DataConnections = new List<DataConnection>(connectionList);
+                dataMapping.DataConnections = new List<DataConnection>(connectionList);
             }
         }
     }

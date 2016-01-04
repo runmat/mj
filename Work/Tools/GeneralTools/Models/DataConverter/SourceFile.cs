@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using CkgDomainLogic.DataKonverter.ViewModels;
-using GeneralTools.Models;
-using GeneralTools.Resources;
+﻿using System.Collections.Generic;
 
-namespace ServicesMvc.Areas.DataKonverter.Models
+namespace GeneralTools.Models
 {
     public class SourceFile
     {

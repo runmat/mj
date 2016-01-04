@@ -1,9 +1,9 @@
-﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
 
 <div id="DivKonfiguration" class="margin-top-20" style="height: 550px;">
     <h4>Konfiguration</h4>
 
-    <div class="w" style="visibility: hidden; height: 0px; padding: 0px; margin: 0px;">DUMMY</div>
+    <div class="w" style="visibility: hidden; height: 0; padding: 0; margin: 0;">DUMMY</div>
         <span class="float-left">
         <button class="btn white" onclick="GotoRecord('first');">
             <<
@@ -20,7 +20,7 @@
         </button>
 
         <span id="RecordPosition" class="margin-left-15 badge margin-right-30">
-            @Model.DataMapper.RecordInfoText
+            @Model.DataConverter.RecordInfoText
         </span>
     </span>
 
@@ -49,9 +49,9 @@
 
     <div style="clear:both"></div>
 
-    <div id="DataKonverterContainer">
+    <div id="DataConverterContainer">
         <div id="source" style="padding: 0px;">
-            @foreach (var item in Model.DataMapper.SourceFile.Fields)
+            @foreach (var item in Model.DataConverter.SourceFile.Fields)
             {
                 <div class="w" id="@item.Guid">
                     <div class="field">@item.Caption</div>
@@ -62,35 +62,36 @@
         </div>
 
         <div id="destination">
-            @Html.Action("ShowDestinationDiv", Model.DataMapper.DestinationFile.XmlDocument)
+            @Html.Action("ShowDestinationDiv", Model.DataConverter.DestinationFile.XmlDocument)
         </div>
     </div>
 
 </div>
 
 <div id="processorTemplate" class="processor hidden">
-        <div class="title">
-            <div class="processortitle float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
-            <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
-        </div>
-        <div class="content" style="">
-            <select name="ProcessorType" class="processortype" onchange="SyncUiData();">
-                <option value="1">Splitten</option>
-                <option value="2">Zusammenfassen</option>
-                <option value="3">Festwert</option>
-            </select>
-            <input type="hidden" name="Title" value=""/>
-            <input type="hidden" name="Number" value=""/>
-            <input type="text" name="ProcessorPara1" value="X" style="width: 60px; float: left; margin-bottom: 2px;" onchange="SyncUiData();"/>
-            <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;display: none;" onchange="SyncUiData();"/>
-            <br style="clear: both;"/> 
-            <div class="data datain width-160 margin-top-5 datastyle">In: </div><br style="clear: both;"/> 
-            <div class="data dataout width-160 datastyle">Out: </div>
-        </div>
-        <div id="tmpprozin" class="prozin"></div>
-        <div id="tmpprozout" class="prozout"></div>
+    <div class="title">
+        <div class="processortitle float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
+        <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
     </div>
-<script>
+    <div class="content" style="">
+        <select name="ProcessorType" class="processortype" onchange="SyncUiData();">
+            <option value="1">Splitten</option>
+            <option value="2">Zusammenfassen</option>
+            <option value="3">Festwert</option>
+        </select>
+        <input type="hidden" name="Title" value=""/>
+        <input type="hidden" name="Number" value=""/>
+        <input type="text" name="ProcessorPara1" value="X" style="width: 60px; float: left; margin-bottom: 2px;" onchange="SyncUiData();"/>
+        <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px; display: none;" onchange="SyncUiData();"/>
+        <br style="clear: both;"/>
+        <div class="data datain width-160 margin-top-5 datastyle">In: </div><br style="clear: both;"/>
+        <div class="data dataout width-160 datastyle">Out: </div>
+    </div>
+    <div id="tmpprozin" class="prozin"></div>
+    <div id="tmpprozout" class="prozout"></div>
+</div>
+
+<script type="text/javascript">
 
     var jsonProcessors; 
     var jsonConnections;
@@ -141,10 +142,10 @@
                     }
                 ]
             ],
-            Container: $('#DataKonverterContainer')
+            Container: $('#DataConverterContainer')
         });
 
-        jsPlumb.Defaults.Container = $('#DataKonverterContainer');
+        jsPlumb.Defaults.Container = $('#DataConverterContainer');
 
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);

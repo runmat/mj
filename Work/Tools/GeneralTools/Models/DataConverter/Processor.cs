@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace ServicesMvc.Areas.DataKonverter.Models
+namespace GeneralTools.Models
 {
     public class Processor
     {
@@ -59,7 +56,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     {
                         return Input.Replace("|", OperationPara1);
                     }
-                catch (Exception e)
+                    catch (Exception)
                     {
                         return Input;
                     }
@@ -70,14 +67,13 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                         var arrString = Input.Split(Convert.ToChar(OperationPara1));
                         return arrString[Convert.ToInt32(OperationPara2)];
                     }
-                catch (Exception e)
+                    catch (Exception)
                     {
                         return Input;
                     }
                 default:
                     return Input;
             }
-            return null;
         }
     }
 }

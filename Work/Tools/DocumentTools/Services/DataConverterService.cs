@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Xml;
 using System.Xml.Linq;
-using CkgDomainLogic.DomainCommon.Models;
-using DocumentTools.Services;
 using GeneralTools.Models;
-using Microsoft.Ajax.Utilities;
 
-namespace ServicesMvc.Areas.DataKonverter.Models
+namespace DocumentTools.Services
 {
-    public class DataMapper
+    public class DataConverterService
     {
+        public DataConverterMapping DataMapping { get; private set; }
+
         public SourceFile SourceFile { get; set; }                  // Enthält Fields und dazugehörige Value-Listen
         public DestinationFile DestinationFile { get; set; }
-        public List<DataConnection> DataConnections { get; set; }
-        public List<Processor> Processors { get; set; }
 
         public string XmlOutput { get; set; }
 
@@ -33,14 +28,14 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
         }
 
-        public DataMapper()
+        public DataConverterService()
         {
+            DataMapping = new DataConverterMapping();
+
             RecordNo = 1;
             
             SourceFile = new SourceFile();
             DestinationFile = new DestinationFile();
-            DataConnections = new List<DataConnection>();
-            Processors = new List<Processor>();
         }
 
         public void Init(string sourceFile, bool firstRowIsCaption, char delimiter, string destinationFileXml, List<DataConnection> dataConnections, List<Processor> processors)
@@ -48,8 +43,8 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             // Convert Excel to csv if needed...
             SourceFile.FilenameOrig = sourceFile;
             DestinationFile.Filename = destinationFileXml;
-            DataConnections = dataConnections;
-            Processors = Processors;
+            DataMapping.DataConnections = dataConnections;
+            DataMapping.Processors = processors;
 
             ReadSourceFile();
             ReadDestinationObj();
@@ -57,7 +52,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
         public List<DataConnection> GetConnections()
         {
-            return DataConnections;
+            return DataMapping.DataConnections;
         }
 
         public void ReadDestinationObj()
@@ -128,13 +123,10 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             SourceFile.Fields = fields;
         }
 
-        public Processor AddProcessor()
+        public void AddProcessor()
         {
-            var newProcessor = new Processor();
-            Processors.Add(newProcessor);
-            newProcessor.Number = Processors.Count;
-            newProcessor.Title = "Processor " + newProcessor.Number;
-            return newProcessor;         
+            var newProcessorNumber = DataMapping.Processors.Count + 1;
+            DataMapping.Processors.Add(new Processor { Number = newProcessorNumber, Title = string.Format("Processor {0}", newProcessorNumber) });       
         }
 
         //public string RemoveProcessor(string processorId)
@@ -147,7 +139,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         public Processor GetProcessorResult(Processor processor)
         {
             // Alle eingehenden Connections ermitteln...
-            var connectionsIn = DataConnections.Where(x => x.GuidDest == "prozin-" + processor.Guid).ToList();
+            var connectionsIn = DataMapping.DataConnections.Where(x => x.GuidDest == "prozin-" + processor.Guid).ToList();
 
             // Input-String ermitteln...
             var input = new StringBuilder();
@@ -174,8 +166,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             SourceFile.FilenameOrig = filenameOrigFull;
             SourceFile.FilenameCsv = filenameCsvFull;
 
-
-            var extension = Path.GetExtension(filenameOrigFull).ToLower();
+            var extension = Path.GetExtension(filenameOrigFull).ToLowerAndNotEmpty();
             if (extension == ".xls" || extension == ".xlsx")
             {
                 SpireXlsFactory.ConvertExcelToCsv(filenameOrigFull, filenameCsvFull, delimeter);
@@ -199,7 +190,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             var records = SourceFile.Fields[0].Records;
 
             // Alle Datensätze durchlaufen
-            for (int recordNo = 1; recordNo < records.Count + 1; recordNo++)
+            for (var recordNo = 1; recordNo < records.Count + 1; recordNo++)
             {
                 // XML-Document für einen Datensatz zum späteren Füllen holen
                 var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
@@ -209,12 +200,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
 
                 // Alle Ergebnisse des aktuellen Datensatzes ermitteln und nur Zielfelder zurückgeben, die nicht leer sind
                 RecalcProcessors();
-                var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Wert));
+                var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Text));
 
                 foreach (var field in destFields)
                 {
-                    var fieldId = field.Beschreibung;
-                    var value = field.Wert;             // Wert des Feldes ermitteln...
+                    var fieldId = field.Key;
+                    var value = field.Text;             // Wert des Feldes ermitteln...
 
                     // In XML-Dokument das passende Feld suchen
                     var fieldIdToFind = fieldId.Substring(5);   // ***refactor me*** Im Model wird der OriginalId (gem. XML-Datei) immer "Dest-" hinzugefügt. Damit Eintrag gefunden werden kann, hier entfernen.
@@ -225,7 +216,9 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                 }
                 
                 var contentToAdd = xmlRecord.DescendantNodes().FirstOrDefault();
-                xmlComplete.Descendants().FirstOrDefault().Add(contentToAdd);
+                var firstDescendant = xmlComplete.Descendants().FirstOrDefault();
+                if (firstDescendant != null)
+                    firstDescendant.Add(contentToAdd);
             }
 
             xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
@@ -238,16 +231,12 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         }
 
         // Alle DatenRecords der Quellfelder (z.B. zur "Live-Anzeige" im UI) ermitteln...
-        public List<Domaenenfestwert> RecalcSourceFields()
+        public List<SelectItem> RecalcSourceFields()
         {
-            var sourceFieldList = new List<Domaenenfestwert>();
+            var sourceFieldList = new List<SelectItem>();
             foreach (var field in SourceFile.Fields)
             {
-                sourceFieldList.Add(new Domaenenfestwert
-                {
-                    Wert = field.Guid,
-                    Beschreibung = field.Records[RecordNo - 1]
-                });
+                sourceFieldList.Add(new SelectItem(field.Guid, field.Records[RecordNo - 1]));
             }
             return sourceFieldList;
         }
@@ -256,7 +245,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
         {
             // Alle Prozessoren zur späteren Ausgabe aktualisieren...
             var processorList = new List<Processor>();
-            foreach (var processor in Processors)
+            foreach (var processor in DataMapping.Processors)
             {
                 var processorResult = GetProcessorResult(processor);
                 processorList.Add(processorResult);
@@ -265,22 +254,22 @@ namespace ServicesMvc.Areas.DataKonverter.Models
             return processorList;
         }
 
-        public List<Domaenenfestwert> RecalcDestFields()
+        public List<SelectItem> RecalcDestFields()
         {
-            var destFieldList = new List<Domaenenfestwert>();
+            var destFieldList = new List<SelectItem>();
             foreach (var field in DestinationFile.Fields)
             {
                 var value = "";
                 field.IsUsed = false;
 
                 // Prüfen, ob Connection vorliegt...
-                var connection = DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
+                var connection = DataMapping.DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
                 if (connection != null)
                 {
                     var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);    // Wenn Sourcefeld kein Prozessor ist
                     if (sourceItem == null)
                     {
-                        var processor = Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
+                        var processor = DataMapping.Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
                         if (processor != null)
                         {
                             value = processor.Output;
@@ -294,11 +283,7 @@ namespace ServicesMvc.Areas.DataKonverter.Models
                     }
                 }
 
-                destFieldList.Add(new Domaenenfestwert
-                {
-                    Wert = value,
-                    Beschreibung = field.Guid
-                });
+                destFieldList.Add(new SelectItem(field.Guid, value));
             }
             return destFieldList;
         }

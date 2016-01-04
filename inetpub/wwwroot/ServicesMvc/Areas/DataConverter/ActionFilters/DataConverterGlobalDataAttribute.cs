@@ -1,11 +1,9 @@
-﻿using System;
-using System.Web.Mvc;
-using CkgDomainLogic.Fahrzeuge.ViewModels;
-using ServicesMvc.DataKonverter.Controllers;
+﻿using System.Web.Mvc;
+using ServicesMvc.DataConverter.Controllers;
 
-namespace ServicesMvc.Areas.DataKonverter
+namespace ServicesMvc.Areas.DataConverter
 {
-    public class DataKonverterInjectGlobalDataAttribute : ActionFilterAttribute
+    public class DataConverterInjectGlobalDataAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {

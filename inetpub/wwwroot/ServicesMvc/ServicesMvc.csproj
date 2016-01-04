@@ -120,7 +120,6 @@
     <Reference Include="FluentValidation.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\FluentValidation.MVC4.4.0.0.1\lib\Net40\FluentValidation.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -235,7 +234,7 @@
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
-    <Content Include="Content\DataKonverter-main.css" />
+    <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\Commands\24x24\OK.png" />
     <Content Include="Images\Commands\24x24\warning.png" />
@@ -284,12 +283,12 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Index.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Partial\Common.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Partial\Prozessauswahl.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Partial\Konfiguration.cshtml" />
-    <Content Include="Areas\DataKonverter\Views\Admin\Partial\Abschluss.cshtml" />
+    <Content Include="Areas\DataConverter\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Common.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Prozessauswahl.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Konfiguration.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Abschluss.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -727,21 +726,13 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\DataKonverter\ActionFilters\DataKonverterGlobalDataAttribute.cs" />
-    <Compile Include="Areas\DataKonverter\ActionFilters\StoreUiAttribute.cs" />
-    <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
-    <Compile Include="Areas\DataKonverter\Controllers\AdminController.cs" />
-    <Compile Include="Areas\DataKonverter\Models\DataConnection.cs" />
-    <Compile Include="Areas\DataKonverter\Models\DestinationFile.cs" />
-    <Compile Include="Areas\DataKonverter\Models\Field.cs" />
-    <Compile Include="Areas\DataKonverter\Models\FieldType.cs" />
-    <Compile Include="Areas\DataKonverter\Models\GlobalViewData.cs" />
-    <Compile Include="Areas\DataKonverter\Models\DataMapper.cs" />
-    <Compile Include="Areas\DataKonverter\Models\Operation.cs" />
-    <Compile Include="Areas\DataKonverter\Models\Processor.cs" />
-    <Compile Include="Areas\DataKonverter\Models\SourceFile.cs" />
-    <Compile Include="Areas\DataKonverter\Services\DataKonverterDataService.cs" />
-    <Compile Include="Areas\DataKonverter\ViewModels\KroschkeDataKonverterViewModel.cs" />
+    <Compile Include="Areas\DataConverter\ActionFilters\DataConverterGlobalDataAttribute.cs" />
+    <Compile Include="Areas\DataConverter\ActionFilters\StoreUiAttribute.cs" />
+    <Compile Include="Areas\DataConverter\Contracts\IDataConverterDataService.cs" />
+    <Compile Include="Areas\DataConverter\Controllers\AdminController.cs" />
+    <Compile Include="Areas\DataConverter\Models\GlobalViewData.cs" />
+    <Compile Include="Areas\DataConverter\Services\DataConverterDataService.cs" />
+    <Compile Include="Areas\DataConverter\ViewModels\DataConverterViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
@@ -2904,7 +2895,7 @@
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
     <Folder Include="Areas\Autohaus\ViewModels\" />
-    <Folder Include="Areas\DataKonverter\Views\User\Partial\" />
+    <Folder Include="Areas\DataConverter\Views\User\Partial\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

@@ -1,54 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Configuration;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
-using CkgDomainLogic.DataKonverter.Contracts;
-using CkgDomainLogic.DataKonverter.ViewModels;
+using CkgDomainLogic.DataConverter.Contracts;
+using CkgDomainLogic.DataConverter.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using ServicesMvc.Areas.DataKonverter.Models;
 using MvcTools.Web;
-using ServicesMvc.Areas.DataKonverter;
-using ServicesMvc.Areas.DataKonverter.ActionFilters;
+using ServicesMvc.Areas.DataConverter;
+using ServicesMvc.Areas.DataConverter.ActionFilters;
 
-namespace ServicesMvc.DataKonverter.Controllers
+namespace ServicesMvc.DataConverter.Controllers
 {
-
-    [DataKonverterInjectGlobalData]
+    [DataConverterInjectGlobalData]
     public class AdminController : CkgDomainController
     {
-        public override string DataContextKey { get { return GetDataContextKey<KroschkeDataKonverterViewModel>(); } }
+        public override string DataContextKey { get { return GetDataContextKey<DataConverterViewModel>(); } }
 
-        public KroschkeDataKonverterViewModel ViewModel
+        public DataConverterViewModel ViewModel
         {
-            get { return GetViewModel<KroschkeDataKonverterViewModel>(); }
+            get { return GetViewModel<DataConverterViewModel>(); }
             set { SetViewModel(value); }
         }
 
-        public AdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IDataKonverterDataService dataKonverterDataService)
+        public AdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IDataConverterDataService dataConverterDataService)
             : base(appSettings, logonContext)
         {
             if (IsInitialRequestOf("Index"))
                 ViewModel = null;
 
-            InitViewModelExpicit(ViewModel, appSettings, logonContext, dataKonverterDataService);
+            InitViewModelExpicit(ViewModel, appSettings, logonContext, dataConverterDataService);
         }
 
-        private void InitViewModelExpicit(KroschkeDataKonverterViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IDataKonverterDataService dataKonverterDataService)
+        private void InitViewModelExpicit(DataConverterViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IDataConverterDataService dataConverterDataService)
         {
-            InitViewModel(vm, appSettings, logonContext, dataKonverterDataService);
+            InitViewModel(vm, appSettings, logonContext, dataConverterDataService);
             InitModelStatics();
         }
 
         void InitModelStatics()
         {
+            //CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            //CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         [CkgApplication]
@@ -56,57 +54,35 @@ namespace ServicesMvc.DataKonverter.Controllers
         {
             ViewModel.DataInit();
 
-            // var csvFilename = ViewModel.ConvertExcelToCsv("Import1 Excel2007.xlsx", Guid.NewGuid() + "-Testfile.csv");
-            // var csvFilename = ViewModel.ConvertExcelToCsv(  "Import1 Excel2007.xlsx", Guid.NewGuid() + "-Testfile.csv");
-            var destFilename = "";
-
-            // ViewModel.DataMapper.SourceFile.Filename = csvFilename; // ViewModel.DataKonverterDataService.FillSourceFile(csvFilename, true);
-            // ViewModel.DataMapper.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  //  ViewModel.FillDestinationObj("KroschkeOn.xsd");
-            var csvFilename = "";
-
-            // ViewModel.DataMapper.Init(ViewModel.GetUploadPathTemp(), csvFilename, true, ';', @"C:\tmp\KroschkeOn2.xml", null, null);
-
             return View(ViewModel);
         }
 
         [HttpPost]
         [CkgApplication]
-        public ActionResult Prozessauswahl(KroschkeDataKonverterViewModel.WizardProzessauswahl model)
+        public ActionResult Prozessauswahl(DataConverterViewModel.WizardProzessauswahl model)
         {
-            var firstRequest = Request["firstRequest"];
-
             if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
                 model = ViewModel.Prozessauswahl;
 
             if (ModelState.IsValid)
-            {
                 ViewModel.Prozessauswahl = model;
-            }
-
-            var test0 = ViewModel;
-
-            var test = model.SourceFile.FilenameOrig;
 
             return PartialView("Partial/Prozessauswahl", model);
         }
 
         [HttpPost]
         [CkgApplication]
-        public ActionResult Konfiguration(KroschkeDataKonverterViewModel.WizardKonfiguration model)
+        public ActionResult Konfiguration(DataConverterViewModel.WizardKonfiguration model)
         {
-            var firstRequest = Request["firstRequest"];
-
             if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
                 model = ViewModel.Konfiguration;
 
             if (ModelState.IsValid)
-            {
                 ViewModel.Konfiguration = model;
-            }
 
-            ViewModel.DataMapper.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
-            ViewModel.DataMapper.ReadSourceFile();
-            ViewModel.DataMapper.ReadDestinationObj();
+            ViewModel.DataConverter.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
+            ViewModel.DataConverter.ReadSourceFile();
+            ViewModel.DataConverter.ReadDestinationObj();
 
             return PartialView("Partial/Konfiguration", ViewModel);
         }
@@ -128,7 +104,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         [StoreUi]
         public JsonResult AddProcessor(string processors, string connections)
         {
-            ViewModel.DataMapper.AddProcessor();
+            ViewModel.DataConverter.AddProcessor();
             return RefreshUi();
         }
 
@@ -159,46 +135,46 @@ namespace ServicesMvc.DataKonverter.Controllers
             switch (recordOffset)
             {
                 case "first":
-                    ViewModel.DataMapper.RecordNo = 0;
+                    ViewModel.DataConverter.RecordNo = 0;
                     break;
 
                 case "-1":
-                    ViewModel.DataMapper.RecordNo --;
+                    ViewModel.DataConverter.RecordNo--;
                     break;
 
                 case "+1":
-                    ViewModel.DataMapper.RecordNo++;
+                    ViewModel.DataConverter.RecordNo++;
                     break;
 
                 case "last":
-                    ViewModel.DataMapper.RecordNo = ViewModel.DataMapper.RecordCount;
+                    ViewModel.DataConverter.RecordNo = ViewModel.DataConverter.RecordCount;
                     break;
             }
 
-            if (ViewModel.DataMapper.RecordNo < 1)
-                ViewModel.DataMapper.RecordNo = 1;
+            if (ViewModel.DataConverter.RecordNo < 1)
+                ViewModel.DataConverter.RecordNo = 1;
 
-            if (ViewModel.DataMapper.RecordNo > ViewModel.DataMapper.RecordCount )
-                ViewModel.DataMapper.RecordNo = ViewModel.DataMapper.RecordCount;
+            if (ViewModel.DataConverter.RecordNo > ViewModel.DataConverter.RecordCount)
+                ViewModel.DataConverter.RecordNo = ViewModel.DataConverter.RecordCount;
             
             // Alle Prozessoren zur späteren Ausgabe aktualisieren...
-            var processorList = ViewModel.DataMapper.RecalcProcessors();
+            var processorList = ViewModel.DataConverter.RecalcProcessors();
 
             // Alle DatenRecords der Quellfelder ermitteln...
             var sourceFieldList = new List<Domaenenfestwert>();
-            foreach (var field in ViewModel.DataMapper.SourceFile.Fields)
+            foreach (var field in ViewModel.DataConverter.SourceFile.Fields)
             {
                 sourceFieldList.Add(new Domaenenfestwert
                 {
                     Wert = field.Guid,
-                    Beschreibung = field.Records[ViewModel.DataMapper.RecordNo - 1]
+                    Beschreibung = field.Records[ViewModel.DataConverter.RecordNo - 1]
                 });
             }
 
             // Alle DatenRecords der Zielfelder ermitteln...
-            var destFieldList = ViewModel.DataMapper.RecalcDestFields();
+            var destFieldList = ViewModel.DataConverter.RecalcDestFields();
 
-            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataMapper.RecordInfoText });
+            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataConverter.RecordInfoText });
         }
 
         #endregion
@@ -222,22 +198,18 @@ namespace ServicesMvc.DataKonverter.Controllers
                 success = true,
                 message = "ok",
                 uploadFileName = file.FileName,
-                uploadFileNameCsv = ViewModel.DataMapper.SourceFile.FilenameCsv
+                uploadFileNameCsv = ViewModel.DataConverter.SourceFile.FilenameCsv
             }, "text/plain");
         }
 
         [HttpPost]
-        public ActionResult Upload(SourceFile model)
+        public ActionResult Upload(DataConverterViewModel.WizardProzessauswahl model)
         {
-            var sdf = ViewModel.DataMapper.SourceFile;
-
             if (Request["firstRequest"] == "ok")                // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-                model = ViewModel.DataMapper.SourceFile;
+                model.SourceFile = ViewModel.DataConverter.SourceFile;
 
             if (ModelState.IsValid)
-            {
-                ViewModel.DataMapper.SourceFile = model;
-            }
+                ViewModel.DataConverter.SourceFile = model.SourceFile;
 
             return PartialView("Partial/Prozessauswahl", model);
         }
@@ -260,7 +232,7 @@ namespace ServicesMvc.DataKonverter.Controllers
         [HttpPost]
         public ActionResult ExportXml()
         {
-            var xmlContent = ViewModel.DataMapper.ExportToXml(@"C:\tmp\TestOutputComplete.xml");
+            var xmlContent = ViewModel.DataConverter.ExportToXml(@"C:\tmp\TestOutputComplete.xml");
 
             return Content(xmlContent);
         }

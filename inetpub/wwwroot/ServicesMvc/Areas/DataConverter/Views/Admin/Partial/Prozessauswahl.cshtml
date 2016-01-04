@@ -1,14 +1,14 @@
-﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel.WizardProzessauswahl
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel.WizardProzessauswahl
 
-<script>
-    
+<script type="text/javascript">
+
     var firstRequest = '@Request["firstRequest"]';
 
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-    
-    $(function () {
 
-        $(window).resize(function () {
+    $(function() {
+
+        $(window).resize(function() {
         });
 
         $('#SelectedProcess').chosen();
@@ -20,7 +20,7 @@
 
         var fileExt = filename.split('.').pop().toLowerCase();
 
-        if (fileExt != "txt" && fileExt != "csv" && fileExt !="xls" && fileExt != "xlsx") {
+        if (fileExt != "txt" && fileExt != "csv" && fileExt != "xls" && fileExt != "xlsx") {
             alert("Nur folgende Formate sind möglich: txt, csv, xls, xlsx");
             return false;
         }
@@ -32,7 +32,7 @@
 
     function UploadFinished(e) {
         setTimeout("LoadingHide()", 1000);
-        
+
         // clear only the UI of our Upload Control:
         $(this).children(".t-upload-files").remove();
 
@@ -40,7 +40,7 @@
             alert(e.response.message);
             return;
         }
-        
+
         $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
         $('#SourceFile_FilenameCsv').val(e.response.uploadFileNameCsv);
 
@@ -54,6 +54,7 @@
     }
 
 </script>
+
 <div id="DivProzessauswahl" class="margin-top-20">
     
     <h4>Prozessauswahl</h4>

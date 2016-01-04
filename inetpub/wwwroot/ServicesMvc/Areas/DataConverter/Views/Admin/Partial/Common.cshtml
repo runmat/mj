@@ -1,5 +1,4 @@
-﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
-
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
 
 <style type="text/css">
     .form-wizard .progress {
@@ -10,7 +9,6 @@
 <script type="text/javascript">
 
     var _modelIsValid = false;
-    var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
 
     function FormPreparePrivate() {
         try { FormWizardInitPrivate(); } catch (e) { }
@@ -20,13 +18,6 @@
         FormPrepareAjax();
         $('.tooltips').tooltip();
         setTimeout('LoadingHide()', 1000);
-    }
-
-    function FormWizardShowHideSaveButton(show, delay) {
-        setTimeout(function () {
-            $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
-            FormWizard.ButtonCustom1Show(show, _customButtonText);
-        }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
 
     function FormWizardInitPrivate() {
@@ -53,12 +44,6 @@
             if (stepName == 'Admin/Konfiguration') {
                 $('.processorobj').hide();
             }
-
-//          FormWizardShowHideSaveButton(stepName == "Receipt", 500);
-//          var prevStepName = FormWizard.GetStepKey(step);
-//          if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
-//              FormWizard.ButtonPrevInvoke();
-//            }
 
             window.scrollTo(0, 0);
             return true;

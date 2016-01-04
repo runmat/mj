@@ -4,29 +4,24 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Xml.XPath;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using CkgDomainLogic.DataKonverter.Contracts;
+using CkgDomainLogic.DataConverter.Contracts;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using GeneralTools.Resources;
-using ServicesMvc.Areas.DataKonverter.Models;
+using ServicesMvc.Areas.DataConverter.Models;
 
-namespace CkgDomainLogic.DataKonverter.ViewModels
+namespace CkgDomainLogic.DataConverter.ViewModels
 {
-
-    public class KroschkeDataKonverterViewModel : CkgBaseViewModel
+    public class DataConverterViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
-        public IDataKonverterDataService DataKonverterDataService { get { return CacheGet<IDataKonverterDataService>(); } }
+        public IDataConverterDataService DataConverterDataService { get { return CacheGet<IDataConverterDataService>(); } }
 
-        public DataMapper DataMapper { get; set; }
+        public DataConverterService DataConverter { get; set; }
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
 
@@ -38,7 +33,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             {
                 return PropertyCacheGet(() => new Dictionary<string, string>
                 {
-                    { "Prozessauswahl", "Prozessauswahl" },         // Localize.Vehicle
+                    { "Prozessauswahl", "Prozessauswahl" },
                     { "Admin/Konfiguration", "Konfiguration" },
                     //{ "Admin/Testimport", "Testimport" },
                     { "Admin/Abschluss", Localize.Ready + "!" },
@@ -61,16 +56,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         {
             #region Globale Properties, nutzbar in allen Partials
 
-            DataMapper = new DataMapper();
+            DataConverter = new DataConverterService();
 
-            GlobalViewData = new GlobalViewData
-            {
-                
-            };
+            GlobalViewData = new GlobalViewData();
 
-            //var fileNameFull = GetUploadPathTemp() + @"\KroschkeOn2.xml";
-            // DataMapper.DestinationFile = DataMapper.ReadDestinationObj(fileNameFull);
-            // DataMapper.DestinationFile = DataMapper.ReadDestinationObj();
             Prozessauswahl = new WizardProzessauswahl();
 
             #endregion
@@ -85,10 +74,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         {
             public SourceFile SourceFile { get; set; }
 
-            [LocalizedDisplay("Prozess")]                   // LocalizeConstants.Customer
+            [LocalizedDisplay("Prozess")]
             public string SelectedProcess { get; set; }
 
-            [SelectListText]            
+            [SelectListText]
             public List<string> ProcessList
             {
                 get { return new List<string>
@@ -111,17 +100,6 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         #region File converter
 
-        //public string ConvertExcelToCsv(string excelFilename, string csvFilename, char delimeter = ';')
-        //{
-        //    var tempFolder = GetUploadPathTemp();
-        //    var tmpSourceFile = Path.Combine(tempFolder, excelFilename);
-        //    var tmpDestFile = Path.Combine(tempFolder, csvFilename);
-
-        //    tmpDestFile = SpireXlsFactory.ConvertExcelToCsv(tmpSourceFile, tmpDestFile, delimeter);            
-            
-        //    return tmpDestFile;
-        //}
-
         public string GetUploadPathTemp()
         {
             return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
@@ -135,7 +113,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         public string SetProcessorSettings(string processorId, Operation processorType, string processorPara1, string processorPara2)
         {
-            var processor = DataMapper.Processors.FirstOrDefault(x => x.Guid == processorId);
+            var processor = DataConverter.DataMapping.Processors.FirstOrDefault(x => x.Guid == processorId);
             if (processor == null)
                 return null;
 
@@ -156,7 +134,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
         #region Upload source file
         public bool UploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
-            var extension = Path.GetExtension(fileName).ToLower();
+            var extension = Path.GetExtension(fileName).ToLowerAndNotEmpty();
 
             var randomfilename = Guid.NewGuid().ToString();
 
@@ -168,10 +146,10 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var tmpFilenameOrig = GetUploadPathTemp() + @"\" + nameSaved + extension;
             var tmpFilenameCsv = GetUploadPathTemp() + @"\" + nameSaved + ".csv";
 
-            DataMapper.ConvertToCsvIfNeeded(tmpFilenameOrig, tmpFilenameCsv);
+            DataConverter.ConvertToCsvIfNeeded(tmpFilenameOrig, tmpFilenameCsv);
 
-            DataMapper.SourceFile.FilenameOrig = fileName;
-            DataMapper.SourceFile.FilenameCsv = tmpFilenameCsv;
+            DataConverter.SourceFile.FilenameOrig = fileName;
+            DataConverter.SourceFile.FilenameCsv = tmpFilenameCsv;
 
             return true;
         }
@@ -189,7 +167,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             var nodeList = destXmlDocument.ChildNodes[1].ChildNodes;
             
             var sb = new StringBuilder();
-            TraverseNodes(nodeList, ref sb);    // TraverseNodes(doc.ChildNodes, ref content);
+            TraverseNodes(nodeList, ref sb);
 
             return sb.ToString();
         }
@@ -232,7 +210,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         public string CreateXmlContent()
         {
-            var xmlContent = DataMapper.ExportToXml();
+            var xmlContent = DataConverter.ExportToXml();
             return xmlContent;
         }
 

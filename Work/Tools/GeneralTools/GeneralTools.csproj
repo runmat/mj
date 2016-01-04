@@ -137,6 +137,14 @@
     <Compile Include="Models\Attributes\LowerCaseAttribute.cs" />
     <Compile Include="Models\Attributes\RequiredAsGroupAttribute.cs" />
     <Compile Include="Models\Attributes\ModelMappingCopyIgnoreAttribute.cs" />
+    <Compile Include="Models\DataConverter\DataConnection.cs" />
+    <Compile Include="Models\DataConverter\DataConverterMapping.cs" />
+    <Compile Include="Models\DataConverter\DestinationFile.cs" />
+    <Compile Include="Models\DataConverter\Field.cs" />
+    <Compile Include="Models\DataConverter\FieldType.cs" />
+    <Compile Include="Models\DataConverter\Operation.cs" />
+    <Compile Include="Models\DataConverter\Processor.cs" />
+    <Compile Include="Models\DataConverter\SourceFile.cs" />
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Models\CommonEnums.cs" />
     <Compile Include="Models\DateRangePresets.cs" />
