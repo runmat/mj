@@ -388,7 +388,7 @@ namespace CarDocu.Models
                                    {
                                        ID = "TP",  Name = "Scan-Template", 
                                        AllowedLengths = new List<int>(), 
-                                       InputRuleName = "Beliebige Vorlagenbezeichnung:"
+                                       InputRuleName = "Beliebiger Freitext:"
                                    },
                            };
             }

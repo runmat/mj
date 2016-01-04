@@ -124,6 +124,55 @@
         <GradientStop Color="#ddfCfCfc" Offset="0.55"/>
         <GradientStop Color="#dde0e0e0" Offset="1"/>
     </LinearGradientBrush>
-    
-    
+
+    <Style x:Key="TagsListBoxHorizontalSmall" TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Background="Transparent" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}" >
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Tag" Value="{Binding Name}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border Name="Border" 
+                                        BorderThickness="1" 
+                                        Background="{DynamicResource brLbItemYellowCheckHardGradient}" CornerRadius="7" 
+                                        BorderBrush="{DynamicResource brGradientLightGrayInverse}" 
+                                        Margin="1,0,1,0"
+                                        Padding="3,0,0,0" ToolTip="{Binding Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Name="rb" Focusable="False" IsHitTestVisible="False" VerticalAlignment="Center" Text="{Binding Name}" FontSize="11" />
+                                        <Button Style="{StaticResource HyperLinkSmallDELETE}"  
+                                                Command="{Binding DeleteCommand}"
+                                                Margin="3,0,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border BorderThickness="0" Padding="0" BorderBrush="Transparent" Background="Transparent" Name="Bd" SnapsToDevicePixels="True">
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
