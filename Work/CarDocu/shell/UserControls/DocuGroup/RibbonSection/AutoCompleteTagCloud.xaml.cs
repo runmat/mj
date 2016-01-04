@@ -53,7 +53,7 @@ namespace CarDocu.UserControls.DocuGroup
                 var autoCompleteTagCloudConsumer = (DataContext as IAutoCompleteTagCloudConsumer);
                 if (autoCompleteTagCloudConsumer != null)
                 { 
-                    autoCompleteTagCloudConsumer.OnDropDownTabKey(enteredText);
+                    autoCompleteTagCloudConsumer.OnRequestProcessTag(enteredText);
                     cb.Text = "";
                     DrowDownSetFocusDelayed();
                 }

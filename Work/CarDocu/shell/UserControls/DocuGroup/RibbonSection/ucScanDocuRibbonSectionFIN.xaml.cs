@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CarDocu.Contracts;
+using CarDocu.ViewModels;
 
 namespace CarDocu.UserControls.DocuGroup
 {
@@ -57,6 +58,19 @@ namespace CarDocu.UserControls.DocuGroup
                     DropDown.IsDropDownOpen = true;
 
                 e.Handled = true;
+
+                var docuVm = (DataContext as DocuViewModel);
+                if (docuVm != null)
+                {
+                    Task.Factory.StartNew(() =>
+                    {
+                        docuVm.FinNumberAlertHintVisible = true;
+                        Thread.Sleep(1500);
+                    }).ContinueWith(x =>
+                    {
+                        docuVm.FinNumberAlertHintVisible = false;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
             }
         }
 
@@ -70,7 +84,7 @@ namespace CarDocu.UserControls.DocuGroup
             var autoCompleteTagCloudConsumer = (DataContext as IAutoCompleteTagCloudConsumer);
             if (autoCompleteTagCloudConsumer != null)
             {
-                autoCompleteTagCloudConsumer.OnDropDownTabKey(enteredText);
+                autoCompleteTagCloudConsumer.OnRequestProcessTag(enteredText);
                 cb.Text = "";
                 DrowDownSetFocusDelayed();
             }

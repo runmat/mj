@@ -52,6 +52,13 @@ namespace CarDocu.ViewModels
 
         public bool FinNumberAsTagCollection { get { return true; } }
 
+        private bool _finNumberAlertHintVisible;
+        public bool FinNumberAlertHintVisible
+        {
+            get { return _finNumberAlertHintVisible; }
+            set { _finNumberAlertHintVisible = value; SendPropertyChanged("FinNumberAlertHintVisible"); }
+        }
+
         const string TempRootPath = @"D:\Backup\Test";
 
         private string _title; 
@@ -970,7 +977,7 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public void OnDropDownTabKey(string tagText)
+        public void OnRequestProcessTag(string tagText)
         {
             if (tagText.IsNullOrEmpty())
                 return;

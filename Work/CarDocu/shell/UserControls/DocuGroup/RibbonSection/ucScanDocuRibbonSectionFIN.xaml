@@ -37,10 +37,16 @@
                 <TextBlock Text="Name:" VerticalAlignment="Top" Visibility="Visible" TextWrapping="WrapWithOverflow" TextAlignment="Left" Margin="5,25,10,0" />
 
                 <StackPanel>
-                    <TextBlock Margin="7,0,0,0" Text="{Binding FinNumber}" FontSize="11" Foreground="Blue" HorizontalAlignment="Left" MinHeight="20" />
+                    <TextBlock Foreground="Red" Background="Yellow" FontSize="11" Margin="5,0,0,0"
+                               Visibility="{Binding FinNumberAlertHintVisible, Converter={StaticResource BooleanVisibilityConverter}}">
+                        Auswählen mit TAB statt ENTER
+                    </TextBlock>
+                    <TextBlock Margin="7,0,0,0" Text="{Binding FinNumber}" FontSize="11" Foreground="Blue" HorizontalAlignment="Left" 
+                               Visibility="{Binding FinNumberAlertHintVisible, Converter={StaticResource BooleanVisibilityInverseConverter}}"
+                               />
                     <ComboBox   Name="DropDown" 
                                 IsEnabled="{Binding ValidDocumentType}" 
-                                Margin="0,0,0,0" Padding="5,2,0,0" 
+                                Margin="0,5,0,0" Padding="5,2,0,0" 
                                 Background="{Binding FinNumberBackground}" Foreground="{Binding FinNumberForeground}" 
                                 FontSize="16" Height="27" Width="180"
                                 VerticalAlignment="Top" VerticalContentAlignment="Top"
@@ -67,6 +73,7 @@
                 </StackPanel>
                 
                 <StackPanel>
+                    
                     <ListBox    
                         ItemsSource="{Binding SelectedTags}" 
                         IsTabStop="False"

@@ -4,7 +4,7 @@ namespace CarDocu.Contracts
 {
     public interface IAutoCompleteTagCloudConsumer
     {
-        void OnDropDownTabKey(string tagText);
+        void OnRequestProcessTag(string tagText);
 
         void OnDeleteTag(string tagText);
 
