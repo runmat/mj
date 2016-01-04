@@ -106,10 +106,11 @@ namespace CarDocu.ViewModels
 
         #endregion
 
+        public static MainViewModel Instance { get; private set; }
 
         public MainViewModel()
         {
-            //XpsDocumentInit();
+            Instance = this;
 
             LocationSelectionToggleCommand = new DelegateCommand(e => LocationSelectionVisible = !LocationSelectionVisible);
             LocationSelectionHideCommand = new DelegateCommand(e => LocationSelectionVisible = false);

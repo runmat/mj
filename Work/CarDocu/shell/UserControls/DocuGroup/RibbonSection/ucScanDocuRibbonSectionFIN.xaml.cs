@@ -17,7 +17,7 @@ namespace CarDocu.UserControls.DocuGroup
         {
             InitializeComponent();
 
-            DrowDownSetFocusDelayed(1500);
+            DrowDownSetFocusDelayed(2500);
         }
 
         void DrowDownSetFocusDelayed()
@@ -36,6 +36,20 @@ namespace CarDocu.UserControls.DocuGroup
             }).ContinueWith(x =>
             {
                 DropDown.Focus();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        void DummySetFocusDelayed()
+        {
+            if (DropDown.Visibility != Visibility.Visible)
+                return;
+
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(100);
+            }).ContinueWith(x =>
+            {
+                DummyButton.Focus();
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -109,7 +123,11 @@ namespace CarDocu.UserControls.DocuGroup
         {
             var at = (DataContext as IAutoCompleteTagCloudConsumer);
             if (at != null)
-                at.AfterDeleteAction = DrowDownSetFocusDelayed;
+                at.AfterDeleteTagAction = DrowDownSetFocusDelayed;
+
+            var dvm = (DataContext as DocuViewModel);
+            if (dvm != null)
+                dvm.FocusDocumentNameSectionAction = DummySetFocusDelayed;
         }
     }
 }

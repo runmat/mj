@@ -57,7 +57,7 @@ namespace CarDocu.ViewModels
             set { _finNumberAlertHintVisible = value; SendPropertyChanged("FinNumberAlertHintVisible"); }
         }
 
-        const string TempRootPath = @"D:\Backup\Test";
+        const string TempRootPath = @"C:\Backup\Test";
 
         private string _title; 
         public string Title 
@@ -852,6 +852,8 @@ namespace CarDocu.ViewModels
 
             DomainService.Repository.UserSettingsSave();
 
+            FocusDocumentNameSectionAction?.Invoke();
+
             //return !Tools.Confirm("Weitere Seite?");
             return true;
         }
@@ -1019,7 +1021,7 @@ namespace CarDocu.ViewModels
                 SelectedTags.Remove(selectedTag);
                 GetFinNumberFromSelectedTags();
 
-                AfterDeleteAction?.Invoke();
+                AfterDeleteTagAction?.Invoke();
             }
 
             if (isPrivateTag)
@@ -1033,7 +1035,9 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public Action AfterDeleteAction { get; set; }
+        public Action AfterDeleteTagAction { get; set; }
+
+        public Action FocusDocumentNameSectionAction { get; set; }
 
         void GetFinNumberFromSelectedTags()
         {
