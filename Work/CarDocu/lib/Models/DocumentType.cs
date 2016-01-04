@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -290,12 +291,31 @@ namespace CarDocu.Models
                     Tools.AlertError("Das Verzeichnis existiert nicht und konnte auch nicht erstellt werden!");
                     
                     SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
+                    SendPropertyChanged("TagCollectionCheckBoxHint");
                     return;
                 }
 
                 _inlineNetworkDeliveryArchiveFolder = value;
                 SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
+                SendPropertyChanged("TagCollectionCheckBoxHint");
             }
+        }
+
+        bool _useTagCollectionForDocumentNameEditing;
+
+        public bool UseTagCollectionForDocumentNameEditing
+        {
+            get { return _useTagCollectionForDocumentNameEditing; }
+            set
+            {
+                _useTagCollectionForDocumentNameEditing = value;
+                SendPropertyChanged("UseTagCollectionForDocumentNameEditing");
+            }
+        }
+
+        public string TagCollectionCheckBoxHint
+        {
+            get { return string.Format("Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {0})", InlineNetworkDeliveryArchiveFolder); }
         }
 
         private readonly Media.Brush _brushBackgroundValid = Media.Brushes.LightGoldenrodYellow;

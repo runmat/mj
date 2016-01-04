@@ -58,7 +58,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="60" />
                             <RowDefinition Height="30" />
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="55" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -131,8 +131,12 @@
                                     VerticalAlignment="Top" Grid.Row="7" Grid.Column="1">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBox Width="400" Text="{Binding InlineNetworkDeliveryArchiveFolder, UpdateSourceTrigger=LostFocus}" Margin="0,0,5,0" Foreground="DarkRed" />
-                                <TextBlock Text="(Nur diese Doku-Art + nur bei internem Netzwerk-Versand)" Foreground="DarkRed" TextAlignment="Right" />
+                                <TextBlock Text="(Gilt nur für diese Doku-Art + nur bei internem Netzwerk-Versand)" Foreground="DarkRed" TextAlignment="Right" />
                             </StackPanel>
+                            <CheckBox 
+                                Visibility="{Binding InlineNetworkDeliveryArchiveFolder, Converter={StaticResource StringVisibilityConverter}}"
+                                IsChecked="{Binding UseTagCollectionForDocumentNameEditing}" 
+                                Content="{Binding TagCollectionCheckBoxHint}" Foreground="DarkRed" Margin="0,3,0,0" />
                         </StackPanel>
 
                         

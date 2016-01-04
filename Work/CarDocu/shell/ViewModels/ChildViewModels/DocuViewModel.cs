@@ -50,8 +50,6 @@ namespace CarDocu.ViewModels
 
         public bool UiModeBatchScanOnly { get { return Parent.UiModeBatchScanOnly; } }
 
-        public bool FinNumberAsTagCollection { get { return true; } }
-
         private bool _finNumberAlertHintVisible;
         public bool FinNumberAlertHintVisible
         {
@@ -926,7 +924,25 @@ namespace CarDocu.ViewModels
         private string _selectedTag;
         private ObservableCollection<Tag> _tags;
         private ObservableCollection<Tag> _selectedTags;
-        private const string TagsFileName = @"C:\Backup\Tags.xml";
+
+        private string TagsFileName
+        {
+            get
+            {
+                if (SelectedDocumentType == null || SelectedDocumentType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty())
+                    return "";
+
+                return Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, "Tags.xml");
+            }
+        }
+
+        public bool FinNumberAsTagCollection
+        {
+            get
+            {
+                return (SelectedDocumentType?.UseTagCollectionForDocumentNameEditing).GetValueOrDefault();
+            }
+        }
 
         public string SelectedTag
         {
@@ -990,12 +1006,12 @@ namespace CarDocu.ViewModels
 
             if (SelectedTags.None(t => t.Name.ToLower() == tagText.ToLower()))
             {
-                SelectedTags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Parent = this });
+                SelectedTags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Parent = this, IsPrivate = true });
                 GetFinNumberFromSelectedTags();
             }
         }
 
-        public void OnDeleteTag(string tagText)
+        public void OnDeleteTag(string tagText, bool isPrivateTag)
         {
             var selectedTag = SelectedTags.FirstOrDefault(t => t.Name == tagText);
             if (selectedTag != null)
@@ -1005,6 +1021,9 @@ namespace CarDocu.ViewModels
 
                 AfterDeleteAction?.Invoke();
             }
+
+            if (isPrivateTag)
+                return;
 
             var tag = Tags.FirstOrDefault(t => t.Name == tagText);
             if (tag != null)
@@ -1028,6 +1047,9 @@ namespace CarDocu.ViewModels
 
         private List<Tag> TagsLoad()
         {
+            if (!File.Exists(TagsFileName))
+                return new List<Tag>();
+
             var list = XmlService.XmlDeserializeFromFile<List<Tag>>(TagsFileName);
             list.ForEach(t => t.Parent = this);
 
@@ -1035,5 +1057,10 @@ namespace CarDocu.ViewModels
         }
 
         #endregion
+
+        public void OnDocumentTypesChanged()
+        {
+            SendPropertyChanged("FinNumberAsTagCollection");
+        }
     }
 }

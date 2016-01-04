@@ -6,7 +6,7 @@ namespace CarDocu.Contracts
     {
         void OnRequestProcessTag(string tagText);
 
-        void OnDeleteTag(string tagText);
+        void OnDeleteTag(string tagText, bool isPrivateTag);
 
         Action AfterDeleteAction { get; set; }
     }

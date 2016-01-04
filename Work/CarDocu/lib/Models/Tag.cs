@@ -22,6 +22,8 @@ namespace CarDocu.Models
         [XmlIgnore]
         public IAutoCompleteTagCloudConsumer Parent { get; set; }
 
+        public bool IsPrivate { get; set; }
+
 
         public Tag()
         {
@@ -30,7 +32,7 @@ namespace CarDocu.Models
 
         void DeleteAction(object e)
         {
-            Parent?.OnDeleteTag(Name);
+            Parent?.OnDeleteTag(Name, IsPrivate);
         }
     }
 }
