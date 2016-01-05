@@ -53,6 +53,24 @@ namespace CarDocu.Models
             }
         }
 
+        public string CodePrefix
+        {
+            get
+            {
+                var code = Code;
+                if (code.IsNullOrEmpty() || code.Length < 1)
+                    return Code;
+
+                if (code[0] == '_')
+                    code = Code.SubstringTry(1);
+
+                if (code.Contains("_"))
+                    return code.Split('_')[0];
+
+                return code;
+            }
+        }
+
         private string _name; 
         public string Name 
         { 

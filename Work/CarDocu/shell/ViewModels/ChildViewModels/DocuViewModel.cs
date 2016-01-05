@@ -250,7 +250,7 @@ namespace CarDocu.ViewModels
                 SendPropertyChangedFin();
                 SendPropertyChanged("CharacterCasing");
 
-                Parent.NewDocuViewModel?.OnDocumentTypesChanged();
+                OnDocumentTypesChanged();
             }
         }
 
@@ -376,6 +376,8 @@ namespace CarDocu.ViewModels
             
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
+
+            TagsMarkForRefresh();
         }
 
         private Size _windowSize;
@@ -937,7 +939,7 @@ namespace CarDocu.ViewModels
                 if (SelectedDocumentType == null || SelectedDocumentType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty())
                     return "";
 
-                return Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, "Tags.xml");
+                return Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, $"{SelectedDocumentType.CodePrefix}.xml");
             }
         }
 
@@ -1024,7 +1026,7 @@ namespace CarDocu.ViewModels
                 SelectedTags.Remove(selectedTag);
                 GetFinNumberFromSelectedTags();
 
-                AfterDeleteTagAction?.Invoke();
+                OnDeleteTagAction?.Invoke();
             }
 
             if (isPrivateTag)
@@ -1038,7 +1040,9 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public Action AfterDeleteTagAction { get; set; }
+        public Action OnDeleteTagAction { get; set; }
+
+        public Action OnSelectedDocTypeChangedAction { get; set; }
 
         public Action FocusDocumentNameSectionAction { get; set; }
 
@@ -1067,7 +1071,17 @@ namespace CarDocu.ViewModels
 
         public void OnDocumentTypesChanged()
         {
+            TagsMarkForRefresh();
+
+            OnSelectedDocTypeChangedAction?.Invoke();
+        }
+
+        public void TagsMarkForRefresh()
+        {
             SendPropertyChanged("FinNumberAsTagCollection");
+
+            _tags = null;
+            SendPropertyChanged("Tags");
         }
     }
 }
