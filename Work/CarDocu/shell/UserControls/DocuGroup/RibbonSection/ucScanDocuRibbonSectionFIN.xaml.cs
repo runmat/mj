@@ -102,7 +102,7 @@ namespace CarDocu.UserControls.DocuGroup
             }
         }
 
-        void ComboBox_TextBox_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void ComboBox_TextBox_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is TextBox)
                 DrowDownSetFocusDelayed();
@@ -135,6 +135,19 @@ namespace CarDocu.UserControls.DocuGroup
         {
             if (DropDown.IsVisible)
                 DrowDownSetFocusDelayed(1000);
+        }
+
+        private void ComboBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var mousePosition = e.MouseDevice.GetPosition(DropDown);
+            if (mousePosition.X > 0 && mousePosition.X < DropDown.ActualWidth &&
+                mousePosition.Y > 0) // && mousePosition.Y < DropDown.ActualHeight)
+                return;
+
+            if (!DropDown.IsDropDownOpen)
+                return;
+
+            DropDown.IsDropDownOpen = false;
         }
     }
 }
