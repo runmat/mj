@@ -16,8 +16,6 @@ namespace CarDocu.UserControls.DocuGroup
         public ucScanDocuRibbonSectionFIN()
         {
             InitializeComponent();
-
-            DrowDownSetFocusDelayed(2500);
         }
 
         void DrowDownSetFocusDelayed()
@@ -64,7 +62,7 @@ namespace CarDocu.UserControls.DocuGroup
                 ProcessEnteredTag();
         }
 
-        private void DropDown_OnPreviewKeyUp(object sender, KeyEventArgs e)
+        private void ComboBox_OnPreviewKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -128,6 +126,12 @@ namespace CarDocu.UserControls.DocuGroup
             var dvm = (DataContext as DocuViewModel);
             if (dvm != null)
                 dvm.FocusDocumentNameSectionAction = DummySetFocusDelayed;
+        }
+
+        private void ComboBox_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DropDown.IsVisible)
+                DrowDownSetFocusDelayed(1000);
         }
     }
 }

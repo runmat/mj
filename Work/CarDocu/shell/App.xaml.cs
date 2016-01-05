@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using CarDocu.Services;
 using CarDocu.ViewModels;
 using GeneralTools.Services;
@@ -61,25 +60,11 @@ namespace CarDocu
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            //EventManager.RegisterClassHandler(typeof(UIElement), UIElement.PreviewKeyDownEvent, new RoutedEventHandler(KeyDownEventHandler), true);
-
             var splashScreen = new SplashScreen("logo_cardocu-border.jpg");
             splashScreen.Show(true, true);
 
             base.OnStartup(e);
         }
-
-        //internal static void KeyDownEventHandler(object sender, RoutedEventArgs e)
-        //{
-        //    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.A))
-        //    {
-        //        var newDocuViewModel = MainViewModel.Instance.NewDocuViewModel;
-        //        if (newDocuViewModel != null && newDocuViewModel.ScanDocumentSaveCommand.CanExecute(null))
-        //            newDocuViewModel.ScanDocumentSaveCommand.Execute(null);
-
-        //        e.Handled = true;
-        //    }
-        //}
 
         public static void ClearTempFolders()
         {
@@ -88,22 +73,13 @@ namespace CarDocu
                 var dirInfo = new DirectoryInfo(DomainService.Repository.GlobalSettings.TempPath);
                 foreach (var file in dirInfo.GetFiles())
                 {
-                    try
-                    {
-                        file.Delete();
-                    }
+                    try { file.Delete(); }
                     catch (Exception)
-                    {
-                    }
-
-
+                    {/**/}
                 }
             }
             catch (Exception)
-            {
-
-            }
-
+            {/**/}
         }
 
         private static void ShowInitialAppSettingsDialog(string userHintForArchives = null)

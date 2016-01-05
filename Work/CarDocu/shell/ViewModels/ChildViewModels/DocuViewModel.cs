@@ -249,6 +249,8 @@ namespace CarDocu.ViewModels
 
                 SendPropertyChangedFin();
                 SendPropertyChanged("CharacterCasing");
+
+                Parent.NewDocuViewModel?.OnDocumentTypesChanged();
             }
         }
 
@@ -827,6 +829,7 @@ namespace CarDocu.ViewModels
             return true;
         }
 
+        // ReSharper disable once UnusedMember.Local
         static void TestScanComplete(ProgressBarOperation progressBarOperation)
         {
             if (!progressBarOperation.TaskResult)

@@ -122,9 +122,6 @@
     <Compile Include="UserControls\AllGroups\ucDomainLocationSelection.xaml.cs">
       <DependentUpon>ucDomainLocationSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DocuGroup\RibbonSection\AutoCompleteTagCloud.xaml.cs">
-      <DependentUpon>AutoCompleteTagCloud.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ChildViewModels\BatchSummary.cs" />
     <Compile Include="ViewModels\ListEditing\DomainLocationsEditViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\UserLogonViewModel.cs" />
@@ -204,10 +201,6 @@
     <Page Include="UserControls\AllGroups\ucDomainLocationSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\DocuGroup\RibbonSection\AutoCompleteTagCloud.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AppSettingsInitial.xaml">
       <SubType>Designer</SubType>

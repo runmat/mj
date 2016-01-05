@@ -58,8 +58,9 @@
                                 TextSearch.TextPath="Name"  
                                 SelectedValue="{Binding SelectedTag}"
                                 PreviewMouseUp="ComboBox_TextBox_OnMouseDown"
-                                PreviewKeyUp="DropDown_OnPreviewKeyUp"
+                                PreviewKeyUp="ComboBox_OnPreviewKeyUp"
                                 KeyDown="ComboBox_KeyDown"
+                                IsVisibleChanged="ComboBox_OnIsVisibleChanged"
                                 GotFocus="ComboBox_GotFocus">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

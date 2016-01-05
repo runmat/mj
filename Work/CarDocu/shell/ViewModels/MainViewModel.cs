@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -8,7 +9,6 @@ using CarDocu.Models;
 using CarDocu.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace CarDocu.ViewModels
 {
@@ -220,18 +220,14 @@ namespace CarDocu.ViewModels
 
         public void MainWindowSizeChanged(Size newSize)
         {
-            if (NewDocuViewModel != null)
-                NewDocuViewModel.MainWindowSizeChanged(newSize);
-            if (StoredDocuViewModel != null)
-                StoredDocuViewModel.MainWindowSizeChanged(newSize);
+            NewDocuViewModel?.MainWindowSizeChanged(newSize);
+            StoredDocuViewModel?.MainWindowSizeChanged(newSize);
         }
 
         public void NotifyDocuArtSelectionBigVisible(bool val)
         {
-            if (NewDocuViewModel != null)
-                NewDocuViewModel.NotifyDocuArtSelectionBigVisible(val);
-            if (StoredDocuViewModel != null)
-                StoredDocuViewModel.NotifyDocuArtSelectionBigVisible(val);
+            NewDocuViewModel?.NotifyDocuArtSelectionBigVisible(val);
+            StoredDocuViewModel?.NotifyDocuArtSelectionBigVisible(val);
         }
 
         #region UI Help HInts
