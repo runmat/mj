@@ -115,7 +115,6 @@ namespace DocumentTools.Services
             pdfDoc.Save(tempFileName);
             pdfDoc.Close();
 
-            pdfFileName = "Secured ~ " + pdfFileName;
             using (Stream output = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 var reader = new ITextsharpPdf.PdfReader(tempFileName);
