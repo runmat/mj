@@ -53,6 +53,8 @@ namespace CarDocu.Models
             }
         }
 
+        public string PdfEncryptionHashedPassword { get; set; }
+
         public string CodePrefix
         {
             get

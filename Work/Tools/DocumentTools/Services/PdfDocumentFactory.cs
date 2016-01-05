@@ -110,10 +110,12 @@ namespace DocumentTools.Services
                 return;
             }
 
+            // PDF encryption goes here:
             var tempFileName = Path.Combine(Path.GetDirectoryName(pdfFileName) ?? "", Path.GetFileNameWithoutExtension(pdfFileName) + "-temp" + Path.GetExtension(pdfFileName));
             pdfDoc.Save(tempFileName);
             pdfDoc.Close();
 
+            pdfFileName = "Secured ~ " + pdfFileName;
             using (Stream output = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 var reader = new ITextsharpPdf.PdfReader(tempFileName);
