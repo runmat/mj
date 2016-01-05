@@ -121,11 +121,14 @@ namespace CarDocu.UserControls.DocuGroup
         {
             var at = (DataContext as IAutoCompleteTagCloudConsumer);
             if (at != null)
-                at.AfterDeleteTagAction = DrowDownSetFocusDelayed;
+                at.OnDeleteTagAction = DrowDownSetFocusDelayed;
 
             var dvm = (DataContext as DocuViewModel);
             if (dvm != null)
+            {
                 dvm.FocusDocumentNameSectionAction = DummySetFocusDelayed;
+                dvm.OnSelectedDocTypeChangedAction = DrowDownSetFocusDelayed;
+            }
         }
 
         private void ComboBox_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

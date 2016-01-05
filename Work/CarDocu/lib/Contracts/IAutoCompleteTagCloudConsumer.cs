@@ -8,6 +8,6 @@ namespace CarDocu.Contracts
 
         void OnDeleteTag(string tagText, bool isPrivateTag);
 
-        Action AfterDeleteTagAction { get; set; }
+        Action OnDeleteTagAction { get; set; }
     }
 }
