@@ -941,6 +941,9 @@ namespace CarDocu.ViewModels
 
                 var tagsDirectory = Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, "_tags");
                 FileService.TryDirectoryCreate(tagsDirectory);
+                var di = new DirectoryInfo(tagsDirectory);
+                if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                    di.Attributes |= FileAttributes.Hidden;
 
                 return Path.Combine(tagsDirectory, $"{SelectedDocumentType.CodePrefix}.xml");
             }

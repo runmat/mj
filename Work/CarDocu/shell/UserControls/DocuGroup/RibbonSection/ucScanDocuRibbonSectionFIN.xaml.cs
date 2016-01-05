@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,7 +97,9 @@ namespace CarDocu.UserControls.DocuGroup
             var autoCompleteTagCloudConsumer = (DataContext as IAutoCompleteTagCloudConsumer);
             if (autoCompleteTagCloudConsumer != null)
             {
-                autoCompleteTagCloudConsumer.OnRequestProcessTag(enteredText);
+                var enteredTextTags = enteredText.Split(' ', '-', '_');
+                enteredTextTags.ToList().ForEach(enteredTextTag => autoCompleteTagCloudConsumer.OnRequestProcessTag(enteredTextTag));
+
                 cb.Text = "";
                 DrowDownSetFocusDelayed();
             }
