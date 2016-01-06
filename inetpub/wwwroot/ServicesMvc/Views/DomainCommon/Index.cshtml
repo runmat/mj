@@ -1,4 +1,5 @@
-﻿@model CkgCommonViewModel
+﻿@using CkgDomainLogic.General.Contracts
+@model CkgCommonViewModel
 
 <h3 class="page-title">@Localize.WelcomeAtPortalDadStart <small>@Localize.WelcomeAtPortalDadEnd</small></h3>
 
@@ -10,4 +11,16 @@
 @if (Model.AppFavoritesAvailable)
 {
     @Html.Partial("AppFavorites/AppFavoriteButtons")
+}
+
+@{
+    var logonContext = (ILogonContextDataService) SessionHelper.GetSessionObject("LogonContext");
+}
+@if (logonContext.UserName.ToLower().StartsWith("mje"))
+{
+    <div style="height: 250px;">
+        <div id="cont_09dcf2f0c1d01cc9960aac87ecdd1067"><span id="h_09dcf2f0c1d01cc9960aac87ecdd1067"><a class="LinkWid" href="http://www.daswetter.com/wetter_Altstadt-Europa-Deutschland-Hamburg--1-98307.html" target="_blank" style="font-family:Helvetica; font-size:13px; color:#656565;">.</a></span>
+            <script type="text/javascript" async src="https://www.daswetter.com/wid_loader/09dcf2f0c1d01cc9960aac87ecdd1067"></script>
+        </div>
+    </div>
 }
