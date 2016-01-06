@@ -4,16 +4,15 @@ namespace GeneralTools.Models
 {
     public class Field
     {
-        public string Guid { get; set; }
-        public string Caption { get; set; }
-        public FieldType FieldType { get; set; }
-        public bool IsUsed { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
 
         public List<string> Records { get; set; }   // All values (records) of this field
 
-        public Field()
+        public Field(string bezeichnung)
         {
-            Guid = System.Guid.NewGuid().ToString();
+            Id = System.Guid.NewGuid().ToString();
+            Name = bezeichnung;
             Records = new List<string>();
         }
     }    

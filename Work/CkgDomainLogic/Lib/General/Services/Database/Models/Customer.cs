@@ -58,6 +58,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool PwdDontSendEmail { get; set; }
 
+        public bool Master { get; set; }
+
 
         #region Interface IPasswordSecurityRuleDataProvider
 

@@ -48,6 +48,8 @@ namespace CkgDomainLogic.General.Contracts
         // only for backward compatibility:
         string CurrentGridColumns { get; }
 
+        AdminLevel HighestAdminLevel { get; }
+
         IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem);
 
         IHtmlString FormatUserEncrytpedUrl(string url);

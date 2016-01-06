@@ -216,7 +216,7 @@ namespace CkgDomainLogic.General.Database.Services
             get
             {
                 return _organization ?? (_organization = Database.SqlQuery<Organization>(" SELECT " +
-                                                                                  " og.* " +
+                                                                                  " og.*, om.OrganizationAdmin " +
                                                                                   " FROM WebUser wu " +
                                                                                   " INNER JOIN OrganizationMember om ON om.UserID = wu.UserID " +
                                                                                   " INNER JOIN Organization og ON om.OrganizationID = og.OrganizationID " +
@@ -797,6 +797,37 @@ namespace CkgDomainLogic.General.Database.Services
             }
 
             return Database.SqlQuery<GroupArchiveAssigned>(query);
+        }
+
+        #endregion
+
+        #region DataConverter
+
+        public IEnumerable<string> GetDataConverterProcessStructureNames()
+        {
+            return Database.SqlQuery<string>("SELECT ProcessName FROM ProcessStructure");
+        }
+
+        public DataConverterProcessStructure GetDataConverterProcessStructure(string processName)
+        {
+            return Database.SqlQuery<DataConverterProcessStructure>("SELECT * FROM ProcessStructure WHERE ProcessName = {0}", processName).FirstOrDefault();
+        }
+
+        public IEnumerable<DataConverterDataMapping> GetDataConverterDataMappings(int customerId, string processName)
+        {
+            var query = "SELECT * FROM vwDataMapping";
+            var filterByCustomer = false;
+
+            if (customerId > 0)
+            {
+                query += " WHERE CustomerId = " + customerId;
+                filterByCustomer = true;
+            }
+
+            if (!string.IsNullOrEmpty(processName))
+                query += " " + (filterByCustomer ? "AND" : "WHERE") + " ProcessName = " + processName;
+
+            return Database.SqlQuery<DataConverterDataMapping>(query);
         }
 
         #endregion

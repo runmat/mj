@@ -4,112 +4,117 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.DataConverter.Contracts;
+using CkgDomainLogic.DataConverter.Models;
+using CkgDomainLogic.General.Database.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using ServicesMvc.Areas.DataConverter.Models;
 
 namespace CkgDomainLogic.DataConverter.ViewModels
 {
     public class DataConverterViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
-        public IDataConverterDataService DataConverterDataService { get { return CacheGet<IDataConverterDataService>(); } }
+        public IDataConverterDataService DataService { get { return CacheGet<IDataConverterDataService>(); } }
 
-        public DataConverterService DataConverter { get; set; }
-
-        public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
-
-        #region Wizard
         [XmlIgnore]
-        public IDictionary<string, string> Steps
+        public List<Customer> Kunden
         {
             get
             {
-                return PropertyCacheGet(() => new Dictionary<string, string>
-                {
-                    { "Prozessauswahl", "Prozessauswahl" },
-                    { "Admin/Konfiguration", "Konfiguration" },
-                    //{ "Admin/Testimport", "Testimport" },
-                    { "Admin/Abschluss", Localize.Ready + "!" },
-                });
+                return PropertyCacheGet(() => DataService.GetCustomers()
+                    .InsertAtTop(new Customer { CustomerID = 0, Customername = Localize.DropdownDefaultOptionPleaseChoose }).ToListOrEmptyList());
             }
         }
 
-        public string[] StepKeys { get { return PropertyCacheGet(() => Steps.Select(s => s.Key).ToArray()); } }
-
-        public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
-
-        public string FirstStepPartialViewName
+        [XmlIgnore]
+        public List<string> Prozesse
         {
-            get { return string.Format("{0}", StepKeys[1]); }
+            get
+            {
+                return PropertyCacheGet(() => DataService.GetProcessStructureNames()
+                    .InsertAtTop("").ToListOrEmptyList());
+            }
         }
 
-        #endregion
+        public DataMappingSelektor Selektor
+        {
+            get { return PropertyCacheGet(() => new DataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.Customer.CustomerID) }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public NewDataMappingSelektor NewMappingSelektor
+        {
+            get { return PropertyCacheGet(() => new NewDataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.Customer.CustomerID) }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<DataConverterDataMapping> DataMappings
+        {
+            get { return PropertyCacheGet(() => new List<DataConverterDataMapping>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<DataConverterDataMapping> DataMappingsFiltered
+        {
+            get { return PropertyCacheGet(() => DataMappings); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public DataConverterService DataConverter { get; set; }
+
+        public bool CanUserSelectCustomer { get { return LogonContext.HighestAdminLevel > AdminLevel.Customer; } }
 
         public void DataInit()
         {
-            #region Globale Properties, nutzbar in allen Partials
-
             DataConverter = new DataConverterService();
 
-            GlobalViewData = new GlobalViewData();
-
-            Prozessauswahl = new WizardProzessauswahl();
-
-            #endregion
+            DataMarkForRefresh(true);
         }
 
-        #region Wizard-ViewModels
-
-        public WizardProzessauswahl Prozessauswahl { get; set; }
-        public WizardKonfiguration Konfiguration { get; set; }
-
-        public class WizardProzessauswahl
+        private void DataMarkForRefresh(bool refreshStammdaten = false)
         {
-            public SourceFile SourceFile { get; set; }
+            PropertyCacheClear(this, m => m.DataMappingsFiltered);
 
-            [LocalizedDisplay("Prozess")]
-            public string SelectedProcess { get; set; }
-
-            [SelectListText]
-            public List<string> ProcessList
+            if (refreshStammdaten)
             {
-                get { return new List<string>
-                        {
-                            "Zulassung",
-                            "Abmeldung",
-                            "Test"
-                        };
-                }
+                PropertyCacheClear(this, m => m.Kunden);
+                PropertyCacheClear(this, m => m.Prozesse);
             }
         }
 
-        public class WizardKonfiguration
+        public void LoadDataMappings(ModelStateDictionary state)
         {
-            [LocalizedDisplay("Datumsformat")] 
-            public string GlobalDateTransformation { get; set; }
+            DataMappings = DataService.GetDataMappings(Selektor);
+
+            DataMarkForRefresh();
         }
 
-        #endregion
+        public void FilterDataMappings(string filterValue, string filterProperties)
+        {
+            DataMappingsFiltered = DataMappings.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
 
-        #region File converter
+        public void InitMapping(int mappingId)
+        {
+            DataConverter.InitXml(@"C:\tmp\KroschkeOn2.xml");  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
+
+            //var selectedMapping = DataMappings.FirstOrDefault(m => m.Id == mappingId);
+            //DataConverter.InitJson(selectedMapping != null ? selectedMapping.Mapping : null);
+        }
 
         public string GetUploadPathTemp()
         {
             return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
         }
-
-        #endregion
-
-        #region XML/XSD-Handling
-
-        #endregion
 
         public string SetProcessorSettings(string processorId, Operation processorType, string processorPara1, string processorPara2)
         {
@@ -132,6 +137,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         }
 
         #region Upload source file
+
         public bool UploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
             var extension = Path.GetExtension(fileName).ToLowerAndNotEmpty();
@@ -153,10 +159,6 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
             return true;
         }
-        #endregion
-
-        #region ConnectionHandling
-
 
         #endregion
 
@@ -177,9 +179,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             foreach (XmlNode node in nodes)
             {
                 if (node.NodeType == XmlNodeType.XmlDeclaration)
-                {
                     continue;
-                }
 
                 string id = null;
 
@@ -208,12 +208,16 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             }
         }
 
-        public string CreateXmlContent()
+        #endregion
+
+        public string GenerateXmlResultStructure()
         {
-            var xmlContent = DataConverter.ExportToXml();
-            return xmlContent;
+            return DataConverter.ExportToXmlString();
         }
 
-        #endregion
+        public void SaveMapping(ModelStateDictionary state)
+        {
+            
+        }
     }
 }

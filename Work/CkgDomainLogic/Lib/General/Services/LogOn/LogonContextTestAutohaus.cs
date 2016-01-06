@@ -17,6 +17,7 @@ namespace CkgDomainLogic.General.Services
     public class LogonContextTestAutohaus : Store, ILogonContextDataServiceAutohaus
     {
         public string CurrentGridColumns { get; set; }
+        public AdminLevel HighestAdminLevel { get; private set; }
 
         public string UserNameForDisplay { get; set; }
 

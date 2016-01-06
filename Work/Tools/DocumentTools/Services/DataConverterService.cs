@@ -11,22 +11,16 @@ namespace DocumentTools.Services
 {
     public class DataConverterService
     {
-        public DataConverterMapping DataMapping { get; private set; }
+        public DataConverterMapping DataMapping { get; set; }
 
         public SourceFile SourceFile { get; set; }                  // Enthält Fields und dazugehörige Value-Listen
-        public DestinationFile DestinationFile { get; set; }
+        public ProcessStructure DestinationStructure { get; set; }
 
         public string XmlOutput { get; set; }
 
         public int RecordNo { get; set; }
-        public int RecordCount
-        {
-            get { return SourceFile.RowCount; }
-        }
-        public string RecordInfoText
-        {
-            get { return string.Format("{0}/{1}", RecordNo, RecordCount); } 
-        }
+        public int RecordCount { get { return SourceFile.RowCount; } }
+        public string RecordInfoText { get { return string.Format("{0}/{1}", RecordNo, RecordCount); }  }
 
         public DataConverterService()
         {
@@ -35,19 +29,19 @@ namespace DocumentTools.Services
             RecordNo = 1;
             
             SourceFile = new SourceFile();
-            DestinationFile = new DestinationFile();
+            DestinationStructure = new ProcessStructure();
         }
 
-        public void Init(string sourceFile, bool firstRowIsCaption, char delimiter, string destinationFileXml, List<DataConnection> dataConnections, List<Processor> processors)
+        public void InitXml(string destinationFileXml)
         {
-            // Convert Excel to csv if needed...
-            SourceFile.FilenameOrig = sourceFile;
-            DestinationFile.Filename = destinationFileXml;
-            DataMapping.DataConnections = dataConnections;
-            DataMapping.Processors = processors;
-
             ReadSourceFile();
-            ReadDestinationObj();
+            ReadDestinationStructureXml(destinationFileXml);
+        }
+
+        public void InitJson(string jsonDestinationStructure)
+        {
+            ReadSourceFile();
+            ReadDestinationStructureJson(jsonDestinationStructure);
         }
 
         public List<DataConnection> GetConnections()
@@ -55,13 +49,12 @@ namespace DocumentTools.Services
             return DataMapping.DataConnections;
         }
 
-        public void ReadDestinationObj()
+        public void ReadDestinationStructureXml(string destinationFileXml)
         {
             var doc = new XmlDocument();
-            doc.Load(DestinationFile.Filename);
-            DestinationFile.XmlRaw = doc.InnerXml;
-            DestinationFile.XmlDocument = doc;
-            DestinationFile.Fields = new List<Field>();
+            doc.Load(destinationFileXml);
+            DestinationStructure.XmlDocument = doc;
+            DestinationStructure.Fields = new List<Field>();
 
             doc.IterateThroughAllNodes(delegate(XmlNode node)
             {
@@ -69,18 +62,39 @@ namespace DocumentTools.Services
                 {
                     var nodeId = node.Attributes["id"].Value;
 
-                    var newField = new Field
-                    {
-                        Guid = "Dest-" + nodeId,
-                        Records = new List<string>()
-                    };
-
-                    DestinationFile.Fields.Add(newField);
+                    DestinationStructure.Fields.Add(new Field(nodeId));
                 }
                 catch (Exception)
                 {
                 }
             });
+        }
+
+        public void ReadDestinationStructureJson(string jsonDestinationStructure)
+        {
+            if (jsonDestinationStructure == null)
+            {
+                DataMapping = new DataConverterMapping();
+                return;
+            }
+
+            //var doc = new XmlDocument();
+            //doc.Load(destinationFileXml);
+            //DestinationStructure.XmlDocument = doc;
+            //DestinationStructure.Fields = new List<Field>();
+
+            //doc.IterateThroughAllNodes(delegate(XmlNode node)
+            //{
+            //    try
+            //    {
+            //        var nodeId = node.Attributes["id"].Value;
+
+            //        DestinationStructure.Fields.Add(new Field(nodeId));
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+            //});
         }
 
         /// <summary>
@@ -100,14 +114,7 @@ namespace DocumentTools.Services
                 if (!SourceFile.FirstRowIsCaption)  // Falls keine Überschriften, Spaltennamen selbst erstellen..
                     headers[i] = "Spalte" + i ;
 
-                var newField = new Field
-                {
-                    Caption = headers[i],
-                    FieldType = FieldType.String,  // DefaultType
-                    IsUsed = true
-                };
-
-                fields.Add(newField);
+                fields.Add(new Field(headers[i]));
             }
 
             // Daten jeder Column zuordnen...
@@ -129,13 +136,6 @@ namespace DocumentTools.Services
             DataMapping.Processors.Add(new Processor { Number = newProcessorNumber, Title = string.Format("Processor {0}", newProcessorNumber) });       
         }
 
-        //public string RemoveProcessor(string processorId)
-        //{
-        //    var processor = Processors.FirstOrDefault(x => x.Guid == processorId);
-        //    Processors.Remove(processor);
-        //    return processorId;
-        //}
-
         public Processor GetProcessorResult(Processor processor)
         {
             // Alle eingehenden Connections ermitteln...
@@ -145,7 +145,7 @@ namespace DocumentTools.Services
             var input = new StringBuilder();
             foreach (var dataConnection in connectionsIn)
             {
-                var sourceField = SourceFile.Fields.FirstOrDefault(x => x.Guid == dataConnection.GuidSource);
+                var sourceField = SourceFile.Fields.FirstOrDefault(x => x.Id == dataConnection.GuidSource);
                 if (sourceField != null)
                 {
                     var value = sourceField.Records[RecordNo - 1];
@@ -180,8 +180,8 @@ namespace DocumentTools.Services
         /// Speichert ein XML-Dokument mit allen vorhandenen Datensätzen in einer Datei, falls xmlOutputFilename gesetzt.
         /// </summary>
         /// <param name="xmlOutputFilename"></param>
-        /// <returns>XML-Dokument als String</returns>
-        public string ExportToXml(string xmlOutputFilename = null)
+        /// <returns>XML-Struktur</returns>
+        public XElement ExportToXml(string xmlOutputFilename = null)
         {
             var xmlComplete = new XDocument();
             xmlComplete.Add(new XElement("IMPORTS"));
@@ -193,7 +193,7 @@ namespace DocumentTools.Services
             for (var recordNo = 1; recordNo < records.Count + 1; recordNo++)
             {
                 // XML-Document für einen Datensatz zum späteren Füllen holen
-                var xmlSingleRecord = (XmlDocument)DestinationFile.XmlDocument.Clone();
+                var xmlSingleRecord = (XmlDocument)DestinationStructure.XmlDocument.Clone();
                 var xmlRecord = XDocument.Parse(xmlSingleRecord.InnerXml);
 
                 RecordNo = recordNo;
@@ -210,33 +210,40 @@ namespace DocumentTools.Services
                     // In XML-Dokument das passende Feld suchen
                     var fieldIdToFind = fieldId.Substring(5);   // ***refactor me*** Im Model wird der OriginalId (gem. XML-Datei) immer "Dest-" hinzugefügt. Damit Eintrag gefunden werden kann, hier entfernen.
                     var element = xmlRecord.Descendants().FirstOrDefault(x => (string)x.Attribute("id") == fieldIdToFind);
-                    if (element != null) {
+                    if (element != null)
+                    {
                         element.Value = value;
                     }
                 }
-                
+
                 var contentToAdd = xmlRecord.DescendantNodes().FirstOrDefault();
                 var firstDescendant = xmlComplete.Descendants().FirstOrDefault();
                 if (firstDescendant != null)
                     firstDescendant.Add(contentToAdd);
             }
 
-            xmlComplete.Save(@"C:\tmp\TestOutputComplete.xml");
             if (xmlOutputFilename != null)
-            {
                 xmlComplete.Save(xmlOutputFilename);
-            }
-            
-            return xmlComplete.ToString();
+
+            return xmlComplete.Root;
         }
 
-        // Alle DatenRecords der Quellfelder (z.B. zur "Live-Anzeige" im UI) ermitteln...
+        /// <summary>
+        /// Speichert ein XML-Dokument mit allen vorhandenen Datensätzen in einer Datei, falls xmlOutputFilename gesetzt.
+        /// </summary>
+        /// <param name="xmlOutputFilename"></param>
+        /// <returns>XML-Dokument als String</returns>
+        public string ExportToXmlString(string xmlOutputFilename = null)
+        {
+            return ExportToXml().ToString();
+        }
+
         public List<SelectItem> RecalcSourceFields()
         {
             var sourceFieldList = new List<SelectItem>();
             foreach (var field in SourceFile.Fields)
             {
-                sourceFieldList.Add(new SelectItem(field.Guid, field.Records[RecordNo - 1]));
+                sourceFieldList.Add(new SelectItem(field.Id, field.Records[RecordNo - 1]));
             }
             return sourceFieldList;
         }
@@ -257,34 +264,32 @@ namespace DocumentTools.Services
         public List<SelectItem> RecalcDestFields()
         {
             var destFieldList = new List<SelectItem>();
-            foreach (var field in DestinationFile.Fields)
+            foreach (var field in DestinationStructure.Fields)
             {
                 var value = "";
-                field.IsUsed = false;
 
                 // Prüfen, ob Connection vorliegt...
-                var connection = DataMapping.DataConnections.FirstOrDefault(x => x.GuidDest == field.Guid);
+                var connection = DataMapping.DataConnections.FirstOrDefault(x => x.GuidDest == field.Id);
                 if (connection != null)
                 {
-                    var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Guid == connection.GuidSource);    // Wenn Sourcefeld kein Prozessor ist
+                    var sourceItem = SourceFile.Fields.FirstOrDefault(x => x.Id == connection.GuidSource);    // Wenn Sourcefeld kein Prozessor ist
                     if (sourceItem == null)
                     {
                         var processor = DataMapping.Processors.FirstOrDefault(x => x.Guid == connection.GuidSource.Replace("prozout-", ""));
                         if (processor != null)
                         {
                             value = processor.Output;
-                            field.IsUsed = true;
                         }
                     }
                     else
                     {
-                        value = sourceItem.Records[RecordNo - 1];
-                        field.IsUsed = true;    
+                        value = sourceItem.Records[RecordNo - 1];   
                     }
                 }
 
-                destFieldList.Add(new SelectItem(field.Guid, value));
+                destFieldList.Add(new SelectItem(field.Id, value));
             }
+
             return destFieldList;
         }
     }

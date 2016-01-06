@@ -4,7 +4,6 @@ namespace GeneralTools.Models
 {
     public class SourceFile
     {
-        public string Guid { get; set; }
         public string FilenameOrig { get; set; }    // Original file name
         public string FilenameCsv { get; set; }     // Internal file name -> {guid}.csv
         public List<Field> Fields { get; set; }     // All Fields in source file
@@ -12,19 +11,10 @@ namespace GeneralTools.Models
         public bool FirstRowIsCaption { get; set; }
         public char Delimiter { get; set; }
 
-        public int RowCount
-        {
-            get
-            {
-                return Fields == null ? 0 : Fields[0].Records.Count;
-            }
-        }
-
-        public string DateTransformation { get; set; }  
+        public int RowCount { get { return (Fields == null ? 0 : Fields[0].Records.Count); } }
 
         public SourceFile()
         {
-            Guid = System.Guid.NewGuid().ToString();
             Delimiter = ';';
             FirstRowIsCaption = true;
         }

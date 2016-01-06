@@ -241,7 +241,6 @@
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\teamviewer-icon.png" />
-    <Content Include="Scripts\jsPlumb-2.0.3.js" />
     <Content Include="Scripts\jsPlumb-2.0.5.js" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -288,7 +287,8 @@
     <Content Include="Areas\DataConverter\Views\Admin\Partial\Common.cshtml" />
     <Content Include="Areas\DataConverter\Views\Admin\Partial\Prozessauswahl.cshtml" />
     <Content Include="Areas\DataConverter\Views\Admin\Partial\Konfiguration.cshtml" />
-    <Content Include="Areas\DataConverter\Views\Admin\Partial\Abschluss.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Suche.cshtml" />
+    <Content Include="Areas\DataConverter\Views\Admin\Partial\Grid.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -726,11 +726,11 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\DataConverter\ActionFilters\DataConverterGlobalDataAttribute.cs" />
     <Compile Include="Areas\DataConverter\ActionFilters\StoreUiAttribute.cs" />
     <Compile Include="Areas\DataConverter\Contracts\IDataConverterDataService.cs" />
     <Compile Include="Areas\DataConverter\Controllers\AdminController.cs" />
-    <Compile Include="Areas\DataConverter\Models\GlobalViewData.cs" />
+    <Compile Include="Areas\DataConverter\Models\DataMappingSelektor.cs" />
+    <Compile Include="Areas\DataConverter\Models\NewDataMappingSelektor.cs" />
     <Compile Include="Areas\DataConverter\Services\DataConverterDataService.cs" />
     <Compile Include="Areas\DataConverter\ViewModels\DataConverterViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
@@ -2895,7 +2895,6 @@
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
     <Folder Include="Areas\Autohaus\ViewModels\" />
-    <Folder Include="Areas\DataConverter\Views\User\Partial\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

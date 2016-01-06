@@ -18,5 +18,7 @@ namespace CkgDomainLogic.General.Database.Models
         public string OrganizationReference2 { get; set; }
 
         public bool AllOrganizations { get; set; }
+
+        public bool OrganizationAdmin { get; set; }
     }
 }

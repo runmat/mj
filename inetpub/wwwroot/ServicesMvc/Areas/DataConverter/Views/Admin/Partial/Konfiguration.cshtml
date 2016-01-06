@@ -1,60 +1,36 @@
-﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
+﻿@model DocumentTools.Services.DataConverterService
 
-<div id="DivKonfiguration" class="margin-top-20" style="height: 550px;">
-    <h4>Konfiguration</h4>
+<div id="DivKonfiguration">
+    <h4>@Localize.Configuration</h4>
 
-    <div class="w" style="visibility: hidden; height: 0; padding: 0; margin: 0;">DUMMY</div>
-        <span class="float-left">
-        <button class="btn white" onclick="GotoRecord('first');">
-            <<
-        </button>
-        <button class="btn white" onclick="GotoRecord('-1');">
-            <
-        </button>
+    <div class="w hidden no-padding no-margin">DUMMY</div>
+    <span class="float-left">
+        <button class="btn white tooltips" data-original-title="@Localize.FirstEntry" data-placement="bottom" onclick="GotoRecord('first');"><i class="halflings-icon fast-backward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.Backward" data-placement="bottom" onclick="GotoRecord('-1');"><i class="halflings-icon backward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.Forward" data-placement="bottom" onclick="GotoRecord('+1');"><i class="halflings-icon forward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.LastEntry" data-placement="bottom" onclick="GotoRecord('last');"><i class="halflings-icon fast-forward"></i></button>
 
-        <button class="btn white" onclick="GotoRecord('+1');">
-            >
-        </button>
-        <button class="btn white" onclick="GotoRecord('last');">
-            >>
-        </button>
-
-        <span id="RecordPosition" class="margin-left-15 badge margin-right-30">
-            @Model.DataConverter.RecordInfoText
+        <span id="RecordPosition" class="margin-left-15 badge margin-right-15">
+            @Model.RecordInfoText
         </span>
     </span>
 
     <div class="float-left">
-        <button class="btn white" onclick="AddProcessor();">
-            Prozessor
-            <i class="halflings-icon  plus"></i>
-        </button>
-
-        <button class="btn white" onclick="ClearAll();">
-            Leeren
-            <i class="icon-remove"></i>
-        </button>
-
-        <button class="btn white margin-left-10" onclick="ShowHideProcessors(false);">
-            <i class="halflings-icon eye-close"></i>
-        </button>
-        <button class="btn white" onclick="ShowHideProcessors(true);">
-            <i class="halflings-icon eye-open"></i>
-        </button>
-        
-        <button class="btn white margin-left-10" onclick="Export();">
-            Test-Export
-        </button>
+        <button class="btn white" onclick="AddProcessor();">@Localize.Processor <i class="halflings-icon plus"></i></button>
+        <button class="btn white margin-left-5" onclick="ClearAll();">@Localize.Clear <i class="icon-remove"></i></button>
+        <button class="btn white margin-left-5 tooltips" data-original-title="@Localize.HideProcessors" data-placement="bottom" onclick="ShowHideProcessors(false);">@Localize.Hide <i class="halflings-icon eye-close"></i></button>
+        <button class="btn white margin-left-5 tooltips" data-original-title="@Localize.ShowProcessors" data-placement="bottom" onclick="ShowHideProcessors(true);">@Localize.Show <i class="halflings-icon eye-open"></i></button>
+        <a class="btn white margin-left-5" href="TestExportXml">@Localize.TestExportToXml</a>
     </div>
 
-    <div style="clear:both"></div>
+    <div class="space5"></div>
 
     <div id="DataConverterContainer">
-        <div id="source" style="padding: 0px;">
-            @foreach (var item in Model.DataConverter.SourceFile.Fields)
+        <div id="source" class="no-padding">
+            @foreach (var item in Model.SourceFile.Fields)
             {
-                <div class="w" id="@item.Guid">
-                    <div class="field">@item.Caption</div>
+                <div class="w" id="@item.Id">
+                    <div class="field">@item.Name</div>
                     <div class="data">@item.Records[0]</div>
                     <div class="sp"></div>
                 </div>
@@ -62,30 +38,38 @@
         </div>
 
         <div id="destination">
-            @Html.Action("ShowDestinationDiv", Model.DataConverter.DestinationFile.XmlDocument)
+            @Html.Action("ShowDestinationDiv", Model.DestinationStructure.XmlDocument)
         </div>
     </div>
 
 </div>
 
+<div class="form-horizontal margin-top-10">
+    <div class="form-actions">
+        <button type="button" class="btn" onclick="CloseDataMappingDetails();">@Localize.Cancel</button>
+        <button type="button" class="btn green" onclick=""><i class="icon-ok"></i> @Localize.Save</button>
+    </div>
+</div>
+
 <div id="processorTemplate" class="processor hidden">
     <div class="title">
-        <div class="processortitle float-left" style="margin-top: -5px; margin-left: 15px;">Prozessor</div>
-        <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
+        <div class="processortitle float-left margin-left-15">@Localize.Processor</div>
+        <button class="processorclose float-right no-padding"><i class="icon-remove"></i></button>
     </div>
-    <div class="content" style="">
+    <div class="content">
         <select name="ProcessorType" class="processortype" onchange="SyncUiData();">
-            <option value="1">Splitten</option>
-            <option value="2">Zusammenfassen</option>
-            <option value="3">Festwert</option>
+            <option value="1">@Localize.ProcessorTypeSplit</option>
+            <option value="2">@Localize.ProcessorTypeConcat</option>
+            <option value="3">@Localize.ProcessorTypeFixedValue</option>
         </select>
         <input type="hidden" name="Title" value=""/>
         <input type="hidden" name="Number" value=""/>
-        <input type="text" name="ProcessorPara1" value="X" style="width: 60px; float: left; margin-bottom: 2px;" onchange="SyncUiData();"/>
-        <input type="text" name="ProcessorPara2" value="1" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px; display: none;" onchange="SyncUiData();"/>
-        <br style="clear: both;"/>
-        <div class="data datain width-160 margin-top-5 datastyle">In: </div><br style="clear: both;"/>
-        <div class="data dataout width-160 datastyle">Out: </div>
+        <input type="text" name="ProcessorPara1" value="X" class="processorpara1" onchange="SyncUiData();"/>
+        <input type="text" name="ProcessorPara2" value="1" class="processorpara2" onchange="SyncUiData();"/>
+        <div class="space5"></div>
+        <div class="data datain width-160 margin-top-5 datastyle">@Localize.DirectionIn: </div>
+        <div class="space5"></div>
+        <div class="data dataout width-160 datastyle">@Localize.DirectionOut: </div>
     </div>
     <div id="tmpprozin" class="prozin"></div>
     <div id="tmpprozout" class="prozout"></div>
@@ -122,8 +106,7 @@
     };
 
     $(function () {
-        $('.processorobj').show();        
-        $('#SelectedDateTransformation').chosen();
+        $('.processorobj').show();
     });
 
     jsPlumb.ready(function () {
@@ -234,7 +217,7 @@
     function AddProcessor() {
         $.ajax({
             type: "POST",
-            url: "Admin/AddProcessor",
+            url: "AddProcessor",
             data: { processors: UiProcessors, connections: UiConnections },
             loadingShow: false,
             success: function (uiResult) {
@@ -289,7 +272,7 @@
     function SyncUiData() {
         $.ajax({
             type: "POST",
-            url: "Admin/SyncUiData",
+            url: "SyncUiData",
             loadingShow: false,
             data: { processors: UiProcessors, connections: UiConnections },
             dataType: 'json',
@@ -304,22 +287,11 @@
 
         $.ajax({
             type: "POST",
-            url: "Admin/RefreshUi",
+            url: "RefreshUi",
             data: { recordOffset: 0 },
             loadingShow: false,
             success: function (result) {
                 RefreshUi(result);
-            }
-        });
-    }
-
-    function Export() {
-        $.ajax({
-            type: "POST",
-            url: "Admin/ExportXml",
-            loadingShow: false,
-            success: function (result) {
-                alert(result);
             }
         });
     }
@@ -378,7 +350,7 @@
     function GotoRecord(value) {
         $.ajax({
             type: "POST",
-            url: "Admin/RefreshUi",
+            url: "RefreshUi",
             data: { recordOffset: value, processors: UiProcessors, connections: UiConnections },
             loadingShow: false,
             success: function (result) {
@@ -396,8 +368,8 @@
         
         // Refresh SourceField data
         for (i = 0; i < uiObject.SourceFieldList.length; i++) {
-            guid = uiObject.SourceFieldList[i].Wert;
-            value = uiObject.SourceFieldList[i].Beschreibung;
+            guid = uiObject.SourceFieldList[i].Key;
+            value = uiObject.SourceFieldList[i].Text;
             $('#' + guid).find(".data").html(value);
         }
 
@@ -423,8 +395,8 @@
 
         // Refresh DestField data
         for (i = 0; i < uiObject.DestFieldList.length; i++) {
-            guid = uiObject.DestFieldList[i].Beschreibung;
-            value = uiObject.DestFieldList[i].Wert;         
+            guid = uiObject.DestFieldList[i].Key;
+            value = uiObject.DestFieldList[i].Text;         
             $('#' + guid).find(".data").html(value);
         }
     }

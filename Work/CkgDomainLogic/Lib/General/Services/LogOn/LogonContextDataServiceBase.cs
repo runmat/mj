@@ -418,5 +418,25 @@ namespace CkgDomainLogic.General.Services
         {
             return "";
         }
+
+        public AdminLevel HighestAdminLevel
+        {
+            get
+            {
+                if (Customer.Master && User.CustomerAdmin)
+                    return AdminLevel.Master;
+
+                if (User.FirstLevelAdmin)
+                    return AdminLevel.FirstLevel;
+
+                if (User.CustomerAdmin)
+                    return AdminLevel.Customer;
+
+                if (Organization.OrganizationAdmin)
+                    return AdminLevel.Organization;
+
+                return AdminLevel.None;
+            }
+        }
     }
 }

@@ -1,18 +1,70 @@
-﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel.WizardProzessauswahl
+﻿@model CkgDomainLogic.DataConverter.Models.NewDataMappingSelektor
+
+<div id="DivProzessauswahl" class="margin-top-20">
+    
+    <h4>@Localize.NewDataMapping</h4>
+
+    @using (Ajax.BeginForm("Prozessauswahl", "Admin", null,
+        new MvcAjaxOptions { UpdateTargetId = "DivProzessauswahl", OnComplete = "AjaxFormProzessauswahlComplete();" },
+        htmlAttributes: new { @class = "form-horizontal margin-top-20", id = "AjaxFormProzessauswahl" }))
+    {
+        <div class="form-horizontal" id="searchForm">
+
+            @Html.FormValidationSummary()
+
+
+            @Html.HiddenFor(m => m.SourceFile.FilenameOrig)
+            @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
+
+            @if (Model.CanUserSelectCustomer)
+            {
+                @Html.FormDropDownListFor(m => m.CustomerId, Model.CustomerList.ToSelectList("CustomerID", "Customername"))
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.CustomerId)
+            }
+
+            @Html.FormDropDownListFor(m => m.ProzessName, Model.ProzessList.ToSelectList())
+
+            <div class="control-group margin-top-20">
+                <label class="control-label">@Localize.UploadFile:</label>
+                <div class="controls">
+                    @(Html.Telerik().Upload()
+                          .Name("fileUpload")
+                          .Localizable("de-DE")
+                          .Async(async => async
+                              .Save("UploadStart", "Admin")
+                              .SaveField("uploadFiles")
+                              .AutoUpload(true))
+                          .Multiple(false)
+                          .ShowFileList(false)
+                          .ClientEvents(events => events
+                              .OnUpload("UploadStart")
+                              .OnSuccess("UploadFinished")
+                              .OnError("UploadError")
+                          )
+                      )
+                </div>
+            </div>
+
+            <div class="space20"></div>
+
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="button" class="btn" onclick="CloseDataMappingDetails();">@Localize.Cancel</button>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
 
 <script type="text/javascript">
-
-    var firstRequest = '@Request["firstRequest"]';
-
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
-    $(function() {
-
-        $(window).resize(function() {
-        });
-
-        $('#SelectedProcess').chosen();
-    });
 
     function UploadStart(e) {
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
@@ -55,44 +107,4 @@
 
 </script>
 
-<div id="DivProzessauswahl" class="margin-top-20">
-    
-    <h4>Prozessauswahl</h4>
 
-    @using (Ajax.BeginForm("Prozessauswahl", "Admin", null,
-        new MvcAjaxOptions {UpdateTargetId = "DivProzessauswahl", OnComplete = "AjaxFormProzessauswahlComplete();"},
-        htmlAttributes: new {@class = "form-horizontal", id = "AjaxFormProzessauswahl"}))
-    {
-        @Html.FormValidationSummary()
-
-        <div class="row-fluid margin-top-40">
-            <div class="span6">
-                @Html.FormDropDownListFor(m => m.SelectedProcess, Model.ProcessList.ToSelectList(), new {@class = "m-wrap"})
-            </div>
-            <div class="span6">
-                <div class="control-group">
-                    <label class="control-label">Quelldatei</label>
-                    <div class="controls">
-                        @(Html.Telerik().Upload()
-                              .Name("fileUpload")
-                              .Localizable("de-DE")
-                              .Async(async => async
-                                  .Save("UploadStart", "Admin")
-                                  .SaveField("uploadFiles")
-                                  .AutoUpload(true))
-                              .Multiple(false)
-                              .ShowFileList(false)
-                              .ClientEvents(events => events
-                                  .OnUpload("UploadStart")
-                                  .OnSuccess("UploadFinished")
-                                  .OnError("UploadError")
-                              )
-                              )
-                    </div>
-                </div>
-                @Html.HiddenFor(m => m.SourceFile.FilenameOrig)      
-                @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
-            </div>
-        </div>
-    }
-</div>

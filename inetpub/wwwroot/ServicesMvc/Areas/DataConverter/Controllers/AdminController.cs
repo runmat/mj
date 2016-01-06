@@ -1,23 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 using CkgDomainLogic.DataConverter.Contracts;
+using CkgDomainLogic.DataConverter.Models;
 using CkgDomainLogic.DataConverter.ViewModels;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
 using CkgDomainLogic.General.Services;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using MvcTools.Web;
-using ServicesMvc.Areas.DataConverter;
 using ServicesMvc.Areas.DataConverter.ActionFilters;
+using Telerik.Web.Mvc;
 
 namespace ServicesMvc.DataConverter.Controllers
 {
-    [DataConverterInjectGlobalData]
+    [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
     public class AdminController : CkgDomainController
     {
         public override string DataContextKey { get { return GetDataContextKey<DataConverterViewModel>(); } }
@@ -31,22 +33,14 @@ namespace ServicesMvc.DataConverter.Controllers
         public AdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IDataConverterDataService dataConverterDataService)
             : base(appSettings, logonContext)
         {
-            if (IsInitialRequestOf("Index"))
-                ViewModel = null;
-
-            InitViewModelExpicit(ViewModel, appSettings, logonContext, dataConverterDataService);
-        }
-
-        private void InitViewModelExpicit(DataConverterViewModel vm, IAppSettings appSettings, ILogonContextDataService logonContext, IDataConverterDataService dataConverterDataService)
-        {
-            InitViewModel(vm, appSettings, logonContext, dataConverterDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, dataConverterDataService);
             InitModelStatics();
         }
 
         void InitModelStatics()
         {
-            //CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
-            //CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            DataMappingSelektor.GetViewModel = GetViewModel<DataConverterViewModel>;
+            NewDataMappingSelektor.GetViewModel = GetViewModel<DataConverterViewModel>;
         }
 
         [CkgApplication]
@@ -58,47 +52,114 @@ namespace ServicesMvc.DataConverter.Controllers
         }
 
         [HttpPost]
-        [CkgApplication]
-        public ActionResult Prozessauswahl(DataConverterViewModel.WizardProzessauswahl model)
+        public ActionResult LoadDataMappings(DataMappingSelektor model)
         {
-            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-                model = ViewModel.Prozessauswahl;
+            ViewModel.Selektor = model;
 
             if (ModelState.IsValid)
-                ViewModel.Prozessauswahl = model;
+                ViewModel.LoadDataMappings(ModelState);
+
+            return PartialView("Partial/Suche", ViewModel.Selektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowDataMappings()
+        {
+            return PartialView("Partial/Grid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult DataMappingsAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.DataMappingsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridDataMappings(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterDataMappings(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #region Grid-Export
+
+        public ActionResult ExportDataMappingsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.DataMappingsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DataConverter, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDataMappingsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.DataMappingsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DataConverter, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        [HttpPost]
+        public ActionResult ShowProzessauswahl()
+        {
+            return PartialView("Partial/Prozessauswahl", ViewModel.NewMappingSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult Prozessauswahl(NewDataMappingSelektor model)
+        {
+            if (ModelState.IsValid)
+                ViewModel.NewMappingSelektor = model;
 
             return PartialView("Partial/Prozessauswahl", model);
         }
 
-        [HttpPost]
-        [CkgApplication]
-        public ActionResult Konfiguration(DataConverterViewModel.WizardKonfiguration model)
-        {
-            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-                model = ViewModel.Konfiguration;
-
-            if (ModelState.IsValid)
-                ViewModel.Konfiguration = model;
-
-            ViewModel.DataConverter.DestinationFile.Filename = @"C:\tmp\KroschkeOn2.xml";  // ###removeme### Prozessdatei bis jetzt noch fest verdrahtet
-            ViewModel.DataConverter.ReadSourceFile();
-            ViewModel.DataConverter.ReadDestinationObj();
-
-            return PartialView("Partial/Konfiguration", ViewModel);
-        }
+        #region Upload
 
         [HttpPost]
-        [CkgApplication]
-        public ActionResult Abschluss()
+        public ActionResult UploadStart(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
-            //if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-            //    model = ViewModel.Auftraggeber;
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
 
-            return PartialView("Partial/Abschluss", ViewModel);
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!ViewModel.UploadFileSave(file.FileName, file.SavePostedFile))
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+
+            return Json(new
+            {
+                success = true,
+                message = "ok",
+                uploadFileName = file.FileName,
+                uploadFileNameCsv = ViewModel.DataConverter.SourceFile.FilenameCsv
+            }, "text/plain");
         }
 
-        #region Ajax
+        #endregion
 
+        [HttpPost]
+        public ActionResult ShowKonfiguration(int mappingId)
+        {
+            ViewModel.InitMapping(mappingId);
+
+            return PartialView("Partial/Konfiguration", ViewModel.DataConverter);
+        }
+
+        #region Show Xml as div content
+
+        public ActionResult ShowDestinationDiv(XmlDocument destXmlDocument)
+        {
+            var divContent = ViewModel.GetDestinationDiv(destXmlDocument);
+
+            return Content(divContent);
+        }
+
+        #endregion
 
         [HttpPost]
         [StoreUi]
@@ -116,12 +177,14 @@ namespace ServicesMvc.DataConverter.Controllers
         }
 
         [HttpPost]
+        [StoreUi]
         public JsonResult LoadUiData()
         {
             return RefreshUi();
         }
 
         [HttpPost]
+        [StoreUi]
         public JsonResult SetProcessorSettings(string processorId, Operation processorType, string processorPara1, string processorPara2)
         {
             ViewModel.SetProcessorSettings(processorId, processorType, processorPara1, processorPara2);
@@ -161,15 +224,7 @@ namespace ServicesMvc.DataConverter.Controllers
             var processorList = ViewModel.DataConverter.RecalcProcessors();
 
             // Alle DatenRecords der Quellfelder ermitteln...
-            var sourceFieldList = new List<Domaenenfestwert>();
-            foreach (var field in ViewModel.DataConverter.SourceFile.Fields)
-            {
-                sourceFieldList.Add(new Domaenenfestwert
-                {
-                    Wert = field.Guid,
-                    Beschreibung = field.Records[ViewModel.DataConverter.RecordNo - 1]
-                });
-            }
+            var sourceFieldList = ViewModel.DataConverter.RecalcSourceFields();
 
             // Alle DatenRecords der Zielfelder ermitteln...
             var destFieldList = ViewModel.DataConverter.RecalcDestFields();
@@ -177,64 +232,24 @@ namespace ServicesMvc.DataConverter.Controllers
             return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataConverter.RecordInfoText });
         }
 
-        #endregion
-
-        #region Upload
-
         [HttpPost]
-        public ActionResult UploadStart(IEnumerable<HttpPostedFileBase> uploadFiles)
+        [StoreUi]
+        public ActionResult SaveKonfiguration()
         {
-            if (uploadFiles == null || uploadFiles.None())
-                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
-
-            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
-            var file = uploadFiles.ToArray()[0];
-
-            if (!ViewModel.UploadFileSave(file.FileName, file.SavePostedFile))
-                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
-
-            return Json(new
-            {
-                success = true,
-                message = "ok",
-                uploadFileName = file.FileName,
-                uploadFileNameCsv = ViewModel.DataConverter.SourceFile.FilenameCsv
-            }, "text/plain");
-        }
-
-        [HttpPost]
-        public ActionResult Upload(DataConverterViewModel.WizardProzessauswahl model)
-        {
-            if (Request["firstRequest"] == "ok")                // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
-                model.SourceFile = ViewModel.DataConverter.SourceFile;
-
             if (ModelState.IsValid)
-                ViewModel.DataConverter.SourceFile = model.SourceFile;
+                ViewModel.SaveMapping(ModelState);
 
-            return PartialView("Partial/Prozessauswahl", model);
+            return PartialView("Partial/Konfiguration", ViewModel.DataConverter);
         }
-
-        #endregion
-
-        #region Show Xml as div content
-
-        public ActionResult ShowDestinationDiv(XmlDocument destXmlDocument)
-        {
-            var divContent = ViewModel.GetDestinationDiv(destXmlDocument);
-
-            return Content(divContent);
-        }
-
-        #endregion
 
         #region Export Xml
 
-        [HttpPost]
-        public ActionResult ExportXml()
+        [StoreUi]
+        public ActionResult TestExportXml()
         {
-            var xmlContent = ViewModel.DataConverter.ExportToXml(@"C:\tmp\TestOutputComplete.xml");
+            var brrr = JSon.Serialize(ViewModel.DataConverter.DataMapping);
 
-            return Content(xmlContent);
+            return Content(ViewModel.GenerateXmlResultStructure(), "text/xml");
         }
 
         #endregion

@@ -17,6 +17,7 @@ namespace CkgDomainLogic.General.Services
     public class LogonContextTest : Store, ILogonContextDataService
     {
         public string CurrentGridColumns { get; set; }
+        public AdminLevel HighestAdminLevel { get; private set; }
 
         public string UserNameForDisplay { get; set; }
 

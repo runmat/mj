@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.General.Database.Models
+
+@{ var gridName = "GridDataMappings"; }
+
+@(Html.Telerik()
+    .Grid<DataConverterDataMapping>()   
+    .Name(gridName)
+    .XAjaxDataBinding("DataMappingsAjaxBinding", "Admin")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Id).Filterable(false).Sortable(false).Groupable(false)
+            .ClientTemplate(
+                "<button onclick='ShowKonfiguration(\"<#= data.Id #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditMapping + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+            ).HeaderTemplate(
+                "<button onclick='ShowProzessauswahl();' class='btn mini gray tooltips' data-original-title='" + Localize.AddNewMapping + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+        );
+        
+        columns.XBound(c => c.Customername);
+        columns.XBound(c => c.KUNNR);
+        columns.XBound(c => c.Process);
+        columns.XBound(c => c.Title);               
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .Sortable(s => s.Enabled(true))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDataMappingsFilteredExcel", "Admin");
+        commands.FilteredDataCommand("ExportDataMappingsFilteredPDF", "Admin");
+    })
+)

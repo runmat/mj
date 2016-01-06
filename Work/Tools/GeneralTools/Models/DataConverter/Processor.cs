@@ -15,10 +15,7 @@ namespace GeneralTools.Models
         public string OperationPara2 { get; set; }
         public string Input { get; set; }
 
-        public string Output
-        {
-            get { return CalcOutput(); }
-        }
+        public string Output { get { return CalcOutput(); } }
         
         public int PosLeft { get; set; }
         public int PosTop { get; set; }
