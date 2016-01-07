@@ -205,9 +205,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var items = GetAllItems(selector, null);
 
+            Func<ZulassungsReportModel, string> getTitleFunc = (groupKey => groupKey.MaterialKurztext.NotNullOrEmpty().Crop(30));
+            Func<ZulassungsReportModel, string> xAxisKeyModel = (groupKey => getTitleFunc(groupKey));
 
-            Func<ZulassungsReportModel, string> xAxisKeyModel = (groupKey => groupKey.MaterialKurztext);
+            double countTotal = items.Count;
+            if (countTotal > 0)
+            {
+                var percentThreshold = 1.5;
+                var validMaterialTexts = items.GroupBy(xAxisKeyModel).Where(g => g.Count(i => true) / countTotal*100.0 > percentThreshold).Select(g => g.Key);
 
+                xAxisKeyModel = (groupKey => validMaterialTexts.Contains(getTitleFunc(groupKey)) ? getTitleFunc(groupKey) : " Sonstige");
+            }
             return ChartService.GetPieChartGroupedItemsWithLabels(
                     items,
                     xAxisKeyModel
