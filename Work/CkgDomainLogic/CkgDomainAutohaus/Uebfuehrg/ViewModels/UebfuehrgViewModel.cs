@@ -619,6 +619,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 {
                     DataService.KundenNr = rgDaten.AgKundenNr;
                     RechnungsAdressen = DataService.GetRechnungsAdressen();
+                    rgDaten.MarkForRefreshRgReKundenNr();
                 }
             }
 
