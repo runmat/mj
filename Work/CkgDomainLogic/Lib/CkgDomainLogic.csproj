@@ -108,6 +108,7 @@
     <Compile Include="General\Models\Attributes\ZulassungsKreisAttribute.cs" />
     <Compile Include="General\Models\Attributes\VIN.cs" />
     <Compile Include="General\Models\ChartItemsPackage.cs" />
+    <Compile Include="General\Models\ChartItemsTick.cs" />
     <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
     <Compile Include="General\Models\DataModels\Hersteller.cs" />

@@ -61,30 +61,12 @@ namespace ServicesMvc.Common.Controllers
             }
 
             // <Json data caching>
-            var storedDashboardItemExpired = false;
-            var itemData = PersistanceGetObjects<ChartItemsPackage>(CacheJsonDataPersistableGroupKey).FirstOrDefault(c => c.ID == id);
-            if (itemData != null && itemData.dataAsText != null)
-            {
-                // load cached json data
-                itemData.data = new JavaScriptSerializer().DeserializeObject(itemData.dataAsText);
-                
-                // check for cached data expiration
-                storedDashboardItemExpired = itemData.EditDate < (DateTime.Now.AddMinutes(-1 * dashboardItem.Options.JsonDataCacheExpirationMinutes));
-            }
-
-            if (itemData == null || storedDashboardItemExpired || clearDataCache)
-            {
-                // no cached json data available  or  cached data has expired
-                var storedObjectKey = itemData == null ? null : itemData.ObjectKey;
-
-                itemData = ViewModel.GetChartData(id, dashboardItem);
-                itemData.ID = id;
-                if (itemData.data != null)
-                {
-                    itemData.dataAsText = new JavaScriptSerializer().Serialize(itemData.data);
-                    PersistanceSaveObject(CacheJsonDataPersistableGroupKey, storedObjectKey, itemData);
-                }
-            }
+            var pService = LogonContext.PersistanceService;
+            var itemData = pService.GetCachedChartItemAsJson(
+                                id, LogonContext.UserName, CacheJsonDataPersistableGroupKey, 
+                                LogonContext.UserName, clearDataCache,
+                                data => dashboardItem.Options.JsonDataCacheExpired(data.EditDate), 
+                                () => ViewModel.GetChartData(id, dashboardItem));
             // </Json data caching>
 
             return Json(itemData);

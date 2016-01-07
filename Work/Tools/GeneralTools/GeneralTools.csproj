@@ -140,6 +140,7 @@
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Models\CommonEnums.cs" />
     <Compile Include="Models\DateRangePresets.cs" />
+    <Compile Include="Models\JsonItemsPackage.cs" />
     <Compile Include="Models\MaintenanceMessage.cs" />
     <Compile Include="Models\MaintenanceResult.cs" />
     <Compile Include="Models\SearchExtensions35.cs" />

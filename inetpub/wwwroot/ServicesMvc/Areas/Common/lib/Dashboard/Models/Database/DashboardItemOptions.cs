@@ -1,4 +1,5 @@
-﻿using CkgDomainLogic.General.Contracts;
+﻿using System;
+using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.General.Database.Models
@@ -34,5 +35,10 @@ namespace CkgDomainLogic.General.Database.Models
         public bool IsChart { get { return ItemType.NotNullOrEmpty().ToLower() == "chart"; } }
 
         public bool IsPartialView { get { return ItemType.NotNullOrEmpty().ToLower() == "partialview"; } }
+
+        public bool JsonDataCacheExpired(DateTime? dt)
+        {
+            return dt < (DateTime.Now.AddMinutes(-1*JsonDataCacheExpirationMinutes));
+        }
     }
 }

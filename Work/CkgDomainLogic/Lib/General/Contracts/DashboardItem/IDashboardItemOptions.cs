@@ -1,4 +1,6 @@
-﻿namespace CkgDomainLogic.General.Contracts
+﻿using System;
+
+namespace CkgDomainLogic.General.Contracts
 {
     public interface IDashboardItemOptions
     {
@@ -15,5 +17,7 @@
         bool IsChart { get; }
 
         bool IsPartialView { get; }
+
+        bool JsonDataCacheExpired(DateTime? dt);
     }
 }

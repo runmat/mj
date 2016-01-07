@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 
@@ -97,8 +98,8 @@ namespace GeneralTools.Services
 
             var persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
 
-            var validPersistedObjectContainersBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object as IPersistableObject != null);
-            var validPersistedObjectContainersAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null);
+            var validPersistedObjectContainersBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object is IPersistableObject);
+            var validPersistedObjectContainersAfterSave = persistedContainersAfterSave.Where(pc => pc.Object is IPersistableObject);
 
             var persistedObjectsBeforeSave = validPersistedObjectContainersBeforeSave.Select(pc => pc.Object as IPersistableObject);
             var persistedObjectsAfterSave = validPersistedObjectContainersAfterSave.Select(pc => pc.Object as IPersistableObject);
@@ -141,6 +142,48 @@ namespace GeneralTools.Services
         public void DeleteObject(string objectKey)
         {
             DeletePersistedObject(objectKey);
+        }
+
+
+        public List<T> GetObjects<T>(string ownerKey, string groupKey)
+        {
+            return GetObjectContainers(ownerKey, groupKey)
+                .Select(pContainer => (T) pContainer.Object)
+                    .ToListOrEmptyList();
+        }
+
+        public JsonItemsPackage GetCachedChartItemAsJson(string objectId, string ownerKey, string groupKey, 
+                                                                string editUserName, bool clearDataCache,
+                                                                Func<JsonItemsPackage, bool> expirationCheckFunc,
+                                                                Func<JsonItemsPackage> getItemDataFunc
+                                                                )
+        {
+            var storedDashboardItemExpired = false;
+            var itemData = GetObjects<JsonItemsPackage>(ownerKey, groupKey).FirstOrDefault(c => c.ID == objectId);
+            if (itemData != null && itemData.dataAsText != null)
+            {
+                // load cached json data
+                itemData.data = new JavaScriptSerializer().DeserializeObject(itemData.dataAsText);
+
+                // check for cached data expiration
+                storedDashboardItemExpired = expirationCheckFunc(itemData);
+            }
+
+            if (itemData == null || storedDashboardItemExpired || clearDataCache)
+            {
+                // no cached json data available  or  cached data has expired
+                var storedObjectKey = itemData == null ? null : itemData.ObjectKey;
+
+                itemData = getItemDataFunc(); 
+                itemData.ID = objectId;
+                if (itemData.data != null)
+                {
+                    itemData.dataAsText = new JavaScriptSerializer().Serialize(itemData.data);
+                    SaveObject(storedObjectKey, ownerKey, groupKey, editUserName, itemData);
+                }
+            }
+
+            return itemData;
         }
     }
 }
