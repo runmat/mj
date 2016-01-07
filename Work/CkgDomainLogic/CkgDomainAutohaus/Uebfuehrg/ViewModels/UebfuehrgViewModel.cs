@@ -243,6 +243,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 #endif
                 };
 
+            PrepareRgDatenFahrtAdressenTransportTypen(RgDaten, true);
+
             if ((IstKroschke && RgDaten.KundenAusHierarchie.Count() > 1) || RgDaten.ReAdressen.Count() > 1 || RgDaten.RgAdressen.Count() > 1)
             {
                 TryDataContextRestoreUiModel(RgDaten);
@@ -609,15 +611,19 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             }
         }
 
-        private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten)
+        private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten, bool initRgDatenOnly = false)
         {
-            if (IstKroschke && !String.IsNullOrEmpty(rgDaten.AgKundenNr))
+            var userSeparateCustomerNo = (LogonContext.User.Reference.NotNullOrEmpty().Length == 6) ? LogonContext.User.Reference.ToInt(0) : 0;
+            var userHasSeparateCustomerNo = (userSeparateCustomerNo != 0);
+
+            if (userHasSeparateCustomerNo || (IstKroschke && !String.IsNullOrEmpty(rgDaten.AgKundenNr)))
             {
-                rgDaten.KundenNr = rgDaten.AgKundenNr;
+                var agKundenNr = userHasSeparateCustomerNo ? userSeparateCustomerNo.ToString() : rgDaten.AgKundenNr;
+                rgDaten.KundenNr = agKundenNr;
 
                 if (rgDaten.KundenNr != DataService.KundenNr)
                 {
-                    DataService.KundenNr = rgDaten.AgKundenNr;
+                    DataService.KundenNr = agKundenNr;
                     RechnungsAdressen = DataService.GetRechnungsAdressen();
                     rgDaten.MarkForRefreshRgReKundenNr();
                 }
@@ -643,6 +649,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             }
 
             DataService.AuftragGeber = rgDaten.RgKundenNr;
+
+            if (initRgDatenOnly)
+                return;
 
             FahrtAdressen = DataService.GetFahrtAdressen(_addressTypes);
 
