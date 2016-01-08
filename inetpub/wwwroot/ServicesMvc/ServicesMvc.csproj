@@ -279,6 +279,8 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Common\Views\Weather\Index.cshtml" />
+    <Content Include="Areas\Common\Views\Weather\Partial\Common.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -706,6 +708,7 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
+    <Compile Include="Areas\Common\Controllers\WeatherController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\Controllers\GridAdminController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
@@ -717,6 +720,9 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Contracts\IWeatherDataService.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Services\WeatherDataServiceOpenWeatherMap.cs" />
+    <Compile Include="Areas\Common\lib\Weather\ViewModels\WeatherViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
@@ -2880,6 +2886,7 @@
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
     <Folder Include="Areas\Autohaus\ViewModels\" />
+    <Folder Include="Areas\Common\lib\Weather\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

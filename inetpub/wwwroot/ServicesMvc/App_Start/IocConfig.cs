@@ -202,6 +202,7 @@ namespace ServicesMvc
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardItemOptions>().As<IDashboardItemOptions>().InstancePerLifetimeScope();
             builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<WeatherDataServiceOpenWeatherMap>().As<IWeatherDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
