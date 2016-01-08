@@ -60,9 +60,6 @@ namespace CKGDatabaseAdminLib.ViewModels
         public void Init(object parameter)
         {
             Parent.ActiveViewModel = this;
-
-            if (FunctionReflector.DataService == null)
-                FunctionReflector.DataService = new SapDataServiceFromConfigNoCacheFactory().Create();
         }
 
         public void ExecuteSqlString(object parameter)
