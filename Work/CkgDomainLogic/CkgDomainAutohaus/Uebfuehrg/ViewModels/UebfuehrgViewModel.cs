@@ -640,11 +640,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 if (String.IsNullOrEmpty(rgDaten.ReKundenNr))
                     rgDaten.ReKundenNr = rgDaten.ReAdressen.First().KundenNr;
 
-                if (StepCurrentModel is RgDaten)
+                if (StepModels != null && StepModels.Count > 0 && StepCurrentModel is RgDaten)
                 {
-                    (StepCurrentModel as RgDaten).KundenNr = rgDaten.KundenNr;
-                    (StepCurrentModel as RgDaten).RgKundenNr = rgDaten.RgKundenNr;
-                    (StepCurrentModel as RgDaten).ReKundenNr = rgDaten.ReKundenNr;
+                    ((RgDaten) StepCurrentModel).KundenNr = rgDaten.KundenNr;
+                    ((RgDaten) StepCurrentModel).RgKundenNr = rgDaten.RgKundenNr;
+                    ((RgDaten) StepCurrentModel).ReKundenNr = rgDaten.ReKundenNr;
                 }
             }
 
