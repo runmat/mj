@@ -727,12 +727,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\DataConverter\ActionFilters\StoreUiAttribute.cs" />
-    <Compile Include="Areas\DataConverter\Contracts\IDataConverterDataService.cs" />
     <Compile Include="Areas\DataConverter\Controllers\AdminController.cs" />
-    <Compile Include="Areas\DataConverter\Models\DataMappingSelektor.cs" />
-    <Compile Include="Areas\DataConverter\Models\NewDataMappingSelektor.cs" />
-    <Compile Include="Areas\DataConverter\Services\DataConverterDataService.cs" />
-    <Compile Include="Areas\DataConverter\ViewModels\DataConverterViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />

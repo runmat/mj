@@ -13,6 +13,16 @@ namespace CkgDomainLogic.DataConverter.Contracts
 
         DataConverterProcessStructure GetProcessStructure(string processName);
 
-        List<DataConverterDataMapping> GetDataMappings(DataMappingSelektor selektor);
+        bool SaveProcessStructure(DataConverterProcessStructure processStructure);
+
+        bool DeleteProcessStructure(string processName);
+
+        List<DataConverterMappingInfo> GetDataMappingInfos(DataMappingSelektor selektor);
+
+        DataConverterMappingData GetDataMapping(int mappingId);
+
+        bool SaveDataMapping(DataConverterMappingData mapping);
+
+        bool DeleteDataMapping(int mappingId);
     }
 }

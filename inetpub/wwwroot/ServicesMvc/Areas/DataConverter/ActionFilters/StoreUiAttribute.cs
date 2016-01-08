@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using GeneralTools.Models;
+using CkgDomainLogic.DataConverter.Models;
 using MvcTools.Web;
 using ServicesMvc.DataConverter.Controllers;
 
-namespace ServicesMvc.Areas.DataConverter.ActionFilters
+namespace CkgDomainLogic.DataConverter.ActionFilters
 {
     /// <summary>
     /// Evtl. mit übermittelte UI-Daten ins Viewmodel überführen...
@@ -13,7 +13,7 @@ namespace ServicesMvc.Areas.DataConverter.ActionFilters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext) 
         {
-            var dataMapping = ((AdminController)filterContext.Controller).ViewModel.DataConverter.DataMapping;
+            var dataMapping = ((AdminController)filterContext.Controller).ViewModel.MappingModel;
 
             var processors = filterContext.RequestContext.HttpContext.Request["processors"];
             var connections = filterContext.RequestContext.HttpContext.Request["connections"];

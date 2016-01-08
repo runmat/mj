@@ -18,7 +18,7 @@ namespace CkgDomainLogic.DataConverter.Models
         [XmlIgnore]
         public List<Customer> CustomerList { get { return GetViewModel == null ? new List<Customer>() : GetViewModel().Kunden; } }
 
-        [LocalizedDisplay(LocalizeConstants.ProcessSelection)]
+        [LocalizedDisplay(LocalizeConstants.Process)]
         public string ProzessName { get; set; }
 
         [XmlIgnore]

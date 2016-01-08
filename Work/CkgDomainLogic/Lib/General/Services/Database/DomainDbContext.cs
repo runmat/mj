@@ -813,7 +813,30 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<DataConverterProcessStructure>("SELECT * FROM ProcessStructure WHERE ProcessName = {0}", processName).FirstOrDefault();
         }
 
-        public IEnumerable<DataConverterDataMapping> GetDataConverterDataMappings(int customerId, string processName)
+        public bool SaveDataConverterProcessStructure(DataConverterProcessStructure processStructure)
+        {
+            int rowsAffected;
+
+            var existingElement = Database.SqlQuery<DataConverterProcessStructure>("SELECT * FROM ProcessStructure WHERE ProcessName = {0}", processStructure.ProcessName).FirstOrDefault();
+
+            if (existingElement == null)
+                rowsAffected = Database.ExecuteSqlCommand("INSERT INTO ProcessStructure (ProcessName, DestinationStructure) VALUES ({0}, {1})",
+                    processStructure.ProcessName, processStructure.DestinationStructure);
+            else
+                rowsAffected = Database.ExecuteSqlCommand("UPDATE ProcessStructure SET DestinationStructure = {0} WHERE ProcessName = {1}",
+                    processStructure.DestinationStructure, processStructure.ProcessName);
+
+            return (rowsAffected > 0);
+        }
+
+        public bool DeleteDataConverterProcessStructure(string processName)
+        {
+            var rowsAffected = Database.ExecuteSqlCommand("DELETE FROM ProcessStructure WHERE ProcessName = {0}", processName);
+
+            return (rowsAffected > 0);
+        }
+
+        public IEnumerable<DataConverterMappingInfo> GetDataConverterMappingInfos(int customerId, string processName)
         {
             var query = "SELECT * FROM vwDataMapping";
             var filterByCustomer = false;
@@ -827,7 +850,36 @@ namespace CkgDomainLogic.General.Database.Services
             if (!string.IsNullOrEmpty(processName))
                 query += " " + (filterByCustomer ? "AND" : "WHERE") + " ProcessName = " + processName;
 
-            return Database.SqlQuery<DataConverterDataMapping>(query);
+            return Database.SqlQuery<DataConverterMappingInfo>(query);
+        }
+
+        public DataConverterMappingData GetDataConverterMappingData(int mappingId)
+        {
+            return Database.SqlQuery<DataConverterMappingData>("SELECT * FROM DataMapping WHERE Id = {0}", mappingId).FirstOrDefault();
+        }
+
+        public bool SaveDataConverterMapping(DataConverterMappingData mapping)
+        {
+            if (mapping.Id == 0)
+            {
+                var newId = Database.SqlQuery<decimal>("SET NOCOUNT ON; INSERT INTO DataMapping (Title, CustomerId, Process, Mapping) VALUES ({0}, {1}, {2}, {3}); SELECT SCOPE_IDENTITY(); SET NOCOUNT OFF;",
+                    mapping.Title, mapping.CustomerId, mapping.Process, mapping.Mapping).FirstOrDefault();
+
+                mapping.Id = (int)newId;
+
+                return (newId > 0);
+            }
+
+            var rowsAffected = Database.ExecuteSqlCommand("UPDATE DataMapping SET Mapping = {0} WHERE Id = {1}", mapping.Mapping, mapping.Id);
+
+            return (rowsAffected > 0);
+        }
+
+        public bool DeleteDataConverterMapping(int mappingId)
+        {
+            var rowsAffected = Database.ExecuteSqlCommand("DELETE FROM DataMapping WHERE Id = {0}", mappingId);
+
+            return (rowsAffected > 0);
         }
 
         #endregion

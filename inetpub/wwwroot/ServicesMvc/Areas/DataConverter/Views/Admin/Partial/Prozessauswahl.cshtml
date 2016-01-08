@@ -16,6 +16,8 @@
             @Html.HiddenFor(m => m.SourceFile.FilenameOrig)
             @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
 
+            @Html.FormTextBoxFor(m => m.MappingName, new { @class = "m-wrap" })
+
             @if (Model.CanUserSelectCustomer)
             {
                 @Html.FormDropDownListFor(m => m.CustomerId, Model.CustomerList.ToSelectList("CustomerID", "Customername"))

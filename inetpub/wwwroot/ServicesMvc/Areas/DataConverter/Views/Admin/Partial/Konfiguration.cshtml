@@ -1,7 +1,7 @@
-﻿@model DocumentTools.Services.DataConverterService
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
 
 <div id="DivKonfiguration">
-    <h4>@Localize.Configuration</h4>
+    <h4>@Localize.Configuration @Model.MappingName</h4>
 
     <div class="w hidden no-padding no-margin">DUMMY</div>
     <span class="float-left">
@@ -11,7 +11,7 @@
         <button class="btn white tooltips" data-original-title="@Localize.LastEntry" data-placement="bottom" onclick="GotoRecord('last');"><i class="halflings-icon fast-forward"></i></button>
 
         <span id="RecordPosition" class="margin-left-15 badge margin-right-15">
-            @Model.RecordInfoText
+            @Model.MappingModel.RecordInfoText
         </span>
     </span>
 
@@ -27,10 +27,10 @@
 
     <div id="DataConverterContainer">
         <div id="source" class="no-padding">
-            @foreach (var item in Model.SourceFile.Fields)
+            @foreach (var item in Model.MappingModel.SourceFile.Fields)
             {
                 <div class="w" id="@item.Id">
-                    <div class="field">@item.Name</div>
+                    <div class="field">@item.Bezeichnung</div>
                     <div class="data">@item.Records[0]</div>
                     <div class="sp"></div>
                 </div>
@@ -38,7 +38,7 @@
         </div>
 
         <div id="destination">
-            @Html.Action("ShowDestinationDiv", Model.DestinationStructure.XmlDocument)
+            @Html.Action("ShowDestinationDiv")
         </div>
     </div>
 
@@ -47,7 +47,7 @@
 <div class="form-horizontal margin-top-10">
     <div class="form-actions">
         <button type="button" class="btn" onclick="CloseDataMappingDetails();">@Localize.Cancel</button>
-        <button type="button" class="btn green" onclick=""><i class="icon-ok"></i> @Localize.Save</button>
+        <button type="button" class="btn green" onclick="SaveKonfiguration();"><i class="icon-ok"></i> @Localize.Save</button>
     </div>
 </div>
 
@@ -106,14 +106,14 @@
     };
 
     $(function () {
-        $('.processorobj').show();
+        LoadUiData();
+        setTimeout('refreshPlumb();', 1000);
     });
 
     jsPlumb.ready(function () {
         jsPlumb.importDefaults({
             Connector: ["Straight"], 
             Endpoint: ["Dot", { radius: 1}],
-            // HoverPaintStyle: { strokeStyle: "#1e8151", lineWidth: 2 },
             Anchors: ["Right", "Left"],
             ConnectionOverlays: [
                 [
@@ -144,6 +144,7 @@
         $('#source').on("scroll", function () {
             refreshPlumb();
         });
+
         $('#destination').on("scroll", function () {
             refreshPlumb();
         });
@@ -227,15 +228,11 @@
     }
 
     function AddConnection(connectionId, source, dest) {
-        jsPlumb.makeSource($(".w"), startpointOptions);
-        jsPlumb.makeTarget($(".ept"), endpointOptions);
-
         jsPlumb.connect({
             source: source,
             target: dest
         });
-        jsPlumb.revalidate();
-        jsPlumb.repaintEverything();
+        jsPlumb.revalidate(connectionId);
     }
 
     function UiProcessors() {
@@ -283,7 +280,7 @@
     }
 
     function LoadUiData() {
-        ClearAll();
+        ClearAll(true);
 
         $.ajax({
             type: "POST",
@@ -291,12 +288,12 @@
             data: { recordOffset: 0 },
             loadingShow: false,
             success: function (result) {
-                RefreshUi(result);
+                RefreshUi(result, true);
             }
         });
     }
 
-    function ClearAll() {
+    function ClearAll(suppressSync) {
         jsPlumb.detachEveryConnection();
 
         $(".processorobj").each(function (index) {
@@ -307,7 +304,8 @@
             $(this).find(".data").html("");
         });
 
-        SyncUiData();
+        if (!suppressSync)
+            SyncUiData();
     }
 
     function ShowHideLines(obj) {
@@ -359,7 +357,7 @@
         });
     }
 
-    function RefreshUi(uiObject) {
+    function RefreshUi(uiObject, initConnections) {
         var guid;
         var value;
         var i;
@@ -399,6 +397,16 @@
             value = uiObject.DestFieldList[i].Text;         
             $('#' + guid).find(".data").html(value);
         }
+
+        if (initConnections)
+            InitConnections(uiObject.ConnectionList);
+    }
+
+    function InitConnections(connectionList) {
+        for (var i = 0; i < connectionList.length; i++) {
+            AddConnection(connectionList[i].Guid, connectionList[i].GuidSource, connectionList[i].GuidDest);
+        }
+        refreshPlumb();
     }
 
 </script>

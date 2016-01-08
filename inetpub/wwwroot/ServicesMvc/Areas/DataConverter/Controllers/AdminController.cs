@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml;
 using CkgDomainLogic.DataConverter.Contracts;
 using CkgDomainLogic.DataConverter.Models;
 using CkgDomainLogic.DataConverter.ViewModels;
@@ -14,7 +13,7 @@ using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Models;
 using MvcTools.Web;
-using ServicesMvc.Areas.DataConverter.ActionFilters;
+using CkgDomainLogic.DataConverter.ActionFilters;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.DataConverter.Controllers
@@ -105,6 +104,8 @@ namespace ServicesMvc.DataConverter.Controllers
         [HttpPost]
         public ActionResult ShowProzessauswahl()
         {
+            ViewModel.ClearNewMappingSelektor();
+
             return PartialView("Partial/Prozessauswahl", ViewModel.NewMappingSelektor);
         }
 
@@ -136,7 +137,7 @@ namespace ServicesMvc.DataConverter.Controllers
                 success = true,
                 message = "ok",
                 uploadFileName = file.FileName,
-                uploadFileNameCsv = ViewModel.DataConverter.SourceFile.FilenameCsv
+                uploadFileNameCsv = ViewModel.MappingModel.SourceFile.FilenameCsv
             }, "text/plain");
         }
 
@@ -147,16 +148,22 @@ namespace ServicesMvc.DataConverter.Controllers
         {
             ViewModel.InitMapping(mappingId);
 
-            return PartialView("Partial/Konfiguration", ViewModel.DataConverter);
+            return PartialView("Partial/Konfiguration", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteKonfiguration(int mappingId)
+        {
+            ViewModel.DeleteMapping(mappingId);
+
+            return new EmptyResult();
         }
 
         #region Show Xml as div content
 
-        public ActionResult ShowDestinationDiv(XmlDocument destXmlDocument)
+        public ActionResult ShowDestinationDiv()
         {
-            var divContent = ViewModel.GetDestinationDiv(destXmlDocument);
-
-            return Content(divContent);
+            return Content(ViewModel.GetDestinationDiv());
         }
 
         #endregion
@@ -165,7 +172,7 @@ namespace ServicesMvc.DataConverter.Controllers
         [StoreUi]
         public JsonResult AddProcessor(string processors, string connections)
         {
-            ViewModel.DataConverter.AddProcessor();
+            ViewModel.AddProcessor();
             return RefreshUi();
         }
 
@@ -198,48 +205,47 @@ namespace ServicesMvc.DataConverter.Controllers
             switch (recordOffset)
             {
                 case "first":
-                    ViewModel.DataConverter.RecordNo = 0;
+                    ViewModel.MappingModel.RecordNo = 0;
                     break;
 
                 case "-1":
-                    ViewModel.DataConverter.RecordNo--;
+                    ViewModel.MappingModel.RecordNo--;
                     break;
 
                 case "+1":
-                    ViewModel.DataConverter.RecordNo++;
+                    ViewModel.MappingModel.RecordNo++;
                     break;
 
                 case "last":
-                    ViewModel.DataConverter.RecordNo = ViewModel.DataConverter.RecordCount;
+                    ViewModel.MappingModel.RecordNo = ViewModel.MappingModel.RecordCount;
                     break;
             }
 
-            if (ViewModel.DataConverter.RecordNo < 1)
-                ViewModel.DataConverter.RecordNo = 1;
+            if (ViewModel.MappingModel.RecordNo < 1)
+                ViewModel.MappingModel.RecordNo = 1;
 
-            if (ViewModel.DataConverter.RecordNo > ViewModel.DataConverter.RecordCount)
-                ViewModel.DataConverter.RecordNo = ViewModel.DataConverter.RecordCount;
-            
-            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
-            var processorList = ViewModel.DataConverter.RecalcProcessors();
+            if (ViewModel.MappingModel.RecordNo > ViewModel.MappingModel.RecordCount)
+                ViewModel.MappingModel.RecordNo = ViewModel.MappingModel.RecordCount;
 
             // Alle DatenRecords der Quellfelder ermitteln...
-            var sourceFieldList = ViewModel.DataConverter.RecalcSourceFields();
+            var sourceFieldList = ViewModel.RecalcSourceFields();
 
             // Alle DatenRecords der Zielfelder ermitteln...
-            var destFieldList = ViewModel.DataConverter.RecalcDestFields();
+            var destFieldList = ViewModel.RecalcDestFields();
 
-            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ProcessorList = processorList, RecordInfoText = ViewModel.DataConverter.RecordInfoText });
+            // Alle Prozessoren zur späteren Ausgabe aktualisieren...
+            var processorList = ViewModel.RecalcProcessors();
+
+            return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ConnectionList = ViewModel.MappingModel.DataConnections, ProcessorList = processorList, RecordInfoText = ViewModel.MappingModel.RecordInfoText });
         }
 
         [HttpPost]
         [StoreUi]
         public ActionResult SaveKonfiguration()
         {
-            if (ModelState.IsValid)
-                ViewModel.SaveMapping(ModelState);
+            var success = ViewModel.SaveMapping();
 
-            return PartialView("Partial/Konfiguration", ViewModel.DataConverter);
+            return Json(new { success = success, message = (success ? Localize.SaveSuccessful : Localize.SaveFailed) });
         }
 
         #region Export Xml
@@ -247,9 +253,9 @@ namespace ServicesMvc.DataConverter.Controllers
         [StoreUi]
         public ActionResult TestExportXml()
         {
-            var brrr = JSon.Serialize(ViewModel.DataConverter.DataMapping);
+            var brrr = JSon.Serialize(ViewModel.MappingModel);
 
-            return Content(ViewModel.GenerateXmlResultStructure(), "text/xml");
+            return Content(ViewModel.GenerateXmlResultStructure().ToString(), "text/xml");
         }
 
         #endregion

@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Xml;
 
-namespace GeneralTools.Models
+namespace CkgDomainLogic.DataConverter.Models
 {
     public class ProcessStructure
     {
         public string StructureName { get; set; }
-
-        public XmlDocument XmlDocument { get; set; }
 
         public List<Field> Fields { get; set; }
 

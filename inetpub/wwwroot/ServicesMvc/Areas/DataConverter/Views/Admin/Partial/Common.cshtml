@@ -10,14 +10,6 @@
          height: 532px;
      }
      
-@*     #DataConverterContainer {
-         width: 100%;
-         height: 500px;
-         position: relative;     
-         -ms-overflow-y: hidden;
-         overflow-y: hidden;
-    }*@
-    
     #source {
         height: 450px;
         width: 250px;
@@ -271,48 +263,6 @@
         setTimeout('LoadingHide()', 1000);
     }
 
-    function FormWizardInitPrivate() {
-        FormWizard.Init(function () {
-            FormWizard.ActionsShow(true);
-            FormWizard.tabClickDisabled = true;
-        });
-
-        FormWizard.OnNext(function (step, maxSteps) {            
-            var stepName = FormWizard.GetStepKey(step - 1);
-            try {
-                $("#AjaxForm" + stepName).submit();
-                window.scrollTo(0, 0);
-                return false;
-            }
-            catch (e) {
-                return true;
-            }
-        });
-
-        FormWizard.OnPrev(function (step, maxSteps) {
-            var stepName = FormWizard.GetStepKey(step + 1);
-
-            if (stepName == 'Konfiguration') {
-                $('.processorobj').hide();
-            }
-
-            window.scrollTo(0, 0);
-            return true;
-        });
-
-        FormWizard.OnSubmit(function () {
-            LoadingShow();
-            SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
-            AjaxRequestNextStep();
-
-            return true;
-        });
-
-        FormWizard.OnRestart(function () {
-            LocationReloadWithoutQueryString();
-        });
-    }
-
     function GetGrid(gridName) {
         return $("#" + gridName).data("tGrid");
     }
@@ -321,39 +271,10 @@
         GetGrid(gridName).pageTo(1);
     }
 
-    function AjaxRequestNextStep() {
-        var nextTabKey = FormWizard.GetNextTabKey();
-        $.ajax({
-            type: "POST",
-            url: nextTabKey,
-            data: {},
-            loadingShow: true,
-            success: function (result) {
-                SpanAlertWarningHide("WaitHint");
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetNextTabHtmlAndMoveNext(result);
-                FormPreparePrivateAjax();
-
-            }
-        });
-    }
-
     function AjaxFormProzessauswahlComplete() {
         FormPreparePrivateAjax();
         if (_modelStateValid) {
             ShowKonfiguration(0);
-        }
-    }
-
-    function AjaxFormKonfigurationComplete() {
-        FormPreparePrivateAjax();
-        if (_modelStateValid) {
-            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
-            SpanAlertSuccess("spanAlertDataConverterAdmin", successMessage, 1800);
-            CloseDataMappingDetails();
         }
     }
 
@@ -396,12 +317,11 @@
         }, 500);
     }
 
-    function ShowKonfiguration(id) {
+    function ShowProzessauswahl() {
         $.ajax(
         {
             type: "POST",
-            url: "ShowKonfiguration",
-            data: { mappingId: id },
+            url: "ShowProzessauswahl",
             loadingShow: true,
             success: function (result) {
                 ShowDataMappingDetails(result);
@@ -412,14 +332,40 @@
         });
     }
 
-    function ShowProzessauswahl() {
+    function ShowKonfiguration(id) {
         $.ajax(
         {
             type: "POST",
-            url: "ShowProzessauswahl",
+            url: "ShowKonfiguration",
+            data: { mappingId: id },
             loadingShow: true,
             success: function (result) {
                 ShowDataMappingDetails(result);
+//                if ($.isFunction(refreshPlumb))
+//                    refreshPlumb();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function DeleteKonfiguration(id) {
+        if (!confirm('@Localize.MappingDeleteConfirm.ToJavascriptString()')) {
+            return;
+        }
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteKonfiguration",
+            data: { mappingId: id },
+            loadingShow: true,
+            success: function (result) {
+                TryGridRefresh();
+            },
+            error: function (result) {
+                alert(result.data);
             }
         });
     }
@@ -433,6 +379,7 @@
 
     function CloseDataMappingDetails() {
         setTimeout(function () {
+            $("#divDataMappingDetails").html("");
             $("#divDataMappingDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
@@ -440,6 +387,29 @@
         }, 150);
 
         TryGridRefresh();
+    }
+
+    function SaveKonfiguration() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SaveKonfiguration",
+            loadingShow: true,
+            success: function (result) {
+                FormPreparePrivateAjax();
+
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertDataConverterAdmin", result.message, 1800);
+                    CloseDataMappingDetails();
+                }
+                else {
+                    SpanAlertError("spanAlertDataConverterAdmin", result.message, 3000);
+                }
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
     }
 
 </script>

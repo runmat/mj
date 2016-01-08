@@ -1,5 +1,5 @@
 ﻿
-namespace GeneralTools.Models
+namespace CkgDomainLogic.DataConverter.Models
 {
     public enum Operation
     {

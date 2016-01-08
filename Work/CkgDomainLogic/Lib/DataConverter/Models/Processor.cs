@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeneralTools.Models
+namespace CkgDomainLogic.DataConverter.Models
 {
     public class Processor
     {

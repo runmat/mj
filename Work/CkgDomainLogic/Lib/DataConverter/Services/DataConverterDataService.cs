@@ -47,11 +47,51 @@ namespace CkgDomainLogic.DataConverter.Services
             }
         }
 
-        public List<DataConverterDataMapping> GetDataMappings(DataMappingSelektor selektor)
+        public bool SaveProcessStructure(DataConverterProcessStructure processStructure)
         {
             using (var dbContext = GetDbContext())
             {
-                return dbContext.GetDataConverterDataMappings(selektor.CustomerId, selektor.ProzessName).OrderBy(x => x.Customername).ThenBy(x => x.Process).ThenBy(x => x.Title).ToListOrEmptyList();
+                return dbContext.SaveDataConverterProcessStructure(processStructure);
+            }
+        }
+
+        public bool DeleteProcessStructure(string processName)
+        {
+            using (var dbContext = GetDbContext())
+            {
+                return dbContext.DeleteDataConverterProcessStructure(processName);
+            }
+        }
+
+        public List<DataConverterMappingInfo> GetDataMappingInfos(DataMappingSelektor selektor)
+        {
+            using (var dbContext = GetDbContext())
+            {
+                return dbContext.GetDataConverterMappingInfos(selektor.CustomerId, selektor.ProzessName).OrderBy(x => x.Customername).ThenBy(x => x.Process).ThenBy(x => x.Title).ToListOrEmptyList();
+            }
+        }
+
+        public DataConverterMappingData GetDataMapping(int mappingId)
+        {
+            using (var dbContext = GetDbContext())
+            {
+                return dbContext.GetDataConverterMappingData(mappingId);
+            }
+        }
+
+        public bool SaveDataMapping(DataConverterMappingData mapping)
+        {
+            using (var dbContext = GetDbContext())
+            {
+                return dbContext.SaveDataConverterMapping(mapping);
+            }
+        }
+
+        public bool DeleteDataMapping(int mappingId)
+        {
+            using (var dbContext = GetDbContext())
+            {
+                return dbContext.DeleteDataConverterMapping(mappingId);
             }
         }
     }

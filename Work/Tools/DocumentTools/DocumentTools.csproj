@@ -99,7 +99,6 @@
     <Compile Include="Services\DataTableMailMergeSource.cs" />
     <Compile Include="Services\ExcelDocumentFactory.cs" />
     <Compile Include="Services\CsvReader.cs" />
-    <Compile Include="Services\DataConverterService.cs" />
     <Compile Include="Services\PdfDocumentFactory.cs" />
     <Compile Include="Services\SpireXLS.cs" />
     <Compile Include="Services\SpreadsheetLightService.cs" />

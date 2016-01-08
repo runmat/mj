@@ -13,6 +13,11 @@ namespace CkgDomainLogic.DataConverter.Models
 {
     public class NewDataMappingSelektor
     {
+        [Required]
+        [MaxLength(50)]
+        [LocalizedDisplay(LocalizeConstants.Name)]
+        public string MappingName { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public int CustomerId { get; set; }
 
@@ -20,7 +25,7 @@ namespace CkgDomainLogic.DataConverter.Models
         public List<Customer> CustomerList { get { return GetViewModel == null ? new List<Customer>() : GetViewModel().Kunden; } }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.ProcessSelection)]
+        [LocalizedDisplay(LocalizeConstants.Process)]
         public string ProzessName { get; set; }
 
         [XmlIgnore]
