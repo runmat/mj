@@ -31,7 +31,7 @@ namespace GeneralTools.Services
             SetConfigValue(context, keyName, value, connectionString);
         }
 
-        private const string SQLClause = "Context = @Context AND [Key] = @Key";
+        private const string SqlClause = "Context = @Context AND [Key] = @Key";
 
         public static string GetConfigValue(string context, string keyName)
         {
@@ -40,7 +40,7 @@ namespace GeneralTools.Services
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "SELECT value FROM Config " +
-                                  "WHERE " + SQLClause;
+                                  "WHERE " + SqlClause;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Context", context);
                 cmd.Parameters.AddWithValue("@Key", keyName);
@@ -66,7 +66,7 @@ namespace GeneralTools.Services
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "SELECT value FROM ConfigAllServers " +
-                                  "WHERE " + SQLClause;
+                                  "WHERE " + SqlClause;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Context", context);
                 cmd.Parameters.AddWithValue("@Key", keyName);
@@ -113,7 +113,7 @@ namespace GeneralTools.Services
                 return new Dictionary<string, string>();
             }
                 // ReSharper disable once UnusedVariable
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Dictionary<string, string>();
             }
@@ -127,7 +127,7 @@ namespace GeneralTools.Services
                 cnn.Open();
 
                 var cmdInsert = cnn.CreateCommand();
-                cmdInsert.CommandText = "if (not exists(select * from Config where " + SQLClause + ")) " +
+                cmdInsert.CommandText = "if (not exists(select * from Config where " + SqlClause + ")) " +
                                         "   insert into Config " +
                                         "      (Context, [Key], Value) select " + 
                                         "      @Context, @Key, ''";
@@ -140,7 +140,7 @@ namespace GeneralTools.Services
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "update Config " +
                                   "set Value = @Value " +
-                                  "WHERE " + SQLClause;
+                                  "WHERE " + SqlClause;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Context", context);
                 cmd.Parameters.AddWithValue("@Key", keyName);

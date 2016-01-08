@@ -16,11 +16,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
     public class WeatherViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IDashboardDataService DataService { get { return CacheGet<IDashboardDataService>(); } }
+        public IWeatherDataService DataService { get { return CacheGet<IWeatherDataService>(); } }
 
         public void DataInit()
         {
-            var conns = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>().GetConfigAllServersVals("ConnectionString");
+            const string cityAndCountry = "hamburg,de";
+
+            var jsonData = DataService.GetWeatherData(cityAndCountry);
         }
     }
 }
