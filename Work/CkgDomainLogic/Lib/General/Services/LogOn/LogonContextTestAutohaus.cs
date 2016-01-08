@@ -26,6 +26,10 @@ namespace CkgDomainLogic.General.Services
         
         public MaintenanceResult MaintenanceInfo { get { return PropertyCacheGet(() => new MaintenanceResult()); } set { PropertyCacheSet(value); } }
 
+        public int CustomerID { get { return 0; } }
+
+        public int AppID { get { return 0; } }
+
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
         public string GroupName { get; set; }
@@ -35,6 +39,8 @@ namespace CkgDomainLogic.General.Services
             get { return PropertyCacheGet(() => User == null ? "TestUser" : User.Username); }
             set { PropertyCacheSet(value); }
         }
+
+        public virtual bool HasLocalizationTranslationRights { get { return false; } }
 
         public WebUserInfo UserInfo { get; set; }
 

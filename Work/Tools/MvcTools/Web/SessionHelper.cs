@@ -3,14 +3,17 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.SessionState;
+using System.Web.WebPages;
 using GeneralTools.Models;
 using Telerik.Web.Mvc.UI;
 
 namespace MvcTools.Web
 {
-    public static class SessionHelper
+    public static class SessionHelper 
     {
         private static HttpContext HttpContext
         {
@@ -154,6 +157,83 @@ namespace MvcTools.Web
 
             var relativeUrl = HttpContext.Current.GetAppUrlCurrent();
             return string.Format("GridColumnsAutoPersist_{0}_{1}", relativeUrl, gridCurrentModelType.Name);
+        }
+
+        public static void FormSettingsAdminModeWysiwygModeSet(bool set)
+        {
+            SetSessionValue("FormSettingsAdminModeWysiwygMode", set);
+        }
+
+        public static bool FormSettingsAdminModeWysiwygModeGet()
+        {
+            return GetSessionValue("FormSettingsAdminModeWysiwygMode", false);
+        }
+
+        public static string GetPartialViewContextCurrent()
+        {
+            return GetSessionString("PartialViewContextCurrent");
+        }
+
+        public static void SetPartialViewContextCurrent(HtmlHelper html = null)
+        {
+            var partialViewUrl = "";
+            var browserUrl = HttpContext.Current.GetAppUrlCurrent();
+
+            if (html == null)
+            {
+                if (HttpContext.Current != null)
+                    partialViewUrl = HttpContext.Current.Request.Url.AbsolutePath;
+            }
+            else
+            { 
+                var partialViewHtml = html.ViewContext.Writer.ToString().NotNullOrEmpty().SubstringTry(0, 1024);
+                const string strRegex = @"action=\""(?<url>.*?)\""";
+                var matches = Regex.Match(partialViewHtml, strRegex);
+                if (matches.Groups.Count > 0)
+                    partialViewUrl = matches.Groups["url"].Value;
+                else
+                    partialViewUrl = partialViewHtml.SubstringTry(0, 50).Replace("\\r", "").Replace("\\n", "");
+
+                if (partialViewUrl.IsNullOrEmpty())
+                    partialViewUrl = GetSessionString("PartialViewUrlCurrent");
+            }
+
+            browserUrl = GetUrlWithoutIisWebAppName(browserUrl.NotNullOrEmpty().ToLower());
+            partialViewUrl = GetUrlWithoutIisWebAppName(partialViewUrl.NotNullOrEmpty().ToLower());
+
+            if (partialViewUrl.Contains("/gridadmin"))
+                return;
+
+            var partialViewContext = string.Format("{0}___{1}", browserUrl, partialViewUrl);
+            partialViewContext = partialViewContext.Replace("/", "_");
+
+            SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
+            SetSessionValue("PartialViewContextCurrent", partialViewContext);
+        }
+
+        private static string GetPartialViewContextIsFormControlHidingNotAvailableKey()
+        {
+            return "PartialViewUrlCurrent_" + GetPartialViewContextCurrent();
+        }
+
+        public static bool GetPartialViewContextIsFormControlHidingNotAvailable()
+        {
+            return GetSessionValue(GetPartialViewContextIsFormControlHidingNotAvailableKey(), false);
+        }
+
+        public static void SetPartialViewContextIsFormControlHidingNotAvailable(bool set)
+        {
+            SetSessionValue(GetPartialViewContextIsFormControlHidingNotAvailableKey(), set);
+        }
+
+        static string GetUrlWithoutIisWebAppName(string url)
+        {
+            var path = url;
+            var index = path.SubstringTry(1).IndexOf("/", StringComparison.Ordinal);
+            if (index < 0)
+                return "";
+
+            return path.SubstringTry(index + 1);
         }
     }
 }
