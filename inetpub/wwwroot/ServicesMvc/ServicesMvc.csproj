@@ -2822,7 +2822,7 @@
     <Content Include="Views\Shared\Partial\ImpressumCkg.cshtml" />
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
-    <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
