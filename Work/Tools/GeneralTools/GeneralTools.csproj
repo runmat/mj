@@ -187,6 +187,7 @@
     <Compile Include="Services\AssemblyService.cs" />
     <Compile Include="Services\Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Services\Configuration\GeneralConfiguration.cs" />
+    <Compile Include="Services\CryptoMd5.cs" />
     <Compile Include="Services\CsvService.cs" />
     <Compile Include="Services\DateService.cs" />
     <Compile Include="Services\HttpContextService.cs" />

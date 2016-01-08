@@ -73,7 +73,7 @@ namespace CkgDomainLogic.General.Services
             UserID = User.UserID.ToString();
             UserOnProdDataSystem = !User.TestUser;
 
-            UserNameEncryptedToUrlEncoded = CryptoMd5.EncryptToUrlEncoded(User.Username);
+            UserNameEncryptedToUrlEncoded = CryptoMd5Web.EncryptToUrlEncoded(User.Username);
 
             dbContext.SetLastLogin(DateTime.Now);
 

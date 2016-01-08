@@ -20,6 +20,12 @@ namespace GeneralTools.Services
             return GetConfigAllServersValues(context, connectionString, filterClause);
         }
 
+        public string GetConfigAllServerVal(string context, string keyName)
+        {
+            return GetConfigAllServerValue(context, keyName);
+        }
+
+
         public void SetConfigVal(string context, string keyName, string value, string connectionString = null)
         {
             SetConfigValue(context, keyName, value, connectionString);
@@ -53,9 +59,38 @@ namespace GeneralTools.Services
                 return "";
             }
         }
+        public static string GetConfigAllServerValue(string context, string keyName)
+        {
+            try
+            {
+                var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+                var cmd = cnn.CreateCommand();
+                cmd.CommandText = "SELECT value FROM ConfigAllServers " +
+                                  "WHERE " + SQLClause;
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Context", context);
+                cmd.Parameters.AddWithValue("@Key", keyName);
+
+                cnn.Open();
+                var erg = cmd.ExecuteScalar();
+                cnn.Close();
+
+                if (erg != null)
+                    return erg.ToString();
+
+                return "";
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
 
         public static IDictionary<string,string> GetConfigAllServersValues(string context, string connectionString = null, string filterClause=null)
         {
+            var encryptedPwd = GetConfigAllServerValue("ConnectionStringMetadata", "Database User Pwd");
+            var decryptedPwd = CryptoMd5.Decrypt(encryptedPwd);
+
             try
             {
                 var cnn = new SqlConnection(connectionString ?? ConfigurationManager.AppSettings["Connectionstring"]);
@@ -73,7 +108,7 @@ namespace GeneralTools.Services
                 cnn.Close();
 
                 if (dt.Rows.Count > 0)
-                    return dt.Rows.OfType<DataRow>().ToDictionary(row => row[0].ToString(), row => row[1].ToString().Replace("******", "seE?Anemone"));
+                    return dt.Rows.OfType<DataRow>().ToDictionary(row => row[0].ToString(), row => row[1].ToString().Replace("******", decryptedPwd));
 
                 return new Dictionary<string, string>();
             }
