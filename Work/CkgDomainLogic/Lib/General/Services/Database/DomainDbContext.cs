@@ -848,7 +848,7 @@ namespace CkgDomainLogic.General.Database.Services
             }
 
             if (!string.IsNullOrEmpty(processName))
-                query += " " + (filterByCustomer ? "AND" : "WHERE") + " ProcessName = " + processName;
+                query += " " + (filterByCustomer ? "AND" : "WHERE") + " Process = '" + processName + "'";
 
             return Database.SqlQuery<DataConverterMappingInfo>(query);
         }

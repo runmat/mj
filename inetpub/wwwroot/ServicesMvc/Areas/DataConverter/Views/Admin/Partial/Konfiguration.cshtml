@@ -25,22 +25,24 @@
 
     <div class="space5"></div>
 
-    <div id="DataConverterContainer">
-        <div id="source" class="no-padding">
-            @foreach (var item in Model.MappingModel.SourceFile.Fields)
-            {
-                <div class="w" id="@item.Id">
-                    <div class="field">@item.Bezeichnung</div>
-                    <div class="data">@item.Records[0]</div>
-                    <div class="sp"></div>
-                </div>
-            }
-        </div>
+    @*<div id="DataConverterScrollContainer">*@
+        <div id="DataConverterContainer">
+            <div id="source" class="no-padding">
+                @foreach (var item in Model.MappingModel.SourceFile.Fields)
+                {
+                    <div class="w" id="@item.Id">
+                        <div class="field">@item.Bezeichnung</div>
+                        <div class="data">@item.Records[0]</div>
+                        <div class="sp"></div>
+                    </div>
+                }
+            </div>
 
-        <div id="destination">
-            @Html.Action("ShowDestinationDiv")
+            <div id="destination">
+                @Html.Action("ShowDestinationDiv")
+            </div>
         </div>
-    </div>
+    @*</div>*@
 
 </div>
 
@@ -86,6 +88,7 @@
         anchor: "Right",
         allowLoopback: false
     };
+
     var endpointOptions = {
         isSource: false,
         isTarget: true,
@@ -149,6 +152,10 @@
             refreshPlumb();
         });
 
+//        $('#DataConverterContainerScrollContainer').on("scroll", function () {
+//            refreshPlumb();
+//        });
+
         jsPlumb.bind("dblclick", function (c) {
             jsPlumb.detach(c);
             SyncUiData();
@@ -162,12 +169,22 @@
     function refreshPlumb() {
         jsPlumb.repaintEverything();
     }
+
+    function resetPlumb() {
+        jsPlumb.reset();
+    }
+
+    function ResetKonfiguration() {
+        ClearAll(true);
+        resetPlumb();
+    }
     
     // Show Processor in UI
     function ShowProcessor(processorId, number, title, posLeft, posTop, type, para1, para2) {
-        
+
         // Clone template div...
-        var div = document.getElementById('processorTemplate'), clone = div.cloneNode(true);
+        var div = document.getElementById('processorTemplate');
+        var clone = div.cloneNode(true);
 
         clone.id = processorId;
         document.body.appendChild(clone);
@@ -192,8 +209,8 @@
         prozin.attr("id", "prozin-" + processorId);
         prozout.attr("id", "prozout-" + processorId);
 
-        jsPlumb.makeTarget($("#prozin-" + processorId), endpointOptionsProzessor);
         jsPlumb.makeSource($("#prozout-" + processorId), startpointOptions);
+        jsPlumb.makeTarget($("#prozin-" + processorId), endpointOptionsProzessor);
 
         switch (type) {
             case 1:
@@ -400,13 +417,20 @@
 
         if (initConnections)
             InitConnections(uiObject.ConnectionList);
+
+        refreshPlumb();
     }
 
     function InitConnections(connectionList) {
+        jsPlumb.unbind("connection");
+
         for (var i = 0; i < connectionList.length; i++) {
             AddConnection(connectionList[i].Guid, connectionList[i].GuidSource, connectionList[i].GuidDest);
         }
-        refreshPlumb();
+
+        jsPlumb.bind("connection", function (info) {
+            SyncUiData();
+        });
     }
 
 </script>

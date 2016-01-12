@@ -2,16 +2,22 @@
 
 <style type="text/css">
     
-     .form-wizard .progress {
-         margin-bottom: 10px !important;
-     }
+    .form-wizard .progress {
+        margin-bottom: 10px !important;
+    }
      
-     #DivKonfiguration {
-         height: 532px;
-     }
-     
-    #source {
+    #DivKonfiguration {
+        height: 532px;
+    }
+    
+    #DataConverterContainer {
         height: 450px;
+        overflow: hidden;
+        @*position: relative;*@
+    }
+
+    #source {
+        height: 445px;
         width: 250px;
         position: absolute;
         padding: 0;
@@ -22,7 +28,7 @@
     }
 
     #destination {
-        height: 450px;
+        height: 445px;
         width: 250px;
         right: 3%;
         position: absolute;
@@ -342,8 +348,6 @@
             loadingShow: true,
             success: function (result) {
                 ShowDataMappingDetails(result);
-//                if ($.isFunction(refreshPlumb))
-//                    refreshPlumb();
             },
             error: function (result) {
                 alert(result.data);
@@ -379,8 +383,10 @@
     }
 
     function CloseDataMappingDetails() {
+        if ($.isFunction(ResetKonfiguration))
+            ResetKonfiguration();
+
         setTimeout(function () {
-            $("#divDataMappingDetails").html("");
             $("#divDataMappingDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);
