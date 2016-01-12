@@ -3,23 +3,56 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 using CkgDomainLogic.AutohausFahrzeugdaten.Models;
+using CkgDomainLogic.DataConverter.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using MvcTools.Data;
 
 namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 {
-    public class UploadFahrzeugdatenViewModel : CkgBaseViewModel
+    public class UploadFahrzeugdatenViewModel : DataConverterViewModel
     {
+        [XmlIgnore, ScriptIgnore]
+        public IDictionary<string, string> Steps
+        {
+            get
+            {
+                return PropertyCacheGet(() =>
+                {
+                    var dict = new Dictionary<string, string>();
+
+                    if (MappedUpload && DataMappingsForCustomer.Count != 1)
+                        dict.Add("MappingSelection", Localize.MappingSelection);
+
+                    dict.Add("FileUpload", Localize.UploadExcelFile);
+                    dict.Add("UploadFahrzeugdatenGrid", Localize.Send);
+                    dict.Add("Receipt", Localize.DoneStep);
+
+                    return dict;
+                });
+            }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public string[] StepKeys { get { return PropertyCacheGet(() => Steps.Select(s => s.Key).ToArray()); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public string FirstStepPartialViewName { get { return string.Format("{0}", StepKeys[0]); } }
+
         public string UploadFileName { get; private set; }
         public string UploadServerFileName { get; private set; }
-        public List<UploadFahrzeug> UploadItems { get { return DataService.UploadItems; } }
+        public List<UploadFahrzeug> UploadItems { get { return UploadDataService.UploadItems; } }
 
         [LocalizedDisplay(LocalizeConstants.DataWithErrorsOccurred)]
         public bool UploadItemsUploadErrorsOccurred { get { return UploadItems.Any(item => !item.IsValid); } }
@@ -29,21 +62,32 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public bool SaveFailed { get; set; }
 
+        public bool MappedUpload { get; set; }
+
         [XmlIgnore]
-        public IUploadFahrzeugdatenDataService DataService { get { return CacheGet<IUploadFahrzeugdatenDataService>(); } }
+        public IUploadFahrzeugdatenDataService UploadDataService { get { return CacheGet<IUploadFahrzeugdatenDataService>(); } }
 
         public string SaveResultMessage { get; set; }
 
-        public void DataMarkForRefresh()
+        public void InitViewModel(bool mappedUpload = false)
         {
+            DataConverterInit();
+
+            MappedUpload = mappedUpload;
+
+            PropertyCacheClear(this, m => m.Steps);
+            PropertyCacheClear(this, m => m.StepKeys);
+            PropertyCacheClear(this, m => m.StepFriendlyNames);
+
             PropertyCacheClear(this, m => m.UploadItems);
             PropertyCacheClear(this, m => m.UploadItemsFiltered);
+
             SubmitMode = false;
         }
 
         public bool SubmitMode { get; set; }
 
-        public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
+        public void ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction, ModelStateDictionary state)
         {
             UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
@@ -53,14 +97,33 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
-                return false;
+            {
+                state.AddModelError(string.Empty, Localize.ErrorFileCouldNotBeSaved);
+                return;
+            }
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, "", CreateInstanceFromDatarow, ';', true, true).ToList();
+            List<UploadFahrzeug> list;
+
+            if (MappedUpload)
+            {
+                InitDataMapper(MappingSelectionModel.MappingId);
+                var inputData = new ExcelDocumentFactory().ReadToDataTableForMappedUpload(UploadServerFileName, true, DynamicObjectConverter.CreateDynamicObjectFromDatarow, MappingModel.SourceFile.Delimiter, true, true).ToList();
+                list = MapData<UploadFahrzeug>(inputData, state);
+            }
+            else
+            {
+                list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, "", CreateInstanceFromDatarow, ';', true, true).ToList();
+            }
+
             FileService.TryFileDelete(UploadServerFileName);
-            if (list.None())
-                return false;
 
-            DataService.UploadItems = list;
+            if (list.None())
+            {
+                state.AddModelError(string.Empty, Localize.ImportDataCouldNotBeRead);
+                return;
+            }
+
+            UploadDataService.UploadItems = list;
 
             var zaehler = 0;
             foreach (var item in UploadItems)
@@ -82,8 +145,6 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
             }
 
             ValidateUploadItems();
-
-            return true;
         }
 
         static UploadFahrzeug CreateInstanceFromDatarow(DataRow row)
@@ -111,7 +172,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void ValidateUploadItems()
         {
-            DataService.ValidateFahrzeugdatenCsvUpload();
+            UploadDataService.ValidateFahrzeugdatenCsvUpload();
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;
         }
@@ -149,7 +210,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void SaveUploadItems()
         {
-            SaveResultMessage = DataService.SaveFahrzeugdatenCsvUpload();
+            SaveResultMessage = UploadDataService.SaveFahrzeugdatenCsvUpload();
             SaveFailed = !String.IsNullOrEmpty(SaveResultMessage);
         }
 

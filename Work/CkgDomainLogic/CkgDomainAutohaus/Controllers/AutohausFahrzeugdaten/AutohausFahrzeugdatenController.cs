@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.AutohausFahrzeugdaten.ViewModels;
+using CkgDomainLogic.DataConverter.Models;
 using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Models;
@@ -19,32 +20,64 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult UploadFahrzeugdaten()
         {
-            UploadFahrzeugdatenViewModel.DataMarkForRefresh();
+            UploadFahrzeugdatenViewModel.InitViewModel();
 
             return View(UploadFahrzeugdatenViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult MappedUploadFahrzeugdaten()
+        {
+            UploadFahrzeugdatenViewModel.InitViewModel(true);
+
+            return View("UploadFahrzeugdaten", UploadFahrzeugdatenViewModel);
+        }
+
+        #region MappingSelection
+
+        [HttpPost]
+        public ActionResult MappingSelection()
+        {
+            return PartialView("UploadFahrzeugdaten/MappingSelection", UploadFahrzeugdatenViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult MappingSelectionForm(MappedUploadMappingSelectionModel model)
+        {
+            if (ModelState.IsValid)
+                UploadFahrzeugdatenViewModel.MappingSelectionModel.MappingId = model.MappingId;
+
+            return PartialView("UploadFahrzeugdaten/MappingSelectionForm", model);
+        }
+
+        #endregion
+
         #region CsvUpload
+
+        [HttpPost]
+        public ActionResult FileUpload()
+        {
+            return PartialView("UploadFahrzeugdaten/FileUpload", UploadFahrzeugdatenViewModel);
+        }
 
         [HttpPost]
         public ActionResult UploadFahrzeugdatenStart(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
+            ModelState.Clear();
+
             if (uploadFiles == null || uploadFiles.None())
                 return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
 
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
-            if (!UploadFahrzeugdatenViewModel.ExcelUploadFileSave(file.FileName, file.SavePostedFile))
-                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+            UploadFahrzeugdatenViewModel.ExcelUploadFileSave(file.FileName, file.SavePostedFile, ModelState);
 
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = string.Format("{0} ({1})", Localize.ErrorFileCouldNotBeSaved, 
+                                                                                        ModelState.Values.First(m => m.Errors.Any()).Errors.First().ErrorMessage) }, "text/plain");
 
-            return Json(new
-            {
-                success = true,
-                message = "ok",
-                uploadFileName = file.FileName,
-            }, "text/plain");
+            return Json(new { success = true, message = "ok", uploadFileName = file.FileName }, "text/plain");
         }
 
         [HttpPost]

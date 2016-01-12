@@ -2868,6 +2868,8 @@
     <Content Include="Views\Fahrzeuge\Carportnacherfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugnacherfassungForm.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\MappingSelection.cshtml" />
+    <Content Include="Views\AutohausFahrzeugdaten\UploadFahrzeugdaten\MappingSelectionForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

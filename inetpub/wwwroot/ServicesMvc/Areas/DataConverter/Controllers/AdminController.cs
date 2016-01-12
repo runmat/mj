@@ -45,7 +45,7 @@ namespace ServicesMvc.DataConverter.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            ViewModel.DataInit();
+            ViewModel.DataConverterInit();
 
             return View(ViewModel);
         }
@@ -53,12 +53,12 @@ namespace ServicesMvc.DataConverter.Controllers
         [HttpPost]
         public ActionResult LoadDataMappings(DataMappingSelektor model)
         {
-            ViewModel.Selektor = model;
+            ViewModel.MappingSelektor = model;
 
             if (ModelState.IsValid)
                 ViewModel.LoadDataMappings(ModelState);
 
-            return PartialView("Partial/Suche", ViewModel.Selektor);
+            return PartialView("Partial/Suche", ViewModel.MappingSelektor);
         }
 
         [HttpPost]
@@ -253,8 +253,6 @@ namespace ServicesMvc.DataConverter.Controllers
         [StoreUi]
         public ActionResult TestExportXml()
         {
-            var brrr = JSon.Serialize(ViewModel.MappingModel);
-
             return Content(ViewModel.GenerateXmlResultStructure().ToString(), "text/xml");
         }
 

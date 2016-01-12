@@ -101,6 +101,7 @@
     <Compile Include="DataConverter\Models\DataMappingModel.cs" />
     <Compile Include="DataConverter\Models\DataMappingSelektor.cs" />
     <Compile Include="DataConverter\Models\Field.cs" />
+    <Compile Include="DataConverter\Models\MappedUpload\MappedUploadMappingSelectionModel.cs" />
     <Compile Include="DataConverter\Models\NewDataMappingSelektor.cs" />
     <Compile Include="DataConverter\Models\Operation.cs" />
     <Compile Include="DataConverter\Models\Processor.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="DataConverter\Models\SourceFile.cs" />
     <Compile Include="DataConverter\Models\JsonStructureGeneration\DataConverterStructure.cs" />
     <Compile Include="DataConverter\Services\DataConverterDataService.cs" />
+    <Compile Include="DataConverter\Services\DataConverterStructureGenerationService.cs" />
     <Compile Include="DataConverter\ViewModels\DataConverterViewModel.cs" />
     <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />

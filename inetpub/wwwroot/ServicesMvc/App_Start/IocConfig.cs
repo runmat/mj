@@ -136,9 +136,7 @@ namespace ServicesMvc
 
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM
-
-            builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM 
 
             builder.RegisterType<FehlteilEtikettenDataServiceSAP>().As<IFehlteilEtikettenDataService>().InstancePerLifetimeScope();
             
@@ -238,6 +236,8 @@ namespace ServicesMvc
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
+
+            builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

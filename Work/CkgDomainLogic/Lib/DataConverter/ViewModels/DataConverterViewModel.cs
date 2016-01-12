@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -15,22 +17,24 @@ using CkgDomainLogic.DataConverter.Models;
 using CkgDomainLogic.General.Database.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
+using MvcTools.Data;
 using Newtonsoft.Json;
 
 namespace CkgDomainLogic.DataConverter.ViewModels
 {
+    [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
     public class DataConverterViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
-        public IDataConverterDataService DataService { get { return CacheGet<IDataConverterDataService>(); } }
+        public IDataConverterDataService DataConverterDataService { get { return CacheGet<IDataConverterDataService>(); } }
 
         [XmlIgnore]
         public List<Customer> Kunden
         {
             get
             {
-                return PropertyCacheGet(() => DataService.GetCustomers()
-                    .InsertAtTop(new Customer { CustomerID = 0, Customername = Localize.DropdownDefaultOptionPleaseChoose }).ToListOrEmptyList());
+                return PropertyCacheGet(() => DataConverterDataService.GetCustomers()
+                    .InsertAtTop(new Customer { CustomerID = 0, Customername = Localize.DropdownDefaultOptionPleaseChoose }).OrderBy(k => k.Customername).ToListOrEmptyList());
             }
         }
 
@@ -39,20 +43,26 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         {
             get
             {
-                return PropertyCacheGet(() => DataService.GetProcessStructureNames()
-                    .InsertAtTop("").ToListOrEmptyList());
+                return PropertyCacheGet(() => DataConverterDataService.GetProcessStructureNames()
+                    .InsertAtTop("").OrderBy(p => p).ToListOrEmptyList());
             }
         }
 
-        public DataMappingSelektor Selektor
+        public DataMappingSelektor MappingSelektor
         {
-            get { return PropertyCacheGet(() => new DataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.Customer.CustomerID) }); }
+            get { return PropertyCacheGet(() => new DataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.User.CustomerID) }); }
             set { PropertyCacheSet(value); }
         }
 
         public NewDataMappingSelektor NewMappingSelektor
         {
-            get { return PropertyCacheGet(() => new NewDataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.Customer.CustomerID) }); }
+            get { return PropertyCacheGet(() => new NewDataMappingSelektor { CustomerId = (CanUserSelectCustomer ? 0 : LogonContext.User.CustomerID) }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public MappedUploadMappingSelectionModel MappingSelectionModel
+        {
+            get { return PropertyCacheGet(() => new MappedUploadMappingSelectionModel { MappingId = (DataMappingsForCustomer.Count == 1 ? DataMappingsForCustomer.First().Id : 0) }); }
             set { PropertyCacheSet(value); }
         }
 
@@ -70,6 +80,9 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<DataConverterMappingInfo> DataMappingsForCustomer { get { return PropertyCacheGet(() => LoadDataMappingsForCustomer()); } }
+
         public DataMappingModel MappingModel { get; set; }
 
         public int MappingId { get; set; }
@@ -80,7 +93,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
         public bool CanUserSelectCustomer { get { return LogonContext.HighestAdminLevel > AdminLevel.Customer; } }
 
-        public void DataInit()
+        public void DataConverterInit()
         {
             MappingModel = new DataMappingModel();
 
@@ -90,6 +103,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         private void DataMarkForRefresh(bool refreshStammdaten = false)
         {
             PropertyCacheClear(this, m => m.DataMappingsFiltered);
+            PropertyCacheClear(this, m => m.DataMappingsForCustomer);
 
             if (refreshStammdaten)
             {
@@ -109,14 +123,28 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
         public void LoadDataMappings(ModelStateDictionary state)
         {
-            DataMappings = DataService.GetDataMappingInfos(Selektor);
+            DataMappings = DataConverterDataService.GetDataMappingInfos(MappingSelektor);
 
             DataMarkForRefresh();
+        }
+
+        public List<DataConverterMappingInfo> LoadDataMappingsForCustomer()
+        {
+            return DataConverterDataService.GetDataMappingInfos(new DataMappingSelektor { CustomerId = LogonContext.User.CustomerID, ProzessName = "" });
         }
 
         public void FilterDataMappings(string filterValue, string filterProperties)
         {
             DataMappingsFiltered = DataMappings.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void InitDataMapper(int mappingId)
+        {
+            MappingSelektor = new DataMappingSelektor { CustomerId = LogonContext.User.CustomerID };
+
+            LoadDataMappings(new ModelStateDictionary());
+
+            InitMapping(mappingId);
         }
 
         public void InitMapping(int mappingId)
@@ -125,7 +153,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
             if (mappingId == 0)
             {
-                ReadDestinationStructureFromJson(DataService.GetProcessStructure(NewMappingSelektor.ProzessName));
+                ReadDestinationStructureFromJson(DataConverterDataService.GetProcessStructure(NewMappingSelektor.ProzessName));
                 ReadSourceFile();
                 MappingCustomerId = NewMappingSelektor.CustomerId;
                 MappingName = NewMappingSelektor.MappingName;
@@ -134,7 +162,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             {
                 var selectedMapping = DataMappings.FirstOrDefault(m => m.Id == mappingId);
 
-                var mappingData = (selectedMapping != null ? DataService.GetDataMapping(selectedMapping.Id) : null);
+                var mappingData = (selectedMapping != null ? DataConverterDataService.GetDataMapping(selectedMapping.Id) : null);
                 if (mappingData != null)
                 {
                     MappingId = mappingData.Id;
@@ -416,7 +444,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
                 Mapping = JsonConvert.SerializeObject(MappingModel)
             };
 
-            success = DataService.SaveDataMapping(SaveObject);
+            success = DataConverterDataService.SaveDataMapping(SaveObject);
 
             if (MappingId == 0)
             {
@@ -447,7 +475,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
         public void DeleteMapping(int mappingId)
         {
-            var success = DataService.DeleteDataMapping(mappingId);
+            var success = DataConverterDataService.DeleteDataMapping(mappingId);
 
             if (success)
             {
@@ -496,6 +524,36 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             return xmlResult;
         }
 
+        /// <summary>
+        /// Liste von dynamischen Objekten mit allen vorhandenen Datensätzen generieren
+        /// </summary>
+        /// <returns></returns>
+        public List<dynamic> GenerateResultStructure()
+        {
+            var liste = new List<dynamic>();
+
+            for (var recordNo = 1; recordNo <= MappingModel.RecordCount; recordNo++)
+            {
+                var item = new ExpandoObject();
+
+                MappingModel.RecordNo = recordNo;
+
+                RecalcProcessors();
+                var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Text));
+
+                foreach (var field in MappingModel.DestinationStructure.Fields)
+                {
+                    var destField = destFields.FirstOrDefault(f => f.Key == field.Id);
+
+                    ((IDictionary<string, object>) item).Add(field.Bezeichnung, (destField != null ? destField.Text : null));
+                }
+
+                liste.Add(item);
+            }
+
+            return liste;
+        }
+
         public string ConvertToCsvIfNeeded(string filenameOrigFull, string filenameCsvFull, char delimeter = ';')
         {
             MappingModel.SourceFile.FilenameOrig = filenameOrigFull;
@@ -509,6 +567,59 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             }
 
             return filenameCsvFull;
+        }
+
+        /// <summary>
+        /// Mapping der Daten in eine Liste von anonymen Objekten (vorgelagertes DataInit und InitDataMapper erforderlich!)
+        /// </summary>
+        /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
+        /// <param name="state"></param>
+        /// <returns>Liste der Ergebnisobjekte</returns>
+        public List<object> MapData(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
+        {
+            SetSourceFileData(inputData, state);
+
+            return GenerateResultStructure();
+        }
+
+        /// <summary>
+        /// Mapping der Daten in eine Liste von Objekten des angegebenen Typs T (vorgelagertes DataInit und InitDataMapper erforderlich!)
+        /// </summary>
+        /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
+        /// <param name="state"></param>
+        /// <returns>Liste der Ergebnisobjekte vom Typ T</returns>
+        public List<T> MapData<T>(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
+            where T : class, new()
+        {
+            SetSourceFileData(inputData, state);
+
+            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure());
+        }
+
+        private void SetSourceFileData(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
+        {
+            MappingModel.SourceFile.Fields.ForEach(f => f.Records.Clear());
+
+            if (inputData.Any())
+            {
+                var propertyNames = ((IDictionary<string, object>)inputData.First()).Keys.ToList();
+
+                if (propertyNames.Count < MappingModel.SourceFile.Fields.Count)
+                {
+                    if (state != null)
+                        state.AddModelError(string.Empty, string.Format("{0} ({1})", Localize.MappingFailed, Localize.InsufficientNumberOfImportFields));
+
+                    return;
+                }
+
+                foreach (var item in inputData)
+                {
+                    for (var i = 0; i < MappingModel.SourceFile.Fields.Count; i++)
+                    {
+                        MappingModel.SourceFile.Fields[i].Records.Add(((IDictionary<string, object>)item)[propertyNames[i]].ToString().NotNullOrEmpty());
+                    }
+                }
+            }
         }
     }
 }

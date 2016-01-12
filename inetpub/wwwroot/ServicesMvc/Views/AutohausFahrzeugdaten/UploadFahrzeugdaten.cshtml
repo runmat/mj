@@ -4,17 +4,17 @@
 
 <div class="portlet app-view">
     
-    @Html.FormWizard("icon-arrow-up", "", new[] { Localize.UploadExcelFile, Localize.Send, Localize.DoneStep })
+    @Html.FormWizard("icon-arrow-up", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
 
     <div id="formWizardTab1" class="hide">
-        @Html.Partial("UploadFahrzeugdaten/FileUpload")
+        @Html.Partial("UploadFahrzeugdaten/" + Model.FirstStepPartialViewName)
     </div>
 
 </div>
 
-
 <script type="text/javascript">
 
+    var _modelStateValid = false;
     var _formWizardForceHideSubmitButton = false;
 
     function FormPreparePrivate() {
@@ -24,19 +24,33 @@
 
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
-            FormWizard.ActionsShow(false);
+            var showSubmitButtonInitially = (FormWizard.stepKeys.indexOf("MappingSelection") > -1);
+            FormWizard.ActionsShow(showSubmitButtonInitially);
+            FormWizard.tabClickDisabled = true;
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
-            if (step == 3) {
+            var stepName = FormWizard.GetStepKey(step - 1);
+
+            if (stepName == "UploadFahrzeugdatenGrid") {
                 CheckUpload();
                 return false;
             }
-            return true;
+
+            try {
+                $("#AjaxForm" + stepName).submit();
+                window.scrollTo(0, 0);
+                return false;
+            }
+            catch (e) {
+                return true;
+            }
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
-            if (step == 1) {
+            var stepName = FormWizard.GetStepKey(step + 1);
+
+            if (stepName == "UploadFahrzeugdatenGrid") {
                 if (_formWizardForceHideSubmitButton == false) {
                     ResetSubmitMode();
                     return false;
@@ -47,7 +61,13 @@
         });
 
         FormWizard.OnSubmit(function () {
-            SubmitUpload();
+            var nextTabKey = FormWizard.GetNextTabKey();
+
+            if (nextTabKey == "Receipt") {
+                SubmitUpload();
+            } else {
+                AjaxRequestNextStep();
+            }
         });
 
         FormWizard.OnRestart(function () {
@@ -102,6 +122,24 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function AjaxRequestNextStep() {
+        $.ajax({
+            type: "POST",
+            url: FormWizard.GetNextTabKey(),
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                window.scrollTo(0, 0);
+            }
+        });
+    }
+
     function UploadStart(e) {
 
         // clear only the UI of our Upload Control:
@@ -110,8 +148,8 @@
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
         var fileName = e.files[0].name;
 
-        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
-            alert('@Localize.FileUploadOnlyCsvLegal');
+        if (fileName.toLowerCase().indexOf('.csv') < 0 && fileName.toLowerCase().indexOf('.xls') < 0) {
+            alert('@Localize.FileUploadOnlyXlsCsvLegal.ToJavascriptString()');
             return false;
         }
 
@@ -151,7 +189,7 @@
                     alert(result.message);
                     return;
                 }
-                FormWizard.SetTabHtml(2, result);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("UploadFahrzeugdatenGrid") + 1, result);
                 window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 FormWizard.ButtonNextInvoke();
@@ -167,7 +205,7 @@
             loadingShow: true,
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
-                FormWizard.SetTabHtml(2, result);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("UploadFahrzeugdatenGrid") + 1, result);
                 window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 SetButtonVisibility();
@@ -182,7 +220,7 @@
             loadingShow: true,
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
-                FormWizard.SetTabHtml(3, result);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("Receipt") + 1, result);
                 window.scrollTo(0, 0);
                 GridAllColumnFilterApplyToGrid("GridUploadSaveFahrzeugdaten");
                 FormPreparePrivateAjax();
@@ -198,7 +236,7 @@
             loadingShow: true,
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
-                FormWizard.SetTabHtml(2, result);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("UploadFahrzeugdatenGrid") + 1, result);
                 window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
                 SetButtonVisibility();
@@ -213,6 +251,15 @@
         } else {
             FormWizard.ButtonSubmitShow(true);
             FormWizard.ButtonNextShow(false);
+        }
+    }
+
+    function AjaxFormMappingSelectionComplete() {
+        FormPrepareAjax();
+
+        if (_modelStateValid) {
+            AjaxRequestNextStep();
+            return;
         }
     }
 
