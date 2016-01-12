@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CKGDatabaseAdminLib.Models;
 using CkgDomainLogic.General.Contracts;
 
@@ -17,5 +18,7 @@ namespace CKGDatabaseAdminLib.Contracts
         void ReloadData(string connectionName);
 
         void FilterGitBranches();
+
+        List<GitBranchInfo> GetBranchesForTransportMail();
     }
 }

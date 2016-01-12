@@ -104,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucSqlExecution.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ucSapOrmModelGeneration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -172,6 +176,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucSqlExecution.xaml.cs">
+      <DependentUpon>ucSqlExecution.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucSapOrmModelGeneration.xaml.cs">
       <DependentUpon>ucSapOrmModelGeneration.xaml</DependentUpon>
     </Compile>
@@ -288,9 +295,13 @@
   <ItemGroup>
     <Resource Include="Images\info.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Mail.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)\bin\debug" "C:\inst\CKGDatabaseAdminTool" /E /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

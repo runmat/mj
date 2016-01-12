@@ -41,7 +41,7 @@ namespace CKGDatabaseAdminLib.Services
 
         private void LoadData(string connectionName)
         {
-            var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+            var sectionData = Config.GetAllDbConnections();
             _dataContext = new DatabaseContext(sectionData.Get(connectionName));
             _dataContext.GitBranchInfos.Load();
             
@@ -87,6 +87,11 @@ namespace CKGDatabaseAdminLib.Services
 
             GitBranches.CollectionChanged += GitBranchesFilteredOnCollectionChanged;
         }
+
+        public List<GitBranchInfo> GetBranchesForTransportMail()
+        {
+            return GitBranchesAll.Where(g => !g.Erledigt && !String.IsNullOrEmpty(g.FreigegebenDurch)).OrderBy(g => g.Name).ToList();
+        } 
 
         private void GitBranchesFilteredOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
