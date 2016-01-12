@@ -33,31 +33,48 @@ namespace ServicesMvc.Common.Controllers
 
 
         [HttpPost]
-        public ActionResult Edit(string columnMember)
+        public ActionResult EditTranslations(string modelTypeName, string propertyName, string partialViewContext)
         {
-            ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
+            if (partialViewContext.IsNotNullOrEmpty())
+                SessionHelper.SetSessionValue("PartialViewContextCurrent", partialViewContext); 
 
-            var gridCurrentModelType = (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
-            if (gridCurrentModelType == null)
+            ViewModel.Mode = (modelTypeName == null ? GridAdminMode.GridColumns : GridAdminMode.FormControls);
+
+            var currentModelType = ViewModel.Mode == GridAdminMode.GridColumns
+                                            ? (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type)
+                                            : Type.GetType(modelTypeName);
+            if (currentModelType == null)
                 return new EmptyResult();
 
-            if (!ViewModel.DataInit(gridCurrentModelType, columnMember))
-                return new EmptyResult();
+            if (!ViewModel.DataInit(currentModelType, propertyName))
+                return PartialView("Partial/NoTranslationAvailable", ViewModel);
 
-            return PartialView("Partial/Edit", ViewModel);
+            return PartialView("Partial/EditTranslations", ViewModel);
         }
 
         [HttpPost]
-        public ActionResult EditGridColumnTranslations(GridAdminViewModel model)
+        public ActionResult EditTranslationsForm(GridAdminViewModel model)
         {
-            if (!ModelState.IsValid)
-                return PartialView("Partial/Edit", model);
+            if (model.TmpSwitchGlobalFlag)
+            {
+                ViewModel.IsGlobal = model.IsGlobal;
+                ViewModel.TmpSwitchGlobalFlag = model.TmpSwitchGlobalFlag;
+                ViewModel.LoadTranslatedResourcesForProperty();
+                ModelState.Clear();
+                return PartialView("Partial/EditTranslations", ViewModel);
+            }
 
-            ViewModel.DataSave(model);
-            if (model.TmpDeleteCustomerTranslation)
+            if (!ModelState.IsValid)
+                return PartialView("Partial/EditTranslations", ViewModel);
+
+            ModelMapping.CopyPropertiesTo(model, ViewModel);
+
+            ViewModel.DataSave();
+
+            if (ViewModel.TmpDeleteCustomerTranslation)
                 ModelState.Clear();
 
-            return PartialView("Partial/Edit", model);
+            return PartialView("Partial/EditTranslations", ViewModel);
         }
 
         [HttpPost]
@@ -138,25 +155,40 @@ namespace ServicesMvc.Common.Controllers
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }
-        
-#if __TEST
+
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Test()
+        public ActionResult TestStrafzettel()
         {
             TryUserLogoff();
 
             ViewModel.ReportSettings = new ReportSolution
-                {
-                    AdminIsAuthorized = true,
-                    AdminUserName = "JenzenM",
-                    AppID = 1805, // 1731
-                    AppFriendlyName = "Überführungs-Report"
-                };
+            {
+                AdminIsAuthorized = true,
+                AdminUserName = "JenzenM",
+                AppID = 1731,
+                AppFriendlyName = "Strafzettel-Report"
+            };
 
-            return View(ViewModel);
+            return View("Test", ViewModel);
         }
-#endif    
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult TestZulassung()
+        {
+            TryUserLogoff();
+
+            ViewModel.ReportSettings = new ReportSolution
+            {
+                AdminIsAuthorized = true,
+                AdminUserName = "JenzenM",
+                AppID = 1806,
+                AppFriendlyName = "Autohaus-Zulassung"
+            };
+
+            return View("Test", ViewModel);
+        }
 
     }
 }

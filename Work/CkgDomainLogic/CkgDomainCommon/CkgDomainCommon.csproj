@@ -135,8 +135,8 @@
     <Compile Include="DomainCommon\Services\BriefVersand\BriefVersandDataServiceSAP.cs" />
     <Compile Include="DomainCommon\Services\CustomerDocumentDataService.cs" />
     <Compile Include="DomainCommon\Services\InfoCenterDataService.cs" />
+    <Compile Include="DomainCommon\Services\TranslationService.cs" />
     <Compile Include="DomainCommon\Services\HaendlerAdressenDataServiceSAP.cs" />
-    <Compile Include="DomainCommon\Services\TranslationFormatService.cs" />
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\HaendlerAdressenViewModel.cs" />

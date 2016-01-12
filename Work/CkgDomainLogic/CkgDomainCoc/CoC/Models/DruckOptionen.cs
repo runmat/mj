@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 

@@ -21,6 +21,8 @@ namespace CkgDomainLogic.General.Contracts
 
         User User { get; set; }
 
+        bool HasLocalizationTranslationRights { get; }
+
         string UserNameForDisplay { get; set; }
 
         WebUserInfo UserInfo { get; set; }
