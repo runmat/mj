@@ -331,6 +331,15 @@ namespace GeneralTools.Models
             return string.Join(separator, list.ToListOrEmptyList().ToArray());
         }
 
+        public static string ToLowerFirstUpperWithFragments(this string s, char fragmentSourceSeparator = '_', char fragmentDestinationSeparator = '-')
+        {
+            if (!s.Contains(fragmentSourceSeparator))
+                return s.ToLowerFirstUpper();
+
+            var fragments = s.Split(fragmentSourceSeparator);
+            return string.Join(fragmentDestinationSeparator.ToString(), fragments.Select(f => f.ToLowerFirstUpper()).ToArray());
+        }
+
         public static string ToLowerFirstUpper(this string s)
         {
             s = s.NotNullOrEmpty();
@@ -781,6 +790,14 @@ namespace GeneralTools.Models
             }
 
             return erg;
+        }
+
+        public static TValue GetPropertyValueIfIs<TModel, TValue>(this object o, Expression<Func<TModel, TValue>> expression, TValue defaultValue = default (TValue))
+        {
+            if (!(o is TModel))
+                return defaultValue;
+
+            return expression.Compile().Invoke((TModel)o);
         }
     }
 

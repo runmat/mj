@@ -61,9 +61,6 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult StrafzettelAjaxBinding()
         {
-            var locFac = DI.Current.Resolve<ILocalizationServiceFactory>();
-            var locSrv = locFac.Create("", new CultureInfo("de-DE"));
-
             return View(new GridModel(ViewModel.StrafzettelFiltered));
         }
 

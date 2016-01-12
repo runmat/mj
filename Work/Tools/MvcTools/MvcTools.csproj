@@ -108,12 +108,12 @@
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\Attributes\NoCache.cs" />
+    <Compile Include="Web\CustomModelValidatorsProvider.cs" />
     <Compile Include="Web\RazorViewWithWrapperMarkers.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\DataContextCapableController.cs" />
     <Compile Include="Controllers\LayoutFlexibleController.cs" />
-    <Compile Include="Controllers\LogonCapableController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\EditableContentControlController.cs" />
     <Compile Include="Controls\HtmlHelperExtensions.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Data\LinqSqlDataService.cs" />
     <Compile Include="Data\EfDataService.cs" />
     <Compile Include="Data\MvcRepository.cs" />
-    <Compile Include="Data\SessionDataHelper.cs" />
+    <Compile Include="Data\LogonContextProvider.cs" />
     <Compile Include="Data\XsdSchemaCreator.cs" />
     <Compile Include="Imaging\DbImageFileCacheService.cs" />
     <Compile Include="Imaging\Imaging.cs" />
@@ -177,6 +177,7 @@
     <Compile Include="Web\ModelStateExtensions.cs" />
     <Compile Include="Web\MvcAjaxOptions.cs" />
     <Compile Include="Web\Json.cs" />
+    <Compile Include="Web\SessionBasedKeyValueStore.cs" />
     <Compile Include="Web\TelerikExtensionsUI.cs" />
     <Compile Include="Web\ModelBinders\DateTimeModelBinder.cs" />
     <Compile Include="Web\ModelBinders\DecimalModelBinder.cs" />

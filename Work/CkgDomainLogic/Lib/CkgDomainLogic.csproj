@@ -101,6 +101,7 @@
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
     <Compile Include="General\Controllers\CkgDomainController.cs" />
     <Compile Include="General\Controllers\LoginController.cs" />
+    <Compile Include="General\Controllers\LogonCapableController.cs" />
     <Compile Include="General\Models\AppModelMappings.cs" />
     <Compile Include="General\Models\Attributes\KennzeichenPartialAttribute.cs" />
     <Compile Include="General\Models\Attributes\KennzeichenAttribute.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="General\Services\Database\Models\GroupArchiveAssigned.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
+    <Compile Include="General\Services\Database\Models\TranslatedResource_UserLogs.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />

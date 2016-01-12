@@ -7,11 +7,11 @@ namespace GeneralTools.Services
     {
         #region Privates and constructor
 
-        private readonly ITranslationFormatService _translationFormatService;
+        private readonly ITranslationService _translationService;
 
-        public LocalizationService(ITranslationFormatService translationFormatService)
+        public LocalizationService(ITranslationService translationService)
         {
-            _translationFormatService = translationFormatService;
+            _translationService = translationService;
         }
 
         #endregion
@@ -20,12 +20,12 @@ namespace GeneralTools.Services
 
         public string TranslateResourceKey(string resource)
         {
-            return _translationFormatService.GetTranslation(resource);
+            return _translationService.GetTranslation(resource);
         }
 
         public IDictionary<string, string> GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(string resourcePrefix)
         {
-            return _translationFormatService.GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(resourcePrefix);
+            return _translationService.GetTranslationsStartsWidthPrefixAndRemovePrefixFromKey(resourcePrefix);
         }
 
         #endregion
