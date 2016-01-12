@@ -62,7 +62,7 @@ namespace ServicesMvc.Common.Controllers
 
             // <Json data caching>
             var pService = LogonContext.PersistanceService;
-            var itemData = pService.GetCachedChartItemAsJson(
+            var itemData = pService.GetCachedItemAsJsonPackage(
                                 id, LogonContext.UserName, CacheJsonDataPersistableGroupKey, 
                                 LogonContext.UserName, clearDataCache,
                                 data => dashboardItem.Options.JsonDataCacheExpired(data.EditDate), 

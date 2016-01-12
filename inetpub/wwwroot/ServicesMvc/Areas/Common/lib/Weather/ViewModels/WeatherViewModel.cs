@@ -1,4 +1,6 @@
 ﻿ // ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -16,13 +18,38 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
     public class WeatherViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
+        static IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
+
+        [XmlIgnore]
         public IWeatherDataService DataService { get { return CacheGet<IWeatherDataService>(); } }
 
-        public void DataInit()
+        [XmlIgnore]
+        private int JsonDataCacheExpirationMinutes
         {
-            const string cityAndCountry = "hamburg,de";
+            get { return GeneralConfigurationProvider.GetConfigAllServerVal(DataService.ConfigurationContextKey, "ServiceRequestCacheExpirationMinutes").ToInt(0); }
+        }
 
-            var jsonData = DataService.GetWeatherData(cityAndCountry);
+
+        bool JsonDataCacheExpired(JsonItemsPackage jsonPackage)
+        {
+            return jsonPackage.EditDate < (DateTime.Now.AddMinutes(-1 * JsonDataCacheExpirationMinutes));
+        }
+
+        public JsonItemsPackage GetWeatherData(string cityAndCountry)
+        {
+            var itemId = cityAndCountry;
+            var ownerKey = cityAndCountry;
+
+            // <Json data caching>
+            var pService = LogonContext.PersistanceService;
+            var jsonData = pService.GetCachedItemAsJsonPackage(
+                                itemId, ownerKey, DataService.ConfigurationContextKey,
+                                LogonContext.UserName, false,
+                                JsonDataCacheExpired,
+                                () => DataService.RequestGetWeatherData(cityAndCountry));
+            // </Json data caching>
+
+            return jsonData;
         }
     }
 }

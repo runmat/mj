@@ -22,9 +22,17 @@ namespace ServicesMvc.Common.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            ViewModel.DataInit();
+            //ViewModel.DataInit(); "hamburg,de"
 
             return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult PrepareWeatherWidget(string cityAndCountry)
+        {
+            var jsonData = ViewModel.GetWeatherData(cityAndCountry);
+
+            return Json(jsonData);
         }
     }
 }

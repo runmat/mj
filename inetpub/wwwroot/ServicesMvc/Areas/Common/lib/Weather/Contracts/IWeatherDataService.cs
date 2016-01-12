@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using GeneralTools.Models;
 
 namespace CkgDomainLogic.General.Contracts
 {
     public interface IWeatherDataService
     {
-        string GetWeatherData(string cityAndCountry);
+        string ConfigurationContextKey { get; }
+
+        JsonItemsPackage RequestGetWeatherData(string cityAndCountry);
     }
 }

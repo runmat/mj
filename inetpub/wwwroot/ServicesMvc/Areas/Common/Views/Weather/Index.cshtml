@@ -2,5 +2,39 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Weather<small>Widget</small></h3>
+<h3 class="page-title">Weather <small>Widget</small></h3>
 
+<h4 id="test"></h4>
+
+<script type="text/javascript">
+    
+    function FormPreparePrivate() {
+        PrepareWeatherWidget("hamburg,de");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+
+    function PrepareWeatherWidget(cityAndCountry) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "PrepareWeatherWidget",
+                data: { cityAndCountry: cityAndCountry },
+                loadingShow: false,
+                success: function (result) {
+
+                    //$("#test").html(result.data.city.name);
+
+                    $("#test").html(result.data.list[0].weatherFirst.main);
+
+                }
+            });
+
+        return false;
+    }
+
+</script>

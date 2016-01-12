@@ -722,6 +722,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Weather\Contracts\IWeatherDataService.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Models\WeatherData.cs" />
     <Compile Include="Areas\Common\lib\Weather\Services\WeatherDataServiceOpenWeatherMap.cs" />
     <Compile Include="Areas\Common\lib\Weather\ViewModels\WeatherViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
@@ -2976,7 +2977,6 @@
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
     <Folder Include="Areas\Autohaus\ViewModels\" />
-    <Folder Include="Areas\Common\lib\Weather\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

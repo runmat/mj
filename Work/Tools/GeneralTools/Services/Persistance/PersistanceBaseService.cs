@@ -152,7 +152,7 @@ namespace GeneralTools.Services
                     .ToListOrEmptyList();
         }
 
-        public JsonItemsPackage GetCachedChartItemAsJson(string objectId, string ownerKey, string groupKey, 
+        public JsonItemsPackage GetCachedItemAsJsonPackage(string objectId, string ownerKey, string groupKey, 
                                                                 string editUserName, bool clearDataCache,
                                                                 Func<JsonItemsPackage, bool> expirationCheckFunc,
                                                                 Func<JsonItemsPackage> getItemDataFunc

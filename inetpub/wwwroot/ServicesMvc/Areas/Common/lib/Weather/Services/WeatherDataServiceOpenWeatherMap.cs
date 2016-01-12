@@ -1,50 +1,90 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using GeneralTools.Models;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Models.OpenWeatherMap;
 using GeneralTools.Contracts;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
     public class WeatherDataServiceOpenWeatherMap : IWeatherDataService
     {
-        IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
+        static IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
 
-        private string ApiKey { get { return GeneralConfigurationProvider.GetConfigAllServerVal("LicenseData", "WeatherDataService_OpenWeatherMap_ApiKey"); } }
+        public string ConfigurationContextKey { get { return "WeatherDataService_OpenWeatherMap"; } }
+
+        private string ApiKey { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "License_ApiKey"); } }
+
+        private string ServiceRequestUrl { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "ServiceRequestUrl"); } }
 
 
-        public string GetWeatherData(string cityAndCountry)
+        static bool WeatherDateMatches(string firstDateTxt, string dtTxt)
         {
-            var url = string.Format("http://api.openweathermap.org/data/2.5/forecast?q={0}&mode=json&appid={1}", cityAndCountry, ApiKey);
+            var firstDate = DateTime.Parse(firstDateTxt);
+            var dt = DateTime.Parse(dtTxt);
 
-            var request = WebRequest.Create(url);
-            try
+            var hour = dt.Date == DateTime.Now.Date ? firstDate.Hour : 12;
+
+            return dt.Hour == hour;
+        }
+
+        public WeatherData FilterWeatherData(string jsonDataAsString)
+        {
+            //jsonDataAsString = File.ReadAllText(@"C:\Users\JenzenM\Downloads\data.json");
+            var jsonData = new JavaScriptSerializer().Deserialize<WeatherData>(jsonDataAsString);
+
+            if (jsonData == null || jsonData.list == null)
+                return new WeatherData();
+
+            var firstOrDefault = jsonData.list.FirstOrDefault();
+            if (firstOrDefault == null)
+                return jsonData;
+
+            var firstDateTxt = firstOrDefault.dt_txt;
+            jsonData.list = jsonData.list.Where(d => WeatherDateMatches(firstDateTxt, d.dt_txt)).Select(d => d).ToArray();
+
+            return jsonData;
+        }
+
+        public JsonItemsPackage RequestGetWeatherData(string cityAndCountry)
+        {
+           try
             {
+                var url = string.Format(ServiceRequestUrl, cityAndCountry, ApiKey);
+
+                var request = WebRequest.Create(url);
+
                 var response = request.GetResponse();
                 var stream = response.GetResponseStream();
                 if (stream == null)
                 {
                     response.Close();
-                    return "";
+                    return new JsonItemsPackage();
                 }
 
                 var streamReader = new StreamReader(stream);
-                var json = streamReader.ReadToEnd();
+                var jsonDataAsString = streamReader.ReadToEnd();
 
                 response.Close();
                 streamReader.Close();
 
-                return json;
+                var jsonData = FilterWeatherData(jsonDataAsString);
+
+                return new JsonItemsPackage
+                {
+                    ID = "",
+                    data = jsonData,
+                    dataAsText = jsonDataAsString
+                };
             }
             catch (WebException)
             {
-                return "";
+                return new JsonItemsPackage();
             }
         }
     }

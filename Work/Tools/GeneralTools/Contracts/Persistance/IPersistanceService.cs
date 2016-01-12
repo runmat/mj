@@ -17,7 +17,7 @@ namespace GeneralTools.Contracts
 
         void DeleteAllObjects(string ownerKey, string groupKey, string additionalFilter);
 
-        JsonItemsPackage GetCachedChartItemAsJson(string objectId, string ownerKey, string groupKey,  
+        JsonItemsPackage GetCachedItemAsJsonPackage(string objectId, string ownerKey, string groupKey,  
                                                         string editUserName, bool clearDataCache,
                                                         Func<JsonItemsPackage, bool> expirationCheckFunc,
                                                         Func<JsonItemsPackage> getItemDataFunc);
