@@ -2,9 +2,36 @@
 
 @Html.Partial("Partial/Common")
 
+<style type="text/css">
+    
+</style>
+
+
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
 <h4 id="test"></h4>
+
+
+<div id="wd-template" class="">
+    <div class="wd-day">
+        
+        <div class="day-info">
+            <div class="day">
+            </div>
+            <div class="wkday">
+            </div>
+        </div>
+
+        <div class="temp-info">
+            <div class="max-info">
+            </div>
+            <hr/>
+            <div class="min-info">
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     
@@ -29,7 +56,7 @@
 
                     //$("#test").html(result.data.city.name);
 
-                    $("#test").html(result.data.list[0].weatherFirst.main);
+                    $("#test").html(result.data.list[3].weatherFirst.main);
 
                 }
             });
