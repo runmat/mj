@@ -257,7 +257,10 @@ namespace CarDocu.Models
 
         public bool DeleteAndBackupFileAfterDelivery
         {
-            get { return _deleteAndBackupFileAfterDelivery; }
+            get
+            {
+                return _deleteAndBackupFileAfterDelivery;
+            }
             set
             {
                 _deleteAndBackupFileAfterDelivery = value;
@@ -444,6 +447,24 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
+        public bool IsDisabledGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return !IsEnabledGlobalDeleteAndBackupFileAfterDelivery; }
+        }
+
+        [XmlIgnore]
+        public bool IsEnabledGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return DomainService.Repository.AppSettings.GlobalDeleteAndBackupFileAfterDelivery; }
+        }
+
+        [XmlIgnore]
+        public double OpacityGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return IsDisabledGlobalDeleteAndBackupFileAfterDelivery ? 1.0 : 0.4; }
+        }
+
+        [XmlIgnore]
         static public List<DocumentTypeWebServiceFunction> WebServiceFunctions
         {
             get
@@ -594,5 +615,12 @@ namespace CarDocu.Models
             SendPropertyChanged("ShowErrorBarcodeRangeEnd");
         }
 
+        public void SendPropertyChangedGlobalSettings()
+        {
+            SendPropertyChanged("IsDisabledGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("IsEnabledGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("OpacityGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("DeleteAndBackupFileAfterDelivery");
+        }
     }
 }

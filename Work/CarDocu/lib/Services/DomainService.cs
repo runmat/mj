@@ -35,6 +35,7 @@ namespace CarDocu.Services
 
         private static DomainRepository _repository;
         public static DomainRepository Repository { get { return (_repository ?? (_repository = new DomainRepository())); } }
+        public static bool RepositoryIsInitialized {  get { return _repository != null; } }
 
         private static DomainThreads _threads;
         public static DomainThreads Threads { get { return (_threads ?? (_threads = new DomainThreads())); } }

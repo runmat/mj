@@ -58,7 +58,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="60" />
                             <RowDefinition Height="30" />
-                            <RowDefinition Height="55" />
+                            <RowDefinition Height="60" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -115,28 +115,35 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
+                        <TextBlock IsEnabled="{Binding IsDisabledGlobalDeleteAndBackupFileAfterDelivery}" Opacity="{Binding OpacityGlobalDeleteAndBackupFileAfterDelivery}"
                                    Text="PDF verschieben nach Netzwerk-Versand?" Grid.Row="6" Grid.Column="0" Foreground="DarkRed" />
-                        <CheckBox Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
+                        <CheckBox Visibility="{Binding IsDisabledGlobalDeleteAndBackupFileAfterDelivery, Converter={StaticResource BooleanVisibilityConverter}}" 
+                                  IsEnabled="{Binding IsDisabledGlobalDeleteAndBackupFileAfterDelivery}"  Opacity="{Binding OpacityGlobalDeleteAndBackupFileAfterDelivery}"
                                   Content="PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben" VerticalAlignment="Center" VerticalContentAlignment="Center"
                                   IsChecked="{Binding DeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" 
+                                  Foreground="DarkRed"
+                                  />
+                        <CheckBox Visibility="{Binding IsEnabledGlobalDeleteAndBackupFileAfterDelivery, Converter={StaticResource BooleanVisibilityConverter}}" 
+                                  IsEnabled="{Binding IsDisabledGlobalDeleteAndBackupFileAfterDelivery}"  Opacity="{Binding OpacityGlobalDeleteAndBackupFileAfterDelivery}"
+                                  Content="PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben (DURCH GLOBALE EINSTELLUNG ÜBERSCHRIEBEN)" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                  IsChecked="{Binding IsEnabledGlobalDeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Row="6" Grid.Column="1" 
                                   Foreground="DarkRed"
                                   />
 
 
                         <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
-                                   Foreground="DarkRed" VerticalAlignment="Top"
-                                Text="Optional, zusätzlich kopieren in Archiv-Pfad" Grid.Row="7" Grid.Column="0" Margin="0,3,0,0" />
+                                   VerticalAlignment="Top"
+                                Text="Optional, zusätzlich kopieren in Archiv-Pfad" Grid.Row="7" Grid.Column="0" Margin="0,13,0,0" />
                         <StackPanel Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
-                                    VerticalAlignment="Top" Grid.Row="7" Grid.Column="1">
+                                    VerticalAlignment="Top" Grid.Row="7" Grid.Column="1" Margin="0,10,0,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                                <TextBox Width="400" Text="{Binding InlineNetworkDeliveryArchiveFolder, UpdateSourceTrigger=LostFocus}" Margin="0,0,5,0" Foreground="DarkRed" />
-                                <TextBlock Text="(Gilt nur für diese Doku-Art + nur bei internem Netzwerk-Versand)" Foreground="DarkRed" TextAlignment="Right" />
+                                <TextBox Width="400" Text="{Binding InlineNetworkDeliveryArchiveFolder, UpdateSourceTrigger=LostFocus}" Margin="0,0,5,0" />
+                                <TextBlock Text="(Gilt nur für diese Doku-Art + nur bei internem Netzwerk-Versand)" TextAlignment="Right" />
                             </StackPanel>
                             <CheckBox 
                                 Visibility="{Binding InlineNetworkDeliveryArchiveFolder, Converter={StaticResource StringVisibilityConverter}}"
                                 IsChecked="{Binding UseTagCollectionForDocumentNameEditing}" 
-                                Content="{Binding TagCollectionCheckBoxHint}" Foreground="DarkRed" Margin="0,3,0,0" />
+                                Content="{Binding TagCollectionCheckBoxHint}" Margin="0,3,0,0" />
                         </StackPanel>
 
                         
