@@ -1,7 +1,10 @@
 ﻿// ReSharper disable All
 
+using System;
+using System.Globalization;
 using System.Linq;
 using GeneralTools.Models;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.General.Models.OpenWeatherMap
 {
@@ -27,6 +30,17 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
         public string dt_txt { get; set; }
 
         public WdItemWeather weatherFirst { get { return weather == null || weather.None() ? new WdItemWeather() : weather.First(); } }
+
+        public string dateWeekday { get { return getDate().ToString("ddd").SubstringTry(0, 2); } }
+
+        private DateTime getDate()
+        {
+            DateTime date;
+            if (!DateTime.TryParseExact(dt_txt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                return DateTime.Today;
+
+            return date;
+        }
     }
 
     public class WdItemMain

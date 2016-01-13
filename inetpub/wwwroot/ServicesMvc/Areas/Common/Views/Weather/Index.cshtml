@@ -20,6 +20,7 @@
     .day-info div.wkday {
         font-size: 1.5em;
         font-weight: bold;
+        margin: 3px 0 0 0;
     }
 
     .temp-info {
@@ -116,7 +117,7 @@
                     var minTemperature = toCelsiusTemperature(wd.main.temp_min);
                     var maxTemperature = toCelsiusTemperature(wd.main.temp_max);
 
-                    $(".wd-day .day-info div.day").html("Mi, 13.01.");
+                    $(".wd-day .day-info div.day").html(wd.dateWeekday + ", 13.01.");
                     $(".wd-day .day-info div.wkday").html("heute");
 
                     $(".wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");

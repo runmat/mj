@@ -35,7 +35,6 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public WeatherData FilterWeatherData(string jsonDataAsString)
         {
-            //jsonDataAsString = File.ReadAllText(@"C:\Users\JenzenM\Downloads\data.json");
             var jsonData = new JavaScriptSerializer().Deserialize<WeatherData>(jsonDataAsString);
 
             if (jsonData == null || jsonData.list == null)
