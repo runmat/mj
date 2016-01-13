@@ -30,8 +30,8 @@ namespace CkgDomainLogic.Autohaus.Models
             set { _auftragsNr = value.NotNullOrEmpty().ToUpper(); }
         }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
+        [Required]
         public string FahrgestellNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2)]
@@ -48,8 +48,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [RequiredConditional]
         public string FzgModell { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
+        [Required]
         public string FahrzeugartId { get; set; }
 
         public Domaenenfestwert Fahrzeugart
