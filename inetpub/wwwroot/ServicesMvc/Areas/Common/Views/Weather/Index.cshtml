@@ -3,14 +3,49 @@
 @Html.Partial("Partial/Common")
 
 <style type="text/css">
-    
+    .wd-day {
+        width: 75px;
+        display: inline-block;
+        margin: 5px 0 15px 0;
+    }
+    .temp-info div {
+    }
+
+    .temp-info hr {
+        margin: 2px 0 2px -3px; 
+    }
+    .temp-info div.tlabel {
+        color: black!important;
+        display: inline-block;
+        width: 30px;
+        text-align: left;
+    }
+    .temp-info div.tlabel-degree {
+        display: inline-block;
+        vertical-align: 4px;
+        font-size: 1.5em;
+    }
+    .temp-info div.celsius {
+        display: inline-block;
+        width: 30px;
+        text-align: right;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+    .temp-info div {
+        color: green;
+    }
+    .temp-info div.leq-zero * {
+        color: blue;
+    }
+
+    .wd-day .picture {
+        text-align: center;
+    }
 </style>
 
 
 <h3 class="page-title">Weather <small>Widget</small></h3>
-
-<h4 id="test"></h4>
-
 
 <div id="wd-template" class="">
     <div class="wd-day">
@@ -24,11 +59,18 @@
 
         <div class="temp-info">
             <div class="max-info">
+                <div class="tlabel">max</div> <div class="celsius"></div><div class="tlabel-degree">°</div>
             </div>
             <hr/>
             <div class="min-info">
+                <div class="tlabel">min</div> <div class="celsius"></div><div class="tlabel-degree">°</div>
             </div>
         </div>
+
+        <div class="picture">
+            <img src=""/>
+        </div>
+
     </div>
 </div>
 
@@ -43,8 +85,9 @@
         FormPrepareAjax();
     }
 
-
     function PrepareWeatherWidget(cityAndCountry) {
+
+        var imagePath = '@Url.ContentArea("Content/Weather/images/")';
 
         $.ajax(
             {
@@ -54,14 +97,30 @@
                 loadingShow: false,
                 success: function (result) {
 
+                    var wd = result.data.list[3];
                     //$("#test").html(result.data.city.name);
 
-                    $("#test").html(result.data.list[3].weatherFirst.main);
+                    console.log(wd);
+
+                    var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 25;
+                    var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 20;
+
+                    $(".wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");
+                    $(".wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(maxTemperature <= 0 ? "leq-zero" : "");
+
+                    $(".wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
 
                 }
             });
 
         return false;
+    }
+
+    function toCelsiusTemperature(kelvin) {
+        console.log(kelvin);
+        var celsius = Math.round(parseFloat(kelvin)) - 273.0;
+
+        return celsius;
     }
 
 </script>
