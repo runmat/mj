@@ -1274,7 +1274,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CarDocu, Version=2.8.5842.30775, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:CarDocu, Version=2.10.5848.22288, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_E47C389AA79E4737A7982CDEA1BE7D43"
@@ -1461,15 +1461,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CarDocu-Scan"
-        "ProductCode" = "8:{5C0DA983-55F6-444A-B380-142C86FF9560}"
-        "PackageCode" = "8:{042D5280-283B-40DB-B0EF-FA2F23B97FF7}"
+        "ProductCode" = "8:{30B204A8-4373-4D01-947E-A22CA27DBB78}"
+        "PackageCode" = "8:{C7BA01E9-7037-4209-9390-1FDF3E0CDF0F}"
         "UpgradeCode" = "8:{89B9FE07-FA59-40FC-8D5A-1CFA7180580F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.08"
+        "ProductVersion" = "8:2.10"
         "Manufacturer" = "8:Kroschke Gruppe"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

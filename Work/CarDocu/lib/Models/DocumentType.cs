@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -49,6 +50,26 @@ namespace CarDocu.Models
 
                 if (!WebServiceFunctionAvailable || (WebServiceFunctionAvailable && !preWebServiceFunctionAvailable))
                     WebServiceFunction = "";
+            }
+        }
+
+        public string PdfEncryptionHashedPassword { get; set; }
+
+        public string CodePrefix
+        {
+            get
+            {
+                var code = Code;
+                if (code.IsNullOrEmpty() || code.Length < 1)
+                    return Code;
+
+                if (code[0] == '_')
+                    code = Code.SubstringTry(1);
+
+                if (code.Contains("_"))
+                    return code.Split('_')[0];
+
+                return code;
             }
         }
 
@@ -236,7 +257,10 @@ namespace CarDocu.Models
 
         public bool DeleteAndBackupFileAfterDelivery
         {
-            get { return _deleteAndBackupFileAfterDelivery; }
+            get
+            {
+                return _deleteAndBackupFileAfterDelivery;
+            }
             set
             {
                 _deleteAndBackupFileAfterDelivery = value;
@@ -290,12 +314,31 @@ namespace CarDocu.Models
                     Tools.AlertError("Das Verzeichnis existiert nicht und konnte auch nicht erstellt werden!");
                     
                     SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
+                    SendPropertyChanged("TagCollectionCheckBoxHint");
                     return;
                 }
 
                 _inlineNetworkDeliveryArchiveFolder = value;
                 SendPropertyChanged("InlineNetworkDeliveryArchiveFolder");
+                SendPropertyChanged("TagCollectionCheckBoxHint");
             }
+        }
+
+        bool _useTagCollectionForDocumentNameEditing;
+
+        public bool UseTagCollectionForDocumentNameEditing
+        {
+            get { return _useTagCollectionForDocumentNameEditing; }
+            set
+            {
+                _useTagCollectionForDocumentNameEditing = value;
+                SendPropertyChanged("UseTagCollectionForDocumentNameEditing");
+            }
+        }
+
+        public string TagCollectionCheckBoxHint
+        {
+            get { return string.Format("Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {0})", InlineNetworkDeliveryArchiveFolder); }
         }
 
         private readonly Media.Brush _brushBackgroundValid = Media.Brushes.LightGoldenrodYellow;
@@ -388,7 +431,7 @@ namespace CarDocu.Models
                                    {
                                        ID = "TP",  Name = "Scan-Template", 
                                        AllowedLengths = new List<int>(), 
-                                       InputRuleName = "Beliebige Vorlagenbezeichnung:"
+                                       InputRuleName = "Beliebiger Freitext:"
                                    },
                            };
             }
@@ -401,6 +444,24 @@ namespace CarDocu.Models
         public bool WebServiceFunctionAvailable
         {
             get { return ArchiveCode == "EASY"; }
+        }
+
+        [XmlIgnore]
+        public bool IsDisabledGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return !IsEnabledGlobalDeleteAndBackupFileAfterDelivery; }
+        }
+
+        [XmlIgnore]
+        public bool IsEnabledGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return DomainService.Repository.AppSettings.GlobalDeleteAndBackupFileAfterDelivery; }
+        }
+
+        [XmlIgnore]
+        public double OpacityGlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return IsDisabledGlobalDeleteAndBackupFileAfterDelivery ? 1.0 : 0.4; }
         }
 
         [XmlIgnore]
@@ -554,5 +615,12 @@ namespace CarDocu.Models
             SendPropertyChanged("ShowErrorBarcodeRangeEnd");
         }
 
+        public void SendPropertyChangedGlobalSettings()
+        {
+            SendPropertyChanged("IsDisabledGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("IsEnabledGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("OpacityGlobalDeleteAndBackupFileAfterDelivery");
+            SendPropertyChanged("DeleteAndBackupFileAfterDelivery");
+        }
     }
 }
