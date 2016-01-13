@@ -89,6 +89,10 @@
   <ItemGroup>
     <Compile Include="Contracts\IAddressStreetHouseNo.cs" />
     <Compile Include="Contracts\IAppSettings.cs" />
+    <Compile Include="Contracts\IApplicationConfigurationProvider.cs" />
+    <Compile Include="Contracts\ICustomerConfigurationProvider.cs" />
+    <Compile Include="Contracts\IGeneralConfigurationProvider.cs" />
+    <Compile Include="Contracts\IKeyValueStore.cs" />
     <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\ILocalizedDisplayAttribute.cs" />
     <Compile Include="Contracts\ILogonContext.cs" />
@@ -98,9 +102,9 @@
     <Compile Include="Contracts\IModelMappingApplied.cs" />
     <Compile Include="Contracts\IPasswordSecurityRuleDataProvider.cs" />
     <Compile Include="Contracts\IPersistableSelectorProvider.cs" />
-    <Compile Include="Contracts\ISessionDataHelper.cs" />
+    <Compile Include="Contracts\ILogonContextProvider.cs" />
     <Compile Include="Contracts\ISmtpSettings.cs" />
-    <Compile Include="Contracts\ITranslationFormatService.cs" />
+    <Compile Include="Contracts\ITranslationService.cs" />
     <Compile Include="Contracts\IUiView.cs" />
     <Compile Include="Contracts\IAttributeWithModelMappingConvert.cs" />
     <Compile Include="Contracts\IUserSecurityRuleDataProvider.cs" />

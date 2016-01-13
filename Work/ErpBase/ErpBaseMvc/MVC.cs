@@ -18,6 +18,7 @@ namespace ErpBaseMvc
             var context = HttpContext.Current;
 
             var user = (User)context.Session["objUser"];
+            var rawUrl = context.Request.RawUrl;
             if (user == null)
             {
                 var requestUserName = context.Request["un"];
@@ -27,11 +28,10 @@ namespace ErpBaseMvc
                 var decryptedUserName = CryptoMd5.Decrypt(requestUserName);
 
                 user = new User();
-                user.Login(decryptedUserName, context.Session.SessionID);
+                user.Login(decryptedUserName, context.Session.SessionID, context.Request.Url.AbsoluteUri);
                 context.Session["objUser"] = user;
             }
 
-            var rawUrl = context.Request.RawUrl;
             var index = rawUrl.IndexOf("?un=", StringComparison.Ordinal);
             if (index == -1)
                 index = rawUrl.IndexOf("&un=", StringComparison.Ordinal);

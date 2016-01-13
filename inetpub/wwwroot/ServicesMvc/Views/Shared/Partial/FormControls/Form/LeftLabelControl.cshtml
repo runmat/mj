@@ -1,31 +1,58 @@
-﻿@using MvcTools.Models
-@model FormControlModel 
+﻿@using MvcTools.Contracts
+@using MvcTools.Models
+@model FormControlModel
 
+@{
+    var formSettingsAdminMode = ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
+    var formSettingsButtonAvailable = (formSettingsAdminMode && Model.ControlHtml != null && !Model.ModelTypeName.NotNullOrEmpty().ToLower().Contains("gridadminviewmodel"));
+    var partialViewContext = SessionHelper.GetPartialViewContextCurrent();
+
+    var additionalClass = "";
+    if (Model.IsCollapsed)
+    {
+        additionalClass = " hide";
+    }
+    else if (Model.IsGrayed)
+    {
+        additionalClass = " grayed";
+    }
+}
 
 @if (Model.ColumnMode != FormMultiColumnMode.None)
 {
-    if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Left3)
+    if (!Model.IsCollapsed && (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Left3))
     {
-        @Html.Raw("<div class=\"row-fluid\">")
+        @Html.Raw("<div class=\"row-fluid\">") 
     }
 
     if (Model.ColumnMode == FormMultiColumnMode.Left || Model.ColumnMode == FormMultiColumnMode.Right)
     {
-        @Html.Raw("<div class=\"span6\">")
+        @Html.Raw("<div class=\"span6" + additionalClass + "\">")
     }
 
     if (Model.ColumnMode == FormMultiColumnMode.Left3 || Model.ColumnMode == FormMultiColumnMode.Middle3 || Model.ColumnMode == FormMultiColumnMode.Right3)
     {
-        @Html.Raw("<div class=\"span4\">")
+        @Html.Raw("<div class=\"span4" + additionalClass + "\">")
     }
 }
 
-<div class="control-group">
+<div class="control-group @additionalClass">
     
     <label class="control-label">
         @if (!Model.LabelHidden)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+        }
+        @if (formSettingsButtonAvailable)
+        {
+            <span>
+                <i class="icon-wrench" 
+                     data-model-type-name="@Model.ModelTypeName" 
+                     data-property-name="@Model.PropertyName" 
+                     data-partial-view-context="@partialViewContext"
+                     onclick="return FormSettingsAdminMode_EditFormControls($(this));">
+                </i>
+            </span>
         }
     </label>
 
@@ -73,7 +100,7 @@
 {
     @Html.Raw("</div>")
 
-    if (Model.ColumnMode == FormMultiColumnMode.Right || Model.ColumnMode == FormMultiColumnMode.Right3)
+    if (!Model.IsCollapsed && (Model.ColumnMode == FormMultiColumnMode.Right || Model.ColumnMode == FormMultiColumnMode.Right3))
     {
         @Html.Raw("</div>")
     }

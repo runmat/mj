@@ -174,30 +174,61 @@ namespace SapORM.Services
                 sw.WriteLine();
             }
 
+            sw.WriteLine("\t\t\tprivate bool MappingErrorProcessed { get; set; }");
+            sw.WriteLine();
+
             sw.WriteLine("\t\t\tpublic static {0} Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)", tableName);
             sw.WriteLine("\t\t\t{");
-            sw.WriteLine("\t\t\t\tvar o = new {0}", tableName);
+
+            sw.WriteLine("\t\t\t\t{0} o;", tableName);
+            sw.WriteLine();
+            sw.WriteLine("\t\t\t\ttry");
             sw.WriteLine("\t\t\t\t{");
+
+            sw.WriteLine("\t\t\t\t\to = new {0}", tableName);
+            sw.WriteLine("\t\t\t\t\t{");
+
+            sw.WriteLine("\t\t\t\t\t\tSAPConnection = sapConnection,");
+            sw.WriteLine("\t\t\t\t\t\tDynSapProxyFactory = dynSapProxyFactory,");
+            sw.WriteLine();
 
             foreach (var col in tableColumns)
             {
                 if (col.IsNullable)
-                    sw.WriteLine("\t\t\t\t\t{0} = string.IsNullOrEmpty(row[\"{0}\"].ToString()) ? null : ({1})row[\"{0}\"],", col.Name, col.TypeAsString);
+                    sw.WriteLine("\t\t\t\t\t\t{0} = string.IsNullOrEmpty(row[\"{0}\"].ToString()) ? null : ({1})row[\"{0}\"],", col.Name, col.TypeAsString);
                 else
-                    sw.WriteLine("\t\t\t\t\t{0} = ({1})row[\"{0}\"],", col.Name, col.TypeAsString);
+                    sw.WriteLine("\t\t\t\t\t\t{0} = ({1})row[\"{0}\"],", col.Name, col.TypeAsString);
             }
 
-            sw.WriteLine();
-            sw.WriteLine("\t\t\t\t\tSAPConnection = sapConnection,");
-            sw.WriteLine("\t\t\t\t\tDynSapProxyFactory = dynSapProxyFactory,");
 
-            sw.WriteLine("\t\t\t\t};");
+            sw.WriteLine("\t\t\t\t\t};");
+
+            sw.WriteLine("\t\t\t\t}");
+            sw.WriteLine("\t\t\t\tcatch(Exception e)");
+            sw.WriteLine("\t\t\t\t{");
+            sw.WriteLine("\t\t\t\t\to = new {0}", tableName);
+            sw.WriteLine("\t\t\t\t\t{");
+
+            sw.WriteLine("\t\t\t\t\t\tSAPConnection = sapConnection,");
+            sw.WriteLine("\t\t\t\t\t\tDynSapProxyFactory = dynSapProxyFactory,");
+            sw.WriteLine("\t\t\t\t\t};");
+
+            sw.WriteLine("\t\t\t\t\to.OnMappingError(e, row, {0});", isExport.ToString().ToLower());
+            sw.WriteLine("\t\t\t\t\tif (!o.MappingErrorProcessed)");
+            sw.WriteLine("\t\t\t\t\t\tthrow;");
+
+            sw.WriteLine("\t\t\t\t}");
+
+            sw.WriteLine();
             sw.WriteLine("\t\t\t\to.OnInitFromSap();");
             sw.WriteLine("\t\t\t\treturn o;");
             sw.WriteLine("\t\t\t}");
 
             sw.WriteLine();
             sw.WriteLine("\t\t\tpartial void OnInitFromSap();");
+
+            sw.WriteLine();
+            sw.WriteLine("\t\t\tpartial void OnMappingError(Exception e, DataRow row, bool isExport);");
 
             sw.WriteLine();
             sw.WriteLine("\t\t\tpartial void OnInitFromExtern();");

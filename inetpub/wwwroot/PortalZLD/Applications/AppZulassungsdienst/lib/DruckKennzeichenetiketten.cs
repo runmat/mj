@@ -28,12 +28,19 @@ namespace AppZulassungsdienst.lib
 
         #region "Methods"
 
+        public DruckKennzeichenetiketten(string userReferenz)
+        {
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
+        }
+
         public void LoadVorgaenge()
         {
             ExecuteSapZugriff(() =>
                 {
                     Z_ZLD_AH_2015_ETIKETT_SEL.Init(SAP);
 
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
                     SAP.SetImportParameter("I_ZLDAT", Zulassungsdatum);
                     
                     if (!String.IsNullOrEmpty(SapId))
