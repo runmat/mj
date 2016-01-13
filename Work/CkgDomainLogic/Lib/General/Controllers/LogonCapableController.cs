@@ -139,6 +139,7 @@ namespace CkgDomainLogic.General.Controllers
                         // Auto Logon a User only for debug purposes 
                         // and only available for machine names starting with "AHW"
                         LogonContext.LogonUser(autoLogonUser);
+                        LogonContext.TrySetLogoutLink();
                         return Redirect(rawUrl);
                     }
                 }
@@ -180,6 +181,7 @@ namespace CkgDomainLogic.General.Controllers
                 UrlLogOff();
             }
 
+            LogonContext.TrySetLogoutLink();
 
             if ((LogonContext.UserName.IsNotNullOrEmpty() && decryptedRequestUserName.IsNullOrEmpty()) || !NeedsAuhentification)
                 // a valid usercontext in session plus missing "request user" and "remote login user" should signal success and avoid any redirection here:

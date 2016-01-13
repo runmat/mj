@@ -245,11 +245,31 @@ namespace CkgDomainLogic.General.Services
                 return;
             }
 
-            if (customer != null && customer.PortalType.NotNullOrEmpty().ToLower() != "mvc")
+            if (customer != null)
             {
-                var urlParam = "FromMvc_" + dbContext.User.UserID + "_" + DateTime.Now.ToString("dd.MM.yyyy-HH:mm");
-                var crypted = CryptoMd5.EncryptToUrlEncoded(urlParam);
-                ReturnUrl = "/Services/Start/Login.aspx?unm=" + crypted;
+                if (customer.ForceSpecifiedLoginLink.IsTrue() && HttpContext.Current != null)
+                {
+                    var specifiedLoginLink = customer.LoginLink.NotNullOrEmpty().ToLower().Replace("http://", "").Replace("https://", "");
+                    if (specifiedLoginLink.Contains('/'))
+                        specifiedLoginLink = specifiedLoginLink.Split('/')[0];
+
+                    var currentLoginLink = HttpContext.Current.Request.Url.AbsoluteUri.NotNullOrEmpty().ToLower().Replace("http://", "").Replace("https://", "");
+                    if (currentLoginLink.Contains('/'))
+                        currentLoginLink = currentLoginLink.Split('/')[0];
+
+                    if (!HttpContext.Current.Request.IsLocal && specifiedLoginLink != currentLoginLink)
+                    {
+                        addModelError(m => m.UserName, string.Format(Localize.LoginPleaseUseSpecifiedLoginLinkHintLine1 + Environment.NewLine + Localize.LoginPleaseUseSpecifiedLoginLinkHintLine2, "https://" + specifiedLoginLink));
+                        return;
+                    }
+                }
+
+                if (customer.PortalType.NotNullOrEmpty().ToLower() != "mvc")
+                {
+                    var urlParam = "FromMvc_" + dbContext.User.UserID + "_" + DateTime.Now.ToString("dd.MM.yyyy-HH:mm");
+                    var crypted = CryptoMd5.EncryptToUrlEncoded(urlParam);
+                    ReturnUrl = "/Services/Start/Login.aspx?unm=" + crypted;
+                }
             }
 
             loginModel.RedirectUrl = ReturnUrl;

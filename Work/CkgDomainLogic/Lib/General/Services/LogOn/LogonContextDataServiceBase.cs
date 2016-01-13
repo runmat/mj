@@ -424,5 +424,11 @@ namespace CkgDomainLogic.General.Services
         {
             return "";
         }
+
+        public void TrySetLogoutLink()
+        {
+            if (Customer != null)
+                LogoutUrl = Customer.LogoutLink;
     }
+}
 }
