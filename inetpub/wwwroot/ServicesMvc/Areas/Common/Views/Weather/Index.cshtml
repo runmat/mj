@@ -7,15 +7,29 @@
         width: 75px;
         display: inline-block;
         margin: 5px 0 15px 0;
-    }
-    .temp-info div {
+        text-align: center;
     }
 
+    .day-info {
+        margin: 0 0 15px 0;
+    }
+    .day-info div.day {
+        font-size: 1.0em;
+        color: #808080!important;
+    }
+    .day-info div.wkday {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .temp-info {
+        margin: 0 0 10px 0;
+    }
     .temp-info hr {
         margin: 2px 0 2px -3px; 
     }
     .temp-info div.tlabel {
-        color: black!important;
+        color: #808080!important;
         display: inline-block;
         width: 30px;
         text-align: left;
@@ -39,9 +53,6 @@
         color: blue;
     }
 
-    .wd-day .picture {
-        text-align: center;
-    }
 </style>
 
 
@@ -97,13 +108,16 @@
                 loadingShow: false,
                 success: function (result) {
 
-                    var wd = result.data.list[3];
+                    var wd = result.data.list[0];
                     //$("#test").html(result.data.city.name);
 
                     console.log(wd);
 
-                    var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 25;
-                    var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 20;
+                    var minTemperature = toCelsiusTemperature(wd.main.temp_min);
+                    var maxTemperature = toCelsiusTemperature(wd.main.temp_max);
+
+                    $(".wd-day .day-info div.day").html("Mi, 13.01.");
+                    $(".wd-day .day-info div.wkday").html("heute");
 
                     $(".wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");
                     $(".wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(maxTemperature <= 0 ? "leq-zero" : "");
@@ -117,7 +131,6 @@
     }
 
     function toCelsiusTemperature(kelvin) {
-        console.log(kelvin);
         var celsius = Math.round(parseFloat(kelvin)) - 273.0;
 
         return celsius;
