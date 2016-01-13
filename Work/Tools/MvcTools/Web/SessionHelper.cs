@@ -204,7 +204,12 @@ namespace MvcTools.Web
             if (partialViewUrl.Contains("/gridadmin"))
                 return;
 
-            var partialViewContext = string.Format("{0}___{1}", browserUrl, partialViewUrl);
+            var browserUrlParts = browserUrl.Split('/');
+            if (browserUrlParts.Length >= 2)
+                browserUrl = string.Join("/", browserUrlParts.Take(browserUrlParts.Length - 1));
+
+            //var partialViewContext = string.Format("{0}___{1}", browserUrl, partialViewUrl);
+            var partialViewContext = browserUrl;
             partialViewContext = partialViewContext.Replace("/", "_");
 
             SetSessionValue("PartialViewUrlCurrent", partialViewUrl);
