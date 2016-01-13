@@ -130,7 +130,8 @@ namespace AppZulassungsdienst.forms
             if (!is48hOk)
                 return;
 
-            if (objCommon.Ist48hZulassung && (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1)))
+            var abwVersanddaten = (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1));
+            if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && abwVersanddaten))
             {
                 SetAbwLieferadresse();
                 Fill48hDialog();
@@ -800,6 +801,8 @@ namespace AppZulassungsdienst.forms
 
         private void Fill48hDialog()
         {
+            lblPanel48hTitle.Text = (objCommon.Ist48hZulassung ? "48h-Versandzulassung" : "Abweichende Versandadresse");
+            lblPanel48hHint.Visible = objCommon.Ist48hZulassung;
             lblLieferuhrzeit.Text = objCommon.LieferUhrzeitBisFormatted;
             lblAbwName.Text = String.Format("{0} {1}", objCommon.AbwName1, objCommon.AbwName2);
             lblAbwStrasse.Text = objCommon.AbwStrasse;
@@ -1167,7 +1170,8 @@ namespace AppZulassungsdienst.forms
                     dRow["FaxLief"] = SelRow[0]["FAX_NUMBER"].ToString() + " " + SelRow[0]["FAX_EXTENS"].ToString();
                 }
 
-                if (objCommon.Ist48hZulassung && !String.IsNullOrEmpty(objCommon.AbwName1))
+                var abwVersanddaten = (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1));
+                if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && abwVersanddaten))
                 {
                     dRow["Name1Lief"] = objCommon.AbwName1;
                     dRow["Name2Lief"] = objCommon.AbwName2;
