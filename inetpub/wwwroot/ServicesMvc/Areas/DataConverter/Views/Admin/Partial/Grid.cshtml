@@ -12,7 +12,7 @@
             .ClientTemplate(
                 "<button onclick='ShowKonfiguration(<#= data.Id #>);' class='btn mini gray tooltips' data-original-title='" + Localize.EditMapping + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                 + "&nbsp;" +
-                "<a href='#' onclick='DeleteKonfiguration(\"<#= data.Id #>\");' class='btn mini gray tooltips margin-left-5' data-original-title='" + Localize.DeleteMapping + "' data-placement='right'><i class='halflings-icon white remove'></i></a>"
+                "<button onclick='DeleteKonfiguration(\"<#= data.Id #>\");' class='btn mini gray tooltips margin-left-5' data-original-title='" + Localize.DeleteMapping + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
             ).HeaderTemplate(
                 "<button onclick='ShowProzessauswahl();' class='btn mini gray tooltips' data-original-title='" + Localize.AddNewMapping + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
         );

@@ -109,7 +109,10 @@
 
     $(function () {
         LoadUiData();
-        setTimeout('refreshPlumb();', 1000);
+        setTimeout(function () {
+            refreshPlumb();
+            resizeBodyContainer();
+        }, 1000);
     });
 
     jsPlumb.ready(function () {
@@ -170,6 +173,11 @@
     function ResetKonfiguration() {
         ClearAll(true);
         resetPlumb();
+    }
+
+    function resizeBodyContainer() {
+        var newHeight = 150 + Math.max($('#source').outerHeight(), $('#destination').outerHeight());
+        $('.body-container').css('height', newHeight);
     }
     
     // Show Processor in UI
