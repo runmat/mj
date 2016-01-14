@@ -2,22 +2,8 @@
 
 <style type="text/css">
     
-    .form-wizard .progress {
-        margin-bottom: 10px !important;
-    }
-     
-    #DivKonfiguration {
-        height: 532px;
-    }
-    
-    #DataConverterContainer {
-        height: 450px;
-        overflow: hidden;
-        @*position: relative;*@
-    }
-
-    #source {
-        height: 445px;
+    #source 
+    {
         width: 250px;
         position: absolute;
         padding: 0;
@@ -25,10 +11,11 @@
         overflow-x: hidden;
         -ms-overflow-x: hidden;
         margin-top: 10px;
+        padding-bottom: 35px;
     }
 
-    #destination {
-        height: 445px;
+    #destination 
+    {
         width: 250px;
         right: 3%;
         position: absolute;
@@ -36,6 +23,7 @@
         overflow-x: hidden;
         -ms-overflow-x: hidden;
         margin-top: 10px;
+        padding-bottom: 35px;
     }
 
     .w {
@@ -122,8 +110,6 @@
         position: absolute;
         left: -3px;
         top: -3px;
-        width: 1em;
-        height: 1em;
         cursor: pointer;
         box-shadow: 0 0 2px black;
         -webkit-transition: -webkit-box-shadow 0.25s ease-in;
@@ -144,8 +130,6 @@
         position: absolute;
         right: -3px;
         top: -3px;
-        width: 1em;
-        height: 1em;
         cursor: pointer;
         box-shadow: 0 0 2px black;
         -webkit-transition: -webkit-box-shadow 0.25s ease-in;
@@ -254,7 +238,7 @@
         margin-top: -3px;
         border: 0;
     }
-     
+    
 </style>
 
 <script type="text/javascript">
@@ -379,14 +363,16 @@
         $("#divDataMappingDetails").html(result);
         $("#divSearchAndGrid").slideUp();
         $("#divDataMappingDetails").slideDown();
+        FormPreparePrivateAjax();
         scrollToTop();
     }
 
     function CloseDataMappingDetails() {
-        if ($.isFunction(ResetKonfiguration))
+        if (typeof ResetKonfiguration !== "undefined")
             ResetKonfiguration();
 
         setTimeout(function () {
+            FormPreparePrivateAjax();
             $("#divDataMappingDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
             setTimeout('LoadingHide();', 500);

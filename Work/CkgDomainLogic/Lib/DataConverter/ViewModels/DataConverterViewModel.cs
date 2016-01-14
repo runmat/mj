@@ -153,6 +153,8 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
             if (mappingId == 0)
             {
+                MappingModel.DataConnections.Clear();
+                MappingModel.Processors.Clear();
                 ReadDestinationStructureFromJson(DataConverterDataService.GetProcessStructure(NewMappingSelektor.ProzessName));
                 ReadSourceFile();
                 MappingCustomerId = NewMappingSelektor.CustomerId;
