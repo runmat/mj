@@ -32,6 +32,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return jsonPackage.EditDate < (DateTime.Now.AddMinutes(-1 * JsonDataCacheExpirationMinutes));
         }
 
+        public JsonItemsPackage GetWeatherCities(string country)
+        {
+            var jsonData = DataService.RequestGetWeatherCities(AppSettings.DataPath, country);
+
+            return jsonData;
+        }
+
         public JsonItemsPackage GetWeatherData(string cityAndCountry)
         {
             var itemId = cityAndCountry;

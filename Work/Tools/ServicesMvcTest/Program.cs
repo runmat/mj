@@ -45,7 +45,7 @@ namespace ServicesMvcTest
             var appSettings = new CkgDomainAppSettings();
 
             var service = new WeatherDataServiceOpenWeatherMap();
-            service.InternalUseForExportRequestGetWeatherCities(appSettings.DataPath, "CH");
+            service.WeatherCitiesSaveToFile(appSettings.DataPath, "CH");
 
             //service.RequestGetWeatherCities(appSettings.DataPath, "DE");
             //service.RequestGetWeatherCities(appSettings.DataPath, "AT");

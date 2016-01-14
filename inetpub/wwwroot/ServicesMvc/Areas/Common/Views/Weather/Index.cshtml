@@ -64,6 +64,9 @@
 
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
+
+<input id="tb-cities" class="m-wrap medium ui-autocomplete-input" type="text" />
+
 <div id="wd-content" class="hide">
 </div>
 
@@ -98,11 +101,91 @@
 <script type="text/javascript">
 
     function FormPreparePrivate() {
-        PrepareWeatherWidget("hamburg,de");
+        InitCityControl();
+
+        //PrepareWeatherWidget("hamburg,de");
+        //PrepareWeatherCityDropdown("de");
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+    }
+
+    function InitCityControl() {
+        console.log("test-1");
+        $('#tb-cities').select2({
+            ajax: {
+                url: "PrepareWeatherCityDropdown",
+                dataType: 'json',
+                type: 'POST',
+                data: function (params) {
+                    return {
+                        city: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (result, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                        results: result.data,
+                        pagination: {
+                            more: (params.page * 30) < result.data.length
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            templateResult: function(c) {
+                //if (repo.loading) return repo.text;
+
+                var markup = "<div class='select2-result-repository clearfix'>" +
+                    "<div class='select2-result-repository__title'>" + c.name + "</div>" +
+                    "</div>";
+
+                //alert(markup);
+
+                return markup;
+            },
+            templateSelection: function (c) { return c.name; }
+    });
+
+        console.log("test-2");
+
+        //setTimeout(function () {
+        //    $('#city-dropdown').data('select2').open();
+        //}, 100);
+    }
+
+    function OnCityChanged(city) {
+        alert(city);
+    }
+
+    function PrepareWeatherCityDropdown(country) {
+        console.log(country);
+        $.ajax(
+            {
+                type: "POST",
+                url: "PrepareWeatherCityDropdown",
+                data: { country: country },
+                loadingShow: false,
+                success: function (result) {
+                    $('#city-dropdown').empty();
+                    $(result.data).each(function () {
+
+                        var option = $('<option />');
+                        option.attr('value', this._id).text(this.name);
+
+                        $('#city-dropdown').append(option);
+                    });
+                }
+            });
     }
 
     function PrepareWeatherWidget(cityAndCountry) {

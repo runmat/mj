@@ -1,5 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,7 +24,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         private string ServiceRequestWeatherUrl { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "ServiceRequestWeatherUrl"); } }
 
-        private static JsonItemsPackage _weatherCities;
+        private static Dictionary<string, JsonItemsPackage> _weatherCities = new Dictionary<string, JsonItemsPackage>();
 
 
         static bool WeatherDateMatches(string firstDateTxt, string dtTxt)
@@ -97,30 +98,33 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public JsonItemsPackage RequestGetWeatherCities(string dataPath, string country)
         {
-            if (_weatherCities != null)
-                return _weatherCities;
+            country = country.ToLower();
+            if (_weatherCities.ContainsKey(country))
+                return _weatherCities[country];
 
             var weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list." + country + ".json");
             var jsonDataAsString = File.ReadAllText(weatherCitiesFileName);
 
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
             var jsonData = serializer.Deserialize<WeatherCity[]>(jsonDataAsString);
-            var len = jsonData.Length;
+            jsonData = jsonData.OrderBy(c => c.name).Take(5).ToArray();
 
-            _weatherCities = new JsonItemsPackage
+            _weatherCities.Add(country, new JsonItemsPackage
             {
-                ID = "",
+                ID = country,
                 data = jsonData,
                 dataAsText = ""
-            };
+            });
 
-            return _weatherCities;
+            return _weatherCities[country];
         }
+
 
         #region _internal use
 
-        public void InternalUseForExportRequestGetWeatherCities(string dataPath, string country)
+        public void WeatherCitiesSaveToFile(string dataPath, string country)
         {
+            // for internal use only
             var weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list.json");
             var jsonDataAsString = File.ReadAllText(weatherCitiesFileName);
 
