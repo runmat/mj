@@ -5,10 +5,25 @@ using System.Globalization;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using SapORM.Contracts;
 
 namespace CkgDomainLogic.General.Models.OpenWeatherMap
 {
+
+    #region Weather Cities
+
+    public class WeatherCity
+    {
+        public string _id { get; set; }
+        public string name { get; set; }
+        public string country { get; set; }
+    }
+
+    #endregion
+
+
+
+    #region Weather Data
+
     public class WeatherData
     {
         public WdCity city { get; set; }
@@ -30,9 +45,15 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
         public WdItemWeather[] weather { get; set; }
         public string dt_txt { get; set; }
 
-        public WdItemWeather weatherFirst { get { return weather == null || weather.None() ? new WdItemWeather() : weather.First(); } }
+        public WdItemWeather weatherFirst
+        {
+            get { return weather == null || weather.None() ? new WdItemWeather() : weather.First(); }
+        }
 
-        public string dateWeekdayShort { get { return getDate().ToString("ddd").SubstringTry(0, 2); } }
+        public string dateWeekdayShort
+        {
+            get { return getDate().ToString("ddd").SubstringTry(0, 2); }
+        }
 
         public string dateHeaderTop
         {
@@ -90,4 +111,7 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
         public string description { get; set; }
         public string icon { get; set; }
     }
+
+    #endregion
+
 }

@@ -7,5 +7,7 @@ namespace CkgDomainLogic.General.Contracts
         string ConfigurationContextKey { get; }
 
         JsonItemsPackage RequestGetWeatherData(string cityAndCountry);
+
+        JsonItemsPackage RequestGetWeatherCities(string dataPath, string country);
     }
 }

@@ -2,7 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
+using CkgDomainLogic.DomainCommon.Services;
 using CkgDomainLogic.General.Models.OpenWeatherMap;
+using CkgDomainLogic.Services;
 using GeneralTools.Models;
 // ReSharper disable All
 
@@ -12,7 +14,7 @@ namespace ServicesMvcTest
     {
         static void Main()
         {
-            Test();
+            Test2();
         }
 
         static bool WeatherDateMatches(string firstDateTxt, string dtTxt)
@@ -36,6 +38,18 @@ namespace ServicesMvcTest
             jsonData.list = list;
 
             sData = new JavaScriptSerializer().Serialize(jsonData);
+        }
+
+        static void Test2()
+        {
+            var appSettings = new CkgDomainAppSettings();
+
+            var service = new WeatherDataServiceOpenWeatherMap();
+            service.InternalUseForExportRequestGetWeatherCities(appSettings.DataPath, "CH");
+
+            //service.RequestGetWeatherCities(appSettings.DataPath, "DE");
+            //service.RequestGetWeatherCities(appSettings.DataPath, "AT");
+            //service.RequestGetWeatherCities(appSettings.DataPath, "CH");
         }
     }
 }

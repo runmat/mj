@@ -300,6 +300,9 @@
     <Content Include="Areas\Common\Views\Weather\Index.cshtml" />
     <Content Include="Areas\Common\Views\Weather\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.DE.json" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

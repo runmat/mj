@@ -9,6 +9,7 @@ using GeneralTools.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models.OpenWeatherMap;
 using GeneralTools.Contracts;
+using Newtonsoft.Json;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
@@ -20,7 +21,9 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         private string ApiKey { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "License_ApiKey"); } }
 
-        private string ServiceRequestUrl { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "ServiceRequestUrl"); } }
+        private string ServiceRequestWeatherUrl { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "ServiceRequestWeatherUrl"); } }
+
+        private static JsonItemsPackage _weatherCities;
 
 
         static bool WeatherDateMatches(string firstDateTxt, string dtTxt)
@@ -50,12 +53,10 @@ namespace CkgDomainLogic.DomainCommon.Services
             return jsonData;
         }
 
-        public JsonItemsPackage RequestGetWeatherData(string cityAndCountry)
+        private JsonItemsPackage RequestGetJsonData(string url)
         {
-           try
+            try
             {
-                var url = string.Format(ServiceRequestUrl, cityAndCountry, ApiKey);
-
                 var request = WebRequest.Create(url);
 
                 var response = request.GetResponse();
@@ -86,5 +87,53 @@ namespace CkgDomainLogic.DomainCommon.Services
                 return new JsonItemsPackage();
             }
         }
+
+        public JsonItemsPackage RequestGetWeatherData(string cityAndCountry)
+        {
+            var url = string.Format(ServiceRequestWeatherUrl, cityAndCountry, ApiKey);
+
+            return RequestGetJsonData(url);
+        }
+
+        public JsonItemsPackage RequestGetWeatherCities(string dataPath, string country)
+        {
+            if (_weatherCities != null)
+                return _weatherCities;
+
+            var weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list." + country + ".json");
+            var jsonDataAsString = File.ReadAllText(weatherCitiesFileName);
+
+            var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+            var jsonData = serializer.Deserialize<WeatherCity[]>(jsonDataAsString);
+            var len = jsonData.Length;
+
+            _weatherCities = new JsonItemsPackage
+            {
+                ID = "",
+                data = jsonData,
+                dataAsText = ""
+            };
+
+            return _weatherCities;
+        }
+
+        #region _internal use
+
+        public void InternalUseForExportRequestGetWeatherCities(string dataPath, string country)
+        {
+            var weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list.json");
+            var jsonDataAsString = File.ReadAllText(weatherCitiesFileName);
+
+            var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+            var jsonData = serializer.Deserialize<WeatherCity[]>(jsonDataAsString);
+            jsonData = jsonData.Where(d => d.country == country).ToArray();
+            var len = jsonData.Length;
+
+            var countryDataAsString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+            weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list." + country + ".json");
+            File.WriteAllText(weatherCitiesFileName, countryDataAsString);
+        }
+
+        #endregion
     }
 }
