@@ -3,6 +3,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using SapORM.Contracts;
 
@@ -31,12 +32,43 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
 
         public WdItemWeather weatherFirst { get { return weather == null || weather.None() ? new WdItemWeather() : weather.First(); } }
 
-        public string dateWeekday { get { return getDate().ToString("ddd").SubstringTry(0, 2); } }
+        public string dateWeekdayShort { get { return getDate().ToString("ddd").SubstringTry(0, 2); } }
+
+        public string dateHeaderTop
+        {
+            get
+            {
+                var dt = getDate();
+                var today = DateTime.Today;
+
+                if (dt.Date <= DateTime.Today.Date.AddDays(1))
+                    return string.Format("{0}, {1}", dateWeekdayShort, dt.ToString("dd.MM."));
+
+                return string.Format("{0}", dt.ToString("dd.MM."));
+            }
+        }
+
+        public string dateHeaderBottomBold
+        {
+            get
+            {
+                var dt = getDate();
+                var today = DateTime.Today;
+
+                if (dt.Date == DateTime.Today.Date)
+                    return Localize.Today.ToLower();
+
+                if (dt.Date == DateTime.Today.Date.AddDays(1))
+                    return Localize.Tomorrow.ToLower();
+
+                return dt.ToString("dddd");
+            }
+        }
 
         private DateTime getDate()
         {
             DateTime date;
-            if (!DateTime.TryParseExact(dt_txt, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            if (!DateTime.TryParseExact(dt_txt, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out date))
                 return DateTime.Today;
 
             return date;
