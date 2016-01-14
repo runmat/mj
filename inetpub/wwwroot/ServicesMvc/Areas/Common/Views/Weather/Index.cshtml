@@ -65,7 +65,9 @@
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
 
-<input id="tb-cities" class="m-wrap medium ui-autocomplete-input" type="text" />
+<select id="city-dropdown" class="m-wrap medium select2">
+</select>
+
 
 <div id="wd-content" class="hide">
 </div>
@@ -101,7 +103,7 @@
 <script type="text/javascript">
 
     function FormPreparePrivate() {
-        InitCityControl();
+        InitDropdowns();
 
         //PrepareWeatherWidget("hamburg,de");
         //PrepareWeatherCityDropdown("de");
@@ -111,9 +113,9 @@
         FormPrepareAjax();
     }
 
-    function InitCityControl() {
+    function InitDropdowns() {
         console.log("test-1");
-        $('#tb-cities').select2({
+        $('#city-dropdown').select2({
             ajax: {
                 url: "PrepareWeatherCityDropdown",
                 dataType: 'json',
@@ -140,27 +142,21 @@
                 },
                 cache: true
             },
-            escapeMarkup: function (markup) { return markup; },
+            //escapeMarkup: function (markup) { return markup; },
             minimumInputLength: 1,
-            templateResult: function(c) {
-                //if (repo.loading) return repo.text;
-
-                var markup = "<div class='select2-result-repository clearfix'>" +
-                    "<div class='select2-result-repository__title'>" + c.name + "</div>" +
-                    "</div>";
-
-                //alert(markup);
-
-                return markup;
-            },
+            templateResult: function(c) { return c.name; },
             templateSelection: function (c) { return c.name; }
-    });
+        });
 
         console.log("test-2");
 
-        //setTimeout(function () {
-        //    $('#city-dropdown').data('select2').open();
-        //}, 100);
+        setTimeout(function () {
+            var option = $('<option />');
+            option.attr('value', "0").text("...");
+            $('#city-dropdown').append(option);
+
+            $('#city-dropdown').data('select2').open();
+        }, 100);
     }
 
     function OnCityChanged(city) {
