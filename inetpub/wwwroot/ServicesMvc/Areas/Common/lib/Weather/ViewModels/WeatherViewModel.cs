@@ -1,5 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
@@ -14,6 +15,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 {
     public class WeatherViewModel : CkgBaseViewModel
     {
+        public const int WidgetMax = 3;
+
+        public int WidgetVisibleCount { get; set; }
+
+        public WeatherWidgetUserSettings[] WidgetUserSettings { get; set; }
+    
+
         [XmlIgnore]
         static IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
 
@@ -26,24 +34,45 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             get { return GeneralConfigurationProvider.GetConfigAllServerVal(DataService.ConfigurationContextKey, "ServiceRequestCacheExpirationMinutes").ToInt(0); }
         }
 
+        public Dictionary<string, string> CountryDict = new Dictionary<string, string>
+        {
+            { "de", "Deutschland"},
+            { "at", "Österreich"},
+            { "ch", "Schweiz"},
+        };
+
+
+        public void DataInit()
+        {
+            WidgetVisibleCount = 2;
+
+            if (WidgetUserSettings == null)
+                WidgetUserSettings = new []
+                {
+                    new WeatherWidgetUserSettings { Country = "de", City = "Hamburg" },
+                    new WeatherWidgetUserSettings { Country = "at", City = "Wien" },
+                    new WeatherWidgetUserSettings { Country = "de", City = "Berlin" },
+                };
+        }
+
 
         bool JsonDataCacheExpired(JsonItemsPackage jsonPackage)
         {
             return jsonPackage.EditDate < (DateTime.Now.AddMinutes(-1 * JsonDataCacheExpirationMinutes));
         }
 
-        public JsonItemsPackage GetWeatherCities(string country, string city)
+        public JsonItemsPackage GetWeatherCities(string city, int index)
         {
-            var jsonData = DataService.RequestGetWeatherCities(AppSettings.DataPath, country, city);
+            var jsonData = DataService.RequestGetWeatherCities(AppSettings.DataPath, WidgetUserSettings[index].Country, city);
 
             return jsonData;
         }
 
-        private const string Country = "de";
-
-        public JsonItemsPackage GetWeatherData(string city)
+        public JsonItemsPackage GetWeatherData(string city, int index)
         {
-            var cityAndCountry = city + "," + Country;
+            WidgetUserSettings[index].City = city;
+
+            var cityAndCountry = city + "," + WidgetUserSettings[index].Country;
 
             var itemId = cityAndCountry;
             var ownerKey = cityAndCountry;
@@ -58,6 +87,11 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             // </Json data caching>
 
             return jsonData;
+        }
+
+        public void SetCountry(string country, int index)
+        {
+            WidgetUserSettings[index].Country = country;
         }
     }
 }

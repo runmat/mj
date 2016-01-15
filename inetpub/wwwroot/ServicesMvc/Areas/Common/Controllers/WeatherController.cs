@@ -22,25 +22,31 @@ namespace ServicesMvc.Common.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            //ViewModel.DataInit(); "hamburg,de"
+            ViewModel.DataInit();
 
             return View(ViewModel);
         }
 
         [HttpPost]
-        public ActionResult PrepareWeatherCityDropdown(string city)
+        public ActionResult PrepareWeatherCountryDropdown(string country, int index)
         {
-            const string country = "de";
+            ViewModel.SetCountry(country, index);
 
-            var jsonData = ViewModel.GetWeatherCities(country, city);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult PrepareWeatherCityTextbox(string city, int index)
+        {
+            var jsonData = ViewModel.GetWeatherCities(city, index);
 
             return Json(jsonData);
         }
 
         [HttpPost]
-        public ActionResult PrepareWeatherWidget(string city)
+        public ActionResult PrepareWeatherWidget(string city, int index)
         {
-            var jsonData = ViewModel.GetWeatherData(city);
+            var jsonData = ViewModel.GetWeatherData(city, index);
 
             return Json(jsonData);
         }

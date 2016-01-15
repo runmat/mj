@@ -298,7 +298,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\Weather\Index.cshtml" />
-    <Content Include="Areas\Common\Views\Weather\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
@@ -744,6 +743,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Weather\Contracts\IWeatherDataService.cs" />
     <Compile Include="Areas\Common\lib\Weather\Models\WeatherData.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Models\WeatherWidgetUserSettings.cs" />
     <Compile Include="Areas\Common\lib\Weather\Services\WeatherDataServiceOpenWeatherMap.cs" />
     <Compile Include="Areas\Common\lib\Weather\ViewModels\WeatherViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />

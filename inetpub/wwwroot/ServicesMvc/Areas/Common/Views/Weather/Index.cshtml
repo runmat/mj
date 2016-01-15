@@ -1,16 +1,30 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.WeatherViewModel
-
-@{ var _widgetCount = 3; }
+@* ReSharper disable once CssBrowserCompatibility *@
 
 <style type="text/css">
     
-    .weather-widget {
-        display: table;
-        float: none;
-        margin: 0 0 10px 0;
+    .selection-div {
+        font-size: 0.8em!important;
     }
+    .selection-div.form-horizontal .control-label {
+        width: 70px;
+    }
+    .selection-div.form-horizontal .controls {
+        margin-left: 80px;
+    }
+    
+    .weather-widget {
+         display: table;
+         float: none;
+         width: 330px;
+         margin: 0 0 10px 0;
+         border: 0 solid gray;
+     }
     .wd-content {
-        height: 200px;    
+        height: 150px;    
+    }
+    .wd-content.busy {
+        opacity: 0.3;
     }
 
     .wd-day {
@@ -20,7 +34,7 @@
         margin: 5px 0 15px 20px;
         text-align: center;
     }
-    #wd-0 .wd-day {
+    .no-margin-left .wd-day {
         margin-left: 0;
     }
 
@@ -65,24 +79,41 @@
     .temp-info div {
         color: green;
     }
-    .temp-info div.leq-zero * {
+    .temp-info div.temp-zero * {
         color: blue;
     }
-
+    .temp-info div.temp-freeze * {
+        color: darkmagenta;
+    }
 </style>
 
 
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
-@for (var i = 0; i < _widgetCount; i++)
+@for (var i = 0; i < Model.WidgetVisibleCount; i++)
 {
+    var country = Model.WidgetUserSettings[i].Country;
+    var city = Model.WidgetUserSettings[i].City;
+
     <div id="weather-widget-@i" class="weather-widget">
         <div class="form-horizontal selection-div">
 
             <div class="control-group">
+                <label class="control-label">@Localize.Country</label>
+                <div class="controls">
+                    <select class="m-wrap medium lb-country">
+                        @foreach (var countryEntry in Model.CountryDict)
+                        {
+                            <option @(country == countryEntry.Key ? "selected" : "") value="@countryEntry.Key" label="@countryEntry.Value"></option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
                 <label class="control-label">@Localize.City</label>
                 <div class="controls">
-                    <input class="m-wrap medium tb-city" type="text" value="">
+                    <input class="m-wrap medium tb-city" type="text" value="@city">
                 </div>
             </div>
 
@@ -124,12 +155,8 @@
 
 <script type="text/javascript">
 
-
     function FormPreparePrivate() {
         InitControls();
-
-        //PrepareWeatherWidget("hamburg,de");
-        //PrepareWeatherCityDropdown(_country);
     }
 
     function FormPreparePrivateAjax() {
@@ -137,26 +164,60 @@
     }
 
     function InitControls() {
+        $.each($(".weather-widget .lb-country"), function (index, lbCountry) {
+            InitCountryDropdown($(lbCountry), index);
+        });
         $.each($(".weather-widget .tb-city"), function (index, tbCity) {
-            InitControl($(tbCity), index);
+            InitCityTextbox($(tbCity), index);
         });
     }
 
-    function InitControl(tbCity, index)
-    {
-        //var tbCity = $("#tb-city");
-        //console.log(tbCity);
-        if (index == 0)
-            tbCity.focus();
+    function InitCountryDropdown(lbCountry, index) {
+        lbCountry.change(function() {
 
-        tbCity.on("keyup", function (e) {
-            //console.log(e.keyCode);
+            var widgetId = "#weather-widget-" + index;
+            $(widgetId + " .wd-content").addClass("busy");
 
-            if (e.keyCode === 13) {
-                PrepareWeatherWidget(tbCity.val(), index);
+            var tbCity = $(widgetId + " .tb-city");
+            tbCity.val("");
+            if (tbCity.data('ui-autocomplete') != undefined) {
+                tbCity.autocomplete("destroy");
+                tbCity.removeData("autocomplete");
             }
 
-            var autoCompleteMinLength = 3;
+            $.ajax({
+                type: "POST",
+                url: "PrepareWeatherCountryDropdown",
+                data: { country: lbCountry.val(), index: index },
+                success: function (result) {
+                    $(widgetId + " .wd-content").removeClass("busy");
+                    tbCity.focus();
+                }
+            });
+        });
+    }
+
+    function InitCityTextbox(tbCity, index)
+    {
+        var widgetId = "#weather-widget-" + index;
+        var autoCompleteMinLength = 3;
+
+        //if (index === 0)
+        //    tbCity.focus();
+
+        if (tbCity.val().length >= autoCompleteMinLength) {
+            PrepareWeatherWidget(tbCity.val(), index);
+        }
+
+        tbCity.on("keyup", function (e) {
+            console.log(e.keyCode);
+
+            if (e.keyCode !== 9 && e.keyCode !== 16 && e.keyCode !== 17 && e.keyCode !== 18 && e.keyCode !== 35 && e.keyCode !== 36 && e.keyCode !== 37 && e.keyCode !== 39)
+                $(widgetId + " .wd-content").addClass("busy");
+
+            if (e.keyCode === 13 && tbCity.val().length >= autoCompleteMinLength) {
+                PrepareWeatherWidget(tbCity.val(), index);
+            }
 
             if (tbCity.val().length < autoCompleteMinLength && tbCity.data('ui-autocomplete') != undefined) {
                 tbCity.autocomplete("destroy");
@@ -169,8 +230,8 @@
                     tbCity.data('insideAutoComplete', true);
                     $.ajax({
                         type: "POST",
-                        url: "PrepareWeatherCityDropdown",
-                        data: { city: tbCity.val() },
+                        url: "PrepareWeatherCityTextbox",
+                        data: { city: tbCity.val(), index: index },
                         success: function (result) {
                             //console.log(result.data.length);
                             InitAutoComplete(tbCity, result.data);
@@ -211,7 +272,7 @@
         {
             type: "POST",
             url: "PrepareWeatherWidget",
-            data: { city: city },
+            data: { city: city, index: index },
             loadingShow: false,
             success: function (result) {
 
@@ -220,10 +281,14 @@
                     //console.log(wd);
 
                     var content = $("#wd-template").clone();
-                    content.removeClass("hide");
+                    content.addClass("busy").removeClass("hide");
 
                     var subId = ((index * 100) + i);
                     content.attr("id", "wd-" + subId);
+
+                    if (i === 0)
+                        content.addClass("no-margin-left");
+
                     $(widgetId + " .wd-content").append(content);
 
                     var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 0;
@@ -232,13 +297,13 @@
                     $("#wd-" + subId + " .wd-day .day-info div.day").html(wd.dateHeaderTop);
                     $("#wd-" + subId + " .wd-day .day-info div.wkday").html(wd.dateHeaderBottomBold);
 
-                    $("#wd-" + subId + " .wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");
-                    $("#wd-" + subId + " .wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(maxTemperature <= 0 ? "leq-zero" : "");
+                    $("#wd-" + subId + " .wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= -8 ? "temp-freeze" : minTemperature <= 0 ? "temp-zero" : "");
+                    $("#wd-" + subId + " .wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(minTemperature <= -8 ? "temp-freeze" : maxTemperature <= 0 ? "temp-zero" : "");
 
                     $("#wd-" + subId + " .wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
                 }
 
-                $(widgetId + " .wd-content").removeClass("hide");
+                $(widgetId + " .wd-content").removeClass("busy");
             }
         });
 
