@@ -8,6 +8,6 @@ namespace CkgDomainLogic.General.Contracts
 
         JsonItemsPackage RequestGetWeatherData(string cityAndCountry);
 
-        JsonItemsPackage RequestGetWeatherCities(string dataPath, string country);
+        JsonItemsPackage RequestGetWeatherCities(string dataPath, string country, string city);
     }
 }

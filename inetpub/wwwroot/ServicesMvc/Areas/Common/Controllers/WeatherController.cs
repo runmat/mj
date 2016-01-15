@@ -28,11 +28,11 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult PrepareWeatherCityDropdown(string city, string page)
+        public ActionResult PrepareWeatherCityDropdown(string city)
         {
             const string country = "de";
 
-            var jsonData = ViewModel.GetWeatherCities(country);
+            var jsonData = ViewModel.GetWeatherCities(country, city);
 
             return Json(jsonData);
         }

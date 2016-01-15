@@ -65,8 +65,16 @@
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
 
-<select id="city-dropdown" class="m-wrap medium select2">
-</select>
+<div class="form-horizontal" id="CustomerUserSelectionDiv">
+
+    <div class="control-group">
+        <label class="control-label">@Localize.City</label>
+        <div class="controls">
+            <input class="m-wrap medium" id="tb-city" type="text" value="" autocomplete="off">
+        </div>
+    </div>
+
+</div>
 
 
 <div id="wd-content" class="hide">
@@ -103,7 +111,7 @@
 <script type="text/javascript">
 
     function FormPreparePrivate() {
-        InitDropdowns();
+        InitControls();
 
         //PrepareWeatherWidget("hamburg,de");
         //PrepareWeatherCityDropdown("de");
@@ -113,76 +121,82 @@
         FormPrepareAjax();
     }
 
-    function InitDropdowns() {
+    function InitControls() {
         console.log("test-1");
-        $('#city-dropdown').select2({
-            ajax: {
-                url: "PrepareWeatherCityDropdown",
-                dataType: 'json',
-                type: 'POST',
-                data: function (params) {
-                    return {
-                        city: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (result, params) {
-                    // parse the results into the format expected by Select2
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data, except to indicate that infinite
-                    // scrolling can be used
-                    params.page = params.page || 1;
 
-                    return {
-                        results: result.data,
-                        pagination: {
-                            more: (params.page * 30) < result.data.length
+        var tbCity = $("#tb-city");
+
+        tbCity.focus();
+
+        tbCity.on("keyup", function () {
+            console.log(tbCity.val());
+
+            var autoCompletMinLength = 2;
+
+            if (tbCity.val().length < autoCompletMinLength && tbCity.data('ui-autocomplete') != undefined) {
+                tbCity.autocomplete("destroy");
+                tbCity.removeData("autocomplete");
+            }
+
+            if (tbCity.val().length >= autoCompletMinLength && tbCity.data('ui-autocomplete') == undefined)
+            {
+                if (!tbCity.data('insideAutoComplete')) {
+                    tbCity.data('insideAutoComplete', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "PrepareWeatherCityDropdown",
+                        data: { city: tbCity.val() },
+                        success: function (result) {
+                            //console.log(result.data.length);
+                            InitAutoComplete(tbCity, result.data);
                         }
-                    };
-                },
-                cache: true
-            },
-            //escapeMarkup: function (markup) { return markup; },
-            minimumInputLength: 1,
-            templateResult: function(c) { return c.name; },
-            templateSelection: function (c) { return c.name; }
+                    });
+                }
+            }
         });
 
         console.log("test-2");
 
         setTimeout(function () {
-            var option = $('<option />');
-            option.attr('value', "0").text("...");
-            $('#city-dropdown').append(option);
-
-            $('#city-dropdown').data('select2').open();
         }, 100);
+    }
+
+    function InitAutoComplete(tb, items) {
+        tb.autocomplete({
+            minLength: 2,
+            source: items
+        });
+        tb.autocomplete("enable");
+        if (tb.val() !== "")
+            tb.autocomplete("search");
+
+        tb.data('insideAutoComplete', false);
     }
 
     function OnCityChanged(city) {
         alert(city);
     }
 
-    function PrepareWeatherCityDropdown(country) {
-        console.log(country);
-        $.ajax(
-            {
-                type: "POST",
-                url: "PrepareWeatherCityDropdown",
-                data: { country: country },
-                loadingShow: false,
-                success: function (result) {
-                    $('#city-dropdown').empty();
-                    $(result.data).each(function () {
+    //function PrepareWeatherCityDropdown(country) {
+    //    console.log(country);
+    //    $.ajax(
+    //        {
+    //            type: "POST",
+    //            url: "PrepareWeatherCityDropdown",
+    //            data: { country: country },
+    //            loadingShow: false,
+    //            success: function (result) {
+    //                $('#city-dropdown').empty();
+    //                $(result.data).each(function () {
 
-                        var option = $('<option />');
-                        option.attr('value', this._id).text(this.name);
+    //                    var option = $('<option />');
+    //                    option.attr('value', this._id).text(this.name);
 
-                        $('#city-dropdown').append(option);
-                    });
-                }
-            });
-    }
+    //                    $('#city-dropdown').append(option);
+    //                });
+    //            }
+    //        });
+    //}
 
     function PrepareWeatherWidget(cityAndCountry) {
 
@@ -196,7 +210,7 @@
                 loadingShow: false,
                 success: function (result) {
 
-                    for (var i = 0; i < result.data.list.length; i++) {  
+                    for (var i = 0; i < result.data.list.length; i++) {
                         var wd = result.data.list[i];
                         //console.log(wd);
 

@@ -24,7 +24,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         private string ServiceRequestWeatherUrl { get { return GeneralConfigurationProvider.GetConfigAllServerVal(ConfigurationContextKey, "ServiceRequestWeatherUrl"); } }
 
-        private static Dictionary<string, JsonItemsPackage> _weatherCities = new Dictionary<string, JsonItemsPackage>();
+        private static Dictionary<string, WeatherCity[]> _weatherCities = new Dictionary<string, WeatherCity[]>();
 
 
         static bool WeatherDateMatches(string firstDateTxt, string dtTxt)
@@ -96,27 +96,42 @@ namespace CkgDomainLogic.DomainCommon.Services
             return RequestGetJsonData(url);
         }
 
-        public JsonItemsPackage RequestGetWeatherCities(string dataPath, string country)
+        public JsonItemsPackage RequestGetWeatherCities(string dataPath, string country, string city)
         {
             country = country.ToLower();
             if (_weatherCities.ContainsKey(country))
-                return _weatherCities[country];
+                return new JsonItemsPackage
+                {
+                    ID = country,
+                    data = FilterWeatherCities(_weatherCities[country], city),
+                    dataAsText = ""
+                };
 
             var weatherCitiesFileName = Path.Combine(dataPath, "Weather", "JsonData", "city.list." + country + ".json");
             var jsonDataAsString = File.ReadAllText(weatherCitiesFileName);
 
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
             var jsonData = serializer.Deserialize<WeatherCity[]>(jsonDataAsString);
-            jsonData = jsonData.OrderBy(c => c.name).Take(5).ToArray();
+            jsonData = jsonData.Distinct(new WeatherCityComparer()).OrderBy(c => c.name).ToArray();
 
-            _weatherCities.Add(country, new JsonItemsPackage
+            _weatherCities.Add(country, jsonData);
+
+            return new JsonItemsPackage
             {
                 ID = country,
-                data = jsonData,
+                data = FilterWeatherCities(_weatherCities[country], city),
                 dataAsText = ""
-            });
+            };
 
-            return _weatherCities[country];
+        }
+
+        static string[] FilterWeatherCities(IEnumerable<WeatherCity> cities, string city)
+        {
+            var jsonData = cities.Select(c => c.name).ToArray(); 
+            if (city.IsNotNullOrEmpty())
+                jsonData = jsonData.Where(c => c.ToLower().StartsWith(city.ToLower())).ToArray();
+
+            return jsonData;
         }
 
 

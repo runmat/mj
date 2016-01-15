@@ -156,7 +156,7 @@
   },
   {
     "_id": "3249065",
-    "name": "Landkreis Saarlouis",
+    "name": "Saarlouis",
     "country": "DE"
   },
   {
@@ -441,7 +441,7 @@
   },
   {
     "_id": "3220814",
-    "name": "Landkreis Regen",
+    "name": "Regen",
     "country": "DE"
   },
   {
@@ -461,12 +461,12 @@
   },
   {
     "_id": "3247901",
-    "name": "Landkreis Kusel",
+    "name": "Kusel",
     "country": "DE"
   },
   {
     "_id": "3220801",
-    "name": "Landkreis Fürth",
+    "name": "Fürth",
     "country": "DE"
   },
   {
@@ -486,7 +486,7 @@
   },
   {
     "_id": "3220969",
-    "name": "Landkreis Groß-Gerau",
+    "name": "Groß-Gerau",
     "country": "DE"
   },
   {
@@ -496,7 +496,7 @@
   },
   {
     "_id": "3247464",
-    "name": "Landkreis Cochem-Zell",
+    "name": "Cochem-Zell",
     "country": "DE"
   },
   {
@@ -621,7 +621,7 @@
   },
   {
     "_id": "3220832",
-    "name": "Landkreis Freising",
+    "name": "Freising",
     "country": "DE"
   },
   {
@@ -641,7 +641,7 @@
   },
   {
     "_id": "2953415",
-    "name": "Landkreis Bad Kreuznach",
+    "name": "Bad Kreuznach",
     "country": "DE"
   },
   {
@@ -691,7 +691,7 @@
   },
   {
     "_id": "3302143",
-    "name": "Landkreis Nordwestmecklenburg",
+    "name": "Nordwestmecklenburg",
     "country": "DE"
   },
   {
@@ -771,7 +771,7 @@
   },
   {
     "_id": "2852456",
-    "name": "Landkreis Potsdam-Mittelmark",
+    "name": "Potsdam-Mittelmark",
     "country": "DE"
   },
   {
@@ -796,7 +796,7 @@
   },
   {
     "_id": "3221033",
-    "name": "Landkreis Hannover",
+    "name": "Hannover",
     "country": "DE"
   },
   {
@@ -816,7 +816,7 @@
   },
   {
     "_id": "3220966",
-    "name": "Landkreis Darmstadt-Dieburg",
+    "name": "Darmstadt-Dieburg",
     "country": "DE"
   },
   {
@@ -841,7 +841,7 @@
   },
   {
     "_id": "3220811",
-    "name": "Landkreis Landshut",
+    "name": "Landshut",
     "country": "DE"
   },
   {
@@ -896,7 +896,7 @@
   },
   {
     "_id": "3221017",
-    "name": "Landkreis Peine",
+    "name": "Peine",
     "country": "DE"
   },
   {
@@ -1021,7 +1021,7 @@
   },
   {
     "_id": "3220830",
-    "name": "Landkreis Eichstätt",
+    "name": "Eichstätt",
     "country": "DE"
   },
   {
@@ -1106,7 +1106,7 @@
   },
   {
     "_id": "3220752",
-    "name": "Landkreis Ludwigsburg",
+    "name": "Ludwigsburg",
     "country": "DE"
   },
   {
@@ -1141,7 +1141,7 @@
   },
   {
     "_id": "3247458",
-    "name": "Landkreis Neuwied",
+    "name": "Neuwied",
     "country": "DE"
   },
   {
@@ -1466,7 +1466,7 @@
   },
   {
     "_id": "3214112",
-    "name": "Landkreis Waldshut",
+    "name": "Waldshut",
     "country": "DE"
   },
   {
@@ -1541,7 +1541,7 @@
   },
   {
     "_id": "2803463",
-    "name": "Landkreis Aichach-Friedberg",
+    "name": "Aichach-Friedberg",
     "country": "DE"
   },
   {
@@ -1586,7 +1586,7 @@
   },
   {
     "_id": "2930522",
-    "name": "Landkreis Emmendingen",
+    "name": "Emmendingen",
     "country": "DE"
   },
   {
@@ -1661,7 +1661,7 @@
   },
   {
     "_id": "3220835",
-    "name": "Landkreis Miesbach",
+    "name": "Miesbach",
     "country": "DE"
   },
   {
@@ -1711,7 +1711,7 @@
   },
   {
     "_id": "2829456",
-    "name": "Landkreis Starnberg",
+    "name": "Starnberg",
     "country": "DE"
   },
   {
@@ -1976,7 +1976,7 @@
   },
   {
     "_id": "3249088",
-    "name": "Landkreis Prignitz",
+    "name": "Prignitz",
     "country": "DE"
   },
   {
@@ -2011,7 +2011,7 @@
   },
   {
     "_id": "2918364",
-    "name": "Landkreis Freyung-Grafenau",
+    "name": "Freyung-Grafenau",
     "country": "DE"
   },
   {
@@ -2046,7 +2046,7 @@
   },
   {
     "_id": "3220859",
-    "name": "Landkreis Schwandorf",
+    "name": "Schwandorf",
     "country": "DE"
   },
   {
@@ -2101,7 +2101,7 @@
   },
   {
     "_id": "3220885",
-    "name": "Landkreis Lindau",
+    "name": "Lindau",
     "country": "DE"
   },
   {
@@ -2271,7 +2271,7 @@
   },
   {
     "_id": "2855440",
-    "name": "Landkreis Parchim",
+    "name": "Parchim",
     "country": "DE"
   },
   {
@@ -2336,7 +2336,7 @@
   },
   {
     "_id": "3220791",
-    "name": "Landkreis Ravensburg",
+    "name": "Ravensburg",
     "country": "DE"
   },
   {
@@ -2366,7 +2366,7 @@
   },
   {
     "_id": "3220842",
-    "name": "Landkreis Weilheim-Schongau",
+    "name": "Weilheim-Schongau",
     "country": "DE"
   },
   {
@@ -2406,7 +2406,7 @@
   },
   {
     "_id": "3220898",
-    "name": "Landkreis Würzburg",
+    "name": "Würzburg",
     "country": "DE"
   },
   {
@@ -2551,7 +2551,7 @@
   },
   {
     "_id": "2871673",
-    "name": "Landkreis Merzig-Wadern",
+    "name": "Merzig-Wadern",
     "country": "DE"
   },
   {
@@ -2711,7 +2711,7 @@
   },
   {
     "_id": "2948589",
-    "name": "Landkreis Birkenfeld",
+    "name": "Birkenfeld",
     "country": "DE"
   },
   {
@@ -2761,7 +2761,7 @@
   },
   {
     "_id": "2831482",
-    "name": "Landkreis Heidekreis",
+    "name": "Heidekreis",
     "country": "DE"
   },
   {
@@ -2991,7 +2991,7 @@
   },
   {
     "_id": "2875341",
-    "name": "Landkreis Ludwigslust",
+    "name": "Ludwigslust",
     "country": "DE"
   },
   {
@@ -3561,7 +3561,7 @@
   },
   {
     "_id": "2953523",
-    "name": "Landkreis Bad Dürkheim",
+    "name": "Bad Dürkheim",
     "country": "DE"
   },
   {
@@ -3641,7 +3641,7 @@
   },
   {
     "_id": "3221014",
-    "name": "Landkreis Helmstedt",
+    "name": "Helmstedt",
     "country": "DE"
   },
   {
@@ -3716,7 +3716,7 @@
   },
   {
     "_id": "2922531",
-    "name": "Landkreis Garmisch-Partenkirchen",
+    "name": "Garmisch-Partenkirchen",
     "country": "DE"
   },
   {
@@ -3856,7 +3856,7 @@
   },
   {
     "_id": "3221064",
-    "name": "Landkreis Cloppenburg",
+    "name": "Cloppenburg",
     "country": "DE"
   },
   {
@@ -3956,7 +3956,7 @@
   },
   {
     "_id": "2910684",
-    "name": "Landkreis Harburg",
+    "name": "Harburg",
     "country": "DE"
   },
   {
@@ -3976,7 +3976,7 @@
   },
   {
     "_id": "3214111",
-    "name": "Landkreis Tuttlingen",
+    "name": "Tuttlingen",
     "country": "DE"
   },
   {
@@ -4041,7 +4041,7 @@
   },
   {
     "_id": "3220993",
-    "name": "Landkreis Fulda",
+    "name": "Fulda",
     "country": "DE"
   },
   {
@@ -4176,12 +4176,12 @@
   },
   {
     "_id": "2928748",
-    "name": "Landkreis Esslingen",
+    "name": "Esslingen",
     "country": "DE"
   },
   {
     "_id": "2947443",
-    "name": "Landkreis Böblingen",
+    "name": "Böblingen",
     "country": "DE"
   },
   {
@@ -4196,7 +4196,7 @@
   },
   {
     "_id": "3220894",
-    "name": "Landkreis Miltenberg",
+    "name": "Miltenberg",
     "country": "DE"
   },
   {
@@ -4276,7 +4276,7 @@
   },
   {
     "_id": "3220792",
-    "name": "Landkreis Reutlingen",
+    "name": "Reutlingen",
     "country": "DE"
   },
   {
@@ -4511,7 +4511,7 @@
   },
   {
     "_id": "2919053",
-    "name": "Landkreis Göppingen",
+    "name": "Göppingen",
     "country": "DE"
   },
   {
@@ -4541,7 +4541,7 @@
   },
   {
     "_id": "3220743",
-    "name": "Landkreis Heilbronn",
+    "name": "Heilbronn",
     "country": "DE"
   },
   {
@@ -4601,7 +4601,7 @@
   },
   {
     "_id": "2924895",
-    "name": "Landkreis Freudenstadt",
+    "name": "Freudenstadt",
     "country": "DE"
   },
   {
@@ -4626,7 +4626,7 @@
   },
   {
     "_id": "3220853",
-    "name": "Landkreis Wunsiedel im Fichtelgebirge",
+    "name": "Wunsiedel im Fichtelgebirge",
     "country": "DE"
   },
   {
@@ -4726,7 +4726,7 @@
   },
   {
     "_id": "3247913",
-    "name": "Landkreis Bitburg-Prüm",
+    "name": "Bitburg-Prüm",
     "country": "DE"
   },
   {
@@ -4861,7 +4861,7 @@
   },
   {
     "_id": "3249084",
-    "name": "Landkreis Oberhavel",
+    "name": "Oberhavel",
     "country": "DE"
   },
   {
@@ -4901,7 +4901,7 @@
   },
   {
     "_id": "3220896",
-    "name": "Landkreis Schweinfurt",
+    "name": "Schweinfurt",
     "country": "DE"
   },
   {
@@ -4946,7 +4946,7 @@
   },
   {
     "_id": "3220784",
-    "name": "Landkreis Schwäbisch-Hall",
+    "name": "Schwäbisch-Hall",
     "country": "DE"
   },
   {
@@ -5021,7 +5021,7 @@
   },
   {
     "_id": "2911664",
-    "name": "Landkreis Harz",
+    "name": "Harz",
     "country": "DE"
   },
   {
@@ -5271,7 +5271,7 @@
   },
   {
     "_id": "3220851",
-    "name": "Landkreis Kulmbach",
+    "name": "Kulmbach",
     "country": "DE"
   },
   {
@@ -6186,7 +6186,7 @@
   },
   {
     "_id": "3220793",
-    "name": "Landkreis Sigmaringen",
+    "name": "Sigmaringen",
     "country": "DE"
   },
   {
@@ -6301,7 +6301,7 @@
   },
   {
     "_id": "2923624",
-    "name": "Landkreis Fürstenfeldbruck",
+    "name": "Fürstenfeldbruck",
     "country": "DE"
   },
   {
@@ -6426,7 +6426,7 @@
   },
   {
     "_id": "3220725",
-    "name": "Landkreis Rastatt",
+    "name": "Rastatt",
     "country": "DE"
   },
   {
@@ -6596,7 +6596,7 @@
   },
   {
     "_id": "3247904",
-    "name": "Landkreis Pirmasens",
+    "name": "Pirmasens",
     "country": "DE"
   },
   {
@@ -6746,7 +6746,7 @@
   },
   {
     "_id": "2821160",
-    "name": "Landkreis Trier-Saarburg",
+    "name": "Trier-Saarburg",
     "country": "DE"
   },
   {
@@ -6771,7 +6771,7 @@
   },
   {
     "_id": "3247466",
-    "name": "Landkreis Mainz-Bingen",
+    "name": "Mainz-Bingen",
     "country": "DE"
   },
   {
@@ -7071,7 +7071,7 @@
   },
   {
     "_id": "2831402",
-    "name": "Landkreis Sömmerda",
+    "name": "Sömmerda",
     "country": "DE"
   },
   {
@@ -7286,7 +7286,7 @@
   },
   {
     "_id": "2840133",
-    "name": "Landkreis Schaumburg",
+    "name": "Schaumburg",
     "country": "DE"
   },
   {
@@ -7336,7 +7336,7 @@
   },
   {
     "_id": "3221075",
-    "name": "Landkreis Grafschaft Bentheim",
+    "name": "Grafschaft Bentheim",
     "country": "DE"
   },
   {
@@ -7386,7 +7386,7 @@
   },
   {
     "_id": "2940212",
-    "name": "Landkreis Celle",
+    "name": "Celle",
     "country": "DE"
   },
   {
@@ -7496,7 +7496,7 @@
   },
   {
     "_id": "3302148",
-    "name": "Landkreis Müritz",
+    "name": "Müritz",
     "country": "DE"
   },
   {
@@ -7676,7 +7676,7 @@
   },
   {
     "_id": "3214108",
-    "name": "Landkreis Lörrach",
+    "name": "Lörrach",
     "country": "DE"
   },
   {
@@ -7761,7 +7761,7 @@
   },
   {
     "_id": "3220813",
-    "name": "Landkreis Passau",
+    "name": "Passau",
     "country": "DE"
   },
   {
@@ -7856,7 +7856,7 @@
   },
   {
     "_id": "2950257",
-    "name": "Landkreis Bergstraße",
+    "name": "Bergstraße",
     "country": "DE"
   },
   {
@@ -8246,7 +8246,7 @@
   },
   {
     "_id": "2939657",
-    "name": "Landkreis Cuxhaven",
+    "name": "Cuxhaven",
     "country": "DE"
   },
   {
@@ -8381,7 +8381,7 @@
   },
   {
     "_id": "3247912",
-    "name": "Landkreis Bernkastel-Wittlich",
+    "name": "Bernkastel-Wittlich",
     "country": "DE"
   },
   {
@@ -8431,7 +8431,7 @@
   },
   {
     "_id": "2817598",
-    "name": "Landkreis Verden",
+    "name": "Verden",
     "country": "DE"
   },
   {
@@ -8451,7 +8451,7 @@
   },
   {
     "_id": "3220889",
-    "name": "Landkreis Unterallgäu",
+    "name": "Unterallgäu",
     "country": "DE"
   },
   {
@@ -8526,7 +8526,7 @@
   },
   {
     "_id": "2862622",
-    "name": "Landkreis Nienburg",
+    "name": "Nienburg",
     "country": "DE"
   },
   {
@@ -8591,7 +8591,7 @@
   },
   {
     "_id": "2933937",
-    "name": "Landkreis Ebersberg",
+    "name": "Ebersberg",
     "country": "DE"
   },
   {
@@ -8661,7 +8661,7 @@
   },
   {
     "_id": "2825001",
-    "name": "Landkreis Südliche Weinstraße",
+    "name": "Südliche Weinstraße",
     "country": "DE"
   },
   {
@@ -8771,7 +8771,7 @@
   },
   {
     "_id": "3220790",
-    "name": "Landkreis Biberach",
+    "name": "Biberach",
     "country": "DE"
   },
   {
@@ -8861,7 +8861,7 @@
   },
   {
     "_id": "3221101",
-    "name": "Landkreis Wittmund",
+    "name": "Wittmund",
     "country": "DE"
   },
   {
@@ -8941,7 +8941,7 @@
   },
   {
     "_id": "2953323",
-    "name": "Landkreis Bad Tölz-Wolfratshausen",
+    "name": "Bad Tölz-Wolfratshausen",
     "country": "DE"
   },
   {
@@ -8966,7 +8966,7 @@
   },
   {
     "_id": "2918750",
-    "name": "Landkreis Gotha",
+    "name": "Gotha",
     "country": "DE"
   },
   {
@@ -9291,7 +9291,7 @@
   },
   {
     "_id": "3220838",
-    "name": "Landkreis München",
+    "name": "München",
     "country": "DE"
   },
   {
@@ -9511,7 +9511,7 @@
   },
   {
     "_id": "2803461",
-    "name": "Landkreis Hildesheim",
+    "name": "Hildesheim",
     "country": "DE"
   },
   {
@@ -9851,7 +9851,7 @@
   },
   {
     "_id": "2955273",
-    "name": "Landkreis Aschaffenburg",
+    "name": "Aschaffenburg",
     "country": "DE"
   },
   {
@@ -9936,7 +9936,7 @@
   },
   {
     "_id": "3247460",
-    "name": "Landkreis Ahrweiler",
+    "name": "Ahrweiler",
     "country": "DE"
   },
   {
@@ -10206,7 +10206,7 @@
   },
   {
     "_id": "3220887",
-    "name": "Landkreis Neu-Ulm",
+    "name": "Neu-Ulm",
     "country": "DE"
   },
   {
@@ -10391,7 +10391,7 @@
   },
   {
     "_id": "3220978",
-    "name": "Landkreis Offenbach",
+    "name": "Offenbach",
     "country": "DE"
   },
   {
@@ -10416,7 +10416,7 @@
   },
   {
     "_id": "3249066",
-    "name": "Landkreis Neunkirchen",
+    "name": "Neunkirchen",
     "country": "DE"
   },
   {
@@ -10436,7 +10436,7 @@
   },
   {
     "_id": "2857455",
-    "name": "Landkreis Oldenburg",
+    "name": "Oldenburg",
     "country": "DE"
   },
   {
@@ -10646,7 +10646,7 @@
   },
   {
     "_id": "3220738",
-    "name": "Landkreis Heidenheim",
+    "name": "Heidenheim",
     "country": "DE"
   },
   {
@@ -10661,7 +10661,7 @@
   },
   {
     "_id": "3247907",
-    "name": "Landkreis Germersheim",
+    "name": "Germersheim",
     "country": "DE"
   },
   {
@@ -10711,7 +10711,7 @@
   },
   {
     "_id": "2944796",
-    "name": "Landkreis Breisgau-Hochschwarzwald",
+    "name": "Breisgau-Hochschwarzwald",
     "country": "DE"
   },
   {
@@ -10746,7 +10746,7 @@
   },
   {
     "_id": "3220818",
-    "name": "Landkreis Dachau",
+    "name": "Dachau",
     "country": "DE"
   },
   {
@@ -11086,7 +11086,7 @@
   },
   {
     "_id": "2892791",
-    "name": "Landkreis Karlsruhe",
+    "name": "Karlsruhe",
     "country": "DE"
   },
   {
@@ -11256,7 +11256,7 @@
   },
   {
     "_id": "3221024",
-    "name": "Landkreis Diepholz",
+    "name": "Diepholz",
     "country": "DE"
   },
   {
@@ -11331,7 +11331,7 @@
   },
   {
     "_id": "2920479",
-    "name": "Landkreis Gifhorn",
+    "name": "Gifhorn",
     "country": "DE"
   },
   {
@@ -11481,7 +11481,7 @@
   },
   {
     "_id": "3305827",
-    "name": "Landkreis Gießen",
+    "name": "Gießen",
     "country": "DE"
   },
   {
@@ -11496,7 +11496,7 @@
   },
   {
     "_id": "3221044",
-    "name": "Landkreis Rotenburg",
+    "name": "Rotenburg",
     "country": "DE"
   },
   {
@@ -11611,7 +11611,7 @@
   },
   {
     "_id": "3220874",
-    "name": "Landkreis Günzburg",
+    "name": "Günzburg",
     "country": "DE"
   },
   {
@@ -11626,7 +11626,7 @@
   },
   {
     "_id": "3247914",
-    "name": "Landkreis Daun",
+    "name": "Daun",
     "country": "DE"
   },
   {
@@ -11671,7 +11671,7 @@
   },
   {
     "_id": "2925190",
-    "name": "Landkreis Mittelsachsen",
+    "name": "Mittelsachsen",
     "country": "DE"
   },
   {
@@ -11961,7 +11961,7 @@
   },
   {
     "_id": "3249086",
-    "name": "Landkreis Oder-Spree",
+    "name": "Oder-Spree",
     "country": "DE"
   },
   {
@@ -12086,7 +12086,7 @@
   },
   {
     "_id": "3249080",
-    "name": "Landkreis Dahme-Spreewald",
+    "name": "Dahme-Spreewald",
     "country": "DE"
   },
   {
@@ -12216,7 +12216,7 @@
   },
   {
     "_id": "3221098",
-    "name": "Landkreis Osnabrück",
+    "name": "Osnabrück",
     "country": "DE"
   },
   {
@@ -12301,7 +12301,7 @@
   },
   {
     "_id": "3220796",
-    "name": "Landkreis Ansbach",
+    "name": "Ansbach",
     "country": "DE"
   },
   {
@@ -12346,7 +12346,7 @@
   },
   {
     "_id": "2885678",
-    "name": "Landkreis Konstanz",
+    "name": "Konstanz",
     "country": "DE"
   },
   {
@@ -12381,7 +12381,7 @@
   },
   {
     "_id": "3247456",
-    "name": "Landkreis Altenkirchen",
+    "name": "Altenkirchen",
     "country": "DE"
   },
   {
@@ -12401,7 +12401,7 @@
   },
   {
     "_id": "2957763",
-    "name": "Landkreis Altenburg",
+    "name": "Altenburg",
     "country": "DE"
   },
   {
@@ -12436,7 +12436,7 @@
   },
   {
     "_id": "2864548",
-    "name": "Landkreis Neumarkt in der Oberpfalz",
+    "name": "Neumarkt in der Oberpfalz",
     "country": "DE"
   },
   {
@@ -12476,7 +12476,7 @@
   },
   {
     "_id": "2879138",
-    "name": "Landkreis Leipzig",
+    "name": "Leipzig",
     "country": "DE"
   },
   {
@@ -12566,7 +12566,7 @@
   },
   {
     "_id": "2841464",
-    "name": "Landkreis Sankt Wendel",
+    "name": "Sankt Wendel",
     "country": "DE"
   },
   {
@@ -12601,7 +12601,7 @@
   },
   {
     "_id": "2936260",
-    "name": "Landkreis Donau-Ries",
+    "name": "Donau-Ries",
     "country": "DE"
   },
   {
@@ -12616,7 +12616,7 @@
   },
   {
     "_id": "2820859",
-    "name": "Landkreis Tübingen",
+    "name": "Tübingen",
     "country": "DE"
   },
   {
@@ -12716,7 +12716,7 @@
   },
   {
     "_id": "3220841",
-    "name": "Landkreis Traunstein",
+    "name": "Traunstein",
     "country": "DE"
   },
   {
@@ -12881,7 +12881,7 @@
   },
   {
     "_id": "2894002",
-    "name": "Landkreis Kaiserslautern",
+    "name": "Kaiserslautern",
     "country": "DE"
   },
   {
@@ -12986,7 +12986,7 @@
   },
   {
     "_id": "2854385",
-    "name": "Landkreis Pfaffenhofen an der Ilm",
+    "name": "Pfaffenhofen an der Ilm",
     "country": "DE"
   },
   {
@@ -13036,7 +13036,7 @@
   },
   {
     "_id": "3247461",
-    "name": "Landkreis Mayen-Koblenz",
+    "name": "Mayen-Koblenz",
     "country": "DE"
   },
   {
@@ -13066,7 +13066,7 @@
   },
   {
     "_id": "2872153",
-    "name": "Landkreis Meißen",
+    "name": "Meißen",
     "country": "DE"
   },
   {
@@ -13251,7 +13251,7 @@
   },
   {
     "_id": "3221049",
-    "name": "Landkreis Uelzen",
+    "name": "Uelzen",
     "country": "DE"
   },
   {
@@ -13301,7 +13301,7 @@
   },
   {
     "_id": "3221073",
-    "name": "Landkreis Emsland",
+    "name": "Emsland",
     "country": "DE"
   },
   {
@@ -13341,7 +13341,7 @@
   },
   {
     "_id": "3220808",
-    "name": "Landkreis Dingolfing-Landau",
+    "name": "Dingolfing-Landau",
     "country": "DE"
   },
   {
@@ -13416,7 +13416,7 @@
   },
   {
     "_id": "3220840",
-    "name": "Landkreis Rosenheim",
+    "name": "Rosenheim",
     "country": "DE"
   },
   {
@@ -13456,7 +13456,7 @@
   },
   {
     "_id": "3220846",
-    "name": "Landkreis Bayreuth",
+    "name": "Bayreuth",
     "country": "DE"
   },
   {
@@ -13791,7 +13791,7 @@
   },
   {
     "_id": "3221059",
-    "name": "Landkreis Aurich",
+    "name": "Aurich",
     "country": "DE"
   },
   {
@@ -13841,7 +13841,7 @@
   },
   {
     "_id": "3220844",
-    "name": "Landkreis Bamberg",
+    "name": "Bamberg",
     "country": "DE"
   },
   {
@@ -13881,7 +13881,7 @@
   },
   {
     "_id": "2847553",
-    "name": "Landkreis Rhön-Grabfeld",
+    "name": "Rhön-Grabfeld",
     "country": "DE"
   },
   {
@@ -13991,7 +13991,7 @@
   },
   {
     "_id": "2821806",
-    "name": "Landkreis Nordsachsen",
+    "name": "Nordsachsen",
     "country": "DE"
   },
   {
@@ -14076,7 +14076,7 @@
   },
   {
     "_id": "3220817",
-    "name": "Landkreis Altötting",
+    "name": "Altötting",
     "country": "DE"
   },
   {
@@ -14096,7 +14096,7 @@
   },
   {
     "_id": "2866064",
-    "name": "Landkreis Neuburg-Schrobenhausen",
+    "name": "Neuburg-Schrobenhausen",
     "country": "DE"
   },
   {
@@ -14491,7 +14491,7 @@
   },
   {
     "_id": "3249074",
-    "name": "Landkreis Ostholstein",
+    "name": "Ostholstein",
     "country": "DE"
   },
   {
@@ -14611,7 +14611,7 @@
   },
   {
     "_id": "3220871",
-    "name": "Landkreis Augsburg",
+    "name": "Augsburg",
     "country": "DE"
   },
   {
@@ -14791,7 +14791,7 @@
   },
   {
     "_id": "2940384",
-    "name": "Landkreis Calw",
+    "name": "Calw",
     "country": "DE"
   },
   {
@@ -14976,7 +14976,7 @@
   },
   {
     "_id": "3249081",
-    "name": "Landkreis Elbe-Elster",
+    "name": "Elbe-Elster",
     "country": "DE"
   },
   {
@@ -15006,7 +15006,7 @@
   },
   {
     "_id": "3220797",
-    "name": "Landkreis Weißenburg-Gunzenhausen",
+    "name": "Weißenburg-Gunzenhausen",
     "country": "DE"
   },
   {
@@ -15251,7 +15251,7 @@
   },
   {
     "_id": "3221099",
-    "name": "Landkreis Wesermarsch",
+    "name": "Wesermarsch",
     "country": "DE"
   },
   {
@@ -15601,7 +15601,7 @@
   },
   {
     "_id": "3249090",
-    "name": "Landkreis Teltow-Fläming",
+    "name": "Teltow-Fläming",
     "country": "DE"
   },
   {
@@ -15696,7 +15696,7 @@
   },
   {
     "_id": "2924362",
-    "name": "Landkreis Friesland",
+    "name": "Friesland",
     "country": "DE"
   },
   {
@@ -15946,7 +15946,7 @@
   },
   {
     "_id": "3220848",
-    "name": "Landkreis Forchheim",
+    "name": "Forchheim",
     "country": "DE"
   },
   {
@@ -16006,7 +16006,7 @@
   },
   {
     "_id": "2956708",
-    "name": "Landkreis Alzey-Worms",
+    "name": "Alzey-Worms",
     "country": "DE"
   },
   {
@@ -16151,7 +16151,7 @@
   },
   {
     "_id": "3221094",
-    "name": "Landkreis Leer",
+    "name": "Leer",
     "country": "DE"
   },
   {
@@ -16411,7 +16411,7 @@
   },
   {
     "_id": "3221020",
-    "name": "Landkreis Wolfenbüttel",
+    "name": "Wolfenbüttel",
     "country": "DE"
   },
   {
@@ -16456,7 +16456,7 @@
   },
   {
     "_id": "3220893",
-    "name": "Landkreis Main-Spessart",
+    "name": "Main-Spessart",
     "country": "DE"
   },
   {
@@ -17106,7 +17106,7 @@
   },
   {
     "_id": "2939950",
-    "name": "Landkreis Coburg",
+    "name": "Coburg",
     "country": "DE"
   },
   {
@@ -17306,7 +17306,7 @@
   },
   {
     "_id": "2951880",
-    "name": "Landkreis Bautzen",
+    "name": "Bautzen",
     "country": "DE"
   },
   {
@@ -17356,7 +17356,7 @@
   },
   {
     "_id": "3221097",
-    "name": "Landkreis Vechta",
+    "name": "Vechta",
     "country": "DE"
   },
   {
@@ -17566,7 +17566,7 @@
   },
   {
     "_id": "3221058",
-    "name": "Landkreis Ammerland",
+    "name": "Ammerland",
     "country": "DE"
   },
   {
@@ -17581,7 +17581,7 @@
   },
   {
     "_id": "2892514",
-    "name": "Landkreis Kassel",
+    "name": "Kassel",
     "country": "DE"
   },
   {
@@ -17706,7 +17706,7 @@
   },
   {
     "_id": "3302144",
-    "name": "Landkreis Mecklenburg-Strelitz",
+    "name": "Mecklenburg-Strelitz",
     "country": "DE"
   },
   {
@@ -17731,7 +17731,7 @@
   },
   {
     "_id": "3220799",
-    "name": "Landkreis Erlangen-Höchstadt",
+    "name": "Erlangen-Höchstadt",
     "country": "DE"
   },
   {
@@ -18341,7 +18341,7 @@
   },
   {
     "_id": "2909461",
-    "name": "Landkreis Haßberge",
+    "name": "Haßberge",
     "country": "DE"
   },
   {
@@ -18556,7 +18556,7 @@
   },
   {
     "_id": "2940202",
-    "name": "Landkreis Cham",
+    "name": "Cham",
     "country": "DE"
   },
   {
@@ -18656,7 +18656,7 @@
   },
   {
     "_id": "3221042",
-    "name": "Landkreis Osterholz",
+    "name": "Osterholz",
     "country": "DE"
   },
   {
@@ -18761,7 +18761,7 @@
   },
   {
     "_id": "3220816",
-    "name": "Landkreis Straubing-Bogen",
+    "name": "Straubing-Bogen",
     "country": "DE"
   },
   {
@@ -18941,7 +18941,7 @@
   },
   {
     "_id": "3221046",
-    "name": "Landkreis Stade",
+    "name": "Stade",
     "country": "DE"
   },
   {
@@ -19821,7 +19821,7 @@
   },
   {
     "_id": "3220855",
-    "name": "Landkreis Amberg-Sulzbach",
+    "name": "Amberg-Sulzbach",
     "country": "DE"
   },
   {
@@ -19876,7 +19876,7 @@
   },
   {
     "_id": "2913431",
-    "name": "Landkreis Güstrow",
+    "name": "Güstrow",
     "country": "DE"
   },
   {
@@ -20061,7 +20061,7 @@
   },
   {
     "_id": "3302146",
-    "name": "Landkreis Ostvorpommern",
+    "name": "Ostvorpommern",
     "country": "DE"
   },
   {
@@ -20081,7 +20081,7 @@
   },
   {
     "_id": "3302169",
-    "name": "Landkreis Schmalkalden-Meiningen",
+    "name": "Schmalkalden-Meiningen",
     "country": "DE"
   },
   {
@@ -20431,7 +20431,7 @@
   },
   {
     "_id": "3220888",
-    "name": "Landkreis Ostallgäu",
+    "name": "Ostallgäu",
     "country": "DE"
   },
   {
@@ -20576,7 +20576,7 @@
   },
   {
     "_id": "3302145",
-    "name": "Landkreis Nordvorpommern",
+    "name": "Nordvorpommern",
     "country": "DE"
   },
   {
@@ -20886,7 +20886,7 @@
   },
   {
     "_id": "3220994",
-    "name": "Landkreis Hersfeld-Rotenburg",
+    "name": "Hersfeld-Rotenburg",
     "country": "DE"
   },
   {
@@ -21021,7 +21021,7 @@
   },
   {
     "_id": "2873758",
-    "name": "Landkreis Marburg-Biedenkopf",
+    "name": "Marburg-Biedenkopf",
     "country": "DE"
   },
   {
@@ -21141,7 +21141,7 @@
   },
   {
     "_id": "3249079",
-    "name": "Landkreis Barnim",
+    "name": "Barnim",
     "country": "DE"
   },
   {
@@ -21166,7 +21166,7 @@
   },
   {
     "_id": "3221016",
-    "name": "Landkreis Osterode am Harz",
+    "name": "Osterode am Harz",
     "country": "DE"
   },
   {
@@ -21561,7 +21561,7 @@
   },
   {
     "_id": "3221013",
-    "name": "Landkreis Göttingen",
+    "name": "Göttingen",
     "country": "DE"
   },
   {
@@ -21961,7 +21961,7 @@
   },
   {
     "_id": "3214110",
-    "name": "Landkreis Rottweil",
+    "name": "Rottweil",
     "country": "DE"
   },
   {
@@ -21986,7 +21986,7 @@
   },
   {
     "_id": "3249089",
-    "name": "Landkreis Spree-Neiße",
+    "name": "Spree-Neiße",
     "country": "DE"
   },
   {
@@ -22236,7 +22236,7 @@
   },
   {
     "_id": "3220850",
-    "name": "Landkreis Hof",
+    "name": "Hof",
     "country": "DE"
   },
   {
@@ -23991,7 +23991,7 @@
   },
   {
     "_id": "3220834",
-    "name": "Landkreis Landsberg am Lech",
+    "name": "Landsberg am Lech",
     "country": "DE"
   },
   {
@@ -24626,7 +24626,7 @@
   },
   {
     "_id": "3220856",
-    "name": "Landkreis Neustadt an der Waldnaab",
+    "name": "Neustadt an der Waldnaab",
     "country": "DE"
   },
   {
@@ -24641,7 +24641,7 @@
   },
   {
     "_id": "2938283",
-    "name": "Landkreis Demmin",
+    "name": "Demmin",
     "country": "DE"
   },
   {
@@ -25306,7 +25306,7 @@
   },
   {
     "_id": "2953526",
-    "name": "Landkreis Bad Doberan",
+    "name": "Bad Doberan",
     "country": "DE"
   },
   {
@@ -25676,7 +25676,7 @@
   },
   {
     "_id": "3249083",
-    "name": "Landkreis Märkisch-Oderland",
+    "name": "Märkisch-Oderland",
     "country": "DE"
   },
   {
@@ -25696,7 +25696,7 @@
   },
   {
     "_id": "2929716",
-    "name": "Landkreis Erding",
+    "name": "Erding",
     "country": "DE"
   },
   {
@@ -26086,7 +26086,7 @@
   },
   {
     "_id": "2861443",
-    "name": "Landkreis Oberallgäu",
+    "name": "Oberallgäu",
     "country": "DE"
   },
   {
@@ -26261,7 +26261,7 @@
   },
   {
     "_id": "3249082",
-    "name": "Landkreis Havelland",
+    "name": "Havelland",
     "country": "DE"
   },
   {
@@ -26301,7 +26301,7 @@
   },
   {
     "_id": "2827478",
-    "name": "Landkreis Stendal",
+    "name": "Stendal",
     "country": "DE"
   },
   {
@@ -26836,7 +26836,7 @@
   },
   {
     "_id": "3220807",
-    "name": "Landkreis Deggendorf",
+    "name": "Deggendorf",
     "country": "DE"
   },
   {
@@ -26856,7 +26856,7 @@
   },
   {
     "_id": "3249085",
-    "name": "Landkreis Oberspreewald-Lausitz",
+    "name": "Oberspreewald-Lausitz",
     "country": "DE"
   },
   {
@@ -26946,7 +26946,7 @@
   },
   {
     "_id": "2917735",
-    "name": "Landkreis Greiz",
+    "name": "Greiz",
     "country": "DE"
   },
   {
@@ -27256,7 +27256,7 @@
   },
   {
     "_id": "2904803",
-    "name": "Landkreis Hildburghausen",
+    "name": "Hildburghausen",
     "country": "DE"
   },
   {
@@ -27881,7 +27881,7 @@
   },
   {
     "_id": "3220892",
-    "name": "Landkreis Kitzingen",
+    "name": "Kitzingen",
     "country": "DE"
   },
   {
@@ -28891,7 +28891,7 @@
   },
   {
     "_id": "3221038",
-    "name": "Landkreis Lüchow-Dannenberg",
+    "name": "Lüchow-Dannenberg",
     "country": "DE"
   },
   {
@@ -28976,7 +28976,7 @@
   },
   {
     "_id": "3221040",
-    "name": "Landkreis Lüneburg",
+    "name": "Lüneburg",
     "country": "DE"
   },
   {
@@ -29076,7 +29076,7 @@
   },
   {
     "_id": "3220992",
-    "name": "Landkreis Limburg-Weilburg",
+    "name": "Limburg-Weilburg",
     "country": "DE"
   },
   {
@@ -29286,7 +29286,7 @@
   },
   {
     "_id": "3302147",
-    "name": "Landkreis Uecker-Randow",
+    "name": "Uecker-Randow",
     "country": "DE"
   },
   {
@@ -29576,7 +29576,7 @@
   },
   {
     "_id": "2843774",
-    "name": "Landkreis Rottal-Inn",
+    "name": "Rottal-Inn",
     "country": "DE"
   },
   {
@@ -29591,7 +29591,7 @@
   },
   {
     "_id": "2861979",
-    "name": "Landkreis Nordhausen",
+    "name": "Nordhausen",
     "country": "DE"
   },
   {
@@ -29861,7 +29861,7 @@
   },
   {
     "_id": "3220809",
-    "name": "Landkreis Kelheim",
+    "name": "Kelheim",
     "country": "DE"
   },
   {
@@ -30161,7 +30161,7 @@
   },
   {
     "_id": "3221036",
-    "name": "Landkreis Holzminden",
+    "name": "Holzminden",
     "country": "DE"
   },
   {
@@ -30816,7 +30816,7 @@
   },
   {
     "_id": "3220858",
-    "name": "Landkreis Regensburg",
+    "name": "Regensburg",
     "country": "DE"
   },
   {
@@ -31171,7 +31171,7 @@
   },
   {
     "_id": "2936975",
-    "name": "Landkreis Dillingen an der Donau",
+    "name": "Dillingen an der Donau",
     "country": "DE"
   },
   {
@@ -32796,7 +32796,7 @@
   },
   {
     "_id": "3249087",
-    "name": "Landkreis Ostprignitz-Ruppin",
+    "name": "Ostprignitz-Ruppin",
     "country": "DE"
   },
   {
@@ -34946,7 +34946,7 @@
   },
   {
     "_id": "3221012",
-    "name": "Landkreis Goslar",
+    "name": "Goslar",
     "country": "DE"
   },
   {
@@ -35726,7 +35726,7 @@
   },
   {
     "_id": "2807345",
-    "name": "Landkreis Wittenberg",
+    "name": "Wittenberg",
     "country": "DE"
   },
   {
@@ -36756,7 +36756,7 @@
   },
   {
     "_id": "3220802",
-    "name": "Landkreis Neustadt an der Aisch-Bad Windsheim",
+    "name": "Neustadt an der Aisch-Bad Windsheim",
     "country": "DE"
   },
   {
@@ -38011,7 +38011,7 @@
   },
   {
     "_id": "3305812",
-    "name": "Landkreis Sächsische Schweiz",
+    "name": "Sächsische Schweiz",
     "country": "DE"
   },
   {
@@ -41101,7 +41101,7 @@
   },
   {
     "_id": "3220805",
-    "name": "Landkreis Roth",
+    "name": "Roth",
     "country": "DE"
   },
   {
@@ -41151,7 +41151,7 @@
   },
   {
     "_id": "2953423",
-    "name": "Landkreis Bad Kissingen",
+    "name": "Bad Kissingen",
     "country": "DE"
   },
   {
@@ -44981,7 +44981,7 @@
   },
   {
     "_id": "3220997",
-    "name": "Landkreis Waldeck-Frankenberg",
+    "name": "Waldeck-Frankenberg",
     "country": "DE"
   },
   {
@@ -46861,7 +46861,7 @@
   },
   {
     "_id": "2822099",
-    "name": "Landkreis Tirschenreuth",
+    "name": "Tirschenreuth",
     "country": "DE"
   },
   {
@@ -47981,7 +47981,7 @@
   },
   {
     "_id": "2831245",
-    "name": "Landkreis Sonneberg",
+    "name": "Sonneberg",
     "country": "DE"
   },
   {
@@ -48876,7 +48876,7 @@
   },
   {
     "_id": "3221015",
-    "name": "Landkreis Northeim",
+    "name": "Northeim",
     "country": "DE"
   },
   {
@@ -51646,7 +51646,7 @@
   },
   {
     "_id": "2843324",
-    "name": "Landkreis Rügen",
+    "name": "Rügen",
     "country": "DE"
   },
   {
@@ -53276,7 +53276,7 @@
   },
   {
     "_id": "2883782",
-    "name": "Landkreis Kronach",
+    "name": "Kronach",
     "country": "DE"
   },
   {
@@ -56821,7 +56821,7 @@
   },
   {
     "_id": "3221027",
-    "name": "Landkreis Hameln-Pyrmont",
+    "name": "Hameln-Pyrmont",
     "country": "DE"
   },
   {
@@ -60051,7 +60051,7 @@
   },
   {
     "_id": "3220836",
-    "name": "Landkreis Mühldorf am Inn",
+    "name": "Mühldorf am Inn",
     "country": "DE"
   },
   {
@@ -73856,7 +73856,7 @@
   },
   {
     "_id": "3249091",
-    "name": "Landkreis Uckermark",
+    "name": "Uckermark",
     "country": "DE"
   },
   {
@@ -114351,7 +114351,7 @@
   },
   {
     "_id": "3220852",
-    "name": "Landkreis Lichtenfels",
+    "name": "Lichtenfels",
     "country": "DE"
   },
   {

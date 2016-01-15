@@ -1,8 +1,10 @@
 ﻿// ReSharper disable All
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Linq;
+using System.Collections.Generic;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 
@@ -16,6 +18,19 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
         public string _id { get; set; }
         public string name { get; set; }
         public string country { get; set; }
+    }
+
+    public class WeatherCityComparer : IEqualityComparer<WeatherCity>
+    {
+        public bool Equals(WeatherCity x, WeatherCity y)
+        {
+            return x.name.NotNullOrEmpty().ToLower() == y.name.NotNullOrEmpty().ToLower();
+        }
+
+        public int GetHashCode(WeatherCity obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 
     #endregion
