@@ -299,7 +299,7 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
-    <Content Include="Areas\Common\Views\Weather\Index.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Weather.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
@@ -307,6 +307,7 @@
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.ES.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.FR.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.IT.json" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\WeatherWidgetCollection.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -734,7 +735,6 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
-    <Compile Include="Areas\Common\Controllers\WeatherController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\Controllers\GridAdminController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />

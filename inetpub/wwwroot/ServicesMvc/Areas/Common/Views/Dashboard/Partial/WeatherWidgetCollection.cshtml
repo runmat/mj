@@ -2,42 +2,48 @@
 @* ReSharper disable once CssBrowserCompatibility *@
 
 <style type="text/css">
-    
     .selection-div {
-        font-size: 0.8em!important;
+        font-size: 0.8em !important;
     }
+
     .selection-div.form-horizontal .control-label {
         width: 70px;
     }
+
     .selection-div.form-horizontal .controls {
         margin-left: 80px;
     }
-    
+
     .weather-widget {
-         display: table;
-         float: none;
-         width: 330px;
-         margin: 0 0 10px 0;
-         border: 0 solid gray;
-     }
+        display: table;
+        float: none;
+        width: 360px;
+        margin: 0 0 30px 10px;
+        border: 0 solid gray;
+    }
+
     .weather-widget-header {
         display: table;
         width: 100%;
     }
+
     .weather-widget-title {
         display: inline;
         float: left;
         font-weight: bold;
     }
+
     a.widget-action {
         float: right;
     }
+
     .wd-content {
-        height: 150px;    
+        height: 150px;
     }
-    .wd-content.busy {
-        opacity: 0.3;
-    }
+
+        .wd-content.busy {
+            opacity: 0.3;
+        }
 
     .wd-day {
         float: left;
@@ -46,6 +52,7 @@
         margin: 5px 0 15px 20px;
         text-align: center;
     }
+
     .no-margin-left .wd-day {
         margin-left: 0;
     }
@@ -53,54 +60,60 @@
     .day-info {
         margin: 0 0 2px 0;
     }
-    .day-info div.day {
-        font-size: 1.0em;
-        color: #808080!important;
-    }
-    .day-info div.wkday {
-        font-size: 1.3em;
-        font-weight: bold;
-        margin: 0 0 0 0;
-    }
+
+        .day-info div.day {
+            font-size: 1.0em;
+            color: #808080 !important;
+        }
+
+        .day-info div.wkday {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0 0 0 0;
+        }
 
     .temp-info {
         margin: 0 0 -7px 0;
     }
-    .temp-info hr {
-        margin: -1px 0 -3px -1px; 
-    }
-    .temp-info div.tlabel {
-        color: #808080!important;
-        display: inline-block;
-        font-size: 0.95em;
-        width: 6px;
-        text-align: left;
-    }
-    .temp-info div.tlabel-degree {
-        display: inline-block;
-        vertical-align: 2px;
-        font-size: 1.5em;
-    }
-    .temp-info div.celsius {
-        display: inline-block;
-        width: 30px;
-        text-align: right;
-        font-weight: bold;
-        font-size: 1.5em;
-    }
-    .temp-info div {
-        color: green;
-    }
-    .temp-info div.temp-zero * {
-        color: blue;
-    }
-    .temp-info div.temp-freeze * {
-        color: darkmagenta;
-    }
+
+        .temp-info hr {
+            margin: -1px 0 -3px -1px;
+        }
+
+        .temp-info div.tlabel {
+            color: #808080 !important;
+            display: inline-block;
+            font-size: 0.95em;
+            width: 6px;
+            text-align: left;
+        }
+
+        .temp-info div.tlabel-degree {
+            display: inline-block;
+            vertical-align: 2px;
+            font-size: 1.5em;
+        }
+
+        .temp-info div.celsius {
+            display: inline-block;
+            width: 30px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .temp-info div {
+            color: green;
+        }
+
+            .temp-info div.temp-zero * {
+                color: blue;
+            }
+
+            .temp-info div.temp-freeze * {
+                color: darkmagenta;
+            }
 </style>
-
-
-<h3 class="page-title">Weather <small>Widget</small></h3>
 
 @for (var i = 0; i < Model.WidgetVisibleCount; i++)
 {
@@ -113,11 +126,11 @@
             <div class="weather-widget-title">
                 @city, @country.ToUpper()
             </div>
-            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/settings.png"/></a>
+            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/settings.png" /></a>
         </div>
         <div class="form-horizontal selection-div hide">
 
-            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/close.png"/></a>
+            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/close.png" /></a>
 
             <div class="control-group">
                 <label class="control-label">@Localize.Country</label>
@@ -183,6 +196,8 @@
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
     }
+
+    setTimeout("InitControls()", 1000);
 
     function SettingsToggle(index) {
         var widgetId = "#weather-widget-" + index;
@@ -254,7 +269,6 @@
         }
 
         tbCity.on("keyup", function (e) {
-            //console.log(e.keyCode);
 
             if (e.keyCode !== 9 && e.keyCode !== 16 && e.keyCode !== 17 && e.keyCode !== 18 && e.keyCode !== 35 && e.keyCode !== 36 && e.keyCode !== 37 && e.keyCode !== 39)
                 $(widgetId + " .wd-content").addClass("busy");

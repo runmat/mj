@@ -1,17 +1,13 @@
 ﻿// ReSharper disable RedundantUsingDirective
 
-using System;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
 using System.Linq;
-using System.Web.Script.Serialization;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
-using MvcTools.Web;
-using Newtonsoft.Json;
 
 namespace ServicesMvc.Common.Controllers
 {
@@ -24,11 +20,14 @@ namespace ServicesMvc.Common.Controllers
 
         public DashboardViewModel ViewModel { get { return GetViewModel<DashboardViewModel>(); } }
 
+        public WeatherViewModel WeatherViewModel { get { return GetViewModel<WeatherViewModel>(); } }
 
-        public DashboardController(IAppSettings appSettings, ILogonContextDataService logonContext, IDashboardDataService dashboardDataService)
+
+        public DashboardController(IAppSettings appSettings, ILogonContextDataService logonContext, IDashboardDataService dashboardDataService, IWeatherDataService weatherServiceDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, dashboardDataService);
+            InitViewModel(WeatherViewModel, appSettings, logonContext, weatherServiceDataService);
         }
 
         [CkgApplication]
@@ -37,6 +36,14 @@ namespace ServicesMvc.Common.Controllers
             ViewModel.DataInit();
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Weather()
+        {
+            WeatherViewModel.DataInit();
+
+            return View(WeatherViewModel);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
@@ -57,6 +64,13 @@ namespace ServicesMvc.Common.Controllers
             if (dashboardItem.IsPartialView)
             {
                 ViewBag.IsDashboard = true;
+
+                if (dashboardItem.RelatedAppUrl.ToLower().Contains("weather"))
+                {
+                    WeatherViewModel.DataInit();
+                    return PartialView(dashboardItem.RelatedAppUrl, WeatherViewModel);
+                }
+
                 return PartialView(dashboardItem.RelatedAppUrl);
             }
 
@@ -79,5 +93,35 @@ namespace ServicesMvc.Common.Controllers
 
             return Json(new { hiddenItemsCount = ViewModel.HiddenDashboardItems.Count });
         }
+
+
+
+        #region Dashboard Weather Widget Support
+
+        [HttpPost]
+        public ActionResult PrepareWeatherCountryDropdown(string country, int index)
+        {
+            WeatherViewModel.SetCountry(country, index);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult PrepareWeatherCityTextbox(string city, int index)
+        {
+            var jsonData = WeatherViewModel.GetWeatherCities(city, index);
+
+            return Json(jsonData);
+        }
+
+        [HttpPost]
+        public ActionResult PrepareWeatherWidget(string city, int index)
+        {
+            var jsonData = WeatherViewModel.GetWeatherData(city, index);
+
+            return Json(jsonData);
+        }
+
+        #endregion
     }
 }
