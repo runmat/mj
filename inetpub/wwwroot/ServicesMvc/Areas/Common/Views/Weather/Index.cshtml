@@ -249,15 +249,12 @@
         var widgetId = "#weather-widget-" + index;
         var autoCompleteMinLength = 3;
 
-        //if (index === 0)
-        //    tbCity.focus();
-
         if (tbCity.val().length >= autoCompleteMinLength) {
             PrepareWeatherWidget(tbCity.val(), index);
         }
 
         tbCity.on("keyup", function (e) {
-            console.log(e.keyCode);
+            //console.log(e.keyCode);
 
             if (e.keyCode !== 9 && e.keyCode !== 16 && e.keyCode !== 17 && e.keyCode !== 18 && e.keyCode !== 35 && e.keyCode !== 36 && e.keyCode !== 37 && e.keyCode !== 39)
                 $(widgetId + " .wd-content").addClass("busy");
@@ -327,7 +324,11 @@
             loadingShow: false,
             success: function (result) {
 
-                for (var i = 0; i < result.data.list.length; i++) {
+                var maxDays = result.data.list.length;
+                if (maxDays > 5)
+                    maxDays = 5;
+
+                for (var i = 0; i < maxDays; i++) {
                     var wd = result.data.list[i];
                     //console.log(wd);
 

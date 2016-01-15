@@ -8,7 +8,6 @@ using GeneralTools.Models;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
@@ -19,8 +18,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public int WidgetVisibleCount { get; set; }
 
-        public WeatherWidgetUserSettings[] WidgetUserSettings { get; set; }
-    
+        public WeatherWidgetUserSettingsCollection WidgetUserSettingsCollection { get; set; }
+
+        public WeatherWidgetUserSettings[] WidgetUserSettings { get { return WidgetUserSettingsCollection.Collection; } }
+
 
         [XmlIgnore]
         static IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
@@ -44,15 +45,34 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void DataInit()
         {
-            WidgetVisibleCount = 2;
+            WidgetVisibleCount = 3;
 
-            if (WidgetUserSettings == null)
-                WidgetUserSettings = new []
+            WeatherWidgetUserSettingsLoad();
+        }
+
+        void WeatherWidgetUserSettingsLoad()
+        {
+            var pService = LogonContext.PersistanceService;
+            var o = pService.GetObjects<WeatherWidgetUserSettingsCollection>(LogonContext.UserName, typeof(WeatherWidgetUserSettings).Name).FirstOrDefault();
+            WidgetUserSettingsCollection = o;
+
+            if (WidgetUserSettingsCollection == null)
+                WidgetUserSettingsCollection = new WeatherWidgetUserSettingsCollection
                 {
-                    new WeatherWidgetUserSettings { Country = "de", City = "Hamburg" },
-                    new WeatherWidgetUserSettings { Country = "at", City = "Wien" },
-                    new WeatherWidgetUserSettings { Country = "de", City = "Berlin" },
+                    Collection = new[]
+                        {
+                            new WeatherWidgetUserSettings {Country = "de", City = "Hamburg"},
+                            new WeatherWidgetUserSettings {Country = "at", City = "Wien"},
+                            new WeatherWidgetUserSettings {Country = "de", City = "Berlin"},
+                        }
                 };
+        }
+
+        void WeatherWidgetUserSettingsSave()
+        {
+            var pService = LogonContext.PersistanceService;
+            var o = (WeatherWidgetUserSettingsCollection)pService.SaveObject(WidgetUserSettingsCollection.ObjectKey, LogonContext.UserName, typeof(WeatherWidgetUserSettings).Name, LogonContext.UserName, WidgetUserSettingsCollection);
+            WidgetUserSettingsCollection = o;
         }
 
 
@@ -71,6 +91,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public JsonItemsPackage GetWeatherData(string city, int index)
         {
             WidgetUserSettings[index].City = city;
+            WeatherWidgetUserSettingsSave();
 
             var cityAndCountry = city + "," + WidgetUserSettings[index].Country;
 
