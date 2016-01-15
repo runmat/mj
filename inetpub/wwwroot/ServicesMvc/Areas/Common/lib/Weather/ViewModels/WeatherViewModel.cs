@@ -40,6 +40,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             { "de", "Deutschland"},
             { "at", "Österreich"},
             { "ch", "Schweiz"},
+            { "it", "Italien"},
+            { "fr", "Frankreich"},
+            { "es", "Spanien"},
         };
 
 

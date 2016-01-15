@@ -148,6 +148,9 @@
     <None Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
     <None Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
     <None Include="App_Data\XmlData\Weather\JsonData\city.list.DE.json" />
+    <None Include="App_Data\XmlData\Weather\JsonData\city.list.ES.json" />
+    <None Include="App_Data\XmlData\Weather\JsonData\city.list.FR.json" />
+    <None Include="App_Data\XmlData\Weather\JsonData\city.list.IT.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

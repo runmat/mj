@@ -304,6 +304,9 @@
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.DE.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.ES.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.FR.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.IT.json" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
