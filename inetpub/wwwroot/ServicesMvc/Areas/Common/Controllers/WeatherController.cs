@@ -38,9 +38,9 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult PrepareWeatherWidget(string cityAndCountry)
+        public ActionResult PrepareWeatherWidget(string city)
         {
-            var jsonData = ViewModel.GetWeatherData(cityAndCountry);
+            var jsonData = ViewModel.GetWeatherData(city);
 
             return Json(jsonData);
         }

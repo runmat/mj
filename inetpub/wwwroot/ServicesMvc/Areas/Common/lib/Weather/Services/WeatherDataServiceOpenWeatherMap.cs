@@ -112,7 +112,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             var serializer = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
             var jsonData = serializer.Deserialize<WeatherCity[]>(jsonDataAsString);
-            jsonData = jsonData.Distinct(new WeatherCityComparer()).OrderBy(c => c.name).ToArray();
+            jsonData = jsonData.Distinct(new WeatherCity()).OrderBy(c => c.name).ToArray();
 
             _weatherCities.Add(country, jsonData);
 

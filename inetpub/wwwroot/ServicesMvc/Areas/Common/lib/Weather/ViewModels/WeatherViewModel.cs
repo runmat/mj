@@ -39,8 +39,12 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return jsonData;
         }
 
-        public JsonItemsPackage GetWeatherData(string cityAndCountry)
+        private const string Country = "de";
+
+        public JsonItemsPackage GetWeatherData(string city)
         {
+            var cityAndCountry = city + "," + Country;
+
             var itemId = cityAndCountry;
             var ownerKey = cityAndCountry;
 

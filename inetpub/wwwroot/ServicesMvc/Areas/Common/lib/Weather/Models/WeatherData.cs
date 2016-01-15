@@ -13,15 +13,13 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
 
     #region Weather Cities
 
-    public class WeatherCity
+    public class WeatherCity : IEqualityComparer<WeatherCity>
     {
         public string _id { get; set; }
         public string name { get; set; }
         public string country { get; set; }
-    }
 
-    public class WeatherCityComparer : IEqualityComparer<WeatherCity>
-    {
+
         public bool Equals(WeatherCity x, WeatherCity y)
         {
             return x.name.NotNullOrEmpty().ToLower() == y.name.NotNullOrEmpty().ToLower();
@@ -29,7 +27,7 @@ namespace CkgDomainLogic.General.Models.OpenWeatherMap
 
         public int GetHashCode(WeatherCity obj)
         {
-            return obj.GetHashCode();
+            return obj.name.GetHashCode();
         }
     }
 

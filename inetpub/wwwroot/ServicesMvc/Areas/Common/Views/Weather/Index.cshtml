@@ -1,8 +1,18 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.WeatherViewModel
 
-@Html.Partial("Partial/Common")
+@{ var _widgetCount = 3; }
 
 <style type="text/css">
+    
+    .weather-widget {
+        display: table;
+        float: none;
+        margin: 0 0 10px 0;
+    }
+    .wd-content {
+        height: 200px;    
+    }
+
     .wd-day {
         float: left;
         font-size: 0.7em;
@@ -64,21 +74,25 @@
 
 <h3 class="page-title">Weather <small>Widget</small></h3>
 
+@for (var i = 0; i < _widgetCount; i++)
+{
+    <div id="weather-widget-@i" class="weather-widget">
+        <div class="form-horizontal selection-div">
 
-<div class="form-horizontal" id="CustomerUserSelectionDiv">
+            <div class="control-group">
+                <label class="control-label">@Localize.City</label>
+                <div class="controls">
+                    <input class="m-wrap medium tb-city" type="text" value="">
+                </div>
+            </div>
 
-    <div class="control-group">
-        <label class="control-label">@Localize.City</label>
-        <div class="controls">
-            <input class="m-wrap medium" id="tb-city" type="text" value="" autocomplete="off">
+        </div>
+
+        <div class="wd-content">
         </div>
     </div>
+}
 
-</div>
-
-
-<div id="wd-content" class="hide">
-</div>
 
 <div id="wd-template" class="hide">
     <div class="wd-day">
@@ -110,11 +124,12 @@
 
 <script type="text/javascript">
 
+
     function FormPreparePrivate() {
         InitControls();
 
         //PrepareWeatherWidget("hamburg,de");
-        //PrepareWeatherCityDropdown("de");
+        //PrepareWeatherCityDropdown(_country);
     }
 
     function FormPreparePrivateAjax() {
@@ -122,23 +137,33 @@
     }
 
     function InitControls() {
-        console.log("test-1");
+        $.each($(".weather-widget .tb-city"), function (index, tbCity) {
+            InitControl($(tbCity), index);
+        });
+    }
 
-        var tbCity = $("#tb-city");
+    function InitControl(tbCity, index)
+    {
+        //var tbCity = $("#tb-city");
+        //console.log(tbCity);
+        if (index == 0)
+            tbCity.focus();
 
-        tbCity.focus();
+        tbCity.on("keyup", function (e) {
+            //console.log(e.keyCode);
 
-        tbCity.on("keyup", function () {
-            console.log(tbCity.val());
+            if (e.keyCode === 13) {
+                PrepareWeatherWidget(tbCity.val(), index);
+            }
 
-            var autoCompletMinLength = 2;
+            var autoCompleteMinLength = 3;
 
-            if (tbCity.val().length < autoCompletMinLength && tbCity.data('ui-autocomplete') != undefined) {
+            if (tbCity.val().length < autoCompleteMinLength && tbCity.data('ui-autocomplete') != undefined) {
                 tbCity.autocomplete("destroy");
                 tbCity.removeData("autocomplete");
             }
 
-            if (tbCity.val().length >= autoCompletMinLength && tbCity.data('ui-autocomplete') == undefined)
+            if (tbCity.val().length >= autoCompleteMinLength && tbCity.data('ui-autocomplete') == undefined)
             {
                 if (!tbCity.data('insideAutoComplete')) {
                     tbCity.data('insideAutoComplete', true);
@@ -154,8 +179,6 @@
                 }
             }
         });
-
-        console.log("test-2");
 
         setTimeout(function () {
         }, 100);
@@ -177,63 +200,47 @@
         alert(city);
     }
 
-    //function PrepareWeatherCityDropdown(country) {
-    //    console.log(country);
-    //    $.ajax(
-    //        {
-    //            type: "POST",
-    //            url: "PrepareWeatherCityDropdown",
-    //            data: { country: country },
-    //            loadingShow: false,
-    //            success: function (result) {
-    //                $('#city-dropdown').empty();
-    //                $(result.data).each(function () {
-
-    //                    var option = $('<option />');
-    //                    option.attr('value', this._id).text(this.name);
-
-    //                    $('#city-dropdown').append(option);
-    //                });
-    //            }
-    //        });
-    //}
-
-    function PrepareWeatherWidget(cityAndCountry) {
+    function PrepareWeatherWidget(city, index) {
 
         var imagePath = '@Url.ContentArea("Content/Weather/images/")';
+        var widgetId = "#weather-widget-" + index;
+
+        $(widgetId + " .wd-content").html("");
 
         $.ajax(
-            {
-                type: "POST",
-                url: "PrepareWeatherWidget",
-                data: { cityAndCountry: cityAndCountry },
-                loadingShow: false,
-                success: function (result) {
+        {
+            type: "POST",
+            url: "PrepareWeatherWidget",
+            data: { city: city },
+            loadingShow: false,
+            success: function (result) {
 
-                    for (var i = 0; i < result.data.list.length; i++) {
-                        var wd = result.data.list[i];
-                        //console.log(wd);
+                for (var i = 0; i < result.data.list.length; i++) {
+                    var wd = result.data.list[i];
+                    //console.log(wd);
 
-                        var content = $("#wd-template").clone();
-                        content.removeClass("hide");
-                        content.attr("id", "wd-" + i);
-                        $("#wd-content").append(content);
+                    var content = $("#wd-template").clone();
+                    content.removeClass("hide");
 
-                        var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 20;
-                        var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 20;
+                    var subId = ((index * 100) + i);
+                    content.attr("id", "wd-" + subId);
+                    $(widgetId + " .wd-content").append(content);
 
-                        $("#wd-" + i + " .wd-day .day-info div.day").html(wd.dateHeaderTop);
-                        $("#wd-" + i + " .wd-day .day-info div.wkday").html(wd.dateHeaderBottomBold);
+                    var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 0;
+                    var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 0;
 
-                        $("#wd-" + i + " .wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");
-                        $("#wd-" + i + " .wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(maxTemperature <= 0 ? "leq-zero" : "");
+                    $("#wd-" + subId + " .wd-day .day-info div.day").html(wd.dateHeaderTop);
+                    $("#wd-" + subId + " .wd-day .day-info div.wkday").html(wd.dateHeaderBottomBold);
 
-                        $("#wd-" + i + " .wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
-                    }
+                    $("#wd-" + subId + " .wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= 0 ? "leq-zero" : "");
+                    $("#wd-" + subId + " .wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(maxTemperature <= 0 ? "leq-zero" : "");
 
-                    $("#wd-content").removeClass("hide");
+                    $("#wd-" + subId + " .wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
                 }
-            });
+
+                $(widgetId + " .wd-content").removeClass("hide");
+            }
+        });
 
         return false;
     }
