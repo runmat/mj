@@ -162,7 +162,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         private bool IstKroschke { get { return (LogonContext.Customer.AccountingArea == 1010); } }
 
         [XmlIgnore]
-        private string CurrentFahrtIndex
+        public string CurrentFahrtIndex
         {
             get
             {
@@ -947,8 +947,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     var srcFullFileName = Path.Combine(AppSettings.TempPath, srcFileName);
 
                     var dstPath = Path.Combine(AppSettings.UploadFilePath, DataService.AuftragGeberOderKundenNr, auftrag.AuftragsNr.PadLeft(10, '0'), "Vertraege");
-                    var dstFileName = string.Format("{0}_{1}_{2}_{3}.pdf",
-                                            auftrag.AuftragsNr, auftrag.FahrtIndex, protokoll.Kategorie, protokoll.Protokollart.Replace(".", ""));
+                    var dstFileName = string.Format("{0}_{1}_{2}_{3}.pdf", auftrag.AuftragsNr, auftrag.FahrtIndex, protokoll.Kategorie, protokoll.ProtokollartFormatted);
                     var dstFullFileName = Path.Combine(dstPath, dstFileName);
 
                     if (!FileService.TryDirectoryCreate(dstPath))

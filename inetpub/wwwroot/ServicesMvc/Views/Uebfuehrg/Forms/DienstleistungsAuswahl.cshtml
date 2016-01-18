@@ -91,7 +91,6 @@
             }
 
             function UploadStart(e) {
-
                 // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
                 var fileName = e.files[0].name;
 
@@ -116,11 +115,11 @@
                     return;
                 }
 
-                var protokollArt = e.response.uploadProtokollArt;
-                $("#Dateiname_" + protokollArt).text(e.response.uploadFileName);
-                $("#Dateiname_" + protokollArt).removeClass("hide");
-                $("#spanUpload_" + protokollArt).addClass("hide");
-                $("#btnRemoveProtokoll_" + protokollArt).removeClass("hide");
+                var itemIdSuffix = "_" + e.response.fahrtIndex + "_" + e.response.uploadProtokollArt.replace(" ", "").replace(".", "");
+                $("#Dateiname" + itemIdSuffix).text(e.response.uploadFileName);
+                $("#Dateiname" + itemIdSuffix).removeClass("hide");
+                $("#spanUpload" + itemIdSuffix).addClass("hide");
+                $("#btnRemoveProtokoll" + itemIdSuffix).removeClass("hide");
             }
 
             function UploadError(e) {
@@ -129,7 +128,7 @@
                 alert('@Localize.ErrorFileCouldNotBeSaved');
             }
 
-            function RemoveProtokoll(protokollArt)
+            function RemoveProtokoll(protokollArt, fahrtIndex)
             {
                 $.ajax(
                 {
@@ -138,10 +137,11 @@
                     loadingShow: false,
                     data: { protokollArt: protokollArt },
                     success: function () {
-                        $("#Dateiname_" + protokollArt).text("");
-                        $("#Dateiname_" + protokollArt).addClass("hide");
-                        $("#spanUpload_" + protokollArt).removeClass("hide");
-                        $("#btnRemoveProtokoll_" + protokollArt).addClass("hide");
+                        var itemIdSuffix = "_" + fahrtIndex + "_" + protokollArt.replace(" ", "").replace(".", "");
+                        $("#Dateiname" + itemIdSuffix).text("");
+                        $("#Dateiname" + itemIdSuffix).addClass("hide");
+                        $("#spanUpload" + itemIdSuffix).removeClass("hide");
+                        $("#btnRemoveProtokoll" + itemIdSuffix).addClass("hide");
                     }
                 });
             }

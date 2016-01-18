@@ -156,7 +156,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             var dienstleistungsAuswahlen = stepModels.OfType<DienstleistungsAuswahl>();
             var dienstleistungen = dienstleistungsAuswahlen.SelectMany(a => a.GewaehlteDienstleistungen).ToList();
             var kurzBemerkungen = dienstleistungsAuswahlen.SelectMany(a => a.Bemerkungen.BemerkungAsKurzBemerkungen).ToList();
-            var protokolle = dienstleistungsAuswahlen.SelectMany(a => a.UploadProtokolle).ToList();
+            var protokolle = dienstleistungsAuswahlen.SelectMany(a => a.UploadProtokolle).Where(up => !string.IsNullOrEmpty(up.Dateiname)).ToList();
 
             var vorgangsNr = SAP.GetExportParameterWithInitExecute("Z_UEB_NEXT_NUMBER_VORGANG_01", "E_VORGANG", "");
             if (vorgangsNr.IsNullOrEmpty())
@@ -173,7 +173,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             var fahrzeugeList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FZG_To_Fahrzeug.CopyBack(fahrzeuge).ToList();
             var dienstleistungenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_DIENSTLSTGN_To_Dienstleistung.CopyBack(dienstleistungen).ToList();
             var bemerkungenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_BEM_To_KurzBemerkung.CopyBack(kurzBemerkungen).ToList();
-            var protokolleList = AppModelMappings.Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll.CopyBack(protokolle).ToList();
+            var protokolleList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_PROT_To_WebUploadProtokoll.CopyBack(protokolle).ToList();
 
             SAP.ApplyImport(fahrtenList);
             SAP.ApplyImport(adressenList);
@@ -207,7 +207,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
         {
             Z_DPM_READ_TAB_PROT_01.Init(SAP, "I_KUNNR_AG", AuftragGeberOderKundenNr.ToSapKunnr());
 
-            return AppModelMappings.Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll.Copy(Z_DPM_READ_TAB_PROT_01.GT_OUT.GetExportListWithExecute(SAP)).OrderBy(p => p.Protokollart).ToList();
+            return AppModelMappings.Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll.Copy(Z_DPM_READ_TAB_PROT_01.GT_OUT.GetExportListWithExecute(SAP)).OrderBy(p => p.ProtokollartFormatted).ToList();
         }
     }
 }

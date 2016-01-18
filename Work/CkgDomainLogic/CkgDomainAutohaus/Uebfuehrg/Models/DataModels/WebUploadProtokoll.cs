@@ -8,6 +8,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [LocalizedDisplay(LocalizeConstants._Protokollart)]
         public string Protokollart { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants._Protokollart)]
+        public string ProtokollartFormatted { get { return Protokollart.NotNullOrEmpty().Trim().Replace(".", "").Replace(" ", ""); } }
+
         [LocalizedDisplay(LocalizeConstants._Kategorie)]
         public string Kategorie { get; set; }
 

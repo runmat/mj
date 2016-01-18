@@ -221,6 +221,7 @@ namespace ServicesMvc.Controllers
             {
                 success = true,
                 message = "ok",
+                fahrtIndex = ViewModel.CurrentFahrtIndex,
                 uploadProtokollArt = protokollArt,
                 uploadFileName = file.FileName
             }, "text/plain");

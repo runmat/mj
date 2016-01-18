@@ -344,6 +344,21 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_UEB_CREATE_ORDER_01.GT_PROT, WebUploadProtokoll> Z_UEB_CREATE_ORDER_01_GT_PROT_To_WebUploadProtokoll
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_UEB_CREATE_ORDER_01.GT_PROT, WebUploadProtokoll>(
+                    new Dictionary<string, string> {
+                        { "ZZPROTOKOLLART", "Protokollart" },
+                        { "ZZKATEGORIE", "Kategorie" },
+                        { "FAHRT", "FahrtIndex" }
+                    }));
+            }
+        }
+
         #endregion
     }
 }

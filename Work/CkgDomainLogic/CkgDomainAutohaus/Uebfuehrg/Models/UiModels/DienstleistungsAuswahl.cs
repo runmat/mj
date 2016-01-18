@@ -94,7 +94,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
             if (protokolle != null)
             {
-                UploadProtokolle = protokolle;
+                UploadProtokolle = protokolle.Copy();
                 UploadProtokolle.ForEach(p => p.FahrtIndex = FahrtIndex);
             }
         }
