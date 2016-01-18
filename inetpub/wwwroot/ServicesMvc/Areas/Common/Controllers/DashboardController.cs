@@ -122,6 +122,15 @@ namespace ServicesMvc.Common.Controllers
             return Json(jsonData);
         }
 
+
+        [HttpPost]
+        public ActionResult DashboardItemUserRowSpanSave(int userRowSpanOverride, int rawWidgetId)
+        {
+            ViewModel.DashboardItemUserRowSpanSave(userRowSpanOverride, rawWidgetId);
+
+            return new EmptyResult();
+        }
+
         #endregion
     }
 }

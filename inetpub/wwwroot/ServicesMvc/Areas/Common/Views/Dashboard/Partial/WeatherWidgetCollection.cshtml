@@ -200,17 +200,31 @@
     setTimeout("InitControls()", 1000);
 
     function DashboardItemWeatherWidgetSettings(button, widgetId) {
-        //alert("Jo: DashboardItemWeatherWidgetSettings");
         var widgetDefinition = $(widgetId).data("widgetDefinition");
-        var rowSpan = widgetDefinition.widgetOptions.RowSpan;
-        //var rawId = widgetDefinition.widgetId;
 
+        var rowSpan = widgetDefinition.widgetOptions.RowSpan;
+
+        //console.log(widgetDefinition.widgetId);
+
+        // change user defined rowspan
         rowSpan--;
         widgetDefinition.widgetOptions.RowSpan = rowSpan;
 
         SetRowSpan($(widgetId), rowSpan);
         SetRowSpan($(widgetId + " .sDashboardWidgetContent"), rowSpan);
         SetRowSpan($(widgetId + " .sDashboardWidgetContentBusyHint"), rowSpan);
+
+        // save user defined rowspan
+        $.ajax({
+            type: "POST",
+            url: "DashboardItemUserRowSpanSave",
+            data: {
+                userRowSpanOverride: rowSpan,
+                rawWidgetId: widgetDefinition.widgetId.replace(/id_/g, "")
+            },
+            success: function (result) {
+            }
+        });
 
         return false;
     }

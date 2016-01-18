@@ -7,8 +7,6 @@ namespace CkgDomainLogic.General.Models
         public string Country { get; set; }
 
         public string City { get; set; }
-
-        public int RowSpanOverride { get; set; }
     }
 
     public class WeatherWidgetUserSettingsCollection : Store

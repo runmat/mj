@@ -61,7 +61,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return translatedAppUrl.ToLower() == url;
         }
 
-        public void DashboardItemsSave(string commaSeparatedIds)
+        public void DashboardItemsSave(string commaSeparatedIds = null)
         {
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
@@ -80,6 +80,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
+        }
+
+        public void DashboardItemUserRowSpanSave(int userRowSpanOverride, int rawWidgetId )
+        {
+            var dashboardItem = GetDashboardItem(rawWidgetId.ToString());
+            if (dashboardItem == null)
+                return;
+
+            dashboardItem.ItemAnnotator.RowSpanOverride = userRowSpanOverride;
+
+            DashboardItemsSave();
         }
     }
 }

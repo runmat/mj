@@ -7,5 +7,8 @@
         bool IsUserVisible { get; set; }
 
         int UserSort { get; set; }
+
+        int RowSpanOverride { get; set; }
+
     }
 }

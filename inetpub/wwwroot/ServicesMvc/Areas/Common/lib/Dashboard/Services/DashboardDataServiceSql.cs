@@ -26,9 +26,11 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             var ct = CreateDbContext();
 
-            IList<int> ids = null;
+            IList<int> ids;
             if (commaSeparatedIds.IsNotNullOrEmpty())
                 ids = commaSeparatedIds.Split(',').Select(s => s.ToInt()).ToList();
+            else
+                ids = items.Where(i => i.IsUserVisible).Select(i => i.ID).ToList();
 
             HideAllAnnotatorItems(items);
             ApplyVisibilityAndSortAnnotatorItems(items, ids, true);
