@@ -6,14 +6,14 @@ namespace CkgDomainLogic.General.Database.Models
 {
     public class DashboardItemOptions : IDashboardItemOptions
     {
-        private int _columnSpan = 1;
+        private int _rowSpan = 1;
         private string _itemType = "chart";
         private int _jsonDataCacheExpirationMinutes = 1440; // 24h
 
-        public int ColumnSpan
+        public int RowSpan
         {
-            get { return _columnSpan; }
-            set { _columnSpan = value; }
+            get { return _rowSpan; }
+            set { _rowSpan = value; }
         }
 
         public bool IsAuthorized { get; set; }
@@ -35,6 +35,8 @@ namespace CkgDomainLogic.General.Database.Models
         public bool IsChart { get { return ItemType.NotNullOrEmpty().ToLower() == "chart"; } }
 
         public bool IsPartialView { get { return ItemType.NotNullOrEmpty().ToLower() == "partialview"; } }
+
+        public string SettingsScriptFunction { get; set; }
 
         public bool JsonDataCacheExpired(DateTime? dt)
         {

@@ -41,7 +41,7 @@
 	height: 446px !important;
 }
 .sDashboardWidgetContent.height2 {
-	height: 391px !important;
+	height: 383px !important;
 }
 .sDashboardWidgetContentBusyHint.height2 {
     height: 350px !important;
@@ -50,7 +50,7 @@
 	height: 669px !important;
 }
 .sDashboardWidgetContent.height3 {
-	height: 622px !important;
+	height: 614px !important;
 }
 .sDashboardWidgetContentBusyHint.height3 {
     height: 560px !important;
@@ -328,6 +328,9 @@ a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
     font-style: normal!important;
     text-decoration: none!important;
 }
+a.dashboard-toolbar-item img.dashboard-item-settings {
+    margin: 1px 4px 0 0;
+}
 
 .flotr-grid-label {
     font-size: 0.75em;
@@ -352,3 +355,5 @@ a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
      z-index: 99999;
      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
 }
+
+ 

@@ -250,16 +250,32 @@
                     if (typeof(afterRefreshFunction) !== 'undefined')
                         afterRefreshFunction();
                 }
-            });    
+            });
     }
 
     function SetupWidgetToolbar(widgetId) {
         var rawId = widgetId.replace(/#id_/g, "");
 
-        var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-stack-overflow'></i></a>");
-        printButton.attr("href", $("#report_href_" + rawId).attr("href"));
-        printButton.attr("target", $("#report_href_" + rawId).attr("target"));
-        printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+        var widgetDefinition = $(widgetId).data("widgetDefinition");
+        var isPartialView = widgetDefinition.widgetOptions.IsPartialView;
+        var settingsScriptFunction = widgetDefinition.widgetOptions.SettingsScriptFunction;
+
+        if (isPartialView) {
+            if (settingsScriptFunction !== null && settingsScriptFunction !== '') {
+                //console.log(widgetDefinition.widgetOptions);
+                var settingsButton = $("<a class='dashboard-toolbar-item' onclick='return " + settingsScriptFunction +  "($(this), \"" + widgetId + "\");' href='#' title='Einstellungen ändern ...'><img class='dashboard-item-settings' src='/ServicesMvc/Images/Commands/dashboard-item-settings.png'></a>");
+                settingsButton.attr("href", $("#settings_href_" + rawId).attr("href"));
+                settingsButton.attr("target", $("#settings_href_" + rawId).attr("target"));
+                settingsButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+            }
+        }
+        else
+        {
+            var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-stack-overflow'></i></a>");
+            printButton.attr("href", $("#report_href_" + rawId).attr("href"));
+            printButton.attr("target", $("#report_href_" + rawId).attr("target"));
+            printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+        }
 
         var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetClearCacheAndReload(" + rawId + ")' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
         refreshButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));

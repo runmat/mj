@@ -211,7 +211,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             double countTotal = items.Count;
             if (countTotal > 0)
             {
-                var percentThreshold = 1.5;
+                var percentThreshold = 1.0;
                 var validMaterialTexts = items.GroupBy(xAxisKeyModel).Where(g => g.Count(i => true) / countTotal*100.0 > percentThreshold).Select(g => g.Key);
 
                 xAxisKeyModel = (groupKey => validMaterialTexts.Contains(getTitleFunc(groupKey)) ? getTitleFunc(groupKey) : " Sonstige");

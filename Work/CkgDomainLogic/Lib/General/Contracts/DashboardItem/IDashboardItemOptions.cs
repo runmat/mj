@@ -4,7 +4,7 @@ namespace CkgDomainLogic.General.Contracts
 {
     public interface IDashboardItemOptions
     {
-        int ColumnSpan { get; set; }
+        int RowSpan { get; set; }
 
         bool IsAuthorized { get; set; }
 
@@ -17,6 +17,8 @@ namespace CkgDomainLogic.General.Contracts
         bool IsChart { get; }
 
         bool IsPartialView { get; }
+
+        string SettingsScriptFunction { get; set; }
 
         bool JsonDataCacheExpired(DateTime? dt);
     }

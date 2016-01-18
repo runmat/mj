@@ -199,6 +199,30 @@
 
     setTimeout("InitControls()", 1000);
 
+    function DashboardItemWeatherWidgetSettings(button, widgetId) {
+        //alert("Jo: DashboardItemWeatherWidgetSettings");
+        var widgetDefinition = $(widgetId).data("widgetDefinition");
+        var rowSpan = widgetDefinition.widgetOptions.RowSpan;
+        //var rawId = widgetDefinition.widgetId;
+
+        rowSpan--;
+        widgetDefinition.widgetOptions.RowSpan = rowSpan;
+
+        SetRowSpan($(widgetId), rowSpan);
+        SetRowSpan($(widgetId + " .sDashboardWidgetContent"), rowSpan);
+        SetRowSpan($(widgetId + " .sDashboardWidgetContentBusyHint"), rowSpan);
+
+        return false;
+    }
+
+    function SetRowSpan(el, rowSpan) {
+        el.removeClass("height1");
+        el.removeClass("height2");
+        el.removeClass("height3");
+
+        el.addClass("height" + rowSpan);
+    }
+
     function SettingsToggle(index) {
         var widgetId = "#weather-widget-" + index;
 

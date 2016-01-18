@@ -234,7 +234,7 @@
             widgetHeader.append(widgetDefinition.widgetTitle);
 
             //create a widget content
-            //console.log(widgetDefinition.widgetOptions.ColumnSpan);
+            //console.log(widgetDefinition.widgetOptions.RowSpan);
             var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
             if (widgetDefinition.widgetType === 'table') {
@@ -263,7 +263,7 @@
             //append the widgetContainer to the widget
             widget.append(widgetContainer);
 
-            var colSpan = widgetDefinition.widgetOptions.ColumnSpan;
+            var colSpan = widgetDefinition.widgetOptions.RowSpan;
             if (colSpan > 1) {
                 widget.addClass("height" + colSpan);
                 widgetContent.addClass("height" + colSpan);
@@ -372,10 +372,10 @@
                 if (currentWidget.widgetId === widgetId) {
                     widgetDefs.splice(i, 1);
                     this._trigger("stateChanged", null, {
-                        triggerAction: 'widgetRemoved',
-                        affectedWidget: currentWidget
-                    }
-						);
+                            triggerAction: 'widgetRemoved',
+                            affectedWidget: currentWidget
+                        }
+				    );
                     break;
                 }
             }

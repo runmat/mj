@@ -257,6 +257,7 @@
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\close.png" />
     <Content Include="Images\Commands\OK.png" />
+    <Content Include="Images\Commands\dashboard-item-settings.png" />
     <Content Include="Images\Commands\settings.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
