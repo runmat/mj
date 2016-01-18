@@ -362,5 +362,23 @@ a.dashboard-toolbar-item img.dashboard-item-settings {
  .dashboard-item-row-span-dropdown-menu {
      float: right;
      display: inline-block;
-     margin: 0 10px 30px 0;
+     margin: 0 40px 30px 0;
+     padding: 5px;
+     background-color: ivory;
  }
+ .dashboard-item-row-span-dropdown-menu h4 {
+     display: block;
+     text-align: right;
+     padding: 0 5px 0 0;
+     margin: 0;
+ }
+.dashboard-item-row-span-dropdown-menu .row-span-header {
+    margin: 0 50px 10px 0;
+    font-weight: bold;
+}
+ .dashboard-item-row-span-dropdown-menu .row-span-cancel {
+     float: right;
+ }
+.dashboard-item-row-span-dropdown-menu .row-span-item {
+    margin: 0 30px 0 0;
+}

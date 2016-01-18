@@ -473,7 +473,7 @@ function DashboardItemRowspanSelectMenuShow(widgetId, onRowSpanSelectFunction) {
         });
     }
 
-    a = rowSpanDropdownMenu.find("a.row-span-item-cancel");
+    a = rowSpanDropdownMenu.find("a.row-span-cancel");
     a.click(function () { return DashboardItemRowspanSelectMenuHide(widgetId); });   
 
     rowSpanDropdownMenu.slideDown(200);

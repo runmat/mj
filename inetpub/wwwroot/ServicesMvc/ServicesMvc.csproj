@@ -256,6 +256,9 @@
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\close.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-1.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-2.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-3.png" />
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\Commands\dashboard-item-settings.png" />
     <Content Include="Images\Commands\settings.png" />
