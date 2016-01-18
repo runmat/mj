@@ -41,9 +41,9 @@
         height: 150px;
     }
 
-        .wd-content.busy {
-            opacity: 0.3;
-        }
+    .wd-content.busy {
+        opacity: 0.3;
+    }
 
     .wd-day {
         float: left;
@@ -61,59 +61,61 @@
         margin: 0 0 2px 0;
     }
 
-        .day-info div.day {
-            font-size: 1.0em;
-            color: #808080 !important;
-        }
+    .day-info div.day {
+        font-size: 1.0em;
+        color: #808080 !important;
+    }
 
-        .day-info div.wkday {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin: 0 0 0 0;
-        }
+    .day-info div.wkday {
+        font-size: 1.3em;
+        font-weight: bold;
+        margin: 0 0 0 0;
+    }
 
     .temp-info {
         margin: 0 0 -7px 0;
     }
 
-        .temp-info hr {
-            margin: -1px 0 -3px -1px;
-        }
+    .temp-info hr {
+        margin: -1px 0 -3px -1px;
+    }
 
-        .temp-info div.tlabel {
-            color: #808080 !important;
-            display: inline-block;
-            font-size: 0.95em;
-            width: 6px;
-            text-align: left;
-        }
+    .temp-info div.tlabel {
+        color: #808080 !important;
+        display: inline-block;
+        font-size: 0.95em;
+        width: 6px;
+        text-align: left;
+    }
 
-        .temp-info div.tlabel-degree {
-            display: inline-block;
-            vertical-align: 2px;
-            font-size: 1.5em;
-        }
+    .temp-info div.tlabel-degree {
+        display: inline-block;
+        vertical-align: 2px;
+        font-size: 1.5em;
+    }
 
-        .temp-info div.celsius {
-            display: inline-block;
-            width: 30px;
-            text-align: right;
-            font-weight: bold;
-            font-size: 1.5em;
-        }
+    .temp-info div.celsius {
+        display: inline-block;
+        width: 30px;
+        text-align: right;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
 
-        .temp-info div {
-            color: green;
-        }
+    .temp-info div {
+        color: green;
+    }
 
-            .temp-info div.temp-zero * {
-                color: blue;
-            }
+    .temp-info div.temp-zero * {
+        color: blue;
+    }
 
-            .temp-info div.temp-freeze * {
-                color: darkmagenta;
-            }
+    .temp-info div.temp-freeze * {
+        color: darkmagenta;
+    }
 </style>
+
+@Html.Partial("Partial/RowSpanDropDownMenu")
 
 @for (var i = 0; i < Model.WidgetVisibleCount; i++)
 {
@@ -199,22 +201,32 @@
 
     setTimeout("InitControls()", 1000);
 
-    function DashboardItemWeatherWidgetSettings(button, widgetId) {
+    function DashboardItemWeatherWidgetSettings(settingsButton, widgetId) {
+
+        DashboardItemRowspanSelectMenuShow(widgetId, function (rowSpan) {
+            DashboardItemOnRowSpanSelect(widgetId, rowSpan);
+        });
+
+    }
+
+    function DashboardItemOnRowSpanSelect(widgetId, rowSpan) {
+
         var widgetDefinition = $(widgetId).data("widgetDefinition");
 
-        var rowSpan = widgetDefinition.widgetOptions.RowSpan;
+        var rowSpanPrev = widgetDefinition.userOptions.RowSpanOverride > 0 ? widgetDefinition.userOptions.RowSpanOverride : widgetDefinition.widgetOptions.RowSpan;
 
-        //console.log(widgetDefinition.widgetId);
+        console.log("prev: " + rowSpanPrev);
+        console.log("next: " + rowSpan);
 
-        // change user defined rowspan
-        rowSpan--;
-        widgetDefinition.widgetOptions.RowSpan = rowSpan;
+        // (client only) save user defined rowspan
+        widgetDefinition.userOptions.RowSpanOverride = rowSpan;
+        $(widgetId).data("widgetDefinition", widgetDefinition);
 
         SetRowSpan($(widgetId), rowSpan);
         SetRowSpan($(widgetId + " .sDashboardWidgetContent"), rowSpan);
         SetRowSpan($(widgetId + " .sDashboardWidgetContentBusyHint"), rowSpan);
 
-        // save user defined rowspan
+        // (server) persist user defined rowspan
         $.ajax({
             type: "POST",
             url: "DashboardItemUserRowSpanSave",
@@ -223,6 +235,12 @@
                 rawWidgetId: widgetDefinition.widgetId.replace(/id_/g, "")
             },
             success: function (result) {
+                if (rowSpanPrev < rowSpan) {
+                    // if we have more weather items in our widget now, 
+                    // ==> refresh our weather widget to enforce the additional weather items being calculated and properly displayed:
+                    var rawId = widgetId.replace(/#id_/g, "");
+                    DashboardWidgetClearCacheAndReload(rawId, false);
+                }
             }
         });
 

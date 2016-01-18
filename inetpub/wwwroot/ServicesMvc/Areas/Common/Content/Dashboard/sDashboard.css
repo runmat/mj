@@ -318,6 +318,9 @@ li.ui-sortable-placeholder {
 .dashboard-dropdown-menu a.dropdown-toggle i.icon-bar-chart {
     margin-left: 8px;
 }
+.dashboard-dropdown-menu ul.dropdown-menu li a i.icon-bar-chart {
+    color: #303030!important;
+}
 
 a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
     display: inline;
@@ -356,4 +359,8 @@ a.dashboard-toolbar-item img.dashboard-item-settings {
      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
 }
 
- 
+ .dashboard-item-row-span-dropdown-menu {
+     float: right;
+     display: inline-block;
+     margin: 0 10px 30px 0;
+ }

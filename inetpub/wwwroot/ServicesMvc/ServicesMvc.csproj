@@ -309,6 +309,7 @@
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.FR.json" />
     <Content Include="App_Data\XmlData\Weather\JsonData\city.list.IT.json" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\WeatherWidgetCollection.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\RowSpanDropDownMenu.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -14,8 +14,6 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 {
     public class WeatherViewModel : CkgBaseViewModel
     {
-        public const int WidgetMax = 3;
-
         public int WidgetVisibleCount { get; set; }
 
         public WeatherWidgetUserSettingsCollection WidgetUserSettingsCollection { get; set; }
@@ -46,9 +44,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         };
 
 
-        public void DataInit()
+        public void DataInit(int widgetVisibleCount)
         {
-            WidgetVisibleCount = 3;
+            WidgetVisibleCount = widgetVisibleCount;
 
             WeatherWidgetUserSettingsLoad();
         }

@@ -43,6 +43,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool IsPartialView { get { return Options.IsPartialView; } }
 
+        public int RowSpanReal { get { return ItemAnnotator.RowSpanOverride > 0 ? ItemAnnotator.RowSpanOverride : Options.RowSpan; } }
+
         [NotMapped]
         public IDashboardItemAnnotator ItemAnnotator { get; set; }
     }

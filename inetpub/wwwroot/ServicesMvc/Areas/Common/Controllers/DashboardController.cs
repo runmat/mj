@@ -41,7 +41,7 @@ namespace ServicesMvc.Common.Controllers
         [CkgApplication]
         public ActionResult Weather()
         {
-            WeatherViewModel.DataInit();
+            WeatherViewModel.DataInit(3);
 
             return View(WeatherViewModel);
         }
@@ -67,7 +67,7 @@ namespace ServicesMvc.Common.Controllers
 
                 if (dashboardItem.RelatedAppUrl.ToLower().Contains("weather"))
                 {
-                    WeatherViewModel.DataInit();
+                    WeatherViewModel.DataInit(dashboardItem.RowSpanReal);
                     return PartialView(dashboardItem.RelatedAppUrl, WeatherViewModel);
                 }
 
@@ -126,7 +126,12 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult DashboardItemUserRowSpanSave(int userRowSpanOverride, int rawWidgetId)
         {
+            var dashboardItem = ViewModel.GetDashboardItem(rawWidgetId.ToString());
+            if (dashboardItem == null)
+                return new EmptyResult();
+
             ViewModel.DashboardItemUserRowSpanSave(userRowSpanOverride, rawWidgetId);
+            WeatherViewModel.DataInit(dashboardItem.RowSpanReal);
 
             return new EmptyResult();
         }

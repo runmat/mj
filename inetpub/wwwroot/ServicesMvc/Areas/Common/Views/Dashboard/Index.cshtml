@@ -288,18 +288,26 @@
             printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
         }
 
-        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetClearCacheAndReload(" + rawId + ")' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
+        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetClearCacheAndReload(" + rawId + ", true)' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
         refreshButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
     }
 
-    function DashboardWidgetClearCacheAndReload(id) {
+    function DashboardWidgetClearCacheAndReload(id, showHint) {
         ShowWidget(id, true, function() {
             var anchor = $("#id_" + id + " .sDashboardWidgetContent .sDashboardWidgetContentBusyHint");
-            var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Widget erfolgreich aktualisiert!");
-            hint.insertBefore(anchor);
-            setTimeout(function() {
-                hint.remove();
-            }, 2000);
+
+            if (showHint){
+                var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Widget erfolgreich aktualisiert!");
+                hint.hide();
+                hint.insertBefore(anchor);
+
+                setTimeout(function() {
+                    hint.show();
+                    setTimeout(function() {
+                        hint.remove();
+                    }, 2000);
+                }, 2000);
+            }
         });
 
         return false;

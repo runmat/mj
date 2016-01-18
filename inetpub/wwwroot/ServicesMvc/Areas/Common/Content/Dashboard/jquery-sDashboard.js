@@ -263,12 +263,9 @@
             //append the widgetContainer to the widget
             widget.append(widgetContainer);
 
-            var rowSpan = widgetDefinition.widgetOptions.RowSpan;
-            var userRowSpan = widgetDefinition.userOptions.RowSpanOverride;
-            //console.log(widgetDefinition.userOptions);
+            var rowSpan = widgetDefinition.userOptions.RowSpanOverride > 0 ? widgetDefinition.userOptions.RowSpanOverride : widgetDefinition.widgetOptions.RowSpan;
+            //console.log(widgetDefinition);
             //console.log(userRowSpan);
-            if (userRowSpan > 0)
-                rowSpan = userRowSpan;
 
             if (rowSpan > 1) {
                 widget.addClass("height" + rowSpan);
@@ -460,3 +457,32 @@
 
 }));
 
+
+function DashboardItemRowspanSelectMenuShow(widgetId, onRowSpanSelectFunction) {
+
+    var rowSpanDropdownMenu = $(widgetId + " .dashboard-item-row-span-dropdown-menu");
+    //console.log(widgetId);
+    var maxRows = 3;
+    var a;
+    for (var i = 1; i <= maxRows; i++) {
+        a = rowSpanDropdownMenu.find("a.row-span-item-" + i);
+        a.data("i", i);
+        a.click(function() {
+            DashboardItemRowspanSelectMenuHide(widgetId);
+            return onRowSpanSelectFunction($(this).data("i"));
+        });
+    }
+
+    a = rowSpanDropdownMenu.find("a.row-span-item-cancel");
+    a.click(function () { return DashboardItemRowspanSelectMenuHide(widgetId); });   
+
+    rowSpanDropdownMenu.slideDown(200);
+}
+
+function DashboardItemRowspanSelectMenuHide(widgetId) {
+
+    var rowSpanDropdownMenu = $(widgetId + " .dashboard-item-row-span-dropdown-menu");
+
+    rowSpanDropdownMenu.slideUp(200);
+
+}

@@ -30,6 +30,8 @@
 
         bool IsPartialView { get; }
 
+        int RowSpanReal { get; }
+
         IDashboardItemAnnotator ItemAnnotator { get; set; }
     }
 }
