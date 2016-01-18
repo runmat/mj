@@ -1,22 +1,29 @@
 ﻿//#define TESTDATA
 
-// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
 using CkgDomainLogic.Uebfuehrg.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
+using AdressenTyp = CkgDomainLogic.Uebfuehrg.Models.AdressenTyp;
+using Bemerkungen = CkgDomainLogic.Uebfuehrg.Models.Bemerkungen;
+using Dienstleistung = CkgDomainLogic.Uebfuehrg.Models.Dienstleistung;
+using DienstleistungsAuswahl = CkgDomainLogic.Uebfuehrg.Models.DienstleistungsAuswahl;
+using Fahrt = CkgDomainLogic.Uebfuehrg.Models.Fahrt;
 using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
-// ReSharper restore RedundantUsingDirective
+using TransportTyp = CkgDomainLogic.Uebfuehrg.Models.TransportTyp;
+using UeberfuehrungsAuftragsPosition = CkgDomainLogic.Uebfuehrg.Models.UeberfuehrungsAuftragsPosition;
+using WebUploadProtokoll = CkgDomainLogic.Uebfuehrg.Models.WebUploadProtokoll;
 
 namespace CkgDomainLogic.Uebfuehrg.ViewModels
 {
@@ -116,6 +123,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         [XmlIgnore]
         public List<Dienstleistung> Dienstleistungen { get; private set; }
 
+        [XmlIgnore]
+        public List<WebUploadProtokoll> ProtokollArten { get; private set; }
+
         public List<Fahrt> Fahrten { get; set; }
 
         public RgDaten RgDaten { get; set; }
@@ -150,6 +160,22 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         [XmlIgnore]
         private bool IstKroschke { get { return (LogonContext.Customer.AccountingArea == 1010); } }
+
+        [XmlIgnore]
+        private string CurrentFahrtIndex
+        {
+            get
+            {
+                if (StepCurrentModel is DienstleistungsAuswahl)
+                    return ((DienstleistungsAuswahl) StepCurrentModel).FahrtIndex;
+
+                var lastModel = (StepCurrentIndex == 0 ? null : StepModels[StepCurrentIndex - 1]);
+                if (lastModel is DienstleistungsAuswahl)
+                    return ((DienstleistungsAuswahl)lastModel).FahrtIndex;
+
+                return "";
+            }
+        }
 
 
         public void DataInit(int anzahlFahrzeugeGewuenscht, IDictionary<string, string> externalParams = null)
@@ -277,6 +303,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Fahrzeugwert = "Z00",
                     FahrzeugZugelassen = true,
                     ZulassungBeauftragt = true,
+                    Bereifung = "S",
 #endif
                 };
             TryDataContextRestoreUiModel(uiModel);
@@ -394,6 +421,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         Fahrzeugwert = "Z00",
                         FahrzeugZugelassen = true,
                         ZulassungBeauftragt = true,
+                        Bereifung = "S",
 #endif
                     };
                 TryDataContextRestoreUiModel(uiModel);
@@ -539,15 +567,21 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             var stepModel = GetStepModel(uiIndex);
 
             var savedUiModel = ModelMapping.Copy(stepModel, new CommonUiModel());
+
+            object dataToRecover = null;
+
+            if (stepModel is DienstleistungsAuswahl)
+                dataToRecover = (stepModel as DienstleistungsAuswahl).UploadProtokolle.Copy();
+
             ModelMapping.Copy(subModel, (T) stepModel);
             ModelMapping.Copy(savedUiModel, (T) stepModel);
 
-            PrepareFollowingSteps((T)stepModel);
+            PrepareFollowingSteps((T)stepModel, dataToRecover);
 
             return (T)stepModel;
         }
 
-        private void PrepareFollowingSteps<T>(T subModel) where T : CommonUiModel
+        private void PrepareFollowingSteps<T>(T subModel, object dataToRecover) where T : CommonUiModel
         {
             if (subModel.UiIndex == 0)
             {
@@ -561,7 +595,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 SaveFahrzeug(subModel as Fahrzeug);
 
             if (subModel is DienstleistungsAuswahl)
-                SaveDienstleistungen(subModel as DienstleistungsAuswahl);
+                SaveDienstleistungen(subModel as DienstleistungsAuswahl, dataToRecover as List<WebUploadProtokoll>);
 
             if (subModel is Adresse)
             {
@@ -607,6 +641,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     subModelFahrzeug.Fahrzeugwert = storedFahrzeug.Fahrzeugwert;
                     subModelFahrzeug.FahrzeugZugelassen = storedFahrzeug.FahrzeugZugelassen;
                     subModelFahrzeug.ZulassungBeauftragt = storedFahrzeug.ZulassungBeauftragt;
+                    subModelFahrzeug.Bereifung = storedFahrzeug.Bereifung;
                 }
             }
         }
@@ -660,15 +695,16 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             DataService.GetTransportTypenAndDienstleistungen(out transportTypen, out dienstleistungen);
             Dienstleistungen = dienstleistungen;
             TransportTypen = transportTypen;
+            ProtokollArten = DataService.GetProtokollArten();
 
             StepModels.OfType<DienstleistungsAuswahl>()
                       .ToList()
-                      .ForEach(dl => dl.InitDienstleistungen(Dienstleistungen, null, true));
+                      .ForEach(dl => dl.InitDienstleistungen(Dienstleistungen, null, true, ProtokollArten));
         }
 
-        public void SaveDienstleistungen(DienstleistungsAuswahl model)
+        public void SaveDienstleistungen(DienstleistungsAuswahl model, List<WebUploadProtokoll> lastProtocols)
         {
-            model.InitDienstleistungen(Dienstleistungen, model.FahrtTyp);
+            model.InitDienstleistungen(Dienstleistungen, model.FahrtTyp, false, lastProtocols);
             model.Bemerkungen.FahrtIndex = model.FahrtIndex;
         }
 
@@ -722,7 +758,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 var correspondingDienstleistungsAuswahl = StepModels.Skip(StepModels.IndexOf(model)).OfType<DienstleistungsAuswahl>().FirstOrDefault();
                 if (correspondingDienstleistungsAuswahl != null)
                 {
-                    correspondingDienstleistungsAuswahl.InitDienstleistungen(Dienstleistungen, model.TransportTyp, true);
+                    correspondingDienstleistungsAuswahl.InitDienstleistungen(Dienstleistungen, model.TransportTyp, true, ProtokollArten);
                 }
             }
         }
@@ -785,7 +821,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void CheckDienstleistungsAuswahl(DienstleistungsAuswahl dienstleistungsAuswahl, Action<string, string> addModelError)
         {
-            dienstleistungsAuswahl.InitDienstleistungen(Dienstleistungen);
+            dienstleistungsAuswahl.InitDienstleistungen(Dienstleistungen, null, false, GetProtokolleDerAktuellenFahrt());
             CheckDienstleistungsDatumsWerteSamstagsAuslieferung(dienstleistungsAuswahl, addModelError);
             CheckDienstleistungsDatumsWerteVorholung(dienstleistungsAuswahl, addModelError);
         }
@@ -855,6 +891,77 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             }
         }
 
+        #region Protokollupload
+
+        public List<WebUploadProtokoll> GetProtokolleDerAktuellenFahrt()
+        {
+            var dlModel = StepModels.OfType<DienstleistungsAuswahl>().FirstOrDefault(d => d.FahrtIndex == CurrentFahrtIndex);
+            return (dlModel != null ? dlModel.UploadProtokolle : new List<WebUploadProtokoll>());
+        } 
+
+        public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction, string protokollArt)
+        {
+            var tmpfilename = string.Format("{0}_{1}_{2:yyyyMMddhhmmss}", CurrentFahrtIndex, protokollArt.Replace(".", ""), DateTime.Now);
+            var extension = ".pdf";
+
+            var nameSaved = fileSaveAction(AppSettings.TempPath, tmpfilename, extension);
+
+            if (string.IsNullOrEmpty(nameSaved))
+                return false;
+
+            SetProtokollFilename(protokollArt, nameSaved);
+
+            return true;
+        }
+
+        public void RemoveProtokoll(string protokollArt)
+        {
+            SetProtokollFilename(protokollArt, "");
+        }
+
+        private void SetProtokollFilename(string protokollArt, string filename)
+        {
+            var model = StepModels.OfType<DienstleistungsAuswahl>().First(d => d.FahrtIndex == CurrentFahrtIndex);
+            var protokollItem = model.UploadProtokolle.FirstOrDefault(p => p.Protokollart == protokollArt);
+            if (protokollItem != null)
+                protokollItem.Dateiname = filename;
+        }
+
+        private void CopyProtocolFiles(List<UeberfuehrungsAuftragsPosition> auftragsPositionen)
+        {
+            var dlModels = StepModels.OfType<DienstleistungsAuswahl>().ToList();
+            dlModels.ForEach(dlModel =>
+            {
+                foreach (var protokoll in dlModel.UploadProtokolle)
+                {
+                    var uploadFileName = protokoll.Dateiname;
+
+                    if (uploadFileName.IsNullOrEmpty())
+                        return;
+
+                    var auftrag = auftragsPositionen.FirstOrDefault(ap => ap.FahrtIndex == dlModel.FahrtIndex);
+                    if (auftrag == null)
+                        return;
+
+                    var srcFileName = string.Format("{0}.pdf", uploadFileName);
+                    var srcFullFileName = Path.Combine(AppSettings.TempPath, srcFileName);
+
+                    var dstPath = Path.Combine(AppSettings.UploadFilePath, DataService.AuftragGeberOderKundenNr, auftrag.AuftragsNr.PadLeft(10, '0'), "Vertraege");
+                    var dstFileName = string.Format("{0}_{1}_{2}_{3}.pdf",
+                                            auftrag.AuftragsNr, auftrag.FahrtIndex, protokoll.Kategorie, protokoll.Protokollart.Replace(".", ""));
+                    var dstFullFileName = Path.Combine(dstPath, dstFileName);
+
+                    if (!FileService.TryDirectoryCreate(dstPath))
+                        throw new IOException(string.Format("Fehler, Upload-Zielverzeichnis kann nicht erstellt werden: '{0}'", dstPath));
+
+                    if (!FileService.TryFileCopy(srcFullFileName, dstFullFileName))
+                        throw new IOException(string.Format("Fehler, Upload-Datei kann nicht kopiert werden von '{0}' => '{1}'", srcFullFileName, dstFullFileName));
+                }
+            });
+        }
+
+        #endregion
+
         #endregion
 
 
@@ -885,6 +992,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             try
             {
                 AuftragsPositionen = DataService.Save(RgDatenFromStepModels, StepModels, Fahrten).ToListOrEmptyList();
+                CopyProtocolFiles(AuftragsPositionen);
                 ReceiptPdfFileName = new ReceiptCreationService(this).CreatePDF();
             }
             catch (Exception e)
@@ -1025,6 +1133,5 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         }
 
         #endregion
-
     }
 }

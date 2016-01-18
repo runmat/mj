@@ -198,6 +198,21 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_READ_TAB_PROT_01.GT_OUT, WebUploadProtokoll> Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_TAB_PROT_01.GT_OUT, WebUploadProtokoll>(
+                    new Dictionary<string, string> {
+                        { "ZZPROTOKOLLART", "Protokollart" },
+                        { "ZZKATEGORIE", "Kategorie" },
+                        { "FAHRT", "FahrtIndex" }
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -302,6 +317,8 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                         { "ZZKENN", "Kennzeichen" },
                         
                         { "FZGART", "Fahrzeugklasse" },
+
+                        { "SOWI", "Bereifung" },
 
                         //{ "FZGART", "Hersteller" },
                         //{ "ZZFAHRZGTYP", "Modell" },
