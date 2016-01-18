@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
-using MvcTools.Controllers;
 using GeneralTools.Contracts;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Zulassung.MobileErfassung.ViewModels;
 using MvcTools.Web;
