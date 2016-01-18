@@ -9,6 +9,5 @@
         int UserSort { get; set; }
 
         int RowSpanOverride { get; set; }
-
     }
 }

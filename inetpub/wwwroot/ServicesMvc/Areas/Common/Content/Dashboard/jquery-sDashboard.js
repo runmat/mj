@@ -263,11 +263,17 @@
             //append the widgetContainer to the widget
             widget.append(widgetContainer);
 
-            var colSpan = widgetDefinition.widgetOptions.RowSpan;
-            if (colSpan > 1) {
-                widget.addClass("height" + colSpan);
-                widgetContent.addClass("height" + colSpan);
-                busyHint.addClass("height" + colSpan);
+            var rowSpan = widgetDefinition.widgetOptions.RowSpan;
+            var userRowSpan = widgetDefinition.userOptions.RowSpanOverride;
+            //console.log(widgetDefinition.userOptions);
+            //console.log(userRowSpan);
+            if (userRowSpan > 0)
+                rowSpan = userRowSpan;
+
+            if (rowSpan > 1) {
+                widget.addClass("height" + rowSpan);
+                widgetContent.addClass("height" + rowSpan);
+                busyHint.addClass("height" + rowSpan);
             }
 
             //return widget

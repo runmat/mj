@@ -19,7 +19,7 @@
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
 
-                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title', '@JSon.Serialize(dashBoardItem.Options)')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title', '@JSon.Serialize(dashBoardItem.Options)', '@JSon.Serialize(dashBoardItem.ItemAnnotator)')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
 
         </ul>
@@ -41,9 +41,14 @@
 {
     <script type="text/javascript">
 
-        var wWidgetOptionsAsString = "@JSon.Serialize(dashBoardItem.Options)";
-        wWidgetOptionsAsString = wWidgetOptionsAsString.replace(/&quot;/g, "\"");
-        var widgetOptions = jQuery.parseJSON(wWidgetOptionsAsString);
+        var widgetOptionsAsString = "@JSon.Serialize(dashBoardItem.Options)";
+        widgetOptionsAsString = widgetOptionsAsString.replace(/&quot;/g, "\"");
+        var widgetOptions = jQuery.parseJSON(widgetOptionsAsString);
+
+        var userOptionsAsString = "@JSon.Serialize(dashBoardItem.ItemAnnotator)";
+        userOptionsAsString = userOptionsAsString.replace(/&quot;/g, "\"");
+        var userOptions = jQuery.parseJSON(userOptionsAsString);
+        //console.log(userOptions);
 
         _dashboardJson.push(
             {
@@ -56,6 +61,7 @@
                     return _dashboardData;
                 },
                 widgetOptions: widgetOptions,
+                userOptions: userOptions,
                 widgetContent: {
                     data: null,
                     options: null
@@ -176,16 +182,20 @@
         return false;
     }
 
-    function ShowDashboardItem(id, key, title, wWidgetOptionsAsString) {
+    function ShowDashboardItem(id, key, title, widgetOptionsAsString, userOptionsAsString) {
 
-        AddWidget(id, key, title, wWidgetOptionsAsString);
+        AddWidget(id, key, title, widgetOptionsAsString, userOptionsAsString);
 
         return false;
     }
 
-    function AddWidget(rawWidgetId, widgetKey, widgetTitle, wWidgetOptionsAsString) {
+    function AddWidget(rawWidgetId, widgetKey, widgetTitle, widgetOptionsAsString, userOptionsAsString) {
 
-        var widgetOptions = jQuery.parseJSON(wWidgetOptionsAsString);
+        widgetOptionsAsString = widgetOptionsAsString.replace(/&quot;/g, "\"");
+        var widgetOptions = jQuery.parseJSON(widgetOptionsAsString);
+
+        userOptionsAsString = userOptionsAsString.replace(/&quot;/g, "\"");
+        var userOptions = jQuery.parseJSON(userOptionsAsString);
 
         $("#myDashboard").sDashboard("addWidget",
             {
@@ -198,6 +208,7 @@
                     return _dashboardData;
                 },
                 widgetOptions: widgetOptions,
+                userOptions: userOptions,
                 widgetContent: {
                     data: null,
                     options: null,
