@@ -92,6 +92,13 @@
             function MultiSelectPreparePrivate() {
                 $('#pre-selected-options').multiSelect();
 
+                /* <2-zeilig> */
+                var headerSpanToMove = $(".dienstleistungen-header span.header-right");
+                var clone = headerSpanToMove.clone();
+                headerSpanToMove.hide();
+                $(".ms-container .ms-selection").prepend($("<div></div>").addClass("dienstleistungen-header").addClass("dienstleistungen-selected").html(clone));
+                /* </2-zeilig> */
+
                 $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
                     $(this).append('<i class="icon-chevron-right"></i>');
                 });
