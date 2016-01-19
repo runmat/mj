@@ -10,6 +10,7 @@ using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WebTools.Services;
 
 namespace CkgDomainLogic.General.Services
@@ -267,7 +268,7 @@ namespace CkgDomainLogic.General.Services
                 if (customer.PortalType.NotNullOrEmpty().ToLower() != "mvc")
                 {
                     var urlParam = "FromMvc_" + dbContext.User.UserID + "_" + DateTime.Now.ToString("dd.MM.yyyy-HH:mm");
-                    var crypted = CryptoMd5.EncryptToUrlEncoded(urlParam);
+                    var crypted = CryptoMd5Web.EncryptToUrlEncoded(urlParam);
                     ReturnUrl = "/Services/Start/Login.aspx?unm=" + crypted;
                 }
             }

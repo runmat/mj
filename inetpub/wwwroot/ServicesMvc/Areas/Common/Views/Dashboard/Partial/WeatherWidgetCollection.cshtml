@@ -3,11 +3,16 @@
 
 <style type="text/css">
     .selection-div {
-        font-size: 0.8em !important;
+        background-color: ivory;
+        padding: 15px 0 0 0;
+        height: 100px;
     }
-
+    .selection-div select.m-wrap, .selection-div input.m-wrap {
+        background-color: white !important;
+    }
     .selection-div.form-horizontal .control-label {
         width: 70px;
+        font-size: 1.15em;
     }
 
     .selection-div.form-horizontal .controls {
@@ -38,11 +43,7 @@
     }
 
     .wd-content {
-        height: 150px;
-    }
-
-    .wd-content.busy {
-        opacity: 0.3;
+        height: 160px;
     }
 
     .wd-day {
@@ -132,7 +133,7 @@
         </div>
         <div class="form-horizontal selection-div hide">
 
-            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/close.png" /></a>
+            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><span class="sDashboard-icon sDashboard-remove-icon"></span></a>
 
             <div class="control-group">
                 <label class="control-label">@Localize.Country</label>
@@ -199,14 +200,21 @@
         FormPrepareAjax();
     }
 
+    $.each($(".wd-content"), function (index, el) {
+        var wdContent = $(el);
+        showBusy(wdContent, 0, 0);
+    });
+
     setTimeout("InitControls()", 1000);
+
 
     function DashboardItemWeatherWidgetSettings(settingsButton, widgetId) {
 
         DashboardItemRowspanSelectMenuShow(widgetId, function (rowSpan) {
-            DashboardItemOnRowSpanSelect(widgetId, rowSpan);
+            return DashboardItemOnRowSpanSelect(widgetId, rowSpan);
         });
 
+        return false;
     }
 
     function DashboardItemOnRowSpanSelect(widgetId, rowSpan) {
@@ -239,6 +247,7 @@
                     // if we have more weather items in our widget now, 
                     // ==> refresh our weather widget to enforce the additional weather items being calculated and properly displayed:
                     var rawId = widgetId.replace(/#id_/g, "");
+
                     DashboardWidgetClearCacheAndReload(rawId, false);
                 }
             }
@@ -278,7 +287,7 @@
     }
 
     function InitControls() {
-
+        
         $.each($(".weather-widget .lb-country"), function (index, lbCountry) {
             InitCountryDropdown($(lbCountry), index);
         });
@@ -294,8 +303,6 @@
 
         lbCountry.change(function() {
 
-            $(widgetId + " .wd-content").addClass("busy");
-
             var tbCity = $(widgetId + " .tb-city");
             tbCity.val("");
             if (tbCity.data('ui-autocomplete') != undefined) {
@@ -308,7 +315,6 @@
                 url: "PrepareWeatherCountryDropdown",
                 data: { country: lbCountry.val(), index: index },
                 success: function (result) {
-                    $(widgetId + " .wd-content").removeClass("busy");
                     tbCity.focus();
                 }
             });
@@ -325,9 +331,6 @@
         }
 
         tbCity.on("keyup", function (e) {
-
-            if (e.keyCode !== 9 && e.keyCode !== 16 && e.keyCode !== 17 && e.keyCode !== 18 && e.keyCode !== 35 && e.keyCode !== 36 && e.keyCode !== 37 && e.keyCode !== 39)
-                $(widgetId + " .wd-content").addClass("busy");
 
             if (e.keyCode === 13 && tbCity.val().length >= autoCompleteMinLength) {
                 SettingsToggle(index);
@@ -384,7 +387,10 @@
         var imagePath = '@Url.ContentArea("Content/Weather/images/")';
         var widgetId = "#weather-widget-" + index;
 
-        $(widgetId + " .wd-content").html("");
+        var wdContent = $(widgetId + " .wd-content");
+
+        wdContent.html("");
+        showBusy(wdContent, 0, 0);
 
         $.ajax(
         {
@@ -403,7 +409,7 @@
                     //console.log(wd);
 
                     var content = $("#wd-template").clone();
-                    content.addClass("busy").removeClass("hide");
+                    content.removeClass("hide");
 
                     var subId = ((index * 100) + i);
                     content.attr("id", "wd-" + subId);
@@ -411,7 +417,7 @@
                     if (i === 0)
                         content.addClass("no-margin-left");
 
-                    $(widgetId + " .wd-content").append(content);
+                    wdContent.append(content);
 
                     var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 0;
                     var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 0;
@@ -425,7 +431,7 @@
                     $("#wd-" + subId + " .wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
                 }
 
-                $(widgetId + " .wd-content").removeClass("busy");
+                hideBusy(wdContent);
             }
         });
 

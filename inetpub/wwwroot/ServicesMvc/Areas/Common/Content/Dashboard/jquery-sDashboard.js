@@ -477,6 +477,8 @@ function DashboardItemRowspanSelectMenuShow(widgetId, onRowSpanSelectFunction) {
     a.click(function () { return DashboardItemRowspanSelectMenuHide(widgetId); });   
 
     rowSpanDropdownMenu.slideDown(200);
+
+    return false;
 }
 
 function DashboardItemRowspanSelectMenuHide(widgetId) {
@@ -485,4 +487,5 @@ function DashboardItemRowspanSelectMenuHide(widgetId) {
 
     rowSpanDropdownMenu.slideUp(200);
 
+    return false;
 }

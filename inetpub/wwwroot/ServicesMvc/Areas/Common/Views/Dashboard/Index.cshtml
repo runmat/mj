@@ -293,11 +293,15 @@
     }
 
     function DashboardWidgetClearCacheAndReload(id, showHint) {
+
         ShowWidget(id, true, function() {
             var anchor = $("#id_" + id + " .sDashboardWidgetContent .sDashboardWidgetContentBusyHint");
 
-            if (showHint){
-                var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Widget erfolgreich aktualisiert!");
+            var widgetDefinition = $("#id_" + id).data("widgetDefinition");
+            var isPartialView = widgetDefinition.widgetOptions.IsPartialView;
+
+            if (!isPartialView && showHint) {
+                var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Chart erfolgreich aktualisiert!");
                 hint.hide();
                 hint.insertBefore(anchor);
 
@@ -306,7 +310,7 @@
                     setTimeout(function() {
                         hint.remove();
                     }, 2000);
-                }, 2000);
+                }, 200);
             }
         });
 
