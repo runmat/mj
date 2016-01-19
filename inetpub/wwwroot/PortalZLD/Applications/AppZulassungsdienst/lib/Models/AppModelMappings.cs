@@ -916,7 +916,7 @@ namespace AppZulassungsdienst.lib.Models
                         d.EC_KARTE_NR = s.EcKarteNr;
                         d.NAME = s.Name;
                         d.ORT = s.Ort;
-                        d.UZEIT = s.Uhrzeit.NotNullOrEmpty().Replace(':', ' ').PadRight(6, '0');
+                        d.UZEIT = s.Uhrzeit.NotNullOrEmpty().Replace(":", "").PadRight(6, '0');
                         d.VKBUR = s.VkBur;
                         d.WAERS = s.Waehrung;
                     }));

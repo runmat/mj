@@ -29,7 +29,7 @@
                 .HeaderTemplate(
                       "<a href='#' onclick='return FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></a>"
                 );
-            columns.XBoundAllExcept(m => m.Bemerkung, m => m.CocVorhanden, m => m.VorhandenesKennzReservieren, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb);
+            columns.XBoundAllExcept(m => m.Bemerkung, m => m.CocVorhanden, m => m.VorhandenesKennzReservieren, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb, m => m.BestellNr, m => m.Kostenstelle, m => m.TuevAu, m => m.IsSchnellabmeldungSpeicherrelevant);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))

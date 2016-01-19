@@ -2981,6 +2981,10 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugnacherfassungForm.cshtml" />
     <Content Include="Views\Shared\AppFavorites\UserMessages.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\Common.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carportnacherfassung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugnacherfassungForm.cshtml" />
     <Content Include="Views\Haendler\Adressen.cshtml" />
     <Content Include="Views\Haendler\Partial\Common.cshtml" />
     <Content Include="Views\Haendler\Partial\DetailsForm.cshtml" />

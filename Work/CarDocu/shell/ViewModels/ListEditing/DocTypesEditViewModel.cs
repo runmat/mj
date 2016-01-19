@@ -60,6 +60,8 @@ namespace CarDocu.ViewModels
             DomainService.Repository.EnterpriseSettings.DocumentTypes = Items.ToList();
             DomainService.Repository.EnterpriseSettingsSave();
 
+            Parent.NewDocuViewModel?.OnDocumentTypesChanged();
+
             _itemsPropertyChanged = false;
             ReloadItems();
         }

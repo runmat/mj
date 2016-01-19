@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Xml.Serialization;
+using CarDocu.Services;
 using GeneralTools.Models;
 
 namespace CarDocu.Models
@@ -36,6 +37,28 @@ namespace CarDocu.Models
             {
                 _onlineStatusAutoCheckDisabled = value;
                 SendPropertyChanged("OnlineStatusAutoCheckDisabled");
+            }
+        }
+
+        private bool _globalDeleteAndBackupFileAfterDelivery;
+
+        public bool GlobalDeleteAndBackupFileAfterDelivery
+        {
+            get { return _globalDeleteAndBackupFileAfterDelivery; }
+            set
+            {
+                _globalDeleteAndBackupFileAfterDelivery = value;
+                if (value && DomainService.RepositoryIsInitialized && DomainService.Repository.GlobalSettings.BackupArchive.Path.IsNullOrEmpty())
+                {
+                    _globalDeleteAndBackupFileAfterDelivery = false;
+                    Tools.Alert("Diese Option kann erst aktiviert werden, wenn unter den Domain Einstellungen ein Backup Pfad hinterlegt wurde!");
+                    return;
+                }
+
+                SendPropertyChanged("GlobalDeleteAndBackupFileAfterDelivery");
+
+                if (DomainService.RepositoryIsInitialized)
+                    DomainService.Repository.EnterpriseSettings.DocumentTypes.ForEach(dt => dt.SendPropertyChangedGlobalSettings());
             }
         }
 

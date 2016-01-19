@@ -34,6 +34,9 @@
         <DataTemplate DataType="{x:Type ViewModels:SapOrmModelGenerationViewModel}">
             <uc:ucSapOrmModelGeneration/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:SqlExecutionViewModel}">
+            <uc:ucSqlExecution/>
+        </DataTemplate>
         <conv:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
     </Window.Resources>
 
@@ -73,6 +76,12 @@
                     <fl:Button DataContext="{Binding ApplicationCopyViewModel}" Command="{Binding CommandCopyApplications}" Header="Anwendungen übertragen" 
                                LargeIcon="{StaticResource image/32x32/app_copy}"
                                Height="Auto" />
+                </fl:RibbonGroupBox>
+
+                <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                    <fl:Button DataContext="{Binding SqlExecutionViewModel}" Command="{Binding CommandSqlExecution}" 
+                               LargeIcon="{StaticResource image/32x32/sql}"
+                               Header="SQL ausführen" Height="Auto" />
                 </fl:RibbonGroupBox>
 
                 <fl:RibbonGroupBox HorizontalContentAlignment="Left" Visibility="{Binding UseDefaultStartupView, Converter={StaticResource BooleanVisibilityInverseConverter}}">

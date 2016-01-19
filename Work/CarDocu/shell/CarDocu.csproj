@@ -304,6 +304,10 @@
       <Project>{857B8891-2932-484D-A9A8-D38B47108CF0}</Project>
       <Name>TwainDotNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Tools\WebTools35\WebTools35.csproj">
+      <Project>{772437c2-c72d-4f33-9727-312f8868c94d}</Project>
+      <Name>WebTools35</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tools\WebTools\WebTools.csproj">
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
       <Name>WebTools</Name>

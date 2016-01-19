@@ -64,7 +64,6 @@
 
                     <docuGroup:ucTemplateInsertRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox MinWidth="1000" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
             </fl:RibbonTabItem>
 
             <fl:RibbonTabItem DataContext="{Binding AllDocusViewModel}" Header="Archiv" Group="{Binding ElementName=DocuGroup}" x:Name="AllDocusTab">

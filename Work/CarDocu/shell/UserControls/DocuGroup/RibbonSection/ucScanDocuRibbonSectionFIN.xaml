@@ -3,25 +3,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             DataContextChanged="UcScanDocuRibbonSectionFIN_OnDataContextChanged"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.InputBindings>
+        <KeyBinding Key="S" Modifiers="Alt" Command="{Binding ScanDocumentStartScanCommand}" />
+        <KeyBinding Key="A" Modifiers="Alt" Command="{Binding ScanDocumentSaveCommand}" />
+    </UserControl.InputBindings>
     <Border Margin="10,0,10,0" Height="68" BorderThickness="0" BorderBrush="Gray" Padding="0">
         <StackPanel>
 
-            <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedDocumentType.ValidDocumentType, Converter={StaticResource BooleanVisibilityConverter}}" HorizontalAlignment="Center" Margin="2">
-                <TextBlock Text="{Binding ScanDocument.SelectedDocumentType.InputRuleName}" FontWeight="Bold" Foreground="DarkRed" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                <TextBlock Text="ID:" VerticalAlignment="Center" Visibility="Visible" TextWrapping="WrapWithOverflow" TextAlignment="Right" Margin="5,0,10,0" />
+            <StackPanel VerticalAlignment="Center" Visibility="{Binding FinNumberAsTagCollection, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                <StackPanel>
+                    <TextBlock Text="{Binding ScanDocument.SelectedDocumentType.InputRuleName}" Foreground="Gray" Margin="0,5,0,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedDocumentType.ValidDocumentType, Converter={StaticResource BooleanVisibilityConverter}}" 
+                            HorizontalAlignment="Left" Margin="5,7,0,0">
+                    <TextBlock Text="ID:" VerticalAlignment="Center" Visibility="Visible" TextWrapping="WrapWithOverflow" TextAlignment="Right" Margin="5,0,10,0" />
 
-                <TextBox Text="{Binding FinNumber, UpdateSourceTrigger=PropertyChanged}"  
-                         IsEnabled="{Binding ValidDocumentType}" IsEnabledChanged="TextBoxIsEnabledChanged"
+                    <TextBox Text="{Binding FinNumber, UpdateSourceTrigger=PropertyChanged}"  
+                         IsEnabled="{Binding ValidDocumentType}" 
                          Padding="5,0,0,0" Background="{Binding FinNumberBackground}" Foreground="{Binding FinNumberForeground}" 
                          CharacterCasing="{Binding CharacterCasing}" FontSize="16" Height="27" Width="180" />
 
-                <StackPanel Margin="5,0,5,0" Width="24">
-                    <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding FinNumberInputHintVisible, Converter={StaticResource BooleanVisibilityConverter}}" />
-                    <ContentPresenter Content="{StaticResource image/24x24/cancel}" Visibility="{Binding FinNumberBackgroundOk, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
+                    <StackPanel Margin="5,0,5,0" Width="24">
+                        <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding FinNumberInputHintVisible, Converter={StaticResource BooleanVisibilityConverter}}" />
+                        <ContentPresenter Content="{StaticResource image/24x24/cancel}" Visibility="{Binding FinNumberBackgroundOk, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel 
+                Orientation="Horizontal" Margin="0,5,0,0" MinHeight="70" VerticalAlignment="Top" 
+                Visibility="{Binding FinNumberAsTagCollection, Converter={StaticResource BooleanVisibilityConverter}}">
+                <TextBlock Text="Name:" VerticalAlignment="Top" Visibility="Visible" TextWrapping="WrapWithOverflow" TextAlignment="Left" Margin="5,25,10,0" />
+
+                <StackPanel>
+                    <TextBlock Foreground="Red" Background="Yellow" FontSize="11" Margin="5,0,0,0"
+                               Visibility="{Binding FinNumberAlertHintVisible, Converter={StaticResource BooleanVisibilityConverter}}">
+                        Auswählen mit TAB statt ENTER
+                    </TextBlock>
+                    <TextBlock Margin="7,0,0,0" Text="{Binding FinNumber}" FontSize="11" Foreground="Blue" HorizontalAlignment="Left" 
+                               Visibility="{Binding FinNumberAlertHintVisible, Converter={StaticResource BooleanVisibilityInverseConverter}}"
+                               />
+                    <Button Name="DummyButton" Width="1" Height="1" />
+                    <ComboBox   Name="DropDown" 
+                                IsEnabled="{Binding ValidDocumentType}" 
+                                Margin="0,5,0,0" Padding="5,2,0,0" 
+                                Background="{Binding FinNumberBackground}" Foreground="{Binding FinNumberForeground}" 
+                                FontSize="16" Height="27" Width="180"
+                                VerticalAlignment="Top" VerticalContentAlignment="Top"
+                                IsEditable="True" StaysOpenOnEdit="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False"
+                                ItemsSource="{Binding Tags}" 
+                                SelectedValuePath="Name" 
+                                TextSearch.TextPath="Name"  
+                                SelectedValue="{Binding SelectedTag}"
+                                PreviewMouseUp="ComboBox_TextBox_OnPreviewMouseUp"
+                                PreviewMouseLeftButtonDown="ComboBox_OnPreviewMouseLeftButtonDown"
+                                PreviewKeyUp="ComboBox_OnPreviewKeyUp"
+                                KeyDown="ComboBox_KeyDown"
+                                IsVisibleChanged="ComboBox_OnIsVisibleChanged"
+                                GotFocus="ComboBox_GotFocus">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="140" Text="{Binding Name}"  />
+                                    <Button Style="{StaticResource HyperLinkSmallDELETE}" 
+                                                    Command="{Binding DeleteCommand}"
+                                                    Margin="7,2,0,0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                
+                <StackPanel>
+                    
+                    <ListBox    
+                        ItemsSource="{Binding SelectedTags}" 
+                        IsTabStop="False"
+                        DisplayMemberPath="Name" SelectedValuePath="Name" 
+                        Style="{StaticResource TagsListBoxHorizontalSmall}"
+                        Margin="3,22,0,0" MinWidth="150"  />
+                   
                 </StackPanel>
             </StackPanel>
         </StackPanel>

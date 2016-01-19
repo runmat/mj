@@ -49,6 +49,11 @@ Namespace Start
                 End If
             End If
 
+            If Not String.IsNullOrEmpty(m_User.Customer.LogoutLink) Then
+                Session.Abandon()
+                Response.Redirect(m_User.Customer.LogoutLink, True)
+            End If
+
             If intPause > -1 Then
                 If (Request.QueryString("DoubleLogin") Is Nothing) OrElse (Not Request.QueryString("DoubleLogin").ToString = "True") Then
                     m_User.SetLoggedOn(m_User.UserName, False)
@@ -57,21 +62,9 @@ Namespace Start
                     Table1.Visible = True
                 End If
 
-                'Literal1.Text = "<SCRIPT language=""JavaScript"">" & vbCrLf
-                'Literal1.Text &= "  <!-- //" & vbCrLf
-                'Literal1.Text &= "    function Redirect() {" & vbCrLf
-                ''Literal1.Text &= "      window.location.href = ""/Bounce/?ReturnUrl/%2fPortal%2fStart%2fLogin.aspx?Logon=open"";" & vbCrLf
-                'Literal1.Text &= "      window.location.href = ""/Portal/Start/Bounce.aspx?ReturnUrl=''%2fPortal%2fStart%2fLogin.aspx?Logon=open''"";" & vbCrLf
-                ''Literal1.Text &= "      window.location.href = ""/Portal/Start/Login.aspx?Logon=open"";" & vbCrLf
-                'Literal1.Text &= "    }" & vbCrLf
-                'Literal1.Text &= "    " & vbCrLf
-                'Literal1.Text &= "    window.setTimeout(""Redirect()"", " & intPause.ToString & ");" & vbCrLf
-                'Literal1.Text &= "  //-->" & vbCrLf
-                'Literal1.Text &= "</SCRIPT>" & vbCrLf
                 Session.Abandon()
                 System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                 Response.Redirect("/services", True)
-                'Response.Redirect("/Portal/Start/Bounce.aspx?ReturnUrl=%2fPortal%2fStart%2fLogin.aspx?Logon=open")
 
             End If
 
