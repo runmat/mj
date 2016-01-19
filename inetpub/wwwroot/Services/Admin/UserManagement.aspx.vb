@@ -4,6 +4,8 @@ Imports CKG.Base.Kernel.Security
 Imports Telerik.Web.UI
 Imports Telerik.Web.UI.GridExcelBuilder
 Imports System.Data.SqlClient
+Imports System.Net.Mime
+Imports GeneralTools.Models
 
 Public Structure Appl
     Dim Name As String
@@ -1268,7 +1270,7 @@ Partial Public Class UserManagement
                 Matrix.Rows.Add(Row)
             Next
         End If
-        
+
     End Sub
 
     '-----------
@@ -2201,6 +2203,9 @@ Partial Public Class UserManagement
                 If _User.Save() Then
                     txtUserID.Text = _User.UserID.ToString
 
+                    ' Rechte zuordnen
+                    SaveRightsForUser(_User.UserID.ToString)
+
                     ' Wenn Passwortänderung
                     If Not String.IsNullOrEmpty(strPwd) Then
                         Dim pword As String = strPwd
@@ -2218,6 +2223,8 @@ Partial Public Class UserManagement
 
                     _User.SetLastLogin(Now)
                     _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
+
+
                 Else
                     lblError.Text = _User.ErrorMessage
                 End If
@@ -2991,4 +2998,77 @@ Partial Public Class UserManagement
 
         Return Nothing
     End Function
+
+    Public Sub rightPanel2_OnLoad()
+        ShowRightsPerUser()
+    End Sub
+
+    Public Sub ShowRightsPerUser()
+
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        Dim strUserName As String
+
+        strUserName = txtUserName.Text
+
+        drUserRights.DataSource = RightList.ShowRightsPerUser(strUserName)
+
+    End Sub
+
+    Public Sub SaveRightsForUser(ByVal userId As String)
+
+        Dim txtbox As TextBox
+        Dim cbxSetRight As CheckBox
+        Dim isChecked As Boolean
+        Dim itemCategoryValue As String
+        Dim strRightFieldtype As String
+        Dim strUserRightValue As String
+        Dim strUserName As String
+        Dim strCategoryID As String
+
+        
+        strUserName = txtUserName.Text
+
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+
+
+
+        m_User = GetUser(Me)
+
+        For Each item As GridDataItem In drUserRights.Items
+
+            itemCategoryValue = item("CategoryID").Text
+            
+            If item("SettingsValue").FindControl("Recht1").Visible = True Then
+                txtbox = item("SettingsValue").FindControl("Recht1")
+                strUserRightValue = txtbox.Text
+                strRightFieldtype = "txtfield"
+            End If
+            
+            If item("SettingsValue").FindControl("Recht2").Visible = True Then
+                cbxSetRight = item("SettingsValue").FindControl("Recht2")
+                strUserRightValue = cbxSetRight.Checked
+                strRightFieldtype = "chkbox"
+            End If
+
+            ' RightList.UpdateSingleRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
+            ' RightList.InsertOrDeleteRightForAllUsersOfThisCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
+
+            '  System.Diagnostics.Debug.WriteLine(itemCategoryValue & " " & strUserRightValue)
+
+            RightList.UpdateRightPerUser(strUserName, itemCategoryValue, strUserRightValue, strRightFieldtype)
+
+        Next
+
+        'drUserRights.Rebind()
+
+    End Sub
+
+
+    Protected Sub Recht2_OnPreRender(ByVal strErgebnis As String)
+
+        System.Diagnostics.Debug.WriteLine(strErgebnis)
+
+
+
+    End Sub
 End Class

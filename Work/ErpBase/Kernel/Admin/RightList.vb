@@ -44,7 +44,7 @@ Namespace Kernel.Admin
 
         Public Sub GetAllPossibleRightsforThisCustomer()
 
-            Dim strSql As String
+            Dim strSql As String = ""
             Dim daRights As New SqlClient.SqlDataAdapter()
 
             daRights.SelectCommand = New SqlClient.SqlCommand()
@@ -130,9 +130,6 @@ Namespace Kernel.Admin
 
         End Function
 
-
-
-
         Private Shared Sub InsertOrDeleteRightForSingleUser(ByVal customerId As Integer, ByVal categoryId As String, _
                                                      ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String, ByVal strUserId As String)
 
@@ -188,8 +185,169 @@ Namespace Kernel.Admin
             System.Diagnostics.Debug.WriteLine(sSql)
 
         End Sub
+        
+        Public Shared Function ShowRightsPerUser(ByVal userName As String) As ArrayList
+
+            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+            Dim sSql As String
+            Dim strUserName As String
+
+            '  ' TODO TB: Username as Parameter
+            strUserName = "bruecknerlueg"
+
+            sSql = ""
+            sSql += "SELECT dbo.CategorySettingsWebUser.UserName, dbo.CategorySettingsWebUser.CategoryID, dbo.CategorySettingsMetadata.SettingsType, "
+            sSql += "dbo.CategorySettingsWebUser.SettingsValue, dbo.CategorySettingsMetadata.Description, dbo.CategorySettingsWebUser.EditUserName, "
+            sSql += "dbo.CategorySettingsWebUser.EditDate "
+            sSql += "FROM dbo.CategorySettingsMetadata INNER JOIN "
+            sSql += "dbo.CategorySettingsWebUser ON dbo.CategorySettingsMetadata.CategoryID = dbo.CategorySettingsWebUser.CategoryID "
+            sSql += "WHERE UserName LIKE '" & strUserName & "'"
+
+            'WHERE     (dbo.CategorySettingsWebUser.UserName = 'bruecknerlueg')"
+
+            Dim values As ArrayList = New ArrayList()
+
+            Using cn
+                Dim command As SqlCommand = New SqlCommand(sSql, cn)
+                cn.Open()
+
+                Dim reader As SqlDataReader = command.ExecuteReader()
+
+                If reader.HasRows Then
+                    Do While reader.Read()
+                        values.Add(New UserRightInformation(reader.GetString(0),
+                                                            reader.GetString(1),
+                                                            reader.GetString(2),
+                                                            reader.GetString(3)
+                                                            )
+                                    )
+                    Loop
+                Else
+                    System.Diagnostics.Debug.WriteLine("No rows found.")
+                End If
+
+                reader.Close()
+
+            End Using
+
+           
+
+
+            Return values
+
+
+        End Function
+        
+        Shared Sub UpdateRightPerUser(strUserName As String, categoryId As String, strUserRightValue As String, strRightFieldtype As String)
+
+            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+            Dim cmd As New SqlClient.SqlCommand
+            Dim sSQl As String = ""
+            Dim strTeilSql As String = ""
+
+            If strRightFieldtype = "txtfield" Then
+                strTeilSql += "SettingsValue = '" & strUserRightValue & "' "
+            ElseIf (strRightFieldtype = "chkbox") Then
+                strTeilSql += "SettingsValue = '" & strUserRightValue & "'"
+            End If
+
+
+            sSQl += "UPDATE CategorySettingsWebUser "
+            sSQl += "SET "
+            sSQl += strTeilSQL
+            sSQl += " WHERE "
+            sSQl += "UserName = '" & strUserName & "'"
+            sSQl += " AND "
+            sSQl += "CategoryID = '" & categoryId & "'"
+
+            'System.Diagnostics.Debug.WriteLine(sSQl)
+
+            Try
+                cn.Open()
+                cmd.Connection = cn
+                cmd.CommandType = CommandType.Text
+                cmd.CommandText = sSQl
+                cmd.ExecuteNonQuery()
+
+            Catch ex As Exception
+                Throw New Exception("Update der CustomerRights fehlgeschlagen")
+            Finally
+                cn.Close()
+            End Try
+
+
+        End Sub
+
+
 #End Region
     End Class
+
+    Public Class UserRightInformation
+
+        Dim m_username As String
+        Dim m_categoryId As String
+        Dim m_settingstype As String
+        Dim m_settingsvalue As String
+
+        Public Sub New(username As String, categoryId As String, settingstype As String, settingsvalue As String)
+            MyBase.New()
+            m_username = username
+            m_categoryId = categoryId
+            m_settingstype = settingstype
+            m_settingsvalue = settingsvalue
+        End Sub
+
+        Property UserName As String
+            Get
+                Return m_username
+            End Get
+
+            Set(ByVal value As String)
+                m_username = value
+            End Set
+
+        End Property
+
+        Property CategoryId As String
+            Get
+                Return m_categoryId
+            End Get
+            Set(ByVal value As String)
+                m_categoryId = value
+            End Set
+        End Property
+
+        Property SettingsType As String
+            Get
+                Return m_settingstype
+            End Get
+            Set(ByVal value As String)
+                m_settingstype = value
+            End Set
+        End Property
+
+        ReadOnly Property IsCheckBoxVisible As Boolean
+            Get
+                Return m_settingstype = "chkbox"
+            End Get
+        End Property
+
+        ReadOnly Property IsTextBoxVisible As Boolean
+            Get
+                Return m_settingstype = "txtfield"
+            End Get
+        End Property
+        Property SettingsValue As String
+            Get
+                Return m_settingsvalue
+            End Get
+            Set(ByVal value As String)
+                m_settingsvalue = value
+            End Set
+        End Property
+
+    End Class
+
 End Namespace
 
 ' ************************************************

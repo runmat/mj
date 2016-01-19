@@ -5,6 +5,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
         <script src="../JScript/Jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
@@ -547,7 +548,7 @@
                                                             </tr>
                                                             <tr class="formquery" id="trPhone" runat="server">
                                                                 <td class="firstLeft active">
-                                                                    Telefon:
+                                                                    Telefon::
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:TextBox ID="txtPhone" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
@@ -824,7 +825,104 @@
                                                                 </td>
                                                                 <td>&nbsp;</td>
                                                             </tr>
+
                                                         </table>
+
+                                                           <div id="BenutzerPanel">
+																	
+																	    
+                                                                        			<div style="padding-left: 0px; padding-top: 10px;" style="border: 1px solid orange; z-index: 10;">
+                                                               <h3>User-Rechte</h3>
+                                                               
+                                                                            
+                                                                            <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
+                                                                AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
+                                                                OnNeedDataSource="rightPanel2_OnLoad" 
+                                                                 >
+                                                            
+                                                              
+                                                                <ClientSettings>
+                                                                    <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
+                                                                </ClientSettings>
+
+                                                                <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
+                                                                    <SortExpressions>
+                                                                        <telerik:GridSortExpression FieldName="CategoryID" SortOrder="Ascending" />
+                                                                    </SortExpressions>
+                                                                    <HeaderStyle ForeColor="White" />
+
+                                                                    <Columns>
+                                                                        
+                                                                        
+                                                                       <%-- <telerik:GridBoundColumn DataField="HasSettings" SortExpression="HasSettings" HeaderText="Erteilt" >
+                                                                            <HeaderStyle Width="150px" />
+                                                                            <ItemStyle Wrap="false" />
+                                                                        </telerik:GridBoundColumn>--%>
+                                                                        
+                                                                     
+                                                                              <telerik:GridTemplateColumn Groupable="false" UniqueName="SettingsValue" >
+                                                                                        <HeaderStyle Width="25px" />
+                                                                                                <ItemTemplate>
+                                                                                                          
+                                                                                                          
+                                                                                                          
+
+                                                                                                          <asp:TextBox ID="Recht1"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>' 
+                                                                                                                name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
+                                                                                                                runat="server" 
+                                                                                                                text='<%# DataBinder.Eval(Container.DataItem, "SettingsValue").toString() %>' 
+                                                                                                                
+                                                                                                           />
+                                                                                                           
+                                                                                                          
+                                                                                                          
+                                                                                                          <!--
+
+                                                                                                            <asp:Label ID="lblUrlRemoteLogin2" runat="server" Font-Bold="True">is checkbox Visible?</asp:Label>
+
+                                                                                                            <%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>
+                                                                                                            
+                                                                                                             <asp:Label ID="lblUrlRemoteLogin3" runat="server" Font-Bold="True">is text Visible?</asp:Label>
+
+                                                                                                            <%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>
+                                                                                                                    
+                                                                                                         -->
+                                                                                                         
+                                                                                                            <asp:Checkbox ID="Recht2"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>' 
+                                                                                                                    name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
+                                                                                                                    runat="server" 
+                                                                                                                    Checked='<%#DataBinder.Eval(Container.DataItem, "SettingsValue").toString() %>'
+                                                                                                                    
+                                                                                                                />
+                                                                                                         
+                                                                                                       
+
+                                                                                                </ItemTemplate>
+                                                                                 </telerik:GridTemplateColumn>
+                                                                                 
+                                                                        
+                                                                        <telerik:GridBoundColumn DataField="CategoryID" SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID" >
+                                                                             <HeaderStyle Width="150px" />
+                                                                            <ItemStyle></ItemStyle>
+                                                                        </telerik:GridBoundColumn>
+
+
+                                                                    </Columns>
+
+                                                                </MasterTableView>
+                                                            </telerik:RadGrid>
+                                                                            
+                                                                        
+
+                                                                </div>
+                                                                        
+                                                                        
+                                                                        
+
+																	
+																</div>
+                                                        
+
                                                     </td>
                                                 </tr>
                                             </table>
@@ -873,6 +971,26 @@
                                                 CssClass="Tablebutton" Height="16px" Width="78px" />
                                         </div>
                                     </asp:Panel>
+                                    
+                                    
+                                    <asp:Panel ID="rightPanel" runat="server" Width="385px" Height="150px" BackColor="White"
+                                        BorderColor="red" BorderStyle="Solid" BorderWidth="1" Style="display: none">
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <h2>Rechte</h2>
+                                        </div>
+
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            
+                                        </div>
+
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            
+                                        </div>
+                                    </asp:Panel>
+                                    
+                                    
+                                    
+
                                 </div>
                             </div>
                         </div>

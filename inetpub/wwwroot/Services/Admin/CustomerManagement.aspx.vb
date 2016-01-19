@@ -6,7 +6,7 @@ Imports CKG.Base.Common
 Imports CKG.Services
 Imports Telerik.Web.UI
 Imports System.IO
-
+Imports System.Net.Configuration
 
 
 Imports System.Web.UI.WebControls.WebParts
@@ -21,7 +21,7 @@ Partial Public Class CustomerManagement
     Protected WithEvents UpdatePanel3 As UpdatePanel
     Protected WithEvents UpdatePanel4 As UpdatePanel
     Protected WithEvents IPUpdate As UpdatePanel
-    
+
 
 #Region " Membervariables "
     Private m_User As User
@@ -2411,9 +2411,6 @@ Partial Public Class CustomerManagement
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Dim customerID As Integer = ihCustomerID.Value
 
-        ' Username aus der Webseite auslesen
-        Dim strUsernameBearbeiteterUser As String
-
         m_User = GetUser(Me)
 
         For Each item As GridDataItem In rgRights.Items
@@ -2431,6 +2428,7 @@ Partial Public Class CustomerManagement
 
     End Sub
 
+
 #End Region
-    
+
 End Class
