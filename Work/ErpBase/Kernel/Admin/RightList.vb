@@ -326,13 +326,13 @@ Namespace Kernel.Admin
             End Set
         End Property
 
-        ReadOnly Property IsCheckBoxVisible As Boolean
+        ReadOnly Property IsCheckBoxVisible As String
             Get
                 Return m_settingstype = "chkbox"
             End Get
         End Property
 
-        ReadOnly Property IsTextBoxVisible As Boolean
+        ReadOnly Property IsTextBoxVisible As String
             Get
                 Return m_settingstype = "txtfield"
             End Get

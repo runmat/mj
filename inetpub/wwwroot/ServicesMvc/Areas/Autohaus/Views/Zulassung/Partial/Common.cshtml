@@ -1,4 +1,9 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+﻿@using CkgDomainLogic.General.Contracts
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+
 
 <style type="text/css">
     .form-wizard .progress {
@@ -42,6 +47,7 @@
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
     var _skipBankAddressData = false;
+    var _submitRight = @logonContext.vbbi
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
