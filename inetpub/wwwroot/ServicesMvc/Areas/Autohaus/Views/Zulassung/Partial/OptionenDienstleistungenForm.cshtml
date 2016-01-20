@@ -87,16 +87,13 @@
             CheckKennzeichenSondergroesse();
             CheckSaisonkennzeichen();
             
-            MultiSelectPreparePrivate();
+            MultiSelectPreparePrivate(true);
 
             function MultiSelectPreparePrivate() {
 
-                // 2-zeilig
-                var twoRowMode = true;
-
                 $('#pre-selected-options').multiSelect();
 
-                if (twoRowMode) {
+                if (_doubleListboxMultiSelectTwoRowMode) {
                     var headerSpanToMove = $(".dienstleistungen-header span.header-right");
                     var clone = headerSpanToMove.clone();
                     headerSpanToMove.hide();
@@ -104,7 +101,7 @@
                 }
 
                 $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    if (twoRowMode) {
+                    if (_doubleListboxMultiSelectTwoRowMode) {
                         $(this).prepend('<span class="dienstleistung-nicht-gewaehlt-checkbox">&nbsp;</span>');
                     }
                     else
