@@ -249,7 +249,7 @@ namespace CarDocu.ViewModels
             if (!Tools.Confirm("Wollen Sie das markierte Dokument inkl. aller hierfür gescannten Dokumente wirklich endgültig löschen?"))
                 return;
 
-            if (DomainService.Repository.ScanDocumentRepositoryTryDeleteScanDocument(SelectedItem))
+            if (DomainService.Repository.ScanDocumentRepositoryTryDeleteScanDocument(SelectedItem, true))
             {
                 DomainService.Repository.ScanDocumentRepositorySave();
             }

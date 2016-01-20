@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -8,8 +9,10 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CarDocu.Contracts;
 using CarDocu.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
@@ -17,6 +20,7 @@ using CarDocu.Models;
 using Size = System.Windows.Size;
 using Media = System.Windows.Media;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using ZXing;
 using Tools = CarDocu.Services.Tools;
 // ReSharper disable RedundantUsingDirective
@@ -26,7 +30,7 @@ using TwainDotNet;
 
 namespace CarDocu.ViewModels
 {
-    public class DocuViewModel : ViewModelBase, IMainViewModelChild
+    public class DocuViewModel : ViewModelBase, IMainViewModelChild, IAutoCompleteTagCloudConsumer
     {
         public MainViewModel Parent { get; set; }
 
@@ -45,8 +49,15 @@ namespace CarDocu.ViewModels
         public ICommand ScanDocumentTemplateInsertCommand { get; private set; }
 
         public bool UiModeBatchScanOnly { get { return Parent.UiModeBatchScanOnly; } }
-        
-        const string TempRootPath = @"D:\Backup\Test";
+
+        private bool _finNumberAlertHintVisible;
+        public bool FinNumberAlertHintVisible
+        {
+            get { return _finNumberAlertHintVisible; }
+            set { _finNumberAlertHintVisible = value; SendPropertyChanged("FinNumberAlertHintVisible"); }
+        }
+
+        const string TempRootPath = @"C:\Backup\Test";
 
         private string _title; 
         public string Title 
@@ -238,6 +249,8 @@ namespace CarDocu.ViewModels
 
                 SendPropertyChangedFin();
                 SendPropertyChanged("CharacterCasing");
+
+                OnDocumentTypesChanged();
             }
         }
 
@@ -363,6 +376,8 @@ namespace CarDocu.ViewModels
             
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
+
+            TagsMarkForRefresh();
         }
 
         private Size _windowSize;
@@ -816,6 +831,7 @@ namespace CarDocu.ViewModels
             return true;
         }
 
+        // ReSharper disable once UnusedMember.Local
         static void TestScanComplete(ProgressBarOperation progressBarOperation)
         {
             if (!progressBarOperation.TaskResult)
@@ -840,6 +856,8 @@ namespace CarDocu.ViewModels
             GC.Collect();
 
             DomainService.Repository.UserSettingsSave();
+
+            FocusDocumentNameSectionAction?.Invoke();
 
             //return !Tools.Confirm("Weitere Seite?");
             return true;
@@ -905,6 +923,163 @@ namespace CarDocu.ViewModels
         void UpdateUI()
         {
             Dispatcher.CurrentDispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
+        }
+
+
+        #region IAutoCompleteTagCloudConsumer
+
+        private string _selectedTag;
+        private ObservableCollection<Tag> _tags;
+        private ObservableCollection<Tag> _selectedTags;
+
+        private string TagsFileName
+        {
+            get
+            {
+                if (SelectedDocumentType == null || SelectedDocumentType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty())
+                    return "";
+
+                var tagsDirectory = Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, "_tags");
+                FileService.TryDirectoryCreate(tagsDirectory);
+                var di = new DirectoryInfo(tagsDirectory);
+                if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+                    di.Attributes |= FileAttributes.Hidden;
+
+                return Path.Combine(tagsDirectory, $"{SelectedDocumentType.CodePrefix}.xml");
+            }
+        }
+
+        public bool FinNumberAsTagCollection
+        {
+            get
+            {
+                return (SelectedDocumentType?.UseTagCollectionForDocumentNameEditing).GetValueOrDefault();
+            }
+        }
+
+        public string SelectedTag
+        {
+            get { return _selectedTag; }
+            set
+            {
+                _selectedTag = value;
+                SendPropertyChanged("SelectedTag");
+            }
+        }
+
+        public ObservableCollection<Tag> Tags
+        {
+            get
+            {
+                if (_tags != null)
+                    return _tags;
+
+                _tags = new ObservableCollection<Tag>(TagsLoad());
+
+                var source = CollectionViewSource.GetDefaultView(_tags);
+                source.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+
+                return _tags;
+            }
+        }
+
+        public ObservableCollection<Tag> SelectedTags
+        {
+            get
+            {
+                if (_selectedTags != null)
+                    return _selectedTags;
+
+                _selectedTags = new ObservableCollection<Tag>();
+                //var source = CollectionViewSource.GetDefaultView(_selectedTags);
+                //source.SortDescriptions.Add(new SortDescription("Sort", ListSortDirection.Ascending));
+
+                return _selectedTags;
+            }
+        }
+
+        public void OnRequestProcessTag(string tagText)
+        {
+            if (tagText.IsNullOrEmpty())
+                return;
+
+            if (Tags.None(t => t.Name.ToLower() == tagText.ToLower()))
+            {
+                Tags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Parent = this });
+                TagsSave();
+            }
+
+            if (SelectedTags.None(t => t.Name.ToLower() == tagText.ToLower()))
+            {
+                SelectedTags.Add(new Tag { Name = tagText.ToLowerFirstUpper(), Parent = this, IsPrivate = true });
+                GetFinNumberFromSelectedTags();
+            }
+        }
+
+        public void OnDeleteTag(string tagText, bool isPrivateTag)
+        {
+            var selectedTag = SelectedTags.FirstOrDefault(t => t.Name == tagText);
+            if (selectedTag != null)
+            {
+                SelectedTags.Remove(selectedTag);
+                GetFinNumberFromSelectedTags();
+
+                OnDeleteTagAction?.Invoke();
+            }
+
+            if (isPrivateTag)
+                return;
+
+            var tag = Tags.FirstOrDefault(t => t.Name == tagText);
+            if (tag != null)
+            {
+                Tags.Remove(tag);
+                TagsSave();
+            }
+        }
+
+        public Action OnDeleteTagAction { get; set; }
+
+        public Action OnSelectedDocTypeChangedAction { get; set; }
+
+        public Action FocusDocumentNameSectionAction { get; set; }
+
+        void GetFinNumberFromSelectedTags()
+        {
+            FinNumber = string.Join(" ", SelectedTags.Select(t => t.Name));
+        }
+
+        private void TagsSave()
+        {
+            XmlService.XmlSerializeToFile(Tags.ToList(), TagsFileName);
+        }
+
+        private List<Tag> TagsLoad()
+        {
+            if (!File.Exists(TagsFileName))
+                return new List<Tag>();
+
+            var list = XmlService.XmlDeserializeFromFile<List<Tag>>(TagsFileName);
+            list.ForEach(t => t.Parent = this);
+
+            return list;
+        }
+
+        #endregion
+
+        public void OnDocumentTypesChanged()
+        {
+            TagsMarkForRefresh();
+
+            OnSelectedDocTypeChangedAction?.Invoke();
+        }
+
+        public void TagsMarkForRefresh()
+        {
+            SendPropertyChanged("FinNumberAsTagCollection");
+
+            _tags = null;
+            SendPropertyChanged("Tags");
         }
     }
 }

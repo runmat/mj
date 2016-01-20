@@ -80,6 +80,7 @@ namespace AppZulassungsdienst.lib
         public string AbwStrasse { get; private set; }
         public string AbwPlz { get; private set; }
         public string AbwOrt { get; private set; }
+        public bool GenerellAbwLiefAdrVerwenden { get; private set; }
 
         #endregion
 
@@ -592,13 +593,14 @@ namespace AppZulassungsdienst.lib
                     if (checkResults.Any())
                     {
                         var item = checkResults.First();
-                        Ist48hZulassung = item.Z48H.XToBool();
+                        Ist48hZulassung = item.IST_48H.XToBool();
                         LieferUhrzeitBis = item.LIFUHRBIS;
                         AbwName1 = item.NAME1;
                         AbwName2 = item.NAME2;
                         AbwStrasse = item.STREET;
                         AbwPlz = item.POST_CODE1;
                         AbwOrt = item.CITY1;
+                        GenerellAbwLiefAdrVerwenden = item.ABW_ADR_GENERELL.XToBool();
                     }
                 }
             });

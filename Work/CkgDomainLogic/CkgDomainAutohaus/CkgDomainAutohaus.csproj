@@ -77,6 +77,7 @@
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Uebfuehrg\Models\DataModels\WebUploadProtokoll.cs" />
     <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
     <Compile Include="Zulassung\Models\AuslieferAdresse.cs" />
     <Compile Include="Zulassung\Models\AppModelMappings.cs" />

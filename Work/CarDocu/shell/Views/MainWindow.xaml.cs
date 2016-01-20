@@ -52,8 +52,7 @@ namespace CarDocu
         private void RibbonGroupBoxLauncherClick(object sender, RoutedEventArgs e)
         {
             var context = (((FrameworkElement) sender).DataContext as DocuViewModel);
-            if (context == null) return;
-            context.ShowBigDocuArtSelection();
+            context?.ShowBigDocuArtSelection();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

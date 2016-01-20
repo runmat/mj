@@ -21,6 +21,7 @@
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Domain, Konfigurationsablage-Pfad:" />
@@ -33,6 +34,9 @@
 
                     <TextBlock Text="Übertragungskosten sparen:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
                     <CheckBox IsChecked="{Binding OnlineStatusAutoCheckDisabled, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Online Status Check Polling deaktivieren  (sinnvoll bei kostenintensiven Datenleitungen)</CheckBox>
+
+                    <TextBlock Text="Backup Funktion:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
+                    <CheckBox IsChecked="{Binding GlobalDeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Grundsätzlich PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben (diese Einstellung überschreibt den Schalter in den Dokum.Arten)</CheckBox>
                 </Grid>
             </StackPanel>
         </StackPanel>

@@ -9,8 +9,12 @@ namespace CkgDomainLogic.General.Database.Models
     [Table("TranslatedResourceCustom")]
     public class TranslatedResourceCustom : IValidatableObject
     {
-        [Key]
+        [Column(Order = 0), Key]
         public string Resource { get; set; }
+
+        [Column(Order = 1), Key]
+        public int CustomerID { get; set; }
+
 
         [RequiredConditional]
         public string en { get; set; }
@@ -31,8 +35,6 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string fr { get; set; }
         public string fr_kurz { get; set; }
-
-        public int CustomerID { get; set; }
 
 
         private bool IsEmpty
