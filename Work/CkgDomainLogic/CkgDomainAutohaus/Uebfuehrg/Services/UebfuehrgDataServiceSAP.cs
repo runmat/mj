@@ -207,7 +207,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
         {
             Z_DPM_READ_TAB_PROT_01.Init(SAP, "I_KUNNR_AG", AuftragGeberOderKundenNr.ToSapKunnr());
 
-            return AppModelMappings.Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll.Copy(Z_DPM_READ_TAB_PROT_01.GT_OUT.GetExportListWithExecute(SAP)).OrderBy(p => p.ProtokollartFormatted).ToList();
+            return AppModelMappings.Z_DPM_READ_TAB_PROT_01_GT_OUT_To_WebUploadProtokoll.Copy(Z_DPM_READ_TAB_PROT_01.GT_OUT.GetExportListWithExecute(SAP).Where(x => x.WEB_UPLOAD.XToBool())).OrderBy(p => p.ProtokollartFormatted).ToList();
         }
     }
 }
