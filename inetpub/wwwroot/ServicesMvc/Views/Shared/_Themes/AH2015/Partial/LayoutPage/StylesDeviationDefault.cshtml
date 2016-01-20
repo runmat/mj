@@ -548,7 +548,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 }
 .ms-container ul.ms-list {
     min-height: 40px;
-    height: auto;
+    height: auto!important;
     border: 0!important;
     overflow: hidden!important;
 }
@@ -568,6 +568,8 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 }
 .ms-container .ms-selectable span.dienstleistung-nicht-gewaehlt-checkbox {
     display: inline-block!important;
+    table-layout: fixed;
+    white-space: nowrap;
     border: 2px solid #3AAFDA;
     border-radius: 3px!important;
     background-color: white;
@@ -581,7 +583,9 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 .dienstleistungen-header.dienstleistungen-selected {
     margin-top: 15px;
 }
-
+.ms-container ul.ms-list li {
+    white-space: nowrap;
+}
 /* </2-zeilig> */
 
 

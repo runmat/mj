@@ -93,7 +93,7 @@
 
                 $('#pre-selected-options').multiSelect();
 
-                if (_doubleListboxMultiSelectTwoRowMode) {
+                if (_multiSelectTwoRowMode) {
                     var headerSpanToMove = $(".dienstleistungen-header span.header-right");
                     var clone = headerSpanToMove.clone();
                     headerSpanToMove.hide();
@@ -101,9 +101,8 @@
                 }
 
                 $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    if (_doubleListboxMultiSelectTwoRowMode) {
+                    if (_multiSelectTwoRowMode) 
                         $(this).prepend('<span class="dienstleistung-nicht-gewaehlt-checkbox">&nbsp;</span>');
-                    }
                     else
                         $(this).append('<i class="icon-chevron-right"></i>');
                 });
