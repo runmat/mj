@@ -13,6 +13,8 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
 
         string AuftragGeber { get; set; }
 
+        string AuftragGeberOderKundenNr { get; }
+
         List<Adresse> GetFahrtAdressen(string[] addressTypes);
 
         List<Adresse> GetRechnungsAdressen();
@@ -24,5 +26,7 @@ namespace CkgDomainLogic.Uebfuehrg.Contracts
         void OnInit(ILogonContext logonContext, IAppSettings appSettings);
 
         List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragSelector filter);
+
+        List<WebUploadProtokoll> GetProtokollArten();
     }
 }
