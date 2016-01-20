@@ -1684,7 +1684,6 @@
     <Content Include="assets\plugins\flot\README.txt" />
     <Content Include="assets\plugins\font-awesome\css\font-awesome-ie7.min.css" />
     <Content Include="assets\plugins\font-awesome\css\font-awesome.css" />
-    <Content Include="assets\plugins\font-awesome\css\font-awesome.min.css" />
     <Content Include="assets\plugins\font-awesome\docs\assets\css\font-awesome-ie7.min.css" />
     <Content Include="assets\plugins\font-awesome\docs\assets\css\font-awesome.css" />
     <Content Include="assets\plugins\font-awesome\docs\assets\css\font-awesome.min.css" />

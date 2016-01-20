@@ -80,9 +80,12 @@
     }
 
     function ResizeTilesContainer() {
-        var newHeight = Math.max(140 , $('.ZiPoolInfo').closest('.portlet-body').height());
-        $('.tiles').closest('.portlet-body').css('height', newHeight);
+        var newHeight = Math.max(140 , $('#ZiPoolInfo').closest('.portlet-body').height());
+        $('#FormulareArea').closest('.portlet-body').css('height', newHeight);
     }
 
+    function ShowPdfFormular(docName) {
+        window.location.href = "PdfDocumentDownload?docName=" + docName;
+    }
 
 </script>

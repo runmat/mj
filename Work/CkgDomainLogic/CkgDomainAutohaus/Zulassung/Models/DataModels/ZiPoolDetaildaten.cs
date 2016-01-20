@@ -37,7 +37,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CommercialRegister)]
         public string HandelsregisterErforderlich { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.DirectDebitMandate)]
+        [LocalizedDisplay(LocalizeConstants.SepaMandate)]
         public string LastschrifteinzugErforderlich { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Comment)]

@@ -1,10 +1,10 @@
 ﻿@model MvcTools.Models.TileSimpleModel
 
-<div class="tile @Model.CssClass" onclick="var @Model.OnClickAction">
+<div class="tile @Model.CssClass" onclick="@Model.OnClickAction">
     <div class="tile-body @Model.BodyCssClass">
         <i class="@Model.IconCssClass"></i>
     </div>
-    <div class="tile-object @Model.TitleCssClass">
+    <div class="tile-object padding-left-5 @Model.TitleCssClass">
         @Model.TitleAsHtml
     </div>
 </div>

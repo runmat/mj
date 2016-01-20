@@ -1,10 +1,22 @@
 ﻿@model CkgDomainLogic.Autohaus.Models.ZiPoolDetaildaten
 
-<ul class="ZiPoolInfo">
+<style>
+    
+    .dd-handle {
+        cursor: auto !important;
+    }
+    
+</style>
+
+<ul id="ZiPoolInfo" class="dd-list">
     
     @foreach (var item in Model.ErforderlicheDokumente)
     {
-        <li class="ZiPoolInfoItem">@item</li>
+        <li class="dd-item">
+            <div class="dd-handle">
+                @item
+            </div>
+        </li>
     }
 
 </ul>

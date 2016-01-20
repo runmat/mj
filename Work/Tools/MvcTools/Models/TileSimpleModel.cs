@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 
 namespace MvcTools.Models
 {
