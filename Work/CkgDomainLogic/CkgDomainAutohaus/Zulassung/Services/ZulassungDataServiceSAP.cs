@@ -528,7 +528,7 @@ namespace CkgDomainLogic.Autohaus.Services
         #endregion
 
 
-        #region Dokumentencenter Formulare
+        #region Dokumentencenter Formulare bzw. Infocenter Zulassung
 
         private IEnumerable<Zulassungskreis> LoadZulassungskreiseFromSap()
         {
@@ -558,6 +558,25 @@ namespace CkgDomainLogic.Autohaus.Services
 
             return AppModelMappings.Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular.Copy(sapItems).OrderBy(f => f.Typ).ToList();
         }
+
+        public ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError)
+        {
+            try
+            {
+                Z_M_ZGBS_BEN_ZULASSUNGSUNT.Init(SAP, "I_ZKFZKZ", kreis);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                addModelError("", e.FormatSapSaveException());
+            }
+
+            if (SAP.ResultCode != 0)
+                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+
+            return AppModelMappings.Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten.Copy(Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB.GetExportList(SAP)).FirstOrDefault();
+        } 
 
         #endregion
 

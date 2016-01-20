@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web.Mvc;
 using CkgDomainLogic.Autohaus.Models;
@@ -6,10 +6,8 @@ using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.ViewModels;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
 {
@@ -30,6 +28,13 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel = null;
 
             InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            FormulareSelektor.GetViewModel = GetViewModel<FormulareViewModel>;
+            ZiPoolSelektor.GetViewModel = GetViewModel<FormulareViewModel>;
         }
 
         [CkgApplication]
@@ -41,39 +46,29 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadFormulare(FormulareSelektor model)
+        [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
+        public ActionResult LoadKreisByPlz(string plz)
         {
-            ViewModel.Selektor = model;
+            var kreis = ViewModel.GetKreisByPlz(plz);
+
+            return Json(new { success = (!string.IsNullOrEmpty(kreis)), kreis = kreis });
+        }
+
+        [HttpPost]
+        public ActionResult LoadFormulareAndZiPoolDaten(FormulareSelektor model)
+        {
+            ViewModel.FormulareSelektor = model;
 
             if (ModelState.IsValid)
-            {
-                ViewModel.LoadFormulare(ModelState.AddModelError);
-                if (ViewModel.Formulare.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
+                ViewModel.LoadFormulareAndZiPoolDaten(ModelState.AddModelError);
 
-            ViewData.Add("ZulassungskreiseList", ViewModel.Zulassungskreise);
-            return PartialView("Partial/Suche", ViewModel.Selektor);
+            return PartialView("Partial/Suche", ViewModel.FormulareSelektor);
         }
 
         [HttpPost]
-        public ActionResult ShowFormulare()
+        public ActionResult ShowFormulareAndZiPoolDaten()
         {
-            return PartialView("Partial/Grid", ViewModel);
-        }
-
-        [GridAction]
-        public ActionResult FormulareAjaxBinding()
-        {
-            return View(new GridModel(ViewModel.FormulareFiltered));
-        }
-
-        [HttpPost]
-        public ActionResult FilterGridFormulare(string filterValue, string filterColumns)
-        {
-            ViewModel.FilterFormulare(filterValue, filterColumns);
-
-            return new EmptyResult();
+            return PartialView("Partial/Uebersicht", ViewModel);
         }
 
         public FileContentResult PdfDocumentDownload(string docName)
@@ -82,15 +77,6 @@ namespace ServicesMvc.Autohaus.Controllers
             var auftragPdfBytes = System.IO.File.ReadAllBytes(docFullName);
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(docFullName) };
-        }
-
-        #region Export
-
-        protected override IEnumerable GetGridExportData()
-        {
-            return ViewModel.FormulareFiltered;
-        }
-
-        #endregion    
+        }   
     }
 }

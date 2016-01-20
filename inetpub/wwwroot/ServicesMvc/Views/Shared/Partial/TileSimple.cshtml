@@ -1,0 +1,11 @@
+﻿@model MvcTools.Models.TileSimpleModel
+
+<div class="tile @Model.CssClass">
+    <a class="width-100-percent height-100-percent" href="@Model.Href"></a>
+    <div class="tile-body @Model.BodyCssClass">
+        <i class="@Model.IconCssClass"></i>
+    </div>
+    <div class="tile-object @Model.TitleCssClass">
+        @Model.TitleAsHtml
+    </div>
+</div>

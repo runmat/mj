@@ -414,6 +414,153 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        public static ModelMapping<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB, ZiPoolDaten> Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB, ZiPoolDaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Grunddaten.Kreis = s.ZKFZKZ;
+                        d.Grunddaten.ZuletztGeaendertAm = s.AEDAT;
+                        d.Grunddaten.ZuletztGeaendertVon = s.AENAM;
+                        d.Grunddaten.UrlZulst = s.STVALN;
+                        d.Grunddaten.UrlZulstFormulare = s.STVALNFORM;
+                        d.Grunddaten.UrlZulstGebuehreninformation = s.STVALNGEB;
+                        d.Grunddaten.UrlZulstWunschkennzeichen = s.URL;
+
+                        // ZUL = Zulassung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "ZUL",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PZUL_BRIEF,
+                            FahrzeugscheinErforderlich = s.PZUL_SCHEIN,
+                            CocErforderlich = s.PZUL_COC,
+                            DeckungskarteErforderlich = s.PZUL_DECK,
+                            VollmachtErforderlich = s.PZUL_VOLLM,
+                            PersonalausweisErforderlich = s.PZUL_AUSW,
+                            GewerbeanmeldungErforderlich = s.PZUL_GEWERB,
+                            HandelsregisterErforderlich = s.PZUL_HANDEL,
+                            LastschrifteinzugErforderlich = s.PZUL_LAST,
+                            Bemerkung = s.PZUL_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "ZUL",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UZUL_BRIEF,
+                            FahrzeugscheinErforderlich = s.UZUL_SCHEIN,
+                            CocErforderlich = s.UZUL_COC,
+                            DeckungskarteErforderlich = s.UZUL_DECK,
+                            VollmachtErforderlich = s.UZUL_VOLLM,
+                            PersonalausweisErforderlich = s.UZUL_AUSW,
+                            GewerbeanmeldungErforderlich = s.UZUL_GEWERB,
+                            HandelsregisterErforderlich = s.UZUL_HANDEL,
+                            LastschrifteinzugErforderlich = s.UZUL_LAST,
+                            Bemerkung = s.UZUL_BEM
+                        });
+
+                        // UMS = Umschreibung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMS",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PUMSCHR_BRIEF,
+                            FahrzeugscheinErforderlich = s.PUMSCHR_SCHEIN,
+                            CocErforderlich = s.PUMSCHR_COC,
+                            DeckungskarteErforderlich = s.PUMSCHR_DECK,
+                            VollmachtErforderlich = s.PUMSCHR_VOLLM,
+                            PersonalausweisErforderlich = s.PUMSCHR_AUSW,
+                            GewerbeanmeldungErforderlich = s.PUMSCHR_GEWERB,
+                            HandelsregisterErforderlich = s.PUMSCHR_HANDEL,
+                            LastschrifteinzugErforderlich = s.PUMSCHR_LAST,
+                            Bemerkung = s.PUMSCHR_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMS",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UUMSCHR_BRIEF,
+                            FahrzeugscheinErforderlich = s.UUMSCHR_SCHEIN,
+                            CocErforderlich = s.UUMSCHR_COC,
+                            DeckungskarteErforderlich = s.UUMSCHR_DECK,
+                            VollmachtErforderlich = s.UUMSCHR_VOLLM,
+                            PersonalausweisErforderlich = s.UUMSCHR_AUSW,
+                            GewerbeanmeldungErforderlich = s.UUMSCHR_GEWERB,
+                            HandelsregisterErforderlich = s.UUMSCHR_HANDEL,
+                            LastschrifteinzugErforderlich = s.UUMSCHR_LAST,
+                            Bemerkung = s.UUMSCHR_BEM
+                        });
+
+                        // UMK = Umkennzeichnung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMK",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PUMK_BRIEF,
+                            FahrzeugscheinErforderlich = s.PUMK_SCHEIN,
+                            CocErforderlich = s.PUMK_COC,
+                            DeckungskarteErforderlich = s.PUMK_DECK,
+                            VollmachtErforderlich = s.PUMK_VOLLM,
+                            PersonalausweisErforderlich = s.PUMK_AUSW,
+                            GewerbeanmeldungErforderlich = s.PUMK_GEWERB,
+                            HandelsregisterErforderlich = s.PUMK_HANDEL,
+                            LastschrifteinzugErforderlich = s.PUMK_LAST,
+                            Bemerkung = s.PUMK_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMK",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UUMK_BRIEF,
+                            FahrzeugscheinErforderlich = s.UUMK_SCHEIN,
+                            CocErforderlich = s.UUMK_COC,
+                            DeckungskarteErforderlich = s.UUMK_DECK,
+                            VollmachtErforderlich = s.UUMK_VOLLM,
+                            PersonalausweisErforderlich = s.UUMK_AUSW,
+                            GewerbeanmeldungErforderlich = s.UUMK_GEWERB,
+                            HandelsregisterErforderlich = s.UUMK_HANDEL,
+                            LastschrifteinzugErforderlich = s.UUMK_LAST,
+                            Bemerkung = s.UUMK_BEM
+                        });
+
+                        // EFS = Ersatzfahrzeugschein
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "EFS",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PERS_BRIEF,
+                            FahrzeugscheinErforderlich = s.PERS_SCHEIN,
+                            CocErforderlich = s.PERS_COC,
+                            DeckungskarteErforderlich = s.PERS_DECK,
+                            VollmachtErforderlich = s.PERS_VOLLM,
+                            PersonalausweisErforderlich = s.PERS_AUSW,
+                            GewerbeanmeldungErforderlich = s.PERS_GEWERB,
+                            HandelsregisterErforderlich = s.PERS_HANDEL,
+                            LastschrifteinzugErforderlich = s.PERS_LAST,
+                            Bemerkung = s.PERS_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "EFS",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UERS_BRIEF,
+                            FahrzeugscheinErforderlich = s.UERS_SCHEIN,
+                            CocErforderlich = s.UERS_COC,
+                            DeckungskarteErforderlich = s.UERS_DECK,
+                            VollmachtErforderlich = s.UERS_VOLLM,
+                            PersonalausweisErforderlich = s.UERS_AUSW,
+                            GewerbeanmeldungErforderlich = s.UERS_GEWERB,
+                            HandelsregisterErforderlich = s.UERS_HANDEL,
+                            LastschrifteinzugErforderlich = s.UERS_LAST,
+                            Bemerkung = s.UERS_BEM
+                        });
+                    }));
+            }
+        }
+
         #endregion
 
 

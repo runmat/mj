@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
@@ -14,11 +17,32 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
-
-        public FormulareSelektor Selektor
+        public FormulareSelektor FormulareSelektor
         {
             get { return PropertyCacheGet(() => new FormulareSelektor()); }
             set { PropertyCacheSet(value); }
+        }
+
+        public ZiPoolSelektor ZiPoolSelektor
+        {
+            get { return PropertyCacheGet(() => new ZiPoolSelektor { Dienstleistung = "ZUL", FahrzeugTyp = "1" }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Zulassungskreis> Zulassungskreise { get { return DataService.Zulassungskreise; } }
+
+        [XmlIgnore]
+        public string GewaehlterKreisText {
+            get
+            {
+                if (FormulareSelektor == null || Zulassungskreise == null)
+                    return "";
+
+                var kreis = Zulassungskreise.FirstOrDefault(k => k.KreisKz == FormulareSelektor.Zulassungskreis);
+
+                return (kreis != null ? kreis.KreisText : FormulareSelektor.Zulassungskreis);
+            }
         }
 
         [XmlIgnore]
@@ -28,37 +52,44 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore, ScriptIgnore]
+        public List<Domaenenfestwert> FahrzeugArten { get { return DataService.Fahrzeugarten; } }
+
         [XmlIgnore]
-        public List<PdfFormular> FormulareFiltered
+        public ZiPoolDaten ZiPoolDaten
         {
-            get { return PropertyCacheGet(() => Formulare); }
+            get { return PropertyCacheGet(() => new ZiPoolDaten()); }
             private set { PropertyCacheSet(value); }
         }
 
-        [XmlIgnore, ScriptIgnore]
-        public List<Zulassungskreis> Zulassungskreise { get { return DataService.Zulassungskreise; } }
+        public ZiPoolDetaildaten ZiPoolDetails
+        {
+            get
+            {
+                if (ZiPoolDaten == null || ZiPoolSelektor == null)
+                    return new ZiPoolDetaildaten();
 
+                return ZiPoolDaten.Details.FirstOrDefault(d => d.Gewerblich == ZiPoolSelektor.Gewerblich && d.Dienstleistung == ZiPoolSelektor.Dienstleistung);
+            }
+        }
 
         public void DataInit()
         {
-            DataMarkForRefresh();
+            DataService.MarkForRefresh();
         }
 
-        public void DataMarkForRefresh()
+        public string GetKreisByPlz(string plz)
         {
-            PropertyCacheClear(this, m => m.FormulareFiltered);
+            return DataService.GetZulassungskreisFromPostcodeAndCity(plz, "");
         }
 
-        public void LoadFormulare(Action<string, string> addModelError)
+        public void LoadFormulareAndZiPoolDaten(Action<string, string> addModelError)
         {
-            Formulare = DataService.GetFormulare(Selektor, addModelError);
+            Formulare = DataService.GetFormulare(FormulareSelektor, addModelError);
+            ZiPoolDaten = DataService.GetZiPoolDaten(FormulareSelektor.Zulassungskreis, addModelError);
 
-            DataMarkForRefresh();
-        }
-
-        public void FilterFormulare(string filterValue, string filterProperties)
-        {
-            FormulareFiltered = Formulare.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            if ((Formulare == null || Formulare.None()) && ZiPoolDaten == null)
+                addModelError("", Localize.NoDataFound);
         }
     }
 }

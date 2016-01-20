@@ -1,0 +1,45 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model ZiPoolSelektor
+
+@*<div>
+
+    @Html.SimpleFormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap", onchange = "RefreshZiPoolListe()" })
+    @Html.SimpleFormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new { @class = "m-wrap", onchange = "RefreshZiPoolListe()" })
+
+</div>*@
+
+<style>
+    
+    .container-fluid .row-fluid {
+        width: 90%;
+    }
+    
+</style>
+
+<div class="container-fluid">
+
+    <div class="row-fluid">
+
+        <div class="span6">
+
+            @Html.FormCheckBoxFor(m => m.Gewerblich, new {onchange = "RefreshZiPoolListe()"})
+
+        </div>
+
+        <div class="span6">
+
+            @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new {@class = "m-wrap small", onchange = "RefreshZiPoolListe()"})
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@*<div class="form-horizontal label-width-150">
+
+    @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap", onchange = "RefreshZiPoolListe()", col = "left" })
+    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new { @class = "m-wrap small", onchange = "RefreshZiPoolListe()", col = "right" })
+
+</div>*@

@@ -68,6 +68,11 @@ namespace CkgDomainLogic.Autohaus.Services
             return null;
         }
 
+        public ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Zulassungen
