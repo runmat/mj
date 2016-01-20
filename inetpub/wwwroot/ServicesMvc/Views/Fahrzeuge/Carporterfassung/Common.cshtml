@@ -1,0 +1,270 @@
+﻿<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<style>
+    .m-wrap.tiny {
+        width: 30px !Important;
+    }
+
+    label {
+        display: inline;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var _userCarportId = '@Model.UserCarportId';
+    var _selectionModeAllUsers = false;
+
+    function GetGrid() {
+        return $("#GridCarporterfassung").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridCarporterfassungItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridCarporterfassung() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridCarporterfassung() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCarporterfassung() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnDataBound_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function AjaxFormFahrzeugerfassungComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelIsValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+            NeuesFahrzeugErfassen(false);
+        }
+    }
+
+    function AjaxFormCarportSelectionComplete() {
+        FormPreparePrivateAjax();
+        GridRefresh();
+        setTimeout('FormPreparePrivateAjax();', 200);
+    }
+
+    function ListeAnzeigen() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ListeAnzeigen",
+            loadingShow: true,
+            success: function(result) {
+                ShowGrid(result);
+            }
+        });
+    }
+
+    function FahrzeugBearbeiten(kennzeichen) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FahrzeugBearbeiten",
+            loadingShow: true,
+            data: { kennzeichen: kennzeichen },
+            success: function(result) {
+                ShowEdit(result);
+            }
+        });
+
+        return false;
+    }
+
+    function FahrzeugDelete(kennzeichen) {
+        if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
+            return false;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "FahrzeugDelete",
+            loadingShow: true,
+            data: { kennzeichen: kennzeichen },
+            success: function(result) {
+                GridRefresh();
+                $("#AjaxFormCarportSelection").submit();
+            }
+        });
+
+        return false;
+    }
+
+    function NeuesFahrzeugErfassen(clearList) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "NeuesFahrzeugErfassen",
+            loadingShow: true,
+            data: { clearList: clearList },
+            success: function(result) {
+                ShowEdit(result);
+            }
+        });
+    }
+
+    function ShowGrid(result) {
+        $("#divCarporterfassungEdit").slideUp();
+        $("#divCarporterfassungGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridCarporterfassung");
+        setTimeout('FormPreparePrivateAjax();', 200);
+        $("#divCarporterfassungGrid").slideDown();
+        setTimeout('LoadingHide();', 500);
+        window.scrollTo(0, 0);
+    }
+
+    function ShowGridForConfirmation(result) {
+        $("#divCarporterfassungEdit").slideUp();
+        $("#divCarporterfassungGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridCarporterfassungForConfirmation");
+        setTimeout('FormPreparePrivateAjax();', 200);
+        $("#divCarporterfassungGrid").slideDown();
+        setTimeout('LoadingHide();', 500);
+        window.scrollTo(0, 0);
+    }
+
+    function ShowEdit(result) {
+        _kennzeichenAlt = "";
+        $("#divCarporterfassungGrid").slideUp();
+        $("#divCarporterfassungEdit").html(result);
+        $("#divCarporterfassungEdit").slideDown();
+        setTimeout('LoadingHide();', 500);
+        FormPreparePrivateAjax();
+        window.scrollTo(0, 0);
+    }
+
+    function FahrzeugeSpeichern() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FahrzeugeSpeichern",
+            loadingShow: true,
+            success: function(result) {
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+                ShowGridForConfirmation(result);
+            }
+        });
+    }
+
+    function ApplySelection(applyAbgemeldetSelection, nacherfassung) {
+        if (applyAbgemeldetSelection) {
+            if ($("#Abgemeldet").is(":checked")) {
+                $("#AnzahlKennzeichen").val("0");
+                if (!nacherfassung) {
+                    $("#AnzahlKennzeichen").attr("disabled", "disabled");
+                }
+            }
+            else {
+                if (!nacherfassung) {
+                    $("#AnzahlKennzeichen").removeAttr("disabled");
+                }
+            }
+        }
+
+        if ($("#AnzahlKennzeichen").val() == "0") {
+            $("#DemontageDatum").val("");
+            $("#DemontageDatum").attr("readonly", "readonly");
+        }
+        else {
+            $("#DemontageDatum").removeAttr("readonly");
+        }
+    }
+
+    function OnOrganizationChanged() {
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormFahrzeugerfassung").submit();
+    }
+
+    // Nacherfassung
+
+    function ShowCarportnacherfassungFahrzeuge(autoRedirectToEdit) {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ListeAnzeigen",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCarportnacherfassungFahrzeugeSearchResult(result);
+
+                    if (autoRedirectToEdit && _anzahlTreffer == 1) {
+                        FahrzeugNachbearbeiten();
+                    }
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCarportnacherfassungFahrzeugeSearchResult(result) {
+        SearchFormHide();
+        $("#divCarporterfassungEdit").html('');
+        ShowGrid(result);
+    }
+
+    function FahrzeugNachbearbeiten(kennzeichen) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FahrzeugNachbearbeiten",
+            loadingShow: true,
+            data: { kennzeichen: kennzeichen },
+            success: function (result) {
+                ShowEdit(result);
+            }
+        });
+
+        return false;
+    }
+
+    function CloseCarportnacherfassungDetail() {
+        ShowCarportnacherfassungFahrzeuge(false);
+    }
+
+    function AjaxFormFahrzeugnacherfassungComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelIsValid) {
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+            ShowCarportnacherfassungFahrzeuge(false);
+        }
+    }
+
+</script>

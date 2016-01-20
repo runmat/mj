@@ -50,6 +50,8 @@ namespace CarDocu.Models
             set { _pdfIsSynchronized = value; SendPropertyChanged("PdfIsSynchronized"); }
         }
 
+        public bool FinNumberUppercase { get { return SelectedDocumentType.InputRuleObject.AllowedLengths.Any(); } }
+
         [XmlIgnore]
         public bool ValidFinNumber
         {
@@ -388,7 +390,15 @@ namespace CarDocu.Models
                     var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);    
 
                     var errorMessage = "";
-                    try { PdfDocumentFactory.ScanClientCreatePdfFromImages(scanImagesOfThisCode, pdfFileName); }
+
+                    var pdfEncryptionHashedPassword = "";
+                    var documentType = DomainService.Repository.GetImageDocumentType(docTypeCode);
+                    if (documentType != null)
+                        pdfEncryptionHashedPassword = documentType.PdfEncryptionHashedPassword;
+                    if (pdfEncryptionHashedPassword.IsNotNullOrEmpty())
+                        pdfEncryptionHashedPassword = CryptoMd5Service.Decrypt(pdfEncryptionHashedPassword, "ScanClient");
+
+                    try { PdfDocumentFactory.ScanClientCreatePdfFromImages(scanImagesOfThisCode, pdfFileName, pdfEncryptionHashedPassword); }
                     catch(Exception e) { errorMessage = e.Message; }
 
                     if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))

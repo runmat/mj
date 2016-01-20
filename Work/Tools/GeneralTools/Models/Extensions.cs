@@ -56,17 +56,26 @@ namespace GeneralTools.Models
             copiedList.Insert(0, itemToInsert);
             return copiedList;
         }
-        public static IEnumerable<string> InsertAtTop(this IEnumerable<string> source, string itemToInsert)
+
+        public static IEnumerable<T> InsertAtTop<T>(this IEnumerable<T> source, T itemToInsert)
         {
             var list = source.ToListOrEmptyList();
             list.Insert(0, itemToInsert);
             return list;
         }
-        public static IDictionary<string, string> InsertAtTop(this IDictionary<string, string> source, string key, string value)
+
+        public static IDictionary<T1, T2> InsertAtTop<T1, T2>(this IDictionary<T1, T2> source, T1 key, T2 value)
         {
-            var list = source;
-            list.Add(new KeyValuePair<string, string>(key, value));
-            return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+            var list = source.ToList();
+            list.Insert(0, new KeyValuePair<T1, T2>(key, value));
+            return list.ToDictionary(s => s.Key, s => s.Value);
+        }
+
+        public static IDictionary<T1, T2> InsertAtTop<T1, T2>(this IEnumerable<KeyValuePair<T1, T2>> source, T1 key, T2 value)
+        {
+            var list = source.ToList();
+            list.Insert(0, new KeyValuePair<T1, T2>(key, value));
+            return list.ToDictionary(s => s.Key, s => s.Value);
         }
 
         public static DataTable ToExcelExportDataTable<T>(this IList<T> source)
@@ -322,6 +331,15 @@ namespace GeneralTools.Models
             return string.Join(separator, list.ToListOrEmptyList().ToArray());
         }
 
+        public static string ToLowerFirstUpperWithFragments(this string s, char fragmentSourceSeparator = '_', char fragmentDestinationSeparator = '-')
+        {
+            if (!s.Contains(fragmentSourceSeparator))
+                return s.ToLowerFirstUpper();
+
+            var fragments = s.Split(fragmentSourceSeparator);
+            return string.Join(fragmentDestinationSeparator.ToString(), fragments.Select(f => f.ToLowerFirstUpper()).ToArray());
+        }
+
         public static string ToLowerFirstUpper(this string s)
         {
             s = s.NotNullOrEmpty();
@@ -463,16 +481,16 @@ namespace GeneralTools.Models
 
         public static bool IsNumeric(this string stringValue)
         {
-            int tmp;
-            return Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp);
+            decimal tmp;
+            return decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
 
         public static int ToInt(this string stringValue, int defaultValue = -1)
         {
-            int tmp;
-            if (!Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return defaultValue;
-            return tmp;
+            return (int)tmp;
         }
 
         public static decimal ToDecimal(this string stringValue, decimal defaultValue = -1)
@@ -493,10 +511,10 @@ namespace GeneralTools.Models
 
         public static int? ToNullableInt(this string stringValue)
         {
-            int tmp;
-            if (!Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return null;
-            return tmp;
+            return (int)tmp;
         }
 
         public static DateTime? ToNullableDateTime(this string stringValue, string format = null)
@@ -589,10 +607,10 @@ namespace GeneralTools.Models
 
         public static Int64 ToLong(this string stringValue, Int64 defaultValue = -1)
         {
-            Int64 tmp;
-            if (!Int64.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return defaultValue;
-            return tmp;
+            return (Int64)tmp;
         }
 
         public static string ToEmailWithoutAtSymbol(this string email)
@@ -772,6 +790,14 @@ namespace GeneralTools.Models
             }
 
             return erg;
+        }
+
+        public static TValue GetPropertyValueIfIs<TModel, TValue>(this object o, Expression<Func<TModel, TValue>> expression, TValue defaultValue = default (TValue))
+        {
+            if (!(o is TModel))
+                return defaultValue;
+
+            return expression.Compile().Invoke((TModel)o);
         }
     }
 

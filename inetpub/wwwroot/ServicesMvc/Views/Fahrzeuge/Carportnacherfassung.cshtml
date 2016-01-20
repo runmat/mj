@@ -1,0 +1,50 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carportnacherfassung<small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.Partial("Carporterfassung/Common")
+
+<div class="span-alert-placeholder">
+    @Html.SpanAlert("Message")
+</div>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Carporterfassung/NacherfassungSuche", Model.CarportnacherfassungSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divCarporterfassungGrid"></div>
+    <div id="divCarporterfassungEdit"></div>
+}
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        TryInitDropDownCarportId();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        TryInitDropDownCarportId();
+    }
+
+    function TryInitDropDownCarportId() {
+        if (!_userCarportId) {
+            try {
+                if (_selectionModeAllUsers) {
+                    setTimeout(function () {
+                        $('#SelectedCarportId').select2({
+                            allowClear: true
+                        });
+                    }, 100);
+                }
+            } catch (e) {
+            }
+        }
+    }
+
+</script>

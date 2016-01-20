@@ -1,0 +1,44 @@
+﻿@model List<CkgDomainLogic.Uebfuehrg.Models.WebUploadProtokoll>
+
+<table class="margin-left-20">
+    @for (var i = 0; i < Model.Count; i++)
+    {
+        var item = Model[i];
+        var itemIdSuffix = "_" + item.FahrtIndex + "_" + item.ProtokollartFormatted;
+        var labelProtokollartId = "ProtokollArt" + itemIdSuffix;
+        var labelDateinameId = "Dateiname" + itemIdSuffix;
+        var spanId = "spanUpload" + itemIdSuffix;
+        var buttonId = "btnRemoveProtokoll" + itemIdSuffix; ;
+
+        <tr>
+            <td class="protokollartCell">
+                <label id="@labelProtokollartId">@item.Protokollart</label>
+            </td>
+            <td>
+                <label id="@labelDateinameId">@item.Dateiname</label>
+            </td>
+            <td>
+                <span id="@spanId" class='@(item.Dateiname.IsNullOrEmpty() ? "" : "hide")'>
+                    @(Html.Telerik().Upload()
+                          .Name("fileUpload" + itemIdSuffix)
+                          .Localizable("de-DE")
+                          .Async(async => async
+                              .Save("UploadProtokollStart", "Uebfuehrg", new { protokollArt = @item.Protokollart })
+                              .SaveField("uploadFiles")
+                              .AutoUpload(true)
+                          )
+                          .Multiple(false)
+                          .ShowFileList(false)
+                          .ClientEvents(events => events
+                              .OnUpload("UploadStart")
+                              .OnSuccess("UploadFinished")
+                              .OnError("UploadError")
+                          )
+                      )
+                </span>
+
+                <button type="button" id="@buttonId" onclick="RemoveProtokoll('@item.Protokollart', '@item.FahrtIndex');" class='@("btn mini gray tooltips margin-left-10 " + (item.Dateiname.IsNullOrEmpty() ? "hide" : ""))' data-original-title="@Localize.Delete" data-placement="right"><i class="halflings-icon white remove"></i></button>
+            </td>
+        </tr>
+    }
+</table>

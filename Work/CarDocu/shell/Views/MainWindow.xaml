@@ -49,8 +49,6 @@
                         </fl:Button.ToolTip>
                     </fl:Button>
 
-                    <docuGroup:ucTemplateInsertRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
-
                     <fl:Button Command="{Binding ScanDocumentSaveCommand}" LargeIcon="{StaticResource image/32x32/scan_archive}" 
                                Header="Im Archiv ablegen" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                         <fl:Button.ToolTip>
@@ -63,8 +61,9 @@
                     <docuGroup:ucPdfFolderRibbonButton />
 
                     <docuGroup:ucPdfRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
+
+                    <docuGroup:ucTemplateInsertRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox MinWidth="1000" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
             </fl:RibbonTabItem>
 
             <fl:RibbonTabItem DataContext="{Binding AllDocusViewModel}" Header="Archiv" Group="{Binding ElementName=DocuGroup}" x:Name="AllDocusTab">

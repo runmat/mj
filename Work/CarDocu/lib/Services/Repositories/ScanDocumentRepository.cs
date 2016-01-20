@@ -34,32 +34,28 @@ namespace CarDocu.Services
                 return false;
 
             ScanDocuments.Add(scanDocument);
-            if (OnAddScanDocument != null)
-                OnAddScanDocument(scanDocument);
+            OnAddScanDocument?.Invoke(scanDocument);
 
             return true;
         }
 
-        public bool TryDeleteScanDocument(ScanDocument scanDocument) 
+        public bool TryDeleteScanDocument(ScanDocument scanDocument, bool deleteAlsoNetworkDeliveryPdfFiles)
         {
             var itemToDelete = scanDocument;
 
-            try { Directory.Delete(itemToDelete.GetDocumentPrivateDirectoryName(), true); }
-            catch
-            {
-                //Tools.AlertError("Das Scan-Document kann nicht gelöscht werden!\r\n\r\nIst das Verzeichnis '" + itemToDelete.GetDocumentDirectoryName() + "' ist in u. U. Bearbeitung ?!?");
-                //return false;
-            }
+            scanDocument.EnsureDocumentType();
+            var pdfFileNames = scanDocument.GetPdfFileNames();
 
-            if (!ScanDocuments.Remove(itemToDelete))
+            try
             {
-                var sdStored = ScanDocuments.FirstOrDefault(sd => sd.DocumentID == scanDocument.DocumentID);
-                if (sdStored != null)
-                    ScanDocuments.Remove(sdStored);
-            }
+                FileService.TryDirectoryDelete(itemToDelete.GetDocumentPrivateDirectoryName()); 
 
-            if (OnDeleteScanDocument != null)
-                OnDeleteScanDocument(itemToDelete);
+                if (ScanDocuments.Remove(itemToDelete))
+                    new ArchiveNetworkService().DeletePdfFilesFor(itemToDelete, pdfFileNames, deleteAlsoNetworkDeliveryPdfFiles);
+
+                OnDeleteScanDocument?.Invoke(itemToDelete);
+            }
+            catch { /**/ }
 
             return true;
         }
@@ -67,7 +63,7 @@ namespace CarDocu.Services
         public void Save(string directoryName, string fileName=null)
         {
             if (fileName == null)
-                fileName = this.GetType().Name;
+                fileName = GetType().Name;
 
             XmlService.XmlSerializeToPath(this, directoryName, fileName);
             ScanDocuments.ForEach(sd => sd.XmlSaveScanImages());

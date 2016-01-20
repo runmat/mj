@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.Strafzettel.Models
-@model StrafzettelSelektor
+﻿@model CkgDomainLogic.Strafzettel.Models.StrafzettelSelektor
 
 <div id="divStrafzettelSuche">
     @using (Ajax.BeginForm("LoadStrafzettel", "Strafzettel", null,
@@ -10,28 +9,32 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormMultiColumnModeStart("auto")
 
-            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Fin10, new { @class = "m-wrap uppercase", col = "auto" })
 
-            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "right" })
-            
-            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "auto" })
+
+            @Html.FormDateRangePickerFor(m => m.EingangsDatumRange, new { col = "auto" })
+            @Html.FormDateRangePickerFor(m => m.BehoerdeDatumRange, new { col = "auto" })
+
+            @Html.FormTextBoxFor(m => m.BehoerdeName, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.BehoerdePlz, new { @class = "m-wrap", col = "auto" })
+
+            @Html.FormMultiColumnModeEnd("auto")
 
 
             @*@Html.FormRequiredFieldsSummary()*@
 
             <div class="form-actions">
-                <button type="submit" class='btn blue' accesskey="s"><i class='icon-search'></i>&nbsp;Suchen</button>
+                <button type="submit" class='btn blue' accesskey="s"><i class='icon-search margin-right-5'></i>@Localize.SearchAsVerb</button>
                 
                 @Html.FormPersistenceMenu(Model)
             </div>
-        </div>  
-        
+        </div>
+
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
         </script>

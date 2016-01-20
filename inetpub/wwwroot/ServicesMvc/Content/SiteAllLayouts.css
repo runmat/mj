@@ -878,10 +878,6 @@ span.m-wrap {
 span.m-wrap.font-normal { font-weight: normal!important; }
 .font-bold { font-weight: bold; }
 
-.checker.disabled {
-    padding-top: 7px;
-}
-
 .portlet span.m-wrap {
     margin-top: 1px;
 }
@@ -1394,4 +1390,45 @@ div.span-alert-placeholder .alert {
 .report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
     display: inline-block;
     width: 80%;
+}
+}
+
+#divFormControlsTranslations {
+    width: 800px;
+}
+#translation-edit-form .divider {
+    font-weight: bold;
+    margin: 8px;
+    margin-left: 50px;
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 5px;
+}
+.translation-key-header {
+    min-height: 30px;
+    margin-bottom: 20px;
+}
+.translation-key {
+    margin-left: 10px;
+    background-color: ivory;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0;
+}
+.translation-key.true {
+}
+.translation-key.false {
+    font-size: 0.7em;
+}
+.grayed {
+    opacity: 0.4!important;
+}
+
+.report-generator-buttons, .report-generator-wrapper {
+    display: inline-block;
+}
+.report-generator-wrapper li.persistable-form-dropdown-menu {
+    text-align: left;
+}
+.report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
+    display: inline-block;
 }

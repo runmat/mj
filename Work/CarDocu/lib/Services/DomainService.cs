@@ -6,6 +6,7 @@ using System.Reflection;
 using CarDocu.Models;
 using GeneralTools.Services;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Windows.Input;
 using WebTools.Services;
 
@@ -18,13 +19,13 @@ namespace CarDocu.Services
             get
             {
                 return Environment.UserName.ToLower().Contains("xjenzenm") &&
-                       Environment.MachineName.ToUpper().Contains("AHW460");
+                       Environment.MachineName.ToUpper().Contains("AHW570");
             }
         }
 
         public static string AppName { get { return AppSettings.AppName; } }
 
-        public static string AppVersion { get { return string.Format("{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00")); } }
+        public static string AppVersion { get { return $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00")}"; } }
 
         public static DateTime JobCancelDate { get { return DateTime.Parse("01.01.2000"); } }
 
@@ -34,6 +35,7 @@ namespace CarDocu.Services
 
         private static DomainRepository _repository;
         public static DomainRepository Repository { get { return (_repository ?? (_repository = new DomainRepository())); } }
+        public static bool RepositoryIsInitialized {  get { return _repository != null; } }
 
         private static DomainThreads _threads;
         public static DomainThreads Threads { get { return (_threads ?? (_threads = new DomainThreads())); } }
@@ -58,7 +60,7 @@ namespace CarDocu.Services
             var forceLoginPanelKeyPressed = Keyboard.IsKeyDown(Key.F8);
 
             if (defaultUser != null && !forceLoginPanelKeyPressed)
-                loginData = string.Format("{0}~{1}", defaultUser.LoginName, Repository.GlobalSettings.DomainLocations.First().SapCode);
+                loginData = $"{defaultUser.LoginName}~{Repository.GlobalSettings.DomainLocations.First().SapCode}";
             else
                 loginData = getUserLoginDataFromDialog();
 
@@ -72,7 +74,7 @@ namespace CarDocu.Services
             if (logonUser == null)
             {
                 if (!string.IsNullOrEmpty(loginName))
-                    Tools.AlertError(string.Format("{0}:\r\n\r\nLogin fehlgeschlagen, Benutzer '{1}' ist unbekannt!", AppName, loginName));
+                    Tools.AlertError($"{AppName}:\r\n\r\nLogin fehlgeschlagen, Benutzer '{loginName}' ist unbekannt!");
 
                 return false;
             }
@@ -120,15 +122,24 @@ namespace CarDocu.Services
 
         public static bool SendMail(string to, string subject, string body, IEnumerable<string> filesToAttach = null)
         {
-            if (Repository.GlobalSettings == null || Repository.GlobalSettings.SmtpSettings == null)
+            if (Repository.GlobalSettings?.SmtpSettings == null)
                 return false;
 
             return new SmtpMailService(Repository.GlobalSettings.SmtpSettings).SendMail(to, subject, body, filesToAttach); 
         }
 
-        public static bool SendTestMail()
+        public static bool CheckOnlineState()
         {
-            return true;
+            try
+            {
+                using (var client = new WebClient())
+                    using (client.OpenRead("http://www.google.com"))
+                        return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

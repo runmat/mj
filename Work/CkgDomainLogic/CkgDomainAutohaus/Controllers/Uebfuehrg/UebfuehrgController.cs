@@ -16,6 +16,8 @@ using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 using System.Linq;
+using System.Web;
+using CkgDomainLogic.AutohausFahrzeugdaten.ViewModels;
 using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
 
@@ -200,6 +202,37 @@ namespace ServicesMvc.Controllers
             }
 
             return GetStepPartialView();
+        }
+
+        [HttpPost]
+        public ActionResult UploadProtokollStart(IEnumerable<HttpPostedFileBase> uploadFiles, string protokollArt)
+        {
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
+
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!ViewModel.ExcelUploadFileSave(file.FileName, file.SavePostedFile, protokollArt))
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+
+
+            return Json(new
+            {
+                success = true,
+                message = "ok",
+                fahrtIndex = ViewModel.CurrentFahrtIndex,
+                uploadProtokollArt = protokollArt,
+                uploadFileName = file.FileName
+            }, "text/plain");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveProtokoll(string protokollArt)
+        {
+            ViewModel.RemoveProtokoll(protokollArt);
+
+            return new EmptyResult();
         }
 
         #endregion

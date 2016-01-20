@@ -125,13 +125,18 @@ namespace CarDocu.ViewModels
             ZipToArchiveCommand = new DelegateCommand(e => ZipArchiveUserLogsAndScanDocuments());
             AutoRecycleArchiveCommand = new DelegateCommand(e => AutoRecycleUserLogsAndScanDocuments());
 
-            DomainService.Repository.ScanDocumentRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
-            DomainService.Repository.ScanDocumentRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
+            ScanDocumentRepositoryAttachEvents();
             
             DomainService.Repository.ScanTemplateRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanTemplateRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
 
             TaskService.StartDelayedUiTask(1000, AutoRecycleUserLogsAndScanDocuments);
+        }
+
+        void ScanDocumentRepositoryAttachEvents()
+        {
+            DomainService.Repository.ScanDocumentRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
+            DomainService.Repository.ScanDocumentRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
         }
 
         public static bool EnsureDomainPathExistsAndIsAvailable(string path, string pathDescription)
@@ -211,6 +216,7 @@ namespace CarDocu.ViewModels
 
             DomainService.Repository.ScanDocumentRepositorySave();
             DomainService.Repository.ScanDocumentRepositoryLoad();
+            ScanDocumentRepositoryAttachEvents();
 
             DomainService.Repository.UserSettingsSave();
             DomainService.Repository.LogItemFilesDelete();
@@ -243,7 +249,7 @@ namespace CarDocu.ViewModels
             if (!Tools.Confirm("Wollen Sie das markierte Dokument inkl. aller hierfür gescannten Dokumente wirklich endgültig löschen?"))
                 return;
 
-            if (DomainService.Repository.ScanDocumentRepositoryTryDeleteScanDocument(SelectedItem))
+            if (DomainService.Repository.ScanDocumentRepositoryTryDeleteScanDocument(SelectedItem, true))
             {
                 DomainService.Repository.ScanDocumentRepositorySave();
             }

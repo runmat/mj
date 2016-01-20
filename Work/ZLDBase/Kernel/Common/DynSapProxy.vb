@@ -202,13 +202,13 @@ Namespace Common
 
                 'auswerten der exportparameter
                 If func.Tables("EXP_TAB").RowCount > 0 Then
-                    mExportTabelle = func.Tables("EXP_TAB").ToADOTable
+                    mExportTabelle = func.Tables("EXP_TAB").ToADOTableLocaleDe
                     HelpProcedures.killAllDBNullValuesInDataTable(mExportTabelle)
                     mExportTabelle.AcceptChanges()
                 End If
 
                 If func.Tables("IMP_TAB").RowCount > 0 Then
-                    mImportTabelle = func.Tables("IMP_TAB").ToADOTable
+                    mImportTabelle = func.Tables("IMP_TAB").ToADOTableLocaleDe
                     HelpProcedures.killAllDBNullValuesInDataTable(mImportTabelle)
                     mImportTabelle.AcceptChanges()
                 End If

@@ -20,7 +20,7 @@ namespace CarDocu.Services
                 if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
                     isOnline = true;
                 else
-                    isOnline = DomainService.SendTestMail();
+                    isOnline = DomainService.CheckOnlineState();
             }
             catch { isOnline = false; }
 
@@ -96,7 +96,7 @@ namespace CarDocu.Services
                 if (archiveMailDeliveryNeeded)
                 {
                     // mail delivery occurs right here:
-                    if (!MailDeliveryToUser(scanDocument, pdfFileNames, out mailItemCount))
+                    if (!MailDeliveryToUser(scanDocument, pdfFileNames, docType, out mailItemCount))
                     {
                         DomainService.Logger.LogMessage("Fehler: NetworkDelivery abgebrochen (Funktion NetworkDeliveryToArchive)");
                         return false;
@@ -113,6 +113,7 @@ namespace CarDocu.Services
 
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
+                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
 
                     if (docType.UseExternalCommandline)
                     {
@@ -141,18 +142,15 @@ namespace CarDocu.Services
                     {
                         FileService.TryFileDelete(dstFileName);
                         File.Copy(srcFileName, dstFileName, true);
-                    }
 
-                    if (docType.DeleteAndBackupFileAfterDelivery)
-                    {
-                        var backupFolder = DomainService.Repository.GlobalSettings.BackupArchive.Path;
-                        if (backupFolder.IsNotNullOrEmpty())
+                        if (dstFileName2.IsNotNullOrEmpty())
                         {
-                            var backupFileName = Path.Combine(backupFolder, srcFileInfo.Name);
-                            FileService.TryFileCopy(srcFileName, backupFileName);
-                            FileService.TryFileDelete(srcFileName);
+                            FileService.TryFileDelete(dstFileName2);
+                            File.Copy(srcFileName, dstFileName2, true);
                         }
                     }
+
+                    TryDeleteAndBackupFileAfterDelivery(docType, srcFileName);
 
                 });
             }
@@ -168,10 +166,53 @@ namespace CarDocu.Services
             return true;
         }
 
-        static bool MailDeliveryToUser(ScanDocument scanDocument, IEnumerable<string> pdfFileNames, out int mailItemCount)
+        private static void TryDeleteAndBackupFileAfterDelivery(DocumentType docType, string srcFileName)
         {
-            mailItemCount = 0;
+            if (!DomainService.Repository.AppSettings.GlobalDeleteAndBackupFileAfterDelivery)
+                if (!docType.DeleteAndBackupFileAfterDelivery)
+                    return;
 
+            var srcFileInfo = new FileInfo(srcFileName);
+
+            var backupFolder = DomainService.Repository.GlobalSettings.BackupArchive.Path;
+            if (backupFolder.IsNotNullOrEmpty())
+            {
+                var backupFileName = Path.Combine(backupFolder, srcFileInfo.Name);
+                FileService.TryFileCopy(srcFileName, backupFileName);
+                FileService.TryFileDelete(srcFileName);
+            }
+        }
+
+        public void DeletePdfFilesFor(ScanDocument scanDocument, IEnumerable<string> pdfFileNames, bool deleteAlsoNetworkDeliveryPdfFiles)
+        {
+            var archive = scanDocument.GetArchive();
+
+            if (archive == null)
+                return ;
+
+            var archiveFolder = archive.Path;
+            scanDocument.EnsureDocumentType();
+            var docType = scanDocument.SelectedDocumentType;
+
+            pdfFileNames.ToList().ForEach(srcFileName =>
+            {
+                var srcFileInfo = new FileInfo(srcFileName);
+                FileService.TryFileDelete(srcFileName);
+
+                if (!deleteAlsoNetworkDeliveryPdfFiles)
+                    return;
+
+                var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
+                var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
+
+                FileService.TryFileDelete(dstFileName);
+                if (dstFileName2.IsNotNullOrEmpty())
+                    FileService.TryFileDelete(dstFileName2);
+            });
+        }
+
+        static bool MailDeliveryToUser(ScanDocument scanDocument, IEnumerable<string> pdfFileNames, DocumentType docType, out int mailItemCount)
+        {
             var mailSettings = DomainService.Repository.GlobalSettings.SmtpSettings;
             var attachmentMaxSizeBytes = mailSettings.AttachmentMaxSizeMB * 1000000;
 
@@ -201,6 +242,8 @@ namespace CarDocu.Services
                 splitList.Add(pdfFilenameSize.FileName);
             }
 
+            var success = true;
+
             // 3. iterate the split list and send splitted e-mails:
             for (var i = 0; i < allList.Count; i++)
             {
@@ -219,16 +262,21 @@ namespace CarDocu.Services
                 if (mailSettings.EmailSendAlsoToUser && emailRecipient != DomainService.Repository.LogonUser.Email)
                     emailRecipient += "," + DomainService.Repository.LogonUser.Email;
 
+
                 if (!DomainService.SendMail(emailRecipient,
                                                  subject,
                                                  bodyText,
                                                  splitList))
-                    return false;
+                    success = false;
             }
+
+            if (success)
+                foreach (var list in allList)
+                    list.ForEach(srcFileName => TryDeleteAndBackupFileAfterDelivery(docType, srcFileName));
 
             mailItemCount = allList.Count;
 
-            return true;
+            return success;
         }
     }
 }

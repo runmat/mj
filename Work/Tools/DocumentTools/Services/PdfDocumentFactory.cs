@@ -81,7 +81,7 @@ namespace DocumentTools.Services
             pdfDoc.Close();
         }
 
-        public static void ScanClientCreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
+        public static void ScanClientCreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, string pdfPassword = "")
         {
             var pdfDoc = new ITextSharpPdfDocument();
             var imageCount = 0;
@@ -103,8 +103,25 @@ namespace DocumentTools.Services
                 imageCount++;
             }
 
-            pdfDoc.Save(pdfFileName);
+            if (pdfPassword.IsNullOrEmpty())
+            {
+                pdfDoc.Save(pdfFileName);
+                pdfDoc.Close();
+                return;
+            }
+
+            // PDF encryption goes here:
+            var tempFileName = Path.Combine(Path.GetDirectoryName(pdfFileName) ?? "", Path.GetFileNameWithoutExtension(pdfFileName) + "-temp" + Path.GetExtension(pdfFileName));
+            pdfDoc.Save(tempFileName);
             pdfDoc.Close();
+
+            using (Stream output = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                var reader = new ITextsharpPdf.PdfReader(tempFileName);
+                ITextsharpPdf.PdfEncryptor.Encrypt(reader, output, false, pdfPassword, pdfPassword, ITextsharpPdf.PdfWriter.ALLOW_COPY);
+            }
+
+            FileService.TryFileDelete(tempFileName);
         }
 
         public static byte[] HtmlToPdf(string html, string logoFileName = null, int logoX = 395, int logoY = 745)
@@ -138,21 +155,8 @@ namespace DocumentTools.Services
         /// <returns>PDF-Datei als byte[]</returns>
         public static byte[] MergePdfDocuments(List<byte[]> pdfBytes)
         {
-            byte[] mergedPdf = null;
-            mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
+            var mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
             return mergedPdf;
-
-            #region Example
-            //var subDoc1 = PdfDocumentFactory.HtmlToPdf("test 1");
-            //var subDoc2 = PdfDocumentFactory.HtmlToPdf("test 22222");
-            //var docList = new List<byte[]>
-            //    {
-            //        subDoc1, subDoc2
-            //    };
-            //// MergePdfDocuments
-            //var foo1 = PdfDocumentFactory.MergePdfDocuments(docList);
-            #endregion
-
         }
     }
 }

@@ -2,6 +2,8 @@
 @using GeneralTools.Contracts
 @using GeneralTools.Models
 @{
+    var gridSettingsAdminMode = SessionHelper.GetSessionValue("GridSettingsAdminMode", false);
+    var gridSettingsAdminModeChanged = SessionHelper.GetSessionValue("GridSettingsAdminModeChanged", false);
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
     var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
     var telerikStyleSheetTheme = logonContext.CurrentLayoutTheme.NotNullOr("Simple");
@@ -27,7 +29,7 @@
         
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
-        <link href="~/content/SiteAllLayouts.css?v=20151001_1323" rel="stylesheet" type="text/css" />
+        <link href="~/content/SiteAllLayouts.css?v=20151203_1325" rel="stylesheet" type="text/css" />
         <link href="~/content/Site.css?v=20150901_1554" rel="stylesheet" type="text/css" />
 
         @Html.Partial("Partial/LayoutPage/StylesDeviationAllLayoutPages")
@@ -44,6 +46,12 @@
 
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
         <img class="loading2 hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
+        <div id="global-popup" class="white-popup mfp-hide"></div>
+        <div class="hide">
+            <img class="flag-de" alt="" src="/ServicesMvc/assets/img/flags/de.png" />
+            <img class="flag-en" alt="" src="/ServicesMvc/assets/img/flags/en.png" />
+            <img class="flag-fr" alt="" src="/ServicesMvc/assets/img/flags/fr.png" />
+        </div>
 
         <!-- BEGIN HEADER -->
         <div class="header navbar navbar-inverse navbar-fixed-top">
@@ -119,6 +127,10 @@
             <div class="span pull-right">
                 <a class="link teamviewer" href="~/Teamviewer-Support.zip" title="Download Teamviewer"><img src="~/Images/teamviewer-icon.png" /></a>
                 <span class="go-top"><i class="icon-angle-up"></i></span>
+                @if (logonContext.HasLocalizationTranslationRights)
+                {
+                    <a class="link" href="#" onclick="return GridSettingsAdminModeSet()"><i class="icon-wrench"></i></a>
+                }
             </div>
         </div>
         <!-- END FOOTER -->
