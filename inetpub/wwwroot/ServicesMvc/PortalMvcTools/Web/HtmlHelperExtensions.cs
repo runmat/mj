@@ -913,19 +913,18 @@ namespace PortalMvcTools.Web
             return htmlAttributes;
         }
 
-        public static MvcHtmlString TileSimple(this HtmlHelper html, string title, string cssClass = "", string iconCssClass = "", string href = "#", object controlHtmlAttributes = null, string bodyCssClass = "", string titleCssClass = "")
+        public static MvcHtmlString TileSimple(this HtmlHelper html, string title, string cssClass = "", string iconCssClass = "", string onclickAction = "", string bodyCssClass = "", string titleCssClass = "")
         {
             var model = new TileSimpleModel
             {
                 Title = title,
                 CssClass = cssClass,
                 IconCssClass = iconCssClass,
-                Href = href,
-                ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
+                OnClickAction = onclickAction,
                 BodyCssClass = bodyCssClass,
                 TitleCssClass = titleCssClass
             };
-
+            
             return html.Partial("Partial/TileSimple", model);
         }
 

@@ -8,23 +8,26 @@
 
 </div>*@
 
-<style>
+@*<style>
     
-    .container-fluid .row-fluid {
-        width: 90%;
+    .ZiPoolFilter .row-fluid {
+        padding-left: 0 !important;
+        width: 90% !important;
     }
     
-</style>
+</style>*@
 
-<div class="container-fluid">
+@*<div class="form-horizontal label-width-130 container-fluid ZiPoolFilter">
 
     <div class="row-fluid">
 
-        <div class="span6">
+        <div class="span5">
 
             @Html.FormCheckBoxFor(m => m.Gewerblich, new {onchange = "RefreshZiPoolListe()"})
 
         </div>
+
+        <div class="span1"></div>
 
         <div class="span6">
 
@@ -34,12 +37,12 @@
 
     </div>
 
-</div>
-
-
-@*<div class="form-horizontal label-width-150">
-
-    @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap", onchange = "RefreshZiPoolListe()", col = "left" })
-    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new { @class = "m-wrap small", onchange = "RefreshZiPoolListe()", col = "right" })
-
 </div>*@
+
+<div class="form-horizontal">
+
+    @Html.FormCheckBoxFor(m => m.Gewerblich, new {onchange = "RefreshZiPoolListe()"})
+
+    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new {@class = "m-wrap small", onchange = "RefreshZiPoolListe()"})
+
+</div>

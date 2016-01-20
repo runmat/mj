@@ -13,8 +13,6 @@
             @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onchange = "return TryLoadKreisByPlz();" })
             @Html.FormDropDownListFor(m => m.Zulassungskreis, FormulareSelektor.Zulassungskreise.ToSelectList(), new { @class = "m-wrap", col = "right" })
 
-@Html.FormCheckBoxFor(m => m.IsSelected)
-
 
             @Html.FormRequiredFieldsSummary()
 

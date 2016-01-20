@@ -1,7 +1,6 @@
 ﻿@model MvcTools.Models.TileSimpleModel
 
-<div class="tile @Model.CssClass">
-    <a class="width-100-percent height-100-percent" href="@Model.Href"></a>
+<div class="tile @Model.CssClass" onclick="var @Model.OnClickAction">
     <div class="tile-body @Model.BodyCssClass">
         <i class="@Model.IconCssClass"></i>
     </div>

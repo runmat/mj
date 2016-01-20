@@ -9,9 +9,7 @@ namespace MvcTools.Models
 
         public string IconCssClass { get; set; }
 
-        public string Href { get; set; }
-
-        public IDictionary<string, object> ControlHtmlAttributes { get; set; }
+        public string OnClickAction { get; set; }
 
         public string BodyCssClass { get; set; }
 
