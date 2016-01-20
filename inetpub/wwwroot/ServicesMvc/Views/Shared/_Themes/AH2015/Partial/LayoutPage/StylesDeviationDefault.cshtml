@@ -544,14 +544,18 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 
 /* <2-zeilig> */
 .ms-container {
-    width: 760px;
+    width: 95%;
 }
-.ms-container .ms-list {
-    height: 80px;
+.ms-container ul.ms-list {
+    min-height: 40px;
+    height: auto;
+    border: 0!important;
+    overflow: hidden!important;
 }
 .ms-container ul.ms-list li {
     float: left;
-    margin-right: 20px;
+    margin: 5px 0 0 5px!important;
+    border-radius: 6px !important;
 }
 .ms-container .ms-selectable, .ms-container .ms-selection{
   background: #fff;
@@ -559,15 +563,25 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
   float: left;
   width: 100%;
 }
-.ms-container .ms-selectable{
+.ms-container .ms-selectable {
   margin-right: 0;
 }
+.ms-container .ms-selectable span.dienstleistung-nicht-gewaehlt-checkbox {
+    display: inline-block!important;
+    border: 2px solid #3AAFDA;
+    border-radius: 3px!important;
+    background-color: white;
+    width: 19px!important;
+    height: 18px!important;
+    margin: 0 10px 0 5px!important;
+}
 .ms-container .ms-selection ul.ms-list li span{
-    width: 265px;
+    width: 277px;
 }
 .dienstleistungen-header.dienstleistungen-selected {
     margin-top: 15px;
 }
+
 /* </2-zeilig> */
 
 
