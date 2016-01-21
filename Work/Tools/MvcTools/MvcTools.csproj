@@ -107,6 +107,7 @@
     <Compile Include="Contracts\IGridSettingsAdministrationProvider.cs" />
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Models\TileSimpleModel.cs" />
+    <Compile Include="Models\SimpleUiListItem.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\Attributes\NoCache.cs" />
     <Compile Include="Web\CustomModelValidatorsProvider.cs" />

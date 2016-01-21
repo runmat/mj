@@ -5,6 +5,6 @@
 
     @Html.FormCheckBoxFor(m => m.Gewerblich, new {onchange = "RefreshZiPoolListe()"})
 
-    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new {@class = "m-wrap small", onchange = "RefreshZiPoolListe()"})
+    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new {@class = "m-wrap", onchange = "RefreshZiPoolListe()"})
 
 </div>

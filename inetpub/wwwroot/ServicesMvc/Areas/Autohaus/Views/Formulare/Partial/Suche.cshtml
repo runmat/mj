@@ -10,14 +10,14 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onchange = "return TryLoadKreisByPlz();" })
-            @Html.FormDropDownListFor(m => m.Zulassungskreis, FormulareSelektor.Zulassungskreise.ToSelectList(), new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onblur = "TryLoadKreisByPlz();" })
+            @Html.FormDropDownListFor(m => m.Zulassungskreis, FormulareSelektor.Zulassungskreise.ToSelectList(), new { @class = "m-wrap", col = "right", @onchange = "ClearPlz();" })
 
 
             @Html.FormRequiredFieldsSummary()
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+                <button type="submit" class="btn blue"><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
         </div>  
         

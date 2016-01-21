@@ -57,7 +57,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult LoadFormulareAndZiPoolDaten(FormulareSelektor model)
         {
-            ViewModel.FormulareSelektor = model;
+            ViewModel.ApplySelection(model);
 
             if (ModelState.IsValid)
                 ViewModel.LoadFormulareAndZiPoolDaten(ModelState.AddModelError);

@@ -1435,3 +1435,7 @@ div.span-alert-placeholder .alert {
 div.tile-object {
     font-size: 14px;
 }
+
+.bg-tile-pdf {
+    background-color: #d37166;
+}

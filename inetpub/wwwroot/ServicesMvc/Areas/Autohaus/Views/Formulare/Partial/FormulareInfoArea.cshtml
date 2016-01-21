@@ -4,7 +4,7 @@
     
     @foreach (var item in Model)
     {
-        @Html.TileSimple(item.Typ, "bg-red", "icon-file-pdf-o", "return ShowPdfFormular(\"" + item.DateiPfad + "\");")
+        @Html.TileSimple(item.Typ, "bg-tile-pdf", "icon-file-pdf-o", "return ShowPdfFormular(\"" + item.DateiPfad + "\");")
     }
 
 </div>

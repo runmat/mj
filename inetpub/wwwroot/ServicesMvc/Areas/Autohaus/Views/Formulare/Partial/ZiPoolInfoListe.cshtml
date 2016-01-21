@@ -1,9 +1,18 @@
 ﻿@model CkgDomainLogic.Autohaus.Models.ZiPoolDetaildaten
 
 <style>
-    
+
     .dd-handle {
         cursor: auto !important;
+    }
+
+    .zipool-item-original {
+        background-color: #a0c539;
+    }
+
+    .zipool-item-copy {
+        background-color: #cddf9a; /* fallback color for older browsers */
+        background-color: rgba(160, 197, 57, 0.5);
     }
     
 </style>
@@ -13,8 +22,8 @@
     @foreach (var item in Model.ErforderlicheDokumente)
     {
         <li class="dd-item">
-            <div class="dd-handle">
-                @item
+            <div class="dd-handle @item.StyleCssClass">
+                @item.Text
             </div>
         </li>
     }

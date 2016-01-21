@@ -80,7 +80,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public string GetKreisByPlz(string plz)
         {
-            return DataService.GetZulassungskreisFromPostcodeAndCity(plz, "");
+            if (plz != FormulareSelektor.Postleitzahl)
+            {
+                FormulareSelektor.Postleitzahl = plz;
+                FormulareSelektor.Zulassungskreis = DataService.GetZulassungskreisFromPostcodeAndCity(plz, "");
+            }
+
+            return FormulareSelektor.Zulassungskreis;
+        }
+
+        public void ApplySelection(FormulareSelektor selektor)
+        {
+            if (string.IsNullOrEmpty(selektor.Postleitzahl))  // wenn Plz gesetzt ist, wurde der Kreis schon ermittelt
+                FormulareSelektor = selektor;
         }
 
         public void LoadFormulareAndZiPoolDaten(Action<string, string> addModelError)

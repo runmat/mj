@@ -2,6 +2,7 @@
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Models;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
@@ -43,11 +44,11 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
-        public List<string> ErforderlicheDokumente
+        public List<SimpleUiListItem> ErforderlicheDokumente
         {
             get
             {
-                var liste = new List<string>();
+                var liste = new List<SimpleUiListItem>();
 
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.ZBII, FahrzeugbriefErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.ZBI, FahrzeugscheinErforderlich);
@@ -63,7 +64,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        private void TryAddErforderlicheDokumenteEintrag(ref List<string> liste, string bezeichnung, string wert)
+        private void TryAddErforderlicheDokumenteEintrag(ref List<SimpleUiListItem> liste, string bezeichnung, string wert)
         {
             string ergebnisWert;
 
@@ -85,7 +86,11 @@ namespace CkgDomainLogic.Autohaus.Models
             }
 
             if (ergebnisWert != null)
-                liste.Add(string.Format("{0} ({1})", bezeichnung, ergebnisWert));
+                liste.Add(new SimpleUiListItem
+                {
+                    Text = string.Format("{0} ({1})", bezeichnung, ergebnisWert),
+                    StyleCssClass = string.Format("zipool-item-{0}", (ergebnisWert == Localize.Original ? "original" : "copy"))
+                });
         }
     }
 }

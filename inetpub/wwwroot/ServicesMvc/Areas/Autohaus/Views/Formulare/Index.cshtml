@@ -38,17 +38,26 @@
     }
 
     function TryLoadKreisByPlz() {
+        var plz = $("#Postleitzahl").val();
+
+        if (!plz)
+            return;
+
         $.ajax({
             type: "POST",
             url: "LoadKreisByPlz",
-            data: { plz: $("#Postleitzahl").val() },
+            data: { plz: plz },
             loadingShow: false,
             success: function (result) {
                 if (result.success) {
-                    $("#Zulassungskreis").select2("val", result.kreis);
+                    $("#Zulassungskreis").select2('val', result.kreis);
                 }
             }
         });
+    }
+
+    function ClearPlz() {
+        $("#Postleitzahl").val("");
     }
 
     function ShowFormulareAndZiPoolDaten() {
