@@ -626,9 +626,7 @@
                             </tr>
                             <tr>
                                 <td class="firstLeft active" colspan="2">
-                                    <b>
-                                        48h-Versandzulassung
-                                    </b>
+                                    <asp:Label runat="server" ID="lblPanel48hTitle" Text="48h-Versandzulassung" Font-Bold="True" />
                                 </td>
                             </tr>
                             <tr>
@@ -638,8 +636,11 @@
                             </tr>
                             <tr>
                                 <td class="firstLeft active" colspan="2" style="color: red; padding-left: 3px; padding-right: 3px">
-                                    <b>Achtung! Aufgrund des gewählten Zulassungsdatums, Amtes und Lieferanten wird dieser Vorgang als 48h-Expresszulassung behandelt.</b>
-                                    <br/>
+                                    <asp:Label runat="server" ID="lblPanel48hHint" Text="Achtung! Aufgrund des gewählten Zulassungsdatums, Amtes und Lieferanten wird dieser Vorgang als 48h-Expresszulassung behandelt." Font-Bold="True" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="firstLeft active" colspan="2" style="color: red; padding-left: 3px; padding-right: 3px">
                                     <b>Bitte beachten Sie die folgenden Zusatzinformationen und passen Sie ggf. den Versand vor dem Absenden noch einmal an.</b>
                                 </td>
                             </tr>

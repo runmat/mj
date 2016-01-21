@@ -56,6 +56,7 @@ namespace CkgDomainLogic.General.Database.Services
                     " select {0}, {1}, {2}, getdate()", 
                     UserID, messageID, showMessageFromDate);
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception) { }
         }
 
@@ -77,6 +78,9 @@ namespace CkgDomainLogic.General.Database.Services
                 var accArea = AccountingAreas.FirstOrDefault(a => a.Area == cust.AccountingArea);
                 if (accArea != null)
                     cust.AccountingAreaName = accArea.Description;
+
+                if (cust.LoginLinkID.HasValue && cust.LoginLinkID.Value > 0)
+                    cust.LoginLink = GetLoginLink(cust.LoginLinkID.Value);
             }
 
             return cust;
@@ -87,6 +91,11 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<Customer>("SELECT * FROM Customer").ToListOrEmptyList();
         }
 
+        public string GetLoginLink(int loginLinkId)
+        {
+            return Database.SqlQuery<string>("SELECT Text FROM WebUserUploadLoginLink WHERE ID = {0}", loginLinkId).FirstOrDefault();
+        }
+
         public string GetEmailAddressFromUserName(string userName)
         {
             return Database.SqlQuery<string>("select mail from vwWebUser inner join WebUserInfo on vwWebUser.UserID = WebUserInfo.id_user where Username = {0}", userName).FirstOrDefault();
@@ -95,6 +104,18 @@ namespace CkgDomainLogic.General.Database.Services
         public string GetUserAccountLastLockedBy(string userName)
         {
             return Database.SqlQuery<string>("SELECT LastChangedBy FROM AdminHistory_User WHERE ID = (SELECT MAX(ID) FROM AdminHistory_User WHERE Username = {0} AND Action = {1})", userName, "Benutzer gesperrt").FirstOrDefault();
+        }
+
+        private bool CheckUserHasCategoryRights(string userName, string categoryName)
+        {
+            var sql = string.Format("select COUNT(*) from WebUserCategoryRights where CategoryName = '{0}' and HasRights = 1 and UserName = '{1}'", categoryName, userName);
+            var result = Database.SqlQuery<int>(sql).First();
+            return (result > 0);
+        }
+
+        public bool CheckUserHasLocalizationTranslationRights(string userName)
+        {
+            return CheckUserHasCategoryRights(userName, "LOKALISIERUNGS_RECHT");
         }
 
         public User GetUserFromPasswordToken(string passwordRequestKey)
@@ -534,7 +555,7 @@ namespace CkgDomainLogic.General.Database.Services
         #region TranslatedResource
 
         public DbSet<TranslatedResource> TranslatedResources { get; set; }
-        
+
         public DbSet<TranslatedResourceCustom> TranslatedResourceCustoms { get; set; }
 
         public List<TranslatedResource> Resources
@@ -559,11 +580,61 @@ namespace CkgDomainLogic.General.Database.Services
             return (t ?? new TranslatedResourceCustom { Resource = resourceKey, CustomerID = customerID });
         }
 
-        public void TranslatedResourceUpdate(TranslatedResource r)
+        public void TranslatedResourceUpdate(TranslatedResource r, string userName)
         {
+            if (r.de.IsNullOrEmpty() || r.en.IsNullOrEmpty())
+                return;
+
             Database.ExecuteSqlCommand(
                 " if not exists(select Resource from TranslatedResource where Resource = {0}) " +
-                "   insert into TranslatedResource (Resource, en, de) select {0}, {1}, {2}", r.Resource, r.en, r.de);
+                "   insert into TranslatedResource (Resource, en, en_kurz, de, de_kurz, fr, fr_kurz) select {0}, {1}, {1}, {1}, {1}, {1}, {1}", 
+                r.Resource, "[INSERTED]");
+
+            Database.ExecuteSqlCommand(
+                " insert into TranslatedResource_UserLogs ( " +
+                "  Resource, " +
+                "  de_alt, " +
+                "  de_kurz_alt, " +
+                "  de_neu, " +
+                "  de_kurz_neu, " +
+                "  en_alt, " +
+                "  en_kurz_alt, " +
+                "  en_neu, " +
+                "  en_kurz_neu, " +
+                "  fr_alt, " +
+                "  fr_kurz_alt, " +
+                "  fr_neu, " +
+                "  fr_kurz_neu, " +
+                "  ChangeDate, " +
+                "  ChangeUser " +
+                "  ) " +
+                " select " +
+                "  tr.Resource, " +
+                "  tr.de, " +
+                "  tr.de_kurz, " +
+                "  {0}, " +
+                "  {1}, " +
+                "  tr.en, " +
+                "  tr.en_kurz, " +
+                "  {2}, " +
+                "  {3}, " +
+                "  tr.fr, " +
+                "  tr.fr_kurz, " +
+                "  {4}, " +
+                "  {5}, " +
+                "  getdate(), " +
+                "  {6} " +
+                " from TranslatedResource tr " +
+                " where tr.Resource = {7} " +
+                " and ( " +
+                "       convert(varchar(4096),isnull(tr.de,'')) <> isnull({0},'') or isnull(tr.de_kurz,'') <> isnull({1},'') or " +
+                "       convert(varchar(4096),isnull(tr.en,'')) <> isnull({2},'') or isnull(tr.en_kurz,'') <> isnull({3},'') or " +
+                "       convert(varchar(4096),isnull(tr.fr,'')) <> isnull({4},'') or isnull(tr.fr_kurz,'') <> isnull({5},'') " +
+                "     ) ",
+                    r.de, r.de_kurz,
+                    r.en, r.en_kurz,
+                    r.fr, r.fr_kurz,
+                    userName, r.Resource);
 
             Database.ExecuteSqlCommand(
                 " update TranslatedResource set " +
@@ -580,15 +651,108 @@ namespace CkgDomainLogic.General.Database.Services
                     r.Resource);
         }
 
-        public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r)
+        public void TranslatedResourceDelete(TranslatedResource r, string userName)
+        {
+            Database.ExecuteSqlCommand(
+                " insert into TranslatedResource_UserLogs ( " +
+                "  Resource, " +
+                "  de_alt, " +
+                "  de_kurz_alt, " +
+                "  de_neu, " +
+                "  de_kurz_neu, " +
+                "  en_alt, " +
+                "  en_kurz_alt, " +
+                "  en_neu, " +
+                "  en_kurz_neu, " +
+                "  fr_alt, " +
+                "  fr_kurz_alt, " +
+                "  fr_neu, " +
+                "  fr_kurz_neu, " +
+                "  ChangeDate, " +
+                "  ChangeUser " +
+                "  ) " +
+                " select " +
+                "  tr.Resource, " +
+                "  tr.de, " +
+                "  tr.de_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  tr.en, " +
+                "  tr.en_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  tr.fr, " +
+                "  tr.fr_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  getdate(), " +
+                "  {0} " +
+                " from TranslatedResource tr " +
+                " where tr.Resource = {1} ",
+                    userName, r.Resource);
+
+            Database.ExecuteSqlCommand(
+                " delete from TranslatedResource where Resource = {0}",
+                    r.Resource);
+        }
+
+        public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r, string userName)
         {
             if (r.de.IsNullOrEmpty() || r.en.IsNullOrEmpty())
                 return;
 
             Database.ExecuteSqlCommand(
                 " if not exists (select Resource from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}) " +
-                "   insert into TranslatedResourceCustom (Resource, CustomerID, en, de) select {0}, {1}, {2}, {3}",
-                r.Resource, r.CustomerID, r.en, r.de);
+                "   insert into TranslatedResourceCustom (Resource, CustomerID, en, en_kurz, de, de_kurz, fr, fr_kurz) select {0}, {1}, {2}, {2}, {2}, {2}, {2}, {2}",
+                r.Resource, r.CustomerID, "[INSERTED]");
+
+            Database.ExecuteSqlCommand(
+                " insert into TranslatedResourceCustom_UserLogs ( " +
+                "  Resource, " +
+                "  CustomerID, " +
+                "  de_alt, " +
+                "  de_kurz_alt, " +
+                "  de_neu, " +
+                "  de_kurz_neu, " +
+                "  en_alt, " +
+                "  en_kurz_alt, " +
+                "  en_neu, " +
+                "  en_kurz_neu, " +
+                "  fr_alt, " +
+                "  fr_kurz_alt, " +
+                "  fr_neu, " +
+                "  fr_kurz_neu, " +
+                "  ChangeDate, " +
+                "  ChangeUser " +
+                "  ) " +
+                " select " +
+                "  tr.Resource, " +
+                "  tr.CustomerID, " +
+                "  tr.de, " +
+                "  tr.de_kurz, " +
+                "  {0}, " +
+                "  {1}, " +
+                "  tr.en, " +
+                "  tr.en_kurz, " +
+                "  {2}, " +
+                "  {3}, " +
+                "  tr.fr, " +
+                "  tr.fr_kurz, " +
+                "  {4}, " +
+                "  {5}, " +
+                "  getdate(), " +
+                "  {6} " +
+                " from TranslatedResourceCustom tr " +
+                " where tr.Resource = {7} and tr.CustomerID = {8} " +
+                " and ( " +
+                "       convert(varchar(4096),isnull(tr.de,'')) <> isnull({0},'') or isnull(tr.de_kurz,'') <> isnull({1},'') or " +
+                "       convert(varchar(4096),isnull(tr.en,'')) <> isnull({2},'') or isnull(tr.en_kurz,'') <> isnull({3},'') or " +
+                "       convert(varchar(4096),isnull(tr.fr,'')) <> isnull({4},'') or isnull(tr.fr_kurz,'') <> isnull({5},'') " +
+                "     ) ",
+                    r.de, r.de_kurz,
+                    r.en, r.en_kurz,
+                    r.fr, r.fr_kurz,
+                    userName, r.Resource, r.CustomerID);
 
             Database.ExecuteSqlCommand(
                 " update TranslatedResourceCustom set " +
@@ -605,8 +769,48 @@ namespace CkgDomainLogic.General.Database.Services
                     r.Resource, r.CustomerID);
         }
 
-        public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
+        public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r, string userName)
         {
+            Database.ExecuteSqlCommand(
+                " insert into TranslatedResourceCustom_UserLogs ( " +
+                "  Resource, " +
+                "  CustomerID, " +
+                "  de_alt, " +
+                "  de_kurz_alt, " +
+                "  de_neu, " +
+                "  de_kurz_neu, " +
+                "  en_alt, " +
+                "  en_kurz_alt, " +
+                "  en_neu, " +
+                "  en_kurz_neu, " +
+                "  fr_alt, " +
+                "  fr_kurz_alt, " +
+                "  fr_neu, " +
+                "  fr_kurz_neu, " +
+                "  ChangeDate, " +
+                "  ChangeUser " +
+                "  ) " +
+                " select " +
+                "  tr.Resource, " +
+                "  tr.CustomerID, " +
+                "  tr.de, " +
+                "  tr.de_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  tr.en, " +
+                "  tr.en_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  tr.fr, " +
+                "  tr.fr_kurz, " +
+                "  '[DELETED]', " +
+                "  '[DELETED]', " +
+                "  getdate(), " +
+                "  {0} " +
+                " from TranslatedResourceCustom tr " +
+                " where tr.Resource = {1} and tr.CustomerID = {2} ",
+                    userName, r.Resource, r.CustomerID);
+
             Database.ExecuteSqlCommand(
                 " delete from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}",
                     r.Resource, r.CustomerID);

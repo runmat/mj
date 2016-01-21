@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Web;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using CKGDatabaseAdminLib.Contracts;
@@ -80,6 +85,106 @@ namespace CKGDatabaseAdminLib.ViewModels
             var savePath = (parameter as string);
 
             new ExcelDocumentFactory().CreateExcelDocumentAndSaveAsFile(savePath, GetGitBranchesAsDataTable());
+        }
+
+        public void SendTransportMail()
+        {
+            try
+            {
+                var mailBody = GenerateMailBody();
+
+                var sdp = Process.Start("mailto:?subject=Heutige%20Transporte&body=" + HttpUtility.UrlEncode(mailBody).NotNullOrEmpty().Replace("+", "%20"));
+                if (sdp != null)
+                {
+                    var waitCount = 0;
+                    while (!sdp.HasExited)
+                    {
+                        if (waitCount == 20)
+                        {
+                            if (sdp.Responding)
+                            {
+                                sdp.CloseMainWindow();
+                            }
+                            else
+                            {
+                                sdp.Kill();
+                            }
+                            throw new Exception("EMail-Client konnte nicht geöffnet werden!");
+                        }
+
+                        waitCount++;
+                        Thread.Sleep(1000);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Parent.ShowMessage("Fehler beim Senden der Mail: " + ex.Message, MessageType.Error);
+            }
+        }
+
+        private string GenerateMailBody()
+        {
+            var strBuilder = new StringBuilder();
+
+            strBuilder.AppendLine("Hallo,");
+            strBuilder.AppendLine();
+            strBuilder.AppendLine("folgende ITAs/Tickets wurden transportiert:");
+            strBuilder.AppendLine();
+
+            var branches = DataService.GetBranchesForTransportMail();
+
+            var portalListe = new List<string>();
+            var serverListe = new List<string>();
+
+            foreach (var branch in branches)
+            {
+                foreach (var item in branch.PortalBoolListe.Where(p => p.IsChecked))
+                {
+                    if (!portalListe.Contains(item.Key))
+                        portalListe.Add(item.Key);
+                }
+
+                foreach (var item in branch.ServerBoolListe.Where(s => s.IsChecked))
+                {
+                    if (!serverListe.Contains(item.Key))
+                        serverListe.Add(item.Key);
+                }
+            }
+
+            foreach (var portal in portalListe)
+            {
+                strBuilder.AppendLine(portal);
+                strBuilder.AppendLine("----------------");
+
+                foreach (var item in branches.Where(b => b.PortalBoolListe.Any(p => p.Key == portal && p.IsChecked)))
+                    strBuilder.AppendLine(string.Format("- {0} ({1}): {2}", item.Name, item.PM, item.Bemerkung));
+
+                strBuilder.AppendLine();
+            }
+
+            if (branches.Any(b => b.PortalBoolListe.None(p => p.IsChecked)))
+            {
+                strBuilder.AppendLine("sonstige");
+                strBuilder.AppendLine("----------------");
+
+                foreach (var item in branches.Where(b => b.PortalBoolListe.None(p => p.IsChecked)))
+                    strBuilder.AppendLine(string.Format("- {0} ({1}): {2}", item.Name, item.PM, item.Bemerkung));
+
+                strBuilder.AppendLine();
+            }
+
+            if (serverListe.Any())
+            {
+                strBuilder.AppendLine("Folgende Server sind betroffen:");
+                strBuilder.AppendLine(string.Join(", ", serverListe));
+                strBuilder.AppendLine();
+            }
+
+            strBuilder.AppendLine();
+            strBuilder.AppendLine("IT-Entwicklung");
+
+            return strBuilder.ToString();
         }
 
         #endregion

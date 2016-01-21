@@ -179,7 +179,7 @@ namespace ServicesMvc.Controllers
             ModelState.AddModelError(key, new Exception (errorMessage.NotNullOrEmpty()) { HelpLink = groupName.Replace('.','_') });
         }
 
-        public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
+        public new ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("CocTypen", dt);
@@ -187,7 +187,7 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
+        public new ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("CocTypen", dt, landscapeOrientation: true);

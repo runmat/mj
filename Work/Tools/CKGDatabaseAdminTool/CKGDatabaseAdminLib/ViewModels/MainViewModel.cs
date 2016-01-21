@@ -89,6 +89,13 @@ namespace CKGDatabaseAdminLib.ViewModels
             set { _sapOrmModelGenerationViewModel = value; SendPropertyChanged("SapOrmModelGenerationViewModel"); }
         }
 
+        private SqlExecutionViewModel _sqlExecutionViewModel;
+        public SqlExecutionViewModel SqlExecutionViewModel
+        {
+            get { return _sqlExecutionViewModel; }
+            set { _sqlExecutionViewModel = value; SendPropertyChanged("SqlExecutionViewModel"); }
+        }
+
         public ObservableCollection<string> DbConnections { get; private set; }
 
         private string _actualDatabase;
@@ -162,14 +169,14 @@ namespace CKGDatabaseAdminLib.ViewModels
         private void LoadDbConnections()
         {
             DbConnections = new ObservableCollection<string>();
-            var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+            var sectionData = Config.GetAllDbConnections();
             foreach (var item in sectionData.AllKeys)
             {
                 DbConnections.Add(item);
             }
-            if (DbConnections.Count > 0)
+            if (DbConnections.Count > 1)
             {
-                ActualDatabase = DbConnections[0];
+                ActualDatabase = DbConnections[1];
             }
         }
 
@@ -192,10 +199,11 @@ namespace CKGDatabaseAdminLib.ViewModels
                 FieldTranslationCopyViewModel = new FieldTranslationCopyViewModel(this);
                 BapiCheckViewModel = new BapiCheckViewModel(this);
                 SapOrmModelGenerationViewModel = new SapOrmModelGenerationViewModel(this);
+                SqlExecutionViewModel = new SqlExecutionViewModel(this);
             }
 
             // Git-Branch Verwaltung nur in DAD-Datenbanken
-            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
+            if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD")))
             {
                 GitBranchViewModel = new GitBranchInfoViewModel(this);
                 if (UseDefaultStartupView)

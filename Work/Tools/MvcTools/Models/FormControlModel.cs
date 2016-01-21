@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using GeneralTools.Contracts;
+using GeneralTools.Models;
 
 namespace MvcTools.Models
 {
@@ -8,6 +10,12 @@ namespace MvcTools.Models
 
     public class FormControlModel
     {
+        public string ModelTypeName { get; set; }
+
+        public string PropertyName { get; set; }
+
+        public IKeyValueStore<string> KeyStringStore { get { return DependencyResolver.Current.GetService<IKeyValueStore<string>>(); } }
+
         /// <summary>
         /// label text, grid header, etc
         /// </summary>
@@ -53,6 +61,13 @@ namespace MvcTools.Models
         /// </summary>
         public bool LabelHidden { get; set; }
 
+        /// <summary>
+        /// optionally collapse whole control with all surrounding html templates
+        /// </summary>
+        public bool IsCollapsed { get; set; }
+
+        public bool IsGrayed { get; set; }
+
         private FormMultiColumnMode _columnMode = FormMultiColumnMode.None;
         public FormMultiColumnMode ColumnMode
         {
@@ -64,28 +79,13 @@ namespace MvcTools.Models
                 if (ControlHtmlAttributes == null || !ControlHtmlAttributes.ContainsKey("col"))
                     return FormMultiColumnMode.None;
 
-                switch (ControlHtmlAttributes["col"].ToString())
-                {
-                    case "left":
-                        return FormMultiColumnMode.Left;
+                var colValue = ControlHtmlAttributes["col"].ToString();
+                var autoMode = AutoMultiColumnModeTryGetAndIncrementValue(colValue);
 
-                    case "right":
-                        return FormMultiColumnMode.Right;
+                _columnMode = (autoMode != FormMultiColumnMode.None) ? autoMode : GetMultiColumnMode(colValue);
 
-                    case "left3":
-                        return FormMultiColumnMode.Left3;
-
-                    case "middle3":
-                        return FormMultiColumnMode.Middle3;
-
-                    case "right3":
-                        return FormMultiColumnMode.Right3;
-
-                    default:
-                        return FormMultiColumnMode.None;
-                }
+                return _columnMode;
             }
-            set { _columnMode = value; }
         }
 
         public IHtmlString PreControlHtml { get; set; }
@@ -96,5 +96,115 @@ namespace MvcTools.Models
         /// indicates if this property is persistable
         /// </summary>
         public MvcHtmlString PerstistenceIndicatorHtml { get; set; }
+
+        public void AutoMultiColumnModeStart(string autoKey)
+        {
+            KeyStringStore.SetValue(autoKey, "");
+        }
+
+        public bool AutoMultiColumnModeEndReached(string autoKey)
+        {
+            return AutoMultiColumnModeTryGetAndIncrementValue(autoKey).ToString("F").ToLower().StartsWith("left");
+        }
+
+        FormMultiColumnMode AutoMultiColumnModeTryGetAndIncrementValue(string autoKey)
+        {
+            if (!autoKey.ToLower().StartsWith("auto"))
+                return FormMultiColumnMode.None;
+
+            var storedValue = KeyStringStore.GetValue(autoKey);
+
+            var nextValue = IncrementMultiColumnMode(autoKey, ref storedValue);
+
+            KeyStringStore.SetValue(autoKey, nextValue.ToString("F").ToLower());
+
+            return GetMultiColumnMode(storedValue);
+        }
+
+        private static FormMultiColumnMode GetMultiColumnMode(string value)
+        {
+            switch (value)
+            {
+                case "left":
+                    return FormMultiColumnMode.Left;
+
+                case "right":
+                    return FormMultiColumnMode.Right;
+
+                case "left3":
+                    return FormMultiColumnMode.Left3;
+
+                case "middle3":
+                    return FormMultiColumnMode.Middle3;
+
+                case "right3":
+                    return FormMultiColumnMode.Right3;
+
+                default:
+                    return FormMultiColumnMode.None;
+            }
+        }
+
+        private FormMultiColumnMode IncrementMultiColumnMode(string autoKey, ref string storedValue)
+        {
+            FormMultiColumnMode nextValue;
+
+            if (autoKey.EndsWith("3"))
+            {
+                // 3 Column mode
+
+                if (storedValue.IsNullOrEmpty())
+                    storedValue = "left3";
+
+                if (IsCollapsed)
+                    return GetMultiColumnMode(storedValue);
+
+                switch (storedValue)
+                {
+                    case "left3":
+                        nextValue = FormMultiColumnMode.Middle3;
+                        break;
+
+                    case "middle3":
+                        nextValue = FormMultiColumnMode.Right3;
+                        break;
+
+                    case "right3":
+                        nextValue = FormMultiColumnMode.Left3;
+                        break;
+
+                    default:
+                        nextValue = FormMultiColumnMode.None;
+                        break;
+                }
+            }
+            else
+            {
+                // 2 Column mode
+
+                if (storedValue.IsNullOrEmpty())
+                    storedValue = "left";
+
+                if (IsCollapsed)
+                    return GetMultiColumnMode(storedValue);
+
+                switch (storedValue)
+                {
+                    case "left":
+                        nextValue = FormMultiColumnMode.Right;
+                        break;
+
+                    case "right":
+                        nextValue = FormMultiColumnMode.Left;
+                        break;
+
+                    default:
+                        nextValue = FormMultiColumnMode.None;
+                        break;
+                }
+            }
+
+            return nextValue;
+        }
     }
 }

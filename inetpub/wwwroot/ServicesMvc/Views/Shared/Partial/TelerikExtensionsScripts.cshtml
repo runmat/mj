@@ -41,6 +41,10 @@
                     try { GridPrepareFromSelectorPersistedState(grid.data("tGrid")); }
                     catch (e) { }
                 }
+
+                try {
+                    TryPrepareGridSettingsAdministration(grid);
+                } catch (e) { }
             }
 
             if (gridDataBoundFirstTime) {
@@ -216,9 +220,9 @@
         $.ajax(
                 {
                     type: "POST",
-                    url: "/ServicesMvc/Common/GridAdmin/Edit",
+                    url: "/ServicesMvc/Common/GridAdmin/EditTranslations",
                     data: {
-                        columnMember: columnMember
+                        propertyName: columnMember
                     },
                     loadingShow: true,
                     success: function (result) {
