@@ -59,6 +59,9 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.ApplySelection(model);
 
+            ModelState.Clear();
+            TryValidateModel(model);
+
             if (ModelState.IsValid)
                 ViewModel.LoadFormulareAndZiPoolDaten(ModelState.AddModelError);
 

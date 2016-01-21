@@ -91,8 +91,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ApplySelection(FormulareSelektor selektor)
         {
-            if (string.IsNullOrEmpty(selektor.Postleitzahl))  // wenn Plz gesetzt ist, wurde der Kreis schon ermittelt
+            // bei einer leeren Plz wurde der Kreis geändert, andernfalls wurde bereits vorher per "GetKreisByPlz" der Kreis automatisch ermittelt
+            if (string.IsNullOrEmpty(selektor.Postleitzahl))
                 FormulareSelektor = selektor;
+            else
+                selektor.Zulassungskreis = FormulareSelektor.Zulassungskreis;
         }
 
         public void LoadFormulareAndZiPoolDaten(Action<string, string> addModelError)
