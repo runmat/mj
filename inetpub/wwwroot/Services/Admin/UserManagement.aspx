@@ -853,12 +853,7 @@
 
                                                                     <Columns>
                                                                         
-                                                                        
-                                                                       <%-- <telerik:GridBoundColumn DataField="HasSettings" SortExpression="HasSettings" HeaderText="Erteilt" >
-                                                                            <HeaderStyle Width="150px" />
-                                                                            <ItemStyle Wrap="false" />
-                                                                        </telerik:GridBoundColumn>--%>
-                                                                        
+                                                                       
                                                                      
                                                                               <telerik:GridTemplateColumn Groupable="false" UniqueName="SettingsValue" >
                                                                                         <HeaderStyle Width="150px" />
@@ -871,30 +866,8 @@
                                                                                                                 name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
                                                                                                                 runat="server" 
                                                                                                                 text='<%# DataBinder.Eval(Container.DataItem, "SettingsValue").toString() %>' 
-                                                                                                                
                                                                                                            />
                                                                                                            
-                                                                                                          
-                                                                                                          
-                                                                                                          <%--<br/>
-
-                                                                                                            <asp:Label ID="lblUrlRemoteLogin2" runat="server" Font-Bold="True">is checkbox Visible?</asp:Label>
-                                                                                                             <br/>
-                                                                                                            <%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>
-                                                                                                            <br/>
-                                                                                                            
-                                                                                                            
-                                                                                                            
-                                                                                                           Der settings wert ist  <%#DataBinder.Eval(Container.DataItem, "SettingsValue") %>
-                                                                                                             <br/>
-                                                                                                             <asp:Label ID="lblUrlRemoteLogin3" runat="server" Font-Bold="True">is text Visible?</asp:Label>
-                                                                                                              <br/>
-                                                                                                            <%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>
-                                                                                                                    <asp:Label ID="lblUrlRemoteLogin4" runat="server" Font-Bold="True">Der checked wert ist</asp:Label>
-                                                                                                             <br/>
-                                                                                                            <%# DataBinder.Eval(Container.DataItem, "SettingsValue") %>
-                                                                                                            <br/>
-                                                                                                         --%>
                                                                                                          
                                                                                                             <asp:Checkbox ID="Recht2"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>' 
                                                                                                                     name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 

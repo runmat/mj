@@ -1,40 +1,113 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.General.Contracts
+@using DocumentFormat.OpenXml.Drawing.Charts
+
 @{
     var gridName = "GridShoppingCart";
     var currentController = ViewContext.RouteData.GetRequiredString("controller");
+
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+
 }
 
 @Html.SpanAlert("ShoppingCartSubmitWaitHint")
 
 <div class="form-horizontal">
-    @Html.FormDropDownList("WarenkorbSelectedKunnr", (TempData["KundenauswahlWarenkorb"] as List<Kunde>).ToSelectList(), new { @class = "m-wrap", onchange = "WarenkorbSelectedKunnrChanged()" }, labelText: Localize.ShowOrders)
+    @Html.FormDropDownList("WarenkorbSelectedKunnr", (TempData["KundenauswahlWarenkorb"] as List<Kunde>).ToSelectList(), new {@class = "m-wrap", onchange = "WarenkorbSelectedKunnrChanged()"}, labelText: Localize.ShowOrders)
 </div>
+
+
+<script type="text/javascript">
+
+    var isZulassungAbsendenAllowed1 = '@logonContext.Customer';
+    var isZulassungAbsendenAllowed = "false";
+
+
+
+    $(window).bind("load", function () {
+
+        console.log("window ist gebunden!");
+        alert("window ist gebunden");
+    });
+
+    $(window).load(function () {
+
+        console.log("window ist geladen!");
+        alert("window ist geladen");
+    });
+
+    $(document).ready(function () {
+
+     //   var value = $("[name='test12']").html;
+
+        var arrChkBox = document.getElementsByName("checkedRecords");
+        $(arrChkBox).hide();
+
+
+        console.log("ready!");
+
+        jQuery("input[name='checkedRecords']").each(function () {
+            console.log(this.value + ":" + this.checked);
+        });
+
+        
+
+
+    });
+
+
+    function getCheckbox() {
+
+        window.alert("testt");
+
+        var test = "hier das Ergebnis;";
+        return test;
+      //  "if(isZulassungAbsendenAllowed === 'true') {" +
+        //               "<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.BelegNr #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />" +
+          //         " }" +
+        
+        
+
+        //  var strErgebnis = "<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.BelegNr #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />";
+
+
+        //  return strErgebnis;
+
+    }
+
+
+</script>
+
 
 @(Html.Telerik()
     .Grid<Vorgang>()
     .Name(gridName)
-        
+
     .XAjaxDataBinding("ShoppingCartAjaxBinding", currentController)
     .Columns(columns =>
-        {
-            columns.XBound("")
-                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.BelegNr #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />")
-                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridShoppingCart_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                .Filterable(false);
-            columns.XBound(c => c.BelegNr).Width(145).Title("").Filterable(false).Sortable(false)
-                    .ClientTemplate(
-                            "<button onclick='return ShoppingCartZulassungItemEdit(\"<#= data.BelegNr #>\", \"<#= data.ZulassungFromShoppingCartParameters #>\");' class='btn mini blue tooltips margin-right-10' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
-                            "<button onclick='return ShoppingCartZulassungItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
-                );
+    {
+        columns.XBound("")
+            .ClientTemplate(
+                 "<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.BelegNr #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />" 
+            )
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridShoppingCart_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .Filterable(false);
 
-            columns.XBound(c => c.BeauftragungsArt);
-            columns.XBound(c => c.FahrgestellNr);
-            columns.XBound(c => c.HalterName);
-            columns.XBound(c => c.Zulassungsdatum).Format("{0:dd.MM.yyyy}");
-            columns.XBound(c => c.Abmeldedatum).Format("{0:dd.MM.yyyy}");
-            columns.XBound(c => c.EvbNr);
-            columns.XBound(c => c.Vorerfasser);
-        })
+
+        columns.XBound(c => c.BelegNr).Width(145).Title("").Filterable(false).Sortable(false)
+                .ClientTemplate(
+                        "<button onclick='return ShoppingCartZulassungItemEdit(\"<#= data.BelegNr #>\", \"<#= data.ZulassungFromShoppingCartParameters #>\");' class='btn mini blue tooltips margin-right-10' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
+                        "<button onclick='return ShoppingCartZulassungItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+            );
+
+        columns.XBound(c => c.BeauftragungsArt);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.HalterName);
+        columns.XBound(c => c.Zulassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Abmeldedatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.EvbNr);
+        columns.XBound(c => c.Vorerfasser);
+    })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)

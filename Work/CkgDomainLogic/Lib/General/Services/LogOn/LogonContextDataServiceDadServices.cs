@@ -26,6 +26,15 @@ namespace CkgDomainLogic.General.Services
             get { return CreateDbContext().CheckUserHasLocalizationTranslationRights(UserName); }
         }
 
+
+        //public override string GetLoginUrl(string urlEncodedReturnUrl)
+
+        public override string GetCategorySettingsForWebUser(string RightName)
+        {
+             return CreateDbContext().GetCategorySettingsForWebUser(RightName);
+            
+        }
+
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages
         {
             get { return MaintenanceCoreLoginUserMessages.Cast<IMaintenanceSecurityRuleDataProvider>().ToList(); }

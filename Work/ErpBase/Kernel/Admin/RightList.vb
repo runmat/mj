@@ -115,7 +115,7 @@ Namespace Kernel.Admin
                 If reader.HasRows Then
                     Do While reader.Read()
                         InsertOrDeleteRightForSingleUser(customerId, categoryId, isChecked, strUsernameBearbeiter, reader.GetString(1))
-                        '  System.Diagnostics.Debug.WriteLine(reader.GetInt32(0) & vbTab & reader.GetString(1))
+
                     Loop
                 Else
                     Console.WriteLine("No rows found.")
@@ -141,10 +141,7 @@ Namespace Kernel.Admin
 
             If isChecked = True Then
 
-                ' Wie wird der Username des entsprechenden ZielUsers ermittelt? Sie wird aus dem Form ausgelesen, Name des Feldes ist txtUserID
-                ' Was ist mit der CustomerID - mit rein?
-
-                sSql += "IF NOT EXISTS("
+                sSQl += "IF NOT EXISTS("
                 sSql += "SELECT CategoryID FROM [CategorySettingsWebUser] "
                 sSql += "WHERE "
                 sSql += "UserName LIKE '" & strUserId & "' "
@@ -155,7 +152,6 @@ Namespace Kernel.Admin
                 sSql += "(UserName, CategoryID, SettingsValue, EditUserName, EditDate)"
                 sSql += "VALUES "
                 sSQl += "('" & strUserId & "', '" & categoryId & "', 'false', '" & strUsernameBearbeiter & "', CURRENT_TIMESTAMP)  "
-                ' Hier noch die CustomerID rein? 2x?
 
             Else
 
@@ -164,8 +160,7 @@ Namespace Kernel.Admin
                 sSql += "UserName LIKE '" & strUserId & "' "
                 sSql += "AND "
                 sSQl += "CategoryID LIKE '" & categoryId & "'"
-                ' hier noch die customerID rein?
-                
+
             End If
 
             Try
@@ -192,8 +187,7 @@ Namespace Kernel.Admin
             Dim sSql As String
             Dim strUserName As String
 
-            '  ' TODO TB: Username as Parameter
-            strUserName = "bruecknerlueg"
+            strUserName = userName
 
             sSql = ""
             sSql += "SELECT dbo.CategorySettingsWebUser.UserName, dbo.CategorySettingsWebUser.CategoryID, dbo.CategorySettingsMetadata.SettingsType, "
@@ -203,7 +197,7 @@ Namespace Kernel.Admin
             sSql += "dbo.CategorySettingsWebUser ON dbo.CategorySettingsMetadata.CategoryID = dbo.CategorySettingsWebUser.CategoryID "
             sSql += "WHERE UserName LIKE '" & strUserName & "'"
 
-            'WHERE     (dbo.CategorySettingsWebUser.UserName = 'bruecknerlueg')"
+
 
             Dim values As ArrayList = New ArrayList()
 
@@ -250,8 +244,7 @@ Namespace Kernel.Admin
             ElseIf (strRightFieldtype = "chkbox") Then
                 strTeilSql += "SettingsValue = '" & strUserRightValue & "'"
             End If
-
-
+            
             sSQl += "UPDATE CategorySettingsWebUser "
             sSQl += "SET "
             sSQl += strTeilSQL
@@ -259,8 +252,6 @@ Namespace Kernel.Admin
             sSQl += "UserName = '" & strUserName & "'"
             sSQl += " AND "
             sSQl += "CategoryID = '" & categoryId & "'"
-
-            'System.Diagnostics.Debug.WriteLine(sSQl)
 
             Try
                 cn.Open()
@@ -349,9 +340,3 @@ Namespace Kernel.Admin
     End Class
 
 End Namespace
-
-' ************************************************
-' $History: ApplicationList.vb $
-' 
-
-' ************************************************

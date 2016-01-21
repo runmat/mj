@@ -1,4 +1,11 @@
-﻿<style type="text/css">
+﻿@{
+    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+
+    var submitRightZulassungAbsenden = logonContext.GetCategorySettingsForWebUser("ZULASSUNG_ABSENDEN");
+}
+
+
+<style type="text/css">
     .shopping-cart-menu {
         display: inline;
     }
@@ -72,6 +79,9 @@
 <div class="shopping-cart-body"></div>
 
 <script type="text/javascript">
+    
+    
+    var _submitRightZulassungAbsenden = '@submitRightZulassungAbsenden';
 
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
@@ -275,7 +285,28 @@
             return;
         }
 
-        $(".shopping-cart-item-selection-count").removeClass('hide');
+
+    //    if (_submitRightZulassungAbsenden === "false") {
+    //        $(".button-custom1").hide();
+    //        $(".button-submit").hide();
+    //    }
+        
+        // Submit Right Absende Button anzeigen
+        
+        
+
+        if (_submitRightZulassungAbsenden === "false") {
+            // $(".shopping-cart-item-selection-count").removeClass('hide');
+            console.log("Hier der status für das Grid(false: " + _submitRightZulassungAbsenden);
+          //  $(".shopping-cart-item-selection-count").removeClass('hide');
+            $(".shopping-cart-item-selection-count").hide();
+
+        } else {
+            console.log("Hier der status für das Grid(true: " + _submitRightZulassungAbsenden);
+            $(".shopping-cart-item-selection-count").show();
+
+        }
+
         $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
@@ -283,8 +314,8 @@
     
     function GridShoppingCart_MultiSelectItemCountHint(count) {
         return  '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
-                '<i class="icon-chevron-right margin-right-10"></i>' + 
-                 count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+            '<i class="icon-chevron-right margin-right-10"></i>' + 
+            count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
     }
-    
+
 </script>

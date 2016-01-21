@@ -45,7 +45,20 @@ namespace CkgDomainLogic.General.Services
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
 
+        public string RightName { get; set; }
+
         public virtual bool HasLocalizationTranslationRights { get { return false; } }
+
+        // neu ///////////////////
+        virtual public string GetCategorySettingsForWebUser(string rightname)
+        {
+            return "";
+        }
+        /// </summary>
+
+
+        
+
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserNameForDisplay { get; set; }
