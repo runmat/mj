@@ -3,7 +3,7 @@ using CkgDomainLogic.General.Database.Models;
 
 namespace CkgDomainLogic.General.Contracts
 {
-    public interface IGridAdminDataService
+    public interface IGridAdminDataService : ICkgGeneralDataService
     {
         TranslatedResource TranslatedResourceLoad(string resourceKey);
         TranslatedResourceCustom TranslatedResourceCustomerLoad(string resourceKey, int customerID);
@@ -14,7 +14,13 @@ namespace CkgDomainLogic.General.Contracts
         string GetAppFriendlyName(int appId);
 
         void TranslatedResourceUpdate(TranslatedResource r);
+        void TranslatedResourceDelete(TranslatedResource r);
+
         void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r);
         void TranslatedResourceCustomerDelete(TranslatedResourceCustom r);
+
+        void TranslationsMarkForRefresh();
+
+        void SetCurrentBusinessCustomerConfigVal(string keyName, string value);
     }
 }

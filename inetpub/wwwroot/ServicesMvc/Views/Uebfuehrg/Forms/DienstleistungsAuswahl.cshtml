@@ -23,10 +23,18 @@
                     <option value="@dienstleistung.ID" @dienstleistung.SelectedAsString>@dienstleistung.Name</option>
                 }
             </select>
-        
+
             <div class="bemerkungen">
                 @Html.HiddenFor(m => m.Bemerkungen.FahrtIndex)
-                @Html.FormTextAreaFor(m => m.Bemerkungen.Bemerkung, new { @class = "m-wrap medium" })
+                @Html.FormTextAreaFor(m => m.Bemerkungen.Bemerkung, new {@class = "m-wrap medium"})
+            </div>
+
+            <div class="dienstleistungen-header">
+                <span class="header-left">Protokolle</span>
+            </div>
+
+            <div class="margin-top-15">
+                @Html.Partial("Partial/ProtokollUpload", Model.UploadProtokolle)
             </div>
         </div>
 
@@ -79,6 +87,62 @@
                             $(elem2).scrollIntoView({ ofsetY: 30, duration: '1500' });
                         }
                     });
+                });
+            }
+
+            function UploadStart(e) {
+                // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+                var fileName = e.files[0].name;
+
+                if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
+                    alert('@Localize.FileUploadOnlyPdfLegal');
+                    return false;
+                }
+
+                LoadingShow();
+
+                return true;
+            }
+
+            function UploadFinished(e) {
+                setTimeout("LoadingHide()", 1000);
+
+                // clear only the UI of our Upload Control:
+                $(this).children(".t-upload-files").remove();
+
+                if (!e.response.success) {
+                    alert(e.response.message);
+                    return;
+                }
+
+                var itemIdSuffix = "_" + e.response.fahrtIndex + "_" + e.response.uploadProtokollArt.replace(" ", "").replace(".", "");
+                $("#Dateiname" + itemIdSuffix).text(e.response.uploadFileName);
+                $("#Dateiname" + itemIdSuffix).removeClass("hide");
+                $("#spanUpload" + itemIdSuffix).addClass("hide");
+                $("#btnRemoveProtokoll" + itemIdSuffix).removeClass("hide");
+            }
+
+            function UploadError(e) {
+                e.preventDefault();
+                setTimeout("LoadingHide()", 1000);
+                alert('@Localize.ErrorFileCouldNotBeSaved');
+            }
+
+            function RemoveProtokoll(protokollArt, fahrtIndex)
+            {
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "RemoveProtokoll",
+                    loadingShow: false,
+                    data: { protokollArt: protokollArt },
+                    success: function () {
+                        var itemIdSuffix = "_" + fahrtIndex + "_" + protokollArt.replace(" ", "").replace(".", "");
+                        $("#Dateiname" + itemIdSuffix).text("");
+                        $("#Dateiname" + itemIdSuffix).addClass("hide");
+                        $("#spanUpload" + itemIdSuffix).removeClass("hide");
+                        $("#btnRemoveProtokoll" + itemIdSuffix).addClass("hide");
+                    }
                 });
             }
 

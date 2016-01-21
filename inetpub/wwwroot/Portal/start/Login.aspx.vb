@@ -126,7 +126,7 @@ Public Class Login
 
                     Else
                         'Melde Standard-Benutzer an und geh' weiter
-                        If m_User.Login(strIpStandardUser, Session.SessionID.ToString) Then
+                        If m_User.Login(strIpStandardUser, Session.SessionID, Request.Url.AbsoluteUri) Then
                             System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                         Else
                             lblError.Text = strIpError & "<br>(" & m_User.ErrorMessage & ")"
@@ -361,40 +361,6 @@ Public Class Login
         Return True
     End Function
 
-
-    'Private Sub LinkButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '    Try
-    '        If Not Me.Session("objUser") Is Nothing AndAlso Me.User.Identity.IsAuthenticated = False Then
-    '            '---JVE: User nicht mehr in der Session gespeichert bzw. nicht Authentifiziert---
-    '            Response.Redirect(BouncePage(Me), True)
-    '            Exit Sub
-    '        End If
-
-    '        If m_User.Login(txtUsername.Text, txtPassword.Text) Then
-    '            If Not checkLogin() Then    'Prüfen, ob Anmeldung erlaubt...
-    '                Exit Sub
-    '            End If
-
-    '            m_User.SetLastLogin(Now)
-    '            Session("objUser") = m_User
-    '            System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
-    '        Else
-    '            '############################################################
-    '            'Error-Property bei User-Objekt einfügen und hier darstellen
-    '            If Len(m_User.ErrorMessage) > 0 Then
-    '                lblError.Text = "Fehler bei der Anmeldung<br>(" & m_User.ErrorMessage & ")"
-    '            Else
-    '                lblError.Text = "Fehler bei der Anmeldung."
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        m_App = New App(m_User)
-    '        m_App.WriteErrorText(1, txtUsername.Text, "Login", "cmdLogin_Click", ex.ToString)
-
-    '        lblError.Text = "Fehler bei der Anmeldung (" & ex.Message & ")"
-    '    End Try
-    'End Sub
-
     Private Sub cmdLogin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdLogin.Click
         Try
             Dim blnPasswdlink As Boolean = trPasswortVergessen.Visible
@@ -406,7 +372,7 @@ Public Class Login
             End If
             lnkPasswortVergessen.Text = "Passwort vergessen?"
             trPasswortVergessen.Visible = False
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, blnPasswdlink) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, blnPasswdlink) Then
                 '    If m_User.Login(txtUsername.Text, Session.SessionID.ToString) Then
 
                 'Prüfe IP-Adress-Regelung
@@ -514,7 +480,7 @@ Public Class Login
             'End If
             lnkPasswortVergessen.Text = "Passwort vergessen?"
             trPasswortVergessen.Visible = False
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, blnPasswdlink) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, blnPasswdlink) Then
                 '    If m_User.Login(txtUsername.Text, Session.SessionID.ToString) Then
 
                 'Prüfe IP-Adress-Regelung

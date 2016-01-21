@@ -26,6 +26,10 @@ namespace CkgDomainLogic.General.Services
 
         public MaintenanceResult MaintenanceInfo { get { return PropertyCacheGet(() => new MaintenanceResult()); } set { PropertyCacheSet(value); } }
 
+        public int CustomerID { get { return 0; } }
+
+        public int AppID { get { return 0; } }
+
         public string KundenNr { get { return PropertyCacheGet(() => ConfigurationManager.AppSettings["LogonContextTestKundenNr"]); } set { PropertyCacheSet(value); } }
 
         public string GroupName { get { return PropertyCacheGet(() => "LUEG_BOCHUM"); } set { PropertyCacheSet(value); } }
@@ -35,6 +39,8 @@ namespace CkgDomainLogic.General.Services
             get { return PropertyCacheGet(() => User == null ? "TestUser" : User.Username); }
             set { PropertyCacheSet(value); }
         }
+
+        public virtual bool HasLocalizationTranslationRights { get { return false; } }
 
         private WebUserInfo _userInfo = new WebUserInfo { Telephone = "04102 56677" };
         public WebUserInfo UserInfo
@@ -355,6 +361,11 @@ namespace CkgDomainLogic.General.Services
             AppUrl = "";
             MvcEnforceRawLayout = false;
             LogoutUrl = "";
+        }
+
+        public void TrySetLogoutLink()
+        {
+            throw new NotImplementedException();
         }
 
         public string PersistanceKey { get { return UserName; } }

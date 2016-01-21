@@ -10,6 +10,7 @@ using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WebTools.Services;
 
 namespace CkgDomainLogic.General.ViewModels
@@ -34,7 +35,7 @@ namespace CkgDomainLogic.General.ViewModels
             get
             {
                 if (String.IsNullOrEmpty(_sslCertificateHtml))
-                    _sslCertificateHtml = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate");
+                    _sslCertificateHtml = GeneralConfiguration.GetConfigValue("Login", "SecurityCertificate");
 
                 return _sslCertificateHtml;
             }

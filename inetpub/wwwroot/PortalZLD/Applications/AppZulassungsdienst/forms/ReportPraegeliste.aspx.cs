@@ -114,6 +114,10 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = "Fehler: " + objListe.Message;
             }
+            else if (objListe.PraegListeKopf == null || objListe.PraegListeKopf.Rows.Count == 0)
+            {
+                lblError.Text = "Keine Daten gefunden.";
+            }
             else
             {
                 if ((objListe.pdfPraegeliste != null) && (objListe.pdfPraegeliste.Length > 0))

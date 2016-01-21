@@ -81,7 +81,7 @@ namespace DocumentTools.Services
             pdfDoc.Close();
         }
 
-        public static void ScanClientCreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
+        public static void ScanClientCreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, string pdfPassword = "")
         {
             var pdfDoc = new ITextSharpPdfDocument();
             var imageCount = 0;
@@ -103,8 +103,25 @@ namespace DocumentTools.Services
                 imageCount++;
             }
 
-            pdfDoc.Save(pdfFileName);
+            if (pdfPassword.IsNullOrEmpty())
+            {
+                pdfDoc.Save(pdfFileName);
+                pdfDoc.Close();
+                return;
+            }
+
+            // PDF encryption goes here:
+            var tempFileName = Path.Combine(Path.GetDirectoryName(pdfFileName) ?? "", Path.GetFileNameWithoutExtension(pdfFileName) + "-temp" + Path.GetExtension(pdfFileName));
+            pdfDoc.Save(tempFileName);
             pdfDoc.Close();
+
+            using (Stream output = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                var reader = new ITextsharpPdf.PdfReader(tempFileName);
+                ITextsharpPdf.PdfEncryptor.Encrypt(reader, output, false, pdfPassword, pdfPassword, ITextsharpPdf.PdfWriter.ALLOW_COPY);
+            }
+
+            FileService.TryFileDelete(tempFileName);
         }
 
         public static byte[] HtmlToPdf(string html, string logoFileName = null, int logoX = 395, int logoY = 745)
