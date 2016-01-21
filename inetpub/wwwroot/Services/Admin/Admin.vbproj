@@ -261,6 +261,19 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Kernel\AppConfiguration.vb" />
+    <Compile Include="Kernel\UserListCategoryRights.Designer.vb">
+      <DependentUpon>UserListCategoryRights.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\UserListCategoryRights.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserCategoryRights.aspx.designer.vb">
+      <DependentUpon>UserCategoryRights.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserCategoryRights.aspx.vb">
+      <DependentUpon>UserCategoryRights.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="lib\ShowBapisClass.vb" />
     <Compile Include="Bapi2Report.aspx.designer.vb">
       <DependentUpon>Bapi2Report.aspx</DependentUpon>
@@ -605,6 +618,7 @@
     <Content Include="Bapi2Report.aspx" />
     <Content Include="JahresArchivManagement.aspx" />
     <Content Include="ApplicationConfiguration.aspx" />
+    <Content Include="UserCategoryRights.aspx" />
     <Content Include="RightsOverview.aspx" />
     <Content Include="LogSchwellwert.aspx" />
     <Content Include="LogViewer.aspx" />

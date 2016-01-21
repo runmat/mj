@@ -151,5 +151,11 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
             return s;
         }
+
+        public void MarkForRefreshRgReKundenNr()
+        {
+            RgKundenNr = ReKundenNr = null;
+            _rgAdressen = _reAdressen = null;
+        }
     }
 }

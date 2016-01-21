@@ -16,7 +16,6 @@ using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Contracts;
-using MvcTools.Controllers;
 using MvcTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -45,7 +44,11 @@ namespace CkgDomainLogic.General.Controllers
         public bool GridSettingsAdminMode
         {
             get { return SessionHelper.GetSessionValue("GridSettingsAdminMode", false); }
-            set { SessionHelper.SetSessionValue("GridSettingsAdminMode", value); }
+            set
+            {
+                SessionHelper.SetSessionValue("GridSettingsAdminMode", value);
+                SessionHelper.SetSessionValue("GridSettingsAdminModeChanged", true);
+            }
         }
 
         protected GridSettings GridCurrentSettings
@@ -716,13 +719,33 @@ namespace CkgDomainLogic.General.Controllers
             return Json(new { success = true });
         }
 
-        
+
 
         //
         // </Multi Selection>
         //
 
 
+        #endregion
+
+
+        #region EVB-Prüfung -> Rückgabe der Versicherung
+
+        [HttpPost]
+        public JsonResult GetEvbVersInfo(string evb)
+        {
+            if (evb.IsNullOrEmpty() || evb.Length < 2)
+                return null;
+
+            evb = evb.Substring(0, 2).ToUpper();
+
+            var viewModel = AdressenPflegeViewModel;
+            string message;
+            bool isValid;
+            viewModel.GetEvbInstantInfo(evb, out message, out isValid);
+
+            return Json(new { message = message, isValid = isValid });
+        }
         #endregion
 
 
@@ -984,24 +1007,50 @@ namespace CkgDomainLogic.General.Controllers
 
         #endregion
 
-        #endregion
 
-        #region EVB-Prüfung -> Rückgabe der Versicherung
-        [HttpPost]
-        public JsonResult GetEvbVersInfo(string evb)
+        public bool FormSettingsAdminModeWysiwygMode
         {
-            if (evb.IsNullOrEmpty() || evb.Length < 2)
-                return null;
-
-            evb = evb.Substring(0, 2).ToUpper();
-
-            var viewModel = AdressenPflegeViewModel;
-            string message;
-            bool isValid;
-            viewModel.GetEvbInstantInfo(evb, out message, out isValid);
-
-            return Json(new { message = message, isValid = isValid });
+            get { return SessionHelper.FormSettingsAdminModeWysiwygModeGet(); }
+            set { SessionHelper.FormSettingsAdminModeWysiwygModeSet(value); }
         }
+
+        protected override PartialViewResult PartialView(string viewName, object model)
+        {
+            if (FormSettingsAdminModeWysiwygMode)
+                ModelState.Clear();
+
+            var viewHtml = base.PartialView(viewName, model);
+
+            FormSettingsAdminModeWysiwygMode = false;
+
+            return viewHtml;
+        }
+
+        public ActionResult FormSettingsAdminModeSetWysiwygMode(string modelTypeName, string propertyName)
+        {
+            FormSettingsAdminModeWysiwygMode = true;
+
+            return new EmptyResult();
+        }
+
+        public ActionResult GridSettingsAdminModeActivate(bool set)
+        {
+            GridSettingsAdminMode = set;
+
+            return new EmptyResult();
+        }
+
+
         #endregion
+
+        public string GetConfigValue(string context, string keyName)
+        {
+            return GeneralConfiguration.GetConfigValue(context, keyName);
+        }
+
+        public string GetConfigValueForCurrentCustomer(string keyName)
+        {
+            return ApplicationConfiguration.GetApplicationConfigValue(keyName, "0", LogonContext.Customer.CustomerID);
+        }
     }
 }

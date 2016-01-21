@@ -331,6 +331,15 @@ namespace GeneralTools.Models
             return string.Join(separator, list.ToListOrEmptyList().ToArray());
         }
 
+        public static string ToLowerFirstUpperWithFragments(this string s, char fragmentSourceSeparator = '_', char fragmentDestinationSeparator = '-')
+        {
+            if (!s.Contains(fragmentSourceSeparator))
+                return s.ToLowerFirstUpper();
+
+            var fragments = s.Split(fragmentSourceSeparator);
+            return string.Join(fragmentDestinationSeparator.ToString(), fragments.Select(f => f.ToLowerFirstUpper()).ToArray());
+        }
+
         public static string ToLowerFirstUpper(this string s)
         {
             s = s.NotNullOrEmpty();
@@ -472,16 +481,16 @@ namespace GeneralTools.Models
 
         public static bool IsNumeric(this string stringValue)
         {
-            int tmp;
-            return Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp);
+            decimal tmp;
+            return decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
 
         public static int ToInt(this string stringValue, int defaultValue = -1)
         {
-            int tmp;
-            if (!Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return defaultValue;
-            return tmp;
+            return (int)tmp;
         }
 
         public static decimal ToDecimal(this string stringValue, decimal defaultValue = -1)
@@ -502,10 +511,10 @@ namespace GeneralTools.Models
 
         public static int? ToNullableInt(this string stringValue)
         {
-            int tmp;
-            if (!Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return null;
-            return tmp;
+            return (int)tmp;
         }
 
         public static DateTime? ToNullableDateTime(this string stringValue, string format = null)
@@ -598,10 +607,10 @@ namespace GeneralTools.Models
 
         public static Int64 ToLong(this string stringValue, Int64 defaultValue = -1)
         {
-            Int64 tmp;
-            if (!Int64.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+            decimal tmp;
+            if (!decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return defaultValue;
-            return tmp;
+            return (Int64)tmp;
         }
 
         public static Int64? ToNullableLong(this string stringValue)
@@ -868,6 +877,14 @@ namespace GeneralTools.Models
             }
 
             return erg;
+        }
+
+        public static TValue GetPropertyValueIfIs<TModel, TValue>(this object o, Expression<Func<TModel, TValue>> expression, TValue defaultValue = default (TValue))
+        {
+            if (!(o is TModel))
+                return defaultValue;
+
+            return expression.Compile().Invoke((TModel)o);
         }
     }
 

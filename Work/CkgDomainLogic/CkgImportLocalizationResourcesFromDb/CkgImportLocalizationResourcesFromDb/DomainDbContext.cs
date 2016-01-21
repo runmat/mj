@@ -17,6 +17,8 @@ namespace CkgImportLocalizationResourcesFromDb
 
         public DbSet<TranslatedResourceCustom> TranslatedResourcesCustom { get; set; }
 
+        public DbSet<ConfigAllServers> ConfigsAllServers { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

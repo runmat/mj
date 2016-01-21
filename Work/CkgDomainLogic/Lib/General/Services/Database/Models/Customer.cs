@@ -39,6 +39,13 @@ namespace CkgDomainLogic.General.Database.Models
         public string Userreferenzfeld3 { get; set; }
         public string Userreferenzfeld4 { get; set; }
 
+        public bool? ForceSpecifiedLoginLink { get; set; }
+        public string LogoutLink { get; set; }
+
+        public int? LoginLinkID { get; set; }
+        [NotMapped]
+        public string LoginLink { get; set; }
+
         #region Password Settings
 
         public int PwdNNumeric { get; set; }

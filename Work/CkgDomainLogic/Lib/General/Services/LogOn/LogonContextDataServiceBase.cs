@@ -32,6 +32,10 @@ namespace CkgDomainLogic.General.Services
 
         // ReSharper disable LocalizableElement
 
+        public int CustomerID { get { return Customer == null ? 0 : Customer.CustomerID; } }
+
+        public int AppID { get { return GetAppIdCurrent(); } }
+
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
@@ -40,6 +44,8 @@ namespace CkgDomainLogic.General.Services
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
+
+        public virtual bool HasLocalizationTranslationRights { get { return false; } }
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserNameForDisplay { get; set; }
@@ -418,6 +424,12 @@ namespace CkgDomainLogic.General.Services
         {
             return "";
         }
+
+        public void TrySetLogoutLink()
+        {
+            if (Customer != null)
+                LogoutUrl = Customer.LogoutLink;
+        {
 
         public AdminLevel HighestAdminLevel
         {

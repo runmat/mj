@@ -978,4 +978,180 @@
         return s;
     }
 
+    var _formSettingsAdminMode_CurrentItem = null;
+    var _modelStateTranslationValidFormControls = false;
+
+    function FormSettingsAdminMode_EditFormControls(o) {
+        _formSettingsAdminMode_CurrentItem = o;
+
+        $.ajax({
+            type: "POST",
+            url: "/ServicesMvc/Common/GridAdmin/EditTranslations",
+            loadingShow: false,
+            data: 
+                { 
+                    modelTypeName: o.attr("data-model-type-name"), 
+                    propertyName: o.attr("data-property-name"),
+                    partialViewContext: o.attr("data-partial-view-context") 
+                },
+            success: function (result) {
+                $("#global-popup").html(result);
+                FormPrepareAjax();
+
+                $.magnificPopup.open({
+                    items: { src: $("#global-popup") },
+                    type: 'inline',
+                    alignTop: true,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+
+        return false;
+    }
+
+    function FormSettingsAdminMode_PartialViewReload() {
+
+        var o = _formSettingsAdminMode_CurrentItem;
+        var form = o.closest("form");
+
+        $.ajax({
+            type: "POST",
+            url: "FormSettingsAdminModeSetWysiwygMode",
+            loadingShow: false,
+            data: 
+                { 
+                    modelTypeName: o.attr("data-model-type-name"), 
+                    propertyName: o.attr("data-property-name") 
+                },
+            success: function () {
+
+                form.attr("data-ajax-complete", "try { setTimeout(function(){ LoadingHide();}, 500); } catch (e) {} FormSettingsAdminMode_PartialViewOnComplete();");
+
+                form.submit();
+            }
+        });
+
+        return false;
+    }
+
+    function FormSettingsAdminMode_PartialViewOnComplete() {
+        
+        //alert("completed!");
+        FormPrepareAjax();
+    }
+
+    function GridSettingsAdminModeSet(set) {
+        
+        var gridSettingsAdminMode = @SessionHelper.GetSessionValue("GridSettingsAdminMode", false).ToString().ToLower();
+        gridSettingsAdminMode = !gridSettingsAdminMode;
+        if (typeof(set) != 'undefined')
+            gridSettingsAdminMode = set;
+
+        $.ajax({
+            type: "POST",
+            url: "GridSettingsAdminModeActivate",
+            loadingShow: false,
+            data: 
+                { 
+                    set: gridSettingsAdminMode
+                },
+            success: function () {
+                location.reload();
+            }
+        });
+
+        return false;  
+    }
+
+    function FormControlsTranslationsFormClosePopup() {
+        $(".mfp-close").trigger("click");
+    }
+
+
+    function FormControlsTranslationsFormPrepare() {
+        var that = "FormControlsTranslationsForm";
+
+        FormControlsGridColumnsTranslationsFormPrepare(that);
+
+        $("#" + that + " input[name=IsGlobal]").change(function() {
+            $("#" + that + " input[name=TmpSwitchGlobalFlag]").val(true);
+            $("#" + that).submit();
+        });
+    }
+    function GridColumnsTranslationsFormPrepare() {
+        FormControlsGridColumnsTranslationsFormPrepare("GridColumnsTranslationsForm");
+    }
+    function FormControlsGridColumnsTranslationsFormPrepare(that) {
+        $(".tooltips").tooltip();
+        $.each($("#" + that + " label.control-label"), function(index, elem) {
+            var labelText = $(elem).text().trim();
+            if (labelText.length < 2)
+                return;
+
+            var flag = labelText.substring(0, 2);
+            $(elem).append($("img.flag-" + flag).clone().attr("class", ""));
+        });
+    }
+
+
+    function FormControlsTranslationsCancel() {
+        FormControlsTranslationsFormClosePopup();
+        return false;
+    }
+
+    function GridColumnsTranslationsCancel() {
+        var adminEditDiv = $(".grid-t-column-header-admin-edit-div");
+        adminEditDiv.closest(".portlet-body").css("background-color", "");
+        adminEditDiv.slideUp(300);
+        return false;
+    }
+
+
+    function FormControlsTranslationsComplete() {
+        var tmpSwitchGlobalFlag = $("#FormControlsTranslationsForm input[name=TmpSwitchGlobalFlag]").val().toLowerCase();
+
+        FormControlsGridColumnTranslationsComplete("FormControlsTranslationsForm", function() {
+            //alert(tmpSwitchGlobalFlag);
+            if (!_modelStateTranslationValidFormControls || tmpSwitchGlobalFlag == "true")
+                return;
+
+            FormControlsTranslationsFormClosePopup();
+            FormSettingsAdminMode_PartialViewReload();
+        });
+    }
+    function GridColumnsTranslationsComplete() {
+        FormControlsGridColumnTranslationsComplete("GridColumnsTranslationsForm", function() {
+            if (!_modelStateTranslationValidGridColumns)
+                return;
+
+            GridColumnsTranslationsCancel();
+            $('#FormSearchBox form .form-actions button[type="submit"]').trigger('click');
+        });
+    }
+    function FormControlsGridColumnTranslationsComplete(that, func) {
+        $("#" + that + " input[name=TmpDeleteCustomerTranslation]").val(false);
+        $("#" + that + " input[name=TmpSwitchGlobalFlag]").val(false);
+        FormPreparePrivateAjax();
+
+        func();
+    }
+
+
+    function FormControlsTranslationsFormDeleteCustomerTranslation() {
+        return FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation("FormControlsTranslationsForm");
+    }
+    function GridColumnsTranslationsFormDeleteCustomerTranslation() {
+        return FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation("GridColumnsTranslationsForm");
+    }
+    function FormControlsGridColumnsTranslationsFormDeleteCustomerTranslation(that) {
+        if (!confirm("Diese kundenbezogene Übersetzung wirklich löschen?"))
+            return false;
+        
+        $("#" + that + " input[name=TmpDeleteCustomerTranslation]").val(true);
+        $("#" + that).submit();
+        return false;
+    }
+
 </script>

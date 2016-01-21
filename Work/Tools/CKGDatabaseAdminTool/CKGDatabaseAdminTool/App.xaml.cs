@@ -7,8 +7,8 @@ namespace CKGDatabaseAdminTool
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>
-    public partial class App 
-    { 
+    public partial class App
+    {
         bool _useDefaultDbServer;
         bool _useDefaultStartupView;
         string _developer = "";

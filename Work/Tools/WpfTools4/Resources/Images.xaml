@@ -114,6 +114,7 @@
     <Image x:Shared="False" x:Key="image/32x32/sap_manage" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_manage.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/sap_usages" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_usages.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/sap_models" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sap_models.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/sql" Source="pack://application:,,,/WpfTools4;component/Images/32x32/sql.png" SnapsToDevicePixels="True" Width="32" Height="32" />
 
     <Image x:Shared="False" x:Key="image/48x48/excel_add" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_add.png" SnapsToDevicePixels="True" Width="48" Height="48" />
     <Image x:Shared="False" x:Key="image/48x48/excel_delete" Source="pack://application:,,,/WpfTools4;component/Images/48x48/excel_delete.png" SnapsToDevicePixels="True" Width="48" Height="48" />
