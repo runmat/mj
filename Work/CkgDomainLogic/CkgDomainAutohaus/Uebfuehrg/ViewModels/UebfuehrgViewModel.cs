@@ -520,7 +520,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             Laender = DataService.Laender;
             DomainCommon.Models.Adresse.Laender = Laender;
 
-            KundenAusHierarchie = DataService.KundenAusHierarchie;
+            KundenAusHierarchie = (IstKroschke ? DataService.KundenAusHierarchie : new List<KundeAusHierarchie>());
             RechnungsAdressen = DataService.GetRechnungsAdressen();
         }
 
@@ -655,6 +655,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             {
                 var agKundenNr = userHasSeparateCustomerNo ? userSeparateCustomerNo.ToString() : rgDaten.AgKundenNr;
                 rgDaten.KundenNr = agKundenNr;
+                if (userHasSeparateCustomerNo)
+                {
+                    rgDaten.KundenNrUser = agKundenNr;
+                    rgDaten.AgKundenNr = agKundenNr;
+                }
 
                 if (rgDaten.KundenNr != DataService.KundenNr)
                 {
@@ -667,7 +672,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             rgDaten.GetKundenAusHierarchie = () => KundenAusHierarchie;
             rgDaten.GetRechnungsAdressen = () => RechnungsAdressen;
 
-            if (IstKroschke)
+            if (userHasSeparateCustomerNo || IstKroschke)
             {
                 if (String.IsNullOrEmpty(rgDaten.RgKundenNr))
                     rgDaten.RgKundenNr = rgDaten.RgAdressen.First().KundenNr;
