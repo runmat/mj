@@ -119,11 +119,8 @@ namespace CkgDomainLogic.General.Database.Services
         {
             string strUserRight = "";
             string strUsername = UserName;
-
             
-
-            //  strUserRight = "true";
-            // hier noch richtige DB auswählen
+            // TODO TB: hier noch richtige DB auswählen
             strUserRight = Database.SqlQuery<string>("SELECT SettingsValue FROM [CKGPortalTest].[dbo].[CategorySettingsWebUser] WHERE UserName LIKE {0} AND CategoryID = {1}", strUsername, rightName).FirstOrDefault();
 
 

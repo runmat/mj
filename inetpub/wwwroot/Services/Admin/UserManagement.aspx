@@ -829,18 +829,14 @@
                                                         </table>
 
                                                            <div id="BenutzerPanel">
-																	
 																	    
-                                                                        			<div style="padding-left: 0px; padding-top: 10px;" style="border: 1px solid orange; z-index: 10;">
+                                                            <div style="padding-left: 0px; padding-top: 10px;">
                                                                <h3>User-Rechte</h3>
-                                                               
-                                                                            
-                                                                            <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
-                                                                AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
-                                                                OnNeedDataSource="rightPanel2_OnLoad" 
-                                                                 >
-                                                            
-                                                              
+
+                                                              <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
+                                                                        AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
+                                                                        OnNeedDataSource="drUserRights_OnLoad" 
+                                                                         >
                                                                 <ClientSettings>
                                                                     <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
                                                                 </ClientSettings>
@@ -852,56 +848,36 @@
                                                                     <HeaderStyle ForeColor="White" />
 
                                                                     <Columns>
-                                                                        
-                                                                       
-                                                                     
+
                                                                               <telerik:GridTemplateColumn Groupable="false" UniqueName="SettingsValue" >
                                                                                         <HeaderStyle Width="150px" />
                                                                                                 <ItemTemplate>
-                                                                                                          
-                                                                                                          
-                                                                                                          
-
                                                                                                           <asp:TextBox ID="Recht1"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>' 
                                                                                                                 name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
                                                                                                                 runat="server" 
                                                                                                                 text='<%# DataBinder.Eval(Container.DataItem, "SettingsValue").toString() %>' 
                                                                                                            />
                                                                                                            
-                                                                                                         
                                                                                                             <asp:Checkbox ID="Recht2"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>' 
                                                                                                                     name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
                                                                                                                     runat="server" 
-                                                                                                                   
-                                                                                                                />
+                                                                                                             />
                                                                                                          
-                                                                                                       
-
                                                                                                 </ItemTemplate>
                                                                                  </telerik:GridTemplateColumn>
                                                                                  
-                                                                        
                                                                         <telerik:GridBoundColumn DataField="CategoryID" SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID" >
                                                                              <HeaderStyle Width="150px" />
                                                                             <ItemStyle></ItemStyle>
                                                                         </telerik:GridBoundColumn>
-
 
                                                                     </Columns>
 
                                                                 </MasterTableView>
                                                             </telerik:RadGrid>
                                                                             
-                                                                        
-
                                                                 </div>
-                                                                        
-                                                                        
-                                                                        
-
-																	
-																</div>
-                                                        
+														</div>
 
                                                     </td>
                                                 </tr>

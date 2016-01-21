@@ -2999,7 +2999,7 @@ Partial Public Class UserManagement
         Return Nothing
     End Function
 
-    Public Sub rightPanel2_OnLoad()
+    Public Sub drUserRights_OnLoad()
         ShowRightsPerUser()
     End Sub
 
@@ -3024,14 +3024,11 @@ Partial Public Class UserManagement
         Dim strUserRightValue As String
         Dim strUserName As String
         Dim strCategoryID As String
-
         
         strUserName = txtUserName.Text
 
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-
-
-
+        
         m_User = GetUser(Me)
 
         For Each item As GridDataItem In drUserRights.Items
@@ -3050,25 +3047,10 @@ Partial Public Class UserManagement
                 strRightFieldtype = "chkbox"
             End If
 
-            ' RightList.UpdateSingleRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
-            ' RightList.InsertOrDeleteRightForAllUsersOfThisCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
-
-            '  System.Diagnostics.Debug.WriteLine(itemCategoryValue & " " & strUserRightValue)
-
             RightList.UpdateRightPerUser(strUserName, itemCategoryValue, strUserRightValue, strRightFieldtype)
 
         Next
 
-        'drUserRights.Rebind()
-
     End Sub
-
-
-    Protected Sub Recht2_OnPreRender(ByVal strErgebnis As String)
-
-        System.Diagnostics.Debug.WriteLine(strErgebnis)
-
-
-
-    End Sub
+    
 End Class
