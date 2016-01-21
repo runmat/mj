@@ -76,6 +76,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
         }
 
+        [LocalizedDisplay(LocalizeConstants.VehicleValue)]
+        public string FahrzeugwertText { get { return FahrzeugwertOptions.Find(o => o.Key == Fahrzeugwert.NotNullOrEmpty()).Text; } }
+
         [LocalizedDisplay(LocalizeConstants.VehiclesLicenseStatus)]
         public bool FahrzeugZugelassen { get; set; }
 
@@ -107,14 +110,30 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [XmlIgnore]
         public string EmptyString { get { return ""; } }
 
-        //[XmlIgnore]
-        //public string FahrzeugZugelassenConverted { get { return FahrzeugZugelassen.NotNullOrEmpty() == "N" ? "" : FahrzeugZugelassen; } }
+        [XmlIgnore]
+        public string FahrzeugklasseConverted { get { return Fahrzeugklasse.NotNullOrEmpty().Replace("1", "W"); } }
 
-        //[XmlIgnore]
-        //public string KennzeichenConverted { get { return Kennzeichen.NotNullOrEmpty().Replace(" ", ""); } }
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.Tires)]
+        public string Bereifung { get; set; }
 
         [XmlIgnore]
-        public string FahrzeugklasseConverted { get { return Hersteller.NotNullOrEmpty().Replace("1", "W"); } }
+        public List<SelectItem> BereifungOptions
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem("", ""),
+                    new SelectItem("S", "Sommerreifen"),
+                    new SelectItem("W", "Winterreifen"),
+                    new SelectItem("G", "Ganzjahresreifen"),
+                };
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Tires)]
+        public string BereifungText { get { return BereifungOptions.Find(o => o.Key == Bereifung.NotNullOrEmpty()).Text; } }
     
         public override string GetSummaryString()
         {

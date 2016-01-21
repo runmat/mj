@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
@@ -54,6 +53,9 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         [XmlIgnore]
         public List<Dienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Except(AlleDienstleistungen).ToList(); } }
 
+        [XmlIgnore]
+        public List<WebUploadProtokoll> UploadProtokolle { get; set; }
+
 
         public DienstleistungsAuswahl()
         {
@@ -69,15 +71,15 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             GewaehlteDienstleistungen.ForEach(dl => dl.IstGewaehlt = true);
         }
 
-        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen, string fahrtTyp = null, bool resetGewaehlteDienstleistungen = false)
+        public void InitDienstleistungen(List<Dienstleistung> dienstleistungen, string fahrtTyp = null, bool resetGewaehlteDienstleistungen = false, List<WebUploadProtokoll> protokolle = null)
         {
             if (fahrtTyp != null)
-                this.FahrtTyp = fahrtTyp;
+                FahrtTyp = fahrtTyp;
 
-            AlleDienstleistungen = dienstleistungen.Where(dl => dl.TransportTyp == this.FahrtTyp).ToListOrEmptyList().Copy((src, dst) =>
+            AlleDienstleistungen = dienstleistungen.Where(dl => dl.TransportTyp == FahrtTyp).ToListOrEmptyList().Copy((src, dst) =>
                 {
-                    dst.FahrtIndex = this.FahrtIndex;
-                    dst.TransportTyp = this.FahrtTyp;
+                    dst.FahrtIndex = FahrtIndex;
+                    dst.TransportTyp = FahrtTyp;
                 });
 
             if (resetGewaehlteDienstleistungen)
@@ -89,11 +91,26 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             }
 
             InitDienstleistungenFlags();
+
+            if (protokolle != null)
+            {
+                UploadProtokolle = protokolle.Copy();
+                UploadProtokolle.ForEach(p => p.FahrtIndex = FahrtIndex);
+            }
         }
 
         public override string GetSummaryString()
         {
-            return string.Join("<br />", GewaehlteDienstleistungen.Select(dienstleistung => dienstleistung.Name));
+            var summaryString = string.Join("<br />", GewaehlteDienstleistungen.Select(dienstleistung => dienstleistung.Name));
+
+            if (UploadProtokolle.Any(p => !string.IsNullOrEmpty(p.Dateiname)))
+            {
+                summaryString += "<br /><br />";
+                summaryString += "<b>" + Localize.Protocols + "</b><br />";
+                summaryString += string.Join("<br />", UploadProtokolle.Where(p => !string.IsNullOrEmpty(p.Dateiname)).Select(up => string.Format("{0}: {1}", up.Protokollart, up.Dateiname)));
+            }
+
+            return summaryString;
         }
     }
 }

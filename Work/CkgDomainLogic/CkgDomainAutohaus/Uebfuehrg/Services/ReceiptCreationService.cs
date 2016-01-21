@@ -74,6 +74,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                 CreateStringColumn(dt, "FzgZulBereit" + i);
                 CreateStringColumn(dt, "FzgZulDAD" + i);
                 CreateStringColumn(dt, "FzgKlasse" + i);
+                CreateStringColumn(dt, "Bereifung" + i);
 
                 var r = GetFzgAddressPostfix(i);
 
@@ -113,6 +114,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                 row["FzgZulBereit" + index] = "";
                 row["FzgZulDAD" + index] = "";
                 row["FzgKlasse" + index] = "";
+                row["Bereifung" + index] = "";
                 return;
             }
 
@@ -121,10 +123,11 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             row["Hersteller" + index] = fahrzeug.Hersteller;
             row["Modell" + index] = fahrzeug.Modell;
             row["RefNr" + index] = fahrzeug.Referenznummer;
-            row["FzgWert" + index] = fahrzeug.Fahrzeugwert;
+            row["FzgWert" + index] = fahrzeug.FahrzeugwertText;
             row["FzgZulBereit" + index] = fahrzeug.FahrzeugZugelassen ? "Ja" : "Nein";
             row["FzgZulDAD" + index] = fahrzeug.ZulassungBeauftragt ? "Ja" : "Nein";
-            row["FzgKlasse" + index] = fahrzeug.Fahrzeugklasse;
+            row["FzgKlasse" + index] = fahrzeug.FahrzeugklasseConverted;
+            row["Bereifung" + index] = fahrzeug.BereifungText;
         }
 
         void StammdatenTryFillAddress(DataRow row, int index)
