@@ -91,5 +91,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if ((Formulare == null || Formulare.None()) && ZiPoolDaten == null)
                 addModelError("", Localize.NoDataFound);
         }
+
+        public void FilterZiPool(bool gewerblich, string dienstleistung)
+        {
+            ZiPoolSelektor.Gewerblich = gewerblich;
+            ZiPoolSelektor.Dienstleistung = dienstleistung;
+        }
     }
 }

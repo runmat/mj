@@ -77,6 +77,14 @@ namespace ServicesMvc.Autohaus.Controllers
             var auftragPdfBytes = System.IO.File.ReadAllBytes(docFullName);
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(docFullName) };
-        }   
+        }
+
+        [HttpPost]
+        public ActionResult RefreshZiPoolListe(bool gewerblich, string dienstleistung)
+        {
+            ViewModel.FilterZiPool(gewerblich, dienstleistung);
+
+            return PartialView("Partial/Uebersicht", ViewModel);
+        }
     }
 }

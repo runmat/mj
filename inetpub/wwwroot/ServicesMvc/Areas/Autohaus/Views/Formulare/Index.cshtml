@@ -85,7 +85,26 @@
     }
 
     function ShowPdfFormular(docName) {
-        window.location.href = "PdfDocumentDownload?docName=" + docName;
+        window.open("PdfDocumentDownload?docName=" + docName);
+    }
+
+    function RefreshZiPoolListe() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "RefreshZiPoolListe",
+            data: { gewerblich: $("#Gewerblich").is(':checked'), dienstleistung: $("#Dienstleistung").val() },
+            loadingShow: true,
+            success: function (result) {
+
+                if (_modelStateValid) {
+                    ShowFormulareSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
     }
 
 </script>

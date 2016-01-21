@@ -57,7 +57,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.IdCard, PersonalausweisErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.BusinessRegistration, GewerbeanmeldungErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.CommercialRegister, HandelsregisterErforderlich);
-                TryAddErforderlicheDokumenteEintrag(ref liste, Localize.DirectDebitMandate, LastschrifteinzugErforderlich);
+                TryAddErforderlicheDokumenteEintrag(ref liste, Localize.SepaMandate, LastschrifteinzugErforderlich);
 
                 return liste;
             }
