@@ -1,0 +1,132 @@
+﻿@using CkgDomainLogic.DomainCommon.ViewModels
+@model GridAdminViewModel
+
+@{
+    var globalTranslationWarning = Model.IsGlobal && Model.GlobalTranslationDangerous;
+    var modeAsText = Model.Mode.ToString("F");
+}
+
+<div id="@(modeAsText)DivTranslations" class="margin-bottom-10">
+    @using (Ajax.BeginForm("EditTranslationsForm", "GridAdmin", null,
+        new MvcAjaxOptions(modeAsText + "DivTranslations") { OnComplete = modeAsText + "TranslationsComplete();" }, new { id = modeAsText + "TranslationsForm" }))
+    {    
+        <div class="form-horizontal" id="translation-edit-form">
+
+            <h4 class="translation-key-header">
+                <span>Translation-Key: <span class="translation-key @Model.IsGlobal.ToString().ToLower()">@Model.CurrentTranslatedResource.Resource</span></span>
+            </h4>
+                        
+            @Html.HiddenFor(m => m.CurrentTranslatedResource.Resource)
+            @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.Resource)
+            @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.CustomerID)
+
+            @Html.HiddenFor(m => m.TmpDeleteCustomerTranslation)
+            @Html.HiddenFor(m => m.TmpSwitchGlobalFlag)
+
+
+            @if (Model.Mode == GridAdminMode.GridColumns)
+            {
+                @Html.HiddenFor(m => m.IsGlobal)
+                @Html.HiddenFor(m => m.IsHidden)
+                @Html.HiddenFor(m => m.IsRequired)
+            }
+            @if (Model.Mode == GridAdminMode.FormControls)
+            {
+                @Html.FormCheckBoxFor(m => m.IsGlobal, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+            
+            @if (globalTranslationWarning)
+            {
+            <div class="alert warning">
+                <i class="icon-bell margin-right-10 margin-bottom-20 margin-top-20"></i>
+                <span>
+                    Bitte beachten Sie, dass Sie diese Übersetzung mit dem Schlüssel "@Model.CurrentTranslatedResource.Resource"
+                    <br /><span class="bold margin-left-25"> global für alle(!) Web-Anwendungen pflegen!</span>
+                </span>
+            </div>
+            }
+
+            @Html.FormValidationSummary()
+
+
+            <div class="divider">Standard, für alle Kunden</div>
+
+            @if (Model.Mode == GridAdminMode.GridColumns)
+            {
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de, new {@class = "m-wrap small", col = "right"})
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.en_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.en, new {@class = "m-wrap small", col = "right"})
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.fr_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.fr, new {@class = "m-wrap small", col = "right"})
+            }
+            @if (Model.Mode == GridAdminMode.FormControls)
+            {
+                @Html.HiddenFor(m => m.CurrentTranslatedResource.de_kurz)
+                @Html.HiddenFor(m => m.CurrentTranslatedResource.en_kurz)
+                @Html.HiddenFor(m => m.CurrentTranslatedResource.fr_kurz)
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.fr, new { @class = "m-wrap medium", col = "right" })
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.en, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+
+
+            <div class="divider margin-top-10 margin-bottom-10">
+                Kundenbezogen, für Kunde @Model.CurrentTranslatedResourceCustomer.CustomerID 
+                
+                @if (Model.CurrentTranslatedResourceCustomer.de.IsNotNullOrEmpty())
+                {
+                    <button onclick="return @(modeAsText)TranslationsFormDeleteCustomerTranslation()" class="btn mini red margin-left-10 tooltips" data-original-title="Diese kundenbezogene Übersetzung löschen!" data-placement="right">
+                        <i class="icon-remove"></i> @Localize.Delete
+                    </button>
+                }
+            </div>
+
+            @if (Model.Mode == GridAdminMode.GridColumns)
+            {
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.de_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.de, new {@class = "m-wrap small", col = "right"})
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.en_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.en, new {@class = "m-wrap small", col = "right"})
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.fr_kurz, new {@class = "m-wrap medium", col = "left"})
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.fr, new {@class = "m-wrap small", col = "right"})
+            }            
+            @if (Model.Mode == GridAdminMode.FormControls)
+            {
+                @Html.FormCheckBoxFor(m => m.IsRequired, new { @class = "m-wrap medium", col = "left" }, labelHidden: true)
+                @Html.FormCheckBoxFor(m => m.IsHidden, new { @class = "m-wrap medium", col = "right" }, labelHidden: true)
+
+                @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.de_kurz)
+                @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.en_kurz)
+                @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.fr_kurz)
+
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.de, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.fr, new { @class = "m-wrap medium", col = "right" })
+                @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.en, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
+            }
+
+
+            @Html.FormRequiredFieldsSummary() 
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-save margin-right-5'></i>@Localize.Save</button>
+                <button onclick="return @(modeAsText)TranslationsCancel()" class='btn grey'><i class='icon-remove margin-right-5'></i>@Localize.Cancel</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateTranslationValid@(modeAsText) = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            //alert('_modelStateTranslationValid@(modeAsText)');
+
+            @(modeAsText)TranslationsFormPrepare();
+        </script>
+    }
+</div>

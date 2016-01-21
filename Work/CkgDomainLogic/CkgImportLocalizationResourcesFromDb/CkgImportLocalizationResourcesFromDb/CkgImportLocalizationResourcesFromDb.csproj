@@ -50,6 +50,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,13 +59,22 @@
   <ItemGroup>
     <Compile Include="DomainDbContext.cs" />
     <Compile Include="ModelMapping.cs" />
+    <Compile Include="ConfigAllServers.cs" />
     <Compile Include="TranslatedResourceCustom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TranslatedResource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{a4f36243-8d89-460f-acb3-ef7df37d6fca}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

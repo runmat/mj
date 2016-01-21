@@ -9,6 +9,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Services
 {
@@ -16,20 +17,20 @@ namespace CkgDomainLogic.Services
     {
         public string AppName { get { return ""; } }
 
-        public string AppOwnerName { get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerShortName"); } }
+        public string AppOwnerName { get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerShortName"); } }
 
-        public string AppOwnerFullName { get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName"); } }
+        public string AppOwnerFullName { get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName"); } }
 
         public string AppOwnerNameAndFullName { get { return string.Format("{0}{1}", AppOwnerName.AppendIfNotNull(" - "), AppOwnerFullName ); } }
 
         public string AppOwnerImpressumPartialViewName
         {
-            get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerImpressumPartialViewName").NotNullOr("Partial/Impressum"); }
+            get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerImpressumPartialViewName").NotNullOr("Partial/Impressum"); }
         }
 
         public string AppOwnerKontaktPartialViewName
         {
-            get { return GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "AppOwnerKontaktPartialViewName").NotNullOr("Partial/Kontakt"); }
+            get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerKontaktPartialViewName").NotNullOr("Partial/Kontakt"); }
         }
 
         public string AppCopyRight { get { return string.Format("© {0} {1}", DateTime.Now.Year, AppName); } }

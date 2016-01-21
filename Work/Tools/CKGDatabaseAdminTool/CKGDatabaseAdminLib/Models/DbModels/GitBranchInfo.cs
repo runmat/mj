@@ -1,12 +1,8 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
-using System.Linq;
-using System.Windows.Markup;
 using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.XtraEditors.DXErrorProvider;
 using GeneralTools.Models;
@@ -348,6 +344,7 @@ namespace CKGDatabaseAdminLib.Models
 
     public class GitBranchInfoListItems : List<GitBranchInfoListItem>
     {
-        
+
     }
+
 }

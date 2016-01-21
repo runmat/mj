@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -14,6 +15,8 @@ using MvcTools.Web;
 using System.Web.Mvc.Ajax;
 using PortalMvcTools.Models;
 using CkgDomainLogic.General.Contracts;
+using GeneralTools.Contracts;
+using MvcTools.Contracts;
 
 namespace PortalMvcTools.Web
 {
@@ -84,12 +87,12 @@ namespace PortalMvcTools.Web
             outerTag.Attributes.Add("class", cssClass);
             if (javascriptAction.IsNotNullOrEmpty())
                 outerTag.Attributes.Add("onclick", javascriptAction);
-            if (!string.IsNullOrEmpty(id))
+            if (!id.IsNullOrEmpty())
                 outerTag.Attributes.Add("id", id);
             if (hidden)
                 outerTag.Attributes.Add("style", "display:none;");
 
-            if (!string.IsNullOrEmpty(toolTip))
+            if (!toolTip.IsNullOrEmpty())
             {
                 var helpLayer = new TagBuilder("div");
                 helpLayer.AddCssClass("helplayer");
@@ -211,6 +214,8 @@ namespace PortalMvcTools.Web
 
         #region Default Form Controls, Twitter Bootstrap
 
+        private const string PartialViewNameFormLeftLabelControl = "Partial/FormControls/Form/LeftLabelControl";
+
         # region Label
 
         public static MvcHtmlString FormLabel(this HtmlHelper html, string propertyName, string cssClass = null)
@@ -225,6 +230,8 @@ namespace PortalMvcTools.Web
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -254,7 +261,6 @@ namespace PortalMvcTools.Web
 
             try
             {
-
                 if (!dict.ContainsKey("data-bind"))
                     return dict;
 
@@ -346,50 +352,31 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 LabelHidden = labelHidden,
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
                 PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static bool FormIsInvisible<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
         {
             return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
-        }
-
-        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
-        {
-            controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
-            controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
-            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
-            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
-
-            var model = new FormControlModel
-            {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
-                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
-                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
-                ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
-                ValidationMessageHtml = html.ValidationMessageFor(expression),
-                IconCssClass = iconCssClass,
-                ControlHtmlAttributes = controlHtmlAttributesDict,
-                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
-                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
-                LabelHidden = labelHidden,
-            };
-
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
         public static MvcHtmlString FormTextBox(this HtmlHelper html, string propertyName, object controlHtmlAttributes = null, string labelHtml = null)
@@ -405,7 +392,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControl(model);
         }
 
         public static MvcHtmlString FormPlaceholderTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
@@ -414,16 +401,19 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
             return html.Partial("Partial/FormControls/Form/ControlWithPlaceholder", model);
@@ -431,20 +421,25 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormTemplateControl(this HtmlHelper html, string label, Func<object, HelperResult> templateControlHtml, object controlHtmlAttributes = null)
@@ -460,7 +455,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControl(model);
         }
         #endregion
 
@@ -469,6 +464,7 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "datepicker");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             return FormDatePickerForInner(html, expression, controlHtmlAttributesDict, iconCssClass, postControlHtml: postControlHtml);
         }
@@ -482,6 +478,8 @@ namespace PortalMvcTools.Web
 
         private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, Func<object, HelperResult> postControlHtml = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var formatString = "{0:d}";
             var datePickerFor = html.TextBoxFor(expression, formatString, controlHtmlAttributes)
                                     .Concat(new MvcHtmlString("<span class=\"add-on\"><i class=\"icon-calendar\"></i></span>"));
@@ -489,7 +487,7 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = datePickerFor,
@@ -497,16 +495,18 @@ namespace PortalMvcTools.Web
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributes,
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         #endregion
 
         #region DropDownList
 
-        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes)
         {
             var model = new FormControlModel
             {
@@ -514,7 +514,14 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return model;
+        }
+
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        {
+            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes);
+
+            return html.FormLeftLabelControl(model);
         }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
@@ -535,11 +542,14 @@ namespace PortalMvcTools.Web
 
         private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "dropdown");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
@@ -548,9 +558,11 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormDropDownList<TModel>(this HtmlHelper<TModel> html, string propertyName, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
@@ -589,13 +601,16 @@ namespace PortalMvcTools.Web
             object controlHtmlAttributes = null, string labelText = null, 
             Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var controlHtmlAttributesDict = controlHtmlAttributes.MergePropertiesStrictly(new { multiple = "multiple", @class = "hide" });
             controlHtmlAttributesDict.Add("data-placeholder", "..."); // because of the hyphen it is necessary to add this attribute here and not right above
             controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributesDict, expression.GetPropertyName(), "multiselect");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.ListBoxFor(expression, selectList, controlHtmlAttributesDict),
@@ -604,9 +619,11 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         #endregion
@@ -625,20 +642,25 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var radioButtonsFor = MvcHtmlString.Empty.Concat(selectList.Select(item => html.FormRadioButtonForInner(expression, item)).ToArray());
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributes.ToHtmlDictionary(), typeof(TModel));
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = radioButtonsFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         private static MvcHtmlString FormRadioButtonForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, SelectListItem item, string radioLabelCssClass = "radio")
@@ -655,13 +677,16 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null)
         {
+            html.FormLeftLabelControlConditionalInit();
+
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
 
             var model = new FormControlModel
             {
                 IsCheckBox = true,
                 LabelHidden = labelHidden,
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
@@ -670,9 +695,11 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(expression, model);
         }
 
         public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, object>> labelExpression, params Expression<Func<TModel, bool>>[] expressionArray)
@@ -708,7 +735,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControl(model);
         }
 
         private static MvcHtmlString FormCheckBoxForInner<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, string checkBoxCssClass = "checkbox")
@@ -721,8 +748,10 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormDateRangePickerFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, DateRange>> dateRangeExpression, object controlHtmlAttributes = null, string[] dateRangeGroupsToExclude = null, string labelText = null)
         {
-            //var dateRangeValue = (bool)GetPropertyValue(typeof(TModel), html.ViewData.Model, dateRangeExpression);
+            html.FormLeftLabelControlConditionalInit();
+
             var dateRangePropertyName = dateRangeExpression.GetPropertyName();
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributes.ToHtmlDictionary(), typeof(TModel));
 
             var innerModel = new FormDateRangePickerModel
             {
@@ -740,17 +769,121 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(dateRangeExpression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(dateRangeExpression),
                 ControlHtml = innerHtml,
                 ValidationMessageHtml = html.ValidationMessageFor(dateRangeExpression),
                 IconCssClass = null,
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = dateRangeExpression.GetPropertyName(),
             };
 
-            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+            return html.FormLeftLabelControlConditional(dateRangeExpression, model);
         }
+
+        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
+        {
+            html.FormLeftLabelControlConditionalInit();
+
+            controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
+            controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
+            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
+            CheckSetPartialViewContextIsFormControlHidingAvailable(controlHtmlAttributesDict, typeof(TModel));
+
+            var model = new FormControlModel
+            {
+                DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
+                RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
+                ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
+                ValidationMessageHtml = html.ValidationMessageFor(expression),
+                IconCssClass = iconCssClass,
+                ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                LabelHidden = labelHidden,
+                ModelTypeName = typeof(TModel).GetFullTypeName(),
+                PropertyName = expression.GetPropertyName(),
+            };
+
+            return html.FormLeftLabelControlConditional(expression, model);
+        }
+
+        private static void FormLeftLabelControlConditionalInit(this HtmlHelper html)
+        {
+            SessionHelper.SetPartialViewContextCurrent(html);
+        }
+
+        private static MvcHtmlString FormLeftLabelControlConditional<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, FormControlModel model)
+        {
+            var modelType = typeof(TModel);
+
+            var mExpr = expression.Body as MemberExpression;
+            if (mExpr != null)
+                modelType = mExpr.Expression.Type;
+
+            var propertyName = expression.GetPropertyName();
+
+            var partialViewUrl = SessionHelper.GetPartialViewContextCurrent();
+            if (partialViewUrl == null)
+                return html.HiddenFor(expression);
+
+            var formSettingsAdminMode = html.ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
+            var fieldIsHidden = CustomModelValidatorsProvider.IsPropertyHidden(modelType.GetFullTypeName(), propertyName);
+
+            if (fieldIsHidden)
+            {
+                if (formSettingsAdminMode)
+                    model.IsGrayed = true;
+                else
+                    model.IsCollapsed = true;
+            }
+
+            return html.Partial(PartialViewNameFormLeftLabelControl, model);
+        }
+
+        private static MvcHtmlString FormLeftLabelControl(this HtmlHelper html, FormControlModel model)
+        {
+            return html.Partial(PartialViewNameFormLeftLabelControl, model);
+        }
+
+        public static MvcHtmlString FormMultiColumnModeStart(this HtmlHelper html, string autoKey)
+        {
+            new FormControlModel().AutoMultiColumnModeStart(autoKey);
+
+            return MvcHtmlString.Empty;
+        }
+
+        public static MvcHtmlString FormMultiColumnModeEnd(this HtmlHelper html, string autoKey)
+        {
+            while (!new FormControlModel().AutoMultiColumnModeEndReached(autoKey))
+                html.RenderPartial(PartialViewNameFormLeftLabelControl, GetFormPlaceHolderModel(null, null));
+
+            // explizite Freigabe für Form Control Ausblendbarkeit
+            SessionHelper.SetPartialViewContextIsFormControlHidingNotAvailable(false);
+
+            return MvcHtmlString.Empty;
+        }
+
+        static void CheckSetPartialViewContextIsFormControlHidingAvailable(IDictionary<string, object> dict, Type modelType)
+        {
+            if (modelType.Name.ToLower().Contains("gridadminviewmodel"))
+                return;
+
+            object propertyValue;
+            dict.TryGetValue("col", out propertyValue);
+            if (propertyValue == null)
+                return;
+
+            if (propertyValue.ToString().ToLower() == "left")
+                // explizite Sperre für Form Control Ausblendbarkeit
+                SessionHelper.SetPartialViewContextIsFormControlHidingNotAvailable(true);
+        }
+
+
         #endregion
 
         private static MvcHtmlString FormControlForGetSurroundingDiv(MvcHtmlString controlHtml, string cssClass = "controls", string tagName = "div")

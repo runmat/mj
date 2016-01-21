@@ -116,6 +116,7 @@ namespace ServicesMvc
             builder.RegisterType<SmtpMailService>().As<IMailService>().InstancePerLifetimeScope();
             builder.RegisterType<WebSecurityService>().As<ISecurityService>().InstancePerLifetimeScope();
             builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerLifetimeScope();
+            builder.RegisterType<SessionBasedKeyValueStore>().As<IKeyValueStore<string>>().InstancePerLifetimeScope();
 
 
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTest) : typeof(LogonContextDataServiceDadServices));
@@ -124,6 +125,10 @@ namespace ServicesMvc
             builder.RegisterType<PersistanceServiceSql>().As<IPersistanceService>().InstancePerLifetimeScope().PropertiesAutowired();
 
             builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerLifetimeScope().PropertiesAutowired();
+
+            builder.RegisterType<ApplicationConfiguration>().As<IApplicationConfigurationProvider>().InstancePerLifetimeScope().PropertiesAutowired();
+            builder.RegisterType<ApplicationConfiguration>().As<ICustomerConfigurationProvider>().InstancePerLifetimeScope().PropertiesAutowired();
+            builder.RegisterType<GeneralConfiguration>().As<IGeneralConfigurationProvider>().InstancePerLifetimeScope().PropertiesAutowired();
 
 
             var grunddatenEquiBestandDataService = (appSettings.IsClickDummyMode ? typeof(EquiGrunddatenDataServiceTest) : typeof(EquiGrunddatenDataServiceSAP));
@@ -180,8 +185,8 @@ namespace ServicesMvc
             builder.RegisterType<KlaerfaelleVhcDataServiceSAP>().As<IKlaerfaelleVhcDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceMahnungenVorErsteingangDataServiceSAP>().As<IFinanceMahnungenVorErsteingangDataService>().InstancePerHttpRequest();
 
-            builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerLifetimeScope();
-            builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerLifetimeScope();
+            builder.RegisterType<TranslationService>().As<ITranslationService>().InstancePerLifetimeScope();
+            builder.RegisterType<LogonContextProvider>().As<ILogonContextProvider>().InstancePerLifetimeScope();
             builder.RegisterType<LogsDataServiceSql>().As<ILogsDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ChartsDataServiceSql>().As<IChartsDataService>().InstancePerLifetimeScope();
 
@@ -201,7 +206,7 @@ namespace ServicesMvc
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope(); 
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();

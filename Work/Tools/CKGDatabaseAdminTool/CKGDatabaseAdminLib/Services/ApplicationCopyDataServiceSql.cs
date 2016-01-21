@@ -36,7 +36,7 @@ namespace CKGDatabaseAdminLib.Services
 
         public void InitDataContext(string connectionName)
         {
-            var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+            var sectionData = Config.GetAllDbConnections();
             _dataContext = new DatabaseContext(sectionData.Get(connectionName));
 
             _dataContext.Applications.Load();
@@ -51,7 +51,7 @@ namespace CKGDatabaseAdminLib.Services
             }
             else
             {
-                var sectionData = (NameValueCollection)ConfigurationManager.GetSection("dbConnections");
+                var sectionData = Config.GetAllDbConnections();
                 _destinationDataContext = new DatabaseContext(sectionData.Get(connectionName));
 
                 _destinationDataContext.Applications.Load();

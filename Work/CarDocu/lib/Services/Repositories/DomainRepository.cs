@@ -28,7 +28,7 @@ namespace CarDocu.Services
 
         public string PdfDirectoryName { get { return EnsurePathExists(Path.Combine(DomainService.DomainPath, "PDF", LogonUser.LoginName.Replace(AdminNamePostFix, ""))); } }
 
-        public string GlobalSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(DomainService.DomainPath, this.GetType().Name)); } }
+        public string GlobalSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(DomainService.DomainPath, GetType().Name)); } }
         public DomainGlobalSettings GlobalSettings { get; private set; }
 
         public string TemplateSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(GlobalSettingsDirectoryName, "Templates")); } }
@@ -139,8 +139,10 @@ namespace CarDocu.Services
 
         private void EnterpriseSettingsLoad(string directoryName)
         {
+            DocumentType.IsCurrentylLoadingFromRepository = true;
             EnterpriseSettings = XmlService.XmlDeserializeFromPath<EnterpriseSettings>(directoryName);
             EnterpriseSettings.DocumentTypes.Insert(0, ScanTemplateDocType);
+            DocumentType.IsCurrentylLoadingFromRepository = false;
         }
 
         public void EnterpriseSettingsSave()
@@ -325,12 +327,12 @@ namespace CarDocu.Services
             return ScanDocumentRepository.TryAddScanDocument(scanDocument);
         }
 
-        public bool ScanDocumentRepositoryTryDeleteScanDocument(ScanDocument scanDocument)
+        public bool ScanDocumentRepositoryTryDeleteScanDocument(ScanDocument scanDocument, bool deleteAlsoNetworkDeliveryPdfFiles)
         {
             if (scanDocument.IsTemplate)
-                return ScanTemplateRepository.TryDeleteScanDocument(scanDocument);
+                return ScanTemplateRepository.TryDeleteScanDocument(scanDocument, deleteAlsoNetworkDeliveryPdfFiles);
 
-            return ScanDocumentRepository.TryDeleteScanDocument(scanDocument);
+            return ScanDocumentRepository.TryDeleteScanDocument(scanDocument, deleteAlsoNetworkDeliveryPdfFiles);
         }
 
         #endregion
@@ -351,11 +353,6 @@ namespace CarDocu.Services
         public bool ScanTemplateRepositoryTryAddScanTemplate(ScanDocument scanTemplate)
         {
             return ScanTemplateRepository.TryAddScanDocument(scanTemplate);
-        }
-
-        public bool ScanTemplateRepositoryTryDeleteScanTemplate(ScanDocument scanTemplate)
-        {
-            return ScanTemplateRepository.TryDeleteScanDocument(scanTemplate);
         }
 
         #endregion
@@ -576,13 +573,20 @@ namespace CarDocu.Services
                     progressBarOperation.Details = string.Format("Lösche temporäres Verzeichnis '{0}'", directoryName);
 
                     // ScanDocument aus Repository löschen  +  ScanDocument temp. Verzeichnis löschen
-                    var task = TaskService.StartLongRunningTask(() => ScanDocumentRepository.TryDeleteScanDocument(scanDocument));
+                    var task = TaskService.StartLongRunningTask(() =>
+                    {
+                        var sdOrg = ScanDocumentRepository.ScanDocuments.FirstOrDefault(s => s.DocumentID == scanDocument.DocumentID);
+                        if (sdOrg != null)
+                            ScanDocumentRepository.TryDeleteScanDocument(sdOrg, false);
+                    });
                     if (!task.Wait(10000))
                         throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
 
                     progressBarOperation.Current++;
                     Thread.Sleep(50);
                 }
+
+                ScanDocumentRepositorySave();
 
                 if (progressBarOperation.IsCancellationPending)
                     return false;

@@ -435,8 +435,8 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.WEBUSER_ID = s.WebUserId;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
-                            d.VE_ERNAM = s.Vorerfasser;
-                            d.VE_AENAM = s.Aenderer;
+                            d.VE_ERNAM = s.Vorerfasser.Crop(12, "");
+                            d.VE_AENAM = s.Aenderer.Crop(12, "");
                             d.VE_ERDAT = s.ErfassungsDatum;
                             d.VE_ERZEIT = s.ErfassungsZeit;
                             d.BEB_STATUS = s.VorgangsStatus;

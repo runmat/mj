@@ -73,22 +73,13 @@ namespace CarDocu
                 var dirInfo = new DirectoryInfo(DomainService.Repository.GlobalSettings.TempPath);
                 foreach (var file in dirInfo.GetFiles())
                 {
-                    try
-                    {
-                        file.Delete();
-                    }
+                    try { file.Delete(); }
                     catch (Exception)
-                    {
-                    }
-
-
+                    {/**/}
                 }
             }
             catch (Exception)
-            {
-
-            }
-
+            {/**/}
         }
 
         private static void ShowInitialAppSettingsDialog(string userHintForArchives = null)

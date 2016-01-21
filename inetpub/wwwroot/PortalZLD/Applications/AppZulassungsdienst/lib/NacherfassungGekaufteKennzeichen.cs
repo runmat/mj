@@ -132,9 +132,9 @@ namespace AppZulassungsdienst.lib
             NewRow["LangtextID"] = LangtextID;
 
             if (Equals(Preis, 0.0))
-                NewRow["Preis"] = Preis.ToString();
-            else
                 NewRow["Preis"] = "";
+            else
+                NewRow["Preis"] = Preis.ToString();
             
             tblKennzeichen.Rows.Add(NewRow);
 

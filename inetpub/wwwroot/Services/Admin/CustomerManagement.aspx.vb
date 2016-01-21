@@ -174,6 +174,8 @@ Partial Public Class CustomerManagement
             chkTeamviewer.Checked = _Customer.ShowsTeamViewer
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
+            cbxForceSpecifiedLoginLink.Checked = _Customer.ForceSpecifiedLoginLink
+            txtLogoutLink.Text = _Customer.LogoutLink
             ddlReferenzTyp1.SelectedValue = _Customer.ReferenceType1
             ddlReferenzTyp2.SelectedValue = _Customer.ReferenceType2
             ddlReferenzTyp3.SelectedValue = _Customer.ReferenceType3
@@ -537,6 +539,8 @@ Partial Public Class CustomerManagement
         chkShowOrganization.Checked = False
         cbxOrgAdminRestrictToCustomerGroup.Checked = False
         chkTeamviewer.Checked = False
+        cbxForceSpecifiedLoginLink.Checked = False
+        txtLogoutLink.Text = ""
         'LoginRegeln
         txtLockedAfterNLogins.Text = "3"
         txtNewPwdAfterNDays.Text = "60"
@@ -728,6 +732,10 @@ Partial Public Class CustomerManagement
 
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
+
+        cbxForceSpecifiedLoginLink.Enabled = Not blnLock
+        txtLogoutLink.Enabled = Not blnLock
+        txtLogoutLink.BackColor = Drawing.Color.FromName(strBackColor)
 
         ddlReferenzTyp1.Enabled = Not blnLock
         ddlReferenzTyp2.Enabled = Not blnLock
@@ -1561,6 +1569,8 @@ Partial Public Class CustomerManagement
         ddlAccountingArea.SelectedIndex = 0
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
+        cbxForceSpecifiedLoginLink.Checked = False
+        txtLogoutLink.Text = ""
         ddlReferenzTyp1.SelectedValue = ""
         ddlReferenzTyp2.SelectedValue = ""
         ddlReferenzTyp3.SelectedValue = ""
@@ -1769,6 +1779,8 @@ Partial Public Class CustomerManagement
                                                 cbxUsernameSendEmail.Checked, _
                                                 CInt(ddlPortalLink.SelectedValue), _
                                                 ddlPortalType.SelectedValue, _
+                                                cbxForceSpecifiedLoginLink.Checked, _
+                                                txtLogoutLink.Text, _
                                                 ddlReferenzTyp1.SelectedValue, _
                                                 ddlReferenzTyp2.SelectedValue, _
                                                 ddlReferenzTyp3.SelectedValue, _

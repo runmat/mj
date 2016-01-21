@@ -62,6 +62,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAutoCompleteTagCloudConsumer.cs" />
     <Compile Include="Models\Archive.cs" />
     <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\DocumentTypeInputRule.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\Settings\SapSettings.cs" />
     <Compile Include="Models\Settings\SmtpSettings.cs" />
     <Compile Include="Models\StatusMessage.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Threads\CardocuQueueEntity.cs" />
     <Compile Include="Models\Threads\SapLogItem.cs" />
     <Compile Include="Models\Threads\ArchiveLogItem.cs" />

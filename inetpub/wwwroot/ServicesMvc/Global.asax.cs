@@ -64,6 +64,7 @@ namespace ServicesMvc
             // Customized general validation messages
             DefaultModelBinder.ResourceClassKey = "ValidationMessages";
             DataAnnotationsModelValidatorProvider.RegisterAdapter(typeof(RequiredAttribute), typeof(LocalizedRequiredAttributeAdapter));
+            ModelValidatorProviders.Providers.Add(new CustomModelValidatorsProvider());
 
             //
             // views and controllers provided by external assemblies:
@@ -91,6 +92,11 @@ namespace ServicesMvc
             var context = HttpContext.Current;
             var request = context.Request;
             var url = request.Url;
+            var urlReferrer = request.UrlReferrer;
+            if (request.HttpMethod.NotNullOrEmpty().ToUpper().Contains("POST"))
+            {
+                var x = urlReferrer;
+            }
         }
 
         protected void Application_AcquireRequestState()
