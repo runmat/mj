@@ -64,7 +64,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                         {
                             new WeatherWidgetUserSettings {Country = "de", City = "Hamburg"},
                             new WeatherWidgetUserSettings {Country = "at", City = "Wien"},
-                            new WeatherWidgetUserSettings {Country = "de", City = "Berlin"},
+                            new WeatherWidgetUserSettings {Country = "it", City = "Rom"},
                         }
                 };
         }
