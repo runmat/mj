@@ -77,7 +77,7 @@
             FormWizard.ButtonCustom1Show(show, _customButtonText);
 
             // Verbergen des Absenden Buttons wenn Recht nicht gesetzt
-            if (_submitRightZulassungAbsenden === "false") {
+            if (_submitRightZulassungAbsenden === "False" || _submitRightZulassungAbsenden === "false") {
                 $(".button-custom1").hide();
                 $(".button-submit").hide();
             }
