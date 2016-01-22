@@ -323,16 +323,11 @@
           options = ms.find('option:not(:disabled)').filter(function(){ return($.inArray(this.value, value) > -1); });
 
       if (selectables.length > 0) {
-          if (typeof (_multiSelectTwoRowMode) !== 'undefined' && _multiSelectTwoRowMode) {
-                selectables.addClass('ms-selected').animate({ width: 'toggle' }, 150, function() {
-                selections.addClass('ms-selected').animate({ width: 'toggle' }, 150);
-              });
-          } else {
-              selectables.addClass('ms-selected').hide();
-              selections.addClass('ms-selected').show();
-          }
+          
+        selectables.addClass('ms-selected').hide();
+        selections.addClass('ms-selected').show();
 
-          options.prop('selected', true);
+        options.prop('selected', true);
           
         var selectableOptgroups = that.$selectableUl.children('.ms-optgroup-container');
         if (selectableOptgroups.length > 0){

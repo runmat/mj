@@ -543,30 +543,33 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 
 
 /* <2-zeilig> */
-.ms-container {
+.ms-container.two-row {
     width: 95%;
 }
-.ms-container ul.ms-list {
+.ms-container.two-row ul.ms-list {
     min-height: 40px;
     height: auto!important;
     border: 0!important;
     overflow: hidden!important;
 }
-.ms-container ul.ms-list li {
+.ms-container.two-row ul.ms-list li {
     float: left;
     margin: 5px 0 0 5px!important;
     border-radius: 6px !important;
 }
-.ms-container .ms-selectable, .ms-container .ms-selection{
+.ms-container.two-row .ms-selectable, .ms-container.two-row .ms-selection{
   background: #fff;
   color: #555555;
   float: left;
   width: 100%;
 }
-.ms-container .ms-selectable {
+.ms-container.two-row .ms-selectable {
   margin-right: 0;
 }
-.ms-container .ms-selectable span.dienstleistung-nicht-gewaehlt-checkbox {
+.ms-container.two-row .ms-selection {
+    margin-bottom: 20px;
+}
+.ms-container.two-row .ms-selectable span.dienstleistung-nicht-gewaehlt-checkbox {
     display: inline-block!important;
     table-layout: fixed;
     white-space: nowrap;
@@ -577,13 +580,13 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     height: 18px!important;
     margin: 0 10px 0 5px!important;
 }
-.ms-container .ms-selection ul.ms-list li span{
+.ms-container.two-row .ms-selection ul.ms-list li span{
     width: 277px;
 }
-.dienstleistungen-header.dienstleistungen-selected {
-    margin-top: 15px;
+.ms-container.two-row .dienstleistungen-header.dienstleistungen-selected {
+    margin-top: 0;
 }
-.ms-container ul.ms-list li {
+.ms-container.two-row ul.ms-list li {
     white-space: nowrap;
 }
 /* </2-zeilig> */

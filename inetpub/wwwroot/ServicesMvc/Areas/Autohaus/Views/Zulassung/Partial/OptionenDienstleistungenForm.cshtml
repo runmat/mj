@@ -89,36 +89,66 @@
             
             MultiSelectPreparePrivate(true);
 
-            function MultiSelectPreparePrivate() {
+            function MultiSelectPreparePrivate(multiSelectTwoRowMode) {
 
                 $('#pre-selected-options').multiSelect();
 
-                if (_multiSelectTwoRowMode) {
+                if (multiSelectTwoRowMode) {
                     var headerSpanToMove = $(".dienstleistungen-header span.header-right");
                     var clone = headerSpanToMove.clone();
                     headerSpanToMove.hide();
                     $(".ms-container .ms-selection").prepend($("<div></div>").addClass("dienstleistungen-header").addClass("dienstleistungen-selected").html(clone));
+
+                    var selectedItemsHeader = $(".dienstleistungen-header span.header-left").closest(".dienstleistungen-header");
+                    var newDiv = $("<div></div>").addClass("ms-container").attr("id", "ms-pre-selected-options-sel");
+                    newDiv.html($(".ms-container .ms-selection"));
+                    newDiv.insertBefore(selectedItemsHeader);
+
+                    $(".ms-container").addClass("two-row");
                 }
 
                 $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    if (_multiSelectTwoRowMode) 
+                    if (multiSelectTwoRowMode) 
                         $(this).prepend('<span class="dienstleistung-nicht-gewaehlt-checkbox">&nbsp;</span>');
                     else
                         $(this).append('<i class="icon-chevron-right"></i>');
                 });
-                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
+
+                $('#ms-pre-selected-options-sel > .ms-selection > .ms-list > li').each(function () {
                     $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
                     $(this).append('<i class="icon-remove"></i>');
                 });
                 $('#ms-pre-selected-options').removeClass('hide');
 
+                MultiSelectPrepareSelectedBoxVisibility(false, multiSelectTwoRowMode);
                 $('#pre-selected-options').change(function() {
                     var selectedOptions = '';
                     $('.ms-selection > .ms-list > .ms-selected').each(function () {
                         selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
                     });
                     $("#GewaehlteDienstleistungenString").val(selectedOptions);
+                    MultiSelectPrepareSelectedBoxVisibility(true, multiSelectTwoRowMode);
                 });
+            }
+
+            function MultiSelectPrepareSelectedBoxVisibility(useAnimation, multiSelectTwoRowMode) {
+                if (!multiSelectTwoRowMode)
+                    return;
+
+                var selectItemsAvailable =  ($("#GewaehlteDienstleistungenString").val() !== '');
+                var selectedItemsDiv = $(".ms-selection");
+                if (!useAnimation) {
+                    if (selectItemsAvailable)
+                        selectedItemsDiv.show();
+                    else
+                        selectedItemsDiv.hide();
+                }
+                else {
+                    if (selectItemsAvailable)
+                        selectedItemsDiv.slideDown(150);
+                    else
+                        selectedItemsDiv.slideUp(150);
+                }
             }
 
         </script>
