@@ -103,7 +103,7 @@ namespace CkgDomainLogic.General.Services
                     AccountingArea = 1010,
                 };
 
-            Organization = new Organization
+            Organization = new UserOrganization
             {
                 AllOrganizations = true,
                 CustomerID = 209,
@@ -195,7 +195,7 @@ namespace CkgDomainLogic.General.Services
 
         public UserGroup Group { get; set; }
 
-        public Organization Organization { get; set; }
+        public UserOrganization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 

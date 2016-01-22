@@ -37,7 +37,7 @@ namespace CkgDomainLogic.General.Contracts
 
         UserGroup Group { get; set; }
 
-        Organization Organization { get; set; }
+        UserOrganization Organization { get; set; }
 
         List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get; }
 

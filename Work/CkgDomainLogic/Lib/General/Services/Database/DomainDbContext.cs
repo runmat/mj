@@ -231,12 +231,12 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<Organization> Organizations { get; set; }
 
-        private Organization _organization;
-        public Organization Organization
+        private UserOrganization _organization;
+        public UserOrganization Organization
         {
             get
             {
-                return _organization ?? (_organization = Database.SqlQuery<Organization>(" SELECT " +
+                return _organization ?? (_organization = Database.SqlQuery<UserOrganization>(" SELECT " +
                                                                                   " og.*, om.OrganizationAdmin " +
                                                                                   " FROM WebUser wu " +
                                                                                   " INNER JOIN OrganizationMember om ON om.UserID = wu.UserID " +

@@ -85,7 +85,7 @@ namespace CkgDomainLogic.General.Services
 
         public UserGroup Group { get; set; }
 
-        public Organization Organization { get; set; }
+        public UserOrganization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
@@ -429,7 +429,7 @@ namespace CkgDomainLogic.General.Services
         {
             if (Customer != null)
                 LogoutUrl = Customer.LogoutLink;
-        {
+        }
 
         public AdminLevel HighestAdminLevel
         {
