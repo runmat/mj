@@ -6,6 +6,8 @@
         background-color: ivory;
         padding: 15px 0 0 0;
         height: 100px;
+        border: 1px solid #909090;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
     }
     .selection-div select.m-wrap, .selection-div input.m-wrap {
         background-color: white !important;
@@ -151,6 +153,7 @@
                 <label class="control-label">@Localize.City</label>
                 <div class="controls">
                     <input class="m-wrap medium tb-city" type="text" value="@city">
+                    <button class='btn blue mini margin-left-5 margin-top-5' onclick="SettingsSubmit(@i)"><i class="icon-ok"></i></button>
                 </div>
             </div>
 
@@ -321,6 +324,17 @@
         });
     }
 
+    function SettingsSubmit(index) {
+        var widgetId = "#weather-widget-" + index;
+        var tbCity = $(widgetId + " .tb-city");
+        var tbCountryDropdown = $(widgetId + " .lb-country");
+
+        SettingsToggle(index);
+        PrepareWeatherWidget(tbCity.val(), index);
+
+        $(widgetId + " .weather-widget-title").html(tbCity.val() + ", " + tbCountryDropdown.val().toUpperCase());
+    }
+
     function InitCityTextbox(tbCity, index)
     {
         var widgetId = "#weather-widget-" + index;
@@ -330,20 +344,19 @@
             PrepareWeatherWidget(tbCity.val(), index);
         }
 
-        tbCity.on("keyup", function (e) {
+        tbCity.on("keyup", function(e) {
 
             if (e.keyCode === 13 && tbCity.val().length >= autoCompleteMinLength) {
-                SettingsToggle(index);
-                PrepareWeatherWidget(tbCity.val(), index);
-
-                var tbCountryDropdown = $(widgetId + " .lb-country");
-                $(widgetId + " .weather-widget-title").html(tbCity.val() + ", " + tbCountryDropdown.val().toUpperCase());
+                SettingsSubmit(index);
             }
 
             if (tbCity.val().length < autoCompleteMinLength && tbCity.data('ui-autocomplete') != undefined) {
                 tbCity.autocomplete("destroy");
                 tbCity.removeData("autocomplete");
             }
+
+            var okButton = $(widgetId + " button.btn.blue");
+            if (tbCity.val().length >= autoCompleteMinLength) okButton.show(); else okButton.hide();
 
             if (tbCity.val().length >= autoCompleteMinLength && tbCity.data('ui-autocomplete') == undefined)
             {
