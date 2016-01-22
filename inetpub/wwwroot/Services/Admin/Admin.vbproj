@@ -193,7 +193,7 @@
     </Compile>
     <Compile Include="CustomerManagement.aspx.vb">
       <DependentUpon>CustomerManagement.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EFA_IPVerwaltung.aspx.designer.vb">
       <DependentUpon>EFA_IPVerwaltung.aspx</DependentUpon>
@@ -569,7 +569,7 @@
     </Compile>
     <Compile Include="UserManagement.aspx.vb">
       <DependentUpon>UserManagement.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserUnlock.aspx.designer.vb">
       <DependentUpon>UserUnlock.aspx</DependentUpon>

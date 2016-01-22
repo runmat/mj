@@ -5,7 +5,7 @@ Imports CKG.Base.Kernel.Security
 
 Namespace Kernel.Admin
 
-    Public Class RightList 
+    Public Class RightList
         Inherits DataTable
 
 #Region " Membervariables "
@@ -51,11 +51,11 @@ Namespace Kernel.Admin
             daRights.SelectCommand.Connection = m_cn
 
             If m_intGroupID = -2 Then
-                
-                strSql = " SELECT CustomerID, dbo.CategorySettingsCustomer.CategoryID AS CategoryID, HasSettings, "
+
+                strSql = " SELECT CustomerID, CategorySettingsCustomer.CategoryID AS CategoryID, HasSettings, "
                 strSql += "Description, EditUserName, EditDate"
-                strSql += " FROM dbo.CategorySettingsCustomer LEFT OUTER JOIN "
-                strSql += " dbo.CategorySettingsMetadata ON dbo.CategorySettingsCustomer.CategoryID = dbo.CategorySettingsMetadata.CategoryID "
+                strSql += " FROM CategorySettingsCustomer LEFT OUTER JOIN "
+                strSql += " CategorySettingsMetadata ON CategorySettingsCustomer.CategoryID = CategorySettingsMetadata.CategoryID "
                 strSql += "WHERE (CustomerID = @CustomerID) "
 
             End If
@@ -96,7 +96,7 @@ Namespace Kernel.Admin
             End Try
 
         End Sub
-        
+
         Public Shared Function InsertOrDeleteRightForAllUsersOfThisCustomer(ByVal customerId As Integer, ByVal categoryId As String, _
                                                      ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
 
@@ -168,7 +168,7 @@ Namespace Kernel.Admin
                 cmd.Connection = cn
                 cmd.CommandType = CommandType.Text
                 cmd.CommandText = sSQl
-                
+
                 cmd.ExecuteNonQuery()
 
             Catch ex As Exception
@@ -176,11 +176,9 @@ Namespace Kernel.Admin
             Finally
                 cn.Close()
             End Try
-            System.Diagnostics.Debug.WriteLine("Das SQL Statement ist: ")
-            System.Diagnostics.Debug.WriteLine(sSql)
 
         End Sub
-        
+
         Public Shared Function ShowRightsPerUser(ByVal userName As String) As ArrayList
 
             Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -190,14 +188,12 @@ Namespace Kernel.Admin
             strUserName = userName
 
             sSql = ""
-            sSql += "SELECT dbo.CategorySettingsWebUser.UserName, dbo.CategorySettingsWebUser.CategoryID, dbo.CategorySettingsMetadata.SettingsType, "
-            sSql += "dbo.CategorySettingsWebUser.SettingsValue, dbo.CategorySettingsMetadata.Description, dbo.CategorySettingsWebUser.EditUserName, "
+            sSql += "SELECT CategorySettingsWebUser.UserName, CategorySettingsWebUser.CategoryID, CategorySettingsMetadata.SettingsType, "
+            sSql += "CategorySettingsWebUser.SettingsValue, CategorySettingsMetadata.Description, CategorySettingsWebUser.EditUserName, "
             sSql += "dbo.CategorySettingsWebUser.EditDate "
-            sSql += "FROM dbo.CategorySettingsMetadata INNER JOIN "
-            sSql += "dbo.CategorySettingsWebUser ON dbo.CategorySettingsMetadata.CategoryID = dbo.CategorySettingsWebUser.CategoryID "
+            sSql += "FROM CategorySettingsMetadata INNER JOIN "
+            sSql += "CategorySettingsWebUser ON CategorySettingsMetadata.CategoryID = CategorySettingsWebUser.CategoryID "
             sSql += "WHERE UserName LIKE '" & strUserName & "'"
-
-
 
             Dim values As ArrayList = New ArrayList()
 
@@ -224,14 +220,11 @@ Namespace Kernel.Admin
 
             End Using
 
-           
-
-
             Return values
 
 
         End Function
-        
+
         Shared Sub UpdateRightPerUser(strUserName As String, categoryId As String, strUserRightValue As String, strRightFieldtype As String)
 
             Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
@@ -244,7 +237,7 @@ Namespace Kernel.Admin
             ElseIf (strRightFieldtype = "chkbox") Then
                 strTeilSql += "SettingsValue = '" & strUserRightValue & "'"
             End If
-            
+
             sSQl += "UPDATE CategorySettingsWebUser "
             sSQl += "SET "
             sSQl += strTeilSQL

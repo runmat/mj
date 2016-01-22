@@ -8,19 +8,12 @@ Imports Telerik.Web.UI
 Imports System.IO
 Imports System.Net.Configuration
 
-
 Imports System.Web.UI.WebControls.WebParts
 
 
 Partial Public Class CustomerManagement
     Inherits Page
 
-    Protected WithEvents rbUpdate As UpdatePanel
-    Protected WithEvents UpdatePanel1 As UpdatePanel
-    Protected WithEvents UpdatePanel2 As UpdatePanel
-    Protected WithEvents UpdatePanel3 As UpdatePanel
-    Protected WithEvents UpdatePanel4 As UpdatePanel
-    Protected WithEvents IPUpdate As UpdatePanel
 
 
 #Region " Membervariables "
@@ -188,6 +181,9 @@ Partial Public Class CustomerManagement
             chkTeamviewer.Checked = _Customer.ShowsTeamViewer
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
+            ' TODO TB wieder einkommentieren
+            ' cbxForceSpecifiedLoginLink.Checked = _Customer.ForceSpecifiedLoginLink
+            ' txtLogoutLink.Text = _Customer.LogoutLink
             ddlReferenzTyp1.SelectedValue = _Customer.ReferenceType1
             ddlReferenzTyp2.SelectedValue = _Customer.ReferenceType2
             ddlReferenzTyp3.SelectedValue = _Customer.ReferenceType3
@@ -436,9 +432,6 @@ Partial Public Class CustomerManagement
             tblApps.Clear()
         End If
 
-        InitRightsTable()
-        rgRights.Rebind()
-
         'Unassigned
         Dim AppUnAssigned As New ApplicationList(intCustomerID, cn)
         AppUnAssigned.GetUnassigned(strCustomerPortalType)
@@ -571,13 +564,12 @@ Partial Public Class CustomerManagement
 
     Private Sub FillRights(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
 
-        If tblApps Is Nothing OrElse tblApps.Columns.Count = 0 Then
-            InitAppTable()
+        If tblRights Is Nothing OrElse tblRights.Columns.Count = 0 Then
+            InitRightsTable()
         Else
-            tblApps.Clear()
+            tblRights.Clear()
         End If
 
-        'possibleRights
         Dim possibleRights As New RightList(intCustomerID, cn)
 
         possibleRights.GetAllPossibleRightsforThisCustomer()
@@ -591,13 +583,6 @@ Partial Public Class CustomerManagement
             tblRights.Rows.Add(newRow)
 
         Next
-
-        ' 
-        'Repeater2.Visible = True
-        ' Repeater2.DataSource = possibleRights
-        '        Repeater2.DataBind()
-
-
 
         rgRights.Rebind()
 
@@ -615,6 +600,8 @@ Partial Public Class CustomerManagement
         chkShowOrganization.Checked = False
         cbxOrgAdminRestrictToCustomerGroup.Checked = False
         chkTeamviewer.Checked = False
+        cbxForceSpecifiedLoginLink.Checked = False
+        txtLogoutLink.Text = ""
         'LoginRegeln
         txtLockedAfterNLogins.Text = "3"
         txtNewPwdAfterNDays.Text = "60"
@@ -806,6 +793,10 @@ Partial Public Class CustomerManagement
 
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
+
+        cbxForceSpecifiedLoginLink.Enabled = Not blnLock
+        txtLogoutLink.Enabled = Not blnLock
+        txtLogoutLink.BackColor = Drawing.Color.FromName(strBackColor)
 
         ddlReferenzTyp1.Enabled = Not blnLock
         ddlReferenzTyp2.Enabled = Not blnLock
@@ -1639,6 +1630,8 @@ Partial Public Class CustomerManagement
         ddlAccountingArea.SelectedIndex = 0
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
+        cbxForceSpecifiedLoginLink.Checked = False
+        txtLogoutLink.Text = ""
         ddlReferenzTyp1.SelectedValue = ""
         ddlReferenzTyp2.SelectedValue = ""
         ddlReferenzTyp3.SelectedValue = ""
@@ -1847,6 +1840,8 @@ Partial Public Class CustomerManagement
                                                 cbxUsernameSendEmail.Checked, _
                                                 CInt(ddlPortalLink.SelectedValue), _
                                                 ddlPortalType.SelectedValue, _
+                                                cbxForceSpecifiedLoginLink.Checked, _
+                                                txtLogoutLink.Text, _
                                                 ddlReferenzTyp1.SelectedValue, _
                                                 ddlReferenzTyp2.SelectedValue, _
                                                 ddlReferenzTyp3.SelectedValue, _
@@ -2415,7 +2410,7 @@ Partial Public Class CustomerManagement
 
         For Each item As GridDataItem In rgRights.Items
 
-            cbxSetRight = item("Auswahl").FindControl("cbxSetRight")
+            cbxSetRight = item("Auswahl1").FindControl("cbxSetRight")
             isChecked = cbxSetRight.Checked
             itemCategoryValue = item("CategoryID").Text
 

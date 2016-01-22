@@ -563,7 +563,7 @@
                                                                         <asp:CheckBox ID="cbxTestUser" runat="server"></asp:CheckBox></span>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" runat="server">
+                                                            <tr id="Tr1" class="formquery" runat="server">
                                                                 <td class="firstLeft active">
                                                                     Gültig ab:
                                                                 </td>
@@ -571,7 +571,7 @@
                                                                     <asp:TextBox ID="txtValidFrom" runat="server" Width="160px" MaxLength="10"></asp:TextBox>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" runat="server">
+                                                            <tr id="Tr2" class="formquery" runat="server">
                                                                 <td class="firstLeft active">
                                                                     Gültig bis:
                                                                 </td>
@@ -835,8 +835,10 @@
 
                                                               <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
                                                                         AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
-                                                                        OnNeedDataSource="drUserRights_OnLoad" 
-                                                                         >
+                                                                       >
+                                                                  
+                                                             
+
                                                                 <ClientSettings>
                                                                     <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
                                                                 </ClientSettings>
@@ -861,6 +863,7 @@
                                                                                                             <asp:Checkbox ID="Recht2"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>' 
                                                                                                                     name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
                                                                                                                     runat="server" 
+                                                                                                                     Checked='<%# DataBinder.Eval(Container, "DataItem.SettingsValue") %>' 
                                                                                                              />
                                                                                                          
                                                                                                 </ItemTemplate>

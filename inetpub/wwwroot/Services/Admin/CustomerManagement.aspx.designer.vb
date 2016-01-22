@@ -329,15 +329,6 @@ Partial Public Class CustomerManagement
     Protected WithEvents ddlAccountingArea As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''tr1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
     '''ddlPortalLink-Steuerelement
     '''</summary>
     '''<remarks>
@@ -345,6 +336,24 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents ddlPortalLink As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''cbxForceSpecifiedLoginLink-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents cbxForceSpecifiedLoginLink As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''txtLogoutLink-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtLogoutLink As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''trPortalType-Steuerelement

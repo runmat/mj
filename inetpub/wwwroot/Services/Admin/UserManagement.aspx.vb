@@ -695,6 +695,8 @@ Partial Public Class UserManagement
                 Return False
             End If
 
+            ShowRightsPerUser(_User.UserName)
+
             Return True
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "FillEdit", ex.ToString)
@@ -2999,18 +3001,11 @@ Partial Public Class UserManagement
         Return Nothing
     End Function
 
-    Public Sub drUserRights_OnLoad()
-        ShowRightsPerUser()
-    End Sub
+    Public Sub ShowRightsPerUser(ByVal strUsername As String)
 
-    Public Sub ShowRightsPerUser()
-
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Dim strUserName As String
-
-        strUserName = txtUserName.Text
-
-        drUserRights.DataSource = RightList.ShowRightsPerUser(strUserName)
+        '        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        drUserRights.DataSource = RightList.ShowRightsPerUser(strUsername)
+        drUserRights.Rebind()
 
     End Sub
 
@@ -3024,23 +3019,23 @@ Partial Public Class UserManagement
         Dim strUserRightValue As String
         Dim strUserName As String
         Dim strCategoryID As String
-        
+
         strUserName = txtUserName.Text
 
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        
+
         m_User = GetUser(Me)
 
         For Each item As GridDataItem In drUserRights.Items
 
             itemCategoryValue = item("CategoryID").Text
-            
+
             If item("SettingsValue").FindControl("Recht1").Visible = True Then
                 txtbox = item("SettingsValue").FindControl("Recht1")
                 strUserRightValue = txtbox.Text
                 strRightFieldtype = "txtfield"
             End If
-            
+
             If item("SettingsValue").FindControl("Recht2").Visible = True Then
                 cbxSetRight = item("SettingsValue").FindControl("Recht2")
                 strUserRightValue = cbxSetRight.Checked
@@ -3052,5 +3047,5 @@ Partial Public Class UserManagement
         Next
 
     End Sub
-    
+
 End Class

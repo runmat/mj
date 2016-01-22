@@ -869,6 +869,15 @@ Partial Public Class UserManagement
     Protected WithEvents cbxTestUser As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
+    '''Tr1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
     '''txtValidFrom-Steuerelement
     '''</summary>
     '''<remarks>
@@ -876,6 +885,15 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents txtValidFrom As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''Tr2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Tr2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''txtValidTo-Steuerelement
