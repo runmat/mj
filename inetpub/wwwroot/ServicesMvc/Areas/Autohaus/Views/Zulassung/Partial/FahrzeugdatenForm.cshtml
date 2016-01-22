@@ -16,12 +16,17 @@
 }
 
 <style>
-    .fontUnderline {
-        text-decoration: underline;
-    }
+    
+     .fontUnderline {
+         text-decoration: underline;
+     }
 
     .inputwidth {
         width: 100px;
+    }
+    
+    .m-wrap.tiny {
+        width: 30px !Important;
     }
 </style>
 
@@ -39,45 +44,6 @@
         }
     }
 
-    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
-        Grid_FormatMultiRowSelected(cb);
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vinId: cb.val(), isChecked: cb.is(':checked') },
-            loadingShow: false,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-            }
-        });
-    }
-
-    function OnAllSelectionChange_GridFahrzeugAuswahl(check) {
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vinId: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-                FilterGrid("GridFahrzeugAuswahl");
-            }
-        });
-    }
-
-    function UpdateGridInfo(count) {
-        if (count == 0) {
-            $("#FahrzeugAuswahlCount").addClass('hide');
-            $("#uncheckAllRecords").attr("checked", false);
-            $.uniform.update($("#uncheckAllRecords"));
-            return;
-        }
-        $("#FahrzeugAuswahlCount").removeClass('hide');
-        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-        $("#uncheckAllRecords").attr("checked", true);
-        $.uniform.update($("#uncheckAllRecords"));
-    }
-
     function OnDataBound_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
@@ -88,6 +54,7 @@
     }
     function OnRowDataBound_GridFahrzeugAuswahl(e) {
         $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+        $(e.row).find("#FahrzeugArt").val(e.dataItem.FahrzeugArt);
         ShowHideKennzLabelColumns();
     }
 
@@ -155,6 +122,48 @@
         });
     }
 
+    function ZulassungVehicleAdd() {
+        var numberOfVehiclesToAdd = $("#AnzahlHinzuzufuegendeFahrzeuge").val();
+
+        if (!numberOfVehiclesToAdd || numberOfVehiclesToAdd == 0)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "VehicleAdd",
+            data: { anzFahrzeuge: numberOfVehiclesToAdd },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                    var grid = $("#GridFahrzeugAuswahl").data("tGrid");
+                    grid.ajaxRequest();
+                }
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+    function ZulassungVehicleRemove(finId) {
+        $.ajax({
+            type: "POST",
+            url: "VehicleRemove",
+            data: { finId: finId },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                    var grid = $("#GridFahrzeugAuswahl").data("tGrid");
+                    grid.ajaxRequest();
+                }
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
+
+        return false;
+    }
 
     // Änderung eines Fahrzeugparameters bei Massenzulassung
     $(document).off('change', '.editvinvalue');
@@ -237,39 +246,48 @@
     {
         using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
         {
-                <h4>
-                    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
-                        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-                    </span>
-                </h4>
             var gridName = "GridFahrzeugAuswahl";
-                @(Html.Telerik()
-                      .Grid<FahrzeugAkteBestand>()
-                      .Name(gridName)
-                      .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
-                      .Columns(columns =>
-                      {
-                          columns.XBound(c => c.FinID).Visible(false);
-                          columns.XBound(c => c.Aktion)
-                              .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FinID #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                              .HeaderTemplate(
-                                  "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl(true)' /></span>" +
-                                  "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridFahrzeugAuswahl(false)'></i>"
-                          ).Filterable(false);
-                          columns.XBound(c => c.FIN);
-                          columns.XBound(c => c.HandelsName);
-                          columns.XBound(c => c.FahrzeugArt);
+            
+            @(Html.Telerik()
+                    .Grid<FahrzeugAkteBestand>()
+                    .Name(gridName)
+                    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Fahrzeugliste anzeigen
+                    .Columns(columns =>
+                    {
+                        columns.XBound(c => c.FinID).Visible(false);
 
-                          columns.XBound(c => c.FzgModell).ClientTemplate("<input id='FzModell_<#= data.FIN #>' type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title("Modell <span class='requiredField requiredFieldMarker'>*</span>");
-                          columns.XBound(c => c.Farbe).ClientTemplate("<input id='Farbe_<#= data.FIN #>' type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title("Farbe <span class='requiredField requiredFieldMarker'>*</span>");
+                        columns.XBound(c => c.Aktion).Filterable(false).ClientTemplate(
+                            "<button onclick='return ZulassungVehicleRemove(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>");
 
-                      })
-                      .XPageSize(10)
-                      .XAutoColumnConfiguration()
-                      .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
-                      .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                      .XToolBar(gridName)
-                          )
+                        columns.XBound(c => c.FIN).ClientTemplate(
+                                Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
+                            ).Title(Localize.VIN + " <span class='requiredField requiredFieldMarker'>*</span>");
+                          
+                        columns.XBound(c => c.HandelsName).ClientTemplate(
+                                Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
+                            );
+                          
+                        columns.XBound(c => c.FahrzeugArt).ClientTemplate(
+                                Html.DropDownList("FahrzeugArt", FahrzeugAkteBestand.FahrzeugArtOptionen.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "FahrzeugArt" } }).ToHtmlString()
+                            );
+
+                        columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>");
+                        columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>");
+
+                    })
+                    .XPageSize(10)
+                    .XAutoColumnConfiguration()
+                    .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+                    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                    .XToolBar(gridName)
+                )
+        
+            <div class="form-actions clearfix">
+                <div class="pull-left">
+                    @Html.TextBoxFor(m => m.AnzahlHinzuzufuegendeFahrzeuge, new { @class = "m-wrap tiny", maxlength = 3 })
+                    <button class="btn blue" onclick="ZulassungVehicleAdd();">@Localize.AddVehicleVehicles</button>
+                </div>
+            </div>
         }
     }
     

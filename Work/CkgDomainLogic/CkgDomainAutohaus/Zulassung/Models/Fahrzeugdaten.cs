@@ -94,6 +94,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [RequiredConditional]
         public string TuevAu { get; set; }
 
+        public int AnzahlHinzuzufuegendeFahrzeuge { get; set; }
+
         public string GetSummaryString()
         {
             var s = String.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
