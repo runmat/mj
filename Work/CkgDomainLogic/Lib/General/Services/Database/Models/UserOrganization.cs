@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CkgDomainLogic.General.Database.Models
+﻿namespace CkgDomainLogic.General.Database.Models
 {
-    [Table("Organization")]
-    public class UserOrganization : Organization
+    public class UserOrganization : OrganizationBase
     {
         public bool OrganizationAdmin { get; set; }
     }

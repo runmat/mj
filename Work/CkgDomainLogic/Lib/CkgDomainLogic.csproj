@@ -155,6 +155,7 @@
     <Compile Include="General\Services\Database\Models\DataConverterProcessStructure.cs" />
     <Compile Include="General\Services\Database\Models\DataConverterMappingInfo.cs" />
     <Compile Include="General\Services\Database\Models\DataConverterMappingData.cs" />
+    <Compile Include="General\Services\Database\Models\OrganizationBase.cs" />
     <Compile Include="General\Services\Database\Models\UserOrganization.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />

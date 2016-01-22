@@ -105,7 +105,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
             {
-                return dbContext.Organizations.Where(o => o.CustomerID == LogonContext.User.CustomerID).OrderBy(o => o.OrganizationName).ToDictionary(o => o.OrganizationReference, o => o.OrganizationName);
+                return dbContext.Organizations
+                    .Where(o => o.CustomerID == LogonContext.User.CustomerID)
+                    .OrderBy(o => o.OrganizationName)
+                    .ToDictionary(o => o.OrganizationReference, o => o.OrganizationName);
             }
         }
     }
