@@ -365,6 +365,11 @@ namespace CKGDatabaseAdminLib
             SaveChanges();
         }
 
+        public void ExecuteSqlNonQuery(string sqlString)
+        {
+            Database.ExecuteSqlCommand(sqlString);
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

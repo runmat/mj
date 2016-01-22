@@ -364,6 +364,11 @@ namespace CkgDomainLogic.General.Services
             LogoutUrl = "";
         }
 
+        public void TrySetLogoutLink()
+        {
+            throw new NotImplementedException();
+        }
+
         public string PersistanceKey { get { return UserName; } }
 
         public IPersistanceService PersistanceService { get; set; }

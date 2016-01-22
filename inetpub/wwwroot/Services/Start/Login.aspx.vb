@@ -260,9 +260,9 @@ Partial Public Class Login
             End If
             lnkPasswortVergessen.Text = "Passwort vergessen?"
             trPasswortVergessen.Visible = False
-            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, blnPasswdlink) Then
+            If m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString, Request.Url.AbsoluteUri, blnPasswdlink) Then
 
-
+                Session("UrlRemoteLogin_LogoutUrl") = m_User.Customer.LogoutLink
 
                 ' --- 20.06.2013, MJE
                 ' --- MVC Integration:
@@ -535,7 +535,7 @@ Partial Public Class Login
                         '=> Biete Standard-Login an
                     Else
                         'Melde Standard-Benutzer an und geh' weiter
-                        If m_User.Login(strIpStandardUser, Session.SessionID.ToString) Then
+                        If m_User.Login(strIpStandardUser, Session.SessionID.ToString, Request.Url.AbsoluteUri) Then
                             'System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString, False)
                             RedirectFromLoginPage(m_User)
                             redirectOccurred = True
@@ -598,7 +598,8 @@ Partial Public Class Login
         UrlRemoteUserTryLogin(remoteUserName, remoteUserPwdHashed)
 
         If (Not String.IsNullOrEmpty(remoteUserName)) Then
-            If m_User.Login(remoteUserName, remoteUserPwdHashed, Session.SessionID.ToString, False) Then
+            If m_User.Login(remoteUserName, remoteUserPwdHashed, Session.SessionID.ToString, Request.Url.AbsoluteUri, False) Then
+                Session("UrlRemoteLogin_LogoutUrl") = m_User.Customer.LogoutLink
                 'RedirectFromLoginPage(m_User)
                 SaveAndRedirectUser(remoteUserName, remoteUserPwdHashed)
             Else

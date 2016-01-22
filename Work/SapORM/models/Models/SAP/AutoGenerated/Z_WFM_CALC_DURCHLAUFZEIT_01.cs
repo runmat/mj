@@ -131,36 +131,57 @@ namespace SapORM.Models
 
 			public int? ANZ_ALLE_GT_40 { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static ES_STATISTIK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new ES_STATISTIK
-				{
-					DURCHSCHNITT_DAUER = string.IsNullOrEmpty(row["DURCHSCHNITT_DAUER"].ToString()) ? null : (decimal?)row["DURCHSCHNITT_DAUER"],
-					ANZ_GES = string.IsNullOrEmpty(row["ANZ_GES"].ToString()) ? null : (int?)row["ANZ_GES"],
-					ANZ_STD_LE_10 = string.IsNullOrEmpty(row["ANZ_STD_LE_10"].ToString()) ? null : (int?)row["ANZ_STD_LE_10"],
-					ANZ_STD_11_20 = string.IsNullOrEmpty(row["ANZ_STD_11_20"].ToString()) ? null : (int?)row["ANZ_STD_11_20"],
-					ANZ_STD_21_30 = string.IsNullOrEmpty(row["ANZ_STD_21_30"].ToString()) ? null : (int?)row["ANZ_STD_21_30"],
-					ANZ_STD_31_40 = string.IsNullOrEmpty(row["ANZ_STD_31_40"].ToString()) ? null : (int?)row["ANZ_STD_31_40"],
-					ANZ_STD_GT_40 = string.IsNullOrEmpty(row["ANZ_STD_GT_40"].ToString()) ? null : (int?)row["ANZ_STD_GT_40"],
-					ANZ_KLAER_LE_10 = string.IsNullOrEmpty(row["ANZ_KLAER_LE_10"].ToString()) ? null : (int?)row["ANZ_KLAER_LE_10"],
-					ANZ_KLAER_11_20 = string.IsNullOrEmpty(row["ANZ_KLAER_11_20"].ToString()) ? null : (int?)row["ANZ_KLAER_11_20"],
-					ANZ_KLAER_21_30 = string.IsNullOrEmpty(row["ANZ_KLAER_21_30"].ToString()) ? null : (int?)row["ANZ_KLAER_21_30"],
-					ANZ_KLAER_31_40 = string.IsNullOrEmpty(row["ANZ_KLAER_31_40"].ToString()) ? null : (int?)row["ANZ_KLAER_31_40"],
-					ANZ_KLAER_GT_40 = string.IsNullOrEmpty(row["ANZ_KLAER_GT_40"].ToString()) ? null : (int?)row["ANZ_KLAER_GT_40"],
-					ANZ_ALLE_LE_10 = string.IsNullOrEmpty(row["ANZ_ALLE_LE_10"].ToString()) ? null : (int?)row["ANZ_ALLE_LE_10"],
-					ANZ_ALLE_11_20 = string.IsNullOrEmpty(row["ANZ_ALLE_11_20"].ToString()) ? null : (int?)row["ANZ_ALLE_11_20"],
-					ANZ_ALLE_21_30 = string.IsNullOrEmpty(row["ANZ_ALLE_21_30"].ToString()) ? null : (int?)row["ANZ_ALLE_21_30"],
-					ANZ_ALLE_31_40 = string.IsNullOrEmpty(row["ANZ_ALLE_31_40"].ToString()) ? null : (int?)row["ANZ_ALLE_31_40"],
-					ANZ_ALLE_GT_40 = string.IsNullOrEmpty(row["ANZ_ALLE_GT_40"].ToString()) ? null : (int?)row["ANZ_ALLE_GT_40"],
+				ES_STATISTIK o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new ES_STATISTIK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						DURCHSCHNITT_DAUER = string.IsNullOrEmpty(row["DURCHSCHNITT_DAUER"].ToString()) ? null : (decimal?)row["DURCHSCHNITT_DAUER"],
+						ANZ_GES = string.IsNullOrEmpty(row["ANZ_GES"].ToString()) ? null : (int?)row["ANZ_GES"],
+						ANZ_STD_LE_10 = string.IsNullOrEmpty(row["ANZ_STD_LE_10"].ToString()) ? null : (int?)row["ANZ_STD_LE_10"],
+						ANZ_STD_11_20 = string.IsNullOrEmpty(row["ANZ_STD_11_20"].ToString()) ? null : (int?)row["ANZ_STD_11_20"],
+						ANZ_STD_21_30 = string.IsNullOrEmpty(row["ANZ_STD_21_30"].ToString()) ? null : (int?)row["ANZ_STD_21_30"],
+						ANZ_STD_31_40 = string.IsNullOrEmpty(row["ANZ_STD_31_40"].ToString()) ? null : (int?)row["ANZ_STD_31_40"],
+						ANZ_STD_GT_40 = string.IsNullOrEmpty(row["ANZ_STD_GT_40"].ToString()) ? null : (int?)row["ANZ_STD_GT_40"],
+						ANZ_KLAER_LE_10 = string.IsNullOrEmpty(row["ANZ_KLAER_LE_10"].ToString()) ? null : (int?)row["ANZ_KLAER_LE_10"],
+						ANZ_KLAER_11_20 = string.IsNullOrEmpty(row["ANZ_KLAER_11_20"].ToString()) ? null : (int?)row["ANZ_KLAER_11_20"],
+						ANZ_KLAER_21_30 = string.IsNullOrEmpty(row["ANZ_KLAER_21_30"].ToString()) ? null : (int?)row["ANZ_KLAER_21_30"],
+						ANZ_KLAER_31_40 = string.IsNullOrEmpty(row["ANZ_KLAER_31_40"].ToString()) ? null : (int?)row["ANZ_KLAER_31_40"],
+						ANZ_KLAER_GT_40 = string.IsNullOrEmpty(row["ANZ_KLAER_GT_40"].ToString()) ? null : (int?)row["ANZ_KLAER_GT_40"],
+						ANZ_ALLE_LE_10 = string.IsNullOrEmpty(row["ANZ_ALLE_LE_10"].ToString()) ? null : (int?)row["ANZ_ALLE_LE_10"],
+						ANZ_ALLE_11_20 = string.IsNullOrEmpty(row["ANZ_ALLE_11_20"].ToString()) ? null : (int?)row["ANZ_ALLE_11_20"],
+						ANZ_ALLE_21_30 = string.IsNullOrEmpty(row["ANZ_ALLE_21_30"].ToString()) ? null : (int?)row["ANZ_ALLE_21_30"],
+						ANZ_ALLE_31_40 = string.IsNullOrEmpty(row["ANZ_ALLE_31_40"].ToString()) ? null : (int?)row["ANZ_ALLE_31_40"],
+						ANZ_ALLE_GT_40 = string.IsNullOrEmpty(row["ANZ_ALLE_GT_40"].ToString()) ? null : (int?)row["ANZ_ALLE_GT_40"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new ES_STATISTIK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -269,34 +290,55 @@ namespace SapORM.Models
 
 			public DateTime? ANLAGEDATUM { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static ET_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new ET_OUT
-				{
-					KUNNR = (string)row["KUNNR"],
-					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
-					ERLEDIGT_DATUM = string.IsNullOrEmpty(row["ERLEDIGT_DATUM"].ToString()) ? null : (DateTime?)row["ERLEDIGT_DATUM"],
-					ABMELDEART = (string)row["ABMELDEART"],
-					SELEKTION1 = (string)row["SELEKTION1"],
-					SELEKTION2 = (string)row["SELEKTION2"],
-					SELEKTION3 = (string)row["SELEKTION3"],
-					REFERENZ1 = (string)row["REFERENZ1"],
-					REFERENZ2 = (string)row["REFERENZ2"],
-					REFERENZ3 = (string)row["REFERENZ3"],
-					FAHRG = (string)row["FAHRG"],
-					KENNZ = (string)row["KENNZ"],
-					DURCHLAUFZEIT_STUNDEN = (string)row["DURCHLAUFZEIT_STUNDEN"],
-					DURCHLAUFZEIT_TAGE = (string)row["DURCHLAUFZEIT_TAGE"],
-					ANLAGEDATUM = string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString()) ? null : (DateTime?)row["ANLAGEDATUM"],
+				ET_OUT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new ET_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KUNNR = (string)row["KUNNR"],
+						VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
+						ERLEDIGT_DATUM = string.IsNullOrEmpty(row["ERLEDIGT_DATUM"].ToString()) ? null : (DateTime?)row["ERLEDIGT_DATUM"],
+						ABMELDEART = (string)row["ABMELDEART"],
+						SELEKTION1 = (string)row["SELEKTION1"],
+						SELEKTION2 = (string)row["SELEKTION2"],
+						SELEKTION3 = (string)row["SELEKTION3"],
+						REFERENZ1 = (string)row["REFERENZ1"],
+						REFERENZ2 = (string)row["REFERENZ2"],
+						REFERENZ3 = (string)row["REFERENZ3"],
+						FAHRG = (string)row["FAHRG"],
+						KENNZ = (string)row["KENNZ"],
+						DURCHLAUFZEIT_STUNDEN = (string)row["DURCHLAUFZEIT_STUNDEN"],
+						DURCHLAUFZEIT_TAGE = (string)row["DURCHLAUFZEIT_TAGE"],
+						ANLAGEDATUM = string.IsNullOrEmpty(row["ANLAGEDATUM"].ToString()) ? null : (DateTime?)row["ANLAGEDATUM"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new ET_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

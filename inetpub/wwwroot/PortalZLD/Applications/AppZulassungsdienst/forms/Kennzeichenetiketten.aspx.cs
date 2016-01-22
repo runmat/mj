@@ -33,7 +33,7 @@ namespace AppZulassungsdienst.forms
             {
                 SetAttributes();
 
-                mObjDruckKennzeichenetiketten = new DruckKennzeichenetiketten();
+                mObjDruckKennzeichenetiketten = new DruckKennzeichenetiketten(m_User.Reference);
                 Session["mObjDruckKennzeichenetiketten"] = mObjDruckKennzeichenetiketten;
 
                 Title = lblHead.Text;

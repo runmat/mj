@@ -334,6 +334,11 @@ namespace CkgDomainLogic.General.Services
             LogoutUrl = "";
         }
 
+        public void TrySetLogoutLink()
+        {
+            throw new NotImplementedException();
+        }
+
         public string VkOrg { get; private set; }
         public string VkBur { get; private set; }
 

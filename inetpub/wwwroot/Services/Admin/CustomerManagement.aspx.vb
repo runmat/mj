@@ -181,9 +181,8 @@ Partial Public Class CustomerManagement
             chkTeamviewer.Checked = _Customer.ShowsTeamViewer
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
-            ' TODO TB wieder einkommentieren
-            ' cbxForceSpecifiedLoginLink.Checked = _Customer.ForceSpecifiedLoginLink
-            ' txtLogoutLink.Text = _Customer.LogoutLink
+            cbxForceSpecifiedLoginLink.Checked = _Customer.ForceSpecifiedLoginLink
+            txtLogoutLink.Text = _Customer.LogoutLink
             ddlReferenzTyp1.SelectedValue = _Customer.ReferenceType1
             ddlReferenzTyp2.SelectedValue = _Customer.ReferenceType2
             ddlReferenzTyp3.SelectedValue = _Customer.ReferenceType3
