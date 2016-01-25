@@ -12,7 +12,9 @@
     if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 
-    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];  
+    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];
+
+    var halterAdresse = Fahrzeugdaten.GetZulassungViewModel().Zulassung.Halter.Adresse;
 }
 
 <style>
@@ -22,6 +24,12 @@
 
     .inputwidth {
         width: 100px;
+    }
+
+    .fahrzeug-daten {
+        float: left;
+        width: 50%;
+        margin-left: 0;
     }
 </style>
 
@@ -178,13 +186,13 @@
 
 </script>
 
-<div id="DivFahrzeugdaten" class="margin-top-20">    
+<div id="DivFahrzeugdaten" class="margin-top-20">
     @using (Ajax.BeginForm("FahrzeugdatenForm", "Zulassung", null,
-                           new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
-                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
+                                           new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
+                                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
     {
         @Html.FormValidationSummary()
-        
+
         if (isMassenzulassung || isMassenabmeldung)
         {
             @Html.Hidden("IsMassenzulassung", isMassenzulassung)
@@ -198,52 +206,56 @@
 
             @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
             @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
-            
+
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
             @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelColumns();" })
         }
         else
         {
-            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
-            @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+                <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-left">
+                    @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
+                    @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
-            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "left" })
-            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17, col = "right" })
+                    @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
 
-            @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
+                    @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
+                    @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
 
-            if (modusAbmeldung)
-            {
-                @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase", col = "left" })
-                @Html.FormTextBoxFor(m => m.TuevAu, new { @class = "m-wrap small", maxlength = 4, col = "right" })
-            }
-            else
-            {
-                @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-            }
-            
-            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
-            <div id="ValidationMsgHasEtikett"></div>
-            <div id="KennzeichenLabelFields">
-                @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete", col = "left" })
-                @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap medium", col = "right" })
-            </div>
+                    @if (modusAbmeldung)
+                    {
+                        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+                        @Html.FormTextBoxFor(m => m.TuevAu, new { @class = "m-wrap small", maxlength = 4 })
+                    }
+                    else
+                    {
+                        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+                    }
+                </div>
+
+                <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
+                    @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
+                    <div id="ValidationMsgHasEtikett"></div>
+                    <div id="KennzeichenLabelFields">
+                        @Html.FormTextBoxFor(m => m.Farbe, new {@class = "m-wrap medium colorautocomplete"})
+                        @Html.FormTextBoxFor(m => m.FzgModell, new {@class = "m-wrap medium"})
+                    </div>
+                </div>
         }
     }
-    
+
     @if (isMassenzulassung || isMassenabmeldung)
     {
         using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
         {
-                <h4>
-                    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
-                        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-                    </span>
-                </h4>
+            <h4>
+                <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+                    <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+                </span>
+            </h4>
             var gridName = "GridFahrzeugAuswahl";
-                @(Html.Telerik()
+            @(Html.Telerik()
                       .Grid<FahrzeugAkteBestand>()
                       .Name(gridName)
                       .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
@@ -269,8 +281,8 @@
                       .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
                       .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                       .XToolBar(gridName)
-                          )
+            )
         }
     }
-    
+
 </div>

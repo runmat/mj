@@ -209,6 +209,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.BankAdressdaten.Bankdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
 
             SkipBankAdressdaten = (!Zulassung.BankAdressdaten.Cpdkunde);
+
+
+            // ToDo: Revert StepsKroschkeZulassung.XML
+            // ToDo: Remove this TEST code
+            SetHalterAdresse(HalterAdressen.First(h => h.Name1.NotNullOrEmpty().ToLower().Contains("baumgarten")));
         }
 
         #endregion
