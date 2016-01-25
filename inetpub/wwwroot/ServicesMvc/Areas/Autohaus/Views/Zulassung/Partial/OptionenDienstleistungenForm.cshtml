@@ -91,7 +91,19 @@
 
             function MultiSelectPreparePrivate(multiSelectTwoRowMode) {
 
-                $('#pre-selected-options').multiSelect();
+                $('#pre-selected-options').multiSelect(
+                    {
+                        afterSelect: function(el) {
+                            var elementToSelect = $("#" + el + "-selection");
+                            elementToSelect.css("opacity", 0.0);
+                            setTimeout(function() {
+
+                                elementToSelect.animate({opacity: 1.0}, 700, "easeOutBounce", function() {
+                                });
+                            }, 10);
+                        }
+                    }
+                );
 
                 if (multiSelectTwoRowMode) {
                     var headerSpanToMove = $(".dienstleistungen-header span.header-right");
@@ -108,6 +120,7 @@
                 }
 
                 $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
+                    $(this).css("cursor", "pointer");
                     if (multiSelectTwoRowMode) 
                         $(this).prepend('<span class="dienstleistung-nicht-gewaehlt-checkbox">&nbsp;</span>');
                     else
@@ -115,6 +128,7 @@
                 });
 
                 $('#ms-pre-selected-options-sel > .ms-selection > .ms-list > li').each(function () {
+                    $(this).css("cursor", "pointer");
                     $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
                     $(this).append('<i class="icon-remove"></i>');
                 });
