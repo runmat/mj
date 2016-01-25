@@ -57,7 +57,7 @@ else if (Model.IsSchnellabmeldung)
         @(Html.Telerik()
                 .Grid<FahrzeugAkteBestand>()
                 .Name(gridName)
-                .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+                .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
                 .Columns(columns =>
                 {
                     columns.XBound(c => c.FinID).Visible(false);
