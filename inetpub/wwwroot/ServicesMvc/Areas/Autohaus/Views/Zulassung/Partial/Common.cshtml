@@ -3,7 +3,7 @@
 @{
     var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
 
-    var submitRightZulassungAbsenden = logonContext.GetCategorySettingsForWebUser("ZULASSUNG_ABSENDEN");
+    var submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
 }
 
 
@@ -51,8 +51,8 @@
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
     var _skipBankAddressData = false;
-    var _submitRightZulassungAbsenden = '@submitRightZulassungAbsenden'; 
-    
+    var _submitRightAuftraegeNichtAbsenden = '@submitRightAuftraegeNichtAbsenden';
+
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -76,12 +76,12 @@
             $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
             FormWizard.ButtonCustom1Show(show, _customButtonText);
 
-            // Verbergen des Absenden Buttons wenn Recht nicht gesetzt
-            if (_submitRightZulassungAbsenden === "False" || _submitRightZulassungAbsenden === "false") {
+            // Verbergen des Absenden Buttons wenn Haken gesetzt
+            if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
                 $(".button-custom1").hide();
                 $(".button-submit").hide();
             }
-            
+
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
 

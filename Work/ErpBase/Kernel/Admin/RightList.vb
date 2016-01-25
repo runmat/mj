@@ -208,7 +208,8 @@ Namespace Kernel.Admin
                         values.Add(New UserRightInformation(reader.GetString(0),
                                                             reader.GetString(1),
                                                             reader.GetString(2),
-                                                            reader.GetString(3)
+                                                            reader.GetString(3),
+                                                            reader.GetString(4)
                                                             )
                                     )
                     Loop
@@ -272,13 +273,15 @@ Namespace Kernel.Admin
         Dim m_categoryId As String
         Dim m_settingstype As String
         Dim m_settingsvalue As String
+        Dim m_description As String
 
-        Public Sub New(username As String, categoryId As String, settingstype As String, settingsvalue As String)
+        Public Sub New(username As String, categoryId As String, settingstype As String, settingsvalue As String, description As String)
             MyBase.New()
             m_username = username
             m_categoryId = categoryId
             m_settingstype = settingstype
             m_settingsvalue = settingsvalue
+            m_description = description
         End Sub
 
         Property UserName As String
@@ -329,6 +332,16 @@ Namespace Kernel.Admin
                 m_settingsvalue = value
             End Set
         End Property
+
+        Property Description As String
+            Get
+                Return m_description
+            End Get
+            Set(ByVal value As String)
+                m_description = value
+            End Set
+        End Property
+
 
     End Class
 

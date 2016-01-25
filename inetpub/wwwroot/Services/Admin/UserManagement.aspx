@@ -852,7 +852,7 @@
                                                                     <Columns>
 
                                                                               <telerik:GridTemplateColumn Groupable="false" UniqueName="SettingsValue" >
-                                                                                        <HeaderStyle Width="150px" />
+                                                                                        <HeaderStyle Width="100px" />
                                                                                                 <ItemTemplate>
                                                                                                           <asp:TextBox ID="Recht1"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>' 
                                                                                                                 name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
@@ -873,6 +873,12 @@
                                                                              <HeaderStyle Width="150px" />
                                                                             <ItemStyle></ItemStyle>
                                                                         </telerik:GridBoundColumn>
+                                                                        
+                                                                         <telerik:GridBoundColumn DataField="Description" SortExpression="Description" HeaderText="Beschreibung" UniqueName="Description" >
+                                                                             <HeaderStyle Width="150px" />
+                                                                            <ItemStyle></ItemStyle>
+                                                                        </telerik:GridBoundColumn>
+
 
                                                                     </Columns>
 

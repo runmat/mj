@@ -1,7 +1,7 @@
 ﻿@{
     var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
 
-    var submitRightZulassungAbsenden = logonContext.GetCategorySettingsForWebUser("ZULASSUNG_ABSENDEN");
+    var _submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
 }
 
 
@@ -79,9 +79,9 @@
 <div class="shopping-cart-body"></div>
 
 <script type="text/javascript">
-    
-    
-    var _submitRightZulassungAbsenden = '@submitRightZulassungAbsenden';
+
+
+    var _submitRightAuftraegeNichtAbsenden = '@_submitRightAuftraegeNichtAbsenden';
 
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
@@ -108,7 +108,7 @@
 
         return false;
     };
-    
+
     function ShoppingCartShowResult(result) {
         if (typeof (result.message) !== "undefined") {
             alert(result.message);
@@ -159,7 +159,7 @@
 
         return false;
     }
-    
+
     function ShoppingCartSelectedItemsSubmit(btn) {
 
         $(btn).attr("disabled", true);
@@ -186,9 +186,9 @@
             }
         });
 
-        return false;        
+        return false;
     }
-    
+
 
     function ShoppingCartMenuRefreshCount() {
         $.ajax({
@@ -251,7 +251,7 @@
             }
         });
     }
-    
+
     function GridShoppingCart_MultiSelectItemCountRefresh() {
         var count = _gridShoppingCart_MultiSelectItemCount;
         if (count <= 0) {
@@ -285,20 +285,21 @@
             return;
         }
 
-        if (_submitRightZulassungAbsenden === "False" || _submitRightZulassungAbsenden === "false") {
+
+        if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
             $(".shopping-cart-item-selection-count").hide();
-            } else {
+        } else {
             $(".shopping-cart-item-selection-count").show();
         }
 
         $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-    }   
-    
+    }
+
     function GridShoppingCart_MultiSelectItemCountHint(count) {
-        return  '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
-            '<i class="icon-chevron-right margin-right-10"></i>' + 
+        return '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
+            '<i class="icon-chevron-right margin-right-10"></i>' +
             count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
     }
 

@@ -64,14 +64,7 @@
             <string>Optionen</string>
         </value>
     </item>
-    <item>
-        <key>
-            <string>Summary</string>
-        </key>
-        <value>
-            <string>Übersicht</string>
-        </value>
-    </item>
+    
   <item>
     <key>
       <string>Summary</string>
