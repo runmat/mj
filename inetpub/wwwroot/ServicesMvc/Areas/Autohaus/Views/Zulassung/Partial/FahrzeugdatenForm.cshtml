@@ -31,6 +31,19 @@
         width: 50%;
         margin-left: 0;
     }
+
+    .kroschke-prime-etikette {
+        display: inline-block;
+        background: url(/ServicesMvc/images/kroschke-prime-etikette.png);
+        width: 300px;
+        height: 60px;
+        vertical-align:top;
+    }
+    .kroschke-prime-etikette-more {
+        margin: 19px 0 0 15px;
+        vertical-align:top;
+        width: 40px;
+    }
 </style>
 
 <script>
@@ -38,6 +51,25 @@
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
     var _selectedItemsCount = 0;
+
+    function ToggleCheckHasEtikett(btn) {
+        var isChecked = $("#HasEtikett").is(":checked");
+        $("#HasEtikett").attr("checked", !isChecked);
+        $.uniform.update($("#HasEtikett"));
+
+        var btnIcon = btn.find("i");
+        if (!isChecked) {
+            btnIcon.removeClass("icon-chevron-right");
+            btnIcon.addClass("icon-chevron-down");
+        } else {
+            btnIcon.removeClass("icon-chevron-down");
+            btnIcon.addClass("icon-chevron-right");
+        }
+        
+        ShowHideKennzLabelDiv();
+
+        return false;
+    }
 
     function AjaxFormFahrzeugdatenComplete() {
         FormPrepareAjax();
@@ -235,12 +267,19 @@
                 </div>
 
                 <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
-                    @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
+
+                    <div class="kroschke-prime-etikette">&nbsp;</div>
+                    <button onclick="return ToggleCheckHasEtikett($(this))" class="btn green kroschke-prime-etikette-more"><i class="icon-chevron-right"></i></button>
+
+                    <div class="hide">
+                        @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
+                    </div>
                     <div id="ValidationMsgHasEtikett"></div>
                     <div id="KennzeichenLabelFields">
                         @Html.FormTextBoxFor(m => m.Farbe, new {@class = "m-wrap medium colorautocomplete"})
                         @Html.FormTextBoxFor(m => m.FzgModell, new {@class = "m-wrap medium"})
                     </div>
+
                 </div>
         }
     }
