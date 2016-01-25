@@ -220,13 +220,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
         /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
         /// Fahrzeug-Properties identische Werte haben.
+        /// Vorher muss "DataInit" aufgerufen worden sein!
         /// </summary>
         /// <param name="finList"></param>
         /// <param name="keepZulassungsart">wenn true, kein automatisches Setzen des Modus Massenzulassung/-abmeldung</param>
         public void SetFinList(object finList, bool keepZulassungsart = false)
         {
             FinList = ((List<FahrzeugAkteBestand>)finList ?? new List<FahrzeugAkteBestand>());
-            FinListFiltered = FinList;
 
             #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
 
@@ -235,13 +235,20 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 var firstFahrzeug = FinList.First();
                 var isEqual = true;
 
-                foreach (var fahrzeugAkteBestand in FinList)
+                foreach (var item in FinList)
                 {
+                    var fahrzeugAkteBestand = item;
+
+                    var fzgArt = Fahrzeugarten.FirstOrDefault(a => a.Beschreibung.NotNullOrEmpty().ToUpper() == fahrzeugAkteBestand.FahrzeugArt.NotNullOrEmpty().ToUpper());
+                    if (fzgArt != null && !string.IsNullOrEmpty(fzgArt.Wert))
+                        fahrzeugAkteBestand.ZulassungFahrzeugartId = fzgArt.Wert;
+                    else
+                        fahrzeugAkteBestand.ZulassungFahrzeugartId = Zulassung.Fahrzeugdaten.FahrzeugartId;
+
                     if (fahrzeugAkteBestand.SelectedHalter == null || firstFahrzeug.SelectedHalter == null ||
                         ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
                     {
                         isEqual = false;
-                        break;
                     }
                 }
 
@@ -250,8 +257,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else
             {
-                FinList.Add(new FahrzeugAkteBestand { FinID = "001" });
+                FinList.Add(new FahrzeugAkteBestand { FinID = "001", ZulassungNeuesFzg = true, ZulassungFahrzeugartId = Zulassung.Fahrzeugdaten.FahrzeugartId });
             }
+
+            FinListFiltered = FinList;
 
             #endregion
 
@@ -409,8 +418,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.HandelsName = value);
                         break;
 
-                    case "fahrzeugart":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.FahrzeugArt = value);
+                    case "zulassungfahrzeugartid":
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.ZulassungFahrzeugartId = value);
                         break;
                 }
                 return null;
@@ -911,14 +920,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
         }
 
-        public void AddVehicles(int anzFahrzeuge)
+        public void AddVehicles(int anzFahrzeuge, string fahrzeugartId)
         {
             Zulassung.Fahrzeugdaten.AnzahlHinzuzufuegendeFahrzeuge = anzFahrzeuge;
 
             for (var i = 0; i < anzFahrzeuge; i++)
             {
                 var maxId = FinList.Max(f => f.FinID).ToInt(0);
-                FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3") });
+                FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3"), ZulassungNeuesFzg = true, ZulassungFahrzeugartId = fahrzeugartId });
             }
 
             PropertyCacheClear(this, m => m.FinListFiltered);
@@ -1173,6 +1182,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         new FahrzeugAkteBestand
                         {
                             FinID = "001",
+                            ZulassungNeuesFzg = true,
+                            FahrzeugArt = "PKW",
                             FIN = Zulassung.FahrgestellNr,
                             Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen,
                             VorhandenesKennzReservieren = Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren,
@@ -1325,6 +1336,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         // 20150826 MMA                    
                         singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
                         singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
+                        singleZulassung.Fahrzeugdaten.FahrzeugartId = fahrzeugAkteBestand.ZulassungFahrzeugartId;
                     }
 
                     zulassungenToSave.Add(singleZulassung);

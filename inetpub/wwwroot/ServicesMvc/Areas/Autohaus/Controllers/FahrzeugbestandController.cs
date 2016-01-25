@@ -42,7 +42,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
         void InitModelStatics()
         {
-            FahrzeugAkteBestand.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;
+            FahrzeugAkteBestand.GetBestandViewModel = GetViewModel<FahrzeugbestandViewModel>;
             FahrzeugAkteBestandSelektor.GetViewModel = GetViewModel<FahrzeugbestandViewModel>;
         }
 

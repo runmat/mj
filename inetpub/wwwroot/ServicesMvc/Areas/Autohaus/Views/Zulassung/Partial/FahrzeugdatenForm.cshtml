@@ -52,9 +52,10 @@
         Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
         InitDefaultColorAutocomplete($(".colorautocomplete"));
     }
+
     function OnRowDataBound_GridFahrzeugAuswahl(e) {
         $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
-        $(e.row).find("#FahrzeugArt").val(e.dataItem.FahrzeugArt);
+        $(e.row).find("#ZulassungFahrzeugartId").val(e.dataItem.ZulassungFahrzeugartId);
         ShowHideKennzLabelColumns();
     }
 
@@ -131,7 +132,7 @@
         $.ajax({
             type: "POST",
             url: "VehicleAdd",
-            data: { anzFahrzeuge: numberOfVehiclesToAdd },
+            data: { anzFahrzeuge: numberOfVehiclesToAdd, fahrzeugartId: $("#FahrzeugartId").val() },
             loadingShow: false,
             success: function (result) {
                 if (result.ok == true) {
@@ -161,8 +162,6 @@
                 }
             }
         });
-
-        return false;
     }
 
     // Änderung eines Fahrzeugparameters bei Massenzulassung
@@ -267,8 +266,8 @@
                                 Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
                             );
                           
-                        columns.XBound(c => c.FahrzeugArt).ClientTemplate(
-                                Html.DropDownList("FahrzeugArt", FahrzeugAkteBestand.FahrzeugArtOptionen.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "FahrzeugArt" } }).ToHtmlString()
+                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
+                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
                             );
 
                         columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>");
@@ -279,7 +278,7 @@
                     .XAutoColumnConfiguration()
                     .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
                     .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                    .XToolBar(gridName)
+                    .XToolBar("Zulassung")
                 )
         
             <div class="form-actions clearfix">

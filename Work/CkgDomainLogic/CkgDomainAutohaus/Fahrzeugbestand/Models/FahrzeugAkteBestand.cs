@@ -11,6 +11,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using System.Linq;
+using CkgDomainLogic.Autohaus.ViewModels;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Models
 {
@@ -32,7 +33,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string FinID { get; set; }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
-        public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
+        public static Func<FahrzeugbestandViewModel> GetBestandViewModel { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
 
         public bool IsSelected { get; set; } 
 
@@ -70,6 +74,22 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [Length(5)]
         public string Evb { get; set; }
+
+        public bool ZulassungNeuesFzg { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        public string ZulassungFahrzeugartId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        public string ZulassungFahrzeugart
+        {
+            get
+            {
+                var fzgArt = (GetZulassungViewModel != null ? GetZulassungViewModel().Fahrzeugarten.FirstOrDefault(a => a.Wert == ZulassungFahrzeugartId) : null);
+
+                return (fzgArt != null ? fzgArt.Beschreibung : ZulassungFahrzeugartId);
+            }
+        }
 
         #endregion
 
@@ -282,7 +302,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("HALTER", Halter) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("HALTER", Halter) : null);
             }
         }
 
@@ -291,7 +311,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
             }
         }
 
@@ -300,7 +320,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
             }
         }
 

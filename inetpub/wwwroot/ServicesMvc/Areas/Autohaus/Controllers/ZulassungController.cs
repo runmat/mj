@@ -13,6 +13,7 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Autohaus.ViewModels;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
@@ -199,6 +200,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            FahrzeugAkteBestand.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -526,10 +528,6 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
-            if ((ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung || ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung) && ViewModel.FinList.All(x => string.IsNullOrEmpty(x.FIN)))
-                ModelState.AddModelError(string.Empty, Localize.NoVehicleSelected);
-
-            // 20150828 MMA Zusätzliche Validierung, wenn Kennzeichenetiketten und Massenzulassung gewählt...
             ViewModel.ValidateFahrzeugdatenForm(ModelState.AddModelError, model);
 
             if (ModelState.IsValid)
@@ -553,9 +551,9 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public ActionResult VehicleAdd(int anzFahrzeuge)
+        public ActionResult VehicleAdd(int anzFahrzeuge, string fahrzeugartId)
         {
-            ViewModel.AddVehicles(anzFahrzeuge);
+            ViewModel.AddVehicles(anzFahrzeuge, fahrzeugartId);
 
             return Json(new { ok = true });
         }
