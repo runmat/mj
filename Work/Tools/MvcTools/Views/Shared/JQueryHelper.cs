@@ -140,92 +140,92 @@ WriteLiteral("<script type=\"text/javascript\">\r\n\r\n    // Enthält allg. Hil
 "\n                expr = /^[A-ZÄÖÜ]{1,3}-\\d{1,18}$/;\r\n                if (!expr.t" +
 "est(strKennz)) {\r\n                    return false;\r\n                }\r\n        " +
 "        break;\r\n            case \"606\":\r\n                // Zulassungsbesch. Tei" +
-"l 1\r\n                expr = /^[A-ZÄÖÜ]{1,3}-\\d{1,18}$/;\r\n                if (!ex" +
-"pr.test(strKennz)) {\r\n                    return false;\r\n                }\r\n    " +
-"            break;\r\n            case \"679\":\r\n                // Rotes Heft\r\n    " +
-"            expr = /^[A-ZÄÖÜ]{1,3}-\\d{1,18}$/;\r\n                if (!expr.test(s" +
-"trKennz)) {\r\n                    return false;\r\n                }\r\n             " +
-"   break;\r\n            default:\r\n                // Standard-Kennzeichen\r\n      " +
-"          expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\\d{1,4}$/;\r\n                if (!expr" +
-".test(strKennz)) {\r\n                    return false;\r\n                }\r\n      " +
-"          break;\r\n        }\r\n        return true;\r\n    }\r\n\r\n    // Prüft das Dat" +
-"um (string)\r\n    function CheckFormatDatum(strDatum) {\r\n        if (strDatum != " +
-"null && strDatum != \"\") {\r\n            var expr = /^[0-3][0-9].[0-1][0-9].\\d{4}$" +
-"/;\r\n            if (!expr.test(strDatum)) {\r\n                return false;\r\n    " +
-"        }\r\n        }\r\n        return true;\r\n    }\r\n\r\n    // Prüft, ob das angege" +
-"benen Datum (string) vor oder nach dem Referenzdatum (string) liegt, \r\n    // gi" +
-"bt 1 (größer), 0 (gleich), -1 (kleiner) oder -2 (Fehler) zurück\r\n    function Ve" +
-"rgleicheDatum(strRefDatum, strDatum) {\r\n        if (CheckFormatDatum(strRefDatum" +
-") == false || CheckFormatDatum(strDatum) == false) {\r\n            return -2;\r\n  " +
-"      }\r\n        var datePartsRef = strRefDatum.split(\".\");\r\n        var datumRe" +
-"f = new Date(datePartsRef[2], (datePartsRef[1] - 1), datePartsRef[0]);\r\n        " +
-"var dateParts = strDatum.split(\".\");\r\n        var datum = new Date(dateParts[2]," +
-" (dateParts[1] - 1), dateParts[0]);\r\n        var jahrRef = datumRef.getFullYear(" +
-");\r\n        var monatRef = datumRef.getMonth();\r\n        var tagRef = datumRef.g" +
-"etDate();\r\n        var jahr = datum.getFullYear();\r\n        var monat = datum.ge" +
-"tMonth();\r\n        var tag = datum.getDate();\r\n        if (jahr == jahrRef) {\r\n " +
-"           if (monat == monatRef) {\r\n                if (tag == tagRef) {\r\n     " +
-"               return 0;\r\n                } else {\r\n                    if (tag " +
-"< tagRef) {\r\n                        return -1;\r\n                    } else {\r\n " +
-"                       return 1;\r\n                    }\r\n                }\r\n    " +
-"        } else {\r\n                if (monat < monatRef) {\r\n                    r" +
-"eturn -1;\r\n                } else {\r\n                    return 1;\r\n            " +
-"    }\r\n            }\r\n        } else {\r\n            if (jahr < jahrRef) {\r\n     " +
-"           return -1;\r\n            } else {\r\n                return 1;\r\n        " +
-"    }\r\n        }\r\n    }\r\n\r\n    // div-Operation\r\n    function berechneDiv(zahl1," +
-" zahl2) {\r\n        if (zahl1 * zahl2 > 0) {\r\n            return Math.floor(zahl1" +
-" / zahl2);\r\n        }\r\n        else {\r\n            return Math.ceil(zahl1 / zahl" +
-"2);\r\n        }\r\n    }\r\n\r\n    // Erweiterte Gaußsche Osterformel\r\n    function be" +
-"rechneOstersonntag(jahr) {\r\n        var k = berechneDiv(jahr, 100);\r\n        var" +
-" m = 15 + berechneDiv(3 * k + 3, 4) - berechneDiv(8 * k + 13, 25);\r\n        var " +
-"s = 2 - berechneDiv(3 * k + 3, 4);\r\n        var a = jahr % 19;\r\n        var d = " +
-"(19 * a + m) % 30;\r\n        var r = berechneDiv(berechneDiv(d + a, 11), 29);\r\n  " +
-"      var og = 21 + d - r;\r\n        var sz = 7 - ((jahr + berechneDiv(jahr, 4) +" +
-" s) % 7);\r\n        var oe = 7 - ((og - sz) % 7);\r\n        var os = og + oe;\r\n   " +
-"     // Monat auch hier wieder 0..11\r\n        if (os > 31) {\r\n            return" +
-" new Date(2013, 3, os - 31);\r\n        }\r\n        else {\r\n            return new " +
-"Date(2013, 2, os);\r\n        }\r\n    }\r\n\r\n    // Stellt sicher, dass das angegeben" +
-"e Datum kein Feiertag ist\r\n    function keinFeiertag(date) {\r\n        var jahr =" +
-" date.getFullYear();\r\n        var monat = date.getMonth();\r\n        var tag = da" +
-"te.getDate();\r\n        // statische Feiertage\r\n        for (i = 0; i < listeFest" +
-"eFeiertage.length; i++) {\r\n            // getMonth liefert 0..11, deshalb -1\r\n  " +
-"          if ((monat == listeFesteFeiertage[i][0] - 1)\r\n          && (tag == lis" +
-"teFesteFeiertage[i][1])) {\r\n                return [false, \'\'];\r\n            }\r\n" +
-"        }\r\n        // dynamische Feiertage\r\n        // Ostersonntag\r\n        var" +
-" ostersonntag = berechneOstersonntag(jahr);\r\n        if ((monat == ostersonntag." +
-"getMonth())\r\n          && (tag == ostersonntag.getDate())) {\r\n            return" +
-" [false, \'\'];\r\n        }\r\n        // Karfreitag\r\n        var feiertag = new Date" +
-"(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());\r\n" +
-"        feiertag.setDate(ostersonntag.getDate() - 2);\r\n        if ((monat == fei" +
-"ertag.getMonth())\r\n          && (tag == feiertag.getDate())) {\r\n            retu" +
-"rn [false, \'\'];\r\n        }\r\n        // Ostermontag\r\n        feiertag = new Date(" +
-"ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getDate());\r\n " +
-"       feiertag.setDate(ostersonntag.getDate() + 1);\r\n        if ((monat == feie" +
-"rtag.getMonth())\r\n              && (tag == feiertag.getDate())) {\r\n            r" +
-"eturn [false, \'\'];\r\n        }\r\n        // Christi Himmelfahrt\r\n        feiertag " +
+"l 1\r\n                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{0,2}\\d{1,18}$/;\r\n             " +
+"   if (!expr.test(strKennz)) {\r\n                    return false;\r\n             " +
+"   }\r\n                break;\r\n            case \"679\":\r\n                // Rotes " +
+"Heft\r\n                expr = /^[A-ZÄÖÜ]{1,3}-\\d{1,18}$/;\r\n                if (!e" +
+"xpr.test(strKennz)) {\r\n                    return false;\r\n                }\r\n   " +
+"             break;\r\n            default:\r\n                // Standard-Kennzeich" +
+"en\r\n                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\\d{1,4}$/;\r\n               " +
+" if (!expr.test(strKennz)) {\r\n                    return false;\r\n               " +
+" }\r\n                break;\r\n        }\r\n        return true;\r\n    }\r\n\r\n    // Prü" +
+"ft das Datum (string)\r\n    function CheckFormatDatum(strDatum) {\r\n        if (st" +
+"rDatum != null && strDatum != \"\") {\r\n            var expr = /^[0-3][0-9].[0-1][0" +
+"-9].\\d{4}$/;\r\n            if (!expr.test(strDatum)) {\r\n                return fa" +
+"lse;\r\n            }\r\n        }\r\n        return true;\r\n    }\r\n\r\n    // Prüft, ob " +
+"das angegebenen Datum (string) vor oder nach dem Referenzdatum (string) liegt, \r" +
+"\n    // gibt 1 (größer), 0 (gleich), -1 (kleiner) oder -2 (Fehler) zurück\r\n    f" +
+"unction VergleicheDatum(strRefDatum, strDatum) {\r\n        if (CheckFormatDatum(s" +
+"trRefDatum) == false || CheckFormatDatum(strDatum) == false) {\r\n            retu" +
+"rn -2;\r\n        }\r\n        var datePartsRef = strRefDatum.split(\".\");\r\n        v" +
+"ar datumRef = new Date(datePartsRef[2], (datePartsRef[1] - 1), datePartsRef[0]);" +
+"\r\n        var dateParts = strDatum.split(\".\");\r\n        var datum = new Date(dat" +
+"eParts[2], (dateParts[1] - 1), dateParts[0]);\r\n        var jahrRef = datumRef.ge" +
+"tFullYear();\r\n        var monatRef = datumRef.getMonth();\r\n        var tagRef = " +
+"datumRef.getDate();\r\n        var jahr = datum.getFullYear();\r\n        var monat " +
+"= datum.getMonth();\r\n        var tag = datum.getDate();\r\n        if (jahr == jah" +
+"rRef) {\r\n            if (monat == monatRef) {\r\n                if (tag == tagRef" +
+") {\r\n                    return 0;\r\n                } else {\r\n                  " +
+"  if (tag < tagRef) {\r\n                        return -1;\r\n                    }" +
+" else {\r\n                        return 1;\r\n                    }\r\n             " +
+"   }\r\n            } else {\r\n                if (monat < monatRef) {\r\n           " +
+"         return -1;\r\n                } else {\r\n                    return 1;\r\n  " +
+"              }\r\n            }\r\n        } else {\r\n            if (jahr < jahrRef" +
+") {\r\n                return -1;\r\n            } else {\r\n                return 1;" +
+"\r\n            }\r\n        }\r\n    }\r\n\r\n    // div-Operation\r\n    function berechne" +
+"Div(zahl1, zahl2) {\r\n        if (zahl1 * zahl2 > 0) {\r\n            return Math.f" +
+"loor(zahl1 / zahl2);\r\n        }\r\n        else {\r\n            return Math.ceil(za" +
+"hl1 / zahl2);\r\n        }\r\n    }\r\n\r\n    // Erweiterte Gaußsche Osterformel\r\n    f" +
+"unction berechneOstersonntag(jahr) {\r\n        var k = berechneDiv(jahr, 100);\r\n " +
+"       var m = 15 + berechneDiv(3 * k + 3, 4) - berechneDiv(8 * k + 13, 25);\r\n  " +
+"      var s = 2 - berechneDiv(3 * k + 3, 4);\r\n        var a = jahr % 19;\r\n      " +
+"  var d = (19 * a + m) % 30;\r\n        var r = berechneDiv(berechneDiv(d + a, 11)" +
+", 29);\r\n        var og = 21 + d - r;\r\n        var sz = 7 - ((jahr + berechneDiv(" +
+"jahr, 4) + s) % 7);\r\n        var oe = 7 - ((og - sz) % 7);\r\n        var os = og " +
+"+ oe;\r\n        // Monat auch hier wieder 0..11\r\n        if (os > 31) {\r\n        " +
+"    return new Date(2013, 3, os - 31);\r\n        }\r\n        else {\r\n            r" +
+"eturn new Date(2013, 2, os);\r\n        }\r\n    }\r\n\r\n    // Stellt sicher, dass das" +
+" angegebene Datum kein Feiertag ist\r\n    function keinFeiertag(date) {\r\n        " +
+"var jahr = date.getFullYear();\r\n        var monat = date.getMonth();\r\n        va" +
+"r tag = date.getDate();\r\n        // statische Feiertage\r\n        for (i = 0; i <" +
+" listeFesteFeiertage.length; i++) {\r\n            // getMonth liefert 0..11, desh" +
+"alb -1\r\n            if ((monat == listeFesteFeiertage[i][0] - 1)\r\n          && (" +
+"tag == listeFesteFeiertage[i][1])) {\r\n                return [false, \'\'];\r\n     " +
+"       }\r\n        }\r\n        // dynamische Feiertage\r\n        // Ostersonntag\r\n " +
+"       var ostersonntag = berechneOstersonntag(jahr);\r\n        if ((monat == ost" +
+"ersonntag.getMonth())\r\n          && (tag == ostersonntag.getDate())) {\r\n        " +
+"    return [false, \'\'];\r\n        }\r\n        // Karfreitag\r\n        var feiertag " +
 "= new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.get" +
-"Date());\r\n        feiertag.setDate(ostersonntag.getDate() + 39);\r\n        if ((m" +
-"onat == feiertag.getMonth())\r\n              && (tag == feiertag.getDate())) {\r\n " +
-"           return [false, \'\'];\r\n        }\r\n        // Pfingstmontag\r\n        fei" +
-"ertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonnt" +
-"ag.getDate());\r\n        feiertag.setDate(ostersonntag.getDate() + 50);\r\n        " +
-"if ((monat == feiertag.getMonth())\r\n              && (tag == feiertag.getDate())" +
-") {\r\n            return [false, \'\'];\r\n        }\r\n        return [true, \'\'];\r\n   " +
-" }\r\n\r\n    // Stellt sicher, dass das angegebene Datum kein Samstag oder Sonntag " +
-"ist\r\n    function istKeinWochenende(date) {\r\n        var wochentag = date.getDay" +
-"();\r\n        if ((wochentag == 0) || (wochentag == 6)) {\r\n            return [fa" +
-"lse, \'\'];\r\n        }\r\n        return [true, \'\'];\r\n    }\r\n\r\n    // Werktagsermitt" +
-"lung (verarbeitet Dates oder Texte im Format \"TTMMJJ\")\r\n    function nurWerktage" +
-"(date) {\r\n        if ((date != null) && (date != \"\")) {\r\n            var tempDat" +
-"e;\r\n            if (date instanceof Date) {\r\n                tempDate = date;\r\n " +
-"           }\r\n            else {\r\n                jahr = 2000 + parseInt(date.su" +
-"bstring(4, 6), 10);\r\n                monat = parseInt(date.substring(2, 4), 10) " +
-"- 1;\r\n                tag = parseInt(date.substring(0, 2), 10);\r\n               " +
-" tempDate = new Date(jahr, monat, tag);\r\n            }\r\n            var keinWoch" +
-"enende = istKeinWochenende(tempDate);\r\n            if (keinWochenende[0]) {\r\n   " +
-"             return keinFeiertag(tempDate);\r\n            } else {\r\n             " +
-"   return keinWochenende;\r\n            }\r\n        }\r\n        return [true, \'\'];\r" +
-"\n    }\r\n\r\n </script>");
+"Date());\r\n        feiertag.setDate(ostersonntag.getDate() - 2);\r\n        if ((mo" +
+"nat == feiertag.getMonth())\r\n          && (tag == feiertag.getDate())) {\r\n      " +
+"      return [false, \'\'];\r\n        }\r\n        // Ostermontag\r\n        feiertag =" +
+" new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), ostersonntag.getD" +
+"ate());\r\n        feiertag.setDate(ostersonntag.getDate() + 1);\r\n        if ((mon" +
+"at == feiertag.getMonth())\r\n              && (tag == feiertag.getDate())) {\r\n   " +
+"         return [false, \'\'];\r\n        }\r\n        // Christi Himmelfahrt\r\n       " +
+" feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), osters" +
+"onntag.getDate());\r\n        feiertag.setDate(ostersonntag.getDate() + 39);\r\n    " +
+"    if ((monat == feiertag.getMonth())\r\n              && (tag == feiertag.getDat" +
+"e())) {\r\n            return [false, \'\'];\r\n        }\r\n        // Pfingstmontag\r\n " +
+"       feiertag = new Date(ostersonntag.getFullYear(), ostersonntag.getMonth(), " +
+"ostersonntag.getDate());\r\n        feiertag.setDate(ostersonntag.getDate() + 50);" +
+"\r\n        if ((monat == feiertag.getMonth())\r\n              && (tag == feiertag." +
+"getDate())) {\r\n            return [false, \'\'];\r\n        }\r\n        return [true," +
+" \'\'];\r\n    }\r\n\r\n    // Stellt sicher, dass das angegebene Datum kein Samstag ode" +
+"r Sonntag ist\r\n    function istKeinWochenende(date) {\r\n        var wochentag = d" +
+"ate.getDay();\r\n        if ((wochentag == 0) || (wochentag == 6)) {\r\n            " +
+"return [false, \'\'];\r\n        }\r\n        return [true, \'\'];\r\n    }\r\n\r\n    // Werk" +
+"tagsermittlung (verarbeitet Dates oder Texte im Format \"TTMMJJ\")\r\n    function n" +
+"urWerktage(date) {\r\n        if ((date != null) && (date != \"\")) {\r\n            v" +
+"ar tempDate;\r\n            if (date instanceof Date) {\r\n                tempDate " +
+"= date;\r\n            }\r\n            else {\r\n                jahr = 2000 + parseI" +
+"nt(date.substring(4, 6), 10);\r\n                monat = parseInt(date.substring(2" +
+", 4), 10) - 1;\r\n                tag = parseInt(date.substring(0, 2), 10);\r\n     " +
+"           tempDate = new Date(jahr, monat, tag);\r\n            }\r\n            va" +
+"r keinWochenende = istKeinWochenende(tempDate);\r\n            if (keinWochenende[" +
+"0]) {\r\n                return keinFeiertag(tempDate);\r\n            } else {\r\n   " +
+"             return keinWochenende;\r\n            }\r\n        }\r\n        return [t" +
+"rue, \'\'];\r\n    }\r\n\r\n </script>");
 
 
         }
