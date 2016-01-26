@@ -1,0 +1,70 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
+
+<style>
+
+    .dd-handle {
+        cursor: auto !important; /* ggf. ändern, wenn onclick-Action benötigt */
+    }
+    
+    .form-horizontal .control-group {
+        margin-bottom: 10px;
+    }
+    
+    .validation-summary-errors {
+        margin-bottom: 0;
+    }
+    
+    .CleverSearchVehicleList {
+        min-height: 60px;
+    }
+    
+    span.kennzeichen {
+        padding-top: 0 !important;
+    }
+    
+    span.m-wrap {
+        margin-left: 15px;
+    }
+    
+</style>
+
+<div class="portlet box light-grey position-relative">
+
+    <div class="form-horizontal padding-top-10">
+
+        <div class="CleverSearchStatusContainer">
+            @if (ViewData.ModelState.IsValid)
+            {
+                <div class='CleverSearchStatusIcon CleverSearchStatusOk'></div>
+            }
+            else if (Model.AnfrageTextFormatError)
+            {
+                <div class='CleverSearchStatusIcon CleverSearchStatusWarning'></div>
+            }
+            else
+            {
+                <div class='CleverSearchStatusIcon CleverSearchStatusError'></div>
+            }
+        </div>
+
+        @switch (Model.AnfrageOption)
+        {
+            case "EVB":
+                @Html.Partial("Partial/EvbResult", Model.EvbDaten)
+                break;
+
+            case "FIN":
+            case "KENNZ":
+                @Html.Partial("Partial/VehicleResult", Model)
+                break;
+
+            case "IBAN":
+                @Html.Partial("Partial/IbanResult", Model.IbanDaten)
+                break;
+        }
+
+        @Html.FormValidationSummary()
+
+    </div>
+
+</div>

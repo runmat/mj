@@ -115,6 +115,22 @@ textarea[readonly].m-wrap {
     padding-left: 40px;
 }
 
+.padding-right-5 {
+    padding-right: 5px;
+}
+.padding-right-10 {
+    padding-right: 10px;
+}
+.padding-right-15 {
+    padding-right: 15px;
+}
+.padding-right-30 {
+    padding-right: 30px;
+}
+.padding-right-40 {
+    padding-right: 40px;
+}
+
 
 .padding-top-2 {
     padding-top: 2px;
@@ -1418,4 +1434,34 @@ div.span-alert-placeholder .alert {
 }
 .report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
     display: inline-block;
+}
+
+.CleverSearchStatusContainer {
+    top: 0;
+    right: 0;
+    position: absolute;
+    z-index: 4;
+}
+
+.CleverSearchStatusIcon {
+    width: 72px;
+    height: 72px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.CleverSearchStatusOk {
+    background-image: url(/ServicesMvc/images/icons/72x72/ok.png);
+}
+
+.CleverSearchStatusWarning {
+    background-image: url(/ServicesMvc/images/icons/72x72/warning.png);
+}
+
+.CleverSearchStatusError {
+    background-image: url(/ServicesMvc/images/icons/72x72/delete.png);
+}
+
+.position-relative {
+    position: relative;
 }

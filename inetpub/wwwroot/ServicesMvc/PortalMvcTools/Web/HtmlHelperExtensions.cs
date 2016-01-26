@@ -223,7 +223,7 @@ namespace PortalMvcTools.Web
             return html.Label(propertyName, new { @class = cssClass });
         }
 
-        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null)
+        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var model = new FormControlModel
             {
@@ -232,6 +232,8 @@ namespace PortalMvcTools.Web
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);

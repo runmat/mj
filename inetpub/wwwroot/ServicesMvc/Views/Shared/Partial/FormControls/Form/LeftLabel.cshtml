@@ -1,4 +1,15 @@
 ﻿@using MvcTools.Models
-@model FormControlModel 
+@model FormControlModel
+
+@if (Model.PreControlHtml != null)
+{
+    @Model.PreControlHtml
+}
 
 <label class="control-label">@Model.DisplayNameHtml @Model.RequiredIndicatorHtml</label>
+
+@if (Model.PostControlHtml != null)
+{
+    @Model.PostControlHtml
+}
+        

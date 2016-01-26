@@ -22,7 +22,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         void MarkForRefresh();
 
-        Bankdaten GetBankdaten(string iban);
+        Bankdaten GetBankdaten(string iban, Action<string, string> addModelError);
 
         void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen);
         
