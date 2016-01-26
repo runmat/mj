@@ -4,6 +4,7 @@
 @using GeneralTools.Models;
 
 @model Fahrzeugdaten
+
 @{
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
     var isMassenabmeldung = Convert.ToBoolean(ViewData["IsMassenabmeldung"]) || Convert.ToBoolean(Request["IsMassenabmeldung"]);
@@ -13,8 +14,6 @@
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 
     var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];
-
-    var halterAdresse = Fahrzeugdaten.GetZulassungViewModel().Zulassung.Halter.Adresse;
 }
 
 <style>
@@ -35,8 +34,8 @@
     .kroschke-prime-etikette {
         display: inline-block;
         background: url(/ServicesMvc/images/kroschke-prime-etikette.png);
-        width: 300px;
-        height: 60px;
+        width: 350px;
+        height: 64px;
         vertical-align:top;
     }
     .kroschke-prime-etikette-more {
@@ -44,6 +43,44 @@
         vertical-align:top;
         width: 40px;
     }
+
+    .kroschke-prime-etikette-form {
+        margin: 19px 0 20px 15px;
+        padding: 15px 10px 10px 25px;
+        border: 3px solid #C21823;
+        border-radius: 32px !important;
+        box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
+        width: 360px;
+    }
+    .kroschke-signs-services {
+        display: inline-block;
+        background: url(/ServicesMvc/images/kroschke-signs-services.png);
+        width: 346px;
+        height: 33px;
+        vertical-align:top;
+        margin: 0 0 10px 0;
+    }
+    .kroschke-prime-etikette-form .control-group {
+        margin-bottom: 0!important;
+    }
+    .kroschke-prime-etikette-form .control-label {
+        width: 150px !important;
+        text-align: left;
+    }
+    .kroschke-prime-etikette-form .controls {
+        margin-left: 160px !important;
+    }
+    .kroschke-prime-etikette-form .controls input {
+        width: 170px !important;
+        font-weight: bold;
+        border-color: #e9e9e9 !important;
+        border-radius: 7px !important;
+        background-color: ivory;
+    }
+    .kroschke-prime-etikette-form .controls input.no-border-bottom:not(.input-validation-error){
+        border-bottom: 0 !important;
+    }
+    
 </style>
 
 <script>
@@ -245,42 +282,52 @@
         }
         else
         {
-                <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-left">
-                    @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
-                    @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
+            <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-left">
+                @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
+                @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
-                    @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
+                @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small" })
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
 
-                    @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
-                    @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
+                @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
+                @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
 
-                    @if (modusAbmeldung)
-                    {
-                        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-                        @Html.FormTextBoxFor(m => m.TuevAu, new { @class = "m-wrap small", maxlength = 4 })
-                    }
-                    else
-                    {
-                        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-                    }
+                @if (modusAbmeldung)
+                {
+                    @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+                    @Html.FormTextBoxFor(m => m.TuevAu, new { @class = "m-wrap small", maxlength = 4 })
+                }
+                else
+                {
+                    @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+                }
+            </div>
+
+            <div class="span5 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
+
+                <div class="kroschke-prime-etikette">&nbsp;</div>
+                <button onclick="return ToggleCheckHasEtikett($(this))" class="btn green kroschke-prime-etikette-more"><i class="icon-chevron-right"></i></button>
+
+                <div class="hide">
+                    @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
+                </div>
+                <div id="ValidationMsgHasEtikett"></div>
+                <div id="KennzeichenLabelFields" class="kroschke-prime-etikette-form">
+                    <div class="kroschke-signs-services"></div>
+                    @Html.FormTextBlockFor(m => m.KennzeichenHinweis, new { @class = "m-wrap medium" })
+                    @Html.FormTextBlockFor(m => m.HalterName, new { @class = "m-wrap medium" })
+
+                    @Html.FormTextBoxFor(m => m.FzgModell, new {@class = "m-wrap medium no-border-bottom"})
+                    @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete" })
+
+                    @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap medium" })
+
+                    <div class="margin-top-5"></div>
+
+                    @Html.FormTextBlockFor(m => m.AgName, new { @class = "m-wrap medium" }, labelText: @Model.AgKundenNr)
                 </div>
 
-                <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
-
-                    <div class="kroschke-prime-etikette">&nbsp;</div>
-                    <button onclick="return ToggleCheckHasEtikett($(this))" class="btn green kroschke-prime-etikette-more"><i class="icon-chevron-right"></i></button>
-
-                    <div class="hide">
-                        @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
-                    </div>
-                    <div id="ValidationMsgHasEtikett"></div>
-                    <div id="KennzeichenLabelFields">
-                        @Html.FormTextBoxFor(m => m.Farbe, new {@class = "m-wrap medium colorautocomplete"})
-                        @Html.FormTextBoxFor(m => m.FzgModell, new {@class = "m-wrap medium"})
-                    </div>
-
-                </div>
+            </div>
         }
     }
 

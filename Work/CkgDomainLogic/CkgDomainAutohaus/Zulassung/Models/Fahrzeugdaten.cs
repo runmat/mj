@@ -94,6 +94,17 @@ namespace CkgDomainLogic.Autohaus.Models
         [RequiredConditional]
         public string TuevAu { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterName { get { return GetZulassungViewModel().Zulassung.Halter.Adresse.GetFullName(); } }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string KennzeichenHinweis { get { return Localize.WillBeFilledAutomatically; } }
+
+        Rechnungsdaten AG { get { return GetZulassungViewModel().Zulassung.Rechnungsdaten; } }
+        public Adresse AgAdresse { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse; } }
+        public string AgName { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse.GetFullName(); } }
+        public string AgKundenNr { get { return AG.GetKunde(GetZulassungViewModel().Kunden).KundenNr.TrimStart('0'); } }
+
         public string GetSummaryString()
         {
             var s = String.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
