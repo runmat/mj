@@ -108,6 +108,12 @@
         return false;
     }
 
+    function TrackFin(tb) {
+        var val = tb.val();
+
+        $(".kroschke-prime-etikette-form span[id='FahrgestellNr']").html(val);
+    }
+
     function AjaxFormFahrzeugdatenComplete() {
         FormPrepareAjax();
         if (_modelIsValid) {
@@ -287,7 +293,7 @@
                 @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
                 @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small" })
-                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { onkeyup="TrackFin($(this))", @class = "m-wrap medium uppercase", maxlength = 17 })
 
                 @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
                 @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
