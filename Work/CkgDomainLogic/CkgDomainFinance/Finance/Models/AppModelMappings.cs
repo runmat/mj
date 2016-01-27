@@ -395,9 +395,15 @@ namespace CkgDomainLogic.Finance.Models
                     new Dictionary<string, string>()
                     , (source, destination) =>
                     {
+                        destination.HaendlerNr = source.KUNNR_BEIM_AG;
+                        destination.HaendlerName = source.NAME;
+                        destination.Vertragsart = source.ZVERT_ART;
+                        destination.Anforderungsweg = source.ANFORDERUNGSWEG;
                         destination.Anforderungsart = source.ANF_ART;
-                        destination.Summe = source.SUMME;
                         destination.Versandgrund = source.VERS_GRUND;
+                        destination.Summe = source.SUMME;
+                        destination.BestandHaendler = source.BEST_HAEND;
+                        destination.AnteilInProzent = source.PROZ_VERS;
                     }));
             }
         }
