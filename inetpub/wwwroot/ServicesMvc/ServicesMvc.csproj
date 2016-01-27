@@ -239,6 +239,8 @@
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\gradient-white-lightgray.png" />
+    <Content Include="Images\kroschke-prime-etikette-bg.png" />
+    <Content Include="Images\kroschke-prime-etikette-bg.psd" />
     <Content Include="Images\kroschke-prime-etikette.png" />
     <Content Include="Images\kroschke-signs-services.png" />
     <Content Include="Images\teamviewer-icon.png" />
