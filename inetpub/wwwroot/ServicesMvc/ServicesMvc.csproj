@@ -842,6 +842,7 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
+	<Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
