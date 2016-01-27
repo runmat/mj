@@ -34,14 +34,6 @@
     </item>
     <item>
         <key>
-            <string>AuslieferAdressen</string>
-        </key>
-        <value>
-            <string>Ausliefer&amp;shy;adressen</string>
-        </value>
-    </item>
-    <item>
-        <key>
             <string>Fahrzeugdaten</string>
         </key>
         <value>

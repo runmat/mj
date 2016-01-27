@@ -370,21 +370,27 @@
     }
 
     // AuslieferAdressen
-    function AjaxFormAuslieferAdressenComplete() {
-        FormPrepareAjax();
+    function AjaxFormAuslieferAdressenEdit() {
 
-        $(".mfp-close").trigger("click");
+        $.ajax(
+            {
+                type: "POST",
+                url: "AuslieferAdressen",
+                loadingShow: true,
+                success: function (result) {
+                    $("#InnerAdresseBearbeiten").html(result);
 
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdresseBearbeiten") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
+                }
+            });
 
-        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
-        if (saveSuccessful == 'true') {
-            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
-        }
+        return false;
     }
 
     function OnDataBound_AuslieferAdressenAuswahlGrid() {
@@ -401,8 +407,52 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
+        
+
+//        $(".mfp-close").trigger("click");
+
+        $.magnificPopup.open({
+            items: { src: $("#InnerAdresseBearbeiten") },
+            type: 'inline',
+            alignTop: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
         $('#SelectedAddressId').val(id);
+
         $("#AjaxFormAuslieferAdressen").submit();
+    }
+
+    function AjaxFormAuslieferAdressenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            $(".mfp-close").trigger("click");
+            UpdateSummary();
+            return;
+        }
+
+        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
+        }
+    }
+
+    function UpdateSummary() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Summary",
+            loadingShow: false,
+            success: function (result) {
+                FormWizard.SetTabHtml("Summary", result);
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
     }
 
     function LoadKfzKreisAusHalterAdresse() {
@@ -718,4 +768,7 @@
 </script>
 
 <div id="InnerAdressen" class="white-popup mfp-hide">
+</div>
+
+<div id="InnerAdresseBearbeiten" class="white-popup mfp-hide">
 </div>

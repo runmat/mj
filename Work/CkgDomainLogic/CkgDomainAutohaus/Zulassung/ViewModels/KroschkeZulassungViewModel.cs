@@ -110,7 +110,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 return;
                             }
 
-                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer" || entry.Key == "AuslieferAdressen")
+                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer")
                                 return;
 
                             if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && (entry.Key == "HalterAdresse" || entry.Key == "Fahrzeugdaten"))
@@ -1218,6 +1218,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungDataService.MarkForRefresh();
             zul.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
+        }
+
+        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
+        {
+            return Zulassung.CreateSummaryModel(auslieferAdressenLink);
         }
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)

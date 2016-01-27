@@ -18,6 +18,7 @@ using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -512,6 +513,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
+
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
@@ -548,6 +550,11 @@ namespace ServicesMvc.Autohaus.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        private string GetAuslieferAdressenLink()
+        {
+            return this.RenderPartialViewToString("Partial/SummaryAuslieferAdressenLink");
         }
 
         #endregion
@@ -743,7 +750,7 @@ namespace ServicesMvc.Autohaus.Controllers
             TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
             TempData["IsSchnellabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung;
 
-            return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
+            return PartialView("Partial/Summary", ViewModel.CreateSummaryModel(GetAuslieferAdressenLink()));
         }
 
         #region KundenformularAsPdf
