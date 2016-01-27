@@ -8,7 +8,15 @@
             <string>Auftrag&amp;shy;geber</string>
         </value>
     </item>
-    <item>
+  <item>
+    <key>
+      <string>OptionenDienstleistungen</string>
+    </key>
+    <value>
+      <string>Optionen</string>
+    </value>
+  </item>
+  <item>
         <key>
             <string>HalterAdresse</string>
         </key>
@@ -55,14 +63,6 @@
         <value>
             <string>Zulassung</string>
         </value>
-    </item>
-    <item>
-      <key>
-        <string>OptionenDienstleistungen</string>
-      </key>
-      <value>
-        <string>Optionen</string>
-      </value>
     </item>
     <item>
         <key>
