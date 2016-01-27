@@ -383,6 +383,7 @@
                     $.magnificPopup.open({
                         items: { src: $("#InnerAdresseBearbeiten") },
                         type: 'inline',
+                        closeOnBgClick: false,
                         alignTop: true,
                         removalDelay: 300,
                         mainClass: 'my-mfp-zoom-in'
@@ -407,13 +408,10 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
-        
-
-//        $(".mfp-close").trigger("click");
-
         $.magnificPopup.open({
             items: { src: $("#InnerAdresseBearbeiten") },
             type: 'inline',
+            closeOnBgClick: false,
             alignTop: true,
             removalDelay: 300,
             mainClass: 'my-mfp-zoom-in'
@@ -453,6 +451,10 @@
                 alert(jqXhr.responseText);
             }
         });
+    }
+
+    function AjaxFormAuslieferAdressenClose() {
+        $(".mfp-close").trigger("click");
     }
 
     function LoadKfzKreisAusHalterAdresse() {
