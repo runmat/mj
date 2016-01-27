@@ -12,14 +12,23 @@
     .XAjaxDataBinding("VersendungenSummiertAjaxBinding", "Finance")
     .Columns(columns =>
     {
+        columns.XBound(c => c.HaendlerNr);
+        columns.XBound(c => c.HaendlerName);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.Anforderungsweg);
         columns.XBound(c => c.Anforderungsart);
         columns.XBound(c => c.Versandgrund);
         columns.XBound(c => c.Summe);
+        columns.XBound(c => c.BestandHaendler);
+        columns.XBound(c => c.AnteilInProzent);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Anforderungsart).Ascending())
+    .Sortable(s => s.Enabled(false))
+    .Filterable(f => f.Enabled(false))
+    .Groupable(g => g.Enabled(false))
+    .Reorderable(r => r.Columns(false))
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance");

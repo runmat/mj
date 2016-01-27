@@ -11,10 +11,10 @@ namespace CkgDomainLogic.Finance.Models
     {
         public bool IsSummaryReport { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ImportDate)]
+        [LocalizedDisplay(LocalizeConstants.AssignmentDateCustomer)]
         public DateRange ImportdatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = true }); } set { PropertyCacheSet(value); } }
 
-        [LocalizedDisplay(LocalizeConstants.ProcessingDate)]
+        [LocalizedDisplay(LocalizeConstants.DispatchProcessingDad)]
         public DateRange VerarbeitungsdatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.ContractType)]
