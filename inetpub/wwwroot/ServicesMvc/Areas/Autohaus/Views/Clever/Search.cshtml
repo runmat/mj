@@ -1,72 +1,37 @@
 ﻿@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
 
+@Html.Partial("Partial/Common")
+
 <h3 class="page-title" id="headerTitle">@Localize.Autohaus_KroschkeClever <small></small></h3>
 
 @Html.SpanAlert("spanAlertCleverSearch")
 
-<div class="form-horizontal label-width-200 padding-bottom-10">
+<div class="form-horizontal label-width-250 margin-top-20 CleverSearchFieldContainer">
+    
+    @Html.FormTextBoxFor(m => m.AnfrageText, new { @class = "m-wrap huge bg-color-ckg-paleorange margin-left-10 float-left" })
 
-    @Html.FormTextBoxFor(m => m.AnfrageText, new { @class = "m-wrap float-left" })
+</div>
 
-    <div class="space10"></div>
+<div class="form-horizontal padding-bottom-10 margin-top-30">
 
     <div class="row-fluid">
             
-        <div class="span6">
+        <div class="span4">
                 
             @foreach (var option in Model.AnfrageOptionen)
             {
-                <div class=" margin-left-25 margin-top-10">
-                    <button class='btn mini gray' onclick='PerformCleverSearch("@option.Key");'><i class='halflings-icon white chevron-right'></i></button>
+                <div class="CleverSearchOption margin-left-25 margin-top-10">
+                    <button class='btn gray' onclick='PerformCleverSearch("@option.Key");'><i class='icon-chevron-right white'></i></button>
                     <span class="margin-left-20">@option.Text</span>
                 </div>
             }
 
         </div>
 
-        <div class="span6">
-                
+        <div class="span8">    
             <div id="divCleverResult"></div>
-
         </div>
 
     </div>
 
 </div>
-
-<script type="text/javascript">
-
-    function FormPreparePrivate() {
-    }
-
-    function FormPreparePrivateAjax() {
-        FormPrepareAjax();
-    }
-
-    function PerformCleverSearch(anfrageTyp) {
-        FormPreparePrivateAjax();
-
-        if (!$("#AnfrageText").val()) {
-            $("#divCleverResult").html("");
-            SpanAlertWarning("spanAlertCleverSearch", '@Localize.SearchTextRequired.ToJavascriptString()', 5000);
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "PerformSearch",
-            data: { anfrageText: $("#AnfrageText").val(), anfrageTyp: anfrageTyp },
-            loadingShow: true,
-            success: function (result) {
-                ShowCleverSearchResult(result);
-                LoadingHide();
-            }
-        });
-    }
-
-    function ShowCleverSearchResult(result) {
-        $("#divCleverResult").html(result);
-        FormPreparePrivateAjax();
-    }
-
-</script>
