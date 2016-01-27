@@ -35,6 +35,18 @@
         width: 30px !Important;
     }
 
+    .zulassungsdaten {
+        float: left;
+        width: 48%;
+        margin-left: 0;
+    }
+
+    .zulassungsdaten-required-fields-summary {
+        float: none;
+        display: table;
+        width: 100%;
+    }
+
 </style>
 
 <script type="text/javascript">
@@ -268,8 +280,10 @@
         {
             @Html.Partial("Partial/ZulassungsdatenFormAnmeldung", Model)
         }
-                
-        @Html.FormRequiredFieldsSummary()
-        
+
+        <div class="zulassungsdaten-required-fields-summary">
+            @Html.FormRequiredFieldsSummary()
+        </div>
+
     }
 </div>
