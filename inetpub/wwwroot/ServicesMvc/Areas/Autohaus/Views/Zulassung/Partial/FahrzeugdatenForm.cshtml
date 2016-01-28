@@ -290,24 +290,26 @@
         else
         {
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-left">
-                @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
-                @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
+                
+                @Html.FormTextBoxFor(m => m.AuftragsNr, new {@class = "m-wrap medium uppercase"})
+                @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new {@class = "m-wrap small"})
 
-                @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small" })
-                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { onkeyup="TrackFin($(this))", @class = "m-wrap medium uppercase", maxlength = 17 })
+                @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new {@class = "m-wrap small"})
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new {onkeyup = "TrackFin($(this))", @class = "m-wrap medium uppercase", maxlength = 17})
 
-                @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
-                @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
+                @Html.FormTextBoxFor(m => m.BestellNr, new {@class = "m-wrap medium uppercase"})
+                @Html.FormTextBoxFor(m => m.Zb2Nr, new {@class = "m-wrap medium uppercase"})
 
                 @if (modusAbmeldung)
                 {
-                    @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
-                    @Html.FormTextBoxFor(m => m.TuevAu, new { @class = "m-wrap small", maxlength = 4 })
+                    @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
+                    @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4})
                 }
                 else
                 {
-                    @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+                    @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
                 }
+
             </div>
 
             <div class="span5 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">

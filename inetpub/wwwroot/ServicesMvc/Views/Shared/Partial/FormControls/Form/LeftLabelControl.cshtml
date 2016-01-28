@@ -50,14 +50,7 @@
         }
         @if (formSettingsButtonAvailable)
         {
-            <span>
-                <i class="icon-wrench" 
-                     data-model-type-name="@Model.ModelTypeName" 
-                     data-property-name="@Model.PropertyName" 
-                     data-partial-view-context="@partialViewContext"
-                     onclick="return FormSettingsAdminMode_EditFormControls($(this));">
-                </i>
-            </span>
+            <span><i class="icon-wrench" data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" data-partial-view-context="@partialViewContext" onclick="return FormSettingsAdminMode_EditFormControls($(this));"></i></span>
         }
     </label>
 
@@ -85,6 +78,11 @@
                 }
                 
                 @Model.PerstistenceIndicatorHtml
+
+                @if (formSettingsButtonAvailable)
+                {
+                    <span><i class="icon-wrench" data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" data-partial-view-context="@partialViewContext" onclick="return FormSettingsAdminMode_EditFormControls($(this));"></i></span>
+                }
             </label>
         }
         else
