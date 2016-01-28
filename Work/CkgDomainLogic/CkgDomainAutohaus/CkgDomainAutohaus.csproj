@@ -75,6 +75,10 @@
     <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
     <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="Coc\Contracts\ICocAnforderungDataService.cs" />
+    <Compile Include="Coc\Models\CocAnforderung.cs" />
+    <Compile Include="Coc\Services\CocAnforderungDataServiceSAP.cs" />
+    <Compile Include="Coc\ViewModels\CocAnforderungViewModel.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\WebUploadProtokoll.cs" />
