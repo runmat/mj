@@ -6,15 +6,23 @@
     function FormPreparePrivate() {
     }
 
-    setTimeout(function() {
-        $("#BoolDummy").closest(".control-group").addClass("prime-control");
-    }, 20);
+    //setTimeout(function() {
+    //    $("#BoolDummy").closest(".control-group").addClass("prime-control");
+    //}, 20);
 </script>
 
 
 <style type="text/css">
     .test {
         margin: 100px 0 800px 0;
+        border: 1px solid #f3f3f3;
+    }
+
+    .prime-control .control-label {
+        display: none;
+    }
+    .prime-control .controls {
+        margin-left: 0;
     }
     .prime-control label.checkbox {
         font-weight: bold;
@@ -22,10 +30,8 @@
 
     .prime-control div.checker span {
         display: inline-block;
-        margin: -5px 0 0 -9px!important;
-        background-image: url(/ServicesMvc/_Themes/AH2015/images/uniform/prime-checkbox-sprite.png);
-        background-position: 0 0;
-        background-repeat: no-repeat;
+        margin: 15px 0 0 0px!important;
+        background: url(/ServicesMvc/_Themes/AH2015/images/uniform/prime-checkbox-sprite.png) 0 0 no-repeat;
         -webkit-font-smoothing: antialiased;
         width: 30px;
         height: 30px;
@@ -33,22 +39,41 @@
     .prime-control div.checker span.checked {
         background-position: 0px -30px;
     }
-    .prime-control div.checker:hover span, .prime-control label.checkbox:hover div.checker span:not(.checked) {
+    .prime-control div.checker:hover span, 
+    .prime-control label.checkbox:hover div.checker span:not(.checked) {
         background-position: -30px 0px;
     }
-    .prime-control div.checker:hover span.checked, .prime-control label.checkbox:hover div.checker span.checked {
+    .prime-control div.checker:hover span.checked, 
+    .prime-control label.checkbox:hover div.checker span.checked {
         background-position: -30px -30px;
     }
+    
+    .prime-control .prime-checkbox-image {
+        display: inline-block;
+        margin: 0 0 0 20px;
+        width: 200px;
+        height: 64px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-star.png) 0 0 no-repeat;
+    }
+    .prime-control label.checkbox.checked .prime-checkbox-image {
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag.png) 0 0 no-repeat;
+    }
 
-    .ms-container.two-row .ms-selectable li.ms-hover span.dienstleistung-nicht-gewaehlt-checkbox {
-        background-image: url(/ServicesMvc/_Themes/AH2015/images/checkbox-hover-halfcheck.png) !important;
+
+
+    .kennzeichen-etikette-image {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        width: 150px;
+        height: 64px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png) 0 0 no-repeat;
     }
 
 </style>
 
 
 <div class="form-horizontal test">
-    @Html.FormCheckBoxFor(m => m.BoolDummy, new { @class = "m-wrap" }, labelHidden:true)
+    @Html.FormPrimeCheckBoxFor(m => m.BoolDummy, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>)
 </div>
 
 @if (Model.AppFavoritesAvailable)

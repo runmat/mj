@@ -16,6 +16,11 @@
     {
         additionalClass = " grayed";
     }
+
+    if (Model.IsPrime)
+    {
+        additionalClass = " prime-control";
+    }
 }
 
 @if (Model.ColumnMode != FormMultiColumnMode.None)
@@ -39,7 +44,7 @@
 <div class="control-group @additionalClass">
     
     <label class="control-label">
-        @if (!Model.LabelHidden)
+        @if (!Model.LabelHidden && !Model.IsPrime)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
         }
@@ -64,20 +69,31 @@
         }
            
        
-        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+        @if (Model.IsCheckBox && (Model.LabelHidden || Model.IsPrime) && Model.PostControlHtml == null)
         {
             <label class="checkbox">
                 @Model.ControlHtml
-                @Model.DisplayNameHtml @Model.PerstistenceIndicatorHtml
+
+                @if (Model.IsPrime)
+                {
+                    <span class="prime-checkbox-image">&nbsp;</span>
+                    @Model.PrimeControlHtml
+                }
+                else
+                {
+                    @Model.DisplayNameHtml
+                }
+                
+                @Model.PerstistenceIndicatorHtml
             </label>
         }
         else
         {
             @Model.ControlHtml
             if (Model.IsCheckBox)
-             {
-                 <span>&nbsp;</span>
-             }
+            {
+                <span>&nbsp;</span>
+            }
         }
 
 

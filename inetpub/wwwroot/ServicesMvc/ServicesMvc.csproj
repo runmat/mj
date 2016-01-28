@@ -240,12 +240,14 @@
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\gradient-white-lightgray.png" />
     <Content Include="Images\kroschke-prime-etikette-bg.png" />
-    <Content Include="Images\kroschke-prime-etikette-bg.psd" />
     <Content Include="Images\kroschke-prime-etikette.png" />
     <Content Include="Images\kroschke-signs-services.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
+    <Content Include="_Themes\AH2015\images\kennzeichen-etikette.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-flag.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-star.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
@@ -286,7 +288,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
-    <Content Include="Images\kroschke-prime-etikette.psd" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
