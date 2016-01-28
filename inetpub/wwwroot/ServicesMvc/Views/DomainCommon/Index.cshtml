@@ -5,7 +5,51 @@
 <script type="text/javascript">
     function FormPreparePrivate() {
     }
+
+    setTimeout(function() {
+        $("#BoolDummy").closest(".control-group").addClass("prime-control");
+    }, 20);
 </script>
+
+
+<style type="text/css">
+    .test {
+        margin: 100px 0 800px 0;
+    }
+    .prime-control label.checkbox {
+        font-weight: bold;
+    }
+
+    .prime-control div.checker span {
+        display: inline-block;
+        margin: -5px 0 0 -9px!important;
+        background-image: url(/ServicesMvc/_Themes/AH2015/images/uniform/prime-checkbox-sprite.png);
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        -webkit-font-smoothing: antialiased;
+        width: 30px;
+        height: 30px;
+    }
+    .prime-control div.checker span.checked {
+        background-position: 0px -30px;
+    }
+    .prime-control div.checker:hover span, .prime-control label.checkbox:hover div.checker span:not(.checked) {
+        background-position: -30px 0px;
+    }
+    .prime-control div.checker:hover span.checked, .prime-control label.checkbox:hover div.checker span.checked {
+        background-position: -30px -30px;
+    }
+
+    .ms-container.two-row .ms-selectable li.ms-hover span.dienstleistung-nicht-gewaehlt-checkbox {
+        background-image: url(/ServicesMvc/_Themes/AH2015/images/checkbox-hover-halfcheck.png) !important;
+    }
+
+</style>
+
+
+<div class="form-horizontal test">
+    @Html.FormCheckBoxFor(m => m.BoolDummy, new { @class = "m-wrap" }, labelHidden:true)
+</div>
 
 @if (Model.AppFavoritesAvailable)
 {
