@@ -9,6 +9,7 @@
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
     var isMassenabmeldung = Convert.ToBoolean(ViewData["IsMassenabmeldung"]) || Convert.ToBoolean(Request["IsMassenabmeldung"]);
     var modusAbmeldung = Convert.ToBoolean(ViewData["ModusAbmeldung"]) || Convert.ToBoolean(Request["ModusAbmeldung"]);
+    var modusPartnerportal = Convert.ToBoolean(ViewData["ModusPartnerportal"]) || Convert.ToBoolean(Request["ModusPartnerportal"]);
 
     if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
@@ -310,7 +311,10 @@
 
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
 
-                @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
+                @if (!modusPartnerportal)
+                {
+                    @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
+                }
 
                 <div id="ValidationMsgHasEtikett"></div>
                 <div id="KennzeichenLabelFields" class="kroschke-prime-etikette-form">

@@ -1426,10 +1426,10 @@ div.span-alert-placeholder .alert {
     margin-top: -15px !important;
 }
 .prime-control .control-label {
-    display: none;
+    display: none!important;
 }
 .prime-control .controls {
-    margin-left: 0;
+    margin-left: 0!important;
 }
 .prime-control label.checkbox {
     font-weight: bold;
