@@ -105,7 +105,7 @@ else
                 {
                     columns.XBound(c => c.FinID).Visible(false);
                     columns.XBound(c => c.FIN);
-                    columns.XBound(c => c.FahrzeugArt);
+                    columns.XBound(c => c.ZulassungFahrzeugart);
                     columns.XBound(c => c.HandelsName);
                     columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
                     columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");

@@ -35,13 +35,6 @@ namespace CkgDomainLogic.Finance.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
-        [XmlIgnore]
-        public List<VersendungSummiert> VersendungenSummiertFiltered
-        {
-            get { return PropertyCacheGet(() => VersendungenSummiert); }
-            private set { PropertyCacheSet(value); }
-        }
-
         public VersendungenSuchparameter Suchparameter
         {
             get { return PropertyCacheGet(() => new VersendungenSuchparameter { Vertragsart = "ALLE", Versandart = "ALLE" }); }
@@ -58,7 +51,6 @@ namespace CkgDomainLogic.Finance.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.VersendungenFiltered);
-            PropertyCacheClear(this, m => m.VersendungenSummiertFiltered);
         }
     
         public void LoadVersendungen(ModelStateDictionary state)
@@ -81,9 +73,7 @@ namespace CkgDomainLogic.Finance.ViewModels
 
         public void FilterVersendungen(string filterValue, string filterProperties)
         {
-            if (Suchparameter.IsSummaryReport)
-                VersendungenSummiertFiltered = VersendungenSummiert.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-            else
+            if (!Suchparameter.IsSummaryReport)
                 VersendungenFiltered = Versendungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }

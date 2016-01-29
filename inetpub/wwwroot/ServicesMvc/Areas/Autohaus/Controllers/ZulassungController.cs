@@ -13,6 +13,7 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Autohaus.ViewModels;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
@@ -80,17 +81,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
-
-            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-            if (firstFahrzeug == null)
-            {
-                return Content("Kein Fahrzeug ausgewählt.");
-            }
+            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
 
             ShoppingCartLoadAndCacheItems();
 
@@ -125,25 +116,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [GridAction]
         public ActionResult FahrzeugAuswahlSelectedAjaxBinding()
         {
-            var items = ViewModel.FinList.Where(x => x.IsSelected);
+            var items = ViewModel.FinList.Where(x => !string.IsNullOrEmpty(x.FIN));
             return View(new GridModel(items));
-        }
-
-        [HttpPost]
-        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
-        {
-            int allSelectionCount, allCount = 0;
-            if (vin.IsNullOrEmpty())
-                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
-            else
-                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
-            return Json(new
-            {
-                allSelectionCount,
-                allCount,
-                zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), 
-                zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   
-            });
         }
 
         [HttpPost]
@@ -187,17 +161,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamSonderzulassung("");
 
             ViewModel.DataInit();
-
-            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-            if (firstFahrzeug == null)
-            {
-                return Content("Kein Fahrzeug ausgewählt.");
-            }
+            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
 
             ShoppingCartLoadAndCacheItems();
 
@@ -236,6 +200,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            FahrzeugAkteBestand.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -563,12 +528,6 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
-            if ((ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung || ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung) && !ViewModel.FinList.Any(x => x.IsSelected))
-            {
-                ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
-            }
-
-            // 20150828 MMA Zusätzliche Validierung, wenn Kennzeichenetiketten und Massenzulassung gewählt...
             ViewModel.ValidateFahrzeugdatenForm(ModelState.AddModelError, model);
 
             if (ModelState.IsValid)
@@ -589,6 +548,22 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult VehicleAdd(int anzFahrzeuge, string fahrzeugartId)
+        {
+            ViewModel.AddVehicles(anzFahrzeuge, fahrzeugartId);
+
+            return Json(new { ok = true });
+        }
+
+        [HttpPost]
+        public ActionResult VehicleRemove(string finId)
+        {
+            ViewModel.RemoveVehicle(finId);
+
+            return Json(new { ok = true });
         }
 
         #endregion

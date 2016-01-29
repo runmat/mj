@@ -234,22 +234,27 @@
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
+    <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\gradient-white-lightgray.png" />
     <Content Include="Images\kroschke-prime-etikette-bg.png" />
-    <Content Include="Images\kroschke-prime-etikette-bg.psd" />
     <Content Include="Images\kroschke-prime-etikette.png" />
+    <Content Include="Images\kroschke-prime-info-icon.png" />
     <Content Include="Images\kroschke-signs-services.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
+    <Content Include="_Themes\AH2015\images\kennzeichen-etikette.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-flag.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-star.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
+    <Content Include="_Themes\AH2015\images\uniform\prime-checkbox-sprite.png" />
     <Content Include="_Themes\AH2015\images\switch-2.png" />
     <Content Include="_Themes\AH2015\images\test.png" />
     <Content Include="_Themes\AH2015\images\avatar.png" />
@@ -285,7 +290,7 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
-    <Content Include="Images\kroschke-prime-etikette.psd" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -848,6 +853,7 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
+	<Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

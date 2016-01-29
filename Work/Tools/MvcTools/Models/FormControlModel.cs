@@ -61,6 +61,10 @@ namespace MvcTools.Models
         /// </summary>
         public bool LabelHidden { get; set; }
 
+        public bool IsPrime { get; set; }
+
+        public IHtmlString PrimeControlHtml { get; set; }
+
         /// <summary>
         /// optionally collapse whole control with all surrounding html templates
         /// </summary>
