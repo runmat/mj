@@ -1432,6 +1432,7 @@ div.span-alert-placeholder .alert {
     margin-left: 0!important;
 }
 .prime-control label.checkbox {
+    vertical-align: top;
     font-weight: bold;
     margin: 0 0 0 0!important;
     white-space: nowrap;
@@ -1470,6 +1471,8 @@ div.span-alert-placeholder .alert {
 
 .prime-control span.prime-helphint-icon {
     display: inline-block;
+    vertical-align: top;
+    margin: 3px 0 0 2px;
     background: url(/ServicesMvc/images/kroschke-prime-info-icon.png) 0 0 no-repeat;
     width: 24px;
     height: 24px;

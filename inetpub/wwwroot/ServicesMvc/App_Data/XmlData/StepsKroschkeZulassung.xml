@@ -8,7 +8,15 @@
             <string>Auftrag&amp;shy;geber</string>
         </value>
     </item>
-    <item>
+  <item>
+    <key>
+      <string>Fahrzeugdaten</string>
+    </key>
+    <value>
+      <string>Fahrzeug</string>
+    </value>
+  </item>
+  <item>
       <key>
         <string>HalterAdresse</string>
       </key>
@@ -40,14 +48,6 @@
             <string>Ausliefer&amp;shy;adressen</string>
         </value>
     </item>
-    <item>
-        <key>
-          <string>Fahrzeugdaten</string>
-        </key>
-        <value>
-          <string>Fahrzeug</string>
-        </value>
-        </item>
     <item>
         <key>
             <string>Zulassungsdaten</string>
