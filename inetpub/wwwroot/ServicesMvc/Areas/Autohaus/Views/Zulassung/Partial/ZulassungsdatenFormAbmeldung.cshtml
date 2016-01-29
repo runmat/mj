@@ -26,7 +26,7 @@
                 {
                     columns.XBound(c => c.FinID).Visible(false);
                     columns.XBound(c => c.FIN);
-                    columns.XBound(c => c.FahrzeugArt);
+                    columns.XBound(c => c.ZulassungFahrzeugart);
                     columns.XBound(c => c.HandelsName);
                     columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
                     columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzres' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='True' />").Filterable(false);
@@ -57,7 +57,7 @@ else if (Model.IsSchnellabmeldung)
         @(Html.Telerik()
                 .Grid<FahrzeugAkteBestand>()
                 .Name(gridName)
-                .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+                .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
                 .Columns(columns =>
                 {
                     columns.XBound(c => c.FinID).Visible(false);

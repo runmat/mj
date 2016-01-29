@@ -7,7 +7,6 @@ using CkgDomainLogic.Finance.Models;
 using CkgDomainLogic.Finance.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using System.Linq;
 
 namespace ServicesMvc.Controllers
 {
@@ -58,14 +57,12 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult VersendungenSummiertAjaxBinding()
         {
-            return View(new GridModel(VersendungenViewModel.VersendungenSummiertFiltered));
+            return View(new GridModel(VersendungenViewModel.VersendungenSummiert));
         }
 
         [HttpPost]
         public ActionResult FilterGridVersendungen(string filterValue, string filterColumns)
         {
-            VersendungenViewModel.FilterVersendungen(filterValue, filterColumns);
-
             return new EmptyResult();
         }
 
@@ -88,7 +85,7 @@ namespace ServicesMvc.Controllers
         private DataTable GetData(string orderBy, string filterBy)
         {
             if (VersendungenViewModel.Suchparameter.IsSummaryReport)
-                return VersendungenViewModel.VersendungenSummiertFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+                return VersendungenViewModel.VersendungenSummiert.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             
             return VersendungenViewModel.VersendungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
         }

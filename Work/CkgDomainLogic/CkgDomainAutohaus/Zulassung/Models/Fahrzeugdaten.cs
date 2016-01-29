@@ -105,6 +105,8 @@ namespace CkgDomainLogic.Autohaus.Models
         public string AgName { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse.GetFullName(); } }
         public string AgKundenNr { get { return AG.GetKunde(GetZulassungViewModel().Kunden).KundenNr.TrimStart('0'); } }
 
+        public int AnzahlHinzuzufuegendeFahrzeuge { get; set; }
+
         public string GetSummaryString()
         {
             var s = String.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);

@@ -351,19 +351,37 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
+			public string KUNNR_BEIM_AG { get; set; }
+
+			public string NAME { get; set; }
+
+			public string ZVERT_ART { get; set; }
+
+			public string ANFORDERUNGSWEG { get; set; }
+
 			public string ANF_ART { get; set; }
 
 			public string VERS_GRUND { get; set; }
 
 			public string SUMME { get; set; }
 
+			public string BEST_HAEND { get; set; }
+
+			public string PROZ_VERS { get; set; }
+
 			public static GT_OUT_SUM Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT_SUM
 				{
+					KUNNR_BEIM_AG = (string)row["KUNNR_BEIM_AG"],
+					NAME = (string)row["NAME"],
+					ZVERT_ART = (string)row["ZVERT_ART"],
+					ANFORDERUNGSWEG = (string)row["ANFORDERUNGSWEG"],
 					ANF_ART = (string)row["ANF_ART"],
 					VERS_GRUND = (string)row["VERS_GRUND"],
 					SUMME = (string)row["SUMME"],
+					BEST_HAEND = (string)row["BEST_HAEND"],
+					PROZ_VERS = (string)row["PROZ_VERS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
