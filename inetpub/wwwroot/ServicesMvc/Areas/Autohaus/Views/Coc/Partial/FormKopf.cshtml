@@ -1,0 +1,63 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model CocAnforderungKopfdaten
+
+<style>
+    
+    .validation-summary-errors {
+        margin-top: 0;
+    }
+    
+    .box.portlet {
+        padding: 10px !important;
+    }
+    
+</style>
+
+<div id="divFormKopf">
+    @using (Ajax.BeginForm("ApplyKopfdaten", "Coc", null,
+        new MvcAjaxOptions("divFormKopf") { OnComplete = "ShowDetailsAjax();" }, new { id = "CocAnforderungKopfAjaxForm" }))
+    {
+        <div class="form-horizontal" id="searchForm">
+
+            @Html.FormValidationSummary()
+
+            <div class="portlet box light-grey bg-color-ckg-paleorange">
+                
+                @Html.FormDropDownListFor(m => m.FahrzeugTyp, CocAnforderungKopfdaten.FahrzeugTypList.ToSelectList(), new { @class = "m-wrap medium", col = "left3" })
+                @Html.FormDropDownListFor(m => m.Hersteller, CocAnforderungKopfdaten.HerstellerList.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
+                @Html.FormDropDownListFor(m => m.LandDerErstenZulassung, CocAnforderungKopfdaten.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "right3" })
+
+                @Html.FormRequiredFieldsSummary()
+
+            </div>
+        
+            <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
+                <button type="submit" id="btnCocRequestContinue" class="btn green"><i class="icon-note margin-right-10"></i>@Localize.Continue</button>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowDetailsAjax() {    
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDetails",
+            loadingShow: true,
+            success: function (result) {
+                if (_modelStateValid)
+                    ShowDetails(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
