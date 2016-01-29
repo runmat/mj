@@ -384,8 +384,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult TermineSchadenfaelleKalenderAjaxSelect(string boxID, string startDate, string endDate)
         {
-            var dateStart = DateTime.ParseExact(startDate, "dd.MM.yyyy", new CultureInfo("de-DE"));
-            var dateEnd = DateTime.ParseExact(endDate, "dd.MM.yyyy", new CultureInfo("de-DE"));
+            var dateStart = startDate.ParseYyyyDateTimeCultureIndependently();
+            var dateEnd = endDate.ParseYyyyDateTimeCultureIndependently();
 
             var termin = EventsViewModel.TerminCurrent;
             var boxArt = termin.GetCachedBoxArt();
