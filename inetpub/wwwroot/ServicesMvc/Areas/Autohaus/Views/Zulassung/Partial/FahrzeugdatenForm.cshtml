@@ -98,7 +98,7 @@
     var _selectedItemsCount = 0;
 
     function TrackFin(tb) {
-        var val = tb.val();
+        var val = tb.val().toUpperCase();
 
         $(".kroschke-prime-etikette-form span[id='FahrgestellNr']").html(val);
     }
