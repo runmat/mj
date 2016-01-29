@@ -35,6 +35,11 @@
     .form-actions-top {
         padding-left: 162px !important;
     }
+
+    .zulassungsdaten .prime-control {
+        margin: 20px 0 20px 70px !important;
+    }
+
 </style>
 
 <script type="text/javascript">
@@ -516,10 +521,10 @@
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest("label").show();
+            $("#Expressversand").closest(".control-group").show();
         }
         else {
-            $("#Expressversand").closest("label").hide();
+            $("#Expressversand").closest(".control-group").hide();
         }
         $.uniform.update($("#Expressversand"));
     }
