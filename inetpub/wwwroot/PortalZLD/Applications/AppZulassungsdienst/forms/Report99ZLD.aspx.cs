@@ -419,7 +419,7 @@ namespace AppZulassungsdienst.forms
             if (objSuche.tblResult.Rows.Count > 0 && !String.IsNullOrEmpty(objSuche.tblResult.Rows[0][colName].ToString()))
             {
                 lblInfo.Text = "";
-                string sUrl = objSuche.tblResult.Rows[0]["STVALN"].ToString();
+                string sUrl = objSuche.tblResult.Rows[0][colName].ToString();
                 ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
             }
             else
