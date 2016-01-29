@@ -1423,7 +1423,7 @@ div.span-alert-placeholder .alert {
 
 .prime-control {
     display: inline-block;
-    margin-top: -15px !important;
+    margin-top: 0 !important;
 }
 .prime-control .control-label {
     display: none!important;

@@ -22,14 +22,14 @@
 }
 else
 {
-    <div class="form-horizontal zulassungsdaten" id="zulassungsdaten-left">
+    <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-left">
 
         @Html.FormDatePickerFor(m => m.Zulassungsdatum, new {@class = "m-wrap small"}) 
         @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
 
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
-            @Html.FormCheckBoxListFor(Localize.MailOrderRegistration72h, new { @class = "m-wrap" }, m => m.Expressversand)
+            @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand-image">&nbsp;Test</span></text>)
         }
         else
         {
@@ -41,7 +41,7 @@ else
 
     </div>
 
-    <div class="form-horizontal zulassungsdaten" id="zulassungsdaten-right">
+    <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-right">
         
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
