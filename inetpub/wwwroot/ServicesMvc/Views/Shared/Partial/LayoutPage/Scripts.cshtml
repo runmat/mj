@@ -978,6 +978,18 @@
         return s;
     }
 
+    function FormPrimeControlShowInfo(o) {
+        //alert(o.attr("class"));
+        var infoContent = o.parent().find(".prime-helphint-content");
+        infoContent.slideDown(200);
+    }
+
+    function FormPrimeControlHideInfo(o) {
+        //alert(o.attr("class"));
+        var infoContent = o.parent();
+        infoContent.slideUp(200);
+    }
+
     var _formSettingsAdminMode_CurrentItem = null;
     var _modelStateTranslationValidFormControls = false;
 

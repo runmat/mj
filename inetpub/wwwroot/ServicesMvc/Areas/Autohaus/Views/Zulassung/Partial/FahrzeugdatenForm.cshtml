@@ -27,8 +27,7 @@
 
     .fahrzeug-daten {
         float: left;
-        width: 50%;
-        margin-left: 0;
+        margin: 0!important;
     }
 
     .kroschke-prime-etikette {
@@ -44,9 +43,17 @@
         width: 40px;
     }
 
+    .kennzeichen-etikette-image {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        width: 150px;
+        height: 64px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png) 0 0 no-repeat;
+    }
+
     .kroschke-prime-etikette-form {
         background: url(/ServicesMvc/images/kroschke-prime-etikette-bg.png);
-        margin: 19px 0 20px 15px;
+        margin: 5px 0 20px 15px;
         padding: 15px 10px 10px 25px;
         border: 3px solid #C21823;
         border-radius: 32px !important;
@@ -89,25 +96,6 @@
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
     var _selectedItemsCount = 0;
-
-    function ToggleCheckHasEtikett(btn) {
-        var isChecked = $("#HasEtikett").is(":checked");
-        $("#HasEtikett").attr("checked", !isChecked);
-        $.uniform.update($("#HasEtikett"));
-
-        var btnIcon = btn.find("i");
-        if (!isChecked) {
-            btnIcon.removeClass("icon-chevron-right");
-            btnIcon.addClass("icon-chevron-down");
-        } else {
-            btnIcon.removeClass("icon-chevron-down");
-            btnIcon.addClass("icon-chevron-right");
-        }
-        
-        ShowHideKennzLabelDiv();
-
-        return false;
-    }
 
     function TrackFin(tb) {
         var val = tb.val();
@@ -312,14 +300,10 @@
 
             </div>
 
-            <div class="span5 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
+            <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
 
-                <div class="kroschke-prime-etikette">&nbsp;</div>
-                <button onclick="return ToggleCheckHasEtikett($(this))" class="btn green kroschke-prime-etikette-more"><i class="icon-chevron-right"></i></button>
+                @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
 
-                <div class="hide">
-                    @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
-                </div>
                 <div id="ValidationMsgHasEtikett"></div>
                 <div id="KennzeichenLabelFields" class="kroschke-prime-etikette-form">
                     <div class="kroschke-signs-services"></div>

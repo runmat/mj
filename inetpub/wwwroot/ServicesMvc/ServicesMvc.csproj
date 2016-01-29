@@ -234,6 +234,7 @@
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
+    <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
@@ -241,6 +242,7 @@
     <Content Include="Images\gradient-white-lightgray.png" />
     <Content Include="Images\kroschke-prime-etikette-bg.png" />
     <Content Include="Images\kroschke-prime-etikette.png" />
+    <Content Include="Images\kroschke-prime-info-icon.png" />
     <Content Include="Images\kroschke-signs-services.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />

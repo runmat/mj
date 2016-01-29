@@ -84,6 +84,15 @@
                     <span><i class="icon-wrench" data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" data-partial-view-context="@partialViewContext" onclick="return FormSettingsAdminMode_EditFormControls($(this));"></i></span>
                 }
             </label>
+
+            if (Model.IsPrime && (Model.DisplayNameHtml.ToString().NotNullOrEmpty().Length > 1))
+            {
+                <span class="prime-helphint-icon" title="@Localize.DetailInformations" onclick="return FormPrimeControlShowInfo($(this))">&nbsp;</span>
+                <div class="prime-helphint-content hide">
+                    <span class="close-button" onclick="return FormPrimeControlHideInfo($(this))">&nbsp;</span>
+                    @Model.DisplayNameHtml 
+                </div>
+            }
         }
         else
         {

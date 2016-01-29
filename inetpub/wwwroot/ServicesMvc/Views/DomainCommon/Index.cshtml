@@ -2,41 +2,6 @@
 
 <h3 class="page-title">@Localize.WelcomeAtPortalDadStart <small>@Localize.WelcomeAtPortalDadEnd</small></h3>
 
-<script type="text/javascript">
-    function FormPreparePrivate() {
-    }
-
-    //setTimeout(function() {
-    //    $("#BoolDummy").closest(".control-group").addClass("prime-control");
-    //}, 20);
-</script>
-
-
-<style type="text/css">
-    .test {
-        margin: 100px 0 800px 0;
-        border: 1px solid #f3f3f3;
-    }
-
-
-
-
-
-    .kennzeichen-etikette-image {
-        display: inline-block;
-        margin: 0 0 0 10px;
-        width: 150px;
-        height: 64px;
-        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png) 0 0 no-repeat;
-    }
-
-</style>
-
-
-<div class="form-horizontal test">
-    @Html.FormPrimeCheckBoxFor(m => m.BoolDummy, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>)
-</div>
-
 @if (Model.AppFavoritesAvailable)
 {
     @Html.Partial("AppFavorites/AppFavoriteButtons")
