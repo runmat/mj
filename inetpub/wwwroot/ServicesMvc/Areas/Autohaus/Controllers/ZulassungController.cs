@@ -746,6 +746,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
+            ViewModel.AuslieferAdressenLink = GetAuslieferAdressenLink();
+
             return PartialView("Partial/Summary", ViewModel);
         }
 

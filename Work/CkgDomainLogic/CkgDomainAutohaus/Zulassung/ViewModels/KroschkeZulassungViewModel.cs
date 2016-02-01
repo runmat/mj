@@ -811,6 +811,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
         }
 
+        public string AuslieferAdressenLink { get; set; }
+
         public AuslieferAdressen GetAuslieferAdressenModel()
         {
             var newModel = new AuslieferAdressen
@@ -1151,7 +1153,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Misc + Summaries + Savings
 
-        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(); } }
+        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(AuslieferAdressenLink); } }
 
         public bool SaveDataToErpSystem { get; set; }
 
