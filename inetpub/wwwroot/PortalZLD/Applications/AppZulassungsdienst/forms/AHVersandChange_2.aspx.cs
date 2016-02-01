@@ -130,8 +130,9 @@ namespace AppZulassungsdienst.forms
             if (!is48hOk)
                 return;
 
-            var abwVersanddaten = (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1));
-            if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && abwVersanddaten))
+            var lieferuhrzeitAngegeben = !String.IsNullOrEmpty(objCommon.LieferUhrzeitBis);
+            var abwVersandadresseAngegeben = !String.IsNullOrEmpty(objCommon.AbwName1);
+            if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && (lieferuhrzeitAngegeben || abwVersandadresseAngegeben)))
             {
                 SetAbwLieferadresse();
                 Fill48hDialog();
@@ -1170,8 +1171,8 @@ namespace AppZulassungsdienst.forms
                     dRow["FaxLief"] = SelRow[0]["FAX_NUMBER"].ToString() + " " + SelRow[0]["FAX_EXTENS"].ToString();
                 }
 
-                var abwVersanddaten = (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1));
-                if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && abwVersanddaten))
+                var abwVersandadresseAngegeben = !String.IsNullOrEmpty(objCommon.AbwName1);
+                if (objCommon.GenerellAbwLiefAdrVerwenden || (objCommon.Ist48hZulassung && abwVersandadresseAngegeben))
                 {
                     dRow["Name1Lief"] = objCommon.AbwName1;
                     dRow["Name2Lief"] = objCommon.AbwName2;
