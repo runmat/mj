@@ -115,6 +115,21 @@ textarea[readonly].m-wrap {
     padding-left: 40px;
 }
 
+.padding-right-5 {
+    padding-right: 5px;
+}
+.padding-right-10 {
+    padding-right: 10px;
+}
+.padding-right-15 {
+    padding-right: 15px;
+}
+.padding-right-30 {
+    padding-right: 30px;
+}
+.padding-right-40 {
+    padding-right: 40px;
+}
 
 .padding-top-2 {
     padding-top: 2px;
@@ -1438,4 +1453,105 @@ div.tile-object {
 
 .bg-tile-pdf {
     background-color: #d37166;
+}
+
+
+.color-ckg-green {
+    color: #a0C539 !important;
+}
+
+.color-ckg-lightgreen {
+    color: #cddf9a !important;
+}
+
+.color-ckg-palegreen {
+    color: #dff0d8 !important;
+}
+
+.bg-color-ckg-green, .portlet.box.bg-color-ckg-green {
+    background-color: #a0C539 !important;
+}
+
+.bg-color-ckg-lightgreen, .portlet.box.bg-color-ckg-lightgreen {
+    background-color: #cddf9a !important;
+}
+
+.bg-color-ckg-palegreen, .portlet.box.bg-color-ckg-palegreen {
+    background-color: #dff0d8 !important;
+}
+
+.color-ckg-yellow {
+    color: #ffcc00 !important;
+}
+
+.color-ckg-lightyellow {
+    color: #ffff72 !important;
+}
+
+.color-ckg-paleyellow {
+    color: #fff9e5 !important;
+}
+
+.bg-color-ckg-yellow, .portlet.box.bg-color-ckg-yellow {
+    background-color: #ffcc00 !important;
+}
+
+.bg-color-ckg-lightyellow, .portlet.box.bg-color-ckg-lightyellow {
+    background-color: #ffff72 !important;
+}
+
+.bg-color-ckg-paleyellow, .portlet.box.bg-color-ckg-paleyellow {
+    background-color: #fff9e5 !important;
+}
+
+.color-ckg-orange {
+    color: #ffb848 !important;
+}
+
+.color-ckg-lightorange {
+    color: #ffce46 !important;
+}
+
+.color-ckg-paleorange {
+    color: #fcf8e3 !important;
+}
+
+.bg-color-ckg-orange, .portlet.box.bg-color-ckg-orange {
+    background-color: #ffb848 !important;
+}
+
+.bg-color-ckg-lightorange, .portlet.box.bg-color-ckg-lightorange {
+    background-color: #ffce46 !important;
+}
+
+.bg-color-ckg-paleorange, .portlet.box.bg-color-ckg-paleorange {
+    background-color: #fcf8e3 !important;
+}
+
+.color-ckg-red {
+    color: #c11823 !important;
+}
+
+.color-ckg-lightred {
+    color: #d37166 !important;
+}
+
+.color-ckg-palered {
+    color: #f2dede !important;
+}
+
+.bg-color-ckg-red, .portlet.box.bg-color-ckg-red {
+    background-color: #c11823 !important;
+}
+
+.bg-color-ckg-lightred, .portlet.box.bg-color-ckg-lightred {
+    background-color: #d37166 !important;
+}
+
+.bg-color-ckg-palered, .portlet.box.bg-color-ckg-palered {
+    background-color: #f2dede !important;
+}
+
+.bg-white, .portlet.box.bg-white {
+    background-color: white !important;
 }

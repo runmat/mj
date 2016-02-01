@@ -332,6 +332,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Zulassungsdaten.Kennzeichen = s.ZZKENN;
                         d.Zulassungsdaten.Wunschkennzeichen2 = s.WU_KENNZ2;
                         d.Zulassungsdaten.Wunschkennzeichen3 = s.WU_KENNZ3;
+                        d.Zulassungsdaten.HaltereintragVorhanden = (s.GEBRAUCHT.XToBool() ? "J" : "N");
 
                         // Versandzulassung
                         d.VersandAdresse.Adresse.KundenNr = s.ZL_LIFNR;
@@ -350,7 +351,6 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
                         d.Fahrzeugdaten.Farbe = s.FARBE;
                         d.Fahrzeugdaten.FzgModell = s.FZGTYP;
-                        
                     }));
             }
         }
@@ -438,7 +438,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.PZUL_BRIEF,
                             FahrzeugscheinErforderlich = s.PZUL_SCHEIN,
                             CocErforderlich = s.PZUL_COC,
-                            DeckungskarteErforderlich = s.PZUL_DECK,
+                            EvbNrErforderlich = s.PZUL_DECK,
                             VollmachtErforderlich = s.PZUL_VOLLM,
                             PersonalausweisErforderlich = s.PZUL_AUSW,
                             GewerbeanmeldungErforderlich = s.PZUL_GEWERB,
@@ -453,7 +453,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.UZUL_BRIEF,
                             FahrzeugscheinErforderlich = s.UZUL_SCHEIN,
                             CocErforderlich = s.UZUL_COC,
-                            DeckungskarteErforderlich = s.UZUL_DECK,
+                            EvbNrErforderlich = s.UZUL_DECK,
                             VollmachtErforderlich = s.UZUL_VOLLM,
                             PersonalausweisErforderlich = s.UZUL_AUSW,
                             GewerbeanmeldungErforderlich = s.UZUL_GEWERB,
@@ -470,7 +470,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.PUMSCHR_BRIEF,
                             FahrzeugscheinErforderlich = s.PUMSCHR_SCHEIN,
                             CocErforderlich = s.PUMSCHR_COC,
-                            DeckungskarteErforderlich = s.PUMSCHR_DECK,
+                            EvbNrErforderlich = s.PUMSCHR_DECK,
                             VollmachtErforderlich = s.PUMSCHR_VOLLM,
                             PersonalausweisErforderlich = s.PUMSCHR_AUSW,
                             GewerbeanmeldungErforderlich = s.PUMSCHR_GEWERB,
@@ -485,7 +485,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.UUMSCHR_BRIEF,
                             FahrzeugscheinErforderlich = s.UUMSCHR_SCHEIN,
                             CocErforderlich = s.UUMSCHR_COC,
-                            DeckungskarteErforderlich = s.UUMSCHR_DECK,
+                            EvbNrErforderlich = s.UUMSCHR_DECK,
                             VollmachtErforderlich = s.UUMSCHR_VOLLM,
                             PersonalausweisErforderlich = s.UUMSCHR_AUSW,
                             GewerbeanmeldungErforderlich = s.UUMSCHR_GEWERB,
@@ -502,7 +502,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.PUMK_BRIEF,
                             FahrzeugscheinErforderlich = s.PUMK_SCHEIN,
                             CocErforderlich = s.PUMK_COC,
-                            DeckungskarteErforderlich = s.PUMK_DECK,
+                            EvbNrErforderlich = s.PUMK_DECK,
                             VollmachtErforderlich = s.PUMK_VOLLM,
                             PersonalausweisErforderlich = s.PUMK_AUSW,
                             GewerbeanmeldungErforderlich = s.PUMK_GEWERB,
@@ -517,7 +517,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.UUMK_BRIEF,
                             FahrzeugscheinErforderlich = s.UUMK_SCHEIN,
                             CocErforderlich = s.UUMK_COC,
-                            DeckungskarteErforderlich = s.UUMK_DECK,
+                            EvbNrErforderlich = s.UUMK_DECK,
                             VollmachtErforderlich = s.UUMK_VOLLM,
                             PersonalausweisErforderlich = s.UUMK_AUSW,
                             GewerbeanmeldungErforderlich = s.UUMK_GEWERB,
@@ -534,7 +534,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.PERS_BRIEF,
                             FahrzeugscheinErforderlich = s.PERS_SCHEIN,
                             CocErforderlich = s.PERS_COC,
-                            DeckungskarteErforderlich = s.PERS_DECK,
+                            EvbNrErforderlich = s.PERS_DECK,
                             VollmachtErforderlich = s.PERS_VOLLM,
                             PersonalausweisErforderlich = s.PERS_AUSW,
                             GewerbeanmeldungErforderlich = s.PERS_GEWERB,
@@ -549,13 +549,23 @@ namespace CkgDomainLogic.Autohaus.Models
                             FahrzeugbriefErforderlich = s.UERS_BRIEF,
                             FahrzeugscheinErforderlich = s.UERS_SCHEIN,
                             CocErforderlich = s.UERS_COC,
-                            DeckungskarteErforderlich = s.UERS_DECK,
+                            EvbNrErforderlich = s.UERS_DECK,
                             VollmachtErforderlich = s.UERS_VOLLM,
                             PersonalausweisErforderlich = s.UERS_AUSW,
                             GewerbeanmeldungErforderlich = s.UERS_GEWERB,
                             HandelsregisterErforderlich = s.UERS_HANDEL,
                             LastschrifteinzugErforderlich = s.UERS_LAST,
                             Bemerkung = s.UERS_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "XXX",
+                            Gewerblich = false
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "XXX",
+                            Gewerblich = true
                         });
                     }));
             }
@@ -614,6 +624,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             // Halter
                             var halterNameSap = s.HalterName.NotNullOrEmpty().ToUpper();
                             d.ZZREFNR1 = halterNameSap.Substring(0, Math.Min(20, halterNameSap.Length));
+                            d.GEWEBLICH = s.HalterGewerblich.BoolToX();
 
                             // Zulassung
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
@@ -636,6 +647,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZKENN = formatKennzeichen(s.Zulassungsdaten.Kennzeichen);
                             d.WU_KENNZ2 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen2);
                             d.WU_KENNZ3 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen3);
+                            d.GEBRAUCHT = (s.Zulassungsdaten.HaltereintragVorhanden == "J").BoolToX();
 
                             // Versandzulassung
                             d.ZL_LIFNR = (s.Zulassungsdaten.ModusVersandzulassung ? s.VersandAdresse.Adresse.KundenNr : "");

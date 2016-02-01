@@ -23,8 +23,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Coc)]
         public string CocErforderlich { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CoverageCard)]
-        public string DeckungskarteErforderlich { get; set; }
+        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
+        public string EvbNrErforderlich { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Authorization)]
         public string VollmachtErforderlich { get; set; }
@@ -48,12 +48,15 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
+                if (Dienstleistung == "XXX")
+                    return new List<SimpleUiListItem> { new SimpleUiListItem { StyleCssClass = "zipool-item-error", Text = Localize.ZiPoolMessageNoInformationForThisCase } };
+
                 var liste = new List<SimpleUiListItem>();
 
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.ZBII, FahrzeugbriefErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.ZBI, FahrzeugscheinErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.Coc, CocErforderlich);
-                TryAddErforderlicheDokumenteEintrag(ref liste, Localize.CoverageCard, DeckungskarteErforderlich);
+                TryAddErforderlicheDokumenteEintrag(ref liste, Localize.EvbNumber, EvbNrErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.Authorization, VollmachtErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.IdCard, PersonalausweisErforderlich);
                 TryAddErforderlicheDokumenteEintrag(ref liste, Localize.BusinessRegistration, GewerbeanmeldungErforderlich);

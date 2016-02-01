@@ -112,6 +112,8 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        public bool HalterGewerblich { get { return (Halter != null && Halter.Adresse != null && Halter.Adresse.Gewerblich); } }
+
         public string ZahlerKfzSteuerName
         {
             get

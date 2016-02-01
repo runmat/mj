@@ -18,6 +18,7 @@ using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -739,11 +740,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
-            TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
-            TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
-            TempData["IsSchnellabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung;
-
-            return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
+            return PartialView("Partial/Summary", ViewModel);
         }
 
         #region KundenformularAsPdf

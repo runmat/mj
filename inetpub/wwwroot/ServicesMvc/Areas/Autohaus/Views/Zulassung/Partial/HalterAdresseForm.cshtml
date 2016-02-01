@@ -26,6 +26,7 @@
         @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
         @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
         @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap" }, labelText: Localize.Commercial)
 
         @Html.HiddenFor(m => m.EvbNr, new { @class = "m-wrap xsmall" })
         

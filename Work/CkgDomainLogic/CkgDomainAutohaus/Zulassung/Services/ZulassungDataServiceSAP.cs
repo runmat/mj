@@ -633,6 +633,7 @@ namespace CkgDomainLogic.Autohaus.Services
                         vorgang.Halter = adrsZH;
                         vorgang.Halter.Adresse.Kennung = "HALTER";
                         vorgang.Halter.Adresse.Land = "DE";
+                        vorgang.Halter.Adresse.Gewerblich = item.GEWEBLICH.XToBool();
                     }
 
                     var adrsZ6 = adrsItems.FirstOrDefault(a => a.Partnerrolle == "Z6");

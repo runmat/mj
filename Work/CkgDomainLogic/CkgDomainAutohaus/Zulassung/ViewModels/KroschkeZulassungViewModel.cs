@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
@@ -947,6 +948,50 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
 
+        [XmlIgnore]
+        public ZiPoolDaten ZiPoolDaten
+        {
+            get { return PropertyCacheGet(() => new ZiPoolDaten()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public string DienstleistungsartZiPool
+        {
+            get
+            {
+                switch (Zulassung.Zulassungsdaten.Belegtyp)
+                {
+                    case "AU":
+                        return "UMK";
+
+                    case "AN":
+                        return "ZUL";
+
+                    case "AG":
+                        return "UMS";
+
+                    case "AV":
+                    case "AK":
+                    case "AF":
+                        return (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J" ? "UMS" : "ZUL");
+
+                    default:
+                        return "XXX";
+                }
+            }
+        }
+
+        public ZiPoolDetaildaten ZiPoolDetails
+        {
+            get
+            {
+                if (ZiPoolDaten == null)
+                    return new ZiPoolDetaildaten();
+
+                return ZiPoolDaten.Details.FirstOrDefault(d => d.Gewerblich == Zulassung.HalterGewerblich && d.Dienstleistung == DienstleistungsartZiPool);
+            }
+        }
+
         public void UpdateZulassungsdatenModel(Zulassungsdaten model)
         {
             var zulDat = Zulassung.Zulassungsdaten;
@@ -1026,6 +1071,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);
             }
+
+            if (ModusVersandzulassung)
+                zulDat.HaltereintragVorhanden = (zulDat.Zulassungsart.Belegtyp == "AN" ? "N" : "J");
+
+            ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDat.Zulassungskreis, state.AddModelError);
         }
 
         #endregion
@@ -1100,6 +1150,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
 
         #region Misc + Summaries + Savings
+
+        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(); } }
 
         public bool SaveDataToErpSystem { get; set; }
 
