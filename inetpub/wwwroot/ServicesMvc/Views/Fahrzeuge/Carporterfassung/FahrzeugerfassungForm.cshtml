@@ -40,15 +40,14 @@
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase" },
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase margin-right-5" },
             postControlHtml: @<text>
-                                    @Html.CheckBoxFor(m => m.Ausland)<label for="Ausland">@Localize.LicenseNoForeignCountries</label>
+                                    @Html.FormCheckBoxFor(m => m.Ausland, labelHidden:true, useRawTemplate:true)
                               </text>)
 
         @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 },
             postControlHtml: @<text>
-                                @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1 })
-                                <span>@Localize.CheckDigit</span>
+                                @Html.FormTextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5 margin-right-5", maxlength = 1 }, useRawTemplate: true, labelPositionRight: true)
                               </text>)
 
         @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })

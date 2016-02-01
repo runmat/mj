@@ -41,7 +41,10 @@
     <label class="control-label">
         @if (!Model.LabelHidden)
         {
-            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+            if (!Model.LabelPositionRight)
+            {
+                @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+            }
         }
         @if (formSettingsButtonAvailable)
         {
@@ -77,7 +80,11 @@
             if (Model.IsCheckBox)
              {
                  <span>&nbsp;</span>
-             }
+            }
+            if (Model.LabelPositionRight)
+            {
+                @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+            }
         }
 
 
