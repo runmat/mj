@@ -29,14 +29,17 @@ else
 
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
-            @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand-image">&nbsp;Test</span></text>)
+            @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
         }
         else
         {
             @Html.HiddenFor(m => m.Expressversand)
         }
 
-        @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
+        <div class="kroschke-evb">
+            &nbsp;
+        </div>
+        @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7}, )
         @Html.FormPlaceHolder(@<text><div class="alert" id="EvbInfo"></div></text>)
 
     </div>
