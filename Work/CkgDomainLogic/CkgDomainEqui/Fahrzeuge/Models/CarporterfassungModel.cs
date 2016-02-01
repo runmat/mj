@@ -16,6 +16,7 @@ using MvcTools.Web;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
+    [GridColumnsAutoPersist]
     public class CarporterfassungModel : Store, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
@@ -232,7 +233,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.ActionDot)]
         public string Action { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ActionDot2)]
+        public string Action2 { get; set; }
 
         [XmlIgnore]
         public string TmpStatus { get; set; }

@@ -3,8 +3,8 @@
 
 @{ var gridName = "GridCarporterfassungForConfirmation"; }
 
-@(Html.Telerik()
-    .Grid<CarporterfassungModel>()
+@(Html.XTelerik()
+    .XGrid<CarporterfassungModel>()
     .Name(gridName)
     .XAjaxDataBinding("CarporterfassungAjaxBindingForConfirmation", "Fahrzeuge")
     .Columns(columns =>
