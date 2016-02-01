@@ -33,15 +33,16 @@ else
         }
         else
         {
-            @Html.HiddenFor(m => m.Expressversand)
+        @Html.HiddenFor(m => m.Expressversand)
         }
 
-        <div class="kroschke-evb">
-            &nbsp;
-        </div>
         @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7})
-        @Html.FormPlaceHolder(@<text><div class="alert" id="EvbInfo"></div></text>)
-
+        <div class="control-group">
+            <div class="alert" id="evb-info">
+                .kdfjklds fjlksdjf lkdsjvkldsjvlkjv lkjg l kfj glfg kfdjghfkdjghfkj ghfkj ghfkjghfdkjghfkdjgh kjhgkj h
+                .kdfjklds fjlksdjf lkdsjvkldsjvlkjv lkjg l kfj glfg kfdjghfkdjghfkj ghfkj ghfkjghfdkjghfkdjgh kjhgkj h
+            </div>
+        </div>
     </div>
 
     <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-right">
