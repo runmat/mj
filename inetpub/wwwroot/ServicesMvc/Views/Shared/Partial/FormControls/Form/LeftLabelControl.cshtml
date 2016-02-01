@@ -44,13 +44,20 @@
 <div class="control-group @additionalClass">
     
     <label class="control-label">
-        @if (!Model.LabelHidden && !Model.IsPrime)
+        @if (!Model.LabelHidden && !Model.LabelPositionRight && !Model.IsPrime)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
         }
         @if (formSettingsButtonAvailable)
         {
-            <span><i class="icon-wrench" data-model-type-name="@Model.ModelTypeName" data-property-name="@Model.PropertyName" data-partial-view-context="@partialViewContext" onclick="return FormSettingsAdminMode_EditFormControls($(this));"></i></span>
+            <span>
+                <i class="icon-wrench wysiwyg-localization-icon" 
+                     data-model-type-name="@Model.ModelTypeName" 
+                     data-property-name="@Model.PropertyName" 
+                     data-partial-view-context="@partialViewContext"
+                     onclick="return FormSettingsAdminMode_EditFormControls($(this));">
+                </i>
+            </span>
         }
     </label>
 
@@ -62,7 +69,7 @@
         }
            
        
-        @if (Model.IsCheckBox && (Model.LabelHidden || Model.IsPrime) && Model.PostControlHtml == null)
+        @if (Model.IsCheckBox && (Model.LabelHidden || Model.LabelPositionRight || Model.IsPrime) && Model.PostControlHtml == null)
         {
             <label class="checkbox">
                 @Model.ControlHtml
@@ -98,8 +105,12 @@
         {
             @Model.ControlHtml
             if (Model.IsCheckBox)
+             {
+                 <span>&nbsp;</span>
+            }
+            if (Model.LabelPositionRight)
             {
-                <span>&nbsp;</span>
+                @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
             }
         }
 
