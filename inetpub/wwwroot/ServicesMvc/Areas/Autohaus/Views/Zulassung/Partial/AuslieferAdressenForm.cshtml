@@ -118,6 +118,11 @@
         </div>
 
         @*@Html.FormRequiredFieldsSummary()*@
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormAuslieferAdressenClose();"> @Localize.Cancel</button>
+        </div>
 
         <script type="text/javascript">
 

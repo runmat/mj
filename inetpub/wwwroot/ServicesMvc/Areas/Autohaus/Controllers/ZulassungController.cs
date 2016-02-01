@@ -513,6 +513,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
+
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
@@ -549,6 +550,11 @@ namespace ServicesMvc.Autohaus.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        private string GetAuslieferAdressenLink()
+        {
+            return this.RenderPartialViewToString("Partial/SummaryAuslieferAdressenLink");
         }
 
         #endregion

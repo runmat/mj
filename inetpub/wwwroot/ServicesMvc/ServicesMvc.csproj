@@ -283,6 +283,8 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Uebersicht.cshtml" />
     <Content Include="Areas\Autohaus\Views\Shared\Partial\FormulareInfoArea.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\ZiPoolFilter.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\SummaryAuslieferAdressenLink.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
