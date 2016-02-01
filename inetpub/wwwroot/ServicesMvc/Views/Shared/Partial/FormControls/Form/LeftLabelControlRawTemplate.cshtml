@@ -20,17 +20,14 @@
 
 <div class="control-group-raw @additionalClass">
     
-    @if (!Model.LabelHidden)
+    @if (!Model.LabelHidden && !Model.LabelPositionRight)
     {
-        if (!Model.LabelPositionRight)
-        {
-            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
-        }
+        @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
     }
     @if (formSettingsButtonAvailable)
     {
         <span>
-            <i class="icon-wrench" 
+            <i class="icon-wrench wysiwyg-localization-icon" 
                     data-model-type-name="@Model.ModelTypeName" 
                     data-property-name="@Model.PropertyName" 
                     data-partial-view-context="@partialViewContext"
@@ -39,7 +36,7 @@
         </span>
     }
            
-    @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+    @if (Model.IsCheckBox && (Model.LabelHidden || Model.LabelPositionRight ) && Model.PostControlHtml == null)
     {
         <label class="checkbox">
             @Model.ControlHtml

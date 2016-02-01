@@ -677,7 +677,7 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null, bool useRawTemplate = false)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null, bool labelPositionRight = false, bool useRawTemplate = false)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -699,7 +699,8 @@ namespace PortalMvcTools.Web
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
-                UseRawTemplate = useRawTemplate
+                UseRawTemplate = useRawTemplate,
+                LabelPositionRight = labelPositionRight
             };
 
             return html.FormLeftLabelControlConditional(expression, model);

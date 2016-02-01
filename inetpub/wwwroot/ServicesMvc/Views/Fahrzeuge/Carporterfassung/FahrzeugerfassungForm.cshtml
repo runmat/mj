@@ -42,12 +42,14 @@
 
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase margin-right-5" },
             postControlHtml: @<text>
-                                    @Html.FormCheckBoxFor(m => m.Ausland, labelHidden:true, useRawTemplate:true)
+                                    @Html.FormCheckBoxFor(m => m.Ausland, 
+                                                            useRawTemplate: true, labelPositionRight: true)
                               </text>)
 
         @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 },
             postControlHtml: @<text>
-                                @Html.FormTextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5 margin-right-5", maxlength = 1 }, useRawTemplate: true, labelPositionRight: true)
+                                @Html.FormTextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5 margin-right-5", maxlength = 1 }, 
+                                                            useRawTemplate: true, labelPositionRight: true)
                               </text>)
 
         @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
@@ -56,7 +58,7 @@
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
         @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false, false)" })
         
-        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true, false)" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true, false)" }, labelPositionRight: true)
         @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
 
         @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
