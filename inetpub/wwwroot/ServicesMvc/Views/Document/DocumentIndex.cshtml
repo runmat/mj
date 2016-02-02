@@ -1,7 +1,4 @@
-﻿@using CkgDomainLogic.DomainCommon.ViewModels
-@model DokumentViewModel
-
-<div id="closeDocumentDetails" onclick="CloseDocumentDetails();" class="icon-close"></div>
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.DocumentViewModel
 
 <div id="divDokumentGrid">
     @Html.Partial("DocumentGrid")
@@ -94,15 +91,10 @@
         });
     }
 
-    function ShowDocumentDetails(result, showCloseButton) {
+    function ShowDocumentDetails(result) {
         $("#divDocumentDetails").html(result);
         $("#divDokumentGrid").slideUp();
         $("#divDocumentDetails").slideDown();
-
-        if (showCloseButton == null) showCloseButton = true;
-        if (showCloseButton) {
-            $("#closeDocumentDetails").show();
-        }
 
         FormPreparePrivateAjax();
     }
@@ -120,7 +112,6 @@
     }
 
     function CloseDocumentDetailsInner() {
-        $("#closeDocumentDetails").hide();
         $("#divDocumentDetails").slideUp(function () {
             $("#divDokumentGrid").delay(200).show();
             window.scrollTo(0, 0);

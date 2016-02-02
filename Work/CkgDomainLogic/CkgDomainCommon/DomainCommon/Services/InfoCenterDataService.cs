@@ -1,111 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
-using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Models.DataModels;
-using GeneralTools.Contracts;
-using GeneralTools.Models;
+using CkgDomainLogic.General.Services;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
-    public class InfoCenterDataService : IInfoCenterDataService, ICkgGeneralDataService
+    public class InfoCenterDataService : CkgGeneralDataService, IInfoCenterDataService
     {
-        private DomainDbContext _domainDbContext;
-        private ILogonContextDataService _logonContext;
-
-        public InfoCenterDataService(ILogonContextDataService logonContext)
+        private DomainDbContext CreateDbContext()
         {
-            if (logonContext.User != null)
-            {
-                _domainDbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], logonContext.User.UserID.ToString());    
-            }
-            else
-            {
-                _domainDbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], string.Empty);    
-            }
-
-            _logonContext = logonContext;
+            return new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName);
         }
 
-        public List<Dokument> DokumentsForCurrentCustomer { get { return _domainDbContext.DokumentsForAdmin; } }
-        public List<Dokument> DokumentsForCurrentGroup { get { return _domainDbContext.DokumentsForGroup; }  }
+        public List<Document> DocumentsForAll { get { return CreateDbContext().DocumentsForAll; } }
 
-        public List<UserGroup> UserGroupsOfCurrentCustomer { get { return _domainDbContext.UserGroupsOfCurrentCustomer; } }
+        public List<Document> DocumentsForCurrentCustomer { get { return CreateDbContext().DocumentsForCustomer; } }
 
-        public Dokument SaveDocument(Dokument dokument, Action<string, string> addModelError)
+        public List<Document> DocumentsForCurrentGroup { get { return CreateDbContext().DocumentsForGroup; } }
+
+        public List<UserGroup> UserGroupsOfCurrentCustomer { get { return CreateDbContext().UserGroupsOfCurrentCustomer; } }
+
+        public Document SaveDocument(Document document)
         {
-            return _domainDbContext.SaveDokument(dokument);
+            return CreateDbContext().SaveDocument(document);
         }
 
-        public bool DeleteDocument(Dokument dokument)
+        public bool DeleteDocument(int documentId)
         {
-            return _domainDbContext.DeleteDokument(dokument);
+            return CreateDbContext().DeleteDocument(documentId);
         }
 
-        public bool SaveDocument(DocumentErstellenBearbeiten documentBearbeiten)
+        public bool SaveDocument(DokumentErstellenBearbeiten dokumentBearbeiten)
         {
-            return _domainDbContext.SaveDokument(documentBearbeiten);
+            return CreateDbContext().SaveDocument(dokumentBearbeiten.ID, dokumentBearbeiten.DocTypeID, dokumentBearbeiten.SelectedWebGroups);
         }
 
-        public List<DocumentType> DocumentTypes { get { return _domainDbContext.DocumentTypesForCustomer; } }
+        public List<DocumentType> DocumentTypesForAll { get { return CreateDbContext().DocumentTypesForAll; } }
 
-        public DocumentType CreateDocumentType(DocumentType documentType, Action<string, string> addModelError)
+        public List<DocumentType> DocumentTypes { get { return CreateDbContext().DocumentTypesForCustomer; } }
+
+        public DocumentType SaveDocumentType(DocumentType documentType)
         {
-            return _domainDbContext.CreateDocumentType(documentType);
+            return CreateDbContext().SaveDocumentType(documentType);
         }
 
-        public DocumentType EditDocumentType(DocumentType documentType, Action<string, string> addModelError)
+        public bool DeleteDocumentType(int documentTypeId)
         {
-            return _domainDbContext.UpdateDocumentType(documentType);
+            return CreateDbContext().DeleteDocumentType(documentTypeId);
         }
 
-        public int DeleteDocumentType(DocumentType documentType)
-        {
-           return _domainDbContext.DeleteDokumentType(documentType);
-        }
-
-        public List<DokumentRight> DocumentRights { get { return _domainDbContext.DokumentRights.ToList(); } }
-
-        public List<KundeAusHierarchie> KundenAusHierarchie { get; private set; }
-        public List<Land> Laender { get; private set; }
-        public List<SelectItem> Versicherungen { get; private set; }
-        public List<VersandOption> VersandOptionen { get; private set; }
-        public List<ZulassungsOption> ZulassungsOptionen { get; private set; }
-        public List<ZulassungsDienstleistung> ZulassungsDienstleistungen { get; private set; }
-        public List<FahrzeugStatus> FahrzeugStatusWerte { get; private set; }
-        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
-
-        public string ToDataStoreKundenNr(string kundenNr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CheckFahrgestellnummer(string fin, string pruefziffer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Init(IAppSettings appSettings, ILogonContext logonContext)
-        {
-            _domainDbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], logonContext.UserName);    
-        }
-
-        public string CountryPlzValidate(string country, string plz)
-        {
-            if (country.NotNullOrEmpty().ToUpper() == "DE" && plz.IsNotNullOrEmpty() && plz.Length != 5)
-                return "Deutsche Postleitzahlen müssen 5-stellig sein";
-
-            return "";
-        }
-
-        public string GetZulassungskreisFromPostcodeAndCity(string postCode, string city)
-        {
-            throw new NotImplementedException();
-        }
+        public List<DocumentRight> DocumentRights { get { return CreateDbContext().DocumentRights.ToList(); } }
     }
 }

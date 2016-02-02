@@ -20,7 +20,7 @@ namespace CkgDomainLogic.General.Services
 
         public IAppSettings AppSettings { get; private set; }
 
-        public ILogonContext LogonContext { get; private set; }
+        public ILogonContextDataService LogonContext { get; private set; }
 
         #endregion
 
@@ -55,7 +55,7 @@ namespace CkgDomainLogic.General.Services
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             AppSettings = appSettings;
-            LogonContext = logonContext;
+            LogonContext = (ILogonContextDataService)logonContext;
         }
 
         public string CountryPlzValidate(string country, string plz)

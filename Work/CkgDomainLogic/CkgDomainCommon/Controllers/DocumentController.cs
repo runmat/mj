@@ -6,14 +6,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Database.Models;
-using CkgDomainLogic.General.Models.DataModels;
 using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -22,51 +23,73 @@ namespace CkgDomainLogic.Controllers
 {
     public class DocumentController : CkgDomainController
     {
-        public DocumentController(IAppSettings appSettings, ILogonContextDataService logonContextdataService, IInfoCenterDataService infoCenterDataService) : base(appSettings, logonContextdataService)
+        public DocumentController(IAppSettings appSettings, ILogonContextDataService logonContext, IInfoCenterDataService infoCenterDataService)
+            : base(appSettings, logonContext)
         {
-            InitViewModel(DokumentViewModel, appSettings, logonContextdataService, infoCenterDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, infoCenterDataService);
+            InitModelStatics();
         }
 
-        public DokumentViewModel DokumentViewModel { get { return GetViewModel<DokumentViewModel>(); } private set { SetViewModel(value); } }
+        private void InitModelStatics()
+        {
+            DokumentErstellenBearbeiten.GetViewModel = GetViewModel<DocumentViewModel>;
+        }
 
-        public override string DataContextKey { get { return GetDataContextKey<DokumentViewModel>(); } }
+        public DocumentViewModel ViewModel { get { return GetViewModel<DocumentViewModel>(); } }
 
-        #region Dokument Grid
+        public override string DataContextKey { get { return GetDataContextKey<DocumentViewModel>(); } }
 
         [CkgApplication]
         public ActionResult DocumentsForCurrentGroup()
         {
-            DokumentViewModel = null;
-            return View("Index", DokumentViewModel);
+            ViewModel.DataInit(false, false);
+
+            return View("Index", ViewModel);
         }
 
         [CkgApplication]
         public ActionResult DocumentsForCurrentCustomer()
         {
-            DokumentViewModel = null;
-                                                                                        // ReSharper disable PossibleNullReferenceException
-            DokumentViewModel.IsAdministrator = true;
-                                                                                        // ReSharper restore PossibleNullReferenceException
-            return View("Index", DokumentViewModel);
+            ViewModel.DataInit(false, true);
+
+            return View("Index", ViewModel);
         }
+
+        [CkgApplication]
+        public ActionResult DocumentsGeneral()
+        {
+            ViewModel.DataInit(true, false);
+
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult DocumentsGeneralAdmin()
+        {
+            ViewModel.DataInit(true, true);
+
+            return View("Index", ViewModel);
+        }
+
+        #region Dokument Grid
 
         [GridAction]
         public ActionResult DocumentsAjaxBinding()
         {
-            return PartialView(new GridModel(DokumentViewModel.DokumentsFiltered));
+            return PartialView(new GridModel(ViewModel.DocumentsFiltered));
         }
 
         [HttpPost]
         public ActionResult FilterDokumentGrid(string filterValue, string filterColumns)
         {
-            DokumentViewModel.FilterDokuments(filterValue, filterColumns);
+            ViewModel.FilterDocuments(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
         public FileResult Get(int id)
         {
-            var dokument = DokumentViewModel.Dokuments.Single(x => x.DocumentID == id);
+            var dokument = ViewModel.Documents.Single(x => x.DocumentID == id);
             var virtualFilePath = string.Concat(FileSourcePath, dokument.FileName, ".", dokument.FileType);
             return File(virtualFilePath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
         }
@@ -78,13 +101,6 @@ namespace CkgDomainLogic.Controllers
         [HttpPost]
         public ActionResult UploadDocuments(IEnumerable<HttpPostedFileBase> uploadFiles, string documentTypeId)
         {
-            //// Selektion übernehmen
-            //if (model.SelectedWebGroups == null)
-            //{
-            //    model.SelectedWebGroups = new List<string>();
-            //}
-            //DokumentViewModel.NewDocumentProperties = model;
-
             // Prüfen, ob Upload-Verzeichnis ok und Dateitypen erlaubt
             foreach (var uploadfile in uploadFiles)
             {
@@ -111,58 +127,16 @@ namespace CkgDomainLogic.Controllers
 
             var fileName = uploadFile.SavePostedFile(FileSourcePath, Path.GetFileNameWithoutExtension(uploadFile.FileName), fileInfo.Extension);
 
-            var now = DateTime.Now;
-
-            var dokument = new Dokument
-                {
-                    DocTypeID = DokumentViewModel.NewDocumentProperties.DocTypeID,
-                    FileName = fileName,
-                    FileSize = uploadFile.ContentLength,
-                    LastEdited = now,
-                    Uploaded = now,
-                    CustomerID = LogonContext.User.CustomerID,
-                    FileType = extension
-                };
-
-            dokument = DokumentViewModel.SaveItem(dokument, (s, s1) => { });
-
-            DokumentViewModel.NewDocumentProperties.ID = dokument.DocumentID;
-            DokumentViewModel.NewDocumentProperties.Name = dokument.FileName;
-
-            DokumentViewModel.DataService.SaveDocument(DokumentViewModel.NewDocumentProperties);
+            ViewModel.SaveDocument(fileName, extension, uploadFile.ContentLength);
         }
-
-        //private void ReplaceExistingDocument(HttpPostedFileBase uploadFile)
-        //{
-        //    uploadFile.DeleteExistingAndSavePostedFile(FileSourcePath);
-
-        //    var fileInfo = new FileInfo(uploadFile.FileName);
-        //    var extension = fileInfo.Extension.Replace(".", string.Empty);
-        //    var fileName = Path.GetFileNameWithoutExtension(uploadFile.FileName);
-        //    var now = DateTime.Now;
-
-        //    var dokument = DokumentViewModel.Dokuments.Single(x => x.FileName == fileName && x.FileType == extension);
-
-        //    dokument.DocTypeID = DokumentViewModel.NewDocumentProperties.DocTypeID;
-        //    dokument.Uploaded = now;
-        //    dokument.LastEdited = now;
-
-        //    DokumentViewModel.SaveItem(dokument, (s, s1) => { });
-        //}
 
         private JsonResult VerifyDocument(HttpPostedFileBase uploadFile)
         {
-
             if (!CheckFolderAvailablilityAndCreate())
-            {
-                return Json(new { success = false, message = Localize.DocumentCannotCreateFolder }, "text/plain");
-            }
-
+                return Json(new { success = false, message = Localize.DocumentCannotCreateFolder });
 
             if (!CheckFileExtention(uploadFile.FileName))
-            {
-                return Json(new { success = false, message = Localize.FileUploadLegalFileTypesWarning }, "text/plain"); 
-            }
+                return Json(new { success = false, message = Localize.FileUploadLegalFileTypesWarning }); 
 
             return null;
         }
@@ -237,28 +211,21 @@ namespace CkgDomainLogic.Controllers
         [HttpGet]
         public ActionResult CreateDocument()
         {
-            var model = new DocumentErstellenBearbeiten();
-
-            SetSources(model);
-            model.DocTypeID = 1; //default-Dokumententyp
-
-            return PartialView(model);
+            return PartialView(ViewModel.NewDocumentProperties);
         }
 
         [HttpPost]
         public ActionResult SetDocumentProperties(string docTypeId, string userGroups)
         {
-            DokumentViewModel.NewDocumentProperties = new DocumentErstellenBearbeiten
-                {
-                    DocTypeID = Int32.Parse(docTypeId),
-                    SelectedWebGroups = new List<string>()
-                };
+            ViewModel.NewDocumentProperties.DocTypeID = docTypeId.ToInt(0);
+            ViewModel.NewDocumentProperties.SelectedWebGroups = new List<string>();
+
             if (!String.IsNullOrEmpty(userGroups))
             {
                 var teile = userGroups.Split(',');
                 foreach (var teil in teile)
                 {
-                    DokumentViewModel.NewDocumentProperties.SelectedWebGroups.Add(teil);
+                    ViewModel.NewDocumentProperties.SelectedWebGroups.Add(teil);
                 }
             }
 
@@ -278,66 +245,24 @@ namespace CkgDomainLogic.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var dokument = DokumentViewModel.Dokuments.Single(x => x.DocumentID == id);
-            var dokumentGruppen = from dokumentRight in DokumentViewModel.DataService.DocumentRights
-                                  where dokumentRight.DocumentID == id
-                                  select dokumentRight.GroupID.ToString();
-
-            var model = new DocumentErstellenBearbeiten {ID = id, DocTypeID = dokument.DocTypeID};
-            SetSources(model);
-            model.SelectedWebGroups = dokumentGruppen.ToList();
-            
-            model.IsValid = true;
-
-            return PartialView(model);
+            return PartialView(ViewModel.GetDocumentModel(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(DocumentErstellenBearbeiten model)
+        public ActionResult Edit(DokumentErstellenBearbeiten model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return PartialView(model);
+                if (model.SelectedWebGroups == null)
+                    model.SelectedWebGroups = new List<string>();
+
+                var resultOk = ViewModel.SaveDocument(model);
+
+                if (!resultOk)
+                    ModelState.AddModelError("", "Speicherung schlug fehl");
             }
 
-            if (model.SelectedWebGroups == null)
-            {
-                model.SelectedWebGroups = new List<string>();
-            }
-
-            var result = DokumentViewModel.DataService.SaveDocument(model);
-
-            if (!result)
-            {
-                ModelState.AddModelError("", "Speicherung schlug fehl");
-            }
-            else
-            {
-                model.IsValid = true;
-            }
-
-            SetSources(model);
             return PartialView(model);
-        }
-
-        private void SetSources(DocumentErstellenBearbeiten model)
-        {
-            var gruppen = (from gruppe in DokumentViewModel.DataService.UserGroupsOfCurrentCustomer
-                           select new SelectListItem
-                           {
-                               Text = gruppe.GroupName,
-                               Value = gruppe.GroupID.ToString()
-                           }).ToList();
-
-            var dokumentTypes = (from documentType in DokumentViewModel.DataService.DocumentTypes
-                                select new SelectListItem
-                                {
-                                    Text = documentType.DocTypeName,
-                                    Value = documentType.DocumentTypeID.ToString()
-                                }).ToList();
-
-            model.AvailableWebGroups = gruppen;
-            model.AvailableDocumentTypes = dokumentTypes.ToList();
         }
 
         #endregion
@@ -347,104 +272,65 @@ namespace CkgDomainLogic.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var dokument = DokumentViewModel.Dokuments.Single(x => x.DocumentID == id);
-            var result = DokumentViewModel.DataService.DeleteDocument(dokument);
+            var dokument = ViewModel.Documents.Single(x => x.DocumentID == id);
+            var filePath = string.Concat(FileSourcePath, dokument.FileName, ".", dokument.FileType);
 
-            var fileInfo = new FileInfo(string.Concat(FileSourcePath, dokument.FileName, ".", dokument.FileType));
-            fileInfo.Delete();
+            var resultOk = ViewModel.DeleteDocument(id);
 
-            return Json(result);
+            if (resultOk)
+            {
+                var fileInfo = new FileInfo(filePath);
+                fileInfo.Delete();
+            }
+
+            return Json(resultOk);
         }
 
         #endregion
 
         #region DocumentType
         
-        [CkgApplication]
-        public ActionResult DocumentType()
-        {
-            DokumentViewModel = null;
-            return View("DocumentTypeIndex", DokumentViewModel);
-        }
-
         public ActionResult DocumentTypeAjaxBinding()
         {
-            return Json(new GridModel(DokumentViewModel.DocumentTypesFiltered));
+            return Json(new GridModel(ViewModel.DocumentTypesFiltered));
         }
 
         [HttpPost]
         public ActionResult FilterDocumentTypeGrid(string filterValue, string filterColumns)
         {
-            DokumentViewModel.FilterDocumentTypes(filterValue, filterColumns);
+            ViewModel.FilterDocumentTypes(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
-        #region Create
-
         [HttpGet]
-        public ActionResult CreateDocumentType()
+        public ActionResult CreateOrEditDocumentType(int id)
         {
-            var documentType = new DocumentType();
-            return PartialView(documentType);
+            return PartialView(ViewModel.GetDocumentType(id));
         }
 
         [HttpPost]
-        public ActionResult CreateDocumentType(DocumentType documentType)
+        public ActionResult CreateOrEditDocumentType(DocumentType documentType)
         {
-            if (!ModelState.IsValid)
-            {
-                return PartialView(documentType);
-            }
+            if (ModelState.IsValid)
+                documentType = ViewModel.SaveDocumentType(documentType);
 
-            var saveDokumentType = DokumentViewModel.DataService.CreateDocumentType(documentType, (s, s1) => { });
-
-            return PartialView(saveDokumentType);
-        }
-
-        #endregion
-
-        #region Edit
-
-        [HttpGet]
-        public ActionResult EditDocumentType(int id)
-        {
-            var documentType = DokumentViewModel.DataService.DocumentTypes.Single(x => x.DocumentTypeID == id);
             return PartialView(documentType);
         }
-
-        [HttpPost]
-        public ActionResult EditDocumentType(DocumentType documentType)
-        {
-            if (!ModelState.IsValid)
-            {
-                return PartialView(documentType);
-            }
-
-            var saveDokumentType = DokumentViewModel.DataService.EditDocumentType(documentType, (s, s1) => { });
-
-            return PartialView(saveDokumentType);
-        }
-
-        #endregion
 
         public ActionResult DeleteDocumentType(int id)
         {
             // Kann ich löschen?
-            var numberOfDocumentsUsingdocType = DokumentViewModel.DataService.DokumentsForCurrentCustomer.Count(document => document.DocTypeID == id);
+            var numberOfDocumentsUsingdocType = ViewModel.NumberOfDocumentsUsingDocType(id);
 
             if (numberOfDocumentsUsingdocType > 0)
             {
                 return Json(numberOfDocumentsUsingdocType);
             }
 
-            var documentType = DokumentViewModel.DataService.DocumentTypes.Single(x => x.DocumentTypeID == id);
+            var resultOk = ViewModel.DeleteDocumentType(id);
 
-            DokumentViewModel.DataService.DeleteDocumentType(documentType);
-            // Ich Rückgabewert verwende ich im Moment nicht, wenn etwas schief geht bei der Speicherung dann wird eine Ausnahme geworfen
-
-            return Json(0);    
-           
+            return Json(resultOk);    
         }
 
         #endregion
@@ -453,7 +339,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDokumentsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = ViewModel.DocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Dokumente", dt);
 
             return new EmptyResult();
@@ -461,7 +347,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDokumentsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = ViewModel.DocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Dokumente", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -469,7 +355,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDocumentTypesFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = ViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("DocumentTypes", dt);
 
             return new EmptyResult();
@@ -477,7 +363,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDocumentTypesFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = ViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("DocumentTypes", dt, landscapeOrientation: true);
 
             return new EmptyResult();

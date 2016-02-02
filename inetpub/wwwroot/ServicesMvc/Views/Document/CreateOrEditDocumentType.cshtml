@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.General.Database.Models
+@model DocumentType
+
+<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
+    @using (Ajax.BeginForm("CreateOrEditDocumentType", "Document", null, new MvcAjaxOptions { OnComplete = "CreateOrEditDocumentTypeComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+    {
+        @Html.FormValidationSummary()
+
+        
+        @Html.HiddenFor(m => m.DocumentTypeID)
+        @Html.HiddenFor(m => m.CustomerID)
+
+        @Html.FormTextBoxFor(m => m.DocTypeName, new { @class = "m-wrap" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseDocumentTypeDetails();">@Localize.Cancel</button>
+        </div>
+    }
+</div>
+
+<script type="text/javascript" >
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+    function CreateOrEditDocumentTypeComplete() {
+        CloseDocumentTypeDetails();
+        FormPreparePrivateAjax();
+    }
+</script>

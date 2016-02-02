@@ -1,17 +1,25 @@
-﻿@using CkgDomainLogic.General.Models.DataModels
-@model DocumentErstellenBearbeiten
+﻿@model CkgDomainLogic.DomainCommon.Models.DokumentErstellenBearbeiten
 
 <div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
     @using (Ajax.BeginForm("Edit", "Document", null, new MvcAjaxOptions { OnComplete = "EditDocumentComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
     {
-        @Html.HiddenFor(m => m.ID)
-
         @Html.FormValidationSummary()
         
-        @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes, new { @class = "m-wrap" })
+        
+        @Html.HiddenFor(m => m.ID)
+        
+        @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes.ToSelectList("DocumentTypeID", "DocTypeName"), new { @class = "m-wrap" })
 
-        @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("Value", "Text"), new { @class = "m-wrap chosen" })
+    if (Model.GeneralMode)
+    {
+        @Html.HiddenFor(m => m.SelectedWebGroups)
+    }
+    else
+    {
+        @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("GroupID", "GroupName"), new { @class = "m-wrap chosen" })
+    }
 
+        
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
@@ -20,7 +28,7 @@
         </div>
     
         <script type="text/javascript">
-            _modelIsValid = @Model.IsValid.ToString().ToLower();
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
             function EditDocumentComplete() {
                 CloseDocumentDetails();
