@@ -504,17 +504,17 @@
 
         if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
-            $("#Expressversand").closest(".control-group").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
         } else {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
-            $("#Expressversand").closest(".control-group").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").hide();
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest(".control-group").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
         }
         else {
-            $("#Expressversand").closest(".control-group").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").hide();
         }
         $.uniform.update($("#Expressversand"));
     }

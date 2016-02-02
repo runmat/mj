@@ -29,18 +29,19 @@ else
 
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
-            @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+            <div class="kroschke-evb-control-group-border">
+                @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+            </div>
         }
         else
         {
         @Html.HiddenFor(m => m.Expressversand)
         }
 
-        @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7})
-        <div class="control-group">
-            <div class="alert" id="evb-info">
-                .kdfjklds fjlksdjf lkdsjvkldsjvlkjv lkjg l kfj glfg kfdjghfkdjghfkj ghfkj ghfkjghfdkjghfkdjgh kjhgkj h
-                .kdfjklds fjlksdjf lkdsjvkldsjvlkjv lkjg l kfj glfg kfdjghfkdjghfkj ghfkj ghfkjghfdkjghfkdjgh kjhgkj h
+        <div class="kroschke-evb-control-group-border">
+            @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
+            <div class="control-group">
+                <div class="alert hide" id="evb-info"></div>
             </div>
         </div>
     </div>
