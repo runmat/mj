@@ -61,7 +61,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Adresse.Name1);
         }
 
-        public Bankdaten GetBankdaten(string iban)
+        public Bankdaten GetBankdaten(string iban, Action<string, string> addModelError)
         {
             var erg = new Bankdaten();
 
@@ -75,7 +75,11 @@ namespace CkgDomainLogic.Autohaus.Services
                 erg.KontoNr = SAP.GetExportParameter("E_BANK_ACCOUNT");
                 erg.Bankleitzahl = SAP.GetExportParameter("E_BANK_NUMBER");
                 erg.Geldinstitut = SAP.GetExportParameter("E_BANKA");
-            }           
+            }
+            else
+            {
+                addModelError("", SAP.ResultMessage);
+            }
 
             return erg;
         }

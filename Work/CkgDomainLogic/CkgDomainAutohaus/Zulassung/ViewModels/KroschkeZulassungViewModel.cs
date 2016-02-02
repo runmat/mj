@@ -776,7 +776,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Bankdaten LoadBankdatenAusIban(string iban)
         {
-            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper());
+            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper(), delegate {  });
         }
 
         #endregion

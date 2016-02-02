@@ -245,6 +245,15 @@
     <Content Include="Images\kroschke-prime-etikette.png" />
     <Content Include="Images\kroschke-prime-info-icon.png" />
     <Content Include="Images\kroschke-signs-services.png" />
+    <Content Include="Images\icons\48x48\delete.png" />
+    <Content Include="Images\icons\48x48\ok.png" />
+    <Content Include="Images\icons\48x48\warning.png" />
+    <Content Include="Images\icons\72x72\delete.png" />
+    <Content Include="Images\icons\72x72\ok.png" />
+    <Content Include="Images\icons\72x72\warning.png" />
+    <Content Include="Images\icons\96x96\delete.png" />
+    <Content Include="Images\icons\96x96\ok.png" />
+    <Content Include="Images\icons\96x96\warning.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\express-versand.png" />
@@ -293,6 +302,14 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Search.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\EvbResult.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\SearchResult.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\IbanResult.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\VehicleResult.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\VehicleListItem.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Clever\Partial\Common.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -715,6 +732,7 @@
     <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
     <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
     <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
+    <Compile Include="Areas\Autohaus\Controllers\CleverController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />

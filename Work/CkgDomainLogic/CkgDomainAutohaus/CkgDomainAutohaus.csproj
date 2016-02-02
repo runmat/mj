@@ -75,6 +75,7 @@
     <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
     <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="Clever\ViewModels\CleverViewModel.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\WebUploadProtokoll.cs" />
@@ -225,7 +226,11 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Clever\Contracts\" />
+    <Folder Include="Clever\Models\" />
+    <Folder Include="Clever\Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

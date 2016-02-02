@@ -153,6 +153,30 @@ namespace CkgDomainLogic.General.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT, EvbInfo> Z_AHP_READ_VERSUNTERNEHMEN_GT_OUT_To_EvbInfo
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT, EvbInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.EvbNr = s.EVB2;
+                        d.Fax = s.FAX_NUMBER;
+                        d.HausNr = s.HOUSE_NUM1;
+                        d.Land = s.COUNTRY;
+                        d.Ort = s.CITY1;
+                        d.Plz = s.POST_CODE1;
+                        d.Strasse = s.STREET;
+                        d.Telefon = s.TEL_NUMBER;
+                        d.Versicherung = s.NAME;
+                        d.VsuNr = s.VSU_NR;
+                    }));
+            }
+        }
+
         #endregion
     }
 }
