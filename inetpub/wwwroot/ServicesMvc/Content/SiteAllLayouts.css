@@ -1462,11 +1462,11 @@ div.span-alert-placeholder .alert {
     display: inline-block;
     margin: 0 0 0 20px;
     width: 200px;
-    height: 64px;
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-star.png) 0 0 no-repeat;
+    height: 65px;
+    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;
 }
 .prime-control label.checkbox.checked .prime-checkbox-image {
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag.png) 0 0 no-repeat;
+    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;
 }
 
 .prime-control span.prime-helphint-icon {
