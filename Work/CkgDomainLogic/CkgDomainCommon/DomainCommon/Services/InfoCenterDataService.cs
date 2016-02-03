@@ -36,7 +36,7 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public bool SaveDocument(DokumentErstellenBearbeiten dokumentBearbeiten)
         {
-            return CreateDbContext().SaveDocument(dokumentBearbeiten.ID, dokumentBearbeiten.DocTypeID, dokumentBearbeiten.SelectedWebGroups);
+            return CreateDbContext().SaveDocument(dokumentBearbeiten.ID, dokumentBearbeiten.DocTypeID, dokumentBearbeiten.SelectedWebGroups, dokumentBearbeiten.Tags);
         }
 
         public List<DocumentType> DocumentTypesForAll { get { return CreateDbContext().DocumentTypesForAll; } }

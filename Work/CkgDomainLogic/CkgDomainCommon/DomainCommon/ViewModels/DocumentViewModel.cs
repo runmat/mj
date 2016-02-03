@@ -62,14 +62,16 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             GeneralMode = generalMode;
             AdminMode = adminMode;
 
-            DataMarkForRefresh();
+            DataMarkForRefresh(true);
         }
 
-        private void DataMarkForRefresh()
+        private void DataMarkForRefresh(bool initial = false)
         {
-            PropertyCacheClear(this, m => m.DocumentTypes);
+            PropertyCacheClear(this, m => m.DocumentsFiltered);
             PropertyCacheClear(this, m => m.DocumentTypesFiltered);
-            PropertyCacheClear(this, m => m.NewDocumentProperties);
+
+            if (initial)    
+                PropertyCacheClear(this, m => m.NewDocumentProperties);
         }
 
         public DokumentErstellenBearbeiten GetDocumentModel(int id)
@@ -80,6 +82,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return new DokumentErstellenBearbeiten
             {
                 ID = id,
+                Name = dokument.FileName,
                 DocTypeID = dokument.DocTypeID,
                 SelectedWebGroups = dokumentGruppen.ToList()
             };
@@ -97,23 +100,30 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                     LastEdited = now,
                     Uploaded = now,
                     CustomerID = (GeneralMode ? 1 : LogonContext.CustomerID),
-                    FileType = fileExtension
+                    FileType = fileExtension,
+                    Tags = NewDocumentProperties.Tags
                 }
             );
 
             NewDocumentProperties.ID = dokument.DocumentID;
             NewDocumentProperties.Name = dokument.FileName;
 
+            DataMarkForRefresh();
+
             return DataService.SaveDocument(NewDocumentProperties);
         }
 
         public bool SaveDocument(DokumentErstellenBearbeiten item)
         {
+            DataMarkForRefresh();
+
             return DataService.SaveDocument(item);
         }
 
         public bool DeleteDocument(int id)
         {
+            DataMarkForRefresh();
+
             return DataService.DeleteDocument(id);
         }
 
@@ -127,11 +137,15 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public DocumentType SaveDocumentType(DocumentType item)
         {
+            DataMarkForRefresh();
+
             return DataService.SaveDocumentType(item);
         }
 
         public bool DeleteDocumentType(int id)
         {
+            DataMarkForRefresh();
+
             return DataService.DeleteDocumentType(id);
         }
 

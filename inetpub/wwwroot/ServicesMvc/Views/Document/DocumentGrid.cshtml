@@ -28,6 +28,7 @@
         columns.XBound(c => c.FileName);
         columns.XBound(c => c.FileType);
         columns.XBound(c => c.LastEdited);
+        columns.XBound(c => c.Tags).Visible(Model.GeneralMode);
         columns.XBound(c => c.DocumentID).ClientTemplate("<a target='_blank' class='btn mini gray tooltips a_btn_mini' data-original-title='Download' data-placement='right' href='Get/<#= DocumentID #>' ><i class='halflings-icon white file'></i></a>").Title("Download");
     })
     .XAutoColumnConfiguration()

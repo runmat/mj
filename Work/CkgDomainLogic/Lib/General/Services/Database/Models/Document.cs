@@ -39,5 +39,8 @@ namespace CkgDomainLogic.General.Database.Models
         [LocalizedDisplay(LocalizeConstants.Uploaded)]
         public DateTime Uploaded { get; set; }
 
+        [MaxLength(100)]
+        [LocalizedDisplay(LocalizeConstants.Tags)]
+        public string Tags { get; set; }
     }
 }

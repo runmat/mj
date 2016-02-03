@@ -23,9 +23,12 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.DocumentType)]
         public int? DocTypeID { get; set; }
 
-        [Required]
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.UserGroups)]
         public List<string> SelectedWebGroups { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Tags)]
+        public string Tags { get; set; }
 
         [XmlIgnore, GridHidden, NotMapped]
         public List<UserGroup> AvailableWebGroups

@@ -456,7 +456,7 @@ namespace CkgDomainLogic.General.Database.Services
         /// Dokument DocTypeId anpassen und die Zuordnung zu den Gruppen neu erstellen
         /// </summary>
         /// <returns></returns>
-        public bool SaveDocument(int documentId, int? docTypeId, List<string> selectedWebGroups)
+        public bool SaveDocument(int documentId, int? docTypeId, List<string> selectedWebGroups, string tags)
         {
             // DokumentRights für das Dokument ausfüllen
             var documentRights = DocumentRights.Where(x => x.DocumentID == documentId);
@@ -468,21 +468,24 @@ namespace CkgDomainLogic.General.Database.Services
             documentRights.ToList().ForEach(x => DocumentRights.Remove(x));
 
             // Neue DokumentRights eintragen
-            foreach (var webGroup in selectedWebGroups)
+            if (selectedWebGroups != null)
             {
-                var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
+                foreach (var webGroup in selectedWebGroups)
+                {
+                    var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
 
-                var newDocumentRight = new DocumentRight
+                    var newDocumentRight = new DocumentRight
                     {
                         DocumentID = documentId,
                         GroupID = groupID
                     };
 
-                DocumentRights.Add(newDocumentRight);
+                    DocumentRights.Add(newDocumentRight);
+                }
             }
 
-            // Dokument Wert DocTypeID überschreiben
             document.DocTypeID = docTypeId;
+            document.Tags = tags;
             document.LastEdited = DateTime.Now;
 
             // Jetzt alles auf ein mal schreiben! EF kümmert sich um die Transaction

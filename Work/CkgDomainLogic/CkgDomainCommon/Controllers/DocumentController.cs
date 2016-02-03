@@ -215,10 +215,11 @@ namespace CkgDomainLogic.Controllers
         }
 
         [HttpPost]
-        public ActionResult SetDocumentProperties(string docTypeId, string userGroups)
+        public ActionResult SetDocumentProperties(string docTypeId, string userGroups, string tags)
         {
             ViewModel.NewDocumentProperties.DocTypeID = docTypeId.ToInt(0);
             ViewModel.NewDocumentProperties.SelectedWebGroups = new List<string>();
+            ViewModel.NewDocumentProperties.Tags = tags;
 
             if (!String.IsNullOrEmpty(userGroups))
             {
@@ -253,9 +254,6 @@ namespace CkgDomainLogic.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.SelectedWebGroups == null)
-                    model.SelectedWebGroups = new List<string>();
-
                 var resultOk = ViewModel.SaveDocument(model);
 
                 if (!resultOk)
@@ -283,7 +281,7 @@ namespace CkgDomainLogic.Controllers
                 fileInfo.Delete();
             }
 
-            return Json(resultOk);
+            return new EmptyResult();
         }
 
         #endregion
@@ -328,9 +326,9 @@ namespace CkgDomainLogic.Controllers
                 return Json(numberOfDocumentsUsingdocType);
             }
 
-            var resultOk = ViewModel.DeleteDocumentType(id);
+            ViewModel.DeleteDocumentType(id);
 
-            return Json(resultOk);    
+            return new EmptyResult();    
         }
 
         #endregion

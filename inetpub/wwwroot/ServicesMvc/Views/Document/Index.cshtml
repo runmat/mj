@@ -1,11 +1,6 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.DocumentViewModel
 
-<h3 class="page-title" id="headerTitle">Infocenter 
-    @if (Model.AdminMode)
-    {
-        <small>Admin</small>
-    }
-</h3>
+<h3 class="page-title" id="headerTitle">@Localize.Document_KroschkeDokumentencenter <small>@(Model.AdminMode ? "Admin" : "")</small></h3>
 
 @if (Model.AdminMode)
 {

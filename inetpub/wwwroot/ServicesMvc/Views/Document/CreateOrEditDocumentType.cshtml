@@ -1,18 +1,21 @@
 ﻿@using CkgDomainLogic.General.Database.Models
 @model DocumentType
 
-<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
-    @using (Ajax.BeginForm("CreateOrEditDocumentType", "Document", null, new MvcAjaxOptions { OnComplete = "CreateOrEditDocumentTypeComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+<div id="@MvcAjaxOptions.AjaxFormContainerName">
+    
+    @using (Ajax.BeginForm("CreateOrEditDocumentType", "Document", null, new MvcAjaxOptions {OnComplete = "CreateOrEditDocumentTypeComplete();"}, new {@class = "form-horizontal", id = "ajaxForm"}))
     {
         @Html.FormValidationSummary()
 
-        
+
+        <div class="space10"></div>
+
         @Html.HiddenFor(m => m.DocumentTypeID)
         @Html.HiddenFor(m => m.CustomerID)
 
-        @Html.FormTextBoxFor(m => m.DocTypeName, new { @class = "m-wrap" })
+        @Html.FormTextBoxFor(m => m.DocTypeName, new {@class = "m-wrap", maxlength = 50})
 
-        
+
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
@@ -20,13 +23,16 @@
             <button type="button" class="btn" onclick="CloseDocumentTypeDetails();">@Localize.Cancel</button>
         </div>
     }
+
 </div>
 
-<script type="text/javascript" >
+<script type="text/javascript">
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
     function CreateOrEditDocumentTypeComplete() {
-        CloseDocumentTypeDetails();
         FormPreparePrivateAjax();
+
+        if (_modelIsValid)
+            CloseDocumentTypeDetails();
     }
 </script>
