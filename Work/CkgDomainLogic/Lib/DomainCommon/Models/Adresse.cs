@@ -78,7 +78,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.Remark)]
         public string Bemerkung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._blank)]
+        [LocalizedDisplay(LocalizeConstants.Commercial)]
         public bool Gewerblich { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]

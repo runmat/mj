@@ -16,7 +16,11 @@
 
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium margin-right-50" },
+            postControlHtml: @<text>
+                                 @Html.CheckBoxFor(m => m.Gewerblich)<label for="Gewerblich" class="inline-block">@Localize.Commercial</label>
+                              </text>)
+        
         @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
         @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
                              postControlHtml: @<text>
@@ -26,7 +30,6 @@
         @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
         @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
         @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
-        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap" }, labelText: Localize.Commercial)
 
         @Html.HiddenFor(m => m.EvbNr, new { @class = "m-wrap xsmall" })
         
