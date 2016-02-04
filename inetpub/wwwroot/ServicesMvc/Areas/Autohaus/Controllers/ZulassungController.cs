@@ -237,6 +237,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            VersandDienstleister.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -717,6 +718,27 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             return PartialView("Partial/OptionenDienstleistungenForm", ViewModel.Zulassung.OptionenDienstleistungen);
+        }
+
+        #endregion
+
+        #region Versanddaten
+
+        [HttpPost]
+        public ActionResult Versanddaten()
+        {
+            return PartialView("Partial/Versanddaten", ViewModel.Zulassung.Versanddaten);
+        }
+
+        [HttpPost]
+        public ActionResult VersanddatenForm(Versanddaten model)
+        {
+            ViewModel.ValidateVersanddatenForm(ModelState.AddModelError, model);
+
+            if (ModelState.IsValid)
+                ViewModel.SetVersanddaten(model);
+
+            return PartialView("Partial/VersanddatenForm", ViewModel.Zulassung.Versanddaten);
         }
 
         #endregion

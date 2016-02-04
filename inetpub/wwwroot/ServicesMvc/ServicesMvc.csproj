@@ -228,6 +228,18 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\XmlData\StepsKroschkeSchnellabmeldung.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeVersandzulassung.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeAbmeldung.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\img\bg\1.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
@@ -238,6 +250,21 @@
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
+    <Content Include="Images\shipping-icons\dhl-express.png" />
+    <Content Include="Images\shipping-icons\dhl.png" />
+    <Content Include="Images\shipping-icons\dpd-express.png" />
+    <Content Include="Images\shipping-icons\dpd.png" />
+    <Content Include="Images\shipping-icons\fedex.png" />
+    <Content Include="Images\shipping-icons\gls-express.png" />
+    <Content Include="Images\shipping-icons\gls.png" />
+    <Content Include="Images\shipping-icons\go.png" />
+    <Content Include="Images\shipping-icons\hermes.png" />
+    <Content Include="Images\shipping-icons\post-germany.png" />
+    <Content Include="Images\shipping-icons\tnt-express.png" />
+    <Content Include="Images\shipping-icons\tnt.png" />
+    <Content Include="Images\shipping-icons\tof.alt.png" />
+    <Content Include="Images\shipping-icons\tof.png" />
+    <Content Include="Images\shipping-icons\ups.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -285,6 +312,9 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\ZiPoolFilter.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\SummaryAuslieferAdressenLink.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Versanddaten.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

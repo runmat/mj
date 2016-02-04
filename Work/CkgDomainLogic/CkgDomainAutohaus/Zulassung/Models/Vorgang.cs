@@ -158,6 +158,8 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        public Versanddaten Versanddaten { get; set; }
+
         public bool IsSelected { get; set; }
 
         public Vorgang()
@@ -173,6 +175,7 @@ namespace CkgDomainLogic.Autohaus.Models
             VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };
             Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();
+            Versanddaten = new Versanddaten();
         }
 
         [XmlIgnore, ScriptIgnore]
@@ -370,6 +373,14 @@ namespace CkgDomainLogic.Autohaus.Models
                                     {
                                         Title = Localize.DeliveryAddresses,
                                         Body = AuslieferAdressenSummaryString + auslieferAdressenLink
+                                    }),
+
+                            (!Zulassungsdaten.ModusVersandzulassung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.Shipping,
+                                        Body = Versanddaten.GetSummaryString()
                                     })
                         )
             };

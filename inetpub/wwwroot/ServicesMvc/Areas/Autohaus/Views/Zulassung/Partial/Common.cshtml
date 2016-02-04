@@ -1,9 +1,10 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <style type="text/css">
-    .form-wizard .progress {
-        margin-bottom: 10px!important;
-    }
+    
+     .form-wizard .progress {
+         margin-bottom: 10px!important;
+     }
     
     .reserve-button {
         background-color: #9B9B9B !important;
@@ -35,6 +36,11 @@
     .form-actions-top {
         padding-left: 162px !important;
     }
+    
+    .portlet.box.vdl-option-disabled {
+        background-color: #eeeeee !important;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -785,6 +791,21 @@
             }
             $('.SummaryItems').closest('.portlet.box').css('height', newHeight);
         }, 200);
+    }
+
+    function SelectVersandDienstleister(id) {
+        $("#VersandDienstleisterId").val(id);
+        $("div[id^='divVdl_']").removeClass("bg-color-ckg-lightgreen");
+        $("#divVdl_" + id).addClass("bg-color-ckg-lightgreen");
+    }
+
+    function AjaxFormVersanddatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
     }
 
 </script>

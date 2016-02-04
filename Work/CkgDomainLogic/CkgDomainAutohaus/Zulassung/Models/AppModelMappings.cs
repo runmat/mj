@@ -261,6 +261,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.HausNr = s.HOUSE_NUM1;
                         d.PLZ = s.POST_CODE1;
                         d.Ort = s.CITY1;
+                        d.Land = "DE";
                     }));
             }
         }
@@ -351,6 +352,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
                         d.Fahrzeugdaten.Farbe = s.FARBE;
                         d.Fahrzeugdaten.FzgModell = s.FZGTYP;
+
+                        d.Versanddaten.VersandDienstleisterId = s.VS_DIENSTLEISTER;
+                        //d.Versanddaten.VersandDienstleister.VersandOption = s.VS_OPTION;
+                        d.Ist48hZulassung = s.Z48H_VSZUL.XToBool();
                     }));
             }
         }
@@ -373,6 +378,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Adresse.PLZ = s.PLZ;
                         d.Adresse.Ort = s.CITY1;
                         d.Bemerkung = s.BEMERKUNG;
+                        d.LieferuhrzeitBis = s.LIFUHRBIS;
+                        d.Adresse.Land = s.LAND1;
+                        d.Adresse.Telefon = s.TELEFON_NR1;
+                        d.Adresse.Email = s.SMTPADR;
                     }));
             }
         }
@@ -668,6 +677,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.FARBE = s.Fahrzeugdaten.Farbe;
                             d.FZGTYP = s.Fahrzeugdaten.FzgModell;
 
+                            d.VS_DIENSTLEISTER = s.Versanddaten.VersandDienstleisterId;
+                            //d.VS_OPTION = s.Versanddaten.VersandDienstleister.VersandOption;
+                            d.Z48H_VSZUL = s.Ist48hZulassung.BoolToX();
                         }));
             }
         }
@@ -690,6 +702,10 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.PLZ = s.Adresse.PLZ;
                             d.CITY1 = s.Adresse.Ort;
                             d.BEMERKUNG = s.Bemerkung;
+                            d.LIFUHRBIS = s.LieferuhrzeitBis;
+                            d.LAND1 = s.Adresse.Land;
+                            d.TELEFON_NR1 = s.Adresse.Telefon;
+                            d.SMTPADR = s.Adresse.Email;
                         }));
             }
         }

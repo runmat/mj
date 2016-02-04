@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using System.Web.Mvc.Html;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
@@ -97,30 +96,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 return PropertyCacheGet(() =>
                 {
-                    var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsKroschkeZulassung.xml"));
+                    var xmlFileName = "StepsKroschkeZulassung.xml";
 
-                    if (!ModusAbmeldung)
-                        return dict;
+                    if (ModusAbmeldung)
+                        xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
+                    else if (ModusVersandzulassung)
+                        xmlFileName = "StepsKroschkeVersandzulassung.xml";
 
-                    var abmeldungsDict = new XmlDictionary<string, string>();
-                    dict.ToList().ForEach(entry =>
-                        {
-                            if (entry.Key == "Zulassungsdaten")
-                            {
-                                abmeldungsDict.Add(entry.Key, Localize.Cancellation);
-                                return;
-                            }
-
-                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer")
-                                return;
-
-                            if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && (entry.Key == "HalterAdresse" || entry.Key == "Fahrzeugdaten"))
-                                return;
-
-                            abmeldungsDict.Add(entry.Key, entry.Value);
-                        });
-
-                    return abmeldungsDict;
+                    return XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
                 });
             }
         }
@@ -1151,6 +1134,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
+        #region Versanddaten
+
+        public void SetVersanddaten(Versanddaten model)
+        {
+            Zulassung.Versanddaten = model;
+        }
+
+        #endregion
+
+
         #region Misc + Summaries + Savings
 
         public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(AuslieferAdressenLink); } }
@@ -1563,6 +1556,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return false;
 
             return true;
+        }
+
+        public void ValidateVersanddatenForm(Action<string, string> addModelError, Versanddaten versanddatenModel)
+        {
+            if (ModusVersandzulassung && string.IsNullOrEmpty(versanddatenModel.VersandDienstleisterId))
+                addModelError(string.Empty, Localize.PleaseSelectAShippingServiceProvider);
         }
 
         public void UpdateAnzahlAbmeldungen(string anzAbmeldungen)

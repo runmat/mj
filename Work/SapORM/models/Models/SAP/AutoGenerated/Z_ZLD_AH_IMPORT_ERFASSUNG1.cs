@@ -95,6 +95,16 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string LIFUHRBIS { get; set; }
+
+			public string LAND1 { get; set; }
+
+			public string TELEFON_NR1 { get; set; }
+
+			public string TELEFON_NR2 { get; set; }
+
+			public string SMTPADR { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_ADRS_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -117,6 +127,11 @@ namespace SapORM.Models
 						CITY1 = (string)row["CITY1"],
 						STREET = (string)row["STREET"],
 						BEMERKUNG = (string)row["BEMERKUNG"],
+						LIFUHRBIS = (string)row["LIFUHRBIS"],
+						LAND1 = (string)row["LAND1"],
+						TELEFON_NR1 = (string)row["TELEFON_NR1"],
+						TELEFON_NR2 = (string)row["TELEFON_NR2"],
+						SMTPADR = (string)row["SMTPADR"],
 					};
 				}
 				catch(Exception e)
@@ -394,6 +409,10 @@ namespace SapORM.Models
 
 			public string GEBRAUCHT { get; set; }
 
+			public string VS_DIENSTLEISTER { get; set; }
+
+			public string Z48H_VSZUL { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -486,6 +505,8 @@ namespace SapORM.Models
 						VE_AENAM = (string)row["VE_AENAM"],
 						GEWEBLICH = (string)row["GEWEBLICH"],
 						GEBRAUCHT = (string)row["GEBRAUCHT"],
+						VS_DIENSTLEISTER = (string)row["VS_DIENSTLEISTER"],
+						Z48H_VSZUL = (string)row["Z48H_VSZUL"],
 					};
 				}
 				catch(Exception e)

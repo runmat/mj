@@ -1,0 +1,34 @@
+﻿@model CkgDomainLogic.Autohaus.Models.Versanddaten
+
+<div id="DivVersanddaten" class="margin-top-20">    
+    @using (Ajax.BeginForm("VersanddatenForm", "Zulassung", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivVersanddaten", OnComplete = "AjaxFormVersanddatenComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersanddaten" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.HiddenFor(m => m.VersandDienstleisterId)
+        
+        <div class="row-fluid">
+
+            @for (var i = 0; i < Model.VersandDienstleisterListe.Count; i++)
+            {
+                <div class="span4">
+                    @Html.PartialFor(m => m.VersandDienstleisterListe[i], "Partial/VersandDienstleisterForm")
+                </div>
+            }
+
+        </div>
+
+
+        <script type="text/javascript">
+            
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            SelectVersandDienstleister($("#VersandDienstleisterId").val());
+
+        </script>
+    }
+    
+</div>

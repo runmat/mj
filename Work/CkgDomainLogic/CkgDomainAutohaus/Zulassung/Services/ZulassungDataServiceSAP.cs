@@ -373,6 +373,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     if (vorgang.Zulassungsdaten.ModusVersandzulassung)
                     {
                         vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
+                        vorgang.VersandAdresse.LieferuhrzeitBis = vorgang.LieferuhrzeitBis;
                         adressen.Add(ModelMapping.Copy(vorgang.VersandAdresse));                // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
                     }
 
@@ -680,6 +681,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     {
                         vorgang.VersandAdresse = adrsZZ;
                         vorgang.VersandAdresse.Adresse.Land = "DE";
+                        vorgang.LieferuhrzeitBis = adrsZZ.LieferuhrzeitBis;
                     }
                 }
 
