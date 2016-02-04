@@ -206,6 +206,18 @@ namespace CkgDomainLogic.Equi.Services
             return list;
         }
 
+        public List<Stuecklisten> GetStuecklisten(string equinummer)
+        {
+            Z_DPM_READ_EQUI_STL_02.Init(SAP, "I_EQUNR",  equinummer);
+                        
+            SAP.Execute();
+
+            var sapList = Z_DPM_READ_EQUI_STL_02.GT_OUT.GetExportList(SAP);
+            var list = AppModelMappings.Z_DPM_READ_EQUI_STL_02_GT_OUT_To_StuecklistenKomponente.Copy(sapList).ToList();
+
+            return list;
+        }
+
         #endregion
 
 
@@ -226,7 +238,7 @@ namespace CkgDomainLogic.Equi.Services
 
             return list;
         }
-
+       
         #endregion
     }
 }

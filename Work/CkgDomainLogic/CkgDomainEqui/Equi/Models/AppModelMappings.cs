@@ -845,6 +845,25 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+
+        static public ModelMapping<Z_DPM_READ_EQUI_STL_02.GT_OUT, Stuecklisten> Z_DPM_READ_EQUI_STL_02_GT_OUT_To_StuecklistenKomponente
+        {        
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_STL_02.GT_OUT, Stuecklisten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;                        
+                        d.Materialnummer = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+                        d.Status = s.STATUS_TEXT;
+                        d.Eingangsdatum = s.ANDAT;                                                                       
+                    }));
+            }
+        }
+
         #endregion
 
 
