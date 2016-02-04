@@ -303,7 +303,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Search.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Partial\EvbResult.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Partial\SearchResult.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Partial\IbanResult.cshtml" />

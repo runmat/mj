@@ -41,7 +41,10 @@ else
         <div class="kroschke-evb-control-group-border">
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
             <div class="control-group">
-                <div class="alert hide" id="evb-info"></div>
+                <div class="alert hide" id="evb-info">
+                    <i></i>
+                    <div></div>
+                </div>
             </div>
         </div>
     </div>
@@ -72,8 +75,8 @@ else
             postControlHtml:
                 @<text>
                     <span id="divWkzLink">
-                                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn reserve-button margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
-                            </span>
+                        <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn reserve-button margin-left-10 @(Model.KennzeichenReserviert ? "hide" : "")">@Localize.ReserveAsVerb</a>
+                    </span>
                  </text>)
     
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo))
