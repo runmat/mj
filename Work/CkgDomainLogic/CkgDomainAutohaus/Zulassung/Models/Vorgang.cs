@@ -145,6 +145,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         public byte[] KundenformularPdf { get; set; }
 
+        [XmlIgnore]
+        public byte[] VersandlabelPdf { get; set; }
+
         public static List<SelectItem> AuslieferAdressenPartnerRollen
         {
             get

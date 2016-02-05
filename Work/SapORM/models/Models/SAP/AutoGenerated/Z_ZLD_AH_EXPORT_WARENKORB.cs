@@ -390,7 +390,7 @@ namespace SapORM.Models
 
 			public string VE_AENAM { get; set; }
 
-			public string GEWEBLICH { get; set; }
+			public string GEWERBLICH { get; set; }
 
 			public string GEBRAUCHT { get; set; }
 
@@ -488,7 +488,7 @@ namespace SapORM.Models
 						VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
 						VE_ERZEIT = (string)row["VE_ERZEIT"],
 						VE_AENAM = (string)row["VE_AENAM"],
-						GEWEBLICH = (string)row["GEWEBLICH"],
+						GEWERBLICH = (string)row["GEWERBLICH"],
 						GEBRAUCHT = (string)row["GEBRAUCHT"],
 						VS_DIENSTLEISTER = (string)row["VS_DIENSTLEISTER"],
 						Z48H_VSZUL = (string)row["Z48H_VSZUL"],

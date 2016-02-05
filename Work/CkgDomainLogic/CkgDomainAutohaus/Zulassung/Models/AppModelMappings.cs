@@ -261,7 +261,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.HausNr = s.HOUSE_NUM1;
                         d.PLZ = s.POST_CODE1;
                         d.Ort = s.CITY1;
-                        d.Land = "DE";
+                        d.Land = s.LAND1;
+                        d.Telefon = string.Format("{0} {1}", s.TEL_NUMBER, s.TEL_EXTENS);
+                        d.Email = s.SMTP_ADDR;
                     }));
             }
         }
@@ -580,6 +582,24 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        public static ModelMapping<Z_ZLD_CHECK_48H.ES_VERSAND_48H, Adresse> Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_CHECK_48H.ES_VERSAND_48H, Adresse>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Strasse = s.STREET;
+                        AddressService.ApplyStreetAndHouseNo(d);
+                        d.PLZ = s.POST_CODE1;
+                        d.Ort = s.CITY1;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -633,7 +653,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             // Halter
                             var halterNameSap = s.HalterName.NotNullOrEmpty().ToUpper();
                             d.ZZREFNR1 = halterNameSap.Substring(0, Math.Min(20, halterNameSap.Length));
-                            d.GEWEBLICH = s.HalterGewerblich.BoolToX();
+                            d.GEWERBLICH = s.HalterGewerblich.BoolToX();
 
                             // Zulassung
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
