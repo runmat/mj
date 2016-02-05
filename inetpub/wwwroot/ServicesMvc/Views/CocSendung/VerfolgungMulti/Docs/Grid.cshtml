@@ -10,17 +10,21 @@
 
     .XAjaxDataBinding("SendungenDocsAjaxBinding", "CocSendung")
     .Columns(columns =>
-        {
-            columns.XBound(c => c.VersandIdSurveyLink).ClientTemplate("<# if (data.VersandID != \"\") { #><a target='_blank' class='btn mini gray tooltips' data-original-title='Sendungsverfolgung' data-placement='right' href='<#= data.VersandIdSurveyLink #>'><i class='icon-chevron-right'></i> <i class='icon-truck margin-right-5'></i></a><# } #>");
-            columns.XBound(c => c.VersandID);
-            columns.XBound(c => c.VersandWeg);
-            columns.XBound(c => c.VersandDatum);
-            columns.XBound(c => c.FIN);
-            columns.XBound(c => c.Kennzeichen);
-            columns.XBound(c => c.Fahrzeugbrief);
-            columns.XBound(c => c.VertragsNr);
-            columns.XBound(c => c.StatusText).Visible(Model.ShowStatusInGrid);
-        })
+    {
+        columns.XBound(c => c.VersandIdSurveyLink).ClientTemplate("<# if (data.VersandID != \"\") { #><a target='_blank' class='btn mini gray tooltips' data-original-title='Sendungsverfolgung' data-placement='right' href='<#= data.VersandIdSurveyLink #>'><i class='icon-chevron-right'></i> <i class='icon-truck margin-right-5'></i></a><# } #>");
+        columns.XBound(c => c.VersandID);
+        columns.XBound(c => c.VersandWeg);
+        columns.XBound(c => c.VersandDatum);
+        columns.XBound(c => c.FIN);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Fahrzeugbrief);
+        columns.XBound(c => c.VertragsNr);
+        columns.XBound(c => c.StatusText).Visible(Model.ShowStatusInGrid);
+        columns.XBound(c => c.Referenz1);
+        columns.XBound(c => c.Referenz2);
+        columns.XBound(c => c.Materialnummer);
+        columns.XBound(c => c.Bezeichnung);
+    })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridCocSendungen"))
     .XPageSize(10)

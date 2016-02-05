@@ -72,6 +72,16 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_ZZLSDAT_VON", value);
 		}
 
+		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFERENZ1", value);
+		}
+
+		public static void SetImportParameter_I_ZZREFERENZ2(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ZZREFERENZ2", value);
+		}
+
 		public static void SetImportParameter_I_ZZREFNR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_ZZREFNR", value);
@@ -121,36 +131,69 @@ namespace SapORM.Models
 
 			public string VERSANDVALUE { get; set; }
 
+			public string ZZREFERENZ1 { get; set; }
+
+			public string ZZREFERENZ2 { get; set; }
+
+			public string IDNRK { get; set; }
+
+			public string MAKTX { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_OUT
-				{
-					ZZFAHRG = (string)row["ZZFAHRG"],
-					ZZKENN = (string)row["ZZKENN"],
-					ZZLSDAT = string.IsNullOrEmpty(row["ZZLSDAT"].ToString()) ? null : (DateTime?)row["ZZLSDAT"],
-					VERSANDWEG = (string)row["VERSANDWEG"],
-					ZZTRACK = (string)row["ZZTRACK"],
-					STATUS_CODE = (string)row["STATUS_CODE"],
-					VBELN = (string)row["VBELN"],
-					POOLNR = (string)row["POOLNR"],
-					ZZBRIEF = (string)row["ZZBRIEF"],
-					ZZREFNR = (string)row["ZZREFNR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					STRAS = (string)row["STRAS"],
-					HSNM1 = (string)row["HSNM1"],
-					PSTLZ = (string)row["PSTLZ"],
-					CITY1 = (string)row["CITY1"],
-					VERSANDVALUE = (string)row["VERSANDVALUE"],
+				GT_OUT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZZFAHRG = (string)row["ZZFAHRG"],
+						ZZKENN = (string)row["ZZKENN"],
+						ZZLSDAT = string.IsNullOrEmpty(row["ZZLSDAT"].ToString()) ? null : (DateTime?)row["ZZLSDAT"],
+						VERSANDWEG = (string)row["VERSANDWEG"],
+						ZZTRACK = (string)row["ZZTRACK"],
+						STATUS_CODE = (string)row["STATUS_CODE"],
+						VBELN = (string)row["VBELN"],
+						POOLNR = (string)row["POOLNR"],
+						ZZBRIEF = (string)row["ZZBRIEF"],
+						ZZREFNR = (string)row["ZZREFNR"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						STRAS = (string)row["STRAS"],
+						HSNM1 = (string)row["HSNM1"],
+						PSTLZ = (string)row["PSTLZ"],
+						CITY1 = (string)row["CITY1"],
+						VERSANDVALUE = (string)row["VERSANDVALUE"],
+						ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
+						ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
+						IDNRK = (string)row["IDNRK"],
+						MAKTX = (string)row["MAKTX"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
