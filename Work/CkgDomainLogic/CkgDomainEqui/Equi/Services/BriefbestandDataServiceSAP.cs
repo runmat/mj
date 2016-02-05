@@ -208,6 +208,8 @@ namespace CkgDomainLogic.Equi.Services
 
         public List<Stuecklisten> GetStuecklisten(string equinummer)
         {
+            equinummer = equinummer.PadLeft(18 - equinummer.Length, '0');
+
             Z_DPM_READ_EQUI_STL_02.Init(SAP, "I_EQUNR",  equinummer);
                         
             SAP.Execute();

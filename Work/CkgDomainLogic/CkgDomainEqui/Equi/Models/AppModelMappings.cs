@@ -839,7 +839,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Bezeichnung = s.MAKTX;
                         d.ErsatzteilKennung = s.ERSKZ;
                         d.ErsatzteilKennungText = s.ETEXT;
-
+                        d.Status = s.STATUS_TEXT;
+                        d.EntgueltigVersandt = !(d.Status.NotNullOrEmpty().ToUpper().Contains("LAGERND") || d.Status.NotNullOrEmpty().ToUpper().Contains("TEMPORÄR")); ;
                         d.IstLagernd = (d.ErsatzteilKennung.NotNullOrEmpty().ToUpper() == "L");
                     }));
             }
