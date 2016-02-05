@@ -43,8 +43,7 @@ namespace ServicesMvc.Controllers
         {
             EquipmentHistorieViewModel.DataInitAndLoad(fahrgestellnummer);
 
-            string equinr = "000000000019421525";
-            EquipmentHistorieViewModel.LoadStuecklisten(equinr);
+            EquipmentHistorieViewModel.LoadStuecklisten();
 
             return PartialView("Historie/HistorieDetail", EquipmentHistorieViewModel.EquipmentHistorie);
         }
