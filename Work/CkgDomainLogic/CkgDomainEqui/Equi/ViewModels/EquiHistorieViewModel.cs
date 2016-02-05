@@ -77,13 +77,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             LoadHistorie(fin);            
         }
 
+        // TODO -> Refresh-Bug 
 
-        public void LoadStuecklisten(string equinr)
-        {
-            var padded = equinr.PadLeft(18 - equinr.Length, '0');
-            // Stuecklisten = DataServiceBriefbestand.GetStuecklisten(EquipmentHistorie.Equipmentnummer);
-            // Stuecklisten = DataServiceBriefbestand.GetStuecklisten(padded);
-            EquipmentHistorie.Stuecklisten = DataServiceBriefbestand.GetStuecklisten(padded);
+        public void LoadStuecklisten()
+        {                                 
+            EquipmentHistorie.Stuecklisten = DataServiceBriefbestand.GetStuecklisten(EquipmentHistorie.Equipmentnummer);
         }
 
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
