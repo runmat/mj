@@ -260,8 +260,8 @@
     <Content Include="_Themes\AH2015\images\kennzeichen-etikette.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\kroschke-evb.png" />
-    <Content Include="_Themes\AH2015\images\kroschke-prime-flag.png" />
-    <Content Include="_Themes\AH2015\images\kroschke-prime-star.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-flag-down.png" />
+    <Content Include="_Themes\AH2015\images\kroschke-prime-flag-up.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
