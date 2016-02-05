@@ -1,0 +1,30 @@
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragFinSelektor
+
+<div id="divSendungenFinSuche">
+    @using (Ajax.BeginForm("LoadSendungenFin", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenFinSuche") { OnComplete = "ShowCocSendungenDocs();" }, new { id = "SendungenFormFin" }))
+    {   
+        <div class="form-horizontal" id="searchFormFin">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.FormTextBoxFor(m => m.Fin, new { @class = "m-wrap uppercase", col = "left" }, null)
+            @Html.FormTextBoxFor(m => m.Vertragsnummer, new { @class = "m-wrap uppercase", col = "right" }, null)
+          
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left" }, null)
+            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap uppercase", col = "right" }, null)
+
+            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap uppercase" }, null)
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

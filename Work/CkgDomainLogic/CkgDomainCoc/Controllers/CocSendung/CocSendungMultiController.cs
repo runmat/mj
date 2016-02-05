@@ -88,6 +88,18 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult LoadSendungenFin(SendungsAuftragFinSelektor model)
+        {
+            ViewModel.SendungsAuftragFinSelektor = model;
+
+            if (ModelState.IsValid)
+                ViewModel.LoadSendungenFin(model, ModelState.AddModelError);
+
+            return PartialView("VerfolgungMulti/Fin/Suche", ViewModel.SendungsAuftragFinSelektor);
+        }
+
+
+        [HttpPost]
         public ActionResult ShowSendungenDocs()
         {
             return PartialView("VerfolgungMulti/Docs/Grid", ViewModel);

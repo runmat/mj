@@ -9,6 +9,7 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="#" id="tabIds" data-toggle="tab">Nach Sendungs-ID</a></li>
         <li><a href="#" id="tabDocs" data-toggle="tab">Nach Dokumentendaten</a></li>
+        <li><a href="#" id="tabFin" data-toggle="tab">Nach Fahrzeugdaten</a></li>
     </ul>
 </div>
 
@@ -20,6 +21,9 @@
     <div id="searchBoxDocs" class="divDocs hide">
         @Html.Partial("VerfolgungMulti/Docs/Suche", Model.SendungsAuftragDocsSelektor)
     </div>
+    <div id="searchBoxFin" class="divFin hide">
+        @Html.Partial("VerfolgungMulti/Fin/Suche", Model.SendungsAuftragFinSelektor)
+    </div>
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -29,7 +33,7 @@
     </div>
     <div id="searchResultDocs" class="divDocs hide">
         <div id="divGridDocs"></div>
-    </div>
+    </div>    
 }
 
 <style type="text/css">
@@ -64,11 +68,18 @@
 
             if (hrefId == "tabIds") {
                 $(".divDocs").hide();
+                $(".divFin").hide();
                 $(".divIds").show();
             }
             if (hrefId == "tabDocs") {
                 $(".divIds").hide();
+                $(".divFin").hide();
                 $(".divDocs").show();
+            }
+            if (hrefId == "tabFin") {
+                $(".divIds").hide();                
+                $(".divDocs").hide();
+                $(".divFin").show();
             }
             return true;
         });

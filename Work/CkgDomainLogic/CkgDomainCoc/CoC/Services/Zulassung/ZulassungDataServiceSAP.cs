@@ -327,6 +327,34 @@ namespace CkgDomainLogic.CoC.Services
             return Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP);
         }
 
+        public List<SendungsAuftrag> GetSendungsAuftraegeFin(SendungsAuftragFinSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_03.Init(SAP);
+
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (model.Fin.IsNotNullOrEmpty())            
+                SAP.SetImportParameter("I_ZZLSDAT_VON", model.Fin);
+                           
+            if (model.Vertragsnummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZREFNR", model.Vertragsnummer);
+
+            if (model.Kennzeichen.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZKENN", model.Kennzeichen);
+
+            if (model.Referenz1.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZREFERENZ1", model.Referenz1);
+
+            if (model.Referenz2.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_ZZREFERENZ2", model.Referenz2);
+
+            SAP.Execute();
+
+            var liste = Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP).ToList();
+            
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(liste).ToList();
+        }
+
         #endregion
     }
 }
