@@ -20,7 +20,7 @@ namespace DocumentTools.Services
         {
             var contents = File.ReadAllText(fileName);
             var separators = new [] { ';', ',', '\t' };
-            var selectedSeparator = ',';
+            var selectedSeparator = separators.First();
             var maxSeparatorOccurences = 0;
             for (var i = 0; i < separators.Length; i++)
             {
@@ -53,12 +53,15 @@ namespace DocumentTools.Services
                 if (maintainLeadingZeros)
                     workbook.ConvertNumericData = false;
 
-                if (extension.ToLower().StartsWith(".xls"))
-                    workbook.Open(excelFileName, FileFormatType.Default);
-                else if (extension.ToLower() == ".csv")
+                if (extension.ToLower() == "csv")
+                {
                     workbook.Open(excelFileName, separator);
+                }
                 else
-                    return null;
+                {
+                    var csvStream = SpireXlsFactory.ConvertExcelToCsvStream(excelFileName, separator);
+                    workbook.Open(csvStream, separator);
+                }
 
                 //Get the first worksheet in the workbook
                 var worksheet = workbook.Worksheets[0];
