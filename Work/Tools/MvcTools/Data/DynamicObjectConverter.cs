@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace MvcTools.Data
             return ConvertDynamicObjectToDestinationObject<T>(inputObject, propertiesDst);
         }
 
-        public static List<T> MapDynamicObjectListToDestinationObjectList<T>(IEnumerable<dynamic> inputObjects)
+        public static List<T> MapDynamicObjectListToDestinationObjectList<T>(IEnumerable<dynamic> inputObjects, Action<T> afterMappingAction = null)
             where T : class, new()
         {
             var destinationList = new List<T>();
@@ -28,7 +29,12 @@ namespace MvcTools.Data
 
                 foreach (var item in inputObjects)
                 {
-                    destinationList.Add(ConvertDynamicObjectToDestinationObject<T>(item, propertiesDst));
+                    var dstObject = ConvertDynamicObjectToDestinationObject<T>(item, propertiesDst);
+
+                    if (afterMappingAction != null)
+                        afterMappingAction(dstObject);
+
+                    destinationList.Add(dstObject);
                 }
             }
 

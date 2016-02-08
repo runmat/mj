@@ -101,6 +101,7 @@
     <Compile Include="DataConverter\Models\DataMappingModel.cs" />
     <Compile Include="DataConverter\Models\DataMappingSelektor.cs" />
     <Compile Include="DataConverter\Models\Field.cs" />
+    <Compile Include="DataConverter\Models\SourceFieldInfo.cs" />
     <Compile Include="DataConverter\Models\MappedUpload\MappedUploadMappingSelectionModel.cs" />
     <Compile Include="DataConverter\Models\NewDataMappingSelektor.cs" />
     <Compile Include="DataConverter\Models\Operation.cs" />

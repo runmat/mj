@@ -241,6 +241,14 @@ namespace ServicesMvc.DataConverter.Controllers
 
         [HttpPost]
         [StoreUi]
+        public ActionResult ApplyFileContainsHeadings(bool fileContainsHeadings)
+        {
+            ViewModel.FileContainsHeadings = fileContainsHeadings;
+            return RefreshUi("first");
+        }
+
+        [HttpPost]
+        [StoreUi]
         public ActionResult SaveKonfiguration()
         {
             var success = ViewModel.SaveMapping();

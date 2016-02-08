@@ -17,6 +17,7 @@ using CkgDomainLogic.DataConverter.Models;
 using CkgDomainLogic.General.Database.Models;
 using DocumentTools.Services;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 using MvcTools.Data;
 using Newtonsoft.Json;
 
@@ -92,6 +93,14 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         public string MappingName { get; set; }
 
         public bool CanUserSelectCustomer { get { return LogonContext.HighestAdminLevel > AdminLevel.Customer; } }
+
+        private bool _fileContainsHeadings = true;
+        [LocalizedDisplay(LocalizeConstants.FileContainsHeadings)]
+        public bool FileContainsHeadings
+        {
+            get { return _fileContainsHeadings; }
+            set { _fileContainsHeadings = value; FileContainsHeadingsChanged(); }
+        }
 
         public void DataConverterInit()
         {
@@ -221,6 +230,8 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             MappingModel.SourceFile.FilenameOrig = fileName;
             MappingModel.SourceFile.FilenameCsv = tmpFilenameCsv;
 
+            _fileContainsHeadings = MappingModel.SourceFile.FirstRowIsCaption;
+
             return true;
         }
 
@@ -317,12 +328,16 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             return processor;
         }
 
-        public List<SelectItem> RecalcSourceFields()
+        public List<SourceFieldInfo> RecalcSourceFields()
         {
-            var sourceFieldList = new List<SelectItem>();
+            var sourceFieldList = new List<SourceFieldInfo>();
             foreach (var field in MappingModel.SourceFile.Fields)
             {
-                sourceFieldList.Add(new SelectItem(field.Id, field.Records[MappingModel.RecordNo - 1]));
+                sourceFieldList.Add(new SourceFieldInfo {
+                    Id = field.Id,
+                    Bezeichnung = field.Bezeichnung,
+                    Wert = field.Records[MappingModel.RecordNo - 1]
+                });
             }
             return sourceFieldList;
         }
@@ -598,6 +613,21 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure());
         }
 
+        /// <summary>
+        /// Mapping der Daten in eine Liste von Objekten des angegebenen Typs T (vorgelagertes DataInit und InitDataMapper erforderlich!)
+        /// </summary>
+        /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
+        /// <param name="afterMappingAction"></param>
+        /// <param name="state"></param>
+        /// <returns>Liste der Ergebnisobjekte vom Typ T</returns>
+        public List<T> MapData<T>(IEnumerable<dynamic> inputData, Action<T> afterMappingAction, ModelStateDictionary state = null)
+            where T : class, new()
+        {
+            SetSourceFileData(inputData, state);
+
+            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure(), afterMappingAction);
+        }
+
         private void SetSourceFileData(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
         {
             MappingModel.SourceFile.Fields.ForEach(f => f.Records.Clear());
@@ -620,6 +650,25 @@ namespace CkgDomainLogic.DataConverter.ViewModels
                     {
                         MappingModel.SourceFile.Fields[i].Records.Add(((IDictionary<string, object>)item)[propertyNames[i]].ToString().NotNullOrEmpty());
                     }
+                }
+            }
+        }
+
+        public void FileContainsHeadingsChanged()
+        {
+            for (var i = 0; i < MappingModel.SourceFile.Fields.Count; i++)
+            {
+                var item = MappingModel.SourceFile.Fields[i];
+
+                if (FileContainsHeadings)
+                {
+                    item.Bezeichnung = item.Records[0];
+                    item.Records.RemoveAt(0);
+                }
+                else
+                {
+                    item.Records.Insert(0, item.Bezeichnung);
+                    item.Bezeichnung = "Spalte" + i;
                 }
             }
         }

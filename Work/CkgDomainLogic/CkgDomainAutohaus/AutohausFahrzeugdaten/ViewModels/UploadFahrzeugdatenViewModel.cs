@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -87,11 +88,13 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public bool SubmitMode { get; set; }
 
+        [SuppressMessage("ReSharper", "RedundantTypeArgumentsOfMethod")]
         public void ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction, ModelStateDictionary state)
         {
             UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            var extension = (UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
+            var fileNameParts = UploadFileName.NotNullOrEmpty().Split('.');
+            var extension = "." + fileNameParts.Last();
             UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
@@ -108,7 +111,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
             {
                 InitDataMapper(MappingSelectionModel.MappingId);
                 var inputData = new ExcelDocumentFactory().ReadToDataTableForMappedUpload(UploadServerFileName, true, DynamicObjectConverter.CreateDynamicObjectFromDatarow, MappingModel.SourceFile.Delimiter, true, true).ToList();
-                list = MapData<UploadFahrzeug>(inputData, state);
+                list = MapData<UploadFahrzeug>(inputData, delegate(UploadFahrzeug fzg) { fzg.FahrgestellNr = fzg.FahrgestellNr.NotNullOrEmpty().ToUpper(); }, state);
             }
             else
             {

@@ -4,16 +4,16 @@
     <h4>@Localize.Configuration @Model.MappingName</h4>
 
     <div class="w hidden no-padding no-margin">DUMMY</div>
-    <span class="float-left">
+    <div class="float-left">
         <button class="btn white tooltips" data-original-title="@Localize.FirstEntry" data-placement="bottom" onclick="GotoRecord('first');"><i class="halflings-icon fast-backward"></i></button>
         <button class="btn white tooltips" data-original-title="@Localize.Backward" data-placement="bottom" onclick="GotoRecord('-1');"><i class="halflings-icon backward"></i></button>
         <button class="btn white tooltips" data-original-title="@Localize.Forward" data-placement="bottom" onclick="GotoRecord('+1');"><i class="halflings-icon forward"></i></button>
         <button class="btn white tooltips" data-original-title="@Localize.LastEntry" data-placement="bottom" onclick="GotoRecord('last');"><i class="halflings-icon fast-forward"></i></button>
 
-        <span id="RecordPosition" class="margin-left-15 badge margin-right-15">
+        <div id="RecordPosition" class="margin-left-15 badge margin-right-15">
             @Model.MappingModel.RecordInfoText
-        </span>
-    </span>
+        </div>
+    </div>
 
     <div class="float-left">
         <button class="btn white tooltips" data-original-title="@Localize.AddProcessor" data-placement="bottom" onclick="AddProcessor();"><i class="halflings-icon plus"></i></button>
@@ -25,7 +25,9 @@
         <button class="btn green margin-left-5" onclick="SaveKonfiguration();"><i class="icon-ok"></i> @Localize.Save</button>
     </div>
 
-    <div class="space5"></div>
+    <div id="divFileContainsHeadings" class="form-horizontal label-width-0">
+        @Html.FormCheckBoxFor(m => m.FileContainsHeadings, new { @class = "m-wrap xsmall", onchange = "ApplyFileContainsHeadings()" }, labelHidden: true)
+    </div>
 
     <div id="DataConverterContainer">
         <div id="source" class="no-padding">
@@ -108,6 +110,9 @@
     };
 
     $(function () {
+        if (@Model.MappingId != 0)
+            $("#FileContainsHeadings").attr('disabled', "disabled");
+
         LoadUiData();
         setTimeout(function () {
             refreshPlumb();
@@ -176,7 +181,7 @@
     }
 
     function resizeBodyContainer() {
-        var newHeight = 150 + Math.max($('#source').outerHeight(), $('#destination').outerHeight());
+        var newHeight = 175 + Math.max($('#source').outerHeight(), $('#destination').outerHeight());
         $('.body-container').css('height', newHeight);
     }
     
@@ -377,15 +382,18 @@
 
     function RefreshUi(uiObject, initConnections) {
         var guid;
+        var name;
         var value;
         var i;
 
         $('#RecordPosition').html(uiObject.RecordInfoText);
-        
+
         // Refresh SourceField data
         for (i = 0; i < uiObject.SourceFieldList.length; i++) {
-            guid = uiObject.SourceFieldList[i].Key;
-            value = uiObject.SourceFieldList[i].Text;
+            guid = uiObject.SourceFieldList[i].Id;
+            name = uiObject.SourceFieldList[i].Bezeichnung;
+            value = uiObject.SourceFieldList[i].Wert;
+            $('#' + guid).find(".field").html(name);
             $('#' + guid).find(".data").html(value);
         }
 
@@ -431,6 +439,18 @@
 
         jsPlumb.bind("connection", function (info) {
             SyncUiData();
+        });
+    }
+
+    function ApplyFileContainsHeadings() {
+        $.ajax({
+            type: "POST",
+            url: "ApplyFileContainsHeadings",
+            data: { fileContainsHeadings: $("#FileContainsHeadings").is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                RefreshUi(result);
+            }
         });
     }
 

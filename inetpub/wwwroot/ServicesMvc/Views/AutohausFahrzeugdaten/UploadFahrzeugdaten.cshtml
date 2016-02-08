@@ -50,12 +50,9 @@
         FormWizard.OnPrev(function (step, maxSteps) {
             var stepName = FormWizard.GetStepKey(step + 1);
 
-            if (stepName == "UploadFahrzeugdatenGrid") {
-                if (_formWizardForceHideSubmitButton == false) {
-                    ResetSubmitMode();
-                    return false;
-                }
-                FormWizard.ActionsShow(false);
+            if (stepName == "UploadFahrzeugdatenGrid" && _formWizardForceHideSubmitButton == false) {
+                ResetSubmitMode();
+                return false;
             }
             return true;
         });
