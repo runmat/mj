@@ -38,7 +38,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult AuslandsAnforderung()
+        public ActionResult AuslandsBeauftragung()
         {
             ViewModel.DataInit();
 

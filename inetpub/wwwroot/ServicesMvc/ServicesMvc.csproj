@@ -284,6 +284,10 @@
     <Content Include="Areas\Autohaus\Views\Coc\Partial\FormKopf.cshtml" />
     <Content Include="Areas\Autohaus\Views\Coc\Partial\Receipt.cshtml" />
     <Content Include="Areas\Autohaus\Views\Coc\Partial\FormDetails.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Esd\AuslandsBeauftragung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Esd\Partial\FormDetails.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Esd\Partial\FormKopf.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Esd\Partial\Receipt.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
