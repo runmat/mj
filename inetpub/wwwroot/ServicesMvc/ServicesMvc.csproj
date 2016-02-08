@@ -706,6 +706,7 @@
     <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
     <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
     <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
+    <Compile Include="Areas\Autohaus\Controllers\EsdController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\CocController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
