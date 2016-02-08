@@ -36,7 +36,25 @@
         border: 2px solid #61B1CD;
         border-radius: 12px !important;
         box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
-        width: 150px;
+    }
+    .country-hint i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 38px;
+        height: 38px;
+        background: center center no-repeat;
+        background-size: 50px 64px;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.07)!important;
+    }
+    .country-hint span {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+        font-weight: bold;
     }
 
     path.svg-country {
@@ -48,35 +66,35 @@
 
 </style>
 
-@*@foreach (var land in Model.LaenderAuswahlliste)
-{
-    <div>@land.ID - @land.Name</div>
-}*@
-
 
 <script type="text/javascript" src="~/Scripts/snap.svg.js?v=20160208"></script>
 
 <script type="text/javascript">
 
-    var _validCountriesAsString = '@string.Join(",",Model.LaenderAuswahlliste.Select(c => c.ID))'; 
+    var _validCountriesAsString = '@string.Join(",", Model.LaenderAuswahlliste.Select(c => c.ID))';
+    var _validCountries = @Html.Raw(Json.Encode(Model.LaenderAuswahlliste));
+
+    //console.log(_validCountries);
 
     function CountryIsEnabled(elem) {
         var node = $(elem.node);
         return _validCountriesAsString.indexOf(node.attr("dataid")) >= 0;
     }
 
+    function GetCountryItem(elem) {
+        var node = $(elem.node);
+        return $.grep(_validCountries, function (e) { return e.ID === node.attr("dataid"); })[0];
+    }
+
     $(function () {
         var mouseX;
         var mouseY;
-        document.onmousemove = function(e) {
-            //console.log(e.target.attr("class"));
-            if ($(e.target).attr("class") === "country-hint")
-                return;
+        document.onmousemove = function (e) {
 
             mouseX = e.pageX;
             mouseY = e.pageY;
         }
-        
+
         var s = Snap("#europe-svg");
         Snap.load("/ServicesMvc/Images/maps/europe.svg", function (f) {
 
@@ -86,21 +104,24 @@
             paths.forEach(function (elem, i) {
 
                 var node = $(elem.node);
-                if (_validCountriesAsString.indexOf(node.attr("dataid")) >= 0)
+                if (CountryIsEnabled(elem))
                     node.attr("class", node.attr("class") + " enabled");
 
                 elem.hover(
                     function () {
                         if (!CountryIsEnabled(elem))
                             return;
-                            
+
                         // hover opacity
                         elem.attr("fill-opacity", "0.5");
                         $(".country-hint").css("left", (mouseX - 90) + "px");
                         $(".country-hint").css("top", (mouseY - 100) + "px");
 
-                        var node = $(elem.node);
-                        $(".country-hint").html(node.attr("dataid"));
+                        var countryItem = GetCountryItem(elem);
+                        //var node = $(elem.node);
+                        //console.log(countryItem);
+                        $(".country-hint i").css("background-image", "url(/ServicesMvc/Images/flags/64x64/" + countryItem.ID + ".png)");
+                        $(".country-hint span").html(countryItem.Name);
 
                         $(".country-hint").show();
                     },
@@ -131,7 +152,8 @@
 </script>
 
 <div class="country-hint hide">
-    Country...
+    <i></i>
+    <span></span>
 </div>
 
 <div class="europe-map">
