@@ -10,31 +10,31 @@ namespace ServicesMvc.Autohaus.Controllers
 {
     public class EsdController : CkgDomainController
     {
-        public override string DataContextKey { get { return GetDataContextKey<CocAnforderungViewModel>(); } }
+        public override string DataContextKey { get { return GetDataContextKey<EsdAnforderungViewModel>(); } }
 
-        public CocAnforderungViewModel ViewModel 
+        public EsdAnforderungViewModel ViewModel 
         { 
-            get { return GetViewModel<CocAnforderungViewModel>(); } 
+            get { return GetViewModel<EsdAnforderungViewModel>(); } 
             set { SetViewModel(value); } 
         }
 
         public EsdController(IAppSettings appSettings, ILogonContextDataService logonContext,
             IZulassungDataService zulassungDataService,
-            ICocAnforderungDataService cocAnforderungDataService
+            IEsdAnforderungDataService esdAnforderungDataService
             )
             : base(appSettings, logonContext)
         {
             if (IsInitialRequestOf("Index"))
                 ViewModel = null;
 
-            InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService, cocAnforderungDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService, esdAnforderungDataService);
             InitModelStatics();
         }
 
         private void InitModelStatics()
         {
-            CocAnforderungKopfdaten.GetViewModel = GetViewModel<CocAnforderungViewModel>;
-            CkgDomainLogic.Autohaus.Models.CocAnforderung.GetViewModel = GetViewModel<CocAnforderungViewModel>;
+            //EsdAnforderungKopfdaten.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
+            CkgDomainLogic.Autohaus.Models.EsdAnforderung.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
         }
 
         [CkgApplication]
@@ -45,26 +45,26 @@ namespace ServicesMvc.Autohaus.Controllers
             return View(ViewModel);
         }
 
-        [HttpPost]
-        public ActionResult ApplyKopfdaten(CocAnforderungKopfdaten model)
-        {
-            if (ModelState.IsValid)
-                ViewModel.ApplyKopfdaten(model);
+        //[HttpPost]
+        //public ActionResult ApplyKopfdaten(EsdAnforderungKopfdaten model)
+        //{
+        //    if (ModelState.IsValid)
+        //        ViewModel.ApplyKopfdaten(model);
 
-            return PartialView("Partial/FormKopf", model);
-        }
+        //    return PartialView("Partial/FormKopf", model);
+        //}
 
         [HttpPost]
         public ActionResult ShowDetails()
         {
-            return PartialView("Partial/FormDetails", ViewModel.CocAnforderung);
+            return PartialView("Partial/FormDetails", ViewModel.EsdAnforderung);
         }
 
         [HttpPost]
-        public ActionResult CocAnfordern(CocAnforderung model)
+        public ActionResult EsdAnfordern(EsdAnforderung model)
         {
             if (ModelState.IsValid)
-                ViewModel.CocAnforderungAbsenden(model, ModelState.AddModelError);
+                ViewModel.EsdAnforderungAbsenden(model, ModelState.AddModelError);
 
             return PartialView("Partial/FormDetails", model);
         }

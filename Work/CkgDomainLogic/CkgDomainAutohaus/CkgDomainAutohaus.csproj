@@ -75,6 +75,11 @@
     <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
     <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
+    <Compile Include="Esd\Contracts\IEsdAnforderungDataService.cs" />
+    <Compile Include="Esd\Models\AppModelMappings.cs" />
+    <Compile Include="Esd\Models\EsdAnforderung.cs" />
+    <Compile Include="Esd\Services\EsdAnforderungDataServiceSAP.cs" />
+    <Compile Include="Esd\ViewModels\EsdAnforderungViewModel.cs" />
     <Compile Include="Coc\Contracts\ICocAnforderungDataService.cs" />
     <Compile Include="Coc\Models\AppModelMappings.cs" />
     <Compile Include="Coc\Models\CocAnforderung.cs" />

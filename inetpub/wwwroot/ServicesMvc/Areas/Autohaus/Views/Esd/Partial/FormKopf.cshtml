@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.Autohaus.Models
-@model CocAnforderungKopfdaten
+﻿@model CkgDomainLogic.Autohaus.ViewModels.EsdAnforderungViewModel
 
 <style>
 
@@ -26,19 +25,58 @@
     .europe-map {
         text-align: center;
     }
+    .country-hint {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 99999;
+        display: none;
+        background-color: white;
+        padding: 10px;
+        border: 2px solid #61B1CD;
+        border-radius: 12px !important;
+        box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
+        width: 150px;
+    }
+
+    path.svg-country {
+        fill: #d0d1d5; /* #d0d1d5 */
+    }
+    path.svg-country.enabled {
+        fill: #61B1CD; /* #d0d1d5 */
+    }
 
 </style>
+
+@*@foreach (var land in Model.LaenderAuswahlliste)
+{
+    <div>@land.ID - @land.Name</div>
+}*@
 
 
 <script type="text/javascript" src="~/Scripts/snap.svg.js?v=20160208"></script>
 
 <script type="text/javascript">
-    
+
+    var _validCountriesAsString = '@string.Join(",",Model.LaenderAuswahlliste.Select(c => c.ID))'; 
+
     function CountryIsEnabled(elem) {
-        return $(elem.node).attr("fill") === "#9c0a0e";
+        var node = $(elem.node);
+        return _validCountriesAsString.indexOf(node.attr("dataid")) >= 0;
     }
 
     $(function () {
+        var mouseX;
+        var mouseY;
+        document.onmousemove = function(e) {
+            //console.log(e.target.attr("class"));
+            if ($(e.target).attr("class") === "country-hint")
+                return;
+
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+        }
+        
         var s = Snap("#europe-svg");
         Snap.load("/ServicesMvc/Images/maps/europe.svg", function (f) {
 
@@ -46,29 +84,41 @@
             var paths = g.selectAll("path");
 
             paths.forEach(function (elem, i) {
-            
-                //elem.attr("fill", color);
+
+                var node = $(elem.node);
+                if (_validCountriesAsString.indexOf(node.attr("dataid")) >= 0)
+                    node.attr("class", node.attr("class") + " enabled");
 
                 elem.hover(
                     function () {
-                        console.log($(elem.node).attr("class"));
-                        console.log($(elem.node).attr("fill"));
+                        if (!CountryIsEnabled(elem))
+                            return;
+                            
+                        // hover opacity
+                        elem.attr("fill-opacity", "0.5");
+                        $(".country-hint").css("left", (mouseX - 90) + "px");
+                        $(".country-hint").css("top", (mouseY - 100) + "px");
 
-                        if (CountryIsEnabled(elem))
-                            // hover opacity
-                            elem.attr("fill-opacity", "0.5");
+                        var node = $(elem.node);
+                        $(".country-hint").html(node.attr("dataid"));
+
+                        $(".country-hint").show();
                     },
                     function () {
-                        if (CountryIsEnabled(elem))
-                            // unhover opacity
-                            elem.attr("fill-opacity", "");
+                        if (!CountryIsEnabled(elem))
+                            return;
+
+                        // unhover opacity
+                        elem.attr("fill-opacity", "");
+                        $(".country-hint").hide();
                     }
                 );
                 elem.click(function () {
                     if (!CountryIsEnabled(elem))
                         return;
 
-                    console.log("CLICKED: " + this.attr("class"));
+                    var node = $(elem.node);
+                    console.log("CLICKED: " + node.attr("dataid"));
 
                 });
             });
@@ -80,6 +130,10 @@
 
 </script>
 
+<div class="country-hint hide">
+    Country...
+</div>
+
 <div class="europe-map">
 
     <div id="country-hovered" class=""></div>
@@ -89,55 +143,3 @@
 
 </div>
 
-<div id="divFormKopf">
-
-
-    <div class="hide">
-        @using (Ajax.BeginForm("ApplyKopfdaten", "Coc", null,
-        new MvcAjaxOptions("divFormKopf") { OnComplete = "ShowDetailsAjax();" }, new { id = "CocAnforderungKopfAjaxForm" }))
-        {
-            <div class="form-horizontal" id="searchForm">
-
-                @Html.FormValidationSummary()
-
-                <div class="portlet box light-grey bg-color-ckg-paleorange">
-
-                    @Html.FormDropDownListFor(m => m.FahrzeugTyp, CocAnforderungKopfdaten.FahrzeugTypList.ToSelectList(), new { @class = "m-wrap medium", col = "left3" })
-                    @Html.FormDropDownListFor(m => m.Hersteller, CocAnforderungKopfdaten.HerstellerList.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
-                    @Html.FormDropDownListFor(m => m.LandDerErstenZulassung, CocAnforderungKopfdaten.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "right3" })
-
-                    @Html.FormRequiredFieldsSummary()
-
-                </div>
-
-                <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
-                    <button type="submit" id="btnCocRequestContinue" class="btn green"><i class="icon-note margin-right-10"></i>@Localize.Continue</button>
-                </div>
-            </div>
-
-            <script type="text/javascript">
-                _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            </script>
-        }
-    </div>
-</div>
-
-<script type="text/javascript">
-
-    function ShowDetailsAjax() {
-        FormPreparePrivateAjax();
-
-        $.ajax({
-            type: "POST",
-            url: "ShowDetails",
-            loadingShow: true,
-            success: function (result) {
-                if (_modelStateValid)
-                    ShowDetails(result);
-
-                LoadingHide();
-            }
-        });
-    }
-
-</script>
