@@ -2,18 +2,18 @@
 @model CocAnforderungKopfdaten
 
 <style>
-    
+
     .validation-summary-errors {
         margin-top: 0;
     }
-    
+
     .box.portlet {
         padding: 10px !important;
     }
-    
+
     @@media (max-width: 1580px) {
         .row-fluid .span4 {
-           display: block;
+            display: block;
             float: none;
             width: 100%;
             margin-left: 0;
@@ -22,14 +22,327 @@
             box-sizing: border-box;
         }
     }
-    
+
+    .europe-map {
+        text-align: center;
+    }
+
+    #map {
+        width: auto;
+    }
+    #map_inner {
+        margin-left: -150px !important;
+        width: 750px!important;
+        display: inline;
+    }
+
 </style>
 
+<script type="text/javascript">
+    var inactive_color = '#d0d1d5';
+    var active_color = '#9c0a0e';
+    var hover_color = '#640b1a';
+
+    var default_text = '<p>Komplett-Abwicklung - landesspezifisches Spezial-Know-how - Partner vor Ort</p>';
+
+    function OnMapCountrySelected(c) {
+        alert(c);
+    }
+
+    var simplemaps_worldmap_mapdata = {
+
+        main_settings:{
+            width: '960', //'responsive',
+            background_color: '#FFFFFF',
+            background_transparent: 'yes',
+            border_color: '#ffffff',
+            popups: 'detect',
+
+            state_description:   '',
+            state_color: inactive_color,
+            state_hover_color: hover_color,
+            state_url: '',
+            border_size: 1.5,
+            all_states_inactive: 'yes',
+            all_states_zoomable: 'no',
+
+            location_description:  'Location description',
+            location_color: '#FF0067',
+            location_opacity: .8,
+            location_hover_opacity: 1,
+            location_url: '',
+            location_size: 25,
+            location_type: 'square',
+            location_border_color: '#FFFFFF',
+            location_border: 2,
+            location_hover_border: 2.5,
+            all_locations_inactive: 'no',
+            all_locations_hidden: 'no',
+
+            label_color: '#d5ddec',
+            label_hover_color: '#d5ddec',
+            label_size: 22,
+            label_font: 'Arial',
+            hide_labels: 'no',
+
+            zoom: 'yes',
+            back_image: 'no',
+            arrow_color: '#3B729F',
+            arrow_color_border: '#88A4BC',
+            initial_back: 'no',
+            initial_zoom: 9,
+            initial_zoom_solo: 'yes',
+            region_opacity: 1,
+            region_hover_opacity: .6,
+            zoom_out_incrementally: 'yes',
+            zoom_percentage: 1.0,
+            zoom_time: .5,
+
+            popup_nocss: 'yes',
+
+            div: 'map',
+            auto_load: 'yes',
+            url_new_tab: 'no',
+            images_directory: 'default',
+            fade_time:  .1,
+            link_text: ''
+        },
+
+        regions: {
+            '9': {
+                name: "DAD",
+                states: ["AL","AD","AT","BY","BE","BA","BG","CH","CY","CZ","DE","DK","EE","ES","FO","FI","FR","GB","GR","HU","IE","IT","LT","LU","LV","ME","MD","MK","MT","NL","NO","PL","PT","HR","RS","RO","SE","SI","SK","UA","XK"]
+            }
+        },
+
+        state_specific: {
+
+
+
+                "AT":{
+    name: 'Österreich',
+    description: '<div class="mapicon eusprite AT"></div><h3>Österreich</h3><ul><li>Fahrzeugüberführungen zwischen Österreich und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>bei einzelimportierten Fahrzeugen: notwendige Eintragung in die Genehmigungsdatenbank </li><li>Berechnung der Normverbrauchsabgabe („NoVA“)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "BE":{
+    name: 'Belgien',
+    description: '<div class="mapicon eusprite BE"></div><h3>Belgien</h3><ul><li>Fahrzeugüberführungen zwischen Belgien und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der Zollbescheinigung („Vignette 705“)</li><li>nur durch Sonderprozesse/Verbindungen der DAD Organisation: Zulassung von Neufahrzeugen ohne Fahrzeugvorführung möglich!</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "CH":{
+    name: 'Schweiz',
+    description: '<div class="mapicon eusprite CH"></div><h3>Schweiz</h3><ul><li>Fahrzeugüberführungen zwischen der Schweiz und Deutschland</li><li>Abwicklung der Verzollung und Abführen der CO<sub>2</sub>-Abgabe</li><li>Zulassungen („Einlösung“) und Abmeldungen im zuständigen Kanton + Einfuhr</li><li>Vorführung des Fahrzeuges bei der  „MFK - Motorfahrzeugkontrolle“ (technische Prüforganisation in der Schweiz für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "CZ":{
+    name: 'Tschechische Republik',
+    description: '<div class="mapicon eusprite CZ"></div><h3>Tschechische Republik</h3><ul><li>Fahrzeugüberführungen zwischen der Tschechischen Republik und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland </li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der Ausfuhrversicherung („pojištení“)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "DE":{
+    name: 'Deutschland',
+    description: '<div class="mapicon eusprite DE"></div><h3>Deutschland</h3><ul><li>innovative Lösungen für Fahrzeugflotten und Kfz-Dokumente</li><li>umfassende Prozesslösungen rund um Fahrzeugeinsteuerung und -aussteuerung</li><li>Dokumenten- und Informationsmanagement </li><li>Fahrzeugüberführungen in Deutschland und in die meisten europäischen Länder </li><li>Risikomanagement </li><li>Remarketingunterstützung</li><li>Beratung und Prozessoptimierung</li></ul>',
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "DK":{
+    name: 'Dänemark',
+    description: '<div class="mapicon eusprite DK"></div><h3>Dänemark</h3><ul><li>Fahrzeugüberführungen zwischen Dänemark und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Berechnung der Registrierungsabgabe („registreringsafgift“)</li><li>Beschaffung notwendiger Spezialbescheinigungen</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "ES":{
+    name: 'Spanien',
+    description: '<div class="mapicon eusprite ES"></div><h3>Spanien</h3><ul><li>Fahrzeugüberführungen zwischen Spanien und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung und Bearbeitung notwendiger Spezialbescheinigungen und Antragsformulare z. B. des Kfz-Steuer-Antrages („Solicitud de impuestos sobre vehiculos“)</li><li>Vorführung des Fahrzeuges beim „ITV“ Inspección Técnica de Vehículos (technische Prüforganisation in Spanien für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "FI":{
+    name: 'Finnland',
+    description: '<div class="mapicon eusprite FI"></div><h3>Finnland</h3><ul><li>Fahrzeugüberführungen zwischen Finnland und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der Zulassungserlaubnis vom Zoll </li><li>Vorführung des Fahrzeuges beim „Katsastus“ (technische Prüforganisation in Finnland für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "FR":{
+    name: 'Frankreich',
+    description: '<div class="mapicon eusprite FR"></div><h3>Frankreich</h3><ul><li>Fahrzeugüberführungen zwischen Frankreich und Deutschland</li><li>Zulassungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der Steuerbescheinigung („Quitus fiscal“)</li><li>Ermittlung und Abwicklung der Ausstoß- sowie Standardgebühr („taxe CO2“/„taxe immatriculation“)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "GB":{
+    name: 'Großbritannien',
+    description: '<div class="mapicon eusprite GB"></div><h3>Großbritannien</h3><ul><li>Fahrzeugüberführungen zwischen Großbritannien und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der technischen Prüfbescheinigung („SVA/MOT test certificate“)</li><li>Vorführung des Fahrzeuges beim „Ministry of Transport“ (technische Prüforganisation in Großbritannien für Fahrzeugabnahmen)</li><li>Organisation notwendiger Umbauten für den Linksverkehr (z.B. Anpassung Tachometer oder Scheinwerfereinstellungen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "HU":{
+    name: 'Ungarn',
+    description: '<div class="mapicon eusprite HU"></div><h3>Ungarn</h3><ul><li>Fahrzeugüberführungen zwischen Ungarn und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialdokumente</li><li>Erledigung der in Ungarn aufwendigen Behördengänge für z. B. Begleichung der Anmeldegebühr bei der Nationalen Steuer- und Zollverwaltung („Nemzeti Adó- és Vámhivatal“)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "IE":{
+    name: 'Irland',
+    description: '<div class="mapicon eusprite IE"></div><h3>Irland</h3><ul><li>Fahrzeugüberführungen zwischen Irland und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland </li><li>Beschaffung notwendiger Dokumente – z.B. Form VRT 3 / VRT 4</li><li>Vorführung bei der Zulassungsstelle</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "IT":{
+    name: 'Italien',
+    description: '<div class="mapicon eusprite IT"></div><h3>Italien</h3><ul><li>Fahrzeugüberführungen zwischen Italien und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>nur durch Sonderprozesse der DAD Organisation möglich:<ul><li>Zulassung von Fahrzeugen auch ohne Übersetzung der deutschen Fahrzeugdokumente</li><li>ortsunabhängige Zulassungen für ganz Italien</li></ul></li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "LU":{
+    name: 'Luxemburg',
+    description: '<div class="mapicon eusprite LU"></div><h3>Luxemburg</h3><ul><li>Fahrzeugüberführungen zwischen Luxemburg und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. der Zollbescheinigung („Vignette 705“)</li><li>Vorführung des Fahrzeuges beim „SNCT“ -Sociète National de Contrôle technique (technische Prüforganisation in Luxemburg für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "NL":{
+    name: 'Niederlande',
+    description: '<div class="mapicon eusprite NL"></div><h3>Niederlande</h3><ul><li>Fahrzeugüberführungen zwischen den Niederlanden und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland </li><li>Berechnung sowie Rückabwicklung der niederländischen Luxussteuer  („BPM“ - Belasting van Personenauto’s en Motorrijwielen) für Personenkraftwagen und Krafträder bei Im- bzw. Export</li><li>Vorführung des Fahrzeuges beim „RDW“ - Rijksdienst voor het Wegverkeer (technische Prüforganisation in den Niederlanden für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "PL":{
+    name: 'Polen',
+    description: '<div class="mapicon eusprite PL"></div><h3>Polen</h3><ul><li>Fahrzeugüberführungen zwischen Polen und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. des Steuerdokuments („VAT 25“)</li><li>Beauftragung vereidigter Übersetzungen von zulassungsrelevanten Unterlagen </li><li>Entrichtung der Ökogebühr („Oplata recyklingowa“)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "PT":{
+    name: 'Portugal',
+    description: '<div class="mapicon eusprite PT"></div><h3>Portugal</h3><ul><li>Fahrzeugüberführungen zwischen Portugal und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland </li><li>Beschaffung notwendiger Spezialbescheinigungen</li><li>Berechnung der Fahrzeugsteuer „ISV“</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "RO":{
+    name: 'Rumänien',
+    description: '<div class="mapicon eusprite RO"></div><h3>Rumänien</h3><ul><li>Fahrzeugüberführungen zwischen Rumänien und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Beschaffung notwendiger Spezialbescheinigungen z. B. des Speditionsnachweises („CMR“-Convention relative au contrat de transport international de marchandises par route)</li><li>Vorführung des Fahrzeuges beim „RAR“- Registrul Auto Roman (technische Prüforganisation in Rumänien für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+},
+
+                "SE":{
+    name: 'Schweden',
+    description: '<div class="mapicon eusprite SE"></div><h3>Schweden</h3><ul><li>Fahrzeugüberführungen zwischen Schweden und Deutschland</li><li>Zulassungen und Abmeldungen im Zielland</li><li>Vorstellung des Fahrzeuges beim „Bilprovningen“ (technische Prüforganisation in Schweden für Fahrzeugabnahmen)</li></ul>'+default_text,
+    color: active_color,
+    hover_color: "default",
+    url: "default",
+
+    inactive: 'no'
+
+}
+
+
+        }
+    }
+
+</script>
+
+<script type="text/javascript" src="~/Scripts/maps/worldmap.js"></script>
 
 <div class="europe-map">
+    <div id="map" class=""></div>
+</div>
 
-    <svg height="542.6089315691006" version="1.1" width="100%" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; left: -0.5px;" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin">
-        <rect x="-533.3333333333334" y="-533.3333333333334" width="2666.6666666666665" height="1600" r="0" rx="0" ry="0" fill="#ffffff" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;" fill-opacity="1" stroke-width="0.2604699722222223"></rect>
+<div class="europe-map hide">
+
+    <svg height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; left: -150.5px; background-color: transparent;" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin">
         <path fill="#d0d1d5" stroke="#ffffff" d="M1149.9,348.4L1149.6000000000001,348.29999999999995L1149.1000000000001,348.49999999999994L1148.7,348.8999999999999L1148.3,349.19999999999993L1147.8,348.8999999999999L1148,349.7999999999999L1148.6,350.8999999999999L1148.8,351.19999999999993L1149.1,351.3999999999999L1150.1999999999998,351.69999999999993L1150.4999999999998,351.69999999999993L1151.0999999999997,351.69999999999993L1151.2999999999997,351.79999999999995L1151.4999999999998,352.19999999999993L1151.8999999999999,352.19999999999993L1151.8999999999999,352.0999999999999L1151.8999999999999,351.7999999999999L1152.1,351.5999999999999L1152.3999999999999,351.3999999999999L1152.6999999999998,351.3999999999999L1153.2999999999997,351.2999999999999L1153.8999999999996,351.0999999999999L1154.3999999999996,350.69999999999993L1155.2999999999997,349.69999999999993L1155.5999999999997,349.69999999999993L1155.8999999999996,349.69999999999993L1156.4999999999995,349.69999999999993L1157.0999999999995,349.5999999999999L1156.8999999999994,349.19999999999993L1156.7999999999995,349.0999999999999L1156.3999999999994,348.5999999999999L1156.1999999999994,348.19999999999993L1156.2999999999993,347.5999999999999L1158.7999999999993,345.69999999999993L1159.2999999999993,345.19999999999993L1158.4999999999993,345.3999999999999L1157.8999999999994,345.7999999999999L1157.4999999999993,345.9999999999999L1156.7999999999993,346.39999999999986L1154.4999999999993,347.1999999999999L1153.6999999999994,347.2999999999999L1152.8999999999994,347.2999999999999L1151.8999999999994,347.1999999999999L1150.9999999999993,346.9999999999999L1150.9999999999993,347.6999999999999L1150.7999999999993,348.2999999999999L1150.1999999999994,348.4999999999999L1149.8999999999994,348.39999999999986Z" class="sm_state_CY" fill-opacity="1" stroke-opacity="1" stroke-width="0.9376919000000002" stroke-linejoin="round" transform="matrix(0.5333,0,0,0.5333,-93.3333,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1; cursor: default; stroke-opacity: 1; stroke-linejoin: round;"></path>
         <path fill="#d0d1d5" stroke="#ffffff" d="M1053.6,344L1053.3999999999999,343.8L1052.8999999999999,343.3L1052.3999999999999,343.2L1052.4999999999998,343.8L1052.8999999999999,344.2L1053.3999999999999,344.2L1053.6,344ZM1052.1999999999998,342.8L1052.1999999999998,342.8L1052.1999999999998,342.6L1051.8999999999999,342.5L1051.4999999999998,342.6L1051.5999999999997,342.70000000000005L1051.8999999999996,342.90000000000003L1052.1999999999996,342.8Z" class="sm_state_MT" fill-opacity="1" stroke-opacity="1" stroke-width="0.9376919000000002" stroke-linejoin="round" transform="matrix(0.5333,0,0,0.5333,-93.3333,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1; cursor: default; stroke-opacity: 1; stroke-linejoin: round;"></path>
         <path fill="#d0d1d5" stroke="#ffffff" d="M947,186.9L947,186.6L946.9,186.29999999999998L946.9,186.1L946.8,186.1L946.3,186L946.1999999999999,185.8L946.0999999999999,185.8L946.0999999999999,186L946.1999999999999,186.4L946.6999999999999,186.8L946.9999999999999,187L947.0999999999999,187L946.9999999999999,186.9ZM947.5,184.8L947.5,184.70000000000002L947.3,184.50000000000003L946.8,184.30000000000004L946.5999999999999,184.20000000000005L946.3999999999999,184.30000000000004L946.3999999999999,184.50000000000003L946.4999999999999,184.60000000000002L946.8999999999999,184.70000000000002L947.2999999999998,185.00000000000003L947.3999999999999,185.00000000000003L947.4999999999999,184.80000000000004ZM945.1,182.9L944.9,182.8L944.4,182.9L944.1,182.9L944.2,183.20000000000002L944.8000000000001,183.4L945.1,183.4L945.4,183.4L945.6,183.3L945.5,183.10000000000002L945.1,182.90000000000003ZM947.6,182.4L946.8000000000001,182.20000000000002L946.2,181.9L945.2,182L945.9000000000001,183.1L946.7,183.79999999999998L947.1,183.99999999999997L947.1,183.89999999999998L947.1,183.7L946.7,183.2L946.6,183.1L946.6,183L946.7,182.9L946.9000000000001,182.9L947.2,183.1L947.4000000000001,183.1L947.6000000000001,182.4ZM948.6,182.20000000000002L948.3000000000001,182.00000000000003L947.9000000000001,181.60000000000002L947.9000000000001,182.10000000000002L947.9000000000001,182.40000000000003L947.9000000000001,182.50000000000003L948.0000000000001,182.50000000000003L948.3000000000001,182.60000000000002L948.6,182.20000000000002Z" class="sm_state_FO" fill-opacity="1" stroke-opacity="1" stroke-width="0.9376919000000002" stroke-linejoin="round" transform="matrix(0.5333,0,0,0.5333,-93.3333,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1; cursor: default; stroke-opacity: 1; stroke-linejoin: round;"></path>
@@ -73,7 +386,7 @@
         <path fill="#d0d1d5" stroke="#ffffff" d="M1077.5,300.5L1075.5,303.6L1076,305.5L1076,305.5L1077,306.5L1076.5,308.4L1076.4,312.7L1077.1000000000001,315.7L1080.1000000000001,317.8L1080.3000000000002,319.2L1081.3000000000002,319.59999999999997L1083.4,316.59999999999997L1083.5,314.49999999999994L1085.1,313.59999999999997L1085.1,311.99999999999994L1082.8,310.3999999999999L1081.8999999999999,307.7999999999999L1082.3,305.6999999999999L1082.3,305.6999999999999L1081.8,303.39999999999986L1080.5,302.79999999999984L1079.2,301.1999999999998L1077.9,301.6999999999998L1077.5,300.49999999999983Z" class="sm_state_AL" fill-opacity="1" stroke-opacity="1" stroke-width="0.9376919000000002" stroke-linejoin="round" transform="matrix(0.5333,0,0,0.5333,-93.3333,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1; cursor: default; stroke-opacity: 1; stroke-linejoin: round;"></path>
         <defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs>
     </svg>
-    
+
 </div>
 
 <div id="divFormKopf">
@@ -81,7 +394,7 @@
 
     <div class="hide">
         @using (Ajax.BeginForm("ApplyKopfdaten", "Coc", null,
-            new MvcAjaxOptions("divFormKopf") { OnComplete = "ShowDetailsAjax();" }, new { id = "CocAnforderungKopfAjaxForm" }))
+        new MvcAjaxOptions("divFormKopf") { OnComplete = "ShowDetailsAjax();" }, new { id = "CocAnforderungKopfAjaxForm" }))
         {
             <div class="form-horizontal" id="searchForm">
 
@@ -111,7 +424,7 @@
 
 <script type="text/javascript">
 
-    function ShowDetailsAjax() {    
+    function ShowDetailsAjax() {
         FormPreparePrivateAjax();
 
         $.ajax({

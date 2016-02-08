@@ -239,6 +239,7 @@
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\teamviewer-icon.png" />
+    <Content Include="Scripts\maps\worldmap.js" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
