@@ -77,6 +77,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AnsprechEmail = LogonContext.UserInfo.Mail,
                 AnsprechTelefonNr = LogonContext.UserInfo.Telephone
             };
+            EsdAnforderung.InitDienstleistungen();
         }
 
         public void DataMarkForRefresh()

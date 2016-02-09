@@ -43,6 +43,23 @@
                         @using (Html.PortletBox(Localize.VehicleData, "icon-car", "light-grey bg-white", false))
                         {
                             @Html.FormDropDownListFor(m => m.Land, EsdAnforderung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
+
+                            <div class="dienstleistungen-wrapper">
+
+                                @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+
+                                <div class="dienstleistungen-header">
+                                    <span class="header-left">@Localize.AvailableServices</span>
+                                    <span class="header-right">@Localize.SelectedServices</span>
+                                </div>
+
+                                <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
+                                    @foreach (var dl in Model.AvailableDienstleistungen)
+                                    {
+                                        <option value="@dl.MaterialNr" @dl.SelectedAsString>@dl.Name</option>
+                                    }
+                                </select>
+                            </div>
                         }
 
                     </div>
@@ -75,7 +92,32 @@
         </div>
 
         <script type="text/javascript">
+
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            MultiSelectPreparePrivate();
+
+            function MultiSelectPreparePrivate() {
+                $('#pre-selected-options').multiSelect();
+
+                $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
+                    $(this).append('<i class="icon-chevron-right"></i>');
+                });
+                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
+                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
+                    $(this).append('<i class="icon-remove"></i>');
+                });
+                $('#ms-pre-selected-options').removeClass('hide');
+
+                $('#pre-selected-options').change(function() {
+                    var selectedOptions = '';
+                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
+                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
+                    });
+                    $("#GewaehlteDienstleistungenString").val(selectedOptions);
+                });
+            }
+
         </script>
     }
 </div>
