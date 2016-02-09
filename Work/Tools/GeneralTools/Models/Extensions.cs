@@ -349,6 +349,15 @@ namespace GeneralTools.Models
             return s.Substring(0, 1).ToUpper() + s.Substring(1).ToLower();
         }
 
+        public static string ToFirstLower(this string s)
+        {
+            s = s.NotNullOrEmpty();
+            if (s.Length <= 1)
+                return s;
+
+            return s.Substring(0, 1).ToLower() + s.Substring(1);
+        }
+
         public static string ToLowerAndHyphens(this string s)
         {
             var ret = "";

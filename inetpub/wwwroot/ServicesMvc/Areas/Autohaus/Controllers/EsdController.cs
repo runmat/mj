@@ -33,8 +33,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
         private void InitModelStatics()
         {
-            //EsdAnforderungKopfdaten.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
-            CkgDomainLogic.Autohaus.Models.EsdAnforderung.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
+            EsdAnforderung.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
         }
 
         [CkgApplication]

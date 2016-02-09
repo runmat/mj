@@ -72,10 +72,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             EsdAnforderung = new EsdAnforderung
             {
-                Vorname = LogonContext.FirstName,
-                Nachname = LogonContext.LastName,
-                Email = LogonContext.UserInfo.Mail,
-                TelefonNr = LogonContext.UserInfo.Telephone
+                AnsprechVorname = LogonContext.FirstName,
+                AnsprechNachname = LogonContext.LastName,
+                AnsprechEmail = LogonContext.UserInfo.Mail,
+                AnsprechTelefonNr = LogonContext.UserInfo.Telephone
             };
         }
 
@@ -98,12 +98,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         private void ApplyDetails(EsdAnforderung model)
         {
-            EsdAnforderung.JahrDerErstzulassung = model.JahrDerErstzulassung;
-            EsdAnforderung.FahrgestellNr = model.FahrgestellNr;
-            EsdAnforderung.Vorname = model.Vorname;
-            EsdAnforderung.Nachname = model.Nachname;
-            EsdAnforderung.Email = model.Email;
-            EsdAnforderung.TelefonNr = model.TelefonNr;
+            //EsdAnforderung.JahrDerErstzulassung = model.JahrDerErstzulassung;
+            //EsdAnforderung.FahrgestellNr = model.FahrgestellNr;
+            //EsdAnforderung.Vorname = model.Vorname;
+            //EsdAnforderung.Nachname = model.Nachname;
+            //EsdAnforderung.Email = model.Email;
+            //EsdAnforderung.TelefonNr = model.TelefonNr;
         }
 
         public void EsdAnforderungAbsenden(EsdAnforderung model, Action<string, string> addModelError)
@@ -126,13 +126,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             //mailText += string.Format("{0}: {1}<br/>", Localize.VehicleType, EsdAnforderung.Kopfdaten.FahrzeugTypBezeichnung);
             //mailText += string.Format("{0}: {1}<br/>", Localize.Manufacturer, EsdAnforderung.Kopfdaten.HerstellerBezeichnung);
             //mailText += string.Format("{0}: {1}<br/>", Localize.CountryOfFirstRegistration, EsdAnforderung.Kopfdaten.LandDerErstenZulassungBezeichnung);
-            mailText += string.Format("{0}: {1}<br/>", Localize.YearOfFirstRegistration, EsdAnforderung.JahrDerErstzulassung);
-            mailText += "<br/>";
-            mailText += "Kundendaten:<br/>";
-            mailText += string.Format("{0}: {1}<br/>", Localize.Company, LogonContext.CustomerName);
-            mailText += string.Format("{0}: {1} {2}<br/>", Localize.Name, EsdAnforderung.Vorname, EsdAnforderung.Nachname);
-            mailText += string.Format("{0}: {1}<br/>", Localize.Email, EsdAnforderung.Email);
-            mailText += string.Format("{0}: {1}<br/>", Localize.PhoneNo, EsdAnforderung.TelefonNr);
+            //mailText += string.Format("{0}: {1}<br/>", Localize.YearOfFirstRegistration, EsdAnforderung.JahrDerErstzulassung);
+            //mailText += "<br/>";
+            //mailText += "Kundendaten:<br/>";
+            //mailText += string.Format("{0}: {1}<br/>", Localize.Company, LogonContext.CustomerName);
+            //mailText += string.Format("{0}: {1} {2}<br/>", Localize.Name, EsdAnforderung.Vorname, EsdAnforderung.Nachname);
+            //mailText += string.Format("{0}: {1}<br/>", Localize.Email, EsdAnforderung.Email);
+            //mailText += string.Format("{0}: {1}<br/>", Localize.PhoneNo, EsdAnforderung.TelefonNr);
 
             if (!mailService.SendMail(empfaengerEmail, "Esd-Bestellung", mailText))
                 addModelError("", Localize.ErrorMailCouldNotBeSent);

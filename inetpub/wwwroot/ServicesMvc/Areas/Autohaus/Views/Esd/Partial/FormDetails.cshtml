@@ -18,8 +18,8 @@
 </style>
 
 <div id="divFormDetails">
-    @using (Ajax.BeginForm("CocAnfordern", "Coc", null,
-        new MvcAjaxOptions("divFormDetails") { OnComplete = "ShowReceiptAjax();" }, new { id = "CocAnforderungDetailsAjaxForm" }))
+    @using (Ajax.BeginForm("EsdAnfordern", "Esd", null,
+        new MvcAjaxOptions("divFormDetails") { OnComplete = "ShowReceiptAjax();" }, new { id = "EsdAnforderungDetailsAjaxForm" }))
     {    
         <div class="form-horizontal label-width-200" id="searchForm">
             
@@ -42,9 +42,7 @@
 
                         @using (Html.PortletBox(Localize.VehicleData, "icon-car", "light-grey bg-white", false))
                         {
-                            @Html.FormDropDownListFor(m => m.JahrDerErstzulassung, CocAnforderung.Jahre.ToSelectList(), new { @class = "m-wrap small" })
-                        
-                            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+                            @Html.FormDropDownListFor(m => m.Land, EsdAnforderung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
                         }
 
                     </div>
@@ -53,13 +51,13 @@
 
                         @using (Html.PortletBox(Localize.Contactperson, "icon-user", "light-grey bg-white", false))
                         {
-                            @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
 
-                            @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
 
-                            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
 
-                            @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
                         }
 
                     </div>
@@ -72,7 +70,7 @@
 
             <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
                 <button type="button" class="btn" onclick="CloseDetails();">@Localize.Back</button>
-                <button type="submit" class="btn green"><i class="icon-file-text margin-right-10"></i>@Localize.RequestCoc</button>
+                <button type="submit" class="btn green"><i class="icon-file-text margin-right-10"></i>@Localize.Request</button>
             </div>
         </div>
 

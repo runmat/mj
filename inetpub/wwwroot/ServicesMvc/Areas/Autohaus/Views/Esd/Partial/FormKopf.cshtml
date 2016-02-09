@@ -23,8 +23,35 @@
     }
 
     .europe-map {
-        text-align: center;
+        text-align: left;
+        overflow: hidden;
+        height: 460px;
     }
+    #europe-svg {
+        overflow: hidden; 
+        position: relative; 
+        left: -150px; 
+        top: -90px;
+        background-color: transparent;    
+    }
+    #country-others {
+        display: table;
+        position: relative; 
+        z-index: 9999;
+    }
+    @@media (max-width: 800px) {
+        #country-others {
+            left: 385px; 
+            top: -150px;
+        }
+    }
+    @@media (min-width: 801px) {
+        #country-others {
+        left: 500px; 
+        top: -180px;
+        }
+    }
+
     .country-hint {
         position: absolute;
         left: 0;
@@ -33,7 +60,7 @@
         display: none;
         background-color: white;
         padding: 10px;
-        border: 2px solid #61B1CD;
+        border: 3px solid #6E8CBF;
         border-radius: 12px !important;
         box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
     }
@@ -58,10 +85,11 @@
     }
 
     path.svg-country {
-        fill: #d0d1d5; /* #d0d1d5 */
+        fill: #d0d1d5; 
     }
     path.svg-country.enabled {
-        fill: #61B1CD; /* #d0d1d5 */
+        fill: #6E8CBF;
+        cursor: pointer;
     }
 
 </style>
@@ -74,8 +102,6 @@
     var _validCountriesAsString = '@string.Join(",", Model.LaenderAuswahlliste.Select(c => c.ID))';
     var _validCountries = @Html.Raw(Json.Encode(Model.LaenderAuswahlliste));
 
-    //console.log(_validCountries);
-
     function CountryIsEnabled(elem) {
         var node = $(elem.node);
         return _validCountriesAsString.indexOf(node.attr("dataid")) >= 0;
@@ -87,12 +113,18 @@
     }
 
     $(function () {
-        var mouseX;
-        var mouseY;
+
+        var countryHintVisible = false;
+
         document.onmousemove = function (e) {
 
-            mouseX = e.pageX;
-            mouseY = e.pageY;
+            $(".country-hint").css("left", (e.pageX - 60) + "px");
+            $(".country-hint").css("top", (e.pageY - 120) + "px");
+
+            if (countryHintVisible)
+                $(".country-hint").show();
+            else
+                $(".country-hint").hide();
         }
 
         var s = Snap("#europe-svg");
@@ -114,16 +146,12 @@
 
                         // hover opacity
                         elem.attr("fill-opacity", "0.5");
-                        $(".country-hint").css("left", (mouseX - 90) + "px");
-                        $(".country-hint").css("top", (mouseY - 100) + "px");
 
                         var countryItem = GetCountryItem(elem);
-                        //var node = $(elem.node);
-                        //console.log(countryItem);
                         $(".country-hint i").css("background-image", "url(/ServicesMvc/Images/flags/64x64/" + countryItem.ID + ".png)");
                         $(".country-hint span").html(countryItem.Name);
 
-                        $(".country-hint").show();
+                        countryHintVisible = true;
                     },
                     function () {
                         if (!CountryIsEnabled(elem))
@@ -131,7 +159,8 @@
 
                         // unhover opacity
                         elem.attr("fill-opacity", "");
-                        $(".country-hint").hide();
+
+                        countryHintVisible = false;
                     }
                 );
                 elem.click(function () {
@@ -139,7 +168,7 @@
                         return;
 
                     var node = $(elem.node);
-                    console.log("CLICKED: " + node.attr("dataid"));
+                    //console.log("CLICKED: " + node.attr("dataid"));
 
                 });
             });
@@ -156,12 +185,16 @@
     <span></span>
 </div>
 
+<h4>
+    @Localize.CountrySelection, @Localize.PleaseChooseOneCountry.ToFirstLower():
+</h4>
+
+
 <div class="europe-map">
 
-    <div id="country-hovered" class=""></div>
-
-    <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" style="overflow: hidden; position: relative; left: -150.5px; background-color: transparent;" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin">
+    <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin">
     </svg>
+    <button id="country-others" class="btn blue">@Localize.CountryNotListed</button>
 
 </div>
 
