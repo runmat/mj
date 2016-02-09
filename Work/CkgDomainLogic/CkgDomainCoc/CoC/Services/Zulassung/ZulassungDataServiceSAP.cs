@@ -334,7 +334,7 @@ namespace CkgDomainLogic.CoC.Services
             SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             if (model.Fin.IsNotNullOrEmpty())            
-                SAP.SetImportParameter("I_ZZLSDAT_VON", model.Fin);
+                SAP.SetImportParameter("I_CHASSIS_NUM", model.Fin);
                            
             if (model.Vertragsnummer.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_ZZREFNR", model.Vertragsnummer);

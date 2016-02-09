@@ -193,7 +193,7 @@ namespace CkgDomainLogic.CoC.ViewModels
         #endregion
 
 
-        #region Sendungen, Suche nach Fin
+        #region Sendungen, Suche nach Fin (ViewModel wie Docs)
 
         public SendungsAuftragFinSelektor SendungsAuftragFinSelektor
         {
@@ -201,24 +201,7 @@ namespace CkgDomainLogic.CoC.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        //[XmlIgnore]
-        //public List<SendungsAuftrag> SendungenFin
-        //{
-        //    get { return PropertyCacheGet(() => new List<SendungsAuftrag>()); }
-        //    private set { PropertyCacheSet(value); }
-        //}
-
-        //[XmlIgnore]
-        //public List<SendungsAuftrag> SendungenFinFiltered
-        //{
-        //    get
-        //    {
-        //        FilteredObjectsCurrent = () => SendungenFinFiltered;
-        //        return PropertyCacheGet(() => SendungenFin);
-        //    }
-        //    private set { PropertyCacheSet(value); }
-        //}
-
+       
         public void LoadSendungenFin(SendungsAuftragFinSelektor model, Action<string, string> addModelError)
         {
             PropertyCacheClear(this, m => m.SendungenDocsFiltered);
@@ -232,11 +215,7 @@ namespace CkgDomainLogic.CoC.ViewModels
             DataMarkForRefresh();
         }
 
-        //public void FilterSendungenFin(string filterValue, string filterProperties)
-        //{
-        //    SendungenFinFiltered = SendungenFin.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        //}
-
+        
         #endregion
 
 

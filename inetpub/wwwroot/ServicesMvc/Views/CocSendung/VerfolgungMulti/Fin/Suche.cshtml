@@ -2,7 +2,7 @@
 
 <div id="divSendungenFinSuche">
     @using (Ajax.BeginForm("LoadSendungenFin", "CocSendung", null,
-        new MvcAjaxOptions("divSendungenFinSuche") { OnComplete = "ShowCocSendungenDocs();" }, new { id = "SendungenFormFin" }))
+        new MvcAjaxOptions("divSendungenFinSuche") { OnComplete = "ShowCocSendungenFin();" }, new { id = "SendungenFormFin" }))
     {   
         <div class="form-horizontal" id="searchFormFin">
             

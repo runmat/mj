@@ -33,7 +33,10 @@
     </div>
     <div id="searchResultDocs" class="divDocs hide">
         <div id="divGridDocs"></div>
-    </div>    
+    </div>
+    <div id="searchResultFin" class="divFin hide">
+        <div id="divGridFin"></div>
+    </div>
 }
 
 <style type="text/css">
@@ -202,5 +205,62 @@
     }
 
     // </Suche nach Docs>
+
+
+    // <Suche nach Fin>
+
+    function ShowCocSendungenFin() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenFin",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenFinSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenFinSearchResult(result) {
+        SearchFormHide();
+        $("#divGridFin").html(result);
+
+        // move our Grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenFin");
+
+        setTimeout(function () { $("#divGridFin").slideDown(); }, 1000);
+    }
+
+
+    function OnDataBound_GridCocSendungenFin() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenFin() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    
+    function OnColumnReorder_GridCocSendungenFin() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach Fin>
+
+
 
 </script>
