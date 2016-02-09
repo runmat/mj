@@ -1,0 +1,22 @@
+﻿@model CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels.UploadPartnerUndFahrzeugdatenViewModel
+
+@if (!Model.SaveFailed)
+{
+    <div class="alert alert-success">
+        <label class="checkbox">
+            <i class="icon-check"></i><span class="padding-left-5"><strong>@Localize.ThankYou</strong>, @Localize.WeReceivedYourData!</span>
+        </label>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"> <i class="icon-bell"></i><span class="padding-left-5">@Localize.UploadErrorOccurred! @Model.SaveResultMessage</span></span>
+        </label>
+    </div>
+}
+
+<div class="margin-top-10"></div>
+
+@Html.Partial("Partial/SaveGrid", Model)>

@@ -121,6 +121,7 @@
     <Compile Include="General\Contracts\IKennzeichenAttribute.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItemAnnotator.cs" />
+    <Compile Include="General\Contracts\IUploadItem.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
     <Compile Include="General\Controllers\CkgDomainController.cs" />

@@ -853,7 +853,7 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
-	<Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2962,6 +2962,13 @@
     <Content Include="Views\Haendler\Partial\Grid.cshtml" />
     <Content Include="Views\Haendler\Partial\Suche.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\ProtokollUpload.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Index.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\FileUpload.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\MappingSelection.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\MappingSelectionForm.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\Receipt.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\Grid.cshtml" />
+    <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\SaveGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

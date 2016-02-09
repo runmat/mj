@@ -1,0 +1,158 @@
+﻿@using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
+@using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
+@model UploadPartnerUndFahrzeugdatenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridSaveUploadPartnerUndFahrzeugdaten"; }
+
+@if (Model.UploadItemsSaveErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsSaveErrorsOccurred)</span>
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@if (Model.Modus == UploadPartnerUndFahrzeugdatenViewModel.UploadModus.PartnerUpload)
+{
+    @(Html.Telerik()
+        .Grid<UploadPartnerdaten>()
+        .Name(gridName)
+        .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+        .XAjaxDataBinding("UploadSavePartnerUndFahrzeugdatenAjaxBinding", "AutohausPartnerUndFahrzeugdaten")
+        .Columns(columns =>
+        {
+            columns.XBound(c => c.DatensatzNr).Visible(false);
+            columns.XBound(c => c.SaveStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+
+            columns.XBound(c => c.KundenNr).Visible(false);
+            columns.XBound(c => c.Name1);
+            columns.XBound(c => c.Name2);
+            columns.XBound(c => c.Strasse);
+            columns.XBound(c => c.HausNr);
+            columns.XBound(c => c.Plz);
+            columns.XBound(c => c.Ort);
+            columns.XBound(c => c.Land);
+            columns.XBound(c => c.Email);
+            columns.XBound(c => c.Telefon);
+            columns.XBound(c => c.Fax);
+            columns.XBound(c => c.Bemerkung);
+            columns.XBound(c => c.Referenz1);
+            columns.XBound(c => c.Referenz2);
+            columns.XBound(c => c.Gewerblich);
+            columns.XBound(c => c.Partnerrolle);
+            columns.XBound(c => c.KundendatenSpeichern);
+        })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportUploadItemsFilteredExcel", "AutohausPartnerUndFahrzeugdaten");
+            commands.FilteredDataCommand("ExportUploadItemsFilteredPDF", "AutohausPartnerUndFahrzeugdaten");
+        })
+    )
+}
+else if (Model.Modus == UploadPartnerUndFahrzeugdatenViewModel.UploadModus.FahrzeugUpload)
+{
+    @(Html.Telerik()
+        .Grid<UploadFahrzeugdaten>()
+        .Name(gridName)
+        .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+        .XAjaxDataBinding("UploadSavePartnerUndFahrzeugdatenAjaxBinding", "AutohausPartnerUndFahrzeugdaten")
+        .Columns(columns =>
+        {
+            columns.XBound(c => c.DatensatzNr).Visible(false);
+            columns.XBound(c => c.SaveStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+
+            columns.XBound(c => c.FahrgestellNr);
+            columns.XBound(c => c.HerstellerSchluessel);
+            columns.XBound(c => c.TypSchluessel);
+            columns.XBound(c => c.VvsSchluessel);
+            columns.XBound(c => c.VvsPruefziffer);
+            columns.XBound(c => c.FabrikName);
+            columns.XBound(c => c.HandelsName);
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Erstzulassung);
+            columns.XBound(c => c.AktZulassung);
+            columns.XBound(c => c.Abmeldedatum);
+            columns.XBound(c => c.Fahrzeugart);
+            columns.XBound(c => c.Verkaufssparte);
+            columns.XBound(c => c.FahrzeugNr);
+            columns.XBound(c => c.AuftragsNr);
+            columns.XBound(c => c.Firmenreferenz1);
+            columns.XBound(c => c.Firmenreferenz2);
+        })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportUploadItemsFilteredExcel", "AutohausPartnerUndFahrzeugdaten");
+            commands.FilteredDataCommand("ExportUploadItemsFilteredPDF", "AutohausPartnerUndFahrzeugdaten");
+        })
+    )
+}
+else
+{
+    @(Html.Telerik()
+        .Grid<UploadPartnerUndFahrzeugdaten>()
+        .Name(gridName)
+        .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+        .XAjaxDataBinding("UploadSavePartnerUndFahrzeugdatenAjaxBinding", "AutohausPartnerUndFahrzeugdaten")
+        .Columns(columns =>
+        {
+            columns.XBound(c => c.DatensatzNr).Visible(false);
+            columns.XBound(c => c.SaveStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+
+            columns.XBound(c => c.Halter.KundenNr).Visible(false);
+            columns.XBound(c => c.Halter.Name1);
+            columns.XBound(c => c.Halter.Name2);
+            columns.XBound(c => c.Halter.Strasse);
+            columns.XBound(c => c.Halter.HausNr);
+            columns.XBound(c => c.Halter.Plz);
+            columns.XBound(c => c.Halter.Ort);
+            columns.XBound(c => c.Halter.Land);
+            columns.XBound(c => c.Halter.Email);
+            columns.XBound(c => c.Halter.Telefon);
+            columns.XBound(c => c.Halter.Fax);
+            columns.XBound(c => c.Halter.Bemerkung);
+            columns.XBound(c => c.Halter.Referenz1);
+            columns.XBound(c => c.Halter.Referenz2);
+            columns.XBound(c => c.Halter.Gewerblich);
+            columns.XBound(c => c.Halter.Partnerrolle).Visible(false);
+            columns.XBound(c => c.Halter.KundendatenSpeichern);
+            columns.XBound(c => c.Fahrzeug.FahrgestellNr);
+            columns.XBound(c => c.Fahrzeug.HerstellerSchluessel);
+            columns.XBound(c => c.Fahrzeug.TypSchluessel);
+            columns.XBound(c => c.Fahrzeug.VvsSchluessel);
+            columns.XBound(c => c.Fahrzeug.VvsPruefziffer);
+            columns.XBound(c => c.Fahrzeug.FabrikName);
+            columns.XBound(c => c.Fahrzeug.HandelsName);
+            columns.XBound(c => c.Fahrzeug.Kennzeichen);
+            columns.XBound(c => c.Fahrzeug.Erstzulassung);
+            columns.XBound(c => c.Fahrzeug.AktZulassung);
+            columns.XBound(c => c.Fahrzeug.Abmeldedatum);
+            columns.XBound(c => c.Fahrzeug.Fahrzeugart);
+            columns.XBound(c => c.Fahrzeug.Verkaufssparte);
+            columns.XBound(c => c.Fahrzeug.FahrzeugNr);
+            columns.XBound(c => c.Fahrzeug.AuftragsNr);
+            columns.XBound(c => c.Fahrzeug.Firmenreferenz1);
+            columns.XBound(c => c.Fahrzeug.Firmenreferenz2);
+        })
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportUploadItemsFilteredExcel", "AutohausPartnerUndFahrzeugdaten");
+            commands.FilteredDataCommand("ExportUploadItemsFilteredPDF", "AutohausPartnerUndFahrzeugdaten");
+        })
+    )
+}

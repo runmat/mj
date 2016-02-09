@@ -71,12 +71,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutohausFahrzeugdaten\Contracts\IUploadFahrzeugdatenDataService.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Contracts\IUploadPartnerUndFahrzeugdatenDataService.cs" />
     <Compile Include="AutohausFahrzeugdaten\Models\AppModelMappings.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\AppModelMappings.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\DataModels\Fahrzeugdaten.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\DataModels\Partnerdaten.cs" />
     <Compile Include="AutohausFahrzeugdaten\Models\DataModels\UploadFahrzeug.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\UploadFahrzeugdaten.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\UploadPartnerdaten.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Models\UploadPartnerUndFahrzeugdaten.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\Services\UploadPartnerUndFahrzeugdatenDataServiceSap.cs" />
     <Compile Include="AutohausFahrzeugdaten\Services\UploadFahrzeugdatenDataServiceSap.cs" />
+    <Compile Include="AutohausPartnerUndFahrzeugdaten\ViewModels\UploadPartnerUndFahrzeugdatenViewModel.cs" />
     <Compile Include="AutohausFahrzeugdaten\ViewModels\UploadFahrzeugdatenViewModel.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdatenController.cs" />
     <Compile Include="Controllers\AutohausFahrzeugdaten\AutohausFahrzeugdatenController.cs" />
+    <Compile Include="Controllers\AutohausPartnerUndFahrzeugdatenController.cs" />
+    <Compile Include="Controllers\AutohausPartnerUndFahrzeugdaten\AutohausPartnerUndFahrzeugdatenController.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\WebUploadProtokoll.cs" />
     <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
     <Compile Include="Zulassung\Models\AuslieferAdresse.cs" />

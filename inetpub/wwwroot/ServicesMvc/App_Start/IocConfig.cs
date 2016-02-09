@@ -63,6 +63,8 @@ using SapORM.Contracts;
 using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
 using Telerik.Web.Mvc.Infrastructure;
 using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
 
@@ -243,6 +245,7 @@ namespace ServicesMvc
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
 
             builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

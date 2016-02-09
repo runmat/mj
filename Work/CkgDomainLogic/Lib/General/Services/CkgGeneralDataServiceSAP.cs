@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
@@ -324,6 +325,16 @@ namespace CkgDomainLogic.General.Services
                 return message;
 
             return "";
+        }
+
+        protected static void ValidateSingleUploadItem(IUploadItem item)
+        {
+            var liste = new List<ValidationResult>();
+
+            item.ValidationOk = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
+
+            var ser = new System.Web.Script.Serialization.JavaScriptSerializer();
+            item.ValidationErrorsJson = ser.Serialize(liste);
         }
     }
 }

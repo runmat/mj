@@ -662,7 +662,9 @@ namespace GeneralTools.Models
 
         public static bool ToBool(this string stringValue)
         {
-            return (stringValue.NotNullOrEmpty().ToUpper() == "TRUE");
+            var strUppercaseText = stringValue.NotNullOrEmpty().ToUpper();
+
+            return (strUppercaseText == "TRUE" || strUppercaseText == "JA" || strUppercaseText == "X");
         }
 
         public static bool IsInteger(this string stringValue)
