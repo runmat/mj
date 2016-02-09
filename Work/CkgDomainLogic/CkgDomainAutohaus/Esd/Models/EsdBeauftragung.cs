@@ -9,21 +9,20 @@ using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
-using MvcTools.Web;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class EsdAnforderung
+    public class EsdBeauftragung
     {
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
-        public static Func<EsdAnforderungViewModel> GetViewModel { get; set; }
+        public static Func<EsdBeauftragungViewModel> GetViewModel { get; set; }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugTyp { get; set; }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.Country)]
+        [LocalizedDisplay(LocalizeConstants.SelectedCountry)]
         public string Land { get; set; }
 
         [XmlIgnore]
@@ -45,6 +44,23 @@ namespace CkgDomainLogic.Autohaus.Models
         [Required]
         [LocalizedDisplay(LocalizeConstants.PhoneNo)]
         public string AnsprechTelefonNr { get; set; }
+
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.FirstName)]
+        public string KundeVorname { get; set; }
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.LastName)]
+        public string KundeNachname { get; set; }
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.Email)]
+        public string KundeEmail { get; set; }
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.PhoneNo)]
+        public string KundeTelefonNr { get; set; }
 
 
         #region Dienstleistungen

@@ -9,9 +9,9 @@ using AppModelMappings = CkgDomainLogic.Autohaus.Models.AppModelMappings;
 
 namespace CkgDomainLogic.Autohaus.Services
 {
-    public class EsdAnforderungDataServiceSAP : CkgGeneralDataServiceSAP, IEsdAnforderungDataService
+    public class EsdBeauftragungDataServiceSAP : CkgGeneralDataServiceSAP, IEsdBeauftragungDataService
     {
-        public EsdAnforderungDataServiceSAP(ISapDataService sap)
+        public EsdBeauftragungDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
         }
@@ -29,18 +29,10 @@ namespace CkgDomainLogic.Autohaus.Services
             }
         }
 
-        public List<Hersteller> HerstellerGesamtliste { get { return PropertyCacheGet(() => LoadHerstellerFromSap().ToList()); } }
-
-        private IEnumerable<Hersteller> LoadHerstellerFromSap()
-        {
-            Z_DPM_READ_ZDAD_AUFTR_006.Init(SAP, "I_KENNUNG", "HERSTELLER");
-
-            return AppModelMappings.Z_DPM_READ_ZDAD_AUFTR_006_GT_WEB_To_Hersteller.Copy(Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB.GetExportListWithExecute(SAP));
-        }
 
         public string GetEmpfaengerEmailAdresse()
         {
-            Z_DPM_READ_ZDAD_AUFTR_006.Init(SAP, "I_KENNUNG", "ESD-ANFORDERUNG");
+            Z_DPM_READ_ZDAD_AUFTR_006.Init(SAP, "I_KENNUNG", "ESD-BEAUFTRAGUNG");
 
             SAP.Execute();
 

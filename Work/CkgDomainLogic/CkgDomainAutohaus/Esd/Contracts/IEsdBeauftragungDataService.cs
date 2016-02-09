@@ -4,11 +4,9 @@ using CkgDomainLogic.General.Models;
 
 namespace CkgDomainLogic.Autohaus.Contracts
 {
-    public interface IEsdAnforderungDataService : ICkgGeneralDataService
+    public interface IEsdBeauftragungDataService : ICkgGeneralDataService
     {
         List<Land> LaenderAuswahlliste { get; }
-
-        List<Hersteller> HerstellerGesamtliste { get; }
 
         string GetEmpfaengerEmailAdresse();
     }

@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
-@model EsdAnforderung
+@model EsdBeauftragung
 
 <style>
     
@@ -14,23 +14,20 @@
     .form-actions .btn i {
         display: inline !important;
     }
+
+    #EsdAnforderungDetailsAjaxForm .dienstleistungen-wrapper.two-row {
+        border: 0 !important;
+    }
     
 </style>
 
 <div id="divFormDetails">
-    @using (Ajax.BeginForm("EsdAnfordern", "Esd", null,
+    @using (Ajax.BeginForm("EsdBeauftragen", "Esd", null,
         new MvcAjaxOptions("divFormDetails") { OnComplete = "ShowReceiptAjax();" }, new { id = "EsdAnforderungDetailsAjaxForm" }))
     {    
         <div class="form-horizontal label-width-200" id="searchForm">
             
             @*@Html.HiddenFor(m => m.Kopfdaten.FahrzeugTyp)*@
-
-            <h5>
-                <span class="bold">Gewähltes Land: </span><span>???</span>
-                @*<span class="bold">@Localize.VehicleType: </span>@Model.Kopfdaten.FahrzeugTypBezeichnung
-                <span class="margin-left-10 bold">@Localize.Manufacturer: </span>@Model.Kopfdaten.HerstellerBezeichnung
-                <span class="margin-left-10 bold">@Localize.CountryOfFirstRegistration: </span>@Model.Kopfdaten.LandDerErstenZulassungBezeichnung*@
-            </h5>
 
             @Html.FormValidationSummary()
 
@@ -40,10 +37,13 @@
                 
                     <div class="span6">
 
-                        @using (Html.PortletBox(Localize.VehicleData, "icon-car", "light-grey bg-white", false))
+                        @using (Html.PortletBox(Localize.Country + " + " + Localize.VehicleData, "", "light-grey bg-white", false))
                         {
-                            @Html.FormDropDownListFor(m => m.Land, EsdAnforderung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
+                            @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
+                        }
 
+                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white", false))
+                        {
                             <div class="dienstleistungen-wrapper">
 
                                 @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
@@ -61,12 +61,11 @@
                                 </select>
                             </div>
                         }
-
                     </div>
 
                     <div class="span6">
 
-                        @using (Html.PortletBox(Localize.Contactperson, "icon-user", "light-grey bg-white", false))
+                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white", false))
                         {
                             @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
 
@@ -75,6 +74,17 @@
                             @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
 
                             @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
+                        }
+
+                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.KundeVorname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.KundeNachname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.KundeEmail, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.KundeTelefonNr, new { @class = "m-wrap" })
                         }
 
                     </div>
@@ -95,28 +105,7 @@
 
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
-            MultiSelectPreparePrivate();
-
-            function MultiSelectPreparePrivate() {
-                $('#pre-selected-options').multiSelect();
-
-                $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    $(this).append('<i class="icon-chevron-right"></i>');
-                });
-                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
-                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
-                    $(this).append('<i class="icon-remove"></i>');
-                });
-                $('#ms-pre-selected-options').removeClass('hide');
-
-                $('#pre-selected-options').change(function() {
-                    var selectedOptions = '';
-                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
-                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
-                    });
-                    $("#GewaehlteDienstleistungenString").val(selectedOptions);
-                });
-            }
+            MultiSelectPreparePublic(true);
 
         </script>
     }

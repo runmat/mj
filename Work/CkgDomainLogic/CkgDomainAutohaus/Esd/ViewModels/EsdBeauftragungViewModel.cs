@@ -16,7 +16,7 @@ using WebTools.Services;
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
     [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
-    public class EsdAnforderungViewModel : CkgBaseViewModel
+    public class EsdBeauftragungViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
         public IZulassungDataService ZulassungDataService
@@ -25,9 +25,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public IEsdAnforderungDataService EsdAnforderungDataService
+        public IEsdBeauftragungDataService EsdBeauftragungDataService
         {
-            get { return CacheGet<IEsdAnforderungDataService>(); }
+            get { return CacheGet<IEsdBeauftragungDataService>(); }
         }
 
         [XmlIgnore, ScriptIgnore]
@@ -38,7 +38,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
-                return EsdAnforderungDataService.HerstellerGesamtliste
+                return EsdBeauftragungDataService.HerstellerGesamtliste
                     .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionPleaseChoose } }).OrderBy(f => f.Name).ToList();
             }
         }
@@ -48,7 +48,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
-                return EsdAnforderungDataService.LaenderAuswahlliste
+                return EsdBeauftragungDataService.LaenderAuswahlliste
                         .Where(l => !string.IsNullOrEmpty(l.ID))
                         .OrderByDescending(l => l.ID == "DE").ThenBy(l => l.Name.IsNullOrEmpty() ? "ZZ" : l.Name)
                         .Concat(new List<Land> { new Land { ID = "", Name = Localize.DropdownDefaultOptionOther } })
@@ -59,9 +59,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<SelectItem> Jahre { get { return PropertyCacheGet(() => GetJahreSelectList()); } }
 
-        public EsdAnforderung EsdAnforderung
+        public EsdBeauftragung EsdBeauftragung
         {
-            get { return PropertyCacheGet(() => new EsdAnforderung()); }
+            get { return PropertyCacheGet(() => new EsdBeauftragung()); }
             set { PropertyCacheSet(value); }
         }
 
@@ -70,14 +70,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             DataMarkForRefresh();
 
-            EsdAnforderung = new EsdAnforderung
+            EsdBeauftragung = new EsdBeauftragung
             {
                 AnsprechVorname = LogonContext.FirstName,
                 AnsprechNachname = LogonContext.LastName,
                 AnsprechEmail = LogonContext.UserInfo.Mail,
                 AnsprechTelefonNr = LogonContext.UserInfo.Telephone
             };
-            EsdAnforderung.InitDienstleistungen();
+            EsdBeauftragung.InitDienstleistungen();
         }
 
         public void DataMarkForRefresh()
@@ -97,7 +97,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return liste;
         }
 
-        private void ApplyDetails(EsdAnforderung model)
+        private void ApplyDetails(EsdBeauftragung model)
         {
             //EsdAnforderung.JahrDerErstzulassung = model.JahrDerErstzulassung;
             //EsdAnforderung.FahrgestellNr = model.FahrgestellNr;
@@ -107,11 +107,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             //EsdAnforderung.TelefonNr = model.TelefonNr;
         }
 
-        public void EsdAnforderungAbsenden(EsdAnforderung model, Action<string, string> addModelError)
+        public void EsdBeauftragungAbsenden(EsdBeauftragung model, Action<string, string> addModelError)
         {
             ApplyDetails(model);
 
-            var empfaengerEmail = EsdAnforderungDataService.GetEmpfaengerEmailAdresse();
+            var empfaengerEmail = EsdBeauftragungDataService.GetEmpfaengerEmailAdresse();
 
             if (string.IsNullOrEmpty(empfaengerEmail))
             {

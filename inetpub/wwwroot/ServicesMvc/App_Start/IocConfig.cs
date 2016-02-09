@@ -245,7 +245,7 @@ namespace ServicesMvc
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
 
             builder.RegisterType<CocAnforderungDataServiceSAP>().As<ICocAnforderungDataService>().InstancePerHttpRequest();
-            builder.RegisterType<EsdAnforderungDataServiceSAP>().As<IEsdAnforderungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<EsdBeauftragungDataServiceSAP>().As<IEsdBeauftragungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

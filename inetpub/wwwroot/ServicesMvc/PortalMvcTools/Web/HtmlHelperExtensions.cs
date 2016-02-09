@@ -506,20 +506,21 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
-        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes)
+        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes, string labelText="")
         {
             var model = new FormControlModel
             {
                 PostControlHtml = controlHtml == null ? null : controlHtml.Invoke(null),
                 ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
+                DisplayNameHtml = new MvcHtmlString(labelText)
             };
 
             return model;
         }
 
-        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null, string labelText = "")
         {
-            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes);
+            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes, labelText);
 
             return html.FormLeftLabelControl(model);
         }

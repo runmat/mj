@@ -10,30 +10,30 @@ namespace ServicesMvc.Autohaus.Controllers
 {
     public class EsdController : CkgDomainController
     {
-        public override string DataContextKey { get { return GetDataContextKey<EsdAnforderungViewModel>(); } }
+        public override string DataContextKey { get { return GetDataContextKey<EsdBeauftragungViewModel>(); } }
 
-        public EsdAnforderungViewModel ViewModel 
+        public EsdBeauftragungViewModel ViewModel 
         { 
-            get { return GetViewModel<EsdAnforderungViewModel>(); } 
+            get { return GetViewModel<EsdBeauftragungViewModel>(); } 
             set { SetViewModel(value); } 
         }
 
         public EsdController(IAppSettings appSettings, ILogonContextDataService logonContext,
             IZulassungDataService zulassungDataService,
-            IEsdAnforderungDataService esdAnforderungDataService
+            IEsdBeauftragungDataService esdBeauftragungDataService
             )
             : base(appSettings, logonContext)
         {
             if (IsInitialRequestOf("Index"))
                 ViewModel = null;
 
-            InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService, esdAnforderungDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, zulassungDataService, esdBeauftragungDataService);
             InitModelStatics();
         }
 
         private void InitModelStatics()
         {
-            EsdAnforderung.GetViewModel = GetViewModel<EsdAnforderungViewModel>;
+            EsdBeauftragung.GetViewModel = GetViewModel<EsdBeauftragungViewModel>;
         }
 
         [CkgApplication]
@@ -56,14 +56,14 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ShowDetails()
         {
-            return PartialView("Partial/FormDetails", ViewModel.EsdAnforderung);
+            return PartialView("Partial/FormDetails", ViewModel.EsdBeauftragung);
         }
 
         [HttpPost]
-        public ActionResult EsdAnfordern(EsdAnforderung model)
+        public ActionResult EsdBeauftragen(EsdBeauftragung model)
         {
             if (ModelState.IsValid)
-                ViewModel.EsdAnforderungAbsenden(model, ModelState.AddModelError);
+                ViewModel.EsdBeauftragungAbsenden(model, ModelState.AddModelError);
 
             return PartialView("Partial/FormDetails", model);
         }
