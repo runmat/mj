@@ -335,7 +335,7 @@ namespace Telerik.Web.Mvc.UI
         public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression, bool columnVisibleOnStart = true)
             where TModel : class
         {
-            return builder.XBound(expression.GetPropertyName(), columnVisibleOnStart);
+            return builder.XBound(expression.GetPropertyName(true), columnVisibleOnStart);
         }
 
         public static GridBuilder<TModel> XToolBar<TModel>(this GridBuilder<TModel> builder, string controller)

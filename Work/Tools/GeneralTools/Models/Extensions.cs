@@ -775,7 +775,7 @@ namespace GeneralTools.Models
 
     public static class ExpressionExtensions
     {
-        public static string GetPropertyName(this LambdaExpression lambda)
+        public static string GetPropertyName(this LambdaExpression lambda, bool forGridBinding = false)
         {
             MemberExpression memberExpr = null;
 
@@ -792,7 +792,13 @@ namespace GeneralTools.Models
             if (memberExpr == null)
                 throw new ArgumentException("method");
 
-            return memberExpr.Member.Name;
+            var memberExprExpr = memberExpr.Expression.ToString();
+            var memberExprMember = memberExpr.Member.Name;
+
+            if (forGridBinding && memberExprExpr.Contains("."))
+                return string.Format("{0}.{1}", memberExprExpr.Split('.').Last(), memberExprMember);
+
+            return memberExprMember;
         }
     }
 
