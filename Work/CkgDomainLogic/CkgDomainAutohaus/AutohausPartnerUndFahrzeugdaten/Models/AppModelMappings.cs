@@ -52,11 +52,11 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
             }
         }
 
-        static public ModelMapping<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_PARTNER_IMP, Partnerdaten> Z_AHP_CRE_CHG_PARTNER_FZGDATEN_GT_WEB_PARTNER_IMP_From_Partnerdaten
+        static public ModelMapping<Z_AHP_CRE_CHG_PARTNER.GT_WEB_IMP, Partnerdaten> Z_AHP_CRE_CHG_PARTNER_GT_WEB_IMP_From_Partnerdaten
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_PARTNER_IMP, Partnerdaten>(
+                return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_PARTNER.GT_WEB_IMP, Partnerdaten>(
                     new Dictionary<string, string>()
                     , null
                     , (s, d) =>
@@ -82,11 +82,11 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
             }
         }
 
-        static public ModelMapping<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_FZG_IMP, Fahrzeugdaten> Z_AHP_CRE_CHG_PARTNER_FZGDATEN_GT_WEB_FZG_IMP_From_Fahrzeugdaten
+        static public ModelMapping<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP, Fahrzeugdaten> Z_AHP_CRE_CHG_FZG_AKT_BEST_GT_WEB_IMP_From_Fahrzeugdaten
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_PARTNER_FZGDATEN.GT_WEB_FZG_IMP, Fahrzeugdaten>(
+                return EnsureSingleton(() => new ModelMapping<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP, Fahrzeugdaten>(
                     new Dictionary<string, string>()
                     , null
                     , (s, d) =>
@@ -111,6 +111,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
                         d.FIN_ID = s.FahrzeugID;
                         d.FZGART = s.Fahrzeugart;
                         d.FZGNR = s.FahrzeugNr;
+                        d.HALTER = s.Halter;
                         d.KENNZ = s.Kennzeichen;
                         d.KOSTL = s.Kostenstelle;
                         d.LGORT = s.Lagerort;

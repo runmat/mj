@@ -12,6 +12,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.VehicleId)]
         public string FahrzeugID { get; set; }
 
+        [Required]
         [StringLength(30)]
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }
@@ -104,6 +105,9 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
 
         [LocalizedDisplay(LocalizeConstants.TradeName)]
         public string HandelsName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string Halter { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

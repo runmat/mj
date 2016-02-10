@@ -113,11 +113,11 @@ namespace ServicesMvc.Controllers
             var item = ViewModel.GetDatensatzById(DatensatzNr);
 
             if (item is UploadPartnerdaten)
-                UpdateModel((item as UploadPartnerdaten));
+                TryUpdateModel((item as UploadPartnerdaten));
             else if (item is UploadFahrzeugdaten)
-                UpdateModel((item as UploadFahrzeugdaten));
+                TryUpdateModel((item as UploadFahrzeugdaten));
             else if (item is UploadPartnerUndFahrzeugdaten)
-                UpdateModel((item as UploadPartnerUndFahrzeugdaten));
+                TryUpdateModel((item as UploadPartnerUndFahrzeugdaten));
 
             return View(new GridModel(ViewModel.UploadItems));
         }

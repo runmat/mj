@@ -53,6 +53,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
+        [Required]
         [StringLength(10)]
         [LocalizedDisplay(LocalizeConstants.Reference1)]
         public string Referenz1 { get; set; }
