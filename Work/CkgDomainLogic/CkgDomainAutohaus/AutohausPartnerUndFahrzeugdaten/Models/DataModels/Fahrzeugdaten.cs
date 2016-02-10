@@ -113,20 +113,14 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         {
             DateTime tmpDat;
 
-            if (!String.IsNullOrEmpty(Erstzulassung) && !DateTime.TryParse(Erstzulassung, out tmpDat))
-            {
+            if (!string.IsNullOrEmpty(Erstzulassung) && !DateTime.TryParse(Erstzulassung, out tmpDat))
                 yield return new ValidationResult(Localize.DateInvalid, new[] { "Erstzulassung" });
-            }
 
-            if (!String.IsNullOrEmpty(AktZulassung) && !DateTime.TryParse(AktZulassung, out tmpDat))
-            {
+            if (!string.IsNullOrEmpty(AktZulassung) && !DateTime.TryParse(AktZulassung, out tmpDat))
                 yield return new ValidationResult(Localize.DateInvalid, new[] { "AktZulassung" });
-            }
 
-            if (!String.IsNullOrEmpty(Abmeldedatum) && !DateTime.TryParse(Abmeldedatum, out tmpDat))
-            {
+            if (!string.IsNullOrEmpty(Abmeldedatum) && !DateTime.TryParse(Abmeldedatum, out tmpDat))
                 yield return new ValidationResult(Localize.DateInvalid, new[] { "Abmeldedatum" });
-            }
         }
     }
 }
