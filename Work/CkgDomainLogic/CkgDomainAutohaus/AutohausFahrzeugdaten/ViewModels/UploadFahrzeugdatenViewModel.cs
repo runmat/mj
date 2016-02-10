@@ -111,7 +111,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
             {
                 InitDataMapper(MappingSelectionModel.MappingId);
                 var inputData = new ExcelDocumentFactory().ReadToDataTableForMappedUpload(UploadServerFileName, true, DynamicObjectConverter.CreateDynamicObjectFromDatarow, MappingModel.SourceFile.Delimiter, true, true).ToList();
-                list = MapData<UploadFahrzeug>(inputData, delegate(UploadFahrzeug fzg) { fzg.FahrgestellNr = fzg.FahrgestellNr.NotNullOrEmpty().ToUpper(); }, state);
+                list = MapData<UploadFahrzeug>(inputData, delegate(UploadFahrzeug fzg) { fzg.FahrgestellNr = fzg.FahrgestellNr.NotNullOrEmpty().ToUpper(); }, false, state);
             }
             else
             {

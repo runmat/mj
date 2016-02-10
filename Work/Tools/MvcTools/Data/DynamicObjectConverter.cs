@@ -13,9 +13,7 @@ namespace MvcTools.Data
         public static T MapDynamicObjectToDestinationObject<T>(dynamic inputObject)
             where T : class, new()
         {
-            var propertiesDst = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            return ConvertDynamicObjectToDestinationObject<T>(inputObject, propertiesDst);
+            return ConvertDynamicObjectToDestinationObject<T>(inputObject);
         }
 
         public static List<T> MapDynamicObjectListToDestinationObjectList<T>(IEnumerable<dynamic> inputObjects, Action<T> afterMappingAction = null)
@@ -25,11 +23,9 @@ namespace MvcTools.Data
 
             if (inputObjects.Any())
             {
-                var propertiesDst = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
                 foreach (var item in inputObjects)
                 {
-                    var dstObject = ConvertDynamicObjectToDestinationObject<T>(item, propertiesDst);
+                    var dstObject = ConvertDynamicObjectToDestinationObject<T>(item);
 
                     if (afterMappingAction != null)
                         afterMappingAction(dstObject);
@@ -41,25 +37,61 @@ namespace MvcTools.Data
             return destinationList;
         }
 
-        private static T ConvertDynamicObjectToDestinationObject<T>(dynamic inputObject, PropertyInfo[] destinationProperties)
+        private static T ConvertDynamicObjectToDestinationObject<T>(dynamic inputObject)
             where T : class, new()
         {
             var destination = new T();
 
-            var propertyNamesSrc = ((IDictionary<string, object>)inputObject).Keys.ToList();
+            var propertiesDst = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            foreach (var propertyNameSrc in propertyNamesSrc)
+            foreach (var propertyDst in propertiesDst)
             {
-                var propertyDst = destinationProperties.FirstOrDefault(pDst => pDst.Name.ToLower() == propertyNameSrc.ToLower());
-                if (propertyDst != null && propertyDst.GetSetMethod() != null && propertyDst.GetCustomAttributes(true).OfType<ModelMappingCopyIgnoreAttribute>().None())
+                if (propertyDst.GetSetMethod() != null && propertyDst.GetCustomAttributes(true).OfType<ModelMappingCopyIgnoreAttribute>().None() && ((IDictionary<string, object>)inputObject).ContainsKey(propertyDst.Name))
                 {
-                    var inputValue = ((IDictionary<string, object>) inputObject)[propertyNameSrc];
-                    if (inputValue != null)
-                        propertyDst.SetValue(destination, inputValue.ToString().TryConvertToDestinationType(propertyDst, true), null);
+                    var valueSrc = ((IDictionary<string, object>)inputObject)[propertyDst.Name];
+                    if (valueSrc != null)
+                    {
+                        if (PropertyHasSimpleType(propertyDst))
+                        {
+                            // "einfache" Property
+                            propertyDst.SetValue(destination, valueSrc.ToString().TryConvertToDestinationType(propertyDst, true), null);
+                        }
+                        else
+                        {
+                            // Property einer enthaltenen Klasse
+                            var valueDst = propertyDst.GetValue(destination, null);
+                            var valueDstProperties = valueDst.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanWrite).ToList();
+
+                            foreach (var valueDstProperty in valueDstProperties)
+                            {
+                                if (((IDictionary<string, object>)valueSrc).ContainsKey(valueDstProperty.Name))
+                                {
+                                    var subValueSrc = ((IDictionary<string, object>)valueSrc)[valueDstProperty.Name];
+                                    if (subValueSrc != null)
+                                        valueDstProperty.SetValue(valueDst, subValueSrc.ToString().TryConvertToDestinationType(valueDstProperty, true), null);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
             return destination;
+        }
+
+        private static bool PropertyHasSimpleType(PropertyInfo prop)
+        {
+            return ((prop.PropertyType.IsPrimitive)
+                    || (prop.PropertyType == typeof (string))
+                    || (prop.PropertyType == typeof (int?))
+                    || (prop.PropertyType == typeof (long?))
+                    || (prop.PropertyType == typeof (decimal))
+                    || (prop.PropertyType == typeof (decimal?))
+                    || (prop.PropertyType == typeof (float?))
+                    || (prop.PropertyType == typeof (double?))
+                    || (prop.PropertyType == typeof (DateTime))
+                    || (prop.PropertyType == typeof (DateTime?))
+                    || (prop.PropertyType == typeof (bool?)));
         }
 
         public static dynamic CreateDynamicObjectFromDatarow(DataRow row)

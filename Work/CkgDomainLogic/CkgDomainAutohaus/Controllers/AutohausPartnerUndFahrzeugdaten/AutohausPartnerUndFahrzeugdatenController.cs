@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels;
 using CkgDomainLogic.DataConverter.Models;
@@ -110,8 +111,13 @@ namespace ServicesMvc.Controllers
         public ActionResult UploadPartnerUndFahrzeugdatenAjaxUpdateItem(int DatensatzNr)
         {
             var item = ViewModel.GetDatensatzById(DatensatzNr);
-            if (TryUpdateModel(item))
-                ViewModel.ApplyChangedData(item);
+
+            if (item is UploadPartnerdaten)
+                UpdateModel((item as UploadPartnerdaten));
+            else if (item is UploadFahrzeugdaten)
+                UpdateModel((item as UploadFahrzeugdaten));
+            else if (item is UploadPartnerUndFahrzeugdaten)
+                UpdateModel((item as UploadPartnerUndFahrzeugdaten));
 
             return View(new GridModel(ViewModel.UploadItems));
         }

@@ -20,14 +20,14 @@
 
             @if (Model.CanUserSelectCustomer)
             {
-                @Html.FormDropDownListFor(m => m.CustomerId, Model.CustomerList.ToSelectList("CustomerID", "Customername"))
+                @Html.FormDropDownListFor(m => m.CustomerId, Model.CustomerList.ToSelectList("CustomerID", "Customername"), new { @class = "m-wrap" })
             }
             else
             {
                 @Html.HiddenFor(m => m.CustomerId)
             }
 
-            @Html.FormDropDownListFor(m => m.ProzessName, Model.ProzessList.ToSelectList())
+            @Html.FormDropDownListFor(m => m.ProzessName, Model.ProzessList.ToSelectList(), new { @class = "m-wrap" })
 
             <div class="control-group margin-top-20">
                 <label class="control-label">@Localize.UploadFile:</label>

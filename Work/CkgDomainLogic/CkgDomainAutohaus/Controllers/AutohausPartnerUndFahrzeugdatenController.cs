@@ -1,5 +1,4 @@
-﻿using System.Web.Mvc;
-using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
+﻿using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels;
 using CkgDomainLogic.DataConverter.Contracts;
 using CkgDomainLogic.DataConverter.Models;
@@ -26,11 +25,6 @@ namespace ServicesMvc.Controllers
         void InitModelStatics()
         {
             MappedUploadMappingSelectionModel.GetViewModel = GetViewModel<UploadPartnerUndFahrzeugdatenViewModel>;
-        }
-
-        public ActionResult Index()
-        {
-            return RedirectToAction("UploadFahrzeugdaten");
         }
     }
 }

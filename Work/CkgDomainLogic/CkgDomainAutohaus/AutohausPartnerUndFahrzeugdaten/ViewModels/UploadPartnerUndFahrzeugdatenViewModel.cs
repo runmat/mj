@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models;
-using CkgDomainLogic.DataConverter.Services;
 using CkgDomainLogic.DataConverter.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using DocumentTools.Services;
@@ -135,15 +134,15 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
             switch (Modus)
             {
                 case UploadModus.PartnerUpload:
-                    list.AddRange(MapData<UploadPartnerdaten>(inputData, state));
+                    list.AddRange(MapData<UploadPartnerdaten>(inputData, FormatPartner, true, state));
                     break;
 
                 case UploadModus.FahrzeugUpload:
-                    list.AddRange(MapData<UploadFahrzeugdaten>(inputData, FormatFahrzeug, state));
+                    list.AddRange(MapData<UploadFahrzeugdaten>(inputData, FormatFahrzeug, true, state));
                     break;
 
                 case UploadModus.PartnerUndFahrzeugUpload:
-                    list.AddRange(MapData<UploadPartnerUndFahrzeugdaten>(inputData, delegate(UploadPartnerUndFahrzeugdaten pf) { FormatFahrzeug(pf.Fahrzeug); }, state));
+                    list.AddRange(MapData<UploadPartnerUndFahrzeugdaten>(inputData, FormatPartnerUndFahrzeug, true, state));
                     break;
             }
 
@@ -167,9 +166,16 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
             ValidateUploadItems();
         }
 
+        private static void FormatPartner(Partnerdaten partner)
+        {
+            if (string.IsNullOrEmpty(partner.Partnerrolle))
+                partner.Partnerrolle = "ZO01";
+        }
+
         private static void FormatFahrzeug(Fahrzeugdaten fzg)
         {
             fzg.FahrgestellNr = fzg.FahrgestellNr.NotNullOrEmpty().ToUpper();
+            fzg.Kennzeichen = fzg.Kennzeichen.NotNullOrEmpty().ToUpper();
 
             // Aspose-Import dichtet immer 00:00:00 bei Datumswerten dazu...
             if (!string.IsNullOrEmpty(fzg.Erstzulassung) && fzg.Erstzulassung.EndsWith(" 00:00:00"))
@@ -182,9 +188,24 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
                 fzg.Abmeldedatum = fzg.Abmeldedatum.Replace(" 00:00:00", "");
         }
 
+        private static void FormatPartnerUndFahrzeug(UploadPartnerUndFahrzeugdaten partnerUndFzg)
+        {
+            FormatPartner(partnerUndFzg.Halter);
+            FormatFahrzeug(partnerUndFzg.Fahrzeug);
+        }
+
         public void ValidateUploadItems()
         {
-            UploadDataService.ValidateUploadItems();
+            if (UploadItems.Any())
+            {
+                UploadItems.ForEach(ValidateSingleUploadItem);
+
+                if (UploadItems.First() is UploadFahrzeugdaten)
+                    UploadDataService.LoadTypdaten(UploadItems.Select(u => (UploadFahrzeugdaten)u));
+                else if (UploadItems.First() is UploadPartnerUndFahrzeugdaten)
+                    UploadDataService.LoadTypdaten(UploadItems.Select(u => ((UploadPartnerUndFahrzeugdaten)u).Fahrzeug).Where(f => !string.IsNullOrEmpty(f.FahrgestellNr)));
+            }
+
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;
         }
@@ -203,21 +224,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
         {
             var item = UploadItems.Find(u => u.DatensatzNr == id);
             UploadItems.Remove(item);
-        }
-
-        public void ApplyChangedData(IUploadItem item)
-        {
-            if (item != null)
-            {
-                for (int i = 0; i < UploadItems.Count; i++)
-                {
-                    if (UploadItems[i].DatensatzNr == item.DatensatzNr)
-                    {
-                        UploadItems[i] = item;
-                        break;
-                    }
-                }
-            }
         }
 
         public void SaveUploadItems()

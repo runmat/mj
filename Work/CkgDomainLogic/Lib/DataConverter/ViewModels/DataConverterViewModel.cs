@@ -368,7 +368,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
                     }
                 }
 
-                destFieldList.Add(new SelectItem(field.Id, value));
+                destFieldList.Add(new SelectItem(field.Id, value, field.Feldgruppe));
             }
 
             return destFieldList;
@@ -545,7 +545,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         /// Liste von dynamischen Objekten mit allen vorhandenen Datensätzen generieren
         /// </summary>
         /// <returns></returns>
-        public List<dynamic> GenerateResultStructure()
+        public List<dynamic> GenerateResultStructure(bool generateHierarchicalObjects = false)
         {
             var liste = new List<dynamic>();
 
@@ -556,13 +556,46 @@ namespace CkgDomainLogic.DataConverter.ViewModels
                 MappingModel.RecordNo = recordNo;
 
                 RecalcProcessors();
+
                 var destFields = RecalcDestFields().Where(x => !string.IsNullOrEmpty(x.Text));
 
-                foreach (var field in MappingModel.DestinationStructure.Fields)
-                {
-                    var destField = destFields.FirstOrDefault(f => f.Key == field.Id);
+                SelectItem destField;
 
-                    ((IDictionary<string, object>) item).Add(field.Bezeichnung, (destField != null ? destField.Text : null));
+                if (generateHierarchicalObjects)
+                {
+                    var fieldGroups = MappingModel.DestinationStructure.Fields.Where(f => !string.IsNullOrEmpty(f.Feldgruppe)).GroupBy(f => f.Feldgruppe).Select(fg => fg.Key).ToList();
+
+                    foreach (var fieldGroup in fieldGroups)
+                    {
+                        var fieldGroupName = fieldGroup;
+
+                        var subItem = new ExpandoObject();
+
+                        foreach (var field in MappingModel.DestinationStructure.Fields.Where(f => f.Feldgruppe == fieldGroupName))
+                        {
+                            destField = destFields.FirstOrDefault(f => f.Key == field.Id);
+
+                            ((IDictionary<string, object>)subItem).Add(field.Bezeichnung, (destField != null ? destField.Text : null));
+                        }
+
+                        ((IDictionary<string, object>)item).Add(fieldGroupName, subItem);
+                    }
+
+                    foreach (var field in MappingModel.DestinationStructure.Fields.Where(f => string.IsNullOrEmpty(f.Feldgruppe)))
+                    {
+                        destField = destFields.FirstOrDefault(f => f.Key == field.Id);
+
+                        ((IDictionary<string, object>)item).Add(field.Bezeichnung, (destField != null ? destField.Text : null));
+                    }
+                }
+                else
+                {
+                    foreach (var field in MappingModel.DestinationStructure.Fields)
+                    {
+                        destField = destFields.FirstOrDefault(f => f.Key == field.Id);
+
+                        ((IDictionary<string, object>)item).Add(field.Bezeichnung, (destField != null ? destField.Text : null));
+                    }
                 }
 
                 liste.Add(item);
@@ -590,27 +623,29 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         /// Mapping der Daten in eine Liste von anonymen Objekten (vorgelagertes DataInit und InitDataMapper erforderlich!)
         /// </summary>
         /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
+        /// <param name="generateHierarchicalObjects"></param>
         /// <param name="state"></param>
         /// <returns>Liste der Ergebnisobjekte</returns>
-        public List<object> MapData(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
+        public List<object> MapData(IEnumerable<dynamic> inputData, bool generateHierarchicalObjects = false, ModelStateDictionary state = null)
         {
             SetSourceFileData(inputData, state);
 
-            return GenerateResultStructure();
+            return GenerateResultStructure(generateHierarchicalObjects);
         }
 
         /// <summary>
         /// Mapping der Daten in eine Liste von Objekten des angegebenen Typs T (vorgelagertes DataInit und InitDataMapper erforderlich!)
         /// </summary>
         /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
+        /// <param name="generateHierarchicalObjects"></param>
         /// <param name="state"></param>
         /// <returns>Liste der Ergebnisobjekte vom Typ T</returns>
-        public List<T> MapData<T>(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)
+        public List<T> MapData<T>(IEnumerable<dynamic> inputData, bool generateHierarchicalObjects = false, ModelStateDictionary state = null)
             where T : class, new()
         {
             SetSourceFileData(inputData, state);
 
-            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure());
+            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure(generateHierarchicalObjects));
         }
 
         /// <summary>
@@ -618,14 +653,16 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         /// </summary>
         /// <param name="inputData">Liste von Objekten, deren Properties in der Reihenfolge sein müssen wie in der Upload-Exceldatei</param>
         /// <param name="afterMappingAction"></param>
+        /// <param name="generateHierarchicalObjects"></param>
         /// <param name="state"></param>
         /// <returns>Liste der Ergebnisobjekte vom Typ T</returns>
-        public List<T> MapData<T>(IEnumerable<dynamic> inputData, Action<T> afterMappingAction, ModelStateDictionary state = null)
+        [SuppressMessage("ReSharper", "RedundantTypeArgumentsOfMethod")]
+        public List<T> MapData<T>(IEnumerable<dynamic> inputData, Action<T> afterMappingAction, bool generateHierarchicalObjects = false, ModelStateDictionary state = null)
             where T : class, new()
         {
             SetSourceFileData(inputData, state);
 
-            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure(), afterMappingAction);
+            return DynamicObjectConverter.MapDynamicObjectListToDestinationObjectList<T>(GenerateResultStructure(generateHierarchicalObjects), afterMappingAction);
         }
 
         private void SetSourceFileData(IEnumerable<dynamic> inputData, ModelStateDictionary state = null)

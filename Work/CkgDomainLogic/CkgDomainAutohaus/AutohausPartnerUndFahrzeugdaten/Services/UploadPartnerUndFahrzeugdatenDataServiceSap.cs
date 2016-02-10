@@ -18,36 +18,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services
 
         public List<IUploadItem> UploadItems { get; set; }
 
-        public void ValidateUploadItems()
-        {
-            if (UploadItems.Any())
-            {
-                UploadItems.ForEach(ValidateSingleUploadItem);
-
-                if (UploadItems.First() is UploadFahrzeugdaten)
-                    CheckTypdaten(UploadItems.Select(u => (UploadFahrzeugdaten)u));
-                else if (UploadItems.First() is UploadPartnerUndFahrzeugdaten)
-                    CheckTypdaten(UploadItems.Select(u => ((UploadPartnerUndFahrzeugdaten)u).Fahrzeug).Where(f => !string.IsNullOrEmpty(f.FahrgestellNr)));
-            }
-        }
-
-        public string SaveUploadItems()
-        {
-            var itemType = UploadItems.GetType().GetGenericArguments()[0];
-
-            if (itemType == typeof (UploadPartnerdaten))
-                return SaveUploadPartnerdatenItems(UploadItems.Select(u => (UploadPartnerdaten)u));
-
-            if (itemType == typeof (UploadFahrzeugdaten))
-                return SaveUploadFahrzeugdatenItems(UploadItems.Select(u => (UploadFahrzeugdaten)u));
-
-            if (itemType == typeof(UploadPartnerUndFahrzeugdaten))
-                return SaveUploadPartnerUndFahrzeugdatenItems(UploadItems.Select(u => (UploadPartnerUndFahrzeugdaten)u));
-
-            return string.Format("{0} ({1})", Localize.ErrorsOccuredOnSaving, Localize.InvalidObjectType);
-        }
-
-        private void CheckTypdaten(IEnumerable<Fahrzeugdaten> fahrzeuge)
+        public void LoadTypdaten(IEnumerable<Fahrzeugdaten> fahrzeuge)
         {
             Z_AHP_READ_TYPDAT_BESTAND.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
@@ -78,6 +49,23 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services
                     item.HandelsName = "";
                 }
             }
+        }
+
+        public string SaveUploadItems()
+        {
+            if (UploadItems.Any())
+            {
+                if (UploadItems.First() is UploadPartnerdaten)
+                    return SaveUploadPartnerdatenItems(UploadItems.Select(u => (UploadPartnerdaten)u));
+
+                if (UploadItems.First() is UploadFahrzeugdaten)
+                    return SaveUploadFahrzeugdatenItems(UploadItems.Select(u => (UploadFahrzeugdaten)u));
+
+                if (UploadItems.First() is UploadPartnerUndFahrzeugdaten)
+                    return SaveUploadPartnerUndFahrzeugdatenItems(UploadItems.Select(u => (UploadPartnerUndFahrzeugdaten)u));
+            }
+
+            return string.Format("{0} ({1})", Localize.ErrorsOccuredOnSaving, Localize.InvalidObjectType);
         }
 
         #region Partner

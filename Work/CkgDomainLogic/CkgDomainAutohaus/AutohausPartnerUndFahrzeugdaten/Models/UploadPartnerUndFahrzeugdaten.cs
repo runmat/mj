@@ -44,7 +44,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
 
         public UploadPartnerUndFahrzeugdaten()
         {
-            Halter = new Partnerdaten { Partnerrolle = "ZO01" };
+            Halter = new Partnerdaten();
             Fahrzeug = new Fahrzeugdaten();
         }
     }
