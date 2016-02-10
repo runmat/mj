@@ -34,16 +34,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten.Where(f => !string.IsNullOrEmpty(f.Wert)).OrderBy(f => f.Wert).ToList(); } }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Hersteller> Hersteller
-        {
-            get
-            {
-                return EsdBeauftragungDataService.HerstellerGesamtliste
-                    .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionPleaseChoose } }).OrderBy(f => f.Name).ToList();
-            }
-        }
-
-        [XmlIgnore, ScriptIgnore]
         public List<Land> LaenderAuswahlliste
         {
             get

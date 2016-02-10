@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.ViewModels;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -20,6 +21,23 @@ namespace CkgDomainLogic.Autohaus.Models
         [Required]
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugTyp { get; set; }
+
+        [XmlIgnore]
+        public static List<Domaenenfestwert> FahrzeugTypList { get { return GetViewModel == null ? new List<Domaenenfestwert>() : GetViewModel().Fahrzeugarten; } }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleType)]
+        public string FahrzeugTypBezeichnung
+        {
+            get { return (FahrzeugTypList.Any(f => f.Wert == FahrzeugTyp) ? FahrzeugTypList.First(f => f.Wert == FahrzeugTyp).Beschreibung : FahrzeugTyp); }
+        }
+
+
+        [LocalizedDisplay(LocalizeConstants.LeaseCar)]
+        public bool IsLeasingFahrzeug { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Remark)]
+        public string Bemerkung { get; set; }
+
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.SelectedCountry)]

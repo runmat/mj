@@ -18,7 +18,29 @@
     #EsdAnforderungDetailsAjaxForm .dienstleistungen-wrapper.two-row {
         border: 0 !important;
     }
+
+    #EsdAnforderungDetailsAjaxForm .portlet.box .portlet-body {
+        padding-bottom: 0 !important;
+    }
+
+    #EsdAnforderungDetailsAjaxForm .form-horizontal .control-group {
+        margin-bottom: 20px !important;
+    }
     
+    #EsdAnforderungDetailsAjaxForm .ms-container.two-row .ms-selection ul.ms-list li span{
+        width: 107px;
+    }
+    .ms-container .ms-selectable ul.ms-list li span{
+        width: 128px;
+    }    
+
+    #EsdAnforderungDetailsAjaxForm .box-top {
+        min-height: 320px !important;
+    }
+    #EsdAnforderungDetailsAjaxForm .box-bottom {
+        margin-bottom: 0 !important;
+    }
+
 </style>
 
 <div id="divFormDetails">
@@ -37,12 +59,33 @@
                 
                     <div class="span6">
 
-                        @using (Html.PortletBox(Localize.Country + " + " + Localize.VehicleData, "", "light-grey bg-white", false))
+                        @using (Html.PortletBox(Localize.Country + " + " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
                         {
                             @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
+
+                            @Html.FormDropDownListFor(m => m.FahrzeugTyp, EsdBeauftragung.FahrzeugTypList.ToSelectList(), new { @class = "m-wrap small" })
+
+                            @Html.FormCheckBoxFor(m => m.IsLeasingFahrzeug)
+
+                            @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium" })
                         }
 
-                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white", false))
+                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white box-bottom", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
+                        }
+
+                    </div>
+
+                    <div class="span6">
+                        
+                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white box-top", false))
                         {
                             <div class="dienstleistungen-wrapper">
 
@@ -61,41 +104,26 @@
                                 </select>
                             </div>
                         }
-                    </div>
 
-                    <div class="span6">
-
-                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white", false))
+                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white box-bottom", false))
                         {
-                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.KundeVorname, new {@class = "m-wrap"})
 
-                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.KundeNachname, new {@class = "m-wrap"})
 
-                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.KundeEmail, new {@class = "m-wrap"})
 
-                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
-                        }
-
-                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white", false))
-                        {
-                            @Html.FormTextBoxFor(m => m.KundeVorname, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.KundeNachname, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.KundeEmail, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.KundeTelefonNr, new { @class = "m-wrap" })
+                            @Html.FormTextBoxFor(m => m.KundeTelefonNr, new {@class = "m-wrap"})
                         }
 
                     </div>
 
                 </div>
-        
-                @Html.FormRequiredFieldsSummary()
 
             </div>
 
             <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
+                @Html.FormRequiredFieldsSummary()
                 <button type="button" class="btn" onclick="CloseDetails();">@Localize.Back</button>
                 <button type="submit" class="btn green"><i class="icon-file-text margin-right-10"></i>@Localize.Request</button>
             </div>
