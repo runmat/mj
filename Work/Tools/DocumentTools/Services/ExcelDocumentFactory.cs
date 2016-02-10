@@ -42,7 +42,7 @@ namespace DocumentTools.Services
                     return null;
 
                 var extension = Path.GetExtension(excelFileName);
-                if (extension == null)
+                if (string.IsNullOrEmpty(extension))
                     return null;
 
                 if (separator == '*')
@@ -53,7 +53,7 @@ namespace DocumentTools.Services
                 if (maintainLeadingZeros)
                     workbook.ConvertNumericData = false;
 
-                if (extension.ToLower() == "csv")
+                if (extension.ToLower() == ".csv")
                 {
                     workbook.Open(excelFileName, separator);
                 }
