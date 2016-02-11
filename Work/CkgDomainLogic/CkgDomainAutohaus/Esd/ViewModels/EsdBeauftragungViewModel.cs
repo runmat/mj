@@ -46,9 +46,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        [XmlIgnore, ScriptIgnore]
-        public List<SelectItem> Jahre { get { return PropertyCacheGet(() => GetJahreSelectList()); } }
-
         public EsdBeauftragung EsdBeauftragung
         {
             get { return PropertyCacheGet(() => new EsdBeauftragung()); }
@@ -75,26 +72,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ZulassungDataService.MarkForRefresh();
         }
 
-        private static List<SelectItem> GetJahreSelectList()
-        {
-            var liste = new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose) };
-
-            for (var jahr = DateTime.Now.Year; jahr > 1995; jahr--)
-            {
-                liste.Add(new SelectItem(jahr.ToString(), jahr.ToString()));
-            }
-
-            return liste;
-        }
-
         private void ApplyDetails(EsdBeauftragung model)
         {
-            //EsdAnforderung.JahrDerErstzulassung = model.JahrDerErstzulassung;
-            //EsdAnforderung.FahrgestellNr = model.FahrgestellNr;
-            //EsdAnforderung.Vorname = model.Vorname;
-            //EsdAnforderung.Nachname = model.Nachname;
-            //EsdAnforderung.Email = model.Email;
-            //EsdAnforderung.TelefonNr = model.TelefonNr;
+            EsdBeauftragung = model;
+            EsdBeauftragung.InitDienstleistungen();
         }
 
         public void EsdBeauftragungAbsenden(EsdBeauftragung model, Action<string, string> addModelError)

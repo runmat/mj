@@ -8,12 +8,13 @@ using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class EsdBeauftragung
+    public class EsdBeauftragung : IValidatableObject
     {
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<EsdBeauftragungViewModel> GetViewModel { get; set; }
@@ -150,5 +151,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
         #endregion
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (GewaehlteDienstleistungen.None())
+                yield return new ValidationResult(Localize.PleaseSelectAtLeastOneService, new [] { "" });
+        }
     }
 }
