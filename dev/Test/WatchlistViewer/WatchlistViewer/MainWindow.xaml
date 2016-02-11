@@ -6,7 +6,7 @@
         SizeChanged="MainWindow_OnSizeChanged"
         Top="19" Topmost="True" 
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
-        Title="Watchlist Viewer" SizeToContent="WidthAndHeight" >
+        Title="Watchlist Viewer" SizeToContent="Width" Height="600" >
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White" />
     </Window.Background>
@@ -26,10 +26,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
-            <Button Visibility="Collapsed" Command="{Binding GetStockDataCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/refresh}" ToolTip="Watchlist aktualisieren" />
-            <Button Visibility="Collapsed" Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
-            <Button Visibility="Collapsed" Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
 
             <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
 

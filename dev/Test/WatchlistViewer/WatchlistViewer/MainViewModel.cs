@@ -69,7 +69,7 @@ namespace WatchlistViewer
 
         void WorkTimerTick(object sender, EventArgs e)
         {
-            TaskService.StartLongRunningTask(GetStockDataFromStockCaptureStockService);
+            //TaskService.StartLongRunningTask(GetStockDataFromStockCaptureStockService);
         }
 
         //private static void WatchlistShow()

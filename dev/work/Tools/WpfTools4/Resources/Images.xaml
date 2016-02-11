@@ -40,6 +40,7 @@
 
     <Image x:Shared="False" x:Key="image/16x16/add" Source="pack://application:,,,/WpfTools4;component/Images/16x16/add.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/delete" Source="pack://application:,,,/WpfTools4;component/Images/16x16/delete.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/delete_black" Source="pack://application:,,,/WpfTools4;component/Images/16x16/delete_black.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/info" Source="pack://application:,,,/WpfTools4;component/Images/16x16/info.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/save" Source="pack://application:,,,/WpfTools4;component/Images/16x16/save.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/alert" Source="pack://application:,,,/WpfTools4;component/Images/16x16/alert.png" SnapsToDevicePixels="True" Width="16" Height="16" />
