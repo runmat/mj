@@ -6,7 +6,7 @@
         SizeChanged="MainWindow_OnSizeChanged"
         Top="19" Topmost="True" 
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
-        Title="Watchlist Viewer" SizeToContent="Width" Height="600" >
+        Title="Watchlist Viewer" SizeToContent="WidthAndHeight">
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White" />
     </Window.Background>
@@ -28,7 +28,7 @@
             </ItemsControl>
 
             <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
-
+           
         </StackPanel>
     </Border>
 </Window>

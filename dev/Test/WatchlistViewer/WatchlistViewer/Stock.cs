@@ -27,7 +27,7 @@ namespace WatchlistViewer
         {
             { "Goldpreis", "Gold~1326189~XAUUSD=X~0.0~2" },
             { "Euro / US", "€/US~1390634~EURUSD=X~0.0000~2" },
-            //{ "Bund", "Bund~988006~FGBLM5.EX~0.00~1" },
+            { "DAX", "DAX~20735~%5EGDAXI~0~2" },
         };
 
         public string Name
@@ -47,6 +47,8 @@ namespace WatchlistViewer
             get { return _dateTime; }
             set { _dateTime = value; SendPropertyChanged("DateTime"); SendPropertyChanged("ToolTip"); }
         }
+
+        public Func<string> CustomFuncGetValue { get; set; }
 
         public double Value
         {
@@ -131,6 +133,9 @@ namespace WatchlistViewer
         {
             get
             {
+                if (Math.Abs(OpenValue) < 0.01)
+                    return 0;
+
                 return AbsPercentChangeForUI * PixelAbsPercentChangeMaxForUI;
             }
         }

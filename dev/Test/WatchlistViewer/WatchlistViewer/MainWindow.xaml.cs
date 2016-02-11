@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using GeneralTools.Models;
 
 namespace WatchlistViewer
 {
@@ -16,10 +20,10 @@ namespace WatchlistViewer
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //const int marginRight = FirefoxWebDriver.BrowserWidth + FirefoxWebDriver.BrowserMarginRight;
+            //const int margin Right = FirefoxWebDriver.BrowserWidth + FirefoxWebDriver.BrowserMarginRight;
 
             var desktopWorkingArea = SystemParameters.WorkArea;
-            this.Left = desktopWorkingArea.Width - e.NewSize.Width - 150; //- marginRight + 350;
+            Left = desktopWorkingArea.Width - e.NewSize.Width - 150; //- marginRight + 350;
         }
     }
 }

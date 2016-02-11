@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Selenium.WebDriver.Extensions.JQuery;
+using By = OpenQA.Selenium.By;
 
 namespace WatchlistViewer
 {
@@ -22,6 +24,7 @@ namespace WatchlistViewer
 
         static FirefoxDriver _driver;
         private static IntPtr _browserWindowIntPtr;
+        private static IWebElement _daxDiv;
 
         public static void ShowBrowser()
         {
@@ -51,6 +54,42 @@ namespace WatchlistViewer
             return parsedStocks;
         }
 
+        public static void InvokeDax()
+        {
+            ProcessHelper.KillAllProcessesOf(FirefoxProcessName);
+
+            try
+            {
+                var ffBinary = new FirefoxBinary(@"c:\Program Files (x86)\Mozilla Firefox\firefox.exe");
+                var firefoxProfile =
+                    new FirefoxProfile(
+                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\q9bqzwdx.default");
+                _driver = new FirefoxDriver(ffBinary, firefoxProfile);
+                
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            try
+            {
+                _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
+
+                _driver.Url = "http://www.finanzen.net/aktien/DAX-Realtimekurse";
+
+                _daxDiv = WebDriverExtensions.FindElement(_driver, new JQuerySelector("table.header_height"));
+            }
+            catch
+            {
+            }
+        }
+
+        public static string GetDaxValue()
+        {
+            return _daxDiv.Text;
+        }
+
         public static void InvokeEurUsd()
         {
             ProcessHelper.KillAllProcessesOf(FirefoxProcessName);
@@ -60,7 +99,7 @@ namespace WatchlistViewer
                 var ffBinary = new FirefoxBinary(@"c:\Program Files (x86)\Mozilla Firefox\firefox.exe");
                 var firefoxProfile =
                     new FirefoxProfile(
-                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\8c0l0x02.default-1366789569892");
+                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\q9bqzwdx.default");
                 _driver = new FirefoxDriver(ffBinary, firefoxProfile);
             }
             catch (Exception)
@@ -87,6 +126,7 @@ namespace WatchlistViewer
 
                 _driver.Url = "http://www.finanzen100.de/waehrungen/euro-us-dollar-eur-usd_H1763038774_14959435/?gps=1";
 
+                var tbMail = _driver.FindElementById("MAIL_ADDRESS");
                 _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.ShowNormal, FirefoxProcessName);
 
                 var scrollX = 210;
