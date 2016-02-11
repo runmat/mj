@@ -143,10 +143,10 @@
                                                                     border="0">
                                                                     <tr id="tr_Lagerort" runat="server">
                                                                         <td class="TextLarge" nowrap align="right">
-                                                                            <asp:Label ID="lbl_Lagerort" runat="server">lbl_Lagerort</asp:Label>&nbsp;
+                                                                            <asp:Label ID="lbl_VersandStatus" runat="server">lbl_VersandStatus</asp:Label>&nbsp;
                                                                         </td>
                                                                         <td class="TextLargeDescription" nowrap align="left">
-                                                                            &nbsp;<asp:Label ID="lblLagerortShow" runat="server"></asp:Label>
+                                                                            &nbsp;<asp:Label ID="lblVersandStatusShow" runat="server"></asp:Label>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
