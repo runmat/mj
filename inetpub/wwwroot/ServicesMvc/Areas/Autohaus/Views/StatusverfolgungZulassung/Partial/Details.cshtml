@@ -1,0 +1,79 @@
+﻿@model CkgDomainLogic.Autohaus.Models.StatusverfolgungDetails
+
+<style>
+
+    .dd-handle {
+        cursor: auto !important;
+    }
+    
+</style>
+
+<div class="form-horizontal">
+
+    <h4 class="form-section">@Localize.Registration</h4>
+
+    <h5>
+        <i class="icon-road"></i>
+        <span class="margin-left-10 margin-right-5 bold">@Localize.Customer</span>@Model.Zulassungsdaten.KundenNrAndName
+        <span class="margin-left-10 margin-right-5 bold">@Localize.ReceiptNo</span>@Model.Zulassungsdaten.BelegNummer
+        <span class="margin-left-10 margin-right-5 bold">@Localize.CarOwner</span> @Model.Zulassungsdaten.Referenz1
+        <span class="margin-left-10 margin-right-5 bold">@Localize.VIN</span> @Model.Zulassungsdaten.Referenz2
+        <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span> @Model.Zulassungsdaten.Kennzeichen
+    </h5>
+
+    <h4 class="form-section">@Localize.Status</h4>
+
+    @Html.FormValidationSummary()
+
+    <div class="row-fluid">
+
+        <div class="span1">
+        </div>
+
+        @foreach (var item in Model.Statusverfolgungsdaten)
+        {
+            <div class="span2">
+                @Html.Partial("Partial/StatusItem", item)
+            </div>
+        }
+
+        <div class="span1">
+        </div>
+
+    </div>
+
+    <div class="row-fluid margin-top-10">
+
+        <div class="span12">
+
+            <ul class="dd-list">
+    
+                @foreach (var item in Model.Statusverfolgungsdaten.Where(s => s.IsCompleted))
+                {
+                    <li class="dd-item @(item.IsFailed ? "bg-color-ckg-lightred" : "")">
+                        <div class="dd-handle">
+                            <b>@item.StatusDatumUhrzeitFormatted:</b><span class="margin-left-10">@item.StatusText</span>
+                        </div>
+                    </li>
+                }
+
+                @if (Model.AktuellerStatusCode.In("S,L"))
+                {
+                    <li class="dd-item">
+                        <div class="dd-handle">
+                            <b>@Model.AktuellerStatusDatumUhrzeitFormatted:</b><span class="margin-left-10">@Model.AktuellerStatusText</span>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="form-actions">            
+        <button type="button" class="btn" onclick="CloseDetails();">@Localize.Close</button>
+    </div>  
+
+</div>

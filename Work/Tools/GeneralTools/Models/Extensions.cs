@@ -682,6 +682,26 @@ namespace GeneralTools.Models
             DateTime tmp;
             return DateTime.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
+
+        public static bool In(this string stringValue, IEnumerable<string> liste)
+        {
+            return ( stringValue != null && liste.Contains(stringValue));
+        }
+
+        public static bool In(this string stringValue, string listeAsCommaSeparatedString)
+        {
+            return (stringValue != null && !string.IsNullOrEmpty(listeAsCommaSeparatedString) && listeAsCommaSeparatedString.Split(',').Contains(stringValue));
+        }
+
+        public static bool NotIn(this string stringValue, IEnumerable<string> liste)
+        {
+            return (stringValue == null || !liste.Contains(stringValue));
+        }
+
+        public static bool NotIn(this string stringValue, string listeAsCommaSeparatedString)
+        {
+            return (stringValue == null || string.IsNullOrEmpty(listeAsCommaSeparatedString) || !listeAsCommaSeparatedString.Split(',').Contains(stringValue));
+        }
     }
 
     public static class ExpressionExtensions

@@ -414,6 +414,25 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        static public ModelMapping<Z_ZLD_AH_2015_ZULSTATUS.GT_OUT, StatusverfolgungZulassungModel> Z_ZLD_AH_2015_ZULSTATUS_GT_OUT_To_StatusverfolgungZulassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_2015_ZULSTATUS.GT_OUT, StatusverfolgungZulassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Bemerkung = s.BEMERKUNG;
+                        d.PartnerRolle = s.PARVW;
+                        d.Status = s.BEB_STATUS;
+                        d.StatusDatum = s.STADATE;
+                        d.StatusUhrzeit = s.STATIME;
+                        d.TrackingId = s.TRACKING_ID;
+                        d.VersandDienstleister = s.VS_DIENSTLEISTER;
+                    }));
+            }
+        }
+
         #endregion
 
 

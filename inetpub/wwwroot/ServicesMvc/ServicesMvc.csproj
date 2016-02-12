@@ -238,6 +238,17 @@
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
     <Content Include="Images\Commands\OK.png" />
+    <Content Include="Images\icons-sendungsverfolgung\1_beauftragt_blau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\1_beauftragt_grau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\2_unterwegs_blau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\2_unterwegs_grau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\3_bearbeitet_blau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\3_bearbeitet_grau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\3_bearbeitet_rot.png" />
+    <Content Include="Images\icons-sendungsverfolgung\4_unterwegsZurueck_blau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\4_unterwegsZurueck_grau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\5_abgeschlossen_blau.png" />
+    <Content Include="Images\icons-sendungsverfolgung\5_abgeschlossen_grau.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -280,6 +291,11 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
+    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Index.cshtml" />
+    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Grid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Suche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Details.cshtml" />
+    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\StatusItem.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -703,6 +719,7 @@
     <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
     <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
+    <Compile Include="Areas\Autohaus\Controllers\StatusverfolgungZulassungController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
@@ -841,7 +858,7 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
-	<Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

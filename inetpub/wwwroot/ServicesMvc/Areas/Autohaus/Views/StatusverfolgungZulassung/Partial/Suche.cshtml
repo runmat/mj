@@ -1,0 +1,61 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model StatusverfolgungZulassungSelektor
+
+<div id="divSuche">
+    @using (Ajax.BeginForm("LoadData", "StatusverfolgungZulassung", null,
+        new MvcAjaxOptions("divSuche") { OnComplete = "ShowSearchResultAjax();" }, new { id = "SucheAjaxForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormDropDownListFor(m => m.KundenNr, StatusverfolgungZulassungSelektor.Kunden.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.Referenz3, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.Referenz4, new { @class = "m-wrap", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.Referenz5, new { @class = "m-wrap" })
+
+            @Html.FormDateRangePickerFor(m => m.ZulassungsDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.AuftragsDatumRange, new { col = "right" })
+
+            @Html.FormRadioButtonListFor(m => m.AuftragsArt, StatusverfolgungZulassungSelektor.AuftragsArtOptionen)
+
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowSearchResultAjax() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowData",
+            loadingShow: true,
+            success: function(result) {
+                SearchResultsTryHide();
+
+                if (_modelStateValid)
+                    ShowSearchResult(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

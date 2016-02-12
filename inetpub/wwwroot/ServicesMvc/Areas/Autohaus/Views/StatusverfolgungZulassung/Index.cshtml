@@ -1,0 +1,82 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.StatusverfolgungZulassungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.StatusTracking <small>@Localize.Registration</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divDetails"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridZulassungen");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridZulassungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridZulassungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridZulassungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowDetailsAjax(belegNr) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "ShowDetails",
+                data: { belegNr: belegNr },
+                loadingShow: true,
+                success: function (result) {
+                    ShowDetails(result);
+                }
+            });
+
+        return false;
+    }
+
+    function ShowDetails(result) {
+        $("#divDetails").html(result);
+        $("#divGrid").slideUp();
+        setTimeout("HandleResponsiveControlWidths()", 500);
+        LoadingHide();
+        $("#divDetails").slideDown();
+        FormPreparePrivateAjax();
+    }
+
+    function CloseDetails() {
+        $("#divDetails").html("");
+        $("#divDetails").slideUp();
+        LoadingHide();
+        $("#divGrid").slideDown();
+        FormPreparePrivateAjax();
+    }
+
+</script>
