@@ -1519,3 +1519,7 @@ div.span-alert-placeholder .alert {
 .bg-white, .portlet.box.bg-white {
     background-color: white !important;
 }
+
+.portlet.box {
+    overflow-x: hidden;
+}
