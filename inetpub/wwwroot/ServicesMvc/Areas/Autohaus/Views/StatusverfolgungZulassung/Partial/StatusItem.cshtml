@@ -14,11 +14,11 @@
             @Model.StatusText
         </div>
 
-        <div class="margin-top-10">
+        <div class="margin-top-10 text-center">
             @foreach (var item in Model.TrackingInfos)
             {
-                <div class="padding-left-30 padding-right-30 padding-bottom-15">
-                    <a target="_blank" href="@item.TrackingUrl">@item.VersandLabelHint</a>
+                <div class="margin-top-10">
+                    <a class="btn mini gray tooltips" data-original-title="@item.TrackingLinkHint" data-placement="right" target="_blank" href="@item.TrackingUrl">@item.TrackingId @item.VersandDienstleister</a>
                 </div>
             }
         </div>

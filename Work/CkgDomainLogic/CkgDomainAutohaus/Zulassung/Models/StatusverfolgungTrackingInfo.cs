@@ -46,9 +46,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
-        public string VersandLabelHint
+        public string TrackingLinkHint
         {
-            get { return string.Format("{0} {1} ({2})", Localize.ShippingLabel, PartnerRolleText, Bemerkung); }
+            get { return string.Format("{0} {1} {2} {3} ({4} {5})", Localize.ShippingSurvey, Localize.TrackingId, TrackingId, VersandDienstleister, PartnerRolleText, Bemerkung); }
         }
 
         public string VersandDienstleisterUrl { get; set; }
