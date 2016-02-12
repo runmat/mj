@@ -24,11 +24,11 @@ namespace CkgDomainLogic.Autohaus.Models
             VersandDienstleisterListe = new List<VersandDienstleister>
             {
                 new VersandDienstleister { Id = "UPS", Name = "UPS", LogoFileName = "ups.png", LogoFileNameExpress = "ups.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
-                new VersandDienstleister { Id = "TNT", Name = "TNT", LogoFileName = "tnt.png", LogoFileNameExpress = "tnt-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
+                //new VersandDienstleister { Id = "TNT", Name = "TNT", LogoFileName = "tnt.png", LogoFileNameExpress = "tnt-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
                 new VersandDienstleister { Id = "DHL", Name = "DHL", LogoFileName = "dhl.png", LogoFileNameExpress = "dhl-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = true }
             };
 
-            // vorübergehend DHL als default vorauswählen
+            // bis auf weiteres DHL als default vorauswählen
             VersandDienstleisterId = "DHL";
         }
 
