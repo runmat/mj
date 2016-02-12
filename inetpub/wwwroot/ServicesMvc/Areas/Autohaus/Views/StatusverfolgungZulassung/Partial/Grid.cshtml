@@ -13,7 +13,7 @@
                 "<# if (data.DokumentNameIsValid) { #>" +
                 "   <a class='btn mini gray tooltips' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DokumentName #>' ><i class='icon-download-alt'></i></a> " +
                 "<# } #> "
-            ).Title("").Sortable(false).Filterable(false);
+            ).Title(Localize.Action).Sortable(false).Filterable(false);
 
         columns.XBound(c => c.KundenNrAndName);
         columns.XBound(c => c.BelegNummer);
