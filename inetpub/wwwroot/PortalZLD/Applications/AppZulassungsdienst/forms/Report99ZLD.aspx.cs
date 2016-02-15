@@ -78,18 +78,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdAmt_Click(object sender, EventArgs e)
         {
-            string sAmt = txtKennzeichen.Text;
-
-            if (objSuche.tblResult.Rows.Count > 0 && !String.IsNullOrEmpty(objSuche.tblResult.Rows[0]["STVALN"].ToString()))
-            {
-                lblInfo.Text = "";
-                string sUrl = objSuche.tblResult.Rows[0]["STVALN"].ToString();
-                ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
-            }
-            else
-            {
-                lblInfo.Text = "Das Straßenverkehrsamt für das amtliche Kennzeichen " + sAmt + " bietet keine Weblink hierfür an.";
-            }
+            ClickLink("STVALN");
         }
 
         /// <summary>
@@ -99,7 +88,18 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdWunsch_Click(object sender, EventArgs e)
         {
-            ClickLink("URL");
+            string sAmt = txtKennzeichen.Text;
+
+            if (objSuche.tblResult.Rows.Count > 0 && !String.IsNullOrEmpty(objSuche.tblResult.Rows[0]["URL"].ToString()))
+            {
+                lblInfo.Text = "";
+                string sUrl = objSuche.tblResult.Rows[0]["URL"].ToString();
+                ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
+            }
+            else
+            {
+                lblInfo.Text = "Das Straßenverkehrsamt für das amtliche Kennzeichen " + sAmt + " bietet keinen Weblink hierfür an.";
+            }
         }
 
         /// <summary>
@@ -424,8 +424,8 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                lblInfo.Text = "Das Straßenverkehrsamt für das amtliche Kennzeichen " + sAmt + " bietet keine Weblink hierfür an.<br>" +
-                    "Möchten Sie auf die Standardstartseite dies Verkehrsamts wechseln, so klicken Sie bitte auf den Link Amt. ";
+                lblInfo.Text = "Das Straßenverkehrsamt für das amtliche Kennzeichen " + sAmt + " bietet keinen Weblink hierfür an.<br>" +
+                    "Möchten Sie auf die Standardstartseite dieses Verkehrsamts wechseln, so klicken Sie bitte auf den Link Wunschkennzeichen. ";
             }
         }
 
