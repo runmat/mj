@@ -506,10 +506,10 @@
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").show();
         }
         else {
-            $("#Expressversand").closest(".kroschke-evb-control-group-border").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").hide();
         }
         $.uniform.update($("#Expressversand"));
     }

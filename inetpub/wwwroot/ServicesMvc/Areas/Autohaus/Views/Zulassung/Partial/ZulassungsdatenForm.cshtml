@@ -61,11 +61,15 @@
         padding: 0 0 0 0;
     }
 
+    .control-label.k-header {
+        text-align: left;
+    }
     .kroschke-evb-control-group-border {
         border: 1px solid #e0e0e0;
         border-radius: 12px!important;
         padding: 10px!important;
         margin-bottom: 20px;
+        min-height: 33px;
     }
     .kroschke-evb-control-group-border .control-group {
         margin-bottom: 0 !important;
@@ -83,6 +87,7 @@
         background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-evb.png) 55px 0px no-repeat;
         height: 53px;
     }
+
     #evb-info {
         display: block;
         min-height: 48px;
@@ -105,6 +110,29 @@
         background: url(/ServicesMvc/images/icons/48x48/ok.png) 0 0 no-repeat;
     }
     #evb-info div {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+    }
+
+    #hint-versandzulassung {
+        display: block;
+        vertical-align: middle;
+        margin: 0 0 0 0 !important;
+        border: 0 !important;
+        border-radius: 10px !important;
+    }
+    #hint-versandzulassung i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 48px;
+        height: 48px;
+        background: 0 0 no-repeat;
+    }
+    #hint-versandzulassung.alert-success i {
+        background: url(/ServicesMvc/images/icons/48x48/ok.png) 0 0 no-repeat;
+    }
+    #hint-versandzulassung div {
         display: table-cell;
         vertical-align: middle;
         padding-left: 10px;

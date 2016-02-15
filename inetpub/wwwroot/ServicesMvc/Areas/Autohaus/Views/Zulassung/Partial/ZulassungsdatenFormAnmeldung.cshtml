@@ -30,12 +30,18 @@ else
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
             <div class="kroschke-evb-control-group-border">
-                @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                <div id="hint-versandzulassung" class="alert alert-success">
+                    <i></i>
+                    <div>@Localize.Autohaus_Versandzulassung</div>
+                </div>
+                <div class="inner">
+                    @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                </div>
             </div>
         }
         else
         {
-        @Html.HiddenFor(m => m.Expressversand)
+            @Html.HiddenFor(m => m.Expressversand)
         }
 
         <div class="kroschke-evb-control-group-border">
