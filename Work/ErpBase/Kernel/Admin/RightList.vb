@@ -1,7 +1,6 @@
-﻿Imports System.Configuration
+﻿Imports System.Collections.Generic
+Imports System.Configuration
 Imports System.Data.SqlClient
-Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Base.Kernel.Security
 
 Namespace Kernel.Admin
 
@@ -9,33 +8,21 @@ Namespace Kernel.Admin
         Inherits DataTable
 
 #Region " Membervariables "
-        Private m_cn As SqlClient.SqlConnection
+
+        Private m_cn As SqlConnection
         Private m_intCustomerID As Integer
-        Private m_intGroupID As Integer
-        Private m_blnTableFilled As Boolean = False
-        Private m_intHighestAuthorizationlevel As Int32
-
-
 
 #End Region
 
 #Region " Properties"
-        Public ReadOnly Property HighestAuthorizationlevel() As Int32
-            Get
-                Return m_intHighestAuthorizationlevel
-            End Get
-        End Property
+
 #End Region
 
 #Region " Constructor "
 
-        Public Sub New(ByVal intCustomerId As Integer, ByVal cn As SqlClient.SqlConnection)
-
+        Public Sub New(ByVal intCustomerId As Integer, ByVal cn As SqlConnection)
             m_cn = cn
             m_intCustomerID = intCustomerId
-            m_intGroupID = -2 'Indikator dafuer, dass nicht nach Gruppe gesucht wird.
-            m_intHighestAuthorizationlevel = 0 '(noch) keine Anwendung gefunden, die Autorisierung erfordert
-
         End Sub
 
 #End Region
@@ -44,304 +31,250 @@ Namespace Kernel.Admin
 
         Public Sub GetAllPossibleRightsforThisCustomer()
 
-            Dim strSql As String = ""
-            Dim daRights As New SqlClient.SqlDataAdapter()
+            Using daRights As New SqlDataAdapter()
 
-            daRights.SelectCommand = New SqlClient.SqlCommand()
-            daRights.SelectCommand.Connection = m_cn
+                daRights.SelectCommand = New SqlCommand()
+                daRights.SelectCommand.Connection = m_cn
 
-            If m_intGroupID = -2 Then
+                daRights.SelectCommand.CommandText = "SELECT m.*, c.CustomerID AS CustomerID, ISNULL(c.HasSettings, 0) AS HasSettings, c.EditUserName, c.EditDate " & _
+                    "FROM CategorySettingsMetadata m LEFT OUTER JOIN CategorySettingsCustomer c ON m.CategoryID = c.CategoryID AND c.CustomerID = @CustomerID"
 
-                strSql = " SELECT CustomerID, CategorySettingsCustomer.CategoryID AS CategoryID, HasSettings, "
-                strSql += "Description, EditUserName, EditDate"
-                strSql += " FROM CategorySettingsCustomer LEFT OUTER JOIN "
-                strSql += " CategorySettingsMetadata ON CategorySettingsCustomer.CategoryID = CategorySettingsMetadata.CategoryID "
-                strSql += "WHERE (CustomerID = @CustomerID) "
+                daRights.SelectCommand.Parameters.AddWithValue("@CustomerID", m_intCustomerID)
 
-            End If
+                daRights.Fill(Me)
 
-            daRights.SelectCommand.CommandText = strSql
-            daRights.SelectCommand.Parameters.AddWithValue("@CustomerID", m_intCustomerID)
-            daRights.Fill(Me)
-
-        End Sub
-
-        Public Shared Sub UpdateSingleRightPerCustomer(ByVal customerId As Integer, ByVal categoryId As String, _
-                                                       ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
-
-            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim cmd As New SqlClient.SqlCommand
-            Dim sSQl As String = ""
-
-            sSQl = "UPDATE CategorySettingsCustomer SET "
-            sSQl += "HasSettings = '" & isChecked & "', "
-            sSQl += "EditUserName = '" & strUsernameBearbeiter & "', "
-            sSQl += "EditDate = '" & Date.Now() & "'"
-            sSQl += " WHERE "
-            sSQl += "CustomerID = " & customerId
-            sSQl += " AND "
-            sSQl += "CategoryID = '" & categoryId & "'"
-
-            Try
-                cn.Open()
-                cmd.Connection = cn
-                cmd.CommandType = CommandType.Text
-                cmd.CommandText = sSQl
-                cmd.ExecuteNonQuery()
-
-            Catch ex As Exception
-                Throw New Exception("Update der CustomerRights fehlgeschlagen")
-            Finally
-                cn.Close()
-            End Try
-
-        End Sub
-
-        Public Shared Function InsertOrDeleteRightForAllUsersOfThisCustomer(ByVal customerId As Integer, ByVal categoryId As String, _
-                                                     ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
-
-            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim sSql As String
-
-            sSql = "SELECT UserID, Username FROM WebUser WHERE customerID = " & customerId
-
-
-            Using cn
-                Dim command As SqlCommand = New SqlCommand(sSql, cn)
-                cn.Open()
-
-                Dim reader As SqlDataReader = command.ExecuteReader()
-
-                If reader.HasRows Then
-                    Do While reader.Read()
-                        InsertOrDeleteRightForSingleUser(customerId, categoryId, isChecked, strUsernameBearbeiter, reader.GetString(1))
-
-                    Loop
-                Else
-                    Console.WriteLine("No rows found.")
-                End If
-
-                reader.Close()
             End Using
 
-            Return Nothing
-
-
-
-        End Function
-
-        Private Shared Sub InsertOrDeleteRightForSingleUser(ByVal customerId As Integer, ByVal categoryId As String, _
-                                                     ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String, ByVal strUserId As String)
-
-
-            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim cmd As New SqlClient.SqlCommand
-            Dim sSQl As String = ""
-
-
-            If isChecked = True Then
-
-                sSQl += "IF NOT EXISTS("
-                sSql += "SELECT CategoryID FROM [CategorySettingsWebUser] "
-                sSql += "WHERE "
-                sSql += "UserName LIKE '" & strUserId & "' "
-                sSql += "AND "
-                sSql += "CategoryID LIKE '" & categoryId & "'"
-                sSql += ")"
-                sSql += "INSERT INTO [CategorySettingsWebUser] "
-                sSql += "(UserName, CategoryID, SettingsValue, EditUserName, EditDate)"
-                sSql += "VALUES "
-                sSQl += "('" & strUserId & "', '" & categoryId & "', 'false', '" & strUsernameBearbeiter & "', CURRENT_TIMESTAMP)  "
-
-            Else
-
-                sSql += "DELETE FROM [CategorySettingsWebUser] "
-                sSql += "WHERE "
-                sSql += "UserName LIKE '" & strUserId & "' "
-                sSql += "AND "
-                sSQl += "CategoryID LIKE '" & categoryId & "'"
-
-            End If
-
-            Try
-                cn.Open()
-                cmd.Connection = cn
-                cmd.CommandType = CommandType.Text
-                cmd.CommandText = sSQl
-
-                cmd.ExecuteNonQuery()
-
-            Catch ex As Exception
-                Throw New Exception("Problem eim Inserten / Deleten der Rechte für den User " & strUserId)
-            Finally
-                cn.Close()
-            End Try
-
         End Sub
 
-        Public Shared Function ShowRightsPerUser(ByVal userName As String) As ArrayList
+        Public Shared Function ShowRightsPerCustomer(ByVal customerId As Integer) As List(Of String)
 
-            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim sSql As String
-            Dim strUserName As String
+            Dim values As New List(Of String)
 
-            strUserName = userName
+            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
 
-            sSql = ""
-            sSql += "SELECT CategorySettingsWebUser.UserName, CategorySettingsWebUser.CategoryID, CategorySettingsMetadata.SettingsType, "
-            sSql += "CategorySettingsWebUser.SettingsValue, CategorySettingsMetadata.Description, CategorySettingsWebUser.EditUserName, "
-            sSql += "dbo.CategorySettingsWebUser.EditDate "
-            sSql += "FROM CategorySettingsMetadata INNER JOIN "
-            sSql += "CategorySettingsWebUser ON CategorySettingsMetadata.CategoryID = CategorySettingsWebUser.CategoryID "
-            sSql += "WHERE UserName LIKE '" & strUserName & "'"
-
-            Dim values As ArrayList = New ArrayList()
-
-            Using cn
-                Dim command As SqlCommand = New SqlCommand(sSql, cn)
                 cn.Open()
 
-                Dim reader As SqlDataReader = command.ExecuteReader()
+                Using cmd As SqlCommand = cn.CreateCommand()
 
-                If reader.HasRows Then
-                    Do While reader.Read()
-                        values.Add(New UserRightInformation(reader.GetString(0),
-                                                            reader.GetString(1),
-                                                            reader.GetString(2),
-                                                            reader.GetString(3),
-                                                            reader.GetString(4)
-                                                            )
-                                    )
-                    Loop
-                Else
-                    System.Diagnostics.Debug.WriteLine("No rows found.")
-                End If
+                    cmd.CommandType = CommandType.Text
 
-                reader.Close()
+                    cmd.CommandText = "SELECT CategoryID FROM CategorySettingsCustomer WHERE CustomerID = @CustomerID AND HasSettings = @HasSettings"
+
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                    cmd.Parameters.AddWithValue("@HasSettings", True)
+
+                    Using reader As SqlDataReader = cmd.ExecuteReader()
+
+                        Do While reader.Read()
+                            values.Add(reader.GetString(0))
+                        Loop
+
+                        reader.Close()
+
+                    End Using
+
+                End Using
+
+                cn.Close()
 
             End Using
 
             Return values
 
-
         End Function
 
-        Shared Sub UpdateRightPerUser(strUserName As String, categoryId As String, strUserRightValue As String, strRightFieldtype As String)
+        Public Shared Sub SaveRightPerCustomer(ByVal customerId As Integer, ByVal categoryId As String, ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
 
-            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-            Dim cmd As New SqlClient.SqlCommand
-            Dim sSQl As String = ""
-            Dim strTeilSql As String = ""
+            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
 
-            If strRightFieldtype = "txtfield" Then
-                strTeilSql += "SettingsValue = '" & strUserRightValue & "' "
-            ElseIf (strRightFieldtype = "chkbox") Then
-                strTeilSql += "SettingsValue = '" & strUserRightValue & "'"
-            End If
-
-            sSQl += "UPDATE CategorySettingsWebUser "
-            sSQl += "SET "
-            sSQl += strTeilSQL
-            sSQl += " WHERE "
-            sSQl += "UserName = '" & strUserName & "'"
-            sSQl += " AND "
-            sSQl += "CategoryID = '" & categoryId & "'"
-
-            Try
                 cn.Open()
-                cmd.Connection = cn
-                cmd.CommandType = CommandType.Text
-                cmd.CommandText = sSQl
-                cmd.ExecuteNonQuery()
 
-            Catch ex As Exception
-                Throw New Exception("Update der CustomerRights fehlgeschlagen")
-            Finally
+                Using cmd As SqlCommand = cn.CreateCommand()
+
+                    cmd.CommandType = CommandType.Text
+
+                    cmd.CommandText = "SELECT COUNT(*) FROM CategorySettingsCustomer WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
+
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+
+                    Dim rowCount As Integer = CInt(cmd.ExecuteScalar())
+
+                    cmd.Parameters.Clear()
+
+                    If rowCount > 0 Then
+                        cmd.CommandText = "UPDATE CategorySettingsCustomer SET HasSettings = @HasSettings, EditUserName = @EditUserName, EditDate = @EditDate " & _
+                        "WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
+                    Else
+                        cmd.CommandText = "INSERT INTO CategorySettingsCustomer (HasSettings, EditUserName, EditDate, CustomerID, CategoryID) " & _
+                            "VALUES (@HasSettings, @EditUserName, @EditDate, @CustomerID, @CategoryID)"
+                    End If
+
+                    cmd.Parameters.AddWithValue("@HasSettings", isChecked)
+                    cmd.Parameters.AddWithValue("@EditUserName", strUsernameBearbeiter)
+                    cmd.Parameters.AddWithValue("@EditDate", DateTime.Now)
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+
+                    cmd.ExecuteNonQuery()
+
+                End Using
+
                 cn.Close()
-            End Try
 
+            End Using
 
         End Sub
 
+        Public Shared Sub DeleteRightSettingForAllUsersOfThisCustomer(ByVal customerId As Integer, ByVal categoryId As String)
+
+            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+
+                cn.Open()
+
+                Using cmd As SqlCommand = cn.CreateCommand()
+
+                    cmd.CommandType = CommandType.Text
+
+                    cmd.CommandText = "DELETE FROM CategorySettingsWebUser WHERE Username IN (SELECT Username FROM WebUser WHERE CustomerID = @CustomerID) AND CategoryID = @CategoryID"
+
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+
+                    cmd.ExecuteNonQuery()
+
+                End Using
+
+                cn.Close()
+
+            End Using
+
+        End Sub
+
+        Public Shared Function ShowRightsPerUser(ByVal userName As String, ByVal customerId As Integer) As ArrayList
+
+            Dim values As New ArrayList()
+
+            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+
+                cn.Open()
+
+                Using cmd As SqlCommand = cn.CreateCommand()
+
+                    cmd.CommandType = CommandType.Text
+
+                    cmd.CommandText = "SELECT m.*, ISNULL(u.UserName, '') AS UserName, ISNULL(u.SettingsValue, '') AS SettingsValue " & _
+                        "FROM CategorySettingsMetadata m INNER JOIN CategorySettingsCustomer c ON m.CategoryID = c.CategoryID " & _
+                        "LEFT OUTER JOIN CategorySettingsWebUser u ON m.CategoryID = u.CategoryID AND u.UserName = @UserName WHERE c.CustomerID = @CustomerID AND c.HasSettings = @HasSettings"
+
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                    cmd.Parameters.AddWithValue("@HasSettings", True)
+                    cmd.Parameters.AddWithValue("@UserName", userName)
+
+                    Using reader As SqlDataReader = cmd.ExecuteReader()
+
+                        Do While reader.Read()
+                            values.Add(New UserRightInformation(reader.GetString(reader.GetOrdinal("UserName")),
+                                                                reader.GetString(reader.GetOrdinal("CategoryID")),
+                                                                reader.GetString(reader.GetOrdinal("SettingsType")),
+                                                                reader.GetString(reader.GetOrdinal("SettingsValue")),
+                                                                reader.GetString(reader.GetOrdinal("Description"))))
+                        Loop
+
+                        reader.Close()
+
+                    End Using
+
+                End Using
+
+                cn.Close()
+
+            End Using
+
+            Return values
+
+        End Function
+
+        Shared Sub SaveRightPerUser(ByVal strUserName As String, ByVal categoryId As String, ByVal strUserRightValue As String, ByVal strUsernameBearbeiter As String)
+
+            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+
+                cn.Open()
+
+                Using cmd As SqlCommand = cn.CreateCommand()
+
+                    cmd.CommandType = CommandType.Text
+
+                    cmd.CommandText = "SELECT COUNT(*) FROM CategorySettingsWebUser WHERE UserName = @UserName AND CategoryID = @CategoryID"
+
+                    cmd.Parameters.AddWithValue("@UserName", strUserName)
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+
+                    Dim rowCount As Integer = CInt(cmd.ExecuteScalar())
+
+                    cmd.Parameters.Clear()
+
+                    If rowCount > 0 Then
+                        cmd.CommandText = "UPDATE CategorySettingsWebUser SET SettingsValue = @SettingsValue, EditUserName = @EditUserName, EditDate = @EditDate " & _
+                        "WHERE UserName = @UserName AND CategoryID = @CategoryID"
+                    Else
+                        cmd.CommandText = "INSERT INTO CategorySettingsWebUser (SettingsValue, EditUserName, EditDate, UserName, CategoryID) " & _
+                            "VALUES (@SettingsValue, @EditUserName, @EditDate, @UserName, @CategoryID)"
+
+                    End If
+
+                    cmd.Parameters.AddWithValue("@SettingsValue", strUserRightValue)
+                    cmd.Parameters.AddWithValue("@EditUserName", strUsernameBearbeiter)
+                    cmd.Parameters.AddWithValue("@EditDate", DateTime.Now)
+                    cmd.Parameters.AddWithValue("@UserName", strUserName)
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+
+                    cmd.ExecuteNonQuery()
+
+                End Using
+
+                cn.Close()
+
+            End Using
+
+        End Sub
 
 #End Region
     End Class
 
     Public Class UserRightInformation
 
-        Dim m_username As String
-        Dim m_categoryId As String
-        Dim m_settingstype As String
-        Dim m_settingsvalue As String
-        Dim m_description As String
+        Public Property UserName As String
+
+        Public Property CategoryId As String
+
+        Public Property SettingsType As String
+
+        ReadOnly Property IsCheckBoxVisible As Boolean
+            Get
+                Return SettingsType = "chkbox"
+            End Get
+        End Property
+
+        ReadOnly Property IsTextBoxVisible As Boolean
+            Get
+                Return SettingsType = "txtfield"
+            End Get
+        End Property
+
+        Public Property SettingsValue As String
+
+        Public Property Description As String
 
         Public Sub New(username As String, categoryId As String, settingstype As String, settingsvalue As String, description As String)
             MyBase.New()
-            m_username = username
-            m_categoryId = categoryId
-            m_settingstype = settingstype
-            m_settingsvalue = settingsvalue
-            m_description = description
+            Me.UserName = username
+            Me.CategoryId = categoryId
+            Me.SettingsType = settingstype
+            Me.SettingsValue = settingsvalue
+            Me.Description = description
         End Sub
-
-        Property UserName As String
-            Get
-                Return m_username
-            End Get
-
-            Set(ByVal value As String)
-                m_username = value
-            End Set
-
-        End Property
-
-        Property CategoryId As String
-            Get
-                Return m_categoryId
-            End Get
-            Set(ByVal value As String)
-                m_categoryId = value
-            End Set
-        End Property
-
-        Property SettingsType As String
-            Get
-                Return m_settingstype
-            End Get
-            Set(ByVal value As String)
-                m_settingstype = value
-            End Set
-        End Property
-
-        ReadOnly Property IsCheckBoxVisible As String
-            Get
-                Return m_settingstype = "chkbox"
-            End Get
-        End Property
-
-        ReadOnly Property IsTextBoxVisible As String
-            Get
-                Return m_settingstype = "txtfield"
-            End Get
-        End Property
-        Property SettingsValue As String
-            Get
-                Return m_settingsvalue
-            End Get
-            Set(ByVal value As String)
-                m_settingsvalue = value
-            End Set
-        End Property
-
-        Property Description As String
-            Get
-                Return m_description
-            End Get
-            Set(ByVal value As String)
-                m_description = value
-            End Set
-        End Property
-
 
     End Class
 

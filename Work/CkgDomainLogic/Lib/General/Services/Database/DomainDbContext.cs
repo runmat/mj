@@ -125,14 +125,8 @@ namespace CkgDomainLogic.General.Database.Services
 
         public string GetCategorySettingsForWebUser(string rightName)
         {
-            string strUserRight = "";
-            string strUsername = UserName;
-            
-            strUserRight = Database.SqlQuery<string>("SELECT SettingsValue FROM [CategorySettingsWebUser] WHERE UserName LIKE {0} AND CategoryID = {1}", strUsername, rightName).FirstOrDefault();
-
-            return strUserRight;
+            return Database.SqlQuery<string>("SELECT SettingsValue FROM CategorySettingsWebUser WHERE UserName = {0} AND CategoryID = {1}", UserName, rightName).FirstOrDefault();
         }
-
 
         public List<User> GetUserForCustomer(Customer customer)
         {

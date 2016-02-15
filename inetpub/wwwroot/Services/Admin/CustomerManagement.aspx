@@ -1376,10 +1376,8 @@
                                             </table>
                                         </ContentTemplate>
                                     </ajaxToolkit:TabPanel>
-                                    
-                                    
-                                    
-                                    <ajaxToolkit:TabPanel runat="server" ID="TPSilverSettings" HeaderText="Settings">
+
+                                    <ajaxToolkit:TabPanel runat="server" ID="Settings" HeaderText="Settings">
                                         <ContentTemplate>
                                             <table id="Table2" cellspacing="0" cellpadding="0" width="100%" style="border-color: #FFFFFF;
                                                 font-size: 10px;" border="0">
@@ -1399,8 +1397,7 @@
                                                         <!-- Rechte_anpassen --> 
                                                         <telerik:RadGrid ID="rgRights" runat="server" AllowSorting="False" 
                                                                 AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
-                                                                OnNeedDataSource="rgRights_NeedDataSource" 
-                                                                 >
+                                                                OnNeedDataSource="rgRights_NeedDataSource">
                                                               
                                                                 <ClientSettings>
                                                                     <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
@@ -1419,27 +1416,21 @@
                                                                             <ItemStyle></ItemStyle>
                                                                             <ItemTemplate>
                                                                                   <asp:CheckBox ID="cbxSetRight" runat="server" EnableViewState="True" AutoPostBack="False" style="width: 16px; height: 16px" 
-                                                                                                            Checked='<%# DataBinder.Eval(Container, "DataItem.HasSettings") %>' 
-                                                                                                        />
+                                                                                                            Checked='<%# Eval("HasSettings") %>' />
                                                                              </ItemTemplate>
                                                                         </telerik:GridTemplateColumn>
                                                                     
-                                                                     
-                                                                        
                                                                         <telerik:GridBoundColumn DataField="CategoryID" SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID" >
                                                                              <HeaderStyle Width="150px" />
                                                                             <ItemStyle></ItemStyle>
                                                                             
                                                                         </telerik:GridBoundColumn>
 
-                                                                        
                                                                         <telerik:GridBoundColumn DataField="Description" HeaderText="Beschreibung" UniqueName="Beschreibung" >
                                                                              <HeaderStyle Width="250px" />
                                                                             <ItemStyle></ItemStyle>
                                                                         </telerik:GridBoundColumn>
                                                                        
-
-
                                                                     </Columns>
 
                                                                 </MasterTableView>

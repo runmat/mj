@@ -230,6 +230,60 @@ Partial Public Class AutUserUpload
     Protected WithEvents lblRef3 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''lblWarenkorbNurEigene-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblWarenkorbNurEigene As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDarfNichtAbsenden-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblDarfNichtAbsenden As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblWarenkorbNurEigeneZeile1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblWarenkorbNurEigeneZeile1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDarfNichtAbsendenZeile1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblDarfNichtAbsendenZeile1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblWarenkorbNurEigeneZeile2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblWarenkorbNurEigeneZeile2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDarfNichtAbsendenZeile2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblDarfNichtAbsendenZeile2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''btnEmpty-Steuerelement
     '''</summary>
     '''<remarks>

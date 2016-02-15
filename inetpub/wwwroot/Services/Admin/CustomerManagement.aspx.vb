@@ -6,10 +6,6 @@ Imports CKG.Base.Common
 Imports CKG.Services
 Imports Telerik.Web.UI
 Imports System.IO
-Imports System.Net.Configuration
-
-Imports System.Web.UI.WebControls.WebParts
-
 
 Partial Public Class CustomerManagement
     Inherits Page
@@ -221,10 +217,7 @@ Partial Public Class CustomerManagement
             FillArchivesUnAssigned(_Customer.CustomerId, cn)
 
             ' Rechte 
-            FillRights(_Customer.CustomerId, _Customer.PortalType, cn)
-            'FillArchivesAssigned(_Customer.CustomerId, cn)
-            'FillArchivesUnAssigned(_Customer.CustomerId, cn)
-
+            FillRights(_Customer.CustomerId, cn)
 
             'Style
             txtLogoPath.Text = _Customer.CustomerStyle.LogoPath.ToString
@@ -561,7 +554,7 @@ Partial Public Class CustomerManagement
 
     End Sub
 
-    Private Sub FillRights(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
+    Private Sub FillRights(ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
 
         If tblRights Is Nothing OrElse tblRights.Columns.Count = 0 Then
             InitRightsTable()
@@ -575,7 +568,7 @@ Partial Public Class CustomerManagement
 
         For Each row As DataRow In possibleRights.Rows
             Dim newRow As DataRow = tblRights.NewRow()
-            newRow("CustomerID") = row("CustomerID")
+            newRow("CustomerID") = intCustomerID
             newRow("CategoryID") = row("CategoryID")
             newRow("HasSettings") = row("HasSettings")
             newRow("Description") = row("Description")
@@ -2315,13 +2308,9 @@ Partial Public Class CustomerManagement
         rgAppUnAssigned.DataSource = GetViewAppsUnassigned()
     End Sub
 
-
     Protected Sub rgRights_NeedDataSource(ByVal sender As Object, ByVal e As GridNeedDataSourceEventArgs) Handles rgRights.NeedDataSource
         rgRights.DataSource = GetRights()
-
     End Sub
-
-
 
     Protected Sub rgAppAssigned_NeedDataSource(ByVal sender As Object, ByVal e As GridNeedDataSourceEventArgs) Handles rgAppAssigned.NeedDataSource
         rgAppAssigned.DataSource = GetViewAppsAssigned()
@@ -2399,22 +2388,18 @@ Partial Public Class CustomerManagement
 
     Public Sub SaveRightsForCustomer()
 
-        Dim cbxSetRight As CheckBox
-        Dim isChecked As Boolean
-        Dim itemCategoryValue As String
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Dim customerID As Integer = ihCustomerID.Value
-
-        m_User = GetUser(Me)
 
         For Each item As GridDataItem In rgRights.Items
 
-            cbxSetRight = item("Auswahl1").FindControl("cbxSetRight")
-            isChecked = cbxSetRight.Checked
-            itemCategoryValue = item("CategoryID").Text
+            Dim isChecked = CType(item("Auswahl1").FindControl("cbxSetRight"), CheckBox).Checked
+            Dim itemCategoryValue = item("CategoryID").Text
 
-            RightList.UpdateSingleRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
-            RightList.InsertOrDeleteRightForAllUsersOfThisCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
+            RightList.SaveRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
+
+            If Not isChecked Then
+                RightList.DeleteRightSettingForAllUsersOfThisCustomer(customerID, itemCategoryValue)
+            End If
 
         Next
 

@@ -725,6 +725,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtMaxUser As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''rbUpdate-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rbUpdate As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''rbKeine-Steuerelement
     '''</summary>
     '''<remarks>
@@ -761,6 +770,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents Td3 As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
     '''<summary>
+    '''UpdatePanel1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''lblKundenadministrationInfo-Steuerelement
     '''</summary>
     '''<remarks>
@@ -777,6 +795,15 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Td4 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel2 As Global.System.Web.UI.UpdatePanel
 
     '''<summary>
     '''txtKundenadministrationBeschreibung-Steuerelement
@@ -797,6 +824,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents Td5 As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
     '''<summary>
+    '''UpdatePanel3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel3 As Global.System.Web.UI.UpdatePanel
+
+    '''<summary>
     '''lblKundenadministrationContact-Steuerelement
     '''</summary>
     '''<remarks>
@@ -813,6 +849,15 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Td6 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+
+    '''<summary>
+    '''UpdatePanel4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents UpdatePanel4 As Global.System.Web.UI.UpdatePanel
 
     '''<summary>
     '''EditKundenadministrationContact-Steuerelement
@@ -1065,6 +1110,15 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents IP_Style As Global.AjaxControlToolkit.TabPanel
+
+    '''<summary>
+    '''IPUpdate-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents IPUpdate As Global.System.Web.UI.UpdatePanel
 
     '''<summary>
     '''LogoError-Steuerelement
@@ -1553,13 +1607,13 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtSDSignatur2 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''TPSilverSettings-Steuerelement
+    '''Settings-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents TPSilverSettings As Global.AjaxControlToolkit.TabPanel
+    Protected WithEvents Settings As Global.AjaxControlToolkit.TabPanel
 
     '''<summary>
     '''rgRights-Steuerelement

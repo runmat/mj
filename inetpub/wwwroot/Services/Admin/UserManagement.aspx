@@ -431,7 +431,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td valign="top">
                                                         <table id="tblLeft" style="border-color: #ffffff; padding-right: 50px;" cellspacing="0" cellpadding="0">
                                                             <tr class="formquery" id="trCustomer" runat="server">
                                                                 <td class="firstLeft active">
@@ -828,64 +828,37 @@
 
                                                         </table>
 
-                                                           <div id="BenutzerPanel">
-																	    
-                                                            <div style="padding-left: 0px; padding-top: 10px;">
-                                                               <h3>User-Rechte</h3>
-
+                                                           <div id="BenutzerPanel" style="padding-right: 5px">
+                                                              <h4>User-Rechte</h4>
                                                               <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
-                                                                        AutoGenerateColumns="False" GridLines="None" Culture="de-DE"
-                                                                       >
-                                                                  
-                                                             
-
-                                                                <ClientSettings>
-                                                                    <Scrolling ScrollHeight="265px" AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="1" />
-                                                                </ClientSettings>
-
-                                                                <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
-                                                                    <SortExpressions>
-                                                                        <telerik:GridSortExpression FieldName="CategoryID" SortOrder="Ascending" />
-                                                                    </SortExpressions>
-                                                                    <HeaderStyle ForeColor="White" />
-
-                                                                    <Columns>
-
-                                                                              <telerik:GridTemplateColumn Groupable="false" UniqueName="SettingsValue" >
-                                                                                        <HeaderStyle Width="100px" />
-                                                                                                <ItemTemplate>
-                                                                                                          <asp:TextBox ID="Recht1"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsTextBoxVisible") %>' 
-                                                                                                                name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
-                                                                                                                runat="server" 
-                                                                                                                text='<%# DataBinder.Eval(Container.DataItem, "SettingsValue").toString() %>' 
-                                                                                                           />
-                                                                                                           
-                                                                                                            <asp:Checkbox ID="Recht2"  Visible='<%# DataBinder.Eval(Container.DataItem, "IsCheckBoxVisible") %>' 
-                                                                                                                    name='<%# DataBinder.Eval(Container.DataItem, "CategoryId") %>' 
-                                                                                                                    runat="server" 
-                                                                                                                     Checked='<%# DataBinder.Eval(Container, "DataItem.SettingsValue") %>' 
-                                                                                                             />
-                                                                                                         
-                                                                                                </ItemTemplate>
-                                                                                 </telerik:GridTemplateColumn>
-                                                                                 
-                                                                        <telerik:GridBoundColumn DataField="CategoryID" SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID" >
-                                                                             <HeaderStyle Width="150px" />
-                                                                            <ItemStyle></ItemStyle>
-                                                                        </telerik:GridBoundColumn>
-                                                                        
-                                                                         <telerik:GridBoundColumn DataField="Description" SortExpression="Description" HeaderText="Beschreibung" UniqueName="Description" >
-                                                                             <HeaderStyle Width="150px" />
-                                                                            <ItemStyle></ItemStyle>
-                                                                        </telerik:GridBoundColumn>
-
-
+                                                                  AutoGenerateColumns="False" GridLines="None" Culture="de-DE">
+                                                                  <ClientSettings>
+                                                                      <Scrolling ScrollHeight="170px" AllowScroll="True"  />
+                                                                  </ClientSettings>
+                                                                  <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
+                                                                      <SortExpressions>
+                                                                          <telerik:GridSortExpression FieldName="CategoryID" SortOrder="Ascending" />
+                                                                      </SortExpressions>
+                                                                      <HeaderStyle ForeColor="White" />
+                                                                      <Columns>  
+                                                                          <telerik:GridTemplateColumn SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID">
+                                                                              <HeaderStyle Width="150px" />
+                                                                              <ItemTemplate>
+                                                                                  <asp:Label ID="Kategorie" runat="server" text='<%# Eval("CategoryID") %>' ToolTip='<%# Eval("Description") %>' />
+                                                                              </ItemTemplate>
+                                                                          </telerik:GridTemplateColumn>
+                                                                          <telerik:GridTemplateColumn SortExpression="SettingsValue" HeaderText="Wert" UniqueName="SettingsValue" >
+                                                                              <HeaderStyle Width="150px" />
+                                                                              <ItemTemplate>
+                                                                                  <asp:TextBox ID="Recht1" Visible='<%# Eval("IsTextBoxVisible") %>' 
+                                                                                      name='<%# Eval("CategoryId") %>' runat="server" text='<%# Eval("SettingsValue") %>' />
+                                                                                  <asp:Checkbox ID="Recht2" Visible='<%# Eval("IsCheckBoxVisible") %>' 
+                                                                                      name='<%# Eval("CategoryId") %>' runat="server" Checked='<%# Eval("SettingsValue").ToString().NotNullOrEmpty().ToLower() = "true" %>' />
+                                                                              </ItemTemplate>
+                                                                          </telerik:GridTemplateColumn>
                                                                     </Columns>
-
                                                                 </MasterTableView>
                                                             </telerik:RadGrid>
-                                                                            
-                                                                </div>
 														</div>
 
                                                     </td>
