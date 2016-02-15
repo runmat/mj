@@ -3,7 +3,7 @@
 <h3 class="page-title" id="headerTitle">@Localize.Autohaus_EsdAnforderung <small></small></h3>
 
 <div id="divKopf">
-    @Html.Partial("Partial/FormDetails", Model.EsdBeauftragung)
+    @Html.Partial("Partial/FormKopf", Model)
 </div>
 
 <div id="divDetails"></div>
@@ -21,15 +21,51 @@
         FormPrepareAjax();
     }
 
+    function ShowDetailsForm(countryCode) {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDetailsForm",
+            loadingShow: true,
+            data: { countryCode: countryCode },
+            success: function (result) {
+                ShowDetails(result);
+                LoadingHide();
+            }
+        });
+
+        return false;
+    }
+
     function ShowDetails(result) {
-        $("#divKopf").slideUp();
-        $("#divDetails").html(result);
-        $("#divDetails").slideDown();
+        $("#divKopf").slideUp(200, function() {
+            $("#divDetails").html(result);
+            FormPreparePrivateAjax();
+            $("#divDetails").slideDown(500);
+        });
     }
 
     function CloseDetails() {
-        $("#divDetails").slideUp();
-        $("#divKopf").slideDown();
+        $("#divDetails").slideUp(200, function () {
+            $("#divKopf").slideDown(500);
+        });
+    }
+
+    function ShowReceiptAjax() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowReceipt",
+            loadingShow: true,
+            success: function (result) {
+                if (_modelStateValid)
+                    ShowReceipt(result);
+
+                LoadingHide();
+            }
+        });
     }
 
     function ShowReceipt(result) {

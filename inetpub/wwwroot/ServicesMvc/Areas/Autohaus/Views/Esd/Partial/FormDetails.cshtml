@@ -61,7 +61,7 @@
                 
                     <div class="span6">
 
-                        @using (Html.PortletBox(Localize.Country + " + " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
+                        @using (Html.PortletBox(Localize.Country + " / " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
                         {
                             @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
 
@@ -141,22 +141,3 @@
     }
 </div>
 
-<script type="text/javascript">
-
-    function ShowReceiptAjax() {    
-        FormPreparePrivateAjax();
-
-        $.ajax({
-            type: "POST",
-            url: "ShowReceipt",
-            loadingShow: true,
-            success: function (result) {
-                if (_modelStateValid)
-                    ShowReceipt(result);
-
-                LoadingHide();
-            }
-        });
-    }
-
-</script>

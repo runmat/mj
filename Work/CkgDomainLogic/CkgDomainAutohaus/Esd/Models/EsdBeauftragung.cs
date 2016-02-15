@@ -151,6 +151,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
         #endregion
 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (GewaehlteDienstleistungen.None())

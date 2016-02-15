@@ -62,7 +62,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AnsprechVorname = LogonContext.FirstName,
                 AnsprechNachname = LogonContext.LastName,
                 AnsprechEmail = LogonContext.UserInfo.Mail,
-                AnsprechTelefonNr = LogonContext.UserInfo.Telephone
+                AnsprechTelefonNr = LogonContext.UserInfo.Telephone,
+
+                // ToDo: Remove test code:
+                KundeVorname = "Walter - REMOVE ME",
+                KundeNachname = "Zabel - REMOVE ME",
+                KundeEmail = "matthias.jenzen@kroschke.de",
+                KundeTelefonNr = "0151",
             };
             EsdBeauftragung.InitDienstleistungen();
         }
@@ -70,6 +76,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void DataMarkForRefresh()
         {
             ZulassungDataService.MarkForRefresh();
+        }
+
+        public void SetCountryCode(string countryCode)
+        {
+            EsdBeauftragung.Land = countryCode;
         }
 
         private void ApplyDetails(EsdBeauftragung model)
@@ -84,7 +95,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var empfaengerEmail = EsdBeauftragungDataService.GetEmpfaengerEmailAdresse();
 
-            if (string.IsNullOrEmpty(empfaengerEmail))
+            // ToDo: Remove test code:
+            if (empfaengerEmail.IsNullOrEmpty())
+                empfaengerEmail = "matthias.jenzen@kroschke.de";
+
+                if (string.IsNullOrEmpty(empfaengerEmail))
             {
                 addModelError("", string.Format("{0}: {1}", Localize.ErrorMailCouldNotBeSent, Localize.NoEmailAddressFound));
                 return;
@@ -92,7 +107,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var mailService = new SmtpMailService(AppSettings);
 
-            var mailText = "Folgende Esd-Bestellung wurde eben im Portal Kroschke ON aufgegeben:<br/>";
+            var mailText = "Folgende Auslandsbeauftragung wurde soeben im Portal Kroschke ON aufgegeben:<br/>";
             mailText += "<br/>";
             mailText += "Fahrzeugdaten:<br/>";
             //mailText += string.Format("{0}: {1}<br/>", Localize.VehicleType, EsdAnforderung.Kopfdaten.FahrzeugTypBezeichnung);
@@ -106,7 +121,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             //mailText += string.Format("{0}: {1}<br/>", Localize.Email, EsdAnforderung.Email);
             //mailText += string.Format("{0}: {1}<br/>", Localize.PhoneNo, EsdAnforderung.TelefonNr);
 
-            if (!mailService.SendMail(empfaengerEmail, "Esd-Bestellung", mailText))
+            if (!mailService.SendMail(empfaengerEmail, "Auslandsbeauftragung", mailText))
                 addModelError("", Localize.ErrorMailCouldNotBeSent);
         }
     }

@@ -44,18 +44,12 @@ namespace ServicesMvc.Autohaus.Controllers
             return View(ViewModel);
         }
 
-        //[HttpPost]
-        //public ActionResult ApplyKopfdaten(EsdAnforderungKopfdaten model)
-        //{
-        //    if (ModelState.IsValid)
-        //        ViewModel.ApplyKopfdaten(model);
-
-        //    return PartialView("Partial/FormKopf", model);
-        //}
-
         [HttpPost]
-        public ActionResult ShowDetails()
+        public ActionResult ShowDetailsForm(string countryCode)
         {
+            if (ModelState.IsValid)
+                ViewModel.SetCountryCode(countryCode);
+
             return PartialView("Partial/FormDetails", ViewModel.EsdBeauftragung);
         }
 

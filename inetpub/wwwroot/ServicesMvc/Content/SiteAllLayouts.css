@@ -498,7 +498,7 @@ textarea[readonly].m-wrap {
     padding-top: 2px;
 }
 .form-horizontal .checker {
-    padding-top: 0;
+    padding-top: 3px;
 }
 
 .form-horizontal span.validation-message {

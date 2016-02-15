@@ -5,7 +5,6 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.General.Models;
 using SapORM.Contracts;
 using SapORM.Models;
-using AppModelMappings = CkgDomainLogic.Autohaus.Models.AppModelMappings;
 
 namespace CkgDomainLogic.Autohaus.Services
 {

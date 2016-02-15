@@ -167,8 +167,7 @@
                     if (!CountryIsEnabled(elem))
                         return;
 
-                    var node = $(elem.node);
-                    //console.log("CLICKED: " + node.attr("dataid"));
+                    ShowDetailsForm(node.attr("dataid"));
 
                 });
             });
@@ -185,16 +184,16 @@
     <span></span>
 </div>
 
-<h4>
+<h4 class="no-margin">
     @Localize.CountrySelection, @Localize.PleaseChooseOneCountry.ToFirstLower():
 </h4>
 
 
 <div class="europe-map">
 
-    <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin">
-    </svg>
-    <button id="country-others" class="btn blue">@Localize.CountryNotListed</button>
+    <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin"></svg>
+
+    <button id="country-others" onclick="return ShowDetailsForm('');" class="btn blue">@Localize.CountryNotListed</button>
 
 </div>
 
