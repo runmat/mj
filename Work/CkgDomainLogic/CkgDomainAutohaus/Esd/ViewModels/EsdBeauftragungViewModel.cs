@@ -41,7 +41,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return EsdBeauftragungDataService.LaenderAuswahlliste
                         .Where(l => !string.IsNullOrEmpty(l.ID))
                         .OrderByDescending(l => l.ID == "DE").ThenBy(l => l.Name.IsNullOrEmpty() ? "ZZ" : l.Name)
-                        .Concat(new List<Land> { new Land { ID = "", Name = Localize.DropdownDefaultOptionOther } })
+                        .Concat(new List<Land> { new Land { ID = "-", Name = Localize.DropdownDefaultOptionOther } })
                         .ToList();
             }
         }
@@ -107,21 +107,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var mailService = new SmtpMailService(AppSettings);
 
-            var mailText = "Folgende Auslandsbeauftragung wurde soeben im Portal Kroschke ON aufgegeben:<br/>";
-            mailText += "<br/>";
-            mailText += "Fahrzeugdaten:<br/>";
-            //mailText += string.Format("{0}: {1}<br/>", Localize.VehicleType, EsdAnforderung.Kopfdaten.FahrzeugTypBezeichnung);
-            //mailText += string.Format("{0}: {1}<br/>", Localize.Manufacturer, EsdAnforderung.Kopfdaten.HerstellerBezeichnung);
-            //mailText += string.Format("{0}: {1}<br/>", Localize.CountryOfFirstRegistration, EsdAnforderung.Kopfdaten.LandDerErstenZulassungBezeichnung);
-            //mailText += string.Format("{0}: {1}<br/>", Localize.YearOfFirstRegistration, EsdAnforderung.JahrDerErstzulassung);
-            //mailText += "<br/>";
-            //mailText += "Kundendaten:<br/>";
-            //mailText += string.Format("{0}: {1}<br/>", Localize.Company, LogonContext.CustomerName);
-            //mailText += string.Format("{0}: {1} {2}<br/>", Localize.Name, EsdAnforderung.Vorname, EsdAnforderung.Nachname);
-            //mailText += string.Format("{0}: {1}<br/>", Localize.Email, EsdAnforderung.Email);
-            //mailText += string.Format("{0}: {1}<br/>", Localize.PhoneNo, EsdAnforderung.TelefonNr);
-
-            if (!mailService.SendMail(empfaengerEmail, "Auslandsbeauftragung", mailText))
+            if (!mailService.SendMail(empfaengerEmail, Localize.Autohaus_EsdAnforderung, EsdBeauftragung.GetMailText()))
                 addModelError("", Localize.ErrorMailCouldNotBeSent);
         }
     }

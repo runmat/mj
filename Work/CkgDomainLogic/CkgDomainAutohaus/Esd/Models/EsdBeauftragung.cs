@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -43,6 +44,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [Required]
         [LocalizedDisplay(LocalizeConstants.SelectedCountry)]
         public string Land { get; set; }
+
 
         [XmlIgnore]
         public static List<Land> LaenderAuswahlliste { get { return GetViewModel == null ? new List<Land>() : GetViewModel().LaenderAuswahlliste; } }
@@ -151,6 +153,47 @@ namespace CkgDomainLogic.Autohaus.Models
 
         #endregion
 
+        private string FormatHeaderTextForMail(string s)
+        {
+            return string.Format("<b>{0}</b>", s);
+        }
+
+        public string GetMailText()
+        {
+            const string indent = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+            var mailText = string.Format("{0}:<br/>", Localize.Autohaus_EsdAnforderung_MailTitle);
+
+            mailText += "<br/>";
+            mailText += string.Format("{0} <br/>", FormatHeaderTextForMail(Localize.Country));
+            mailText += string.Format("{1}{0}<br/>", LaenderAuswahlliste.First(l => l.ID == Land.NotNullOr("-")).Name, indent);
+
+            mailText += "<br/>";
+            mailText += string.Format("{0} <br/>", FormatHeaderTextForMail(Localize.VehicleData));
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.VehicleType, FahrzeugTypBezeichnung, indent);
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.LeaseCar, IsLeasingFahrzeug ? Localize.Yes : Localize.No, indent);
+            if (Bemerkung.IsNotNullOrEmpty())
+                mailText += string.Format("{2}{0}: {1}<br/>", Localize.Remark, Bemerkung, indent);
+
+            mailText += "<br/>";
+            mailText += string.Format("{0} <br/>", FormatHeaderTextForMail(Localize.SelectedServices));
+            mailText = GewaehlteDienstleistungen.Aggregate(mailText, (current, dienstleistung) => current + string.Format("{1}- {0}<br/>", dienstleistung.Name, indent));
+
+            mailText += "<br/>";
+            mailText += string.Format("{0} <br/>", FormatHeaderTextForMail(Localize.Contactperson));
+            mailText += string.Format("{3}{0}: {1} {2}<br/>", Localize.Name, AnsprechVorname, AnsprechNachname, indent);
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.Email, AnsprechEmail, indent);
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.PhoneNo, AnsprechTelefonNr, indent);
+
+            mailText += "<br/>";
+            mailText += string.Format("{0} <br/>", FormatHeaderTextForMail(Localize.CustomerData));
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.Company, GetViewModel().LogonContext.CustomerName, indent);
+            mailText += string.Format("{3}{0}: {1} {2}<br/>", Localize.Name, KundeVorname, KundeNachname, indent);
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.Email, KundeEmail, indent);
+            mailText += string.Format("{2}{0}: {1}<br/>", Localize.PhoneNo, KundeTelefonNr, indent);
+
+            return mailText;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
