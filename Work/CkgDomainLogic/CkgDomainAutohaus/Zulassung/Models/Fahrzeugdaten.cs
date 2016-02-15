@@ -105,10 +105,14 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string KennzeichenHinweis { get { return Localize.WillBeFilledAutomatically; } }
 
+        [XmlIgnore]
         Rechnungsdaten AG { get { return GetZulassungViewModel().Zulassung.Rechnungsdaten; } }
+        [XmlIgnore]
         public Adresse AgAdresse { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse; } }
+        [XmlIgnore]
         public string AgName { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse.GetFullName(); } }
-        public string AgKundenNr { get { return AG.GetKunde(GetZulassungViewModel().Kunden).KundenNr.TrimStart('0'); } }
+        [XmlIgnore]
+        public string AgKundenNr { get { return AG.GetKunde(GetZulassungViewModel().Kunden).KundenNr.NotNullOrEmpty().TrimStart('0'); } }
 
         public int AnzahlHinzuzufuegendeFahrzeuge { get; set; }
 
