@@ -62,13 +62,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AnsprechVorname = LogonContext.FirstName,
                 AnsprechNachname = LogonContext.LastName,
                 AnsprechEmail = LogonContext.UserInfo.Mail,
-                AnsprechTelefonNr = LogonContext.UserInfo.Telephone,
-
-                // ToDo: Remove test code:
-                KundeVorname = "Walter - REMOVE ME",
-                KundeNachname = "Zabel - REMOVE ME",
-                KundeEmail = "matthias.jenzen@kroschke.de",
-                KundeTelefonNr = "0151",
+                AnsprechTelefonNr = LogonContext.UserInfo.Telephone
             };
             EsdBeauftragung.InitDienstleistungen();
         }
@@ -95,11 +89,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var empfaengerEmail = EsdBeauftragungDataService.GetEmpfaengerEmailAdresse();
 
-            // ToDo: Remove test code:
-            if (empfaengerEmail.IsNullOrEmpty())
-                empfaengerEmail = "matthias.jenzen@kroschke.de";
-
-                if (string.IsNullOrEmpty(empfaengerEmail))
+            if (string.IsNullOrEmpty(empfaengerEmail))
             {
                 addModelError("", string.Format("{0}: {1}", Localize.ErrorMailCouldNotBeSent, Localize.NoEmailAddressFound));
                 return;
