@@ -91,7 +91,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (string.IsNullOrEmpty(empfaengerEmail))
             {
-                addModelError("", string.Format("{0}: {1}", Localize.ErrorMailCouldNotBeSent, Localize.NoEmailAddressFound));
+                addModelError("", string.Format("{0}: {1}", Localize.ErrorMailCouldNotBeSent, Localize.NoEmailAddressFoundInCusomizing));
                 return;
             }
 

@@ -42,6 +42,7 @@
         $("#divKopf").slideUp(200, function() {
             $("#divDetails").html(result);
             FormPreparePrivateAjax();
+            BindUpCountryDropDown();
             $("#divDetails").slideDown(500);
         });
     }
@@ -73,6 +74,25 @@
         $("#divDetails").slideUp();
         $("#divReceipt").html(result);
         $("#divReceipt").slideDown();
+    }
+
+    function BindUpCountryDropDown() {
+        ShowCountryIcon();
+        $("#Land").change(function () {
+            ShowCountryIcon();
+        });
+        $("#land-icon").click(function () {
+            return CloseDetails();
+        });
+    }
+
+    function ShowCountryIcon() {
+        if ($("#Land").val() === "-") $("#land-icon").hide();
+        else $("#land-icon").show();
+
+        $("#land-icon").attr("title", "Land ändern, über die Karte grafisch auswählen");
+
+        $("#land-icon i").css("background-image", "url(/ServicesMvc/Images/flags/64x64/" + $("#Land").val() + ".png)");
     }
 
 </script>

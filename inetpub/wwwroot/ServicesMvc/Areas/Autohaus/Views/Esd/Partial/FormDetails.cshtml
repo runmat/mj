@@ -63,7 +63,8 @@
 
                         @using (Html.PortletBox(Localize.Country + " / " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
                         {
-                            @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new { @class = "m-wrap small" })
+                            @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new {@class = "m-wrap small"},
+                                                                        postControlHtml:@<text><div id="land-icon"><i></i></div></text>)
 
                             @Html.FormDropDownListFor(m => m.FahrzeugTyp, EsdBeauftragung.FahrzeugTypList.ToSelectList(), new { @class = "m-wrap small" })
 
