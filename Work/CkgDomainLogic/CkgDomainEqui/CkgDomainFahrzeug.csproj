@@ -228,6 +228,8 @@
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugSperrenVerschiebenDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
+    <Compile Include="Fahrzeuge\Models\FloorcheckHaendler.cs" />
+    <Compile Include="Fahrzeuge\Models\Floorcheck.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikett.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikettSelektor.cs" />
