@@ -19,6 +19,7 @@
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        BindUpCountryDropDown();
     }
 
     function ShowDetailsForm(countryCode) {
@@ -42,7 +43,6 @@
         $("#divKopf").slideUp(200, function() {
             $("#divDetails").html(result);
             FormPreparePrivateAjax();
-            BindUpCountryDropDown();
             $("#divDetails").slideDown(500);
         });
     }
