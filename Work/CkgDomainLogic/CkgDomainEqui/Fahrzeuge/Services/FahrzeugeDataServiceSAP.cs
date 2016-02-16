@@ -379,7 +379,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public List<FloorcheckHaendler> GetFloorcheckHaendler(FloorcheckHaendler haendler)
         {            
-            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
             if(!String.IsNullOrEmpty(haendler.HaendlerName))
                 SAP.SetImportParameter("I_NAME", haendler.HaendlerName);
@@ -395,7 +395,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;          
         }
 
-        public List<Floorcheck> GetFloorchecks(int haendlerNo)
+        public List<Floorcheck> GetFloorchecks(string haendlerNo)
         {
             Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
            

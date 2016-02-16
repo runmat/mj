@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+
+
+@{ var gridName = "GridFloorcheck"; }
+
+
+@(Html.Telerik()
+            .Grid<Floorcheck>()
+    .Name(gridName)
+        .XAjaxDataBinding("FloorcheckAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        //columns.XBoundAll();
+        //columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Fahrgestellnummer);
+        //columns.XBound(c => c.Zb2Nummer);
+        //columns.XBound(c => c.NameAG);
+        //columns.XBound(c => c.NameTG);
+        //columns.XBound(c => c.Vertragsnummer);
+        //columns.XBound(c => c.Versandstatus);
+        //columns.XBound(c => c.Versandadresse);
+        //columns.XBound(c => c.Referenz);               
+    })
+    .XAutoColumnConfiguration()
+                    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFloorcheck"))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFloorcheckFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportFloorcheckFilteredPDF", "Fahrzeuge");
+    })
+)

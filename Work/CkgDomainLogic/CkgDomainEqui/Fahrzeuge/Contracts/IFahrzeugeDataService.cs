@@ -42,6 +42,6 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         List<FloorcheckHaendler> GetFloorcheckHaendler(FloorcheckHaendler haendler);
 
-        List<Floorcheck> GetFloorchecks(int haendlerNo);
+        List<Floorcheck> GetFloorchecks(string haendlerNo);
     }
 }
