@@ -187,6 +187,9 @@
                     if (!CountryIsEnabled(elem))
                         return;
 
+                    countryHintVisible = false;
+                    $(".country-hint").hide();
+
                     ShowDetailsForm(node.attr("dataid"));
 
                 });
