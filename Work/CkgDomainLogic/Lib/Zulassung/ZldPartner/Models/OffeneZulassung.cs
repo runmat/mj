@@ -75,6 +75,8 @@ namespace CkgDomainLogic.ZldPartner.Models
             {
                 switch (Status)
                 {
+                    case "EGG":
+                        return "eingegangen";
                     case "IA":
                         return "in Arbeit";
                     case "DGF":
@@ -106,6 +108,25 @@ namespace CkgDomainLogic.ZldPartner.Models
 
         [LocalizedDisplay(LocalizeConstants.Email)]
         public string Email { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reason)]
+        public string StornoGrundId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reason)]
+        public string StornoGrund
+        {
+            get
+            {
+                return (GetViewModel != null && GetViewModel().Gruende.Any(g => g.GrundId == StornoGrundId) ? GetViewModel().Gruende.First(g => g.GrundId == StornoGrundId).GrundText : StornoGrundId);
+            }
+        }
+
+        public string BemerkungLangtextNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        public string Bemerkung { get; set; }
+
+        public string Erfasser { get; set; }
 
         public string ValidationMessage
         {

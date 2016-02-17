@@ -42,6 +42,9 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.Zb2Nr = s.ZZBRIEF;
                         d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
                         d.ZulassungsKreis = s.KREISKZ;
+                        d.StornoGrundId = s.GRUND_KEY;
+                        d.BemerkungLangtextNr = s.LTEXT_NR;
+                        d.Erfasser = s.ERNAM;
                     }));
             }
         }
@@ -72,6 +75,38 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.Zb2Nr = s.ZZBRIEF;
                         d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
                         d.ZulassungsKreis = s.KREISKZ;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_PP_STAMMDATEN.EXP_GRUENDE, StornoGrund> Z_ZLD_PP_STAMMDATEN_EXP_GRUENDE_To_StornoGrund
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_PP_STAMMDATEN.EXP_GRUENDE, StornoGrund>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.GrundId = s.GRUND_KEY;
+                        d.GrundText = s.GRUND;
+                        d.Status = s.PP_STATUS;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_PP_STAMMDATEN.EXP_MATERIAL, Material> Z_ZLD_PP_STAMMDATEN_EXP_MATERIAL_To_Material
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_PP_STAMMDATEN.EXP_MATERIAL, Material>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.In1010Hinzufuegbar = s.ZZMAT_1010.XToBool();
+                        d.In1510Hinzufuegbar = s.ZZMAT_1510.XToBool();
+                        d.MaterialNr = s.MATNR;
+                        d.MaterialText = s.MAKTX;
+                        d.PreisEingebbar = s.ZZMAT_PREIS.XToBool();
                     }));
             }
         }
@@ -115,6 +150,9 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.ZZFAHRG = s.FahrgestellNr;
                         d.ZZKENN = s.Kennzeichen;
                         d.ZZZLDAT = s.ZulassungsDatum.ToNullableDateTime("dd.MM.yyyy");
+                        d.GRUND_KEY = s.StornoGrundId;
+                        d.LTEXT_NR = s.BemerkungLangtextNr;
+                        d.ERNAM = s.Erfasser;
                     }
                 ));
             }

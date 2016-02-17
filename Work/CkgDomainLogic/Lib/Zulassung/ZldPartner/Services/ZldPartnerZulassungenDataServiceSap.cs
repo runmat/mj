@@ -13,20 +13,63 @@ namespace CkgDomainLogic.ZldPartner.Services
 {
     public class ZldPartnerZulassungenDataServiceSap : CkgGeneralDataServiceSAP, IZldPartnerZulassungenDataService
     {
+        public List<StornoGrund> Gruende { get; private set; }
+
+        public List<Material> Materialien { get; private set; }
+
         public ZldPartnerZulassungenDataServiceSap(ISapDataService sap)
             : base(sap)
         {
+            Gruende = new List<StornoGrund>();
+            Materialien = new List<Material>();
+        }
+
+        public void LoadStammdaten()
+        {
+            Z_ZLD_PP_STAMMDATEN.Init(SAP);
+
+            SAP.Execute();
+
+            Gruende = AppModelMappings.Z_ZLD_PP_STAMMDATEN_EXP_GRUENDE_To_StornoGrund.Copy(Z_ZLD_PP_STAMMDATEN.EXP_GRUENDE.GetExportList(SAP)).ToList();
+            Materialien = AppModelMappings.Z_ZLD_PP_STAMMDATEN_EXP_MATERIAL_To_Material.Copy(Z_ZLD_PP_STAMMDATEN.EXP_MATERIAL.GetExportList(SAP)).ToList();
         }
 
         public List<OffeneZulassung> LoadOffeneZulassungen()
         {
             Z_ZLD_PP_GET_PO_01.Init(SAP, "I_LIFNR", LogonContext.User.Reference.NotNullOrEmpty().ToSapKunnr());
 
-            return AppModelMappings.Z_ZLD_PP_GET_PO_01_GT_BESTELLUNGEN_To_OffeneZulassung.Copy(Z_ZLD_PP_GET_PO_01.GT_BESTELLUNGEN.GetExportListWithExecute(SAP)).ToList();
+            var sapItems = AppModelMappings.Z_ZLD_PP_GET_PO_01_GT_BESTELLUNGEN_To_OffeneZulassung.Copy(Z_ZLD_PP_GET_PO_01.GT_BESTELLUNGEN.GetExportListWithExecute(SAP)).ToList();
+
+            sapItems.ForEach(s =>
+            {
+                if (!string.IsNullOrEmpty(s.BemerkungLangtextNr))
+                    s.Bemerkung = ReadLangtext(s.BemerkungLangtextNr);
+            });
+
+            return sapItems;
         }
 
         public List<OffeneZulassung> SaveOffeneZulassungen(bool nurSpeichern, List<OffeneZulassung> zulassungen)
         {
+            zulassungen.ForEach(z =>
+            {
+                if (string.IsNullOrEmpty(z.Bemerkung))
+                {
+                    if (!string.IsNullOrEmpty(z.BemerkungLangtextNr))
+                    {
+                        DeleteLangtext(z.BemerkungLangtextNr);
+                        z.BemerkungLangtextNr = "";
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(z.BemerkungLangtextNr))
+                        z.BemerkungLangtextNr = InsertLangtext(z.Bemerkung);
+                    else
+                        UpdateLangtext(z.BemerkungLangtextNr, z.Bemerkung);
+                }
+            });
+
             Z_ZLD_PP_SAVE_PO_01.Init(SAP, "I_MODUS", (nurSpeichern ? "S" : "A"));
 
             var zulList = AppModelMappings.Z_ZLD_PP_SAVE_PO_01_GT_BESTELLUNGEN_From_OffeneZulassung.CopyBack(zulassungen).ToList();

@@ -59,6 +59,8 @@ namespace CkgDomainLogic.ZldPartner.Models
             {
                 switch (Status)
                 {
+                    case "EGG":
+                        return "eingegangen";
                     case "IA":
                         return "in Arbeit";
                     case "DGF":

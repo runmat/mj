@@ -10,9 +10,9 @@ namespace SapORM.Services
 {
     public class SapDataService : ISapDataService
     {
-        public ISapConnection SapConnection { get; set; }
+        public ISapConnection SapConnection { get; private set; }
 
-        public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+        public IDynSapProxyFactory DynSapProxyFactory { get; private set; }
 
         private static ISapDataService _defaultSapDataService;
         public static ISapDataService DefaultInstance { get { return (_defaultSapDataService ?? (_defaultSapDataService = new SapDataServiceDefaultFactory().Create())); } }
@@ -362,11 +362,6 @@ namespace SapORM.Services
                 return (string.IsNullOrEmpty(tableName) ? tables.FirstOrDefault() : tables.FirstOrDefault(t => t.TableName.ToLower() == tableName.ToLower()));
             
             return null;
-        }
-
-        public string LongStringToSap(string ltextNr)
-        {
-            return new LongStringToSap(SapConnection, DynSapProxyFactory).ReadString(ltextNr);
         }
 
         public string ExecuteAndCatchErrors(Action sapAction, Func<string> getCustomErrorMessageFunction = null, bool ignoreResultCode = false)

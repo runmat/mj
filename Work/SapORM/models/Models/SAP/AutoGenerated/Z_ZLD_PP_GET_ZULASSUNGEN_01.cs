@@ -113,37 +113,58 @@ namespace SapORM.Models
 
 			public string ABRECHNUNG_ERSTELLT { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_BESTELL_LISTE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_BESTELL_LISTE
-				{
-					KUNDE = (string)row["KUNDE"],
-					EBELN = (string)row["EBELN"],
-					EBELP = (string)row["EBELP"],
-					MATNR = (string)row["MATNR"],
-					MAKTX = (string)row["MAKTX"],
-					EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
-					ZH_NAME1 = (string)row["ZH_NAME1"],
-					ZZFAHRG = (string)row["ZZFAHRG"],
-					ZZBRIEF = (string)row["ZZBRIEF"],
-					KREISKZ = (string)row["KREISKZ"],
-					ZZKENN = (string)row["ZZKENN"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
-					DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
-					PP_STATUS = (string)row["PP_STATUS"],
-					GEB_RELEVANT = (string)row["GEB_RELEVANT"],
-					HERK = (string)row["HERK"],
-					ABRECHNUNG_ERSTELLT = (string)row["ABRECHNUNG_ERSTELLT"],
+				GT_BESTELL_LISTE o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_BESTELL_LISTE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KUNDE = (string)row["KUNDE"],
+						EBELN = (string)row["EBELN"],
+						EBELP = (string)row["EBELP"],
+						MATNR = (string)row["MATNR"],
+						MAKTX = (string)row["MAKTX"],
+						EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
+						ZH_NAME1 = (string)row["ZH_NAME1"],
+						ZZFAHRG = (string)row["ZZFAHRG"],
+						ZZBRIEF = (string)row["ZZBRIEF"],
+						KREISKZ = (string)row["KREISKZ"],
+						ZZKENN = (string)row["ZZKENN"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
+						DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
+						PP_STATUS = (string)row["PP_STATUS"],
+						GEB_RELEVANT = (string)row["GEB_RELEVANT"],
+						HERK = (string)row["HERK"],
+						ABRECHNUNG_ERSTELLT = (string)row["ABRECHNUNG_ERSTELLT"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_BESTELL_LISTE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

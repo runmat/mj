@@ -15,15 +15,23 @@
 
 @Html.SpanAlert("Message")
 
+<div class="form-horizontal">
+    <div class="form-actions padding-top-5 padding-bottom-5 no-bottom-margin">
+        <button class="btnSave btn pull-left green" onclick="SaveOffeneZulassungen(false);"> @Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+        <button class="btnSend btn pull-left green margin-left-5 @(@Model.SendingEnabled ? "" : "hide")" onclick="SaveOffeneZulassungen(true);"> @Localize.CompleteRecords <i class="m-icon-swapright m-icon-white"></i></button>
+        <button class="btnContinue btn pull-left green margin-left-5 hide" onclick="location.reload(); "> @Localize.Continue <i class="m-icon-swapright m-icon-white"></i></button>
+    </div>
+</div>
+
 <div id="divOffeneZulassungenGrid">
     @Html.Partial("DurchzufuehrendeZulassungen/Grid", Model)
 </div>
 
 <div class="form-horizontal">
-    <div class="form-actions pull-left">
-        <button id="btnSave" class="btn green" onclick="SaveOffeneZulassungen(false);"> @Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
-        <button id="btnSend" class="btn green margin-left-5 @(@Model.SendingEnabled ? "" : "hide")" onclick="SaveOffeneZulassungen(true);"> @Localize.CompleteRecords <i class="m-icon-swapright m-icon-white"></i></button>
-        <button id="btnContinue" class="btn green margin-left-5 hide" onclick="location.reload(); "> @Localize.Continue <i class="m-icon-swapright m-icon-white"></i></button>
+    <div class="form-actions">
+        <button class="btnSave btn pull-left green" onclick="SaveOffeneZulassungen(false);"> @Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+        <button class="btnSend btn pull-left green margin-left-5 @(@Model.SendingEnabled ? "" : "hide")" onclick="SaveOffeneZulassungen(true);"> @Localize.CompleteRecords <i class="m-icon-swapright m-icon-white"></i></button>
+        <button class="btnContinue btn pull-left green margin-left-5 hide" onclick="location.reload(); "> @Localize.Continue <i class="m-icon-swapright m-icon-white"></i></button>
     </div>
 </div>
 
@@ -82,21 +90,63 @@
     function UpdateOffeneZulassung(datensatzId, property, value) {
         DisableButtons();
 
-        $.ajax({
-            type: "POST",
-            url: "UpdateOffeneZulassung",
-            loadingShow: false,
-            data: { datensatzId: datensatzId, property: property, value: value },
-            success: function (result) {
-                EnableButtons();
+        if (property == "Status" && (value == "FGS" || value == "STO")) {
 
-                if (result.showSendButton == true) {
-                    $("#btnSend").removeClass("hide");
-                } else {
-                    $("#btnSend").addClass("hide");
+            $.ajax({
+                type: "POST",
+                url: "UpdateOffeneZulassungStorno",
+                loadingShow: false,
+                data: { datensatzId: datensatzId, status: value },
+                success: function(result) {
+                    $("#StornoDialog").html(result);
+
+                    $.magnificPopup.open({
+                        items: { src: $("#StornoDialog") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
                 }
+            });
+
+        } else {
+
+            $.ajax({
+                type: "POST",
+                url: "UpdateOffeneZulassung",
+                loadingShow: false,
+                data: { datensatzId: datensatzId, property: property, value: value },
+                success: function (result) {
+                    EnableButtons();
+
+                    if (result.showSendButton == true) {
+                        $(".btnSend").removeClass("hide");
+                    } else {
+                        $(".btnSend").addClass("hide");
+                    }
+                }
+            });
+
+        }
+    }
+
+    function AjaxFormStornoDialogComplete() {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid) {
+            EnableButtons();
+
+            if (_sendingEnabledAfterStorno) {
+                $(".btnSend").removeClass("hide");
+            } else {
+                $(".btnSend").addClass("hide");
             }
-        });
+        }
+    }
+
+    function AjaxFormStornoDialogClose() {
+        $(".mfp-close").trigger("click");
     }
 
     function SaveOffeneZulassungen(absenden) {
@@ -114,9 +164,9 @@
                     SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
 
                     if (absenden == true) {
-                        $("#btnSave").addClass("hide");
-                        $("#btnSend").addClass("hide");
-                        $("#btnContinue").removeClass("hide");
+                        $(".btnSave").addClass("hide");
+                        $(".btnSend").addClass("hide");
+                        $(".btnContinue").removeClass("hide");
                     }
                 }
             }
@@ -124,15 +174,18 @@
     }
 
     function DisableButtons() {
-        $("#btnSave").attr("disabled", "disabled");
-        $("#btnSend").attr("disabled", "disabled");
-        $("#btnContinue").attr("disabled", "disabled");
+        $(".btnSave").attr("disabled", "disabled");
+        $(".btnSend").attr("disabled", "disabled");
+        $(".btnContinue").attr("disabled", "disabled");
     }
 
     function EnableButtons() {
-        $("#btnSave").removeAttr("disabled");
-        $("#btnSend").removeAttr("disabled");
-        $("#btnContinue").removeAttr("disabled");
+        $(".btnSave").removeAttr("disabled");
+        $(".btnSend").removeAttr("disabled");
+        $(".btnContinue").removeAttr("disabled");
     }
 
 </script>
+
+<div id="StornoDialog" class="white-popup mfp-hide">
+</div>

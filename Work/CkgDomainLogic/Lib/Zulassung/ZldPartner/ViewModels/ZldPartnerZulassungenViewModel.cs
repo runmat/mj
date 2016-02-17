@@ -19,6 +19,12 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
         public IZldPartnerZulassungenDataService DataService { get { return CacheGet<IZldPartnerZulassungenDataService>(); } }
 
         [XmlIgnore]
+        public List<StornoGrund> Gruende { get { return DataService.Gruende; } }
+
+        [XmlIgnore]
+        public List<Material> Materialien { get { return DataService.Materialien; } }
+
+        [XmlIgnore]
         public List<OffeneZulassung> OffeneZulassungen
         {
             get { return PropertyCacheGet(() => new List<OffeneZulassung>()); }
@@ -55,13 +61,15 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
 
         private const string KennzeichenRegexString = @"^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$";
 
-        public string StatusWerte { get { return ",;IA,in Arbeit;DGF,durchgeführt;STO,storniert;FGS,fehlgeschlagen"; } }
+        public string StatusWerte { get { return ",;EGG,eingegangen;IA,in Arbeit;DGF,durchgeführt;STO,storniert;FGS,fehlgeschlagen"; } }
 
         public bool SendingEnabled { get { return (OffeneZulassungen.Any(z => z.Status == "DGF" || z.Status == "STO")); } }
 
         public void DataInit()
         {
             EditMode = true;
+
+            DataService.LoadStammdaten();
         }
 
         public void LoadOffeneZulassungen()
@@ -111,7 +119,7 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             return OffeneZulassungen.Find(z => z.DatensatzId == id);
         }
 
-        public void ApplyChangedData(string datensatzId, string property, string value)
+        public void ApplyChangedData(string datensatzId, string property, string value, string grundId = "", string grundBemerkung = "")
         {
             var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == datensatzId);
             if (zul != null)
@@ -153,6 +161,8 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         if (zul.Status != value)
                         {
                             zul.Status = value;
+                            zul.StornoGrundId = grundId;
+                            zul.Bemerkung = grundBemerkung;
                             zul.IsChanged = true;
 
                             sonstigePositionen.ForEach(z =>

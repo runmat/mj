@@ -1,0 +1,40 @@
+﻿@model CkgDomainLogic.ZldPartner.Models.StornoModel
+
+<div id="DivStorno" class="margin-top-20">
+    @using (Ajax.BeginForm("StornoDialogForm", "ZldPartner", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivStorno", OnComplete = "AjaxFormStornoDialogComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "StornoDialogAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.HiddenFor(m => m.DatensatzId)
+        @Html.HiddenFor(m => m.Status)
+        
+        @Html.FormDropDownListFor(m => m.GrundId, Model.Gruende.ToSelectList(true), new { @class = "m-wrap" })
+
+        if (Model.Status == "SONS")
+        {
+            @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.Bemerkung)
+        }
+
+        <div class="space20"></div>
+        
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
+            <button type="button" class="btn" onclick="AjaxFormStornoDialogClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sendingEnabledAfterStorno = @Model.SendingEnabled.ToString().ToLower();
+        </script>
+    }
+</div>

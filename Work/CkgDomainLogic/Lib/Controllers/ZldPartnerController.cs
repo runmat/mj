@@ -64,6 +64,23 @@ namespace ServicesMvc.ZldPartner.Controllers
         }
 
         [HttpPost]
+        public ActionResult UpdateOffeneZulassungStorno(string datensatzId, string status)
+        {
+            var model = new StornoModel { DatensatzId = datensatzId, Status = status };
+
+            return PartialView("DurchzufuehrendeZulassungen/StornoDialogForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult StornoDialogForm(StornoModel model)
+        {
+            if (ModelState.IsValid)
+                ViewModel.ApplyChangedData(model.DatensatzId, "Status", model.Status, model.GrundId, model.Bemerkung);
+
+            return PartialView("DurchzufuehrendeZulassungen/StornoDialogForm", model);
+        }
+
+        [HttpPost]
         public ActionResult OffeneZulassungenSpeichern(bool absenden)
         {
             ViewModel.SaveOffeneZulassungen(!absenden, ModelState);

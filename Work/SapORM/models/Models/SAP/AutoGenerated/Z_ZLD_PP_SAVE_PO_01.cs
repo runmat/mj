@@ -37,11 +37,11 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public string HAUPT_POSITION { get; set; }
-
 			public string EBELN { get; set; }
 
 			public string EBELP { get; set; }
+
+			public string HAUPT_POSITION { get; set; }
 
 			public string LIFNR { get; set; }
 
@@ -97,49 +97,79 @@ namespace SapORM.Models
 
 			public string SMTP_ADDR { get; set; }
 
+			public string GRUND_KEY { get; set; }
+
+			public string LTEXT_NR { get; set; }
+
+			public string ERNAM { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_BESTELLUNGEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_BESTELLUNGEN
-				{
-					HAUPT_POSITION = (string)row["HAUPT_POSITION"],
-					EBELN = (string)row["EBELN"],
-					EBELP = (string)row["EBELP"],
-					LIFNR = (string)row["LIFNR"],
-					MATNR = (string)row["MATNR"],
-					MAKTX = (string)row["MAKTX"],
-					EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
-					EKORG = (string)row["EKORG"],
-					BUKRS = (string)row["BUKRS"],
-					WERKS = (string)row["WERKS"],
-					LGORT = (string)row["LGORT"],
-					BEZ_WERK_LGORT = (string)row["BEZ_WERK_LGORT"],
-					ZH_NAME1 = (string)row["ZH_NAME1"],
-					ZZFAHRG = (string)row["ZZFAHRG"],
-					ZZBRIEF = (string)row["ZZBRIEF"],
-					KREISKZ = (string)row["KREISKZ"],
-					ZZKENN = (string)row["ZZKENN"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					VBELN = (string)row["VBELN"],
-					VBELP = (string)row["VBELP"],
-					KUNNR = (string)row["KUNNR"],
-					GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
-					DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
-					PP_STATUS = (string)row["PP_STATUS"],
-					GEB_RELEVANT = (string)row["GEB_RELEVANT"],
-					HERK = (string)row["HERK"],
-					GEB_EBELP = (string)row["GEB_EBELP"],
-					MESSAGE = (string)row["MESSAGE"],
-					TELF1 = (string)row["TELF1"],
-					SMTP_ADDR = (string)row["SMTP_ADDR"],
+				GT_BESTELLUNGEN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_BESTELLUNGEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						EBELN = (string)row["EBELN"],
+						EBELP = (string)row["EBELP"],
+						HAUPT_POSITION = (string)row["HAUPT_POSITION"],
+						LIFNR = (string)row["LIFNR"],
+						MATNR = (string)row["MATNR"],
+						MAKTX = (string)row["MAKTX"],
+						EINDT = string.IsNullOrEmpty(row["EINDT"].ToString()) ? null : (DateTime?)row["EINDT"],
+						EKORG = (string)row["EKORG"],
+						BUKRS = (string)row["BUKRS"],
+						WERKS = (string)row["WERKS"],
+						LGORT = (string)row["LGORT"],
+						BEZ_WERK_LGORT = (string)row["BEZ_WERK_LGORT"],
+						ZH_NAME1 = (string)row["ZH_NAME1"],
+						ZZFAHRG = (string)row["ZZFAHRG"],
+						ZZBRIEF = (string)row["ZZBRIEF"],
+						KREISKZ = (string)row["KREISKZ"],
+						ZZKENN = (string)row["ZZKENN"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						VBELN = (string)row["VBELN"],
+						VBELP = (string)row["VBELP"],
+						KUNNR = (string)row["KUNNR"],
+						GEBUEHR = string.IsNullOrEmpty(row["GEBUEHR"].ToString()) ? null : (decimal?)row["GEBUEHR"],
+						DL_PREIS = string.IsNullOrEmpty(row["DL_PREIS"].ToString()) ? null : (decimal?)row["DL_PREIS"],
+						PP_STATUS = (string)row["PP_STATUS"],
+						GEB_RELEVANT = (string)row["GEB_RELEVANT"],
+						HERK = (string)row["HERK"],
+						GEB_EBELP = (string)row["GEB_EBELP"],
+						MESSAGE = (string)row["MESSAGE"],
+						TELF1 = (string)row["TELF1"],
+						SMTP_ADDR = (string)row["SMTP_ADDR"],
+						GRUND_KEY = (string)row["GRUND_KEY"],
+						LTEXT_NR = (string)row["LTEXT_NR"],
+						ERNAM = (string)row["ERNAM"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_BESTELLUNGEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -227,12 +257,159 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
+
+		public partial class GT_MATERIALIEN : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string EBELN { get; set; }
+
+			public string MATNR { get; set; }
+
+			public decimal? PREIS { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
+			public static GT_MATERIALIEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				GT_MATERIALIEN o;
+
+				try
+				{
+					o = new GT_MATERIALIEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						EBELN = (string)row["EBELN"],
+						MATNR = (string)row["MATNR"],
+						PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_MATERIALIEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_MATERIALIEN> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_MATERIALIEN> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_MATERIALIEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_MATERIALIEN).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_MATERIALIEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_MATERIALIEN> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_MATERIALIEN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_MATERIALIEN>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_PP_SAVE_PO_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_MATERIALIEN> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_MATERIALIEN>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_MATERIALIEN> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_MATERIALIEN>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_MATERIALIEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_MATERIALIEN>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_PP_SAVE_PO_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_MATERIALIEN> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_MATERIALIEN>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
 	{
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_PP_SAVE_PO_01.GT_BESTELLUNGEN> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_PP_SAVE_PO_01.GT_MATERIALIEN> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}

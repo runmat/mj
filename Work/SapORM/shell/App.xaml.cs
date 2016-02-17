@@ -445,6 +445,7 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_PO_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_SAVE_PO_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_ZULASSUNGEN_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_STAMMDATEN");
 
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
 
