@@ -9,6 +9,9 @@
     @Html.FormCheckBoxListFor(Localize.Selection, m => m.SelektionsfilterLagerbestand, m => m.SelektionsfilterTempVersendete)
 </div>
 
+
+<div id="divEquiHistorie"></div>
+
 <div id="divFahrzeugbriefeGrid">
     @Html.Partial("Briefbestand/FahrzeugbriefeGrid", Model)
 </div>
@@ -18,7 +21,7 @@
     var ladeHinweis = '@Localize.LoadingHintLargeDataAmount';
 
     function FormPreparePrivate() {
-        GridAllColumnFilterApplyToGrid("GridFahrzeugbriefe");
+        GridAllColumnFilterApplyToGrid("GridFahrzeugbriefe");       
 
         $('#divBriefbestandFilter').on('change', ':checkbox', function (e) {
             FilterBriefbestandData();
@@ -27,6 +30,7 @@
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        GridAllColumnFilterApplyToGrid("GridEquiStuecklisten");
     }
 
     function GetGrid() {
@@ -72,6 +76,51 @@
                 }, 500);
             }
         });
+    }
+
+    function ShowEquiHistorieAjax(fin) {
+        LoadingShow();
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetFahrzeugHistorieStuecklistePartial",
+            loadingShow: true,
+            data: { fahrgestellnummer: fin },
+            success: function (result) {
+                ShowEquiHistorie(result);
+            }
+        });
+    }
+
+    function ShowEquiHistorie(result) {
+        $("#divEquiHistorie").html(result);
+        $("#divFahrzeugbriefeGrid").slideUp();
+        $("#divEquiHistorie").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
+    }
+
+    function CloseEquiHistorieDetail() {
+        $("#btnBackToResult").hide();
+        $("#divEquiHistorie").slideUp(function () { $("#divEquiGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divFahrzeugbriefeGrid").slideDown();
+    }
+
+    function OnDataBound_GridEquiStuecklisten() {
+        FilteredData_Grid_OnDataBound($(this));        
+    }
+
+    function OnLoad_GridEquiStuecklisten() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridEquiStuecklisten() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridEquiStuecklisten() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
 </script>

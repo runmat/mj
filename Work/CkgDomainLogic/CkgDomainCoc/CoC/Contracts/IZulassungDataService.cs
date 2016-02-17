@@ -46,5 +46,11 @@ namespace CkgDomainLogic.CoC.Contracts
         List<SendungsAuftrag> GetSendungsAuftraegeDocs(SendungsAuftragDocsSelektor model);
 
         #endregion
+
+        #region Sendungsaufträge, nach Fin
+
+        List<SendungsAuftrag> GetSendungsAuftraegeFin(SendungsAuftragFinSelektor model);
+
+        #endregion
     }
 }
