@@ -19,8 +19,12 @@ namespace CkgDomainLogic.Equi.Models
 
         public string ErsatzteilKennungText { get; set; }
 
+        public string Status { get; set; }
+
         public bool IstLagernd { get; set; }
 
+        [ModelMappingCompareIgnore]
+        public bool EntgueltigVersandt { get; set; }
 
         [SelectListKey]
         public string UniqueId { get { return string.Format("{0}-{1}",  Fahrgestellnummer, Nr); } }

@@ -218,11 +218,15 @@ namespace CkgDomainLogic.Equi.Models
 
         public List<EquiAktionsdaten> Aktionen { get; set; }
 
+        public List<Stuecklisten> Stuecklisten { get; set; }
+
         public bool ShowAktionen { get; set; }
 
         public EquiHaendlerdaten Haendlerdaten { get; set; }
 
         public bool ShowHaendlerdaten { get; set; }
+
+        public bool ShowStuecklisten { get { return Stuecklisten != null ? true : false; } }
 
         public bool HasArchives { get { return (GetViewModel != null && GetViewModel().HasArchives); } }
 
