@@ -63,6 +63,13 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult ShowSearch()
+        {
+            return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
+        }
+
+
+        [HttpPost]
         public ActionResult ShowFloorcheck()
         {
             return PartialView("Floorcheck/FloorcheckGrid", FloorcheckViewModel);

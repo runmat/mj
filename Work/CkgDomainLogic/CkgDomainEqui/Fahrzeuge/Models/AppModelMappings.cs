@@ -661,7 +661,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.Fahrgestellnummer = s.KUNNR_BEIM_AG;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
                         d.Marke = s.ZZHERST_TEXT;
                         d.Handelsname = s.ZZHANDELSNAME;
                         d.Verwendung = s.FAHRZEUGART;

@@ -381,7 +381,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {            
             Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if(!String.IsNullOrEmpty(haendler.HaendlerName))
+            if (!String.IsNullOrEmpty(haendler.HaendlerNummer))
+                SAP.SetImportParameter("I_HAENDLER", haendler.HaendlerNummer);
+
+            if (!String.IsNullOrEmpty(haendler.HaendlerName))
                 SAP.SetImportParameter("I_NAME", haendler.HaendlerName);
 
             if (!String.IsNullOrEmpty(haendler.HaendlerOrt))
