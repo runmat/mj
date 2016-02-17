@@ -4,6 +4,7 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
+using System.Linq;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
@@ -38,8 +39,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {                
                 var list = new List<SelectItem>();
                
-                foreach (var item in FloorcheckHaendlers)                
-                    list.Add(new SelectItem(item.HaendlerNummer, item.HaendlerName + ", " + item.HaendlerOrt));                
+                foreach (var item in FloorcheckHaendlers.OrderBy(a => a.HaendlerName))                
+                    list.Add(new SelectItem(item.HaendlerNummer, item.HaendlerNummer + ", " + item.HaendlerName + ", " + item.HaendlerOrt));                
                 return list;
             }
         }
@@ -48,8 +49,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public FloorcheckHaendler FloorcheckHaendler
         {
             get { return PropertyCacheGet(() => new FloorcheckHaendler()); }
-            private set { PropertyCacheSet(value); }
+            set { PropertyCacheSet(value); }
         }
+        
 
         #region Filter
 
@@ -66,10 +68,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         public void LoadFloorcheck()
-        {
-            // to do -> 
-            var haendler = FloorcheckHaendlers.FirstOrDefault(null);
-            Floorchecks = DataService.GetFloorchecks(haendler.HaendlerNummer);
+        {            
+            Floorchecks = DataService.GetFloorchecks(FloorcheckHaendler.HaendlerNummer);
 
             DataMarkForRefresh();            
         }

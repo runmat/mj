@@ -397,7 +397,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public List<Floorcheck> GetFloorchecks(string haendlerNo)
         {
-            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
            
             SAP.SetImportParameter("I_HAENDLER", haendlerNo);
            

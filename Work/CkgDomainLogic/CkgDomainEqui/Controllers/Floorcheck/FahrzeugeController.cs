@@ -44,10 +44,12 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadFloorcheck()
+        public ActionResult LoadFloorcheck(FloorcheckViewModel model)
         {
             if (ModelState.IsValid)
             {
+                FloorcheckViewModel.FloorcheckHaendler = model.FloorcheckHaendler;
+                
                 FloorcheckViewModel.LoadFloorcheck();
 
                 if (FloorcheckViewModel.Floorchecks.Count == 0)
@@ -56,7 +58,7 @@ namespace ServicesMvc.Controllers
                 }
             }
 
-            return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
+            return PartialView("Floorcheck/FloorcheckSuche", model);
         }
 
         [HttpPost]

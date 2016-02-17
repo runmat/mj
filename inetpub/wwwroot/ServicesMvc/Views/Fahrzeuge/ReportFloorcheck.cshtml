@@ -25,18 +25,26 @@
 
     var ladeHinweis = '@Localize.LoadingData';
 
+    ShowFloorcheckHaendler();
+   
     function FormPreparePrivate() {
-        // $("#FloorcheckForm button[type=submit]").trigger("click");
+        // $("#FloorcheckForm button[type=submit]").trigger("click");        
     }
+
+    function ShowFloorcheckHaendler() {
+       
+        $.ajax({
+            type: "POST",
+            url: "LoadFloorcheckHaendler",
+        });        
+    }
+
 
     function FormPreparePrivateAjax() {
         //$("#divFloorcheckSuche").css("hide");
         FormPrepareAjax();
     }
 
-    function ShowFloorcheckHaendler() {
-        FormPreparePrivateAjax();
-    }
 
     function ShowFloorcheck() {
 
@@ -51,8 +59,7 @@
                 ShowFloorcheckSearchResult(result);
                 LoadingHide();
             }
-        });
-        //alert("1")
+        });       
     }
 
     function OnDataBound_GridFloorcheck() {
