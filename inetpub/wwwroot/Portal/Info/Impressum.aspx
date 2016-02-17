@@ -81,22 +81,16 @@
 																		</TR>
 																	</TABLE>
 																	<TABLE id="Table5" height="149" cellSpacing="1" cellPadding="1" border="0">
-																		<TR>
-																			<TD>Vorsitzender der Geschäftsführung: </TD>
-																			
-																		</TR>
-                                                                        <tr>
-                                                                            <td>
-                                                                                Christian Bartelheimer
-                                                                            </td>
-                                                                        </tr>
+			<TR>
+																			<TD>&nbsp;</TD>
+																		</TR>																		
                                                                         <TR>
 																			<TD>Geschäftsführer: </TD>
 																			
 																		</TR>
                                                                         <tr>
                                                                             <td>
-                                                                                Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
+                                                                                Matthias Gauglitz, Philipp Kroschke (Sprecher der Geschäftsführer), York Schmidt zur Nedden
                                                                             </td>
                                                                         </tr>
 																		<TR>
@@ -167,12 +161,12 @@
 																</TABLE>
 																<TABLE id="Table8" height="149" cellSpacing="1" cellPadding="1" border="0">
 																	<TR>
-																		<TD>Vorsitzender der Geschäftsführung: </TD>
+																		<TD>&nbsp; </TD>
 																			
 																	</TR>
                                                                     <tr>
                                                                         <td>
-                                                                            Christian Bartelheimer
+                                                                            &nbsp;
                                                                         </td>
                                                                     </tr>
                                                                     <TR>
@@ -181,7 +175,7 @@
 																	</TR>
                                                                     <tr>
                                                                         <td>
-                                                                            Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
+                                                                            Matthias Gauglitz, Philipp Kroschke (Sprecher der Geschäftsführung), York Schmidt zur Nedden
                                                                         </td>
                                                                     </tr>
 																	<TR>
