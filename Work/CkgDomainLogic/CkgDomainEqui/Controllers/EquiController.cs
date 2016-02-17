@@ -50,6 +50,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
             InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
+            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, briefbestandDataService);
 
             InitModelStatics();
         }

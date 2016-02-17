@@ -49,6 +49,8 @@ namespace CkgDomainLogic.Equi.Contracts
 
         IEnumerable<StuecklistenKomponente> GetStuecklistenKomponenten(IEnumerable<string> fahrgestellnummern);
 
+        List<Stuecklisten> GetStuecklisten(string equinummer);
+
         #endregion
     }
 }

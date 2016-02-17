@@ -410,7 +410,7 @@ namespace ServicesMvc.Controllers
             ViewModel.Selektor = model;
 
             if (ModelState.IsValid)
-                ViewModel.LoadDurchlauf(ModelState);
+                ViewModel.LoadDurchlauf(ModelState, false);
 
             return PartialView("Durchlauf/Suche", ViewModel.Selektor);
         }
@@ -460,22 +460,14 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult DurchlaufStatistikAjaxBinding()
         {
-            return View(new GridModel(ViewModel.DurchlaufStatistikenFiltered));
-        }
-
-        [HttpPost]
-        public ActionResult FilterGridDurchlaufStatistik(string filterValue, string filterColumns)
-        {
-            ViewModel.FilterDurchlaufStatistiken(filterValue, filterColumns);
-
-            return new EmptyResult();
+            return View(new GridModel(ViewModel.DurchlaufStatistiken));
         }
 
         public ActionResult ExportDurchlaufStatistikenFilteredExcel(int page, string orderBy, string filterBy)
         {
             var gridCurrentSettings = GridSettingsPerName["GridDurchlaufStatistik"];
 
-            var dt = ViewModel.DurchlaufStatistikenFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            var dt = ViewModel.DurchlaufStatistiken.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Statistics, dt);
 
             return new EmptyResult();
@@ -485,7 +477,7 @@ namespace ServicesMvc.Controllers
         {
             var gridCurrentSettings = GridSettingsPerName["GridDurchlaufStatistik"];
 
-            var dt = ViewModel.DurchlaufStatistikenFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            var dt = ViewModel.DurchlaufStatistiken.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Statistics, dt, landscapeOrientation: true);
 
             return new EmptyResult();
