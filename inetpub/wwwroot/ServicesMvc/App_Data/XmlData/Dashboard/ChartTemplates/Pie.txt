@@ -1,7 +1,8 @@
 ﻿{
 	"pie": 
 	{
-		"show" : true
+		"show" : true,
+		"explode": 0
 	},
 	"legend" : {
 		"show": true

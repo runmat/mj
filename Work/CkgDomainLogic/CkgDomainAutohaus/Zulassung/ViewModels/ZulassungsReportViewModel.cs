@@ -199,7 +199,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             var selector = new ZulassungsReportSelektor
             {
-                ZulassungsDatumRange = new DateRange(DateRangeType.Last30Days, true)
+                ZulassungsDatumRange = new DateRange(DateRangeType.Last30Days, true),
+                NurHauptDienstleistungen = true
             };
             DashboardSessionSaveCurrentReportSelector(selector);
 

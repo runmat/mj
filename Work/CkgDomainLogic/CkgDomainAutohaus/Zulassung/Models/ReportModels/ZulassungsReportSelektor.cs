@@ -49,6 +49,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
         public string Referenz5 { get; set; }
 
+        public bool NurHauptDienstleistungen { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
