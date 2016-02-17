@@ -1,11 +1,11 @@
 ﻿@using CkgDomainLogic.CoC.Models
 @model CkgDomainLogic.CoC.ViewModels.SendungenViewModel
 @{
-    var gridName = "GridCocSendungenDocs";
+    var gridName = "GridCocSendungenFin";
 }
 
-@(Html.Telerik()
-    .Grid<SendungsAuftrag>()
+@(Html.XTelerik()
+    .XGrid<SendungsAuftrag>()
     .Name(gridName)
 
     .XAjaxDataBinding("SendungenDocsAjaxBinding", "CocSendung")
@@ -26,7 +26,7 @@
         columns.XBound(c => c.Bezeichnung);
     })
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridCocSendungen"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnDataBound_GridCocSendungenFin"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.VersandDatum).Descending())
     .XToolBar("CocSendung")
