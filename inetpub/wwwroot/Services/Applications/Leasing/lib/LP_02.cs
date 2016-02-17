@@ -692,6 +692,7 @@ namespace Leasing.lib
                     newRow["ZULDAT"] = DurchfuehrungsDatum;
                     newRow["ZZBRIEF"] = row["NummerZB2"];
                     newRow["ZZREFNR"] = row["Leasingnummer"];
+                    newRow["RES_PIN"] = m_ReserviertAuf;
 
                     newRow["WUNSCHKENNZ"] = Kreis + "-" + Wunschkennzeichen;
                     newRow["VERSICHERUNG"] = Versicherungstraeger;
