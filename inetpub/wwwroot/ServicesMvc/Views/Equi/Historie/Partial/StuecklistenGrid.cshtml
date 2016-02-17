@@ -1,0 +1,24 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model IEnumerable<Stuecklisten>
+
+@(Html.XTelerik()
+    .XGrid<Stuecklisten>()
+    .Name("GridEquiStuecklisten")
+    .BindTo(Model)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Materialnummer);
+        columns.XBound(c => c.Bezeichnung);
+        columns.XBound(c => c.Status);
+        columns.XBound(c => c.Menge);
+        columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .XPageSize(10)
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Eingangsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)
