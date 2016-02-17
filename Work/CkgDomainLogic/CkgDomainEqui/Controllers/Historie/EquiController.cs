@@ -37,6 +37,17 @@ namespace ServicesMvc.Controllers
             return PartialView("Historie/HistorieDetail", EquipmentHistorieViewModel.EquipmentHistorie);
         }
 
+        
+        [HttpPost]
+        public ActionResult GetFahrzeugHistorieStuecklistePartial(string fahrgestellnummer)
+        {
+            EquipmentHistorieViewModel.DataInitAndLoad(fahrgestellnummer);
+
+            EquipmentHistorieViewModel.LoadStuecklisten();
+
+            return PartialView("Historie/HistorieDetail", EquipmentHistorieViewModel.EquipmentHistorie);
+        }
+
         [HttpPost]
         public ActionResult LoadHistorieEquis(EquiHistorieSuchparameter model)
         {
