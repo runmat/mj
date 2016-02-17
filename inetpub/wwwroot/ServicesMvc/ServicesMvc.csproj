@@ -2951,6 +2951,7 @@
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFloorcheck.cshtml" />
+    <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche2.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

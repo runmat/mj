@@ -25,10 +25,34 @@
 
     var ladeHinweis = '@Localize.LoadingData';
 
-    ShowFloorcheckHaendler();
+    //ShowFloorcheckHaendler();
    
     function FormPreparePrivate() {
         // $("#FloorcheckForm button[type=submit]").trigger("click");        
+        InitDropdowns();
+    }
+
+    function InitDropdowns() {
+        $('#customer-dropdown').val(0);
+        $('#customer-dropdown').select2({
+            allowClear: true
+        }).off("change").on("change", function (e) {
+            OnCustomerChanged(e.val);
+        });
+
+        setTimeout(function () {
+            $('#customer-dropdown').data('select2').open();
+        }, 100);
+    }
+
+    function OnCustomerChanged(customerId) { }
+
+    function ShowSearchForm() {
+
+        $.ajax({
+            type: "POST",
+            url: "LoadFloorcheck",
+        });
     }
 
     function ShowFloorcheckHaendler() {

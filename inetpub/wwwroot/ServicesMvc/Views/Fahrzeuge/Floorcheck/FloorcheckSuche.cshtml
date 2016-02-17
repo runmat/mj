@@ -2,22 +2,19 @@
 @model FloorcheckViewModel
 
 <div id="divFloorcheckSuche">
-    @using (Ajax.BeginForm("LoadFloorcheck", "Fahrzeuge", null,
-        new MvcAjaxOptions("divFloorcheckSuche") { OnComplete = "ShowFloorcheck();" }, new { id = "FloorcheckForm" } ))
+    @using (Ajax.BeginForm("LoadFloorcheckHaendler", "Fahrzeuge", null,
+        new MvcAjaxOptions("divFloorcheckSuche") { OnComplete = "ShowFloorcheckHaendler();" }, new { id = "FloorcheckForm" } ))
     {    
         <div class="form-horizontal label-width-200" id="searchForm">
 
             @Html.ValidationSummary()
-
-            @Html.FormDropDownListFor(m => m.FloorcheckHaendler.HaendlerNummer, FloorcheckViewModel.FloorcheckHaendlerSelectItems, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerName, new { @class = "m-wrap uppercase", col = "right" })
-
-            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerOrt, new { @class = "m-wrap uppercase", col = "left" })                                            
-            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerNummer, new { @class = "m-wrap uppercase", col = "right" })
-           
-                      
+          
+            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerNummer, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerName, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.FloorcheckHaendler.HaendlerOrt, new { @class = "m-wrap uppercase" })                                            
+                                             
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.Continue</button>
             </div>
         </div>  
         
