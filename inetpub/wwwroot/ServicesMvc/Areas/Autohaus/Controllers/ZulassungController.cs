@@ -727,6 +727,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Versanddaten()
         {
+            // bis auf weiteres DHL als default vorauswählen
+            ViewModel.Zulassung.Versanddaten.VersandDienstleisterId = "DHL";
+
             return PartialView("Partial/Versanddaten", ViewModel.Zulassung.Versanddaten);
         }
 

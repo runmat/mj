@@ -27,9 +27,6 @@ namespace CkgDomainLogic.Autohaus.Models
                 //new VersandDienstleister { Id = "TNT", Name = "TNT", LogoFileName = "tnt.png", LogoFileNameExpress = "tnt-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
                 new VersandDienstleister { Id = "DHL", Name = "DHL", LogoFileName = "dhl.png", LogoFileNameExpress = "dhl-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = true }
             };
-
-            // bis auf weiteres DHL als default vorauswählen
-            VersandDienstleisterId = "DHL";
         }
 
         public string GetSummaryString()
