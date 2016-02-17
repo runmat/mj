@@ -21,6 +21,9 @@ namespace CkgDomainLogic.Equi.ViewModels
         public IEquiHistorieDataService DataService { get { return CacheGet<IEquiHistorieDataService>(); } }
 
         [XmlIgnore]
+        public IBriefbestandDataService DataServiceBriefbestand { get { return CacheGet<IBriefbestandDataService>(); } }
+
+        [XmlIgnore]
         public IEasyAccessDataService EasyAccessDataService { get { return CacheGet<IEasyAccessDataService>(); } }
 
         [XmlIgnore]
@@ -28,7 +31,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         [XmlIgnore]
         public List<EasyAccessArchiveDefinition> Archives { get; private set; }
-
+    
         public bool HasArchives { get { return (Archives.AnyAndNotNull()); } }
 
         public EquiHistorie EquipmentHistorie { get; set; }
@@ -70,8 +73,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void DataInitAndLoad(string fin)
         {
             DataInit();
+          
+            LoadHistorie(fin);            
+        }
 
-            LoadHistorie(fin);
+        // TODO -> Refresh-Bug 
+
+        public void LoadStuecklisten()
+        {                                 
+            EquipmentHistorie.Stuecklisten = DataServiceBriefbestand.GetStuecklisten(EquipmentHistorie.Equipmentnummer);
         }
 
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)

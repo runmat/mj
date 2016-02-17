@@ -66,7 +66,7 @@
                                         </td>
                                         <td class="input">
                                             <asp:TextBox CssClass="LoginTextbox" ID="txtUsername" runat="server" 
-                                                TabIndex="1"></asp:TextBox>
+                                                TabIndex="1" autocomplete="off"></asp:TextBox>
                                         </td>
                                         <td  class="lock" >     
 
@@ -79,7 +79,7 @@
                                         </td>
                                         <td class="input">
                                             <asp:TextBox ID="txtPassword" CssClass="LoginTextbox" runat="server" 
-                                                TextMode="Password" TabIndex="2"></asp:TextBox>
+                                                TextMode="Password" TabIndex="2" autocomplete="off"></asp:TextBox>
                                         </td>
                                         <td class="lock">                                     
                                             <asp:LinkButton ID="cmdLogin" runat="server" CssClass="Tablebutton" Height="16px"
@@ -94,7 +94,7 @@
                                         </td>
                                         <td class="input">
                                             <asp:TextBox CssClass="TextBoxNormal" ID="txtConfirmEmail" runat="server" 
-                                                TabIndex="4">
+                                                TabIndex="4" autocomplete="off">
                                             </asp:TextBox>
                                         </td>
                                         <td class="lock">

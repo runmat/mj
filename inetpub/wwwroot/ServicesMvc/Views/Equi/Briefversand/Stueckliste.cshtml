@@ -20,7 +20,7 @@
     .Columns(columns =>
         {
             columns.XBound(c => c.Action)
-                .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.UniqueId #>' onchange='OnSelectionChange_GridStuecklistenAuswahl($(this))' /> <# } #>")
+                .ClientTemplate("<# if (data.EntgueltigVersandt) { #> <span><i class='icon-ok-circle margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.UniqueId #>' onchange='OnSelectionChange_GridStuecklistenAuswahl($(this))' /> <# } #>")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridStuecklistenAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
                 .Filterable(false);
 
