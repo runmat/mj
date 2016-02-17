@@ -11,7 +11,7 @@
 <div>
     @using (Html.FormSearchBox())
     {
-        @Html.Partial("Floorcheck/FloorcheckSuche", null)
+        @Html.Partial("Floorcheck/FloorcheckSuche", null)        
     }
 </div>
 
@@ -24,34 +24,16 @@
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
-
-    //ShowFloorcheckHaendler();
-   
+       
     function FormPreparePrivate() {
-        // $("#FloorcheckForm button[type=submit]").trigger("click");        
-        InitDropdowns();
+        // $("#FloorcheckForm button[type=submit]").trigger("click");          
     }
-
-    function InitDropdowns() {
-        $('#customer-dropdown').val(0);
-        $('#customer-dropdown').select2({
-            allowClear: true
-        }).off("change").on("change", function (e) {
-            OnCustomerChanged(e.val);
-        });
-
-        setTimeout(function () {
-            $('#customer-dropdown').data('select2').open();
-        }, 100);
-    }
-
-    function OnCustomerChanged(customerId) { }
-
+  
     function ShowSearchForm() {
-
+        alert("");
         $.ajax({
             type: "POST",
-            url: "LoadFloorcheck",
+            url: "ShowSearch",
         });
     }
 
@@ -93,28 +75,23 @@
         //alert("OnDataBound_GridFloorcheck");
     }
 
-    function OnLoad_GridFloorcheck() {
-        //alert("1");
+    function OnLoad_GridFloorcheck() {        
         //$('.t-no-data td').text(ladeHinweis);
     }
 
-    function OnColumnShowHide_GridFloorcheck() {
-        //alert("2");
+    function OnColumnShowHide_GridFloorcheck() {        
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnReorder_GridFloorcheck() {
-        //alert("3");
+    function OnColumnReorder_GridFloorcheck() {        
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
     function ShowFloorcheckSearchResult(result) {
         SearchFormHide();
-        $("#divFloorcheckGrid").html(result);
-        //alert("4");
+        $("#divFloorcheckGrid").html(result);      
         GridAllColumnFilterApplyToGrid("GridFloorcheck");
-        $("#divFloorcheckGrid").slideDown();
-        //alert("5");
+        $("#divFloorcheckGrid").slideDown();      
     }
 
     

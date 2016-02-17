@@ -10,9 +10,9 @@
             @Html.ValidationSummary()
 
             @Html.FormDropDownListFor(m => m.FloorcheckHaendler.HaendlerNummer, FloorcheckViewModel.FloorcheckHaendlerSelectItems, new { @class = "m-wrap"})
-                                           
-            <div class="form-actions">
-                <button class='btn green'><i class='icon-back'  onclick="ShowSearchForm();"></i>&nbsp;@Localize.Back</button>
+                                                               
+            <div class="form-actions">               
+                <button class='btn green'><i class='icon-back' onclick="ShowSearchForm()"></i>&nbsp;@Localize.Back</button>    
                 <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
             </div>
         </div>  
@@ -22,5 +22,4 @@
         </script>
     }
 </div>
-
 
