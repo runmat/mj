@@ -25,26 +25,33 @@
 <div class="tabbable tabbable-custom margin-top-15">
     <ul class="nav nav-tabs">
         @*Anzeigereihenfolge umgedreht*@
-        <li class="active"><a href="#tab_1_5" data-toggle="tab">@Localize.Overview</a></li>
-        <li class="@(@Model.ShowTypdaten ? "" : "hide")"><a href="#tab_1_4" data-toggle="tab">@Localize.TypeData</a></li>
-        <li class="@(@Model.ShowMeldungen ? "" : "hide")"><a href="#tab_1_3" data-toggle="tab">@Localize.Vita</a></li>
-        <li class="@(@Model.ShowAktionen ? "" : "hide")"><a href="#tab_1_2" data-toggle="tab">@Localize.Transmission</a></li>
-        <li class="@(@Model.ShowHaendlerdaten ? "" : "hide")"><a href="#tab_1_1" data-toggle="tab">@Localize.DealerData</a></li>
+        <li class="active"><a href="#tab_1_6" data-toggle="tab">@Localize.Overview</a></li>
+        <li class="@(@Model.ShowTypdaten ? "" : "hide")"><a href="#tab_1_5" data-toggle="tab">@Localize.TypeData</a></li>
+        <li class="@(@Model.ShowMeldungen ? "" : "hide")"><a href="#tab_1_4" data-toggle="tab">@Localize.Vita</a></li>
+        <li class="@(@Model.ShowAktionen ? "" : "hide")"><a href="#tab_1_3" data-toggle="tab">@Localize.Transmission</a></li>
+        <li class="@(@Model.ShowHaendlerdaten ? "" : "hide")"><a href="#tab_1_2" data-toggle="tab">@Localize.DealerData</a></li>
+        <li class="@(@Model.ShowStuecklisten ? "" : "hide")"><a href="#tab_1_1" data-toggle="tab">@Localize.Partlist</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane" id="tab_1_1">
+        <div class="tab-pane overflow-x-auto" id="tab_1_1">
+            @if (@Model.Stuecklisten != null)
+            {
+                @Html.Partial("Historie/Partial/StuecklistenGrid", @Model.Stuecklisten)
+            }
+        </div> 
+        <div class="tab-pane" id="tab_1_2">
             @Html.Partial("Historie/Partial/Haendlerdaten", @Model.Haendlerdaten)
         </div> 
-        <div class="tab-pane overflow-x-auto" id="tab_1_2">
+        <div class="tab-pane overflow-x-auto" id="tab_1_3">
             @Html.Partial("Historie/Partial/AktionsdatenGrid", @Model.Aktionen)
         </div> 
-        <div class="tab-pane overflow-x-auto" id="tab_1_3">
+        <div class="tab-pane overflow-x-auto" id="tab_1_4">
             @Html.Partial("Historie/Partial/MeldungsdatenGrid", @Model.Meldungen)
         </div>               
-        <div class="tab-pane" id="tab_1_4">
+        <div class="tab-pane" id="tab_1_5">
             @Html.Partial("Historie/Partial/Typdaten", @Model.Typdaten)
         </div>               
-        <div class="tab-pane active" id="tab_1_5">
+        <div class="tab-pane active" id="tab_1_6">
             @Html.Partial("Historie/Partial/Uebersicht", @Model)  
         </div>
     </div>

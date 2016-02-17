@@ -61,21 +61,42 @@ namespace SapORM.Models
 
 			public string EQUNR { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IN
-				{
-					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					EQUNR = (string)row["EQUNR"],
+				GT_IN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+						EQUNR = (string)row["EQUNR"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -188,26 +209,53 @@ namespace SapORM.Models
 
 			public string ETEXT { get; set; }
 
+			public string STLKN { get; set; }
+
+			public string STATUS_TEXT { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_OUT
-				{
-					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					EQUNR = (string)row["EQUNR"],
-					IDNRK = (string)row["IDNRK"],
-					MAKTX = (string)row["MAKTX"],
-					ERSKZ = (string)row["ERSKZ"],
-					ETEXT = (string)row["ETEXT"],
+				GT_OUT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+						LICENSE_NUM = (string)row["LICENSE_NUM"],
+						EQUNR = (string)row["EQUNR"],
+						IDNRK = (string)row["IDNRK"],
+						MAKTX = (string)row["MAKTX"],
+						ERSKZ = (string)row["ERSKZ"],
+						ETEXT = (string)row["ETEXT"],
+						STLKN = (string)row["STLKN"],
+						STATUS_TEXT = (string)row["STATUS_TEXT"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
