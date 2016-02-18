@@ -9,82 +9,22 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_DPM_READ_SENDTAB_03
+	public partial class Z_DPM_READ_EQUI_STL_02
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_DPM_READ_SENDTAB_03).Name);
+			sap.Init(typeof(Z_DPM_READ_EQUI_STL_02).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_DPM_READ_SENDTAB_03).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_DPM_READ_EQUI_STL_02).Name, inputParameterKeys, inputParameterValues);
 		}
 
 
-		public static void SetImportParameter_I_AG(ISapDataService sap, string value)
+		public static void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
 		{
-			sap.SetImportParameter("I_AG", value);
-		}
-
-		public static void SetImportParameter_I_CHASSIS_NUM(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_CHASSIS_NUM", value);
-		}
-
-		public static void SetImportParameter_I_CHECK_TRACK(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_CHECK_TRACK", value);
-		}
-
-		public static void SetImportParameter_I_POOLGROUP(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_POOLGROUP", value);
-		}
-
-		public static void SetImportParameter_I_POOLNR(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_POOLNR", value);
-		}
-
-		public static void SetImportParameter_I_TRACK(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_TRACK", value);
-		}
-
-		public static void SetImportParameter_I_ZZBRIEF(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_ZZBRIEF", value);
-		}
-
-		public static void SetImportParameter_I_ZZKENN(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_ZZKENN", value);
-		}
-
-		public static void SetImportParameter_I_ZZLSDAT_BIS(ISapDataService sap, DateTime? value)
-		{
-			sap.SetImportParameter("I_ZZLSDAT_BIS", value);
-		}
-
-		public static void SetImportParameter_I_ZZLSDAT_VON(ISapDataService sap, DateTime? value)
-		{
-			sap.SetImportParameter("I_ZZLSDAT_VON", value);
-		}
-
-		public static void SetImportParameter_I_ZZREFERENZ1(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_ZZREFERENZ1", value);
-		}
-
-		public static void SetImportParameter_I_ZZREFERENZ2(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_ZZREFERENZ2", value);
-		}
-
-		public static void SetImportParameter_I_ZZREFNR(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_ZZREFNR", value);
+			sap.SetImportParameter("I_EQUNR", value);
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -97,47 +37,23 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
-			public string ZZFAHRG { get; set; }
+			public string CHASSIS_NUM { get; set; }
 
-			public string ZZKENN { get; set; }
-
-			public DateTime? ZZLSDAT { get; set; }
-
-			public string VERSANDWEG { get; set; }
-
-			public string ZZTRACK { get; set; }
-
-			public string STATUS_CODE { get; set; }
-
-			public string VBELN { get; set; }
-
-			public string POOLNR { get; set; }
-
-			public string ZZBRIEF { get; set; }
-
-			public string ZZREFNR { get; set; }
-
-			public string NAME1 { get; set; }
-
-			public string NAME2 { get; set; }
-
-			public string STRAS { get; set; }
-
-			public string HSNM1 { get; set; }
-
-			public string PSTLZ { get; set; }
-
-			public string CITY1 { get; set; }
-
-			public string VERSANDVALUE { get; set; }
-
-			public string ZZREFERENZ1 { get; set; }
-
-			public string ZZREFERENZ2 { get; set; }
+			public string LICENSE_NUM { get; set; }
 
 			public string IDNRK { get; set; }
 
+			public string STLKN { get; set; }
+
 			public string MAKTX { get; set; }
+
+			public string STATUS_AKTUELL { get; set; }
+
+			public string STATUS_TEXT { get; set; }
+
+			public string MENGE_C { get; set; }
+
+			public DateTime? ANDAT { get; set; }
 
 			private bool MappingErrorProcessed { get; set; }
 
@@ -152,27 +68,15 @@ namespace SapORM.Models
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
 
-						ZZFAHRG = (string)row["ZZFAHRG"],
-						ZZKENN = (string)row["ZZKENN"],
-						ZZLSDAT = string.IsNullOrEmpty(row["ZZLSDAT"].ToString()) ? null : (DateTime?)row["ZZLSDAT"],
-						VERSANDWEG = (string)row["VERSANDWEG"],
-						ZZTRACK = (string)row["ZZTRACK"],
-						STATUS_CODE = (string)row["STATUS_CODE"],
-						VBELN = (string)row["VBELN"],
-						POOLNR = (string)row["POOLNR"],
-						ZZBRIEF = (string)row["ZZBRIEF"],
-						ZZREFNR = (string)row["ZZREFNR"],
-						NAME1 = (string)row["NAME1"],
-						NAME2 = (string)row["NAME2"],
-						STRAS = (string)row["STRAS"],
-						HSNM1 = (string)row["HSNM1"],
-						PSTLZ = (string)row["PSTLZ"],
-						CITY1 = (string)row["CITY1"],
-						VERSANDVALUE = (string)row["VERSANDVALUE"],
-						ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
-						ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
+						CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+						LICENSE_NUM = (string)row["LICENSE_NUM"],
 						IDNRK = (string)row["IDNRK"],
+						STLKN = (string)row["STLKN"],
 						MAKTX = (string)row["MAKTX"],
+						STATUS_AKTUELL = (string)row["STATUS_AKTUELL"],
+						STATUS_TEXT = (string)row["STATUS_TEXT"],
+						MENGE_C = (string)row["MENGE_C"],
+						ANDAT = string.IsNullOrEmpty(row["ANDAT"].ToString()) ? null : (DateTime?)row["ANDAT"],
 					};
 				}
 				catch(Exception e)
@@ -236,7 +140,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_SENDTAB_03", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_EQUI_STL_02", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -266,7 +170,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_SENDTAB_03", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_EQUI_STL_02", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -286,7 +190,7 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_SENDTAB_03.GT_OUT> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_EQUI_STL_02.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}

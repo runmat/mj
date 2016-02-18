@@ -839,8 +839,28 @@ namespace CkgDomainLogic.Equi.Models
                         d.Bezeichnung = s.MAKTX;
                         d.ErsatzteilKennung = s.ERSKZ;
                         d.ErsatzteilKennungText = s.ETEXT;
-
+                        d.Status = s.STATUS_TEXT;
+                        d.EntgueltigVersandt = !(d.Status.NotNullOrEmpty().ToUpper().Contains("LAGERND") || d.Status.NotNullOrEmpty().ToUpper().Contains("TEMPORÄR")); ;
                         d.IstLagernd = (d.ErsatzteilKennung.NotNullOrEmpty().ToUpper() == "L");
+                    }));
+            }
+        }
+
+
+        static public ModelMapping<Z_DPM_READ_EQUI_STL_02.GT_OUT, Stuecklisten> Z_DPM_READ_EQUI_STL_02_GT_OUT_To_StuecklistenKomponente
+        {        
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_STL_02.GT_OUT, Stuecklisten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;                        
+                        d.Materialnummer = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+                        d.Status = s.STATUS_TEXT;
+                        d.Eingangsdatum = s.ANDAT;                                                                       
                     }));
             }
         }
