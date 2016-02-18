@@ -23,14 +23,59 @@
     }
 
     .europe-map {
+        display: inline-block;
+        float: left;
         text-align: left;
         overflow: hidden;
         height: 460px;
+        width: 605px;
     }
+    .europe-map-hint {
+        display: table-cell;
+        vertical-align: middle;
+        height: 420px;
+    }
+    @@media (max-width: 855px) {
+        .europe-map-hint {
+            height: auto;
+            padding-bottom: 20px;
+            padding-left: 191px;
+        }
+    }
+    .europe-map-hint .inner {
+        display: table-cell;
+        vertical-align: middle;
+        width: 370px;
+
+        border: 3px solid #6E8CBF;
+        border-radius: 12px !important;
+        box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
+        padding: 5px;
+    }
+    .europe-map-hint .hint1, .europe-map-hint .hint2 {
+        padding: 9px 15px 9px 15px;
+    }
+    .europe-map-hint .inner i {
+        display: inline-block;
+        float: left;
+        vertical-align: middle;
+        width: 45px;
+        height: 45px;
+        background: center center no-repeat;
+        background-size: 50px 64px;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.10)!important;
+        background-image: url(/ServicesMvc/Images/flags/64x64/EU.png);
+        margin: 12px 15px 0px 12px!important;
+    }
+
     #europe-svg {
         overflow: hidden; 
         position: relative; 
-        left: -150px; 
+        left: -175px; 
         top: -90px;
         background-color: transparent;    
     }
@@ -39,16 +84,16 @@
         position: relative; 
         z-index: 9999;
     }
-    @@media (max-width: 800px) {
+    @@media (max-width: 650px) {
         #country-others {
             left: 385px; 
             top: -150px;
         }
     }
-    @@media (min-width: 801px) {
+    @@media (min-width: 651px) {
         #country-others {
-        left: 500px; 
-        top: -180px;
+        left: 440px; 
+        top: -165px;
         }
     }
 
@@ -112,6 +157,7 @@
         box-sizing: border-box;
         box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.03)!important;
     }
+
 </style>
 
 
@@ -218,5 +264,17 @@
 
     <button id="country-others" onclick="return ShowDetailsForm('-');" class="btn blue">@Localize.MoreCountries</button>
 
+</div>
+
+<div class="europe-map-hint">
+    <div class="inner">
+        <i></i>
+        <div class="hint1">
+            @Localize.Autohaus_EsdAnforderung_MapHint1
+        </div>
+        <div class="hint2">
+            @Localize.Autohaus_EsdAnforderung_MapHint2
+        </div>
+    </div>
 </div>
 
