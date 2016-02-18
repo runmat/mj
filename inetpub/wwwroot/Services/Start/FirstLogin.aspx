@@ -81,7 +81,7 @@
                                         </td>
                                         <td class="input">
                                             <asp:TextBox ID="txtNewPwd" CssClass="LoginTextbox" runat="server" TextMode="Password"
-                                                Width="267px"></asp:TextBox>
+                                                Width="267px" autocomplete="off"></asp:TextBox>
                                         </td>
                                         <td  class="bold" rowspan="4" width="150px">
                                             <div id="spanUCase" style="color: #B70000; ">
@@ -118,7 +118,7 @@
                                         </td>
                                         <td class="input">
                                             <asp:TextBox ID="txtNewPwdConfirm" CssClass="LoginTextbox" runat="server" TextMode="Password"
-                                                Width="267px"></asp:TextBox>
+                                                Width="267px" autocomplete="off"></asp:TextBox>
                                         </td>
                                         
                                     </tr>
@@ -172,7 +172,7 @@
                                             Antwort:
                                         </td>
                                         <td class="input">
-                                            <asp:TextBox ID="txtAnfordernSpeichern" CssClass="LoginTextbox" runat="server" Width="500px"></asp:TextBox>
+                                            <asp:TextBox ID="txtAnfordernSpeichern" CssClass="LoginTextbox" runat="server" Width="500px" autocomplete="off"></asp:TextBox>
                                         </td>
                                         <td class="lock">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../Images/empty.gif"
