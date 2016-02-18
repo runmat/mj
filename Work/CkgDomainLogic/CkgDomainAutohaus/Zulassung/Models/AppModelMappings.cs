@@ -429,6 +429,8 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.StatusUhrzeit = s.STATIME;
                         d.TrackingId = s.TRACKING_ID;
                         d.VersandDienstleister = s.VS_DIENSTLEISTER;
+                        d.ErledigtDatum = s.ERDAT;
+                        d.Beauftragungsart = s.BEAUFTRAGUNGSART;
                     }));
             }
         }

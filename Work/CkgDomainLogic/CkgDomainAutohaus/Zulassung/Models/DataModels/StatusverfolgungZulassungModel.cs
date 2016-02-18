@@ -38,5 +38,15 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Done)]
+        public DateTime? ErledigtDatum { get; set; }
+
+        public string Beauftragungsart { get; set; }
+
+        public bool IsBundesweiteVersandzulassung
+        {
+            get { return (Beauftragungsart == "VERSANDZULASSUNG"); }
+        }
     }
 }

@@ -121,7 +121,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // Status 2 (unterwegs)
             var status2 = new StatusverfolgungStatusItem { StatusNr = 2 };
 
-            var itemsStatus2 = itemsRaw.Where(s => s.Status.In("1,4,5,A")).ToList();
+            var itemsStatus2 = itemsRaw.Where(s => s.Status.In("4,5,A") || (s.IsBundesweiteVersandzulassung && s.Status == "1")).ToList();
 
             if (aktiverVorgang && itemsStatus2.Any())
             {
@@ -189,7 +189,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (aktiverVorgang && itemsStatus5.Any())
             {
-                status5.StatusDatumUhrzeit = itemsStatus5.Last().StatusDatumUhrzeit;
+                status5.StatusDatumUhrzeit = itemsStatus5.Last().ErledigtDatum;
                 status5.IsCompleted = true;
             }
 

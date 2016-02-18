@@ -49,11 +49,15 @@ namespace SapORM.Models
 
 			public string ZULBELN { get; set; }
 
+			public DateTime? ERDAT { get; set; }
+
 			public DateTime? STADATE { get; set; }
 
 			public string STATIME { get; set; }
 
 			public string BEB_STATUS { get; set; }
+
+			public string BEAUFTRAGUNGSART { get; set; }
 
 			public string PARVW { get; set; }
 
@@ -77,9 +81,11 @@ namespace SapORM.Models
 						DynSapProxyFactory = dynSapProxyFactory,
 
 						ZULBELN = (string)row["ZULBELN"],
+						ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
 						STADATE = string.IsNullOrEmpty(row["STADATE"].ToString()) ? null : (DateTime?)row["STADATE"],
 						STATIME = (string)row["STATIME"],
 						BEB_STATUS = (string)row["BEB_STATUS"],
+						BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
 						PARVW = (string)row["PARVW"],
 						VS_DIENSTLEISTER = (string)row["VS_DIENSTLEISTER"],
 						TRACKING_ID = (string)row["TRACKING_ID"],
