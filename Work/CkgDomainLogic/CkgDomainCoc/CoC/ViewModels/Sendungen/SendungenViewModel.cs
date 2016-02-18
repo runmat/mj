@@ -93,6 +93,9 @@ namespace CkgDomainLogic.CoC.ViewModels
             
             PropertyCacheClear(this, m => m.SendungenDocsFiltered);
             PropertyCacheClear(this, m => m.SendungsAuftragDocsSelektor);
+
+           // PropertyCacheClear(this, m => m.SendungenFinFiltered);
+            PropertyCacheClear(this, m => m.SendungsAuftragFinSelektor);
         }
 
 
@@ -181,12 +184,38 @@ namespace CkgDomainLogic.CoC.ViewModels
 
             DataMarkForRefresh();
         }
-
+      
         public void FilterSendungenDocs(string filterValue, string filterProperties)
         {
             SendungenDocsFiltered = SendungenDocs.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+        #endregion
+
+
+        #region Sendungen, Suche nach Fin (ViewModel wie Docs)
+
+        public SendungsAuftragFinSelektor SendungsAuftragFinSelektor
+        {
+            get { return PropertyCacheGet(() => new SendungsAuftragFinSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
+       
+        public void LoadSendungenFin(SendungsAuftragFinSelektor model, Action<string, string> addModelError)
+        {
+            PropertyCacheClear(this, m => m.SendungenDocsFiltered);
+            SendungenDocs = DataService.GetSendungsAuftraegeFin(model);
+
+            if (SendungenDocs.None())
+                addModelError("", Localize.NoDataFound);
+            else if (!ShowStatusInGrid)
+                SendungenDocs.ForEach(x => x.StatusText = "");
+
+            DataMarkForRefresh();
+        }
+
+        
         #endregion
 
 

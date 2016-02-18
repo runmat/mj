@@ -86,26 +86,53 @@ namespace SapORM.Models
 
 			public string ZZREFNR { get; set; }
 
+			public string ZZDIEN2 { get; set; }
+
+			public string FRACHRFUEHRER { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_WEB
-				{
-					VBELN = (string)row["VBELN"],
-					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
-					ZZFAHRG = (string)row["ZZFAHRG"],
-					ZZKENN = (string)row["ZZKENN"],
-					VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
-					ZZSEND2 = (string)row["ZZSEND2"],
-					ZZREFNR = (string)row["ZZREFNR"],
+				GT_WEB o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_WEB
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						VBELN = (string)row["VBELN"],
+						ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+						ZZFAHRG = (string)row["ZZFAHRG"],
+						ZZKENN = (string)row["ZZKENN"],
+						VDATU = string.IsNullOrEmpty(row["VDATU"].ToString()) ? null : (DateTime?)row["VDATU"],
+						ZZSEND2 = (string)row["ZZSEND2"],
+						ZZREFNR = (string)row["ZZREFNR"],
+						ZZDIEN2 = (string)row["ZZDIEN2"],
+						FRACHRFUEHRER = (string)row["FRACHRFUEHRER"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_WEB
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
