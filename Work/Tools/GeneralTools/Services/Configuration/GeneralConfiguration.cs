@@ -15,6 +15,11 @@ namespace GeneralTools.Services
             return GetConfigValue(context, keyName);
         }
 
+        public string GetConfigAllServerVal(string context, string keyName)
+        {
+            return GetConfigAllServerValue(context, keyName);
+        }
+
         public IDictionary<string, string> GetConfigAllServersVals(string context, string connectionString = null, string filterClause = null)
         {
             return GetConfigAllServersValues(context, connectionString, filterClause);
@@ -34,6 +39,33 @@ namespace GeneralTools.Services
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
                 cmd.CommandText = "SELECT value FROM Config " +
+                                  "WHERE " + SQLClause;
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Context", context);
+                cmd.Parameters.AddWithValue("@Key", keyName);
+
+                cnn.Open();
+                var erg = cmd.ExecuteScalar();
+                cnn.Close();
+
+                if (erg != null)
+                    return erg.ToString();
+
+                return "";
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string GetConfigAllServerValue(string context, string keyName)
+        {
+            try
+            {
+                var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+                var cmd = cnn.CreateCommand();
+                cmd.CommandText = "SELECT value FROM ConfigAllServers " +
                                   "WHERE " + SQLClause;
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.AddWithValue("@Context", context);

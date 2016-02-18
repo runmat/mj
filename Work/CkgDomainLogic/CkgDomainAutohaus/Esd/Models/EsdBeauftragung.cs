@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -87,14 +90,18 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             get
             {
-                return new List<Zusatzdienstleistung>
-                {
-                    new Zusatzdienstleistung { MaterialNr = "10", Name = "Zulassung" },
-                    new Zusatzdienstleistung { MaterialNr = "20", Name = "Überführung" },
-                    new Zusatzdienstleistung { MaterialNr = "30", Name = "Zollzulassung" },
-                    new Zusatzdienstleistung { MaterialNr = "40", Name = "Abmeldung" },
-                    new Zusatzdienstleistung { MaterialNr = "50", Name = "Sonstiges" },
-                };
+                var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+                if (generalConf == null)
+                    return new List<Zusatzdienstleistung>();
+
+                var i = 0;
+                return generalConf.GetConfigAllServerVal("Autohaus", "Autohaus_EsdAnforderung_Dienstleistungen_Keys")
+                    .NotNullOrEmpty().Split(',')
+                    .Select(resourceKey => new Zusatzdienstleistung
+                    {
+                        MaterialNr = (++i).ToString(),
+                        Name = Localize.TranslateResourceKey(resourceKey.Trim(' '))
+                    }).ToList();
             }
         }
 
