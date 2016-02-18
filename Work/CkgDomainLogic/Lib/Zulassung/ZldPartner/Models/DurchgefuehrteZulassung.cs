@@ -37,7 +37,7 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string ZulassungsKreis { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [LocalizedDisplay(LocalizeConstants._Kennzeichen)]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]

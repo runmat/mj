@@ -12,7 +12,7 @@
         @Html.FormValidationSummary()
         
 
-        @Html.FormDropDownListFor(m => m.KundenNr, kundenList.ToSelectList(), new { @class = "m-wrap" })
+        @Html.FormDropDownListFor(m => m.KundenNr, kundenList.ToSelectList(), new { @class = "m-wrap xlarge" }, labelText: (Model.ModusPartnerportal ? Localize.CoStarPartner : Localize.Customer))
 
         if (Model.ModusPartnerportal)
         {
