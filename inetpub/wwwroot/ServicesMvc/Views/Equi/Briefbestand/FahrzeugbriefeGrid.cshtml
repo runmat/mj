@@ -1,15 +1,18 @@
 ﻿@using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridFahrzeugbriefe"; }
 
-@(Html.Telerik()
-    .Grid<Fahrzeugbrief>()
+@(Html.XTelerik()
+    .XGrid<Fahrzeugbrief>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugbriefeAjaxBinding", "Equi")
     .Columns(columns =>
     {
         columns.XBound(c => c.Kennzeichen);
-        columns.XBound(c => c.Fahrgestellnummer);
-        columns.XBound(c => c.Erstzulassungsdatum).Format("{0:dd.MM.yyyy}"); 
+        //columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Fahrgestellnummer).ClientTemplate(
+               "<a href='#' class='link tooltips' data-original-title='Historie' data-placement='right' onclick='ShowEquiHistorieAjax(\"<#= data.Fahrgestellnummer #>\");'><#= data.Fahrgestellnummer #></a>"
+           );
+        columns.XBound(c => c.Erstzulassungsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.TechnIdentnummer);
         columns.XBound(c => c.Vertragsnummer);
         columns.XBound(c => c.StandortText);
