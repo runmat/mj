@@ -2969,6 +2969,9 @@
     <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\Receipt.cshtml" />
     <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\Grid.cshtml" />
     <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\SaveGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

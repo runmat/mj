@@ -92,6 +92,7 @@
     <Compile Include="CoC\Models\DruckOptionen.cs" />
     <Compile Include="CoC\Models\FreieZulassung.cs" />
     <Compile Include="CoC\Models\Sendungen\SendungsAuftragDocsSelektor.cs" />
+    <Compile Include="CoC\Models\Sendungen\SendungsAuftragFinSelektor.cs" />
     <Compile Include="CoC\Models\Sendungen\SendungsAuftragIdSelektor.cs" />
     <Compile Include="CoC\Models\Sendungen\SendungsAuftragSelektor.cs" />
     <Compile Include="CoC\Models\Sendungen\SendungsAuftrag.cs" />
