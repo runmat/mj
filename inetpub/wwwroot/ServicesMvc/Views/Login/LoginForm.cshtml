@@ -39,9 +39,9 @@
                  }
                  else
                  {
-                     @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-user")
+                     @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix", autocomplete = "off" }, "icon-user")
 
-                     @Html.FormPlaceholderTextBoxFor(m => m.Password, new { @class = "m-wrap placeholder-no-fix", type = "password" }, "icon-lock")
+                     @Html.FormPlaceholderTextBoxFor(m => m.Password, new { @class = "m-wrap placeholder-no-fix", type = "password", autocomplete = "off" }, "icon-lock")
 
                      <div class="form-actions">
                          <button type="submit" class="btn blue pull-right loginbtn">
@@ -80,7 +80,7 @@
                 }
                 else
                 {
-                    @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix" }, "icon-user")
+                    @Html.FormPlaceholderTextBoxFor(m => m.UserName, new { @class = "m-wrap placeholder-no-fix", autocomplete = "off" }, "icon-user")
 
                     <div class="captcha-wrapper">
                         <img src="~/Shared/Captcha?id=@Guid.NewGuid()" alt="captcha" class="captcha-image" />
@@ -89,7 +89,7 @@
                         </span>
                     </div>
                     
-                    @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new { @class = "m-wrap placeholder-no-fix" }, "icon-picture")
+                    @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new { @class = "m-wrap placeholder-no-fix", autocomplete = "off" }, "icon-picture")
                     
                     <div class="form-actions">
                         <button type="submit" class="btn blue pull-right pwbtn">
