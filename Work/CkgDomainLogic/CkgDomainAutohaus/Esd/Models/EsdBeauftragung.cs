@@ -67,19 +67,15 @@ namespace CkgDomainLogic.Autohaus.Models
         public string AnsprechTelefonNr { get; set; }
 
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.FirstName)]
         public string KundeVorname { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.LastName)]
         public string KundeNachname { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.Email)]
         public string KundeEmail { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.PhoneNo)]
         public string KundeTelefonNr { get; set; }
 

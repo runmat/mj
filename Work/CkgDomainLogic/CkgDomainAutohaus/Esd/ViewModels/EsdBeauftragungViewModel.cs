@@ -62,7 +62,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AnsprechVorname = LogonContext.FirstName,
                 AnsprechNachname = LogonContext.LastName,
                 AnsprechEmail = LogonContext.UserInfo.Mail,
-                AnsprechTelefonNr = LogonContext.UserInfo.Telephone
+                AnsprechTelefonNr = LogonContext.UserInfo.Telephone2
             };
             EsdBeauftragung.InitDienstleistungen();
         }

@@ -65,7 +65,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Vorname = LogonContext.FirstName,
                 Nachname = LogonContext.LastName,
                 Email = LogonContext.UserInfo.Mail,
-                TelefonNr = LogonContext.UserInfo.Telephone
+                TelefonNr = LogonContext.UserInfo.Telephone2
             };
         }
 

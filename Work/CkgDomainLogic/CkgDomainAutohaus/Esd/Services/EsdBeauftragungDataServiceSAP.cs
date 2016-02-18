@@ -15,7 +15,7 @@ namespace CkgDomainLogic.Autohaus.Services
         {
         }
 
-        private const string ValidCountryCodes = "AT,BE,CH,CZ,DE,DK,ES,FI,FR,GB,HU,IE,IT,LU,NL,PL,PT,RO,SE";
+        private const string ValidCountryCodes = "AT,BE,CH,CZ,DK,ES,FI,FR,GB,HU,IE,IT,LU,NL,PL,PT,RO,SE";
 
         public List<Land> LaenderAuswahlliste
         {
