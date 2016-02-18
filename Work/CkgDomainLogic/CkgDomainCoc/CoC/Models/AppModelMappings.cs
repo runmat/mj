@@ -447,7 +447,7 @@ namespace CkgDomainLogic.CoC.Models
                         d.ZulassungsDatum = s.VDATU;
                         d.VersandID = s.ZZSEND2;
                         d.VertragsNr = s.ZZREFNR;
-                        d.VersandKey = "1"; // 1 = DHL
+                        d.VersandKey = s.FRACHRFUEHRER == "DPE" ? "1" : s.FRACHRFUEHRER == "TNT" ? "2" : s.FRACHRFUEHRER == "GO" ? "3" : s.FRACHRFUEHRER == "UPS" ? "4" : "";                        
                     }));
             }
         }
@@ -472,6 +472,11 @@ namespace CkgDomainLogic.CoC.Models
                         d.VersandWeg = s.VERSANDWEG;
                         d.VersandKey = s.VERSANDVALUE;
                         d.PoolNummer = s.POOLNR;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
+                        d.Materialnummer = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+
                         d.VersandAdresseAsText = string.Format("{0} {1}<br />{2} {3}, {4} {5}", s.NAME1, s.NAME2, s.STRAS, s.HSNM1, s.PSTLZ, s.CITY1);
                     }));
             }

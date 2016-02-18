@@ -2983,6 +2983,9 @@
     <Content Include="Views\Haendler\Partial\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\TileSimple.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\ProtokollUpload.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -102,11 +102,11 @@ Public Class Report46_2
     Protected WithEvents lblStatusShow As Label
     Protected WithEvents lbl_Kennzeichen As Label
     Protected WithEvents tr_Kennzeichen As HtmlTableRow
-    Protected WithEvents lblLagerortShow As Label
+    Protected WithEvents lblVersandStatusShow As Label
     Protected WithEvents lbl_Status As Label
     Protected WithEvents tr_Status As HtmlTableRow
     Protected WithEvents lblHerstellerShow As Label
-    Protected WithEvents lbl_Lagerort As Label
+    Protected WithEvents lbl_VersandStatus As Label
     Protected WithEvents lblHerstellerSchluesselShow As Label
     Protected WithEvents lbl_Hersteller As Label
     Protected WithEvents lblBriefnummerShow As Label
@@ -339,35 +339,41 @@ Public Class Report46_2
             lblFahrzeughalterShow.Text &= " " & row("ORT01_ZH").ToString
         End If
 
-        If row("ZZTMPDT") Is DBNull.Value OrElse row("ZZTMPDT") Is Nothing Then
-            Select Case row("ABCKZ").ToString
-                Case "1"
-                    lblLagerortShow.Text = "temporär angefordert"
-                Case "2"
-                    'bei gmac gibt kein endgültig schreiben, da sie nur endgültig anfordern können
-                    If m_User.KUNNR = "347452" Then
-                        lblLagerortShow.Text = "angefordert"
-                    Else
-                        lblLagerortShow.Text = "endgültig angefordert"
-                    End If
-                Case Else
-                    lblLagerortShow.Text = "eingelagert"
-            End Select
-        Else
-            Select Case row("ABCKZ").ToString
-                Case "1"
-                    lblLagerortShow.Text = "temporär versendet"
-                Case "2"
-                    'bei gmac gibt kein endgültig schreiben, da sie nur endgültig anfordern können
-                    If m_User.KUNNR = "347452" Then
-                        lblLagerortShow.Text = "versendet"
-                    Else
-                        lblLagerortShow.Text = "endgültig versendet"
-                    End If
+        'If row("ZZTMPDT") Is DBNull.Value OrElse row("ZZTMPDT") Is Nothing Then
+        '    Select Case row("ABCKZ").ToString
+        '        Case "1"
+        '            lblLagerortShow.Text = "temporär angefordert"
+        '        Case "2"
+        '            'bei gmac gibt kein endgültig schreiben, da sie nur endgültig anfordern können
+        '            If m_User.KUNNR = "347452" Then
+        '                lblLagerortShow.Text = "angefordert"
+        '            Else
+        '                lblLagerortShow.Text = "endgültig angefordert"
+        '            End If
+        '        Case Else
+        '            lblLagerortShow.Text = "eingelagert"
+        '    End Select
+        'Else
+        '    Select Case row("ABCKZ").ToString
+        '        Case "1"
+        '            lblLagerortShow.Text = "temporär versendet"
+        '        Case "2"
+        '            'bei gmac gibt kein endgültig schreiben, da sie nur endgültig anfordern können
+        '            If m_User.KUNNR = "347452" Then
+        '                lblLagerortShow.Text = "versendet"
+        '            Else
+        '                lblLagerortShow.Text = "endgültig versendet"
+        '            End If
 
-                Case Else
-                    lblLagerortShow.Text = "eingelagert"
-            End Select
+        '        Case Else
+        '            lblLagerortShow.Text = "eingelagert"
+        '    End Select
+        'End If
+
+        If TypeOf row("STANDORT_VERSSTAT_TEXT") Is DBNull Then
+            lblVersandStatusShow.Text = ""
+        Else
+            lblVersandStatusShow.Text = row("STANDORT_VERSSTAT_TEXT").ToString
         End If
 
         If TypeOf row("ZZTMPDT") Is DBNull Then
@@ -845,7 +851,7 @@ Public Class Report46_2
                 .Abmeldedatum = lblAbmeldedatumShow.Text
                 .BriefStatus = lblStatusShow.Text
                 .Kennzeichen = lblKennzeichenShow.Text
-                .Lagerort = lblLagerortShow.Text
+                .Lagerort = lblVersandStatusShow.Text
                 .Hersteller = lblHerstellerShow.Text
                 .Fahrzeugmodell = lblFahrzeugmodellShow.Text
                 .Farbe = objPDIs.ABE_Daten.ZZFARBE
