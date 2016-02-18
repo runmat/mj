@@ -668,7 +668,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Farbe = s.ZFARBE_TEXT;
                         d.Versandgrund = s.VERS_GRUND;
                         d.Kilometerstand = s.KM_STAND;
-                        d.Kreditnummer = s.PAID;
+                        d.Kreditnummer = s.PAID.TrimStart('0');
                     }));
             }
         }

@@ -101,9 +101,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (FloorcheckHaendler.SelectedHaendlerNummer.IsNotNullOrEmpty())
             {
                 FloorcheckHaendler.HaendlerNummer = FloorcheckHaendler.SelectedHaendlerNummer;
-                FloorcheckHaendler.HaendlerName = FloorcheckHaendler.HaendlerOrt = "";
-
+                FloorcheckHaendler.HaendlerName = "";
+                FloorcheckHaendler.HaendlerOrt = "";
             }
+
             FloorcheckHaendlers = DataService.GetFloorcheckHaendler(FloorcheckHaendler);
 
             if (FloorcheckHaendlers.Count == 1)
