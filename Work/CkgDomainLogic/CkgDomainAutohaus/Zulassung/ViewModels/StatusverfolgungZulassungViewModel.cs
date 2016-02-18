@@ -23,7 +23,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public StatusverfolgungZulassungSelektor Selektor
         {
-            get { return PropertyCacheGet(() => new StatusverfolgungZulassungSelektor()); }
+            get { return PropertyCacheGet(() => new StatusverfolgungZulassungSelektor { NurHauptDienstleistungen = true }); }
             set { PropertyCacheSet(value); }
         }
 

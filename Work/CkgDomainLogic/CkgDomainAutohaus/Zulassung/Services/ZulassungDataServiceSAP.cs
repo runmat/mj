@@ -474,6 +474,9 @@ namespace CkgDomainLogic.Autohaus.Services
                 SAP.SetImportParameter("I_ZZKENN", selector.Kennzeichen);
                 SAP.SetImportParameter("I_LISTE", selector.AuftragsArt);
 
+                if (selector.NurHauptDienstleistungen)
+                    SAP.SetImportParameter("I_NUR_HAUPT_DL", "X");
+
                 if (selector.ZulassungsDatumRange.IsSelected)
                 {
                     SAP.SetImportParameter("I_ZZZLDAT_VON", selector.ZulassungsDatumRange.StartDate);

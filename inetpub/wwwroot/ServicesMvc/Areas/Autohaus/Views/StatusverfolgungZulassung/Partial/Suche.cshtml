@@ -10,6 +10,8 @@
             @Html.FormValidationSummary()
 
 
+            @Html.HiddenFor(m => m.NurHauptDienstleistungen)
+
             @Html.FormDropDownListFor(m => m.KundenNr, StatusverfolgungZulassungSelektor.Kunden.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
 

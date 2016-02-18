@@ -23,5 +23,7 @@ namespace CkgDomainLogic.Autohaus.Models
         string Referenz4 { get; set; }
 
         string Referenz5 { get; set; }
+
+        bool NurHauptDienstleistungen { get; set; }
     }
 }
