@@ -86,7 +86,7 @@ namespace ServicesMvc.Controllers
 
             return PartialView("VerfolgungMulti/Docs/Suche", ViewModel.SendungsAuftragDocsSelektor);
         }
-
+       
         [HttpPost]
         public ActionResult ShowSendungenDocs()
         {
@@ -94,6 +94,39 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
+
+        #region Suche nach Fin etc.
+
+        [HttpPost]
+        public ActionResult LoadSendungenFin(SendungsAuftragFinSelektor model)
+        {
+            ViewModel.SendungsAuftragFinSelektor = model;
+
+            if (ModelState.IsValid)
+                ViewModel.LoadSendungenFin(model, ModelState.AddModelError);
+
+            return PartialView("VerfolgungMulti/Fin/Suche", ViewModel.SendungsAuftragFinSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowSendungenFin()
+        {
+            return PartialView("VerfolgungMulti/Fin/Grid", ViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult FilterGridCocSendungenFin(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterSendungenDocs(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
 
     }
 }

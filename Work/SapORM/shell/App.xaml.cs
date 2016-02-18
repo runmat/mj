@@ -440,7 +440,6 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_REM_VERS_VORG_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_CARPORT_MELD_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_INS_CARPORT_NACHLIEF_01");
-
             // CKG Partner-Portal
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_PO_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_SAVE_PO_01");
@@ -448,6 +447,7 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_STAMMDATEN");
 
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_STL_02");
 
             #endregion
 
