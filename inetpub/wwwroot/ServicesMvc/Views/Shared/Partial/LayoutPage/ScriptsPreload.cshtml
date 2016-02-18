@@ -49,6 +49,11 @@
             return true;
         }
 
+        // ä,ö,ü,Ä,Ö,Ü,-> next approach
+        if (key == 228 || key == 246 || key == 252 || key == 196 || key == 214 || key == 220) {
+            return true;
+        }
+
         // alle anderen Zeichen nicht zulassen
         return false;
     }

@@ -182,8 +182,11 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void SelectStueckliste(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            Stueckliste.ToListOrEmptyList().ForEach(sl => sl.IsSelected = select);
+            // Stueckliste.ToListOrEmptyList().ForEach(sl => (sl.IsSelected) = select);
 
+            foreach (var sl in Stueckliste.ToListOrEmptyList())            
+                sl.IsSelected = !sl.EntgueltigVersandt ? select : false;
+                                    
             allSelectionCount = Stueckliste.Count(c => c.IsSelected);
             allCount = Stueckliste.Count;
             allFoundCount = Stueckliste.Count;
