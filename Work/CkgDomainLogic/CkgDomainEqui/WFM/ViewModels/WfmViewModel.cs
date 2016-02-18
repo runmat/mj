@@ -100,7 +100,6 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             PropertyCacheClear(this, m => m.AuftraegeFiltered);
             PropertyCacheClear(this, m => m.DurchlaufDetailsFiltered);
-            PropertyCacheClear(this, m => m.DurchlaufStatistikenFiltered);
 
             DataMarkForRefreshDetails();
         }
@@ -567,27 +566,33 @@ namespace CkgDomainLogic.WFM.ViewModels
         }
 
         [XmlIgnore]
+        public List<WfmDurchlaufSingle> DurchlaufDetailsForChart
+        {
+            get { return PropertyCacheGet(() => new List<WfmDurchlaufSingle>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+
+        [XmlIgnore]
         public List<WfmDurchlaufStatistik> DurchlaufStatistiken
         {
             get { return PropertyCacheGet(() => new List<WfmDurchlaufStatistik>()); }
             private set { PropertyCacheSet(value); }
         }
 
-        [XmlIgnore]
-        public List<WfmDurchlaufStatistik> DurchlaufStatistikenFiltered
-        {
-            get { return PropertyCacheGet(() => DurchlaufStatistiken); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        public void LoadDurchlauf(ModelStateDictionary state)
+        public void LoadDurchlauf(ModelStateDictionary state, bool chartMode)
         {
             DataMarkForRefresh();
 
             DataService.GetDurchlauf(Selektor, (details, statistiken) =>
             {
-                DurchlaufDetails = details.ToListOrEmptyList();
-                DurchlaufStatistiken = statistiken.ToListOrEmptyList();
+                if (chartMode)
+                    DurchlaufDetailsForChart = details.ToListOrEmptyList();
+                else
+                {
+                    DurchlaufDetails = details.ToListOrEmptyList();
+                    DurchlaufStatistiken = statistiken.ToListOrEmptyList();
+                }
             });
 
             if (DurchlaufDetails.None() && state != null)
@@ -597,11 +602,6 @@ namespace CkgDomainLogic.WFM.ViewModels
         public void FilterDurchlaufDetails(string filterValue, string filterProperties)
         {
             DurchlaufDetailsFiltered = DurchlaufDetails.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
-        public void FilterDurchlaufStatistiken(string filterValue, string filterProperties)
-        {
-            DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         private ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items)
@@ -672,9 +672,9 @@ namespace CkgDomainLogic.WFM.ViewModels
             };
             DashboardSessionSaveCurrentReportSelector(Selektor);
 
-            LoadDurchlauf(null);
+            LoadDurchlauf(null, true);
 
-            return GetRawChartData(DurchlaufDetails);
+            return GetRawChartData(DurchlaufDetailsForChart);
         }
 
 
@@ -683,14 +683,14 @@ namespace CkgDomainLogic.WFM.ViewModels
         [HttpPost]
         public object GetChartData(int chartID)
         {
-            var items = DurchlaufDetails;
+            var items = DurchlaufDetailsForChart;
             if (chartID > 1)
             {
                 Selektor.AbmeldeartDurchlauf = Selektor.GetAlleAbmeldeartenDurchlaufNextKeyFor(Selektor.AbmeldeartDurchlauf);
 
-                LoadDurchlauf(null);
+                LoadDurchlauf(null, true);
 
-                items = DurchlaufDetails;
+                items = DurchlaufDetailsForChart;
             }
 
             return GetRawChartData(items);

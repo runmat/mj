@@ -60,16 +60,9 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <strong>Vorsitzender der Geschäftsführung:</strong>
-                                                    <br />
-                                                    Christian Bartelheimer
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
                                                     <strong>Geschäftsführer:</strong>
                                                     <br />
-                                                    Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
+                                                    Matthias Gauglitz, Philipp Kroschke (Sprecher der Geschäftsführung), York Schmidt zur Nedden
                                                 </td>
                                             </tr>
                                             <tr>
@@ -148,16 +141,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <strong>Vorsitzender der Geschäftsführung:</strong>
-                                                        <br />
-                                                        Christian Bartelheimer
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
                                                         <strong>Geschäftsführer:</strong>
                                                         <br />
-                                                        Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden
+                                                        Matthias Gauglitz, Philipp Kroschke (Sprecher der Geschäftsführung), York Schmidt zur Nedden
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -185,7 +171,7 @@
                                                     <td>
                                                         <strong>Verantwortlich im Sinne des Pressegesetzes: </strong>
                                                     <br />
-                                                        Christian Bartelheimer
+                                                        Philipp Kroschke
                                                     </td>
                                                 </tr>
                                                 <tr>
