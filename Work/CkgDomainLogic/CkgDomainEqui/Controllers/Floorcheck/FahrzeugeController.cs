@@ -23,7 +23,8 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(FloorcheckViewModel).Name;
             FloorcheckViewModel.DataMarkForRefresh();
-            
+            FloorcheckViewModel.Init();
+
             return View(FloorcheckViewModel);            
         }
 
@@ -33,38 +34,40 @@ namespace ServicesMvc.Controllers
            if (ModelState.IsValid)
             {
                 FloorcheckViewModel.FloorcheckHaendler = model.FloorcheckHaendler;
-                FloorcheckViewModel.LoadFloorcheckHaendler();
 
+                FloorcheckViewModel.LoadFloorcheckHaendler();
+                                               
                 if (FloorcheckViewModel.FloorcheckHaendlers.Count == 0)
                 {
                     ModelState.AddModelError(String.Empty, Localize.NoDataFound);
                 }
             }
 
-            return PartialView("Floorcheck/FloorcheckSuche2", FloorcheckViewModel);
+            return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
         }
 
-        [HttpPost]
-        public ActionResult LoadFloorcheck(FloorcheckViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                FloorcheckViewModel.FloorcheckHaendler = model.FloorcheckHaendler;
+        //[HttpPost]
+        //public ActionResult LoadFloorcheck(FloorcheckViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        FloorcheckViewModel.FloorcheckHaendler = model.FloorcheckHaendler;
                 
-                FloorcheckViewModel.LoadFloorcheck();
+        //        FloorcheckViewModel.LoadFloorcheck();
 
-                if (FloorcheckViewModel.Floorchecks.Count == 0)
-                {
-                    ModelState.AddModelError(String.Empty, Localize.NoDataFound);
-                }
-            }
-
-            return PartialView("Floorcheck/FloorcheckSuche", model);
-        }
+        //        if (FloorcheckViewModel.Floorchecks.Count == 0)
+        //        {
+        //            ModelState.AddModelError(String.Empty, Localize.NoDataFound);
+        //        }
+        //    }
+        //    return PartialView("Floorcheck/FloorcheckSuche", model);
+        //}
 
         [HttpPost]
-        public ActionResult ShowSearch()
+        public ActionResult ResetSelect()
         {
+            FloorcheckViewModel.FloorcheckHaendler.SelectedHaendlerNummer = null;
+            FloorcheckViewModel.ResetSelection = true;
             return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
         }
 

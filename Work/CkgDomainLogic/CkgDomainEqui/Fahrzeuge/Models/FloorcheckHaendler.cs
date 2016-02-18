@@ -11,7 +11,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class FloorcheckHaendler
     {
-       
+
+        [LocalizedDisplay(LocalizeConstants.Dealer)]
+        public string SelectedHaendlerNummer { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DealerNo)]
         public string HaendlerNummer { get; set; }
 

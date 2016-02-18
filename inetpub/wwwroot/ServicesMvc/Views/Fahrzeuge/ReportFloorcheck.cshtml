@@ -11,7 +11,12 @@
 <div>
     @using (Html.FormSearchBox())
     {
-        @Html.Partial("Floorcheck/FloorcheckSuche", null)        
+        @*<div id="search1">*@
+            @Html.Partial("Floorcheck/FloorcheckSuche", null)
+        @*</div>*@
+        @*<div id="search2" class="">
+            @Html.Partial("Floorcheck/FloorcheckSuche2", null)
+        </div>*@
     }
 </div>
 
@@ -24,25 +29,33 @@
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
-       
-    function FormPreparePrivate() {
-        // $("#FloorcheckForm button[type=submit]").trigger("click");          
+    var _appStateGridData = 0;
+
+    function FormPreparePrivate() {        
     }
   
-    function ShowSearchForm() {
-        alert("");
+    function ShowPreviousSearchForm() {             
+        
         $.ajax({
             type: "POST",
-            url: "ShowSearch",
+            url: "ResetSelect",
         });
+      
+        $("#search2").hide();
+        $("#search1").show();
+        $("#btnback").hide();
     }
 
     function ShowFloorcheckHaendler() {
-       
-        $.ajax({
-            type: "POST",
-            url: "LoadFloorcheckHaendler",
-        });        
+                                                      
+        $("#search1").hide();
+        $("#search2").show();
+        $("#btnback").show();        
+
+        console.log(_appStateGridData);
+
+        if (_appStateGridData > 0)
+            ShowFloorcheck();
     }
 
 
