@@ -56,6 +56,19 @@ namespace CkgDomainLogic.CoC.Models
         [LocalizedDisplay(LocalizeConstants._ZBIINr)]
         public string Fahrzeugbrief { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        public string Referenz1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        public string Referenz2 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.MaterialNo)]
+        public string Materialnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Description)]
+        public string Bezeichnung { get; set; }
+
+
         [LocalizedDisplay(LocalizeConstants.ShippingSurvey)]
         [GridExportIgnore]
         public string VersandIdSurveyLink

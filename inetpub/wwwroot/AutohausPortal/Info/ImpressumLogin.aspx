@@ -22,8 +22,7 @@
                 E-Mail: <a href="mailto:info@kroschke.de">info@kroschke.de</a>
             </p>
             <p>
-                Vorsitzender der Geschäftsführung: Christian Bartelheimer<br />
-                Geschäftsführer: Matthias Gauglitz, Philipp Kroschke, York Schmidt zur Nedden<br />
+                Geschäftsführer: Matthias Gauglitz, Philipp Kroschke (Sprecher der Geschäftsführung), York Schmidt zur Nedden<br />
                 Registergericht: Amtsgericht Lübeck<br />
                 HRB 9417 HL
             </p>
@@ -38,7 +37,7 @@
                 USt.-ID-Nr. DE811887896</p>
             <p>
                 <b>Verantwortlich im Sinne des Pressegesetzes:</b><br />
-                Christian Bartelheimer
+                Philipp Kroschke
             </p>
             <p>
                 Haftungshinweis:<br />
