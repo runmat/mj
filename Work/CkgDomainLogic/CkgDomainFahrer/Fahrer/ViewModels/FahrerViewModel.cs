@@ -345,8 +345,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
+
+            // validation
+            var auftragsNrFriendly = auftrag.AuftragsNrFriendly;
+            var extension = Path.GetExtension(clientFileName);
+
+            if (auftragsNrFriendly.Trim().Length == 0 || extension.ToLower() == ".exe")
+                return;
+
             var serverFileName = string.Format("{0}{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
+                                               GetUploadedImageFileName(auftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
                                                Path.GetExtension(clientFileName));
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);
