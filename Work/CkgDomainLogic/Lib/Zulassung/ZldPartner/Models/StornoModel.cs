@@ -5,17 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.ZldPartner.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.ZldPartner.Models
 {
-    public class StornoModel
+    public class StornoModel : IValidatableObject
     {
         public string DatensatzId { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
         [Required]
@@ -23,7 +23,10 @@ namespace CkgDomainLogic.ZldPartner.Models
         public string GrundId { get; set; }
 
         [XmlIgnore]
-        public List<StornoGrund> Gruende { get { return GetViewModel == null ? new List<StornoGrund>() : GetViewModel().Gruende.Where(g => g.Status == Status).ToList(); } }
+        public List<StornoGrund> Gruende { get { return GetViewModel == null ? new List<StornoGrund>() : GetViewModel().Gruende.Where(g => g.Status == Status).OrderBy(g => g.GrundText).ToList(); } }
+
+        [XmlIgnore]
+        public StornoGrund Grund { get { return Gruende.FirstOrDefault(g => g.GrundId == GrundId, new StornoGrund()); } }
 
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
@@ -32,5 +35,11 @@ namespace CkgDomainLogic.ZldPartner.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<ZldPartnerZulassungenViewModel> GetViewModel { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Grund.MitBemerkung && string.IsNullOrEmpty(Bemerkung))
+                yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Bemerkung" });
+        }
     }
 }

@@ -108,6 +108,9 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         if (!gebuehrInvalid && item.Gebuehr.ToDouble(0) < 0.02)
                             item.ValidationErrorList.Add(new ValidationResult("Gebühr darf nicht 0,00 EUR oder 0,01 EUR sein", new[] { "Gebuehr" }));
                     }
+
+                    if (item.Status.In("FGS,STO") && string.IsNullOrEmpty(item.StornoGrundId))
+                        item.ValidationErrorList.Add(new ValidationResult(string.Format("{0} {1}", Localize.Reason, Localize.Required.NotNullOrEmpty().ToLower()), new[] { "StornoGrundId" }));
                 }
             }
 
@@ -117,6 +120,61 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
         public OffeneZulassung GetOffeneZulassungById(string id)
         {
             return OffeneZulassungen.Find(z => z.DatensatzId == id);
+        }
+
+        public StornoModel GetStornoModel(string datensatzId, string status)
+        {
+            return new StornoModel { DatensatzId = datensatzId, Status = status };
+        }
+
+        public AddPositionModel GetAddPositionModel(string belegNr)
+        {
+            var item = OffeneZulassungen.First(z => z.BelegNr == belegNr && z.Hauptposition);
+
+            return new AddPositionModel { BelegNr = belegNr, Werk = item.Werk };
+        }
+
+        public bool CheckGrundBemerkung(string grundId)
+        {
+            var grund = Gruende.FirstOrDefault(g => g.GrundId == grundId);
+
+            return (grund != null && grund.MitBemerkung);
+        }
+
+        public bool CheckMaterialPreis(string materialNr)
+        {
+            var material = Materialien.FirstOrDefault(m => m.MaterialNr == materialNr);
+
+            return (material != null && material.PreisEingebbar);
+        }
+
+        public void TryAddPosition(AddPositionModel model, ModelStateDictionary state)
+        {
+            if (OffeneZulassungen.Any(z => z.BelegNr == model.BelegNr && z.MaterialNr == model.MaterialNr))
+            {
+                state.AddModelError("", Localize.ServiceAlreadyExists);
+                return;
+            }
+
+            var vorhandenePositionen = OffeneZulassungen.Where(z => z.BelegNr == model.BelegNr).ToList();
+            vorhandenePositionen.ForEach(z => z.IsChanged = true);
+
+            var newItem = ModelMapping.Copy(vorhandenePositionen.First());
+
+            newItem.NeuePosition = true;
+            newItem.BelegPosition = (vorhandenePositionen.Select(vz => vz.BelegPosition.ToInt(0)).Max() + 10).ToString();
+            newItem.Hauptposition = false;
+            newItem.MaterialNr = model.MaterialNr;
+            newItem.Gebuehr = null;
+            newItem.Gebuehrenrelevant = false;
+            newItem.IsChanged = true;
+            newItem.MaterialText = model.Material.MaterialText;
+            newItem.Preis = model.Preis;
+
+            OffeneZulassungen.Add(newItem);
+
+            PropertyCacheClear(this, m => m.OffeneZulassungenToSave);
+            PropertyCacheClear(this, m => m.OffeneZulassungenGridItemsFiltered);
         }
 
         public void ApplyChangedData(string datensatzId, string property, string value, string grundId = "", string grundBemerkung = "")
@@ -162,7 +220,7 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         {
                             zul.Status = value;
                             zul.StornoGrundId = grundId;
-                            zul.Bemerkung = grundBemerkung;
+                            zul.StornoBemerkung = grundBemerkung;
                             zul.IsChanged = true;
 
                             sonstigePositionen.ForEach(z =>

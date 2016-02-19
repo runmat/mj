@@ -13,6 +13,8 @@ namespace CkgDomainLogic.ZldPartner.Models
 {
     public class OffeneZulassung
     {
+        public string KundenNr { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.VoucherNo)]
         public string BelegNr { get; set; }
 
@@ -21,7 +23,17 @@ namespace CkgDomainLogic.ZldPartner.Models
 
         public bool Hauptposition { get; set; }
 
+        public bool NeuePosition { get; set; }
+
         public string DatensatzId { get { return BelegNr.NotNullOrEmpty().PadLeft(10, '0') + BelegPosition.NotNullOrEmpty().PadLeft(5, '0'); } }
+
+        public string BuchungsKreis { get; set; }
+
+        public string EinkaufsOrganisation { get; set; }
+
+        public string Werk { get; set; }
+
+        public string LagerOrt { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.MaterialNo)]
         public string MaterialNr { get; set; }
@@ -121,12 +133,13 @@ namespace CkgDomainLogic.ZldPartner.Models
             }
         }
 
-        public string BemerkungLangtextNr { get; set; }
+        public string StornoBemerkungLangtextNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Comment)]
-        public string Bemerkung { get; set; }
+        public string StornoBemerkung { get; set; }
 
         public string Erfasser { get; set; }
+
+        public bool Express { get; set; }
 
         public string ValidationMessage
         {

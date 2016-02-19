@@ -42,8 +42,8 @@ namespace CkgDomainLogic.ZldPartner.Services
 
             sapItems.ForEach(s =>
             {
-                if (!string.IsNullOrEmpty(s.BemerkungLangtextNr))
-                    s.Bemerkung = ReadLangtext(s.BemerkungLangtextNr);
+                if (!string.IsNullOrEmpty(s.StornoBemerkungLangtextNr))
+                    s.StornoBemerkung = ReadLangtext(s.StornoBemerkungLangtextNr);
             });
 
             return sapItems;
@@ -53,27 +53,30 @@ namespace CkgDomainLogic.ZldPartner.Services
         {
             zulassungen.ForEach(z =>
             {
-                if (string.IsNullOrEmpty(z.Bemerkung))
+                if (string.IsNullOrEmpty(z.StornoBemerkung))
                 {
-                    if (!string.IsNullOrEmpty(z.BemerkungLangtextNr))
+                    if (!string.IsNullOrEmpty(z.StornoBemerkungLangtextNr))
                     {
-                        DeleteLangtext(z.BemerkungLangtextNr);
-                        z.BemerkungLangtextNr = "";
+                        DeleteLangtext(z.StornoBemerkungLangtextNr);
+                        z.StornoBemerkungLangtextNr = "";
                     }
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(z.BemerkungLangtextNr))
-                        z.BemerkungLangtextNr = InsertLangtext(z.Bemerkung);
+                    if (string.IsNullOrEmpty(z.StornoBemerkungLangtextNr))
+                        z.StornoBemerkungLangtextNr = InsertLangtext(z.StornoBemerkung);
                     else
-                        UpdateLangtext(z.BemerkungLangtextNr, z.Bemerkung);
+                        UpdateLangtext(z.StornoBemerkungLangtextNr, z.StornoBemerkung);
                 }
             });
 
             Z_ZLD_PP_SAVE_PO_01.Init(SAP, "I_MODUS", (nurSpeichern ? "S" : "A"));
 
-            var zulList = AppModelMappings.Z_ZLD_PP_SAVE_PO_01_GT_BESTELLUNGEN_From_OffeneZulassung.CopyBack(zulassungen).ToList();
-            SAP.ApplyImport(zulList);
+            var listeVorhandenePositionen = AppModelMappings.Z_ZLD_PP_SAVE_PO_01_GT_BESTELLUNGEN_From_OffeneZulassung.CopyBack(zulassungen.Where(z => !z.NeuePosition)).ToList();
+            SAP.ApplyImport(listeVorhandenePositionen);
+
+            var listeNeuePositionen = AppModelMappings.Z_ZLD_PP_SAVE_PO_01_GT_MATERIALIEN_From_OffeneZulassung.CopyBack(zulassungen.Where(z => z.NeuePosition)).ToList();
+            SAP.ApplyImport(listeNeuePositionen);
 
             SAP.Execute();
 
@@ -81,7 +84,7 @@ namespace CkgDomainLogic.ZldPartner.Services
 
             foreach (var item in zulassungen)
             {
-                if (ergList != null && ergList.Any(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition))
+                if (ergList.Any(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition))
                 {
                     item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition).MESSAGE;
                 }

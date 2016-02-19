@@ -2959,6 +2959,7 @@
     <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
+    <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen\AddPositionDialogForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

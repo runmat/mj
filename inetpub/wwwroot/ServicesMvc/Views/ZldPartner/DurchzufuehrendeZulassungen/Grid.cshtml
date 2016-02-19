@@ -12,9 +12,10 @@
     .XAjaxDataBinding("OffeneZulassungenAjaxBinding", "ZldPartner")
     .Columns(columns =>
     {
-        columns.XBound(c => c.BelegNr);
-        columns.XBound(c => c.BelegPosition).Visible(false);
-        columns.XBound(c => c.Hauptposition).Visible(false);
+        columns.XBound(c => c.BelegNr)
+            .ClientTemplate(
+                "<a href='#' onclick='AddPosition(\"<#= data.BelegNr #>\");' class='tooltips <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.AddPosition + "' data-placement='right'><#= data.BelegNr #></button>"
+            );
         columns.XBound(c => c.Halter);
         columns.XBound(c => c.FahrgestellNr);
         columns.XBound(c => c.Zb2Nr);
@@ -44,8 +45,8 @@
         columns.XBound(c => c.BeauftragtVon);
         columns.XBound(c => c.Telefon);
         columns.XBound(c => c.Email)
-                .ClientTemplate(
-                    "<a href='mailto:<#= data.Email #>'><#= data.Email #></a>"
+            .ClientTemplate(
+                "<a href='mailto:<#= data.Email #>'><#= data.Email #></a>"
             );
         columns.XBound(c => c.BearbeitungsStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
     })

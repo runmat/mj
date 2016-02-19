@@ -1,9 +1,9 @@
 ﻿@model CkgDomainLogic.ZldPartner.Models.StornoModel
 
-<div id="DivStorno" class="margin-top-20">
+<div id="DivStorno">
     @using (Ajax.BeginForm("StornoDialogForm", "ZldPartner", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivStorno", OnComplete = "AjaxFormStornoDialogComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "StornoDialogAjaxForm" }))
+                new MvcAjaxOptions { UpdateTargetId = "DivStorno", OnComplete = "AjaxFormDialogComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal no-bottom-margin", id = "StornoDialogAjaxForm" }))
     {
         @Html.FormValidationSummary()
         
@@ -11,30 +11,22 @@
         @Html.HiddenFor(m => m.DatensatzId)
         @Html.HiddenFor(m => m.Status)
         
-        @Html.FormDropDownListFor(m => m.GrundId, Model.Gruende.ToSelectList(true), new { @class = "m-wrap" })
+        @Html.FormDropDownListFor(m => m.GrundId, Model.Gruende.ToSelectList(true), new { @class = "m-wrap large", onchange = "ApplyGrund()" })
 
-        if (Model.Status == "SONS")
-        {
-            @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large" })
-        }
-        else
-        {
-            @Html.HiddenFor(m => m.Bemerkung)
-        }
+        @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large" })
 
-        <div class="space20"></div>
-        
         
         @Html.FormRequiredFieldsSummary()
         
-        <div class="form-actions no-bottom-margin">
+        <div class="form-actions no-bottom-margin padding-bottom-5">
             <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
-            @*<button type="button" class="btn" onclick="AjaxFormStornoDialogClose();">@Localize.Cancel</button>*@
         </div>
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            _sendingEnabledAfterStorno = @Model.SendingEnabled.ToString().ToLower();
+            _sendingEnabled = @Model.SendingEnabled.ToString().ToLower();
+
+            ShowHideBemerkung(@Model.Grund.MitBemerkung.ToString().ToLower());
         </script>
     }
 </div>

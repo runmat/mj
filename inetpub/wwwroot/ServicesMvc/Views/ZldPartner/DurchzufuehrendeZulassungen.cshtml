@@ -64,6 +64,11 @@
     }
 
     function OnRowDataBound_GridOffeneZulassungen(e) {
+        // Express
+        if (e.dataItem.Express)
+            $(e.row).addClass("bg-color-ckg-palered");
+
+        // Status
         var grid = $(this).data("tGrid");
         var validationErrors = JSON.parse(e.dataItem.ValidationErrorsJson);
 
@@ -105,7 +110,6 @@
                         type: 'inline',
                         showCloseBtn: false,
                         closeOnBgClick: false,
-                        alignTop: true,
                         removalDelay: 300,
                         mainClass: 'my-mfp-zoom-in'
                     });
@@ -133,22 +137,92 @@
         }
     }
 
-    function AjaxFormStornoDialogComplete() {
+    function ApplyGrund() {
+        $.ajax({
+            type: "POST",
+            url: "CheckGrundBemerkung",
+            loadingShow: false,
+            data: { grundId: $("#GrundId").val() },
+            success: function (result) {
+                ShowHideBemerkung(result.MitBemerkung);
+            }
+        });
+    }
+
+    function ShowHideBemerkung(showBemerkung) {
+        var controlGroup = $("#Bemerkung").closest(".control-group");
+
+        if (showBemerkung) {
+            controlGroup.show();
+        } else {
+            $("#Bemerkung").val("");
+            controlGroup.hide();
+        }
+    }
+
+    function AjaxFormDialogComplete() {
         FormPreparePrivateAjax();
 
         if (_modelStateValid) {
             EnableButtons();
 
-            if (_sendingEnabledAfterStorno) {
+            if (_sendingEnabled) {
                 $(".btnSend").removeClass("hide");
             } else {
                 $(".btnSend").addClass("hide");
             }
+
+            AjaxFormDialogClose();
+            GridRefresh();
         }
     }
 
-    function AjaxFormStornoDialogClose() {
-        $(".mfp-close").trigger("click");
+    function AjaxFormDialogClose() {
+        $.magnificPopup.close();
+    }
+
+    function AddPosition(belegNr) {
+        $.ajax({
+            type: "POST",
+            url: "AddPosition",
+            loadingShow: false,
+            data: { belegNr: belegNr },
+            success: function (result) {
+                $("#AddPositionDialog").html(result);
+
+                $.magnificPopup.open({
+                    items: { src: $("#AddPositionDialog") },
+                    type: 'inline',
+                    showCloseBtn: false,
+                    closeOnBgClick: false,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+    }
+
+    function ApplyMaterial() {
+        $.ajax({
+            type: "POST",
+            url: "CheckMaterialPreis",
+            loadingShow: false,
+            data: { materialNr: $("#MaterialNr").val() },
+            success: function (result) {
+                ShowHidePreis(result.PreisEingebbar);
+            }
+        });
+    }
+
+    function ShowHidePreis(showPreis) {
+        var controlGroup = $("#Preis").closest(".control-group");
+
+        if (showPreis) {
+            controlGroup.show();
+        } else {
+            $("#Preis").val("");
+            controlGroup.hide();
+        }
     }
 
     function SaveOffeneZulassungen(absenden) {
@@ -189,5 +263,6 @@
 
 </script>
 
-<div id="StornoDialog" class="white-popup mfp-hide">
-</div>
+<div id="StornoDialog" class="white-popup mfp-hide"></div>
+
+<div id="AddPositionDialog" class="white-popup mfp-hide"></div>

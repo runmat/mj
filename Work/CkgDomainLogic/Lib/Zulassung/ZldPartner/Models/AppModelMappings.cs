@@ -24,7 +24,11 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.BelegGebuehrenPosition = s.GEB_EBELP;
                         d.BelegNr = s.EBELN;
                         d.BelegPosition = s.EBELP;
+                        d.BuchungsKreis = s.BUKRS;
+                        d.EinkaufsOrganisation = s.EKORG;
                         d.Email = s.SMTP_ADDR;
+                        d.Erfasser = s.ERNAM;
+                        d.Express = s.EXPRESS.XToBool();
                         d.FahrgestellNr = s.ZZFAHRG;
                         d.Gebuehr = s.GEBUEHR.ToString();
                         d.Gebuehrenrelevant = s.GEB_RELEVANT.XToBool();
@@ -32,19 +36,22 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.Hauptposition = s.HAUPT_POSITION.XToBool();
                         d.Herkunft = s.HERK;
                         d.Kennzeichen = s.ZZKENN;
+                        d.KundenNr = s.KUNNR;
+                        d.LagerOrt = s.LGORT;
                         d.Lieferant = s.LIFNR;
                         d.LieferDatum = s.EINDT.ToString("dd.MM.yyyy");
                         d.MaterialNr = s.MATNR;
                         d.MaterialText = s.MAKTX;
+                        d.NeuePosition = false;
                         d.Preis = s.DL_PREIS.ToString();
                         d.Status = s.PP_STATUS.NotNullOrEmpty();
+                        d.StornoBemerkungLangtextNr = s.LTEXT_NR;
+                        d.StornoGrundId = s.GRUND_KEY;
                         d.Telefon = s.TELF1;
+                        d.Werk = s.WERKS;
                         d.Zb2Nr = s.ZZBRIEF;
                         d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
                         d.ZulassungsKreis = s.KREISKZ;
-                        d.StornoGrundId = s.GRUND_KEY;
-                        d.BemerkungLangtextNr = s.LTEXT_NR;
-                        d.Erfasser = s.ERNAM;
                     }));
             }
         }
@@ -90,6 +97,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.GrundId = s.GRUND_KEY;
                         d.GrundText = s.GRUND;
                         d.Status = s.PP_STATUS;
+                        d.MitBemerkung = s.GR_LANGTEXT.XToBool();
                     }));
             }
         }
@@ -127,17 +135,25 @@ namespace CkgDomainLogic.ZldPartner.Models
                     , (s, d) =>
                     {
                         d.BEZ_WERK_LGORT = s.BeauftragtVon;
+                        d.BUKRS = s.BuchungsKreis;
                         d.DL_PREIS = s.Preis.ToNullableDecimal();
                         d.EBELN = s.BelegNr;
                         d.EBELP = s.BelegPosition;
                         d.EINDT = s.LieferDatum.ToNullableDateTime("dd.MM.yyyy");
+                        d.EKORG = s.EinkaufsOrganisation;
+                        d.ERNAM = s.Erfasser;
+                        d.EXPRESS = s.Express.BoolToX();
                         d.GEBUEHR = s.Gebuehr.ToNullableDecimal();
                         d.GEB_EBELP = s.BelegGebuehrenPosition;
                         d.GEB_RELEVANT = s.Gebuehrenrelevant.BoolToX();
+                        d.GRUND_KEY = s.StornoGrundId;
                         d.HAUPT_POSITION = s.Hauptposition.BoolToX();
                         d.HERK = s.Herkunft;
                         d.KREISKZ = s.ZulassungsKreis;
+                        d.KUNNR = s.KundenNr;
+                        d.LGORT = s.LagerOrt;
                         d.LIFNR = s.Lieferant;
+                        d.LTEXT_NR = s.StornoBemerkungLangtextNr;
                         d.MAKTX = s.MaterialText;
                         d.MATNR = s.MaterialNr;
                         d.PP_STATUS = s.Status;
@@ -145,14 +161,29 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.TELF1 = s.Telefon;
                         d.VBELN = s.AuftragsNr;
                         d.VBELP = s.AuftragsPosition;
+                        d.WERKS = s.Werk;
                         d.ZH_NAME1 = s.Halter;
                         d.ZZBRIEF = s.Zb2Nr;
                         d.ZZFAHRG = s.FahrgestellNr;
                         d.ZZKENN = s.Kennzeichen;
                         d.ZZZLDAT = s.ZulassungsDatum.ToNullableDateTime("dd.MM.yyyy");
-                        d.GRUND_KEY = s.StornoGrundId;
-                        d.LTEXT_NR = s.BemerkungLangtextNr;
-                        d.ERNAM = s.Erfasser;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_PP_SAVE_PO_01.GT_MATERIALIEN, OffeneZulassung> Z_ZLD_PP_SAVE_PO_01_GT_MATERIALIEN_From_OffeneZulassung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_PP_SAVE_PO_01.GT_MATERIALIEN, OffeneZulassung>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.EBELN = s.BelegNr;
+                        d.MATNR = s.MaterialNr;
+                        d.PREIS = s.Preis.ToNullableDecimal();
                     }
                 ));
             }

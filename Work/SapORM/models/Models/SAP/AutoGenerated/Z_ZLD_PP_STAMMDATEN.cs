@@ -38,6 +38,8 @@ namespace SapORM.Models
 
 			public string GRUND { get; set; }
 
+			public string GR_LANGTEXT { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static EXP_GRUENDE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -54,6 +56,7 @@ namespace SapORM.Models
 						PP_STATUS = (string)row["PP_STATUS"],
 						GRUND_KEY = (string)row["GRUND_KEY"],
 						GRUND = (string)row["GRUND"],
+						GR_LANGTEXT = (string)row["GR_LANGTEXT"],
 					};
 				}
 				catch(Exception e)

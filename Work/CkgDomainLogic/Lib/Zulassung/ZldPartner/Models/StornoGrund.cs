@@ -11,5 +11,7 @@ namespace CkgDomainLogic.ZldPartner.Models
 
         [SelectListText]
         public string GrundText { get; set; }
+
+        public bool MitBemerkung { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace CkgDomainLogic.ZldPartner.Models
         [SelectListText]
         public string MaterialNrUndText
         {
-            get { return string.Format("{0} ~ {1}", MaterialNr, MaterialText); }
+            get { return string.Format("{0} ~ {1}", MaterialNr.NotNullOrEmpty().TrimStart('0'), MaterialText); }
         }
 
         public bool In1010Hinzufuegbar { get; set; }

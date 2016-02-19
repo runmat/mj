@@ -1422,3 +1422,99 @@ div.span-alert-placeholder .alert {
 .report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
     display: inline-block;
 }
+
+.color-ckg-green {
+    color: #a0C539 !important;
+}
+
+.color-ckg-lightgreen {
+    color: #cddf9a !important;
+}
+
+.color-ckg-palegreen {
+    color: #dff0d8 !important;
+}
+
+.bg-color-ckg-green {
+    background-color: #a0C539 !important;
+}
+
+.bg-color-ckg-lightgreen {
+    background-color: #cddf9a !important;
+}
+
+.bg-color-ckg-palegreen {
+    background-color: #dff0d8 !important;
+}
+
+.color-ckg-yellow {
+    color: #ffcc00 !important;
+}
+
+.color-ckg-lightyellow {
+    color: #ffff72 !important;
+}
+
+.color-ckg-paleyellow {
+    color: #fff9e5 !important;
+}
+
+.bg-color-ckg-yellow {
+    background-color: #ffcc00 !important;
+}
+
+.bg-color-ckg-lightyellow {
+    background-color: #ffff72 !important;
+}
+
+.bg-color-ckg-paleyellow {
+    background-color: #fff9e5 !important;
+}
+
+.color-ckg-orange {
+    color: #ffb848 !important;
+}
+
+.color-ckg-lightorange {
+    color: #ffce46 !important;
+}
+
+.color-ckg-paleorange {
+    color: #fcf8e3 !important;
+}
+
+.bg-color-ckg-orange {
+    background-color: #ffb848 !important;
+}
+
+.bg-color-ckg-lightorange {
+    background-color: #ffce46 !important;
+}
+
+.bg-color-ckg-paleorange {
+    background-color: #fcf8e3 !important;
+}
+
+.color-ckg-red {
+    color: #c11823 !important;
+}
+
+.color-ckg-lightred {
+    color: #d37166 !important;
+}
+
+.color-ckg-palered {
+    color: #f2dede !important;
+}
+
+.bg-color-ckg-red {
+    background-color: #c11823 !important;
+}
+
+.bg-color-ckg-lightred {
+    background-color: #d37166 !important;
+}
+
+.bg-color-ckg-palered {
+    background-color: #f2dede !important;
+}

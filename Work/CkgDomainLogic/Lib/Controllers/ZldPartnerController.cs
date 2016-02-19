@@ -26,6 +26,8 @@ namespace ServicesMvc.ZldPartner.Controllers
         void InitModelStatics()
         {
             OffeneZulassung.GetViewModel = GetViewModel<ZldPartnerZulassungenViewModel>;
+            StornoModel.GetViewModel = GetViewModel<ZldPartnerZulassungenViewModel>;
+            AddPositionModel.GetViewModel = GetViewModel<ZldPartnerZulassungenViewModel>;
         }
 
 
@@ -66,9 +68,15 @@ namespace ServicesMvc.ZldPartner.Controllers
         [HttpPost]
         public ActionResult UpdateOffeneZulassungStorno(string datensatzId, string status)
         {
-            var model = new StornoModel { DatensatzId = datensatzId, Status = status };
+            var model = ViewModel.GetStornoModel(datensatzId, status);
 
             return PartialView("DurchzufuehrendeZulassungen/StornoDialogForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult CheckGrundBemerkung(string grundId)
+        {
+            return Json(new { MitBemerkung = ViewModel.CheckGrundBemerkung(grundId) });
         }
 
         [HttpPost]
@@ -78,6 +86,29 @@ namespace ServicesMvc.ZldPartner.Controllers
                 ViewModel.ApplyChangedData(model.DatensatzId, "Status", model.Status, model.GrundId, model.Bemerkung);
 
             return PartialView("DurchzufuehrendeZulassungen/StornoDialogForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddPosition(string belegNr)
+        {
+            var model = ViewModel.GetAddPositionModel(belegNr);
+
+            return PartialView("DurchzufuehrendeZulassungen/AddPositionDialogForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult CheckMaterialPreis(string materialNr)
+        {
+            return Json(new { PreisEingebbar = ViewModel.CheckMaterialPreis(materialNr) });
+        }
+
+        [HttpPost]
+        public ActionResult AddPositionDialogForm(AddPositionModel model)
+        {
+            if (ModelState.IsValid)
+                ViewModel.TryAddPosition(model, ModelState);
+
+            return PartialView("DurchzufuehrendeZulassungen/AddPositionDialogForm", model);
         }
 
         [HttpPost]

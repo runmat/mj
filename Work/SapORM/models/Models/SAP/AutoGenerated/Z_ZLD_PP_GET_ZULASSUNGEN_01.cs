@@ -113,6 +113,8 @@ namespace SapORM.Models
 
 			public string ABRECHNUNG_ERSTELLT { get; set; }
 
+			public string EXPRESS { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_BESTELL_LISTE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -144,6 +146,7 @@ namespace SapORM.Models
 						GEB_RELEVANT = (string)row["GEB_RELEVANT"],
 						HERK = (string)row["HERK"],
 						ABRECHNUNG_ERSTELLT = (string)row["ABRECHNUNG_ERSTELLT"],
+						EXPRESS = (string)row["EXPRESS"],
 					};
 				}
 				catch(Exception e)

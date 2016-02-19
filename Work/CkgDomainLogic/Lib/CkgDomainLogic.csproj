@@ -218,6 +218,7 @@
     <Compile Include="Zulassung\ZldPartner\Models\AppModelMappings.cs" />
     <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassung.cs" />
     <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassungenSuchparameter.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\AddPositionModel.cs" />
     <Compile Include="Zulassung\ZldPartner\Models\StornoModel.cs" />
     <Compile Include="Zulassung\ZldPartner\Models\Material.cs" />
     <Compile Include="Zulassung\ZldPartner\Models\StornoGrund.cs" />

@@ -103,6 +103,8 @@ namespace SapORM.Models
 
 			public string ERNAM { get; set; }
 
+			public string EXPRESS { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_BESTELLUNGEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -149,6 +151,7 @@ namespace SapORM.Models
 						GRUND_KEY = (string)row["GRUND_KEY"],
 						LTEXT_NR = (string)row["LTEXT_NR"],
 						ERNAM = (string)row["ERNAM"],
+						EXPRESS = (string)row["EXPRESS"],
 					};
 				}
 				catch(Exception e)
