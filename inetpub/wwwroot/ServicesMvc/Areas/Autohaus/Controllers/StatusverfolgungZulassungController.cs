@@ -91,7 +91,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.LoadStatusverfolgungDetails(belegNr, ModelState.AddModelError);
 
-            return PartialView("Partial/Details", ViewModel.StatusverfolgungDetails);
+            return PartialView("StatusverfolgungZulassungDetails", ViewModel.StatusverfolgungDetails);
         }
 
         #region Export

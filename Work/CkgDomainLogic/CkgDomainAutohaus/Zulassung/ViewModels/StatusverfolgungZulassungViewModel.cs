@@ -90,9 +90,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             var zulDaten = Items.FirstOrDefault(z => z.BelegNummer == belegNr);
 
+            StatusverfolgungDetails = GetStatusverfolgungDetails(zulDaten, addModelError);
+        }
+
+        public StatusverfolgungDetails GetStatusverfolgungDetails(ZulassungsReportModel zulDaten, Action<string, string> addModelError)
+        {
+            var belegNr = zulDaten.BelegNummer;
+
             var itemsRaw = DataService.GetStatusverfolgungItems(belegNr);
 
-            StatusverfolgungDetails = new StatusverfolgungDetails
+            var detailData = new StatusverfolgungDetails
             {
                 Zulassungsdaten = ModelMapping.Copy(zulDaten),
                 AktuellerStatusCode = (itemsRaw.Any() ? itemsRaw.Last().Status : ""),
@@ -102,15 +109,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (itemsRaw.None())
             {
                 addModelError("", Localize.NoStatusInformationFoundForSelectedRecord);
-                return;
+                return detailData;
             }
 
-            var aktiverVorgang = StatusverfolgungDetails.AktuellerStatusCode.NotIn("S,L");
+            var aktiverVorgang = detailData.AktuellerStatusCode.NotIn("S,L");
 
             // Status 1 (beauftragt)
             var status1 = new StatusverfolgungStatusItem { StatusNr = 1 };
 
-            var itemsStatus1 = itemsRaw.Where(s => s.Status.In("1,4,5,A")).ToList();
+            var itemsStatus1 = itemsRaw.Where(s => s.Status.In("1,4,5,A,2,F,7")).ToList();
 
             if (aktiverVorgang && itemsStatus1.Any())
             {
@@ -121,11 +128,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // Status 2 (unterwegs)
             var status2 = new StatusverfolgungStatusItem { StatusNr = 2 };
 
-            var itemsStatus2 = itemsRaw.Where(s => s.Status.In("4,5,A") || (s.IsBundesweiteVersandzulassung && s.Status == "1")).ToList();
+            var itemsStatus2 = itemsRaw.Where(s => s.Status.In("4,5,A,2,F,7") || (s.IsBundesweiteVersandzulassung && s.Status == "1")).ToList();
 
             if (aktiverVorgang && itemsStatus2.Any())
             {
-                status2.StatusDatumUhrzeit = itemsStatus2.Last().StatusDatumUhrzeit;
+                //status2.StatusDatumUhrzeit = itemsStatus2.Last().StatusDatumUhrzeit;
                 status2.IsCompleted = true;
 
                 itemsStatus2.ForEach(item =>
@@ -147,11 +154,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // Status 3 (Zulassung)
             var status3 = new StatusverfolgungStatusItem { StatusNr = 3 };
 
-            var itemsStatus3 = itemsRaw.Where(s => s.Status.In("2,F")).ToList();
+            var itemsStatus3 = itemsRaw.Where(s => s.Status.In("2,F,7")).ToList();
 
             if (aktiverVorgang && itemsStatus3.Any())
             {
-                status3.StatusDatumUhrzeit = itemsStatus3.Last().StatusDatumUhrzeit;
+                //status3.StatusDatumUhrzeit = itemsStatus3.Last().StatusDatumUhrzeit;
                 status3.IsCompleted = true;
                 status3.IsFailed = itemsStatus3.Any(i => i.Status == "F");
             }
@@ -159,11 +166,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // Status 4 (unterwegs zurück)
             var status4 = new StatusverfolgungStatusItem { StatusNr = 4 };
 
-            var itemsStatus4 = itemsRaw.Where(s => s.Status.In("2,F")).ToList();
+            var itemsStatus4 = itemsRaw.Where(s => s.Status.In("2,F,7")).ToList();
 
             if (aktiverVorgang && itemsStatus4.Any() && itemsStatus4.None(i => i.Status == "F"))
             {
-                status4.StatusDatumUhrzeit = itemsStatus4.Last().StatusDatumUhrzeit;
+                //status4.StatusDatumUhrzeit = itemsStatus4.Last().StatusDatumUhrzeit;
                 status4.IsCompleted = true;
 
                 itemsStatus4.ForEach(item =>
@@ -193,7 +200,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 status5.IsCompleted = true;
             }
 
-            StatusverfolgungDetails.Statusverfolgungsdaten = new List<StatusverfolgungStatusItem>
+            detailData.Statusverfolgungsdaten = new List<StatusverfolgungStatusItem>
             {
                 status1,
                 status2,
@@ -201,6 +208,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 status4,
                 status5
             };
+
+            return detailData;
         }
     }
 }

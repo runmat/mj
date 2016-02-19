@@ -6,6 +6,10 @@
         cursor: auto !important;
     }
     
+    .datetimecolumn {
+        width: 140px;
+    }
+    
 </style>
 
 <div class="form-horizontal">
@@ -33,7 +37,7 @@
         @foreach (var item in Model.Statusverfolgungsdaten)
         {
             <div class="span2">
-                @Html.Partial("Partial/StatusItem", item)
+                @Html.Partial("StatusverfolgungZulassungStatusItem", item)
             </div>
         }
 
@@ -52,7 +56,16 @@
                 {
                     <li class="dd-item @(item.IsFailed ? "bg-color-ckg-lightred" : "")">
                         <div class="dd-handle">
-                            <b>@item.StatusDatumUhrzeitFormatted:</b><span class="margin-left-10">@item.StatusText</span>
+                            <table>
+                                <tr>
+                                    <td class="datetimecolumn">
+                                        <b>@item.StatusDatumUhrzeitFormatted</b>
+                                    </td>
+                                    <td>
+                                        <span class="margin-left-10">@item.StatusText</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </li>
                 }
@@ -61,7 +74,16 @@
                 {
                     <li class="dd-item">
                         <div class="dd-handle">
-                            <b>@Model.AktuellerStatusDatumUhrzeitFormatted:</b><span class="margin-left-10">@Model.AktuellerStatusText</span>
+                            <table>
+                                <tr>
+                                    <td class="datetimecolumn">
+                                        <b>@Model.AktuellerStatusDatumUhrzeitFormatted</b>
+                                    </td>
+                                    <td>
+                                        <span class="margin-left-10">@Model.AktuellerStatusText</span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </li>
                 }

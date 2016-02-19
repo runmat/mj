@@ -83,7 +83,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Time)]
         public string StatusDatumUhrzeitFormatted
         {
-            get { return StatusDatumUhrzeit.ToString("dd.MM.yyyy HH:mm:ss"); }
+            get { return StatusDatumUhrzeit.ToString("dd.MM.yyyy HH:mm:ss").Replace(" 00:00:00", ""); }
         }
 
         public List<StatusverfolgungTrackingInfo> TrackingInfos { get; set; }

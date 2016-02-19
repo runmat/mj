@@ -303,8 +303,8 @@
     <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Suche.cshtml" />
-    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\Details.cshtml" />
-    <Content Include="Areas\Autohaus\Views\StatusverfolgungZulassung\Partial\StatusItem.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Shared\StatusverfolgungZulassungDetails.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Shared\StatusverfolgungZulassungStatusItem.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Search.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Clever\Partial\EvbResult.cshtml" />

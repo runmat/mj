@@ -51,7 +51,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.Time)]
         public string AktuellerStatusDatumUhrzeitFormatted
         {
-            get { return AktuellerStatusDatumUhrzeit.ToString("dd.MM.yyyy HH:mm:ss"); }
+            get { return AktuellerStatusDatumUhrzeit.ToString("dd.MM.yyyy HH:mm:ss").Replace(" 00:00:00", ""); }
         }
 
         public ZulassungsReportModel Zulassungsdaten { get; set; }

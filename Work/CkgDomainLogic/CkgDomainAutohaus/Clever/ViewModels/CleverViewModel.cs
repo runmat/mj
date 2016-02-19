@@ -10,6 +10,7 @@ using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using System.Linq;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
@@ -106,10 +107,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         private void LoadZulassungsReportItems(string fahrgestellNr, string kennzeichen, Action<string, string> addModelError)
         {
             ZulassungsReportItems = ZulassungDataService.GetZulassungsReportItems(
-                    new ZulassungsReportSelektor { Referenz2 = fahrgestellNr, Kennzeichen = kennzeichen }, ZulassungDataService.Kunden, addModelError);
+                    new ZulassungsReportSelektor { Referenz2 = fahrgestellNr, Kennzeichen = kennzeichen, NurHauptDienstleistungen = true }, ZulassungDataService.Kunden, addModelError);
 
             if (ZulassungsReportItems.None())
                 addModelError("", Localize.NoDataFound);
+        }
+
+        public ZulassungsReportModel GetZulassungsReportItem(string belegNr)
+        {
+            return ZulassungsReportItems.FirstOrDefault(z => z.BelegNummer == belegNr);
         }
 
         private void CheckEvb(string evb, Action<string, string> addModelError)

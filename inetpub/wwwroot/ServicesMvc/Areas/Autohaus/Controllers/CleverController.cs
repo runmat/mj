@@ -12,14 +12,17 @@ namespace ServicesMvc.Autohaus.Controllers
     {
         public override string DataContextKey { get { return GetDataContextKey<CleverViewModel>(); } }
 
-        public CleverViewModel ViewModel { get { return GetViewModel<CleverViewModel>(); } }
+        public CleverViewModel CleverViewModel { get { return GetViewModel<CleverViewModel>(); } }
+
+        public StatusverfolgungZulassungViewModel StatusverfolgungViewModel { get { return GetViewModel<StatusverfolgungZulassungViewModel>(); } }
 
         public CleverController(IAppSettings appSettings, ILogonContextDataService logonContext,
             IAdressenDataService adressenDataService,
             IZulassungDataService zulassungDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, adressenDataService, zulassungDataService);
+            InitViewModel(CleverViewModel, appSettings, logonContext, adressenDataService, zulassungDataService);
+            InitViewModel(StatusverfolgungViewModel, appSettings, logonContext, zulassungDataService);
         }
 
         public ActionResult Index()
@@ -30,17 +33,27 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult Search()
         {
-            ViewModel.DataInit();
+            CleverViewModel.DataInit();
+            StatusverfolgungViewModel.DataInit();
 
-            return View(ViewModel);
+            return View(CleverViewModel);
         }
 
         [HttpPost]
         public ActionResult PerformSearch(string anfrageText, string anfrageTyp)
         {
-            ViewModel.PerformSearch(anfrageText, anfrageTyp, ModelState.AddModelError);
+            CleverViewModel.PerformSearch(anfrageText, anfrageTyp, ModelState.AddModelError);
 
-            return PartialView("Partial/SearchResult", ViewModel);
+            return PartialView("Partial/SearchResult", CleverViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ShowStatusverfolgung(string belegNr)
+        {
+            var zulDaten = CleverViewModel.GetZulassungsReportItem(belegNr);
+            var detailDaten = StatusverfolgungViewModel.GetStatusverfolgungDetails(zulDaten, ModelState.AddModelError);
+
+            return PartialView("StatusverfolgungZulassungDetails", detailDaten);
         }
     }
 }

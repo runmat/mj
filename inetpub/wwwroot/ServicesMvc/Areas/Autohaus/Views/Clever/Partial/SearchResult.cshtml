@@ -17,16 +17,16 @@
         {
             case "EVB":
                 @Html.Partial("Partial/EvbResult", Model.EvbDaten)
-           break;
+                break;
 
             case "FIN":
             case "KENNZ":
                 @Html.Partial("Partial/VehicleResult", Model)
-           break;
+                break;
 
             case "IBAN":
                 @Html.Partial("Partial/IbanResult", Model.IbanDaten)
-           break;
+                break;
         }
 
         @Html.FormValidationSummary()
