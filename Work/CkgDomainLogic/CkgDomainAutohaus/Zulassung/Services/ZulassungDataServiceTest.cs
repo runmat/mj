@@ -125,7 +125,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 };
         }
 
-        public Bankdaten GetBankdaten(string iban)
+        public Bankdaten GetBankdaten(string iban, Action<string, string> addModelError)
         {
             return null;
         }

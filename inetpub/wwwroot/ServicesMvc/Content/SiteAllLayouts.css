@@ -115,6 +115,22 @@ textarea[readonly].m-wrap {
     padding-left: 40px;
 }
 
+.padding-right-5 {
+    padding-right: 5px;
+}
+.padding-right-10 {
+    padding-right: 10px;
+}
+.padding-right-15 {
+    padding-right: 15px;
+}
+.padding-right-30 {
+    padding-right: 30px;
+}
+.padding-right-40 {
+    padding-right: 40px;
+}
+
 
 .padding-top-2 {
     padding-top: 2px;
@@ -138,6 +154,9 @@ textarea[readonly].m-wrap {
     padding-top: 15px;
 }
 
+.padding-bottom-1 {
+    padding-bottom: 1px;
+}
 .padding-bottom-5 {
     padding-bottom: 5px;
 }
@@ -297,6 +316,18 @@ textarea[readonly].m-wrap {
 }
 .label-width-250 .controls {
     margin-left: 260px !Important;
+}
+.label-width-275 .control-label {
+    width: 275px !Important;
+}
+.label-width-275 .controls {
+    margin-left: 285px !Important;
+}
+.label-width-300 .control-label {
+    width: 300px !Important;
+}
+.label-width-300 .controls {
+    margin-left: 310px !Important;
 }
 
 .uppercase {
@@ -1418,6 +1449,10 @@ div.span-alert-placeholder .alert {
 }
 .report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
     display: inline-block;
+}
+
+.position-relative {
+    position: relative;
 }
 
 .color-ckg-green {

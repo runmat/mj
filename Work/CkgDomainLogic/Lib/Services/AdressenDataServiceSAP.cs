@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Contracts;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using SapORM.Contracts;
@@ -194,25 +195,26 @@ namespace CkgDomainLogic.DomainCommon.Services
         #endregion
 
         #region EVB-Prüfung -> Rückgabe der Versicherung
-        public void GetEvbVersInfo(string evb, out string message, out bool isValid)
+
+        public EvbInfo GetEvbVersInfo(string evb, out string message, out bool isValid)
         {
-            SAP.Init("Z_AHP_READ_VERSUNTERNEHMEN");
-            SAP.SetImportParameter("I_EVB2", evb);
+            SAP.Init("Z_AHP_READ_VERSUNTERNEHMEN", "I_EVB2", evb);
             SAP.Execute();
 
-            var sapItems = Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT.GetExportList(SAP);
-            var versicherung = sapItems.FirstOrDefault();
+            var versicherung = General.Models.AppModelMappings.Z_AHP_READ_VERSUNTERNEHMEN_GT_OUT_To_EvbInfo.Copy(Z_AHP_READ_VERSUNTERNEHMEN.GT_OUT.GetExportList(SAP)).FirstOrDefault();
 
             if (versicherung != null)
             {
-                message = string.Format("{0}, {1}<br/>{2}", versicherung.NAME, versicherung.CITY1, versicherung.TEL_NUMBER);
+                message = string.Format("{0}, {1}<br/>{2}", versicherung.Versicherung, versicherung.Ort, versicherung.Telefon);
                 isValid = true;
-                return;
+                return versicherung;
             }
 
             message = "Keine Versicherung gefunden, bitte EVB-Nummer prüfen.";
             isValid = false;
+            return null;
         }
+
         #endregion
 
     }
