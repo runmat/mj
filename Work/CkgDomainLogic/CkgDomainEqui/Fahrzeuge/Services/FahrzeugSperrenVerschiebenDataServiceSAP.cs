@@ -145,5 +145,19 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return anzOk;
         }
+
+        public List<FahrzeugVersand> GetFahrzeugVersendungen(string landCode, bool? gesperrte)
+        {
+            Z_DPM_REM_READ_VERSSPERR_01.Init(SAP);
+
+            SAP.SetImportParameter("I_LAND_CODE_ZF", landCode);
+
+            if (gesperrte != null)
+                SAP.SetImportParameter(gesperrte.GetValueOrDefault() ? "I_GESPERRTE" : "I_NICHT_GESPERRTE", "X");
+
+            SAP.Execute();
+
+            return AppModelMappings.Z_DPM_REM_READ_VERSSPERR_01_GT_OUT_To_FahrzeugVersand.Copy(Z_DPM_REM_READ_VERSSPERR_01.GT_OUT.GetExportList(SAP)).ToList();
+        }
     }
 }

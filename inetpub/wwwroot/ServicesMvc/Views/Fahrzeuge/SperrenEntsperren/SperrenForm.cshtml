@@ -1,0 +1,27 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.FahrzeugSperrenEntsperren
+
+<div id="DivFzgSperren" class="margin-top-20">
+    @using (Ajax.BeginForm("FzgSperrenForm", "Fahrzeuge", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivFzgSperren", OnComplete = "AjaxFormFzgSperrenComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "FzgSperrenAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        @Html.HiddenFor(m => m.Message)
+        @Html.HiddenFor(m => m.Sperren)
+        
+        @Html.FormTextBoxFor(m => m.Sperrtext, new { @class = "m-wrap large" })
+        
+        <div class="space20"></div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
+            <button type="button" class="btn" onclick="AjaxFormFzgSperrenClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sperrenEntsperrenResult = '@Model.Message';
+        </script>
+    }
+</div>
