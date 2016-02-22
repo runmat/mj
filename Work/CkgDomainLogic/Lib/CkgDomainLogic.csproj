@@ -129,9 +129,11 @@
     <Compile Include="General\Services\Database\Models\Contact.cs" />
     <Compile Include="General\Services\Database\Models\AccountingArea.cs" />
     <Compile Include="General\Services\Database\Models\GroupArchiveAssigned.cs" />
+    <Compile Include="General\Services\Database\Models\OrganizationBase.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResource_UserLogs.cs" />
+    <Compile Include="General\Services\Database\Models\UserOrganization.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />
