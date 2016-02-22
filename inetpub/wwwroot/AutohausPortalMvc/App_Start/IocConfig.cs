@@ -14,7 +14,6 @@ using CkgDomainLogic.Feinstaub.Contracts;
 using CkgDomainLogic.Feinstaub.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Services;
-using MvcTools.Data;
 using MvcTools.Web;
 using PortalMvcTools.Services;
 using WebTools.Services;
@@ -62,15 +61,11 @@ namespace AutohausPortalMvc.App_Start
             builder.RegisterType<WebSecurityService>().As<ISecurityService>().InstancePerHttpRequest();
             builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerHttpRequest();
 
-            //var logonSettingsType = typeof(LogonContextDataServiceAutohaus);
-            //builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest().PropertiesAutowired();
             var appSettings = new CkgDomainAppSettings();
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTestAutohaus) : typeof(LogonContextDataServiceAutohaus));
             builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest()
                 .PropertiesAutowired();
 
-            builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
-            builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
             builder.RegisterType<UeberfuehrungDataServiceSAP>().As<IUeberfuehrungDataService>().InstancePerHttpRequest();
             builder.RegisterType<AutohausFeinstaubVergabeDataServiceSAP>().As<IAutohausFeinstaubVergabeDataService>().InstancePerHttpRequest();

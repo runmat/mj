@@ -168,6 +168,8 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                         "AG, RG, RE, WEB_USER, EMAIL_WEB_USER",
                         KundenNr.ToSapKunnr(), rgDaten.RgKundenNr.ToSapKunnr(), rgDaten.ReKundenNr.ToSapKunnr(), webUser, webUserEmail);
 
+            fahrtAdressen.Add(CreateWebUserAdresse());
+
             var fahrtenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FAHRTEN_To_Fahrt.CopyBack(fahrten).ToList();
             var adressenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_ADRESSEN_To_Adresse.CopyBack(fahrtAdressen).ToList();
             var fahrzeugeList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FZG_To_Fahrzeug.CopyBack(fahrzeuge).ToList();
@@ -189,6 +191,19 @@ namespace CkgDomainLogic.Uebfuehrg.Services
             returnList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_RET_To_UeberfuehrungsAuftrag.Copy(sapReturnList).ToList();
 
             return returnList;
+        }
+
+        Adresse CreateWebUserAdresse()
+        {
+            return new Adresse
+            {
+                FahrtIndexAktuellTmp = "AP",
+                KundenNr = LogonContext.KundenNr.ToSapKunnr(),
+                Name1 = LogonContext.FirstName,
+                Ansprechpartner = LogonContext.LastName,
+                Telefon = LogonContext.UserInfo.Telephone2,
+                Email = LogonContext.UserInfo.Mail
+            };
         }
 
         public List<HistoryAuftrag> GetHistoryAuftraege(HistoryAuftragSelector filter)

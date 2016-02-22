@@ -880,6 +880,19 @@ Public Class Transfer
                     ImpAdressen.AcceptChanges()
                 Next
 
+
+                ' Web-User Daten als weitere Adresse mit FAHRT="AP" übergeben:
+                Dim dataRow = ImpAdressen.NewRow
+                dataRow("FAHRT") = "AP"
+                dataRow("PARTN_NUMB") = Kundennr.PadLeft(10, "0"c).ToString
+                dataRow("NAME") = objUser.FirstName
+                dataRow("NAME_2") = objUser.LastName
+                dataRow("TELEPHONE") = objUser.Telephone
+                dataRow("SMTP_ADDR") = objUser.Email
+                ImpAdressen.Rows.Add(dataRow)
+                ImpAdressen.AcceptChanges()
+
+
                 'Dienstleistungen
                 For Each Row As DataRow In Dienstleistungen.Rows
                     NewRow = ImpDienstleistungen.NewRow
