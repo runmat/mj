@@ -202,6 +202,24 @@
         });
     }
 
+    function DeletePosition(datensatzId) {
+        if (!confirm('@Localize.PositionDoYouReallyWantToDelete'))
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "DeletePosition",
+            loadingShow: false,
+            data: { datensatzId: datensatzId },
+            success: function (result) {
+                GridRefresh();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
     function ApplyMaterial() {
         $.ajax({
             type: "POST",

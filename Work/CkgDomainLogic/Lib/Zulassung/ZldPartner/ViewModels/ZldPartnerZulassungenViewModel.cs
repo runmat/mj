@@ -134,6 +134,14 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             return new AddPositionModel { BelegNr = belegNr, Werk = item.Werk };
         }
 
+        public void DeletePosition(string id)
+        {
+            OffeneZulassungen.RemoveAll(z => z.DatensatzId == id);
+
+            PropertyCacheClear(this, m => m.OffeneZulassungenToSave);
+            PropertyCacheClear(this, m => m.OffeneZulassungenGridItemsFiltered);
+        }
+
         public bool CheckGrundBemerkung(string grundId)
         {
             var grund = Gruende.FirstOrDefault(g => g.GrundId == grundId);

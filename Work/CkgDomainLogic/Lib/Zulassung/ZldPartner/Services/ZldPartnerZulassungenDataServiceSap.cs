@@ -85,13 +85,14 @@ namespace CkgDomainLogic.ZldPartner.Services
             foreach (var item in zulassungen)
             {
                 if (ergList.Any(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition))
-                {
                     item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition).MESSAGE;
-                }
+                else if (ergList.Any(e => e.EBELN == item.BelegNr))
+                    item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr).MESSAGE;
                 else
-                {
                     item.SaveMessage = "";
-                }
+
+                if (item.SaveOk)
+                    item.NeuePosition = false;
             }
 
             return zulassungen;

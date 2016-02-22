@@ -97,6 +97,14 @@ namespace ServicesMvc.ZldPartner.Controllers
         }
 
         [HttpPost]
+        public ActionResult DeletePosition(string datensatzId)
+        {
+            ViewModel.DeletePosition(datensatzId);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
         public ActionResult CheckMaterialPreis(string materialNr)
         {
             return Json(new { PreisEingebbar = ViewModel.CheckMaterialPreis(materialNr) });
