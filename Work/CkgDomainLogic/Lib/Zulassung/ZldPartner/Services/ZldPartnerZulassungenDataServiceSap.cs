@@ -49,7 +49,7 @@ namespace CkgDomainLogic.ZldPartner.Services
             return sapItems;
         }
 
-        public List<OffeneZulassung> SaveOffeneZulassungen(bool nurSpeichern, List<OffeneZulassung> zulassungen)
+        public string SaveOffeneZulassungen(bool nurSpeichern, List<OffeneZulassung> zulassungen)
         {
             zulassungen.ForEach(z =>
             {
@@ -80,10 +80,16 @@ namespace CkgDomainLogic.ZldPartner.Services
 
             SAP.Execute();
 
+            if (SAP.ResultCode != 0)
+                return SAP.ResultMessage;
+
             var ergList = Z_ZLD_PP_SAVE_PO_01.GT_BESTELLUNGEN.GetExportList(SAP);
 
             foreach (var item in zulassungen)
             {
+                if (item.NeuePosition && ergList.Any(e => e.EBELN == item.BelegNr && e.MATNR == item.MaterialNr))
+                    item.BelegPosition = ergList.First(e => e.EBELN == item.BelegNr && e.MATNR == item.MaterialNr).EBELP;
+
                 if (ergList.Any(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition))
                     item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition).MESSAGE;
                 else if (ergList.Any(e => e.EBELN == item.BelegNr))
@@ -92,10 +98,13 @@ namespace CkgDomainLogic.ZldPartner.Services
                     item.SaveMessage = "";
 
                 if (item.SaveOk)
+                {
                     item.NeuePosition = false;
+                    item.IsChanged = false;
+                }
             }
 
-            return zulassungen;
+            return "";
         }
 
         public string LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter, out List<DurchgefuehrteZulassung> zulassungen)

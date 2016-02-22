@@ -241,6 +241,7 @@
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_costar_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />

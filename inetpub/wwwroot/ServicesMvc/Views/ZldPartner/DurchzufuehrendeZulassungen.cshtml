@@ -203,7 +203,7 @@
     }
 
     function DeletePosition(datensatzId) {
-        if (!confirm('@Localize.PositionDoYouReallyWantToDelete'))
+        if (!confirm('@Localize.PositionDoYouReallyWantToDelete.ToJavascriptString()'))
             return;
 
         $.ajax({

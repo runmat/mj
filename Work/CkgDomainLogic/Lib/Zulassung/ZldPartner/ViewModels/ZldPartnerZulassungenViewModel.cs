@@ -264,21 +264,13 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                 return;
             }
 
-            var savedItems = DataService.SaveOffeneZulassungen(nurSpeichern, OffeneZulassungenToSave);
-
-            foreach (var zulItem in OffeneZulassungenToSave)
-            {
-                var saveItem = savedItems.FirstOrDefault(z => z.DatensatzId == zulItem.DatensatzId);
-                if (saveItem != null)
-                {
-                    zulItem.SaveMessage = saveItem.SaveMessage;
-                    if (zulItem.SaveOk)
-                        zulItem.IsChanged = false;
-                }
-            }
+            var errMessage = DataService.SaveOffeneZulassungen(nurSpeichern, OffeneZulassungenToSave);
 
             if (!nurSpeichern)
                 EditMode = false;
+
+            if (!string.IsNullOrEmpty(errMessage))
+                state.AddModelError("", errMessage);
         }
 
         public void LoadDurchgefuehrteZulassungen(ModelStateDictionary state)
