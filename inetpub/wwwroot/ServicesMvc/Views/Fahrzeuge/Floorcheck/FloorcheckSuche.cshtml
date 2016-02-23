@@ -17,7 +17,7 @@
             <div id="search2" class="hide">
                 @*<p>Bitte wählen Sie eine Händler aus.</p>*@
 
-                @Html.FormDropDownListFor(m => m.FloorcheckHaendler.SelectedHaendlerNummer, FloorcheckViewModel.FloorcheckHaendlerSelectItems, new { @class = "m-wrap" })
+                @Html.FormDropDownListFor(m => m.FloorcheckHaendler.SelectedHaendlerNummer, FloorcheckViewModel.FloorcheckHaendlerSelectItems, new { @class = "m-wrap", onchange = "OnHaendlerSelect()" })
             </div>
 
             <div class="form-actions">

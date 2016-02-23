@@ -71,6 +71,12 @@ namespace ServicesMvc.Controllers
             return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
         }
 
+        [HttpPost]
+        public ActionResult SelectHaendler(string val)
+        {
+            FloorcheckViewModel.FloorcheckHaendler.SelectedHaendlerNummer = val;            
+            return PartialView("Floorcheck/FloorcheckSuche", FloorcheckViewModel);
+        }
 
         [HttpPost]
         public ActionResult ShowFloorcheck()

@@ -58,6 +58,16 @@
             ShowFloorcheck();
     }
 
+    function OnHaendlerSelect() {
+
+        var sel = $('#FloorcheckHaendler_SelectedHaendlerNummer').val();
+        $.ajax({
+            type: "POST",
+            url: "SelectHaendler",
+            data: { val: sel }
+        });
+    }
+
 
     function FormPreparePrivateAjax() {
         //$("#divFloorcheckSuche").css("hide");

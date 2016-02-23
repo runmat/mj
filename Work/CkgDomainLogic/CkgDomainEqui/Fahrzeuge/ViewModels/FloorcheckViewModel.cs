@@ -90,28 +90,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 ResetSelection = false;
             }
 
-            if (FloorcheckHaendler.SelectedHaendlerNummer.IsNullOrEmpty() && FloorcheckHaendler.HaendlerNummer.IsNullOrEmpty() && FloorcheckHaendler.HaendlerName.IsNullOrEmpty() && FloorcheckHaendler.HaendlerOrt.IsNullOrEmpty())
+            if (FloorcheckHaendler.HaendlerNummer.IsNullOrEmpty() && FloorcheckHaendler.HaendlerName.IsNullOrEmpty() && FloorcheckHaendler.HaendlerOrt.IsNullOrEmpty())
                 FloorcheckHaendler.HaendlerName = "*";
-
-            // Auswahl via Freitext überschreibt select
-            if (FloorcheckHaendler.HaendlerNummer.IsNotNullOrEmpty() || FloorcheckHaendler.HaendlerName.IsNotNullOrEmpty() || FloorcheckHaendler.HaendlerOrt.IsNotNullOrEmpty())
-                FloorcheckHaendler.SelectedHaendlerNummer = null;
-
-            // Auswahl via select überschreibt freitext
-            if (FloorcheckHaendler.SelectedHaendlerNummer.IsNotNullOrEmpty())
-            {
-                FloorcheckHaendler.HaendlerNummer = FloorcheckHaendler.SelectedHaendlerNummer;
-                FloorcheckHaendler.HaendlerName = "";
-                FloorcheckHaendler.HaendlerOrt = "";
-            }
-
+           
             FloorcheckHaendlers = DataService.GetFloorcheckHaendler(FloorcheckHaendler);
 
-            if (FloorcheckHaendlers.Count == 1)
-            {
+            if (FloorcheckHaendlers.Count == 1)            
                 FloorcheckHaendler.SelectedHaendlerNummer = FloorcheckHaendlers.First().HaendlerNummer;
-                LoadFloorcheck();
-            }
+
+            if (FloorcheckHaendler.SelectedHaendlerNummer.IsNotNullOrEmpty())                           
+                LoadFloorcheck();            
             else
                 Floorchecks.Clear();
 
