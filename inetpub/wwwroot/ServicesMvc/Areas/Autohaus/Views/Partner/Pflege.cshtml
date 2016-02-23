@@ -84,4 +84,51 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban();
+    }
+
+    function LoadBankdatenAusIban() {
+
+        var iban = $("#Iban").val();
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadBankdatenAusIban",
+                data: { iban: iban },
+                loadingShow: true,
+                success: function (result) {
+                    if (result.Swift == null || result.Swift == '') {
+                        $("#Swift").attr("readonly", false);
+                        $("#Swift").attr("placeholder", "");
+                        $("#Swift").val("");
+                        $("#Geldinstitut").attr("readonly", false);
+                        $("#Geldinstitut").attr("placeholder", "");
+                        $("#Geldinstitut").val("");
+                        return;
+                    }
+
+                    $("#Swift").val(result.Swift);
+                    $("#Swift").attr("readonly", true);
+                    $("#KontoNr").val(result.KontoNr);
+                    $("#Bankleitzahl").val(result.Bankleitzahl);
+                    $("#Geldinstitut").val(result.Geldinstitut);
+                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+                }
+            });
+
+        return false;
+
+    }
 </script>

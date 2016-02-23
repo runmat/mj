@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
@@ -120,6 +119,30 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
         public List<string> KennungenToInsert { get; set; }
+
+
+        #region Bankdaten
+
+        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
+        public string Kontoinhaber { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Iban)]
+        public string Iban { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Swift)]
+        public string Swift { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AccountNo)]
+        public string KontoNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BankCode)]
+        public string Bankleitzahl { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CreditInstitution)]
+        public string Geldinstitut { get; set; }
+
+        #endregion
+
 
         public Adresse SetInsertMode(bool insertMode)
         {
