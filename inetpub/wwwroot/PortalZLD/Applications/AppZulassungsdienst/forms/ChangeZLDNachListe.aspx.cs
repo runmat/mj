@@ -559,7 +559,7 @@ namespace AppZulassungsdienst.forms
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
             string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, Page);
         }
 
         /// <summary>
@@ -1462,14 +1462,18 @@ namespace AppZulassungsdienst.forms
 
         private void ChangeZahlart(string sapId, string posNr, Zahlart zArt)
         {
+            // Zahlart aktualisieren
+            objNacherf.Vorgangsliste.Where(vg => vg.SapId == sapId).ToList().ForEach(vg =>
+            {
+                vg.Zahlart_EC = (zArt == Zahlart.EC);
+                vg.Zahlart_Bar = (zArt == Zahlart.Bar);
+                vg.Zahlart_Rechnung = (zArt == Zahlart.Rechnung);
+            });
+
+            // Preise aktualisieren
             var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == sapId && vg.PositionsNr == posNr);
             if (pos != null)
             {
-                pos.Zahlart_EC = (zArt == Zahlart.EC);
-                pos.Zahlart_Bar = (zArt == Zahlart.Bar);
-                pos.Zahlart_Rechnung = (zArt == Zahlart.Rechnung);
-
-                // Preise aktualisieren
                 foreach (GridViewRow row in GridView1.Rows)
                 {
                     if (GridView1.DataKeys[row.RowIndex] != null)
