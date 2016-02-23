@@ -143,6 +143,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetParamFahrzeugAkte(string fin)
         {
+            if (fin.IsNullOrEmpty())
+                return;
+
             ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();
             if (ParamFahrzeugAkte == null)
                 return;
@@ -494,6 +497,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
                 Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Kennung = "ZAHLERKFZSTEUER";
                 Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Typ = "ZahlerKfzSteuer";
+                Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = Zulassung.Halter.Adresse.Iban;
             }
 
             if (Zulassung.BankAdressdaten.Cpdkunde)
@@ -707,6 +711,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             // Kontoinhaber aus Adresse übernehmen
             Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = String.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Iban;
 
             // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
             if (Zulassung.BankAdressdaten.Cpdkunde
@@ -742,6 +747,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Bankdaten.Iban;
         }
 
         public void DataMarkForRefreshZahlerKfzSteuerAdressen()
@@ -847,10 +853,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PartnerDataService.MarkForRefreshAdressen();
             var list = PartnerDataService.Adressen;
             list.ForEach(a => a.Typ = "Halter");
+
             PartnerDataService.AdressenKennung = "KAEUFER";
             PartnerDataService.MarkForRefreshAdressen();
             var listKaeufer = PartnerDataService.Adressen;
             listKaeufer.ForEach(a => a.Typ = "Kaeufer");
+
             list.AddRange(listKaeufer);
             return list;
         }

@@ -31,6 +31,13 @@
         FormPrepareAjax();
     }
 
+    function InitBankdaten() {
+        setTimeout(function() {
+            _ibanPrev = null;
+            TryLoadBankdatenAusIban("#Iban", true);
+        }, 100);
+    }
+
     function TryShowPartnerGrid() {
         FormPreparePrivateAjax();
 
@@ -86,19 +93,22 @@
 
 
     var _ibanPrev = null;
-    function TryLoadBankdatenAusIban(textbox) {
+    function TryLoadBankdatenAusIban(textbox, suppressMessage) {
 
         if (_ibanPrev == $(textbox).val())
             return;
         _ibanPrev = $(textbox).val();
 
+        $("#Swift").val('');
+        $("#Geldinstitut").val('');
+
         if ($(textbox).val().length < 22)
             return;
 
-        LoadBankdatenAusIban();
+        LoadBankdatenAusIban(suppressMessage);
     }
 
-    function LoadBankdatenAusIban() {
+    function LoadBankdatenAusIban(suppressMessage) {
 
         var iban = $("#Iban").val();
 
@@ -121,10 +131,15 @@
 
                     $("#Swift").val(result.Swift);
                     $("#Swift").attr("readonly", true);
+
+                    $("#Geldinstitut").val(result.Geldinstitut);
+                    $("#Geldinstitut").attr("readonly", true);
+
                     $("#KontoNr").val(result.KontoNr);
                     $("#Bankleitzahl").val(result.Bankleitzahl);
-                    $("#Geldinstitut").val(result.Geldinstitut);
-                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+
+                    if (typeof (suppressMessage) === 'undefined' || !suppressMessage)
+                        SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
                 }
             });
 

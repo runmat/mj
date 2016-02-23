@@ -75,6 +75,8 @@
             _modelIsValid = @Model.IsValid.ToString().ToLower();
             _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
 
+            InitBankdaten();
+
             $(function(){ 
                 if ($('#Kennung').val() == 'HALTER') {
                     $('#divEvbInfo').show();
