@@ -42,14 +42,12 @@
     }
 
     function OnRowDataBound_GridFzgSperrenEntsperren(e) {
-        var auswahl = $("input[name='FahrzeugSelektor.Auswahl']:checked").val();
-
-        var isItemOk = ((auswahl !== "UPLOAD") || (e.dataItem.UploadedFound.toString().toLowerCase() === "true"));
+        var istGesperrt = (e.dataItem.Gesperrt.toString().toLowerCase() === "true");
 
         var tr = $(e.row);
         var classSuffix = tr.hasClass("t-alt") ? "-alt" : "";
 
-        if (!isItemOk)
+        if (istGesperrt)
             tr.addClass("t-grid-error" + classSuffix);
     }
 
