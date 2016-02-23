@@ -15,6 +15,7 @@ using GeneralTools.Services;
 namespace CkgDomainLogic.General.Services
 {
     public class LogonContextTest : Store, ILogonContextDataService
+
     {
         public string CurrentGridColumns { get; set; }
 
@@ -372,6 +373,19 @@ namespace CkgDomainLogic.General.Services
 
         public IPersistanceService PersistanceService { get; set; }
 
+        public string RightName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public int GetAppIdCurrent()
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
@@ -380,6 +394,11 @@ namespace CkgDomainLogic.General.Services
         public string GetEmailAddressForUser()
         {
             return "";
+        }
+
+        public string GetCategorySettingsForWebUser(string rightname)
+        {
+            throw new NotImplementedException();
         }
     }
 }

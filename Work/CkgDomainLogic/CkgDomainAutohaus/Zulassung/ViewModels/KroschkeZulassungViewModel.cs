@@ -97,7 +97,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return PropertyCacheGet(() =>
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsKroschkeZulassung.xml"));
-
+                    
                     if (!ModusAbmeldung)
                         return dict;
 

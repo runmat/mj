@@ -10,6 +10,8 @@ Imports System.IO
 Partial Public Class CustomerManagement
     Inherits Page
 
+
+
 #Region " Membervariables "
     Private m_User As User
     Private m_App As App
@@ -21,6 +23,7 @@ Partial Public Class CustomerManagement
     Const UploadMaxTotalBytes As Integer = 3 * 1024 * 1024 ' 3 MB
     Private uploadTotalBytes As Integer
     Private tblApps As DataTable
+    Private tblRights As DataTable
 
 #End Region
 
@@ -212,6 +215,10 @@ Partial Public Class CustomerManagement
             FillApps(_Customer.CustomerId, _Customer.PortalType, cn)
             FillArchivesAssigned(_Customer.CustomerId, cn)
             FillArchivesUnAssigned(_Customer.CustomerId, cn)
+
+            ' Rechte 
+            FillRights(_Customer.CustomerId, cn)
+
             'Style
             txtLogoPath.Text = _Customer.CustomerStyle.LogoPath.ToString
             If _Customer.LogoPath.ToString <> "" Then
@@ -367,6 +374,15 @@ Partial Public Class CustomerManagement
         Return Nothing
     End Function
 
+    Private Function GetRights() As DataView
+        If tblRights IsNot Nothing Then
+            Dim dvRights As New DataView(tblRights)
+            dvRights.Sort = "CategoryID"
+            Return dvRights
+        End If
+        Return Nothing
+    End Function
+
     Private Sub FillIpAddresses(ByVal mCust As Customer)
         If mCust.IpAddresses.Rows.Count = 0 Then
             Repeater1.Visible = False
@@ -389,6 +405,16 @@ Partial Public Class CustomerManagement
         tblApps.Columns.Add("Assigned")
         tblApps.Columns.Add("AppIsMvcDefaultFavorite", Type.GetType("System.Boolean"))
     End Sub
+
+
+    Private Sub InitRightsTable()
+        tblRights = New DataTable()
+        tblRights.Columns.Add("CustomerID")
+        tblRights.Columns.Add("CategoryID")
+        tblRights.Columns.Add("HasSettings")
+        tblRights.Columns.Add("Description")
+    End Sub
+
 
     Private Sub FillApps(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
 
@@ -527,6 +553,33 @@ Partial Public Class CustomerManagement
         End Try
 
     End Sub
+
+    Private Sub FillRights(ByVal intCustomerID As Integer, ByVal cn As SqlClient.SqlConnection)
+
+        If tblRights Is Nothing OrElse tblRights.Columns.Count = 0 Then
+            InitRightsTable()
+        Else
+            tblRights.Clear()
+        End If
+
+        Dim possibleRights As New RightList(intCustomerID, cn)
+
+        possibleRights.GetAllPossibleRightsforThisCustomer()
+
+        For Each row As DataRow In possibleRights.Rows
+            Dim newRow As DataRow = tblRights.NewRow()
+            newRow("CustomerID") = intCustomerID
+            newRow("CategoryID") = row("CategoryID")
+            newRow("HasSettings") = row("HasSettings")
+            newRow("Description") = row("Description")
+            tblRights.Rows.Add(newRow)
+
+        Next
+
+        rgRights.Rebind()
+
+    End Sub
+
 
     Private Sub ClearEdit()
         ihCustomerID.Value = "-1"
@@ -1854,7 +1907,15 @@ Partial Public Class CustomerManagement
             Dim _archivassignment As New Kernel.ArchivAssignments(intCustomerId, Kernel.AssignmentType.Customer)
             _archivassignment.Save(dvArchivAssigned, lstArchivAssigned.Items, cn)
 
+
+            ' Rechte zuordnen
+            SaveRightsForCustomer()
+
             Search(True, True, , True)
+
+
+
+
             lblMessage.Text = StrDaysLockMessage & StrDaysDelMessage & "Die Änderungen wurden gespeichert."
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "CustomerManagement", "lbtnSave_Click", ex.ToString)
@@ -2247,6 +2308,10 @@ Partial Public Class CustomerManagement
         rgAppUnAssigned.DataSource = GetViewAppsUnassigned()
     End Sub
 
+    Protected Sub rgRights_NeedDataSource(ByVal sender As Object, ByVal e As GridNeedDataSourceEventArgs) Handles rgRights.NeedDataSource
+        rgRights.DataSource = GetRights()
+    End Sub
+
     Protected Sub rgAppAssigned_NeedDataSource(ByVal sender As Object, ByVal e As GridNeedDataSourceEventArgs) Handles rgAppAssigned.NeedDataSource
         rgAppAssigned.DataSource = GetViewAppsAssigned()
     End Sub
@@ -2319,6 +2384,29 @@ Partial Public Class CustomerManagement
             cn.Close()
         End Try
     End Sub
+
+
+    Public Sub SaveRightsForCustomer()
+
+        Dim customerID As Integer = ihCustomerID.Value
+
+        For Each item As GridDataItem In rgRights.Items
+
+            Dim isChecked = CType(item("Auswahl1").FindControl("cbxSetRight"), CheckBox).Checked
+            Dim itemCategoryValue = item("CategoryID").Text
+
+            RightList.SaveRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
+
+            If Not isChecked Then
+                RightList.DeleteRightSettingForAllUsersOfThisCustomer(customerID, itemCategoryValue)
+            End If
+
+        Next
+
+        rgRights.Rebind()
+
+    End Sub
+
 
 #End Region
 

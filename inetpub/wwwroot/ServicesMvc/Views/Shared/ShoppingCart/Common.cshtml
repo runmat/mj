@@ -1,4 +1,11 @@
-﻿<style type="text/css">
+﻿@{
+    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+
+    var _submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
+}
+
+
+<style type="text/css">
     .shopping-cart-menu {
         display: inline;
     }
@@ -73,6 +80,9 @@
 
 <script type="text/javascript">
 
+
+    var _submitRightAuftraegeNichtAbsenden = '@_submitRightAuftraegeNichtAbsenden';
+
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
         $(".hidden-on-shopping-cart-opened").slideDown(200);
@@ -98,7 +108,7 @@
 
         return false;
     };
-    
+
     function ShoppingCartShowResult(result) {
         if (typeof (result.message) !== "undefined") {
             alert(result.message);
@@ -149,7 +159,7 @@
 
         return false;
     }
-    
+
     function ShoppingCartSelectedItemsSubmit(btn) {
 
         $(btn).attr("disabled", true);
@@ -176,9 +186,9 @@
             }
         });
 
-        return false;        
+        return false;
     }
-    
+
 
     function ShoppingCartMenuRefreshCount() {
         $.ajax({
@@ -241,7 +251,7 @@
             }
         });
     }
-    
+
     function GridShoppingCart_MultiSelectItemCountRefresh() {
         var count = _gridShoppingCart_MultiSelectItemCount;
         if (count <= 0) {
@@ -275,16 +285,22 @@
             return;
         }
 
-        $(".shopping-cart-item-selection-count").removeClass('hide');
+
+        if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
+            $(".shopping-cart-item-selection-count").hide();
+        } else {
+            $(".shopping-cart-item-selection-count").show();
+        }
+
         $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-    }   
-    
-    function GridShoppingCart_MultiSelectItemCountHint(count) {
-        return  '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
-                '<i class="icon-chevron-right margin-right-10"></i>' + 
-                 count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
     }
-    
+
+    function GridShoppingCart_MultiSelectItemCountHint(count) {
+        return '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
+            '<i class="icon-chevron-right margin-right-10"></i>' +
+            count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+    }
+
 </script>

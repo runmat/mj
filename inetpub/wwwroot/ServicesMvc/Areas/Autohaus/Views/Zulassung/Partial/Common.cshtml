@@ -1,4 +1,13 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+﻿@using CkgDomainLogic.General.Contracts
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+@{
+    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+
+    var submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
+}
+
+
+
 
 <style type="text/css">
     .form-wizard .progress {
@@ -42,6 +51,8 @@
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
     var _skipBankAddressData = false;
+    var _submitRightAuftraegeNichtAbsenden = '@submitRightAuftraegeNichtAbsenden';
+
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -60,12 +71,20 @@
     }
 
     function FormWizardShowHideSaveButton(show, delay) {
+
         setTimeout(function () {
             $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
             FormWizard.ButtonCustom1Show(show, _customButtonText);
+
+            // Verbergen des Absenden Buttons wenn Haken gesetzt
+            if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
+
+                $(".button-submit").hide();
+            }
+
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
-    
+
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
@@ -144,7 +163,7 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
-                
+
                 if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             }
@@ -166,7 +185,7 @@
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
 
-                if (nextTabKey.toLowerCase() == "receipt") 
+                if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             },
             error: function (jqXhr, exception) {
@@ -322,7 +341,7 @@
         if (_ibanPrev == $(textbox).val())
             return;
         _ibanPrev = $(textbox).val();
-        
+
         if ($(textbox).val().length < 22)
             return;
 
@@ -505,7 +524,8 @@
         if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
             $("#Expressversand").closest(".control-group").show();
-        } else {
+        }
+        else {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
             $("#Expressversand").closest(".control-group").hide();
         }
@@ -525,7 +545,8 @@
         $('#LinkWunschkennzeichen').attr('href', url);
         if (url == undefined || url == '') {
             $('#divWkzLink').hide();
-        } else {
+        }
+        else {
             $('#divWkzLink').show();
         }
     }
@@ -536,16 +557,18 @@
         if (id == "000000000000000619") {                   // Firmeneigene Zulassung
             if (tagHaltedauer.val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
                 tagHaltedauer.val("0");
-            } else {
+            }
+            else {
                 // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
             }
             controlGroup.show();
-        } else {
+        }
+        else {
             tagHaltedauer.val("");
             controlGroup.hide();
         }
     }
-    
+
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();
@@ -562,7 +585,8 @@
         var kennzSondergr = $("#KennzeichenSondergroesse").is(":checked");
         if (kennzSondergr) {
             kennzGr.attr('disabled', false);
-        } else {
+        }
+        else {
             kennzGr.attr('disabled', true);
         }
     }
@@ -575,7 +599,8 @@
         if (saisKennz) {
             sais1.attr('disabled', false);
             sais2.attr('disabled', false);
-        } else {
+        }
+        else {
             sais1.attr('disabled', true);
             sais2.attr('disabled', true);
         }
@@ -654,7 +679,7 @@
     function OnComplete_AdressenAuswahlGrid() {
         var grid = $(this);
         setTimeout(function () {
-            var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
+            var gridHeight = parseInt(grid.css('height').replace(/ px /, ""));
             var newHeight = (gridHeight + 80) + 'px';
             grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
         }, 300);

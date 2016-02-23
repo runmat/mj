@@ -8,7 +8,7 @@
             <string>Auftrag&amp;shy;geber</string>
         </value>
     </item>
-    <item>
+   <item>
         <key>
             <string>HalterAdresse</string>
         </key>
@@ -64,14 +64,15 @@
             <string>Optionen</string>
         </value>
     </item>
-    <item>
-        <key>
-            <string>Summary</string>
-        </key>
-        <value>
-            <string>Übersicht</string>
-        </value>
-    </item>
+    
+  <item>
+    <key>
+      <string>Summary</string>
+    </key>
+    <value>
+      <string>Übersicht</string>
+    </value>
+  </item>
     <item>
         <key>
             <string>Receipt</string>
