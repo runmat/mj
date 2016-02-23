@@ -64,22 +64,15 @@ namespace ServicesMvc.Controllers
             return Json(new { allSelectionCount = SperrenEntsperrenViewModel.SelektierteFahrzeuge.Count });
         }
 
-        //[HttpPost]
-        //public ActionResult FzgSperrenEntsperren(bool sperren)
-        //{
-        //    if (!SperrenEntsperrenViewModel.SperrenMoeglich(sperren))
-        //        return Json(new { message = Localize.ActionNotPossibleForFewOfSelectedItems });
+        [HttpPost]
+        public ActionResult FzgSperrenEntsperren(bool sperren)
+        {
+            string message; bool success;
 
-        //    return PartialView("SperrenEntsperren/SperrenForm", SperrenEntsperrenViewModel.GetUiModelSperrenEntsperren(sperren));
-        //}
+            SperrenEntsperrenViewModel.FahrzeugeSperren(sperren, out message, out success);
 
-        //[HttpPost]
-        //public ActionResult FzgSperrenForm(FahrzeugSperrenEntsperren model)
-        //{
-        //    SperrenEntsperrenViewModel.FahrzeugeSperren(ref model, ModelState);
-
-        //    return PartialView("SperrenEntsperren/SperrenForm", model);
-        //}
+            return Json(new { message, success });
+        }
 
         #region Export
 

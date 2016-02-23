@@ -58,8 +58,5 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugSperrenEntsperrenViewModel> GetSperrenEntsperrenViewModel { get; set; }
-
-        [GridHidden, NotMapped, XmlIgnore]
-        public bool IsViewModelEditMode { get { return (GetSperrenEntsperrenViewModel != null && GetSperrenEntsperrenViewModel().EditMode); } }
     }
 }

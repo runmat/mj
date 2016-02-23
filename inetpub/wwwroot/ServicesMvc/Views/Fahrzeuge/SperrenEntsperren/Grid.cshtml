@@ -3,19 +3,16 @@
 
 @{ var gridName = "GridFzgSperrenEntsperren"; }
 
-@if (Model.EditMode)
-{
-    <h4 class="margin-bottom-20">
-        @Localize.PleaseChooseOneOrMoreVehicles: 
-        <span id="FzgSperrenEntsperrenCount" class="alert alert-success margin-left-15 hide">
-            <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-        </span>
-    </h4> 
+<h4 class="margin-bottom-20">
+    @Localize.PleaseChooseOneOrMoreVehicles: 
+    <span id="FzgSperrenEntsperrenCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
     
-    <div id="divFzgSperrenEntsperrenFilter" class="form-horizontal label-width-150">
-        @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
-    </div>
-}
+<div id="divFzgSperrenEntsperrenFilter" class="form-horizontal label-width-150">
+    @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
+</div>
 
 @(Html.Telerik()
     .Grid<FahrzeugVersand>()
@@ -24,8 +21,8 @@
     .Columns(columns =>
     {
         columns.XBound(c => c.IsSelected)
-            .ClientTemplate("<input type='checkbox' <# if (!data.IsViewModelEditMode) { #> disabled <# } #> name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenEntsperren($(this))' />")
-            .HeaderTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " id='uncheckAllRecords' onchange='GridFzgSperrenEntsperren_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenEntsperren($(this))' />")
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFzgSperrenEntsperren_OnAllSelectionChange($(this).is(\":checked\"))' />")
             .Filterable(false);
 
         columns.XBound(c => c.Fahrgestellnummer);
@@ -51,15 +48,8 @@
 )
 
 <div class="form-actions">
-    @if (Model.EditMode)
-    {
-        <button type="button" id="btnFzgSperren" class="btn blue hide" onclick="FzgSperren(true);">@Localize.Lock</button>
-        <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick="FzgSperren(false);">@Localize.Unlock</button>
-    }
-    else
-    {
-        <button type="button" id="btnRestartSperrenEntsperren" class="btn blue" onclick="LocationReloadWithoutQueryString();">@Localize.Continue</button>
-    }
+    <button type="button" id="btnFzgSperren" class="btn blue hide" onclick="FzgSperrenEntsperren(true);">@Localize.Lock</button>
+    <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick="FzgSperrenEntsperren(false);">@Localize.Unlock</button>
 </div>
 
 <script type="text/javascript">

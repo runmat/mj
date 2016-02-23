@@ -2945,7 +2945,6 @@
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenEntsperren.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenEntsperren\Grid.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenEntsperren\SperrenForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
