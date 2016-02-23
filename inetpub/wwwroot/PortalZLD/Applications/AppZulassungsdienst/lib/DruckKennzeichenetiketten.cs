@@ -6,6 +6,7 @@ using CKG.Base.Business;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
+using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.lib
 {
@@ -66,7 +67,7 @@ namespace AppZulassungsdienst.lib
                 vg.IsSelected = isSelected;
         }
 
-        public void PrintEtiketten()
+        public void PrintEtiketten(GridSortExpression sortierung)
         {
             ExecuteSapZugriff(() =>
                 {
@@ -77,7 +78,11 @@ namespace AppZulassungsdienst.lib
                     SAP.SetImportParameter("I_DRUCK_KENNZEICHNEN", "X");
                     SAP.SetImportParameter("I_COMMIT", "X");
 
-                    var sapList = AppModelMappings.Z_ZLD_AH_2015_ETIKETT_DRU_IT_BELN_From_Kennzeichenetikett.CopyBack(Vorgaenge.Where(v => v.IsSelected));
+                    var sortProperty = typeof (Kennzeichenetikett).GetProperty(sortierung.FieldName);
+
+                    var vorgListe = (sortierung.SortOrder == GridSortOrder.Ascending ? Vorgaenge.Where(v => v.IsSelected).OrderBy(v => sortProperty.GetValue(v, null)) : Vorgaenge.Where(v => v.IsSelected).OrderByDescending(v => sortProperty.GetValue(v, null)));
+
+                    var sapList = AppModelMappings.Z_ZLD_AH_2015_ETIKETT_DRU_IT_BELN_From_Kennzeichenetikett.CopyBack(vorgListe);
 
                     SAP.ApplyImport(sapList);
 
