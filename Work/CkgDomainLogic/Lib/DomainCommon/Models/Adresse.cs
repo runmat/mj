@@ -145,6 +145,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         {
             return string.Format("{0}{1}<br/>{2}<br/>{3}{4} {5}", Name1, (Name2.IsNullOrEmpty() ? "" : " " + Name2), StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
         }
+        public string GetFullName()
+        {
+            return Name2.IsNullOrEmpty() ? Name1 : string.Format("{0}, {1}", Name1, Name2);
+        }
 
         public static string LandAsFormatted(string land)
         {

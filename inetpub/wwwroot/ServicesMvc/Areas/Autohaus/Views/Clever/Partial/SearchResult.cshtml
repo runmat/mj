@@ -1,0 +1,36 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
+
+@{
+    var statusOk = ViewData.ModelState.IsValid;
+    var statusWarning = (!statusOk && Model.AnfrageTextFormatError);
+}
+
+<div class="portlet box light-grey position-relative">
+
+    <div class="form-horizontal label-width-200 padding-top-10 padding-bottom-1 @(statusOk ? "bg-color-ckg-palegreen" : (statusWarning ? "bg-color-ckg-paleyellow" : "bg-color-ckg-palered"))">
+
+        <div class="CleverSearchStatusContainer">
+            <div class='CleverSearchStatusIcon @("CleverSearchStatus" + (statusOk ? "Ok" : (statusWarning ? "Warning" : "Error")))'></div>
+        </div>
+
+        @switch (Model.AnfrageOption)
+        {
+            case "EVB":
+                @Html.Partial("Partial/EvbResult", Model.EvbDaten)
+           break;
+
+            case "FIN":
+            case "KENNZ":
+                @Html.Partial("Partial/VehicleResult", Model)
+           break;
+
+            case "IBAN":
+                @Html.Partial("Partial/IbanResult", Model.IbanDaten)
+           break;
+        }
+
+        @Html.FormValidationSummary()
+
+    </div>
+
+</div>

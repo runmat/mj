@@ -223,7 +223,7 @@ namespace PortalMvcTools.Web
             return html.Label(propertyName, new { @class = cssClass });
         }
 
-        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null)
+        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var model = new FormControlModel
             {
@@ -232,6 +232,8 @@ namespace PortalMvcTools.Web
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -675,7 +677,9 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, 
+            string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, 
+            string labelText = null, bool isPrime=false, Func<object, HelperResult> primeControlHtml=null)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -686,6 +690,8 @@ namespace PortalMvcTools.Web
             {
                 IsCheckBox = true,
                 LabelHidden = labelHidden,
+                IsPrime = isPrime,
+                PrimeControlHtml = primeControlHtml == null ? null : primeControlHtml.Invoke(null),
                 DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
@@ -700,6 +706,15 @@ namespace PortalMvcTools.Web
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
+        }
+
+        public static MvcHtmlString FormPrimeCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression,
+            Func<object, HelperResult> primeControlHtml,
+            object controlHtmlAttributes = null,
+            string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, 
+            bool labelHidden = false, string labelText = null)
+        {
+            return html.FormCheckBoxFor(expression, controlHtmlAttributes, iconCssClass, preControlHtml, postControlHtml, labelHidden, labelText, true, primeControlHtml);
         }
 
         public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, object>> labelExpression, params Expression<Func<TModel, bool>>[] expressionArray)

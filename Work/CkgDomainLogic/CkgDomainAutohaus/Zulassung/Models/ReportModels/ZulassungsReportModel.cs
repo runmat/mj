@@ -1,5 +1,6 @@
 ﻿using System;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -102,5 +103,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.Precollector)]
         public string Vorerfasser { get; set; }
+
+        [GridHidden, GridExportIgnore]
+        public string FahrzeugAsString{ get { return string.Format("{0}: {1}, {2}: {3}", Localize.LicenseNo, Kennzeichen, Localize.VIN, Referenz2); } }
     }
 }

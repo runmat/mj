@@ -113,6 +113,7 @@
     <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
     <Compile Include="General\Models\DataModels\Hersteller.cs" />
+    <Compile Include="General\Models\DataModels\EvbInfo.cs" />
     <Compile Include="General\Models\DataModels\KundeAusHierarchie.cs" />
     <Compile Include="General\Models\DataModels\VersandGrund.cs" />
     <Compile Include="General\Models\DataModels\ZulassungsDienstleistung.cs" />
