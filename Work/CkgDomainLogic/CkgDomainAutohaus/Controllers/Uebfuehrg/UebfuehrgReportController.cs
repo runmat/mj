@@ -38,11 +38,11 @@ namespace ServicesMvc.Controllers
             model.GetKundenAusHierarchie = ReportViewModel.HistoryAuftragSelector.GetKundenAusHierarchie;
             ReportViewModel.HistoryAuftragSelector = model;
 
-            bool dateRangeResetOccurred;
-            ReportViewModel.Validate(ModelState.AddModelError, out dateRangeResetOccurred);
-
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !PersistableMode)
             {
+                bool dateRangeResetOccurred;
+                ReportViewModel.Validate(ModelState.AddModelError, out dateRangeResetOccurred);
+
                 ReportViewModel.LoadHistoryAuftraege();
                 if (ReportViewModel.HistoryAuftraege.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
@@ -51,7 +51,7 @@ namespace ServicesMvc.Controllers
                         ModelState.Clear();
             }
 
-            return PartialView("Partial/HistoryAuftragSuche", ReportViewModel.HistoryAuftragSelector);
+            return PersistablePartialView("Partial/HistoryAuftragSuche", ReportViewModel.HistoryAuftragSelector);
         }
 
         [HttpPost]

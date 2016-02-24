@@ -11,10 +11,12 @@ namespace CkgDomainLogic.Autohaus.Models
     public class ZulassungsReportSelektor : Store, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.Customer)]
+        [FormPersistable]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [KennzeichenPartial]
+        [FormPersistable]
         public string Kennzeichen
         {
             get { return PropertyCacheGet(() => "").NotNullOrEmpty().ToUpper(); }
@@ -22,6 +24,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.DispatchType)]
+        [FormPersistable]
         public string AuftragsArt
         {
             get { return PropertyCacheGet(() => "1"); }
@@ -29,21 +32,27 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.OrderDate)]
+        [FormPersistable]
         public DateRange AuftragsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
+        [FormPersistable]
         public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days, true)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.CarOwner)]
+        [FormPersistable]
         public string Referenz1 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
+        [FormPersistable]
         public string Referenz2 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
+        [FormPersistable]
         public string Referenz3 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
+        [FormPersistable]
         public string Referenz4 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]

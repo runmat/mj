@@ -524,6 +524,9 @@ textarea[readonly].m-wrap {
 .validation-summary-errors {
     margin-top: 20px;
 }
+.validation-summary-errors.alert-success {
+    color: darkgreen;
+}
 /*
 .validation-summary-errors {
     margin-top: 10px;
@@ -1378,6 +1381,16 @@ div.span-alert-placeholder .alert {
 
 .m-wrap.tall {
     min-height: 30px;
+}
+
+.report-generator-wrapper li.persistable-form-dropdown-menu {
+    text-align: left;
+}
+
+.report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
+    display: inline-block;
+    width: 80%;
+}
 }
 
 #divFormControlsTranslations {
