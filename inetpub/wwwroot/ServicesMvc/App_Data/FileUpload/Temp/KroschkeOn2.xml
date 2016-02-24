@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IMPORT>
+  <USER>
+    <User id="Username" />
+    <Passwort id="Passwort" />
+  </USER>
+  <Auftragskopf>
+    <AkteAnlegen id="TypeAkteAnlegen" />
+    <Zulassung id="TypeZulassung" />
+    <Ueberfuehrung id="TypeUeberfuehrung" />
+    <Abmeldung id="TypeAbmeldung" />
+  </Auftragskopf>
+  <Fahrzeug>
+    <VIN id="FahrzeugVin" />
+    <Hersteller id="FahrzeugHersteller" />
+    <Modell id="FahrzeugModell"/>
+    <Kilometerstand id="FahrzeugKilometerstand" />
+    <Erstzulassung id="FahrzeugErstzulassung" />
+  </Fahrzeug>
+  <Adressen>
+    <Halter>
+      <Name id="HalterName" />
+      <Name2 id="HalterName2" />
+      <Strasse id="HalterStrasse" />
+      <Hausnummer id="HalterHausNr" />
+      <PLZ id="HalterPlz" />
+      <Ort id="HalterOrt" />
+      <Land id="HalterLand" />
+      <Ansprechpartner>
+        <Name id="HalterAnsprechpartnerName" />
+        <Mail id="HalterAnsprechpartnerMail" />
+        <Telefon id="HalterAnsprechpartnerTel" />
+      </Ansprechpartner>
+    </Halter>      
+    <Steuerzahler>
+      <Name id="SteuerzahlerName" />
+      <Name2 id="SteuerzahlerName2" />
+      <Strasse id="SteuerzahlerStrasse" />
+      <Hausnummer id="SteuerzahlerHausNr" />
+      <PLZ id="SteuerzahlerPlz" />
+      <Ort id="SteuerzahlerOrt" />
+      <Land id="SteuerzahlerLand" />
+      <Ansprechpartner>
+        <Name id="SteuerzahlerAnsprechpartnerName" />
+        <Mail id="SteuerzahlerAnsprechpartnerMail" />
+        <Telefon id="SteuerzahlerAnsprechpartnerTel" />
+      </Ansprechpartner>
+    </Steuerzahler>      
+  </Adressen>
+  <Zulassung>
+    <TYP />
+    <DatumZul />
+    <EVB />
+    <Wunschkennzeichen>
+      <Wunsch1 />
+      <Wunsch2 />
+      <Wunsch3 />
+      <Reservierung />
+      <ReservierungsNummer />
+    </Wunschkennzeichen>
+    <ReferenzZul>
+      <ReferenzZul1 />
+      <ReferenzZul2 />
+      <ReferenzZul3 />
+    </ReferenzZul>
+    <BemerkungZul />
+    <Sonderdienstleistungen>
+      <FSP />
+      <Drittes_Kennzeichen />
+      <Express />
+    </Sonderdienstleistungen>
+  </Zulassung>
+  <Ueberfuehrung>
+    <TYP />
+    <DatumUeb />
+    <ReferenzUeb>
+      <ReferenzUeb1 />
+      <ReferenzUeb2 />
+      <ReferenzUeb3 />
+    </ReferenzUeb>
+    <BemerkungUeb />
+    <Fahrzeug_Fahrbereit />
+    <Bereifung />
+    <Fahrzeug_Zugelassen />
+  </Ueberfuehrung>
+  <Abmeldung>
+    <DatumAbm />
+    <ReferenzAbm>
+      <ReferenzAbm1 />
+      <ReferenzAbm2 />
+      <ReferenzAbm3 />
+    </ReferenzAbm>
+    <BemerkungAbm />
+  </Abmeldung>
+</IMPORT>

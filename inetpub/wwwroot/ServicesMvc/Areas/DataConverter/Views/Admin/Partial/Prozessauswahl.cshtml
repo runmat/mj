@@ -1,0 +1,112 @@
+﻿@model CkgDomainLogic.DataConverter.Models.NewDataMappingSelektor
+
+<div id="DivProzessauswahl" class="margin-top-20">
+    
+    <h4>@Localize.NewDataMapping</h4>
+
+    @using (Ajax.BeginForm("Prozessauswahl", "Admin", null,
+        new MvcAjaxOptions { UpdateTargetId = "DivProzessauswahl", OnComplete = "AjaxFormProzessauswahlComplete();" },
+        htmlAttributes: new { @class = "form-horizontal margin-top-20", id = "AjaxFormProzessauswahl" }))
+    {
+        <div class="form-horizontal" id="searchForm">
+
+            @Html.FormValidationSummary()
+
+
+            @Html.HiddenFor(m => m.SourceFile.FilenameOrig)
+            @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
+
+            @Html.FormTextBoxFor(m => m.MappingName, new { @class = "m-wrap" })
+
+            @if (Model.CanUserSelectCustomer)
+            {
+                @Html.FormDropDownListFor(m => m.CustomerId, Model.CustomerList.ToSelectList("CustomerID", "Customername"), new { @class = "m-wrap" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.CustomerId)
+            }
+
+            @Html.FormDropDownListFor(m => m.ProzessName, Model.ProzessList.ToSelectList(), new { @class = "m-wrap" })
+
+            <div class="control-group margin-top-20">
+                <label class="control-label">@Localize.UploadFile:</label>
+                <div class="controls">
+                    @(Html.Telerik().Upload()
+                          .Name("fileUpload")
+                          .Localizable("de-DE")
+                          .Async(async => async
+                              .Save("UploadStart", "Admin")
+                              .SaveField("uploadFiles")
+                              .AutoUpload(true))
+                          .Multiple(false)
+                          .ShowFileList(false)
+                          .ClientEvents(events => events
+                              .OnUpload("UploadStart")
+                              .OnSuccess("UploadFinished")
+                              .OnError("UploadError")
+                          )
+                      )
+                </div>
+            </div>
+
+            <div class="space20"></div>
+
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="button" class="btn" onclick="CloseDataMappingDetails();">@Localize.Cancel</button>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var filename = e.files[0].name;
+
+        var fileExt = filename.split('.').pop().toLowerCase();
+
+        if (fileExt != "txt" && fileExt != "csv" && fileExt != "xls" && fileExt != "xlsx") {
+            alert("Nur folgende Formate sind möglich: txt, csv, xls, xlsx");
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
+        $('#SourceFile_FilenameCsv').val(e.response.uploadFileNameCsv);
+
+        $("#AjaxFormProzessauswahl").submit();
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved');
+    }
+
+</script>
+
+

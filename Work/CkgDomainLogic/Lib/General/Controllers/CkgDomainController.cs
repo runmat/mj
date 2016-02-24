@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using CkgDomainLogic.DataConverter.Models;
+using CkgDomainLogic.DataConverter.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
@@ -171,8 +173,8 @@ namespace CkgDomainLogic.General.Controllers
         protected ILogonContextDataService GetValidLogonContext(ILogonContextDataService logonContextToTry) 
         {
             var validLogonContext = logonContextToTry;
-            if (this.LogonContext != null && this.LogonContext.UserName.IsNotNullOrEmpty())
-                validLogonContext = this.LogonContext;
+            if (LogonContext != null && LogonContext.UserName.IsNotNullOrEmpty())
+                validLogonContext = LogonContext;
 
             return validLogonContext;
         }

@@ -45,6 +45,9 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Services;
 // MaihoferM
 
+using CkgDomainLogic.DataConverter.Contracts;
+using CkgDomainLogic.DataConverter.Services;
+
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
@@ -64,6 +67,8 @@ using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 using CkgDomainLogic.General.Database.Models;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
 using Telerik.Web.Mvc.Infrastructure;
 using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
 using IZulassungDataService = CkgDomainLogic.CoC.Contracts.IZulassungDataService;
@@ -249,6 +254,9 @@ namespace ServicesMvc
 
             builder.RegisterType<CocAnforderungDataServiceSAP>().As<ICocAnforderungDataService>().InstancePerHttpRequest();
             builder.RegisterType<EsdBeauftragungDataServiceSAP>().As<IEsdBeauftragungDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

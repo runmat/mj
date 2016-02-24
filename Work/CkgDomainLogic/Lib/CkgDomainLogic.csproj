@@ -56,6 +56,14 @@
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\GAC\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\NUnit\nunit.framework.dll</HintPath>
@@ -88,6 +96,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="DataConverter\Contracts\IDataConverterDataService.cs" />
+    <Compile Include="DataConverter\Models\DataConnection.cs" />
+    <Compile Include="DataConverter\Models\DataMappingModel.cs" />
+    <Compile Include="DataConverter\Models\DataMappingSelektor.cs" />
+    <Compile Include="DataConverter\Models\Field.cs" />
+    <Compile Include="DataConverter\Models\SourceFieldInfo.cs" />
+    <Compile Include="DataConverter\Models\MappedUpload\MappedUploadMappingSelectionModel.cs" />
+    <Compile Include="DataConverter\Models\NewDataMappingSelektor.cs" />
+    <Compile Include="DataConverter\Models\Operation.cs" />
+    <Compile Include="DataConverter\Models\Processor.cs" />
+    <Compile Include="DataConverter\Models\ProcessStructure.cs" />
+    <Compile Include="DataConverter\Models\SourceFile.cs" />
+    <Compile Include="DataConverter\Models\JsonStructureGeneration\DataConverterStructure.cs" />
+    <Compile Include="DataConverter\Services\DataConverterDataService.cs" />
+    <Compile Include="DataConverter\Services\DataConverterStructureGenerationService.cs" />
+    <Compile Include="DataConverter\ViewModels\DataConverterViewModel.cs" />
     <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
     <Compile Include="DomainCommon\Models\CommonSummary.cs" />
@@ -98,6 +122,7 @@
     <Compile Include="General\Contracts\IKennzeichenAttribute.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItemAnnotator.cs" />
+    <Compile Include="General\Contracts\IUploadItem.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
     <Compile Include="General\Controllers\CkgDomainController.cs" />
@@ -132,6 +157,11 @@
     <Compile Include="General\Services\Database\Models\Contact.cs" />
     <Compile Include="General\Services\Database\Models\AccountingArea.cs" />
     <Compile Include="General\Services\Database\Models\GroupArchiveAssigned.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterProcessStructure.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterMappingInfo.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterMappingData.cs" />
+    <Compile Include="General\Services\Database\Models\OrganizationBase.cs" />
+    <Compile Include="General\Services\Database\Models\UserOrganization.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResource_UserLogs.cs" />
