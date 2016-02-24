@@ -100,7 +100,6 @@ Enjoy!
             spanTag.html(btnText);
 
             $el.css("opacity", 0);
-            $el.css("display", "none");
             $el.wrap(divTag);
             $el.wrap(spanTag);
 
@@ -253,7 +252,6 @@ Enjoy!
             //hide normal input and add focus classes
             $(elem)
       .css("opacity", 0)
-      .css("display", "none")
       .bind({
           "focus.uniform": function () {
               divTag.addClass(options.focusClass);
@@ -330,7 +328,6 @@ Enjoy!
             //hide normal input and add focus classes
             $(elem)
       .css("opacity", 0)
-      .css("display", "none")
       .bind({
           "focus.uniform": function () {
               divTag.addClass(options.focusClass);
@@ -519,7 +516,6 @@ Enjoy!
 
                 //reset inline style
                 $(this).css("opacity", "1");
-                $(this).css("display", "inline");
 
                 //remove item from list of uniformed elements
                 var index = $.inArray($(elem), $.uniform.elements);

@@ -537,11 +537,17 @@
                 data: { zulassungsKreis: $("#Zulassungskreis").val() },
                 loadingShow: false,
                 success: function (result) {
-                    $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
-                    $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
-                    $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Kennzeichen").val() == "undefined" || $("#Kennzeichen").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Wunschkennzeichen2").val() == "undefined" || $("#Wunschkennzeichen2").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Wunschkennzeichen3").val() == "undefined" || $("#Wunschkennzeichen3").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
 
-                    $('.editkennz').val(result.kennzeichenLinkeSeite); // MMA
+                    $('.editkennz').each(function() {
+                        if (typeof $(this).val() == "undefined" || $(this).val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                            $(this).val(result.kennzeichenLinkeSeite);
+                    });
 
                     // MMA ITA8083
                     $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);

@@ -2383,7 +2383,7 @@ Partial Public Class UserManagement
     Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ddlCustomer.SelectedIndexChanged
         refill_Groups()
         initialize_ReferenceFields()
-
+        ShowRightsPerUser(txtUserName.Text, CInt(ddlCustomer.SelectedItem.Value))
         'NameEditMode(Not _customer.CustomerPasswordRules.NameInputOptional)
     End Sub
 

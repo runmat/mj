@@ -51,28 +51,28 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         #region Massenzulassung // MMA Für Massenzulassung erforderliche Properties
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string Zb2Nr { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
         public string WunschKennz1 { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
         public string WunschKennz2 { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
         public string WunschKennz3 { get; set; }
 
-        [Length(5)]
-        public string ResKennz { get; set; }   
+        [LocalizedDisplay(LocalizeConstants.ReservedLicenseNo)]
+        public string ResKennz { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ReservationNo)]
         public string ReservationNr { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ReservationName)]
         public string ReservationName { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
         public string Evb { get; set; }
 
         public bool ZulassungNeuesFzg { get; set; }

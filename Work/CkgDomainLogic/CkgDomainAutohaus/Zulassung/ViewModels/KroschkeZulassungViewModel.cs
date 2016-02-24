@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -1220,11 +1219,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
                 ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
-
-                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
-                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
-
-                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             if (schnellAbmeldung.IsNotNullOrEmpty())
@@ -1261,6 +1255,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 }
 
                 LoadZulassungsAbmeldeArten();
+            }
+
+            if (zulassungFromShoppingCart.IsNotNullOrEmpty())
+            {
+                LoadZulassungsAbmeldeArten(Zulassung.Zulassungsdaten.Zulassungskreis);
+
+                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
+                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
+                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
@@ -1322,13 +1325,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (zulassungen.Any(z => z.Zulassungsdaten.ModusAbmeldung) && Abmeldearten.None())
             {
                 SaveErrorMessage = Localize.NoDeregistrationTypesFound;
-                return;
-            }
-
-            var zulOhneEvb = zulassungen.Where(z => !z.Zulassungsdaten.ModusAbmeldung && String.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));
-            if (saveDataToSap && zulOhneEvb.Any())
-            {
-                SaveErrorMessage = String.Join(", ", zulOhneEvb.Select(z => String.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
                 return;
             }
 
@@ -1413,6 +1409,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
             {
                 zulassungenToSave = zulassungen;
+            }
+
+            if (saveDataToSap)
+            {
+                var zulOhneEvb = zulassungenToSave.Where(z => !z.Zulassungsdaten.ModusAbmeldung && string.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));
+                if (zulOhneEvb.Any())
+                {
+                    SaveErrorMessage = string.Join(", ", zulOhneEvb.Select(z => string.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
+                    return;
+                }
             }
             
             SaveDataToErpSystem = saveDataToSap;

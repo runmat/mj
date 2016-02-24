@@ -291,7 +291,10 @@
                 @if (modusAbmeldung)
                 {
                     @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
-                    @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4})
+                    @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4},
+                        postControlHtml: @<text>
+                                            <span class="margin-left-10">@string.Format("{0}: {1}", Localize.Format, Localize.DateFormat_MMJJ)</span>
+                                        </text>)
                 }
                 else
                 {
@@ -302,7 +305,7 @@
 
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
 
-                @if (!modusPartnerportal)
+                @if (!modusAbmeldung && !modusPartnerportal)
                 {
                     @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
                 }
