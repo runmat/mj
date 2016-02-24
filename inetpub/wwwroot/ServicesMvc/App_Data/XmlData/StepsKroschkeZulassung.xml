@@ -57,12 +57,12 @@
         </value>
     </item>
     <item>
-        <key>
-            <string>OptionenDienstleistungen</string>
-        </key>
-        <value>
-            <string>Optionen</string>
-        </value>
+      <key>
+        <string>OptionenDienstleistungen</string>
+      </key>
+      <value>
+        <string>Optionen</string>
+      </value>
     </item>
     <item>
         <key>
