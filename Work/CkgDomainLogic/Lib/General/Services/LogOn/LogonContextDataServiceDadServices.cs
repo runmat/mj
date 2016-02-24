@@ -26,6 +26,13 @@ namespace CkgDomainLogic.General.Services
         {
             get { return CreateDbContext().CheckUserHasLocalizationTranslationRights(UserName); }
         }
+        
+
+        public override string GetCategorySettingsForWebUser(string RightName)
+        {
+             return CreateDbContext().GetCategorySettingsForWebUser(RightName);
+            
+        }
 
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages
         {

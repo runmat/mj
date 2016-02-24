@@ -4,6 +4,7 @@ Imports CKG.Base.Kernel.Common.Common
 Imports System.Data.OleDb
 Imports System.Text.RegularExpressions
 Imports System.Drawing
+Imports CKG.Base.Kernel.Admin
 Imports WebTools.Services
 
 Partial Public Class AutUserUpload
@@ -14,8 +15,28 @@ Partial Public Class AutUserUpload
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
-    Private Const ANZAHLEXCELSPALTEN As Integer = 14
+    Private Const MINANZAHLEXCELSPALTEN As Integer = 14
     Private Const PFLICHTFELDLEER As String = "Dieses Pflichtfeld hat keinen Eintrag."
+    Private _rechtWarenkorbNurEigene As Boolean
+    Private _rechtDarfNichtAbsenden As Boolean
+
+    Protected ReadOnly Property RechtWarenkorbNurEigene As Boolean
+        Get
+            Return _rechtWarenkorbNurEigene
+        End Get
+    End Property
+
+    Protected ReadOnly Property RechtDarfNichtAbsenden As Boolean
+        Get
+            Return _rechtDarfNichtAbsenden
+        End Get
+    End Property
+
+    Private ReadOnly Property AnzahlExcelspalten As Integer
+        Get
+            Return (MINANZAHLEXCELSPALTEN + IIf(_rechtWarenkorbNurEigene, 1, 0) + IIf(_rechtDarfNichtAbsenden, 1, 0))
+        End Get
+    End Property
 
     Private Enum UploadExcelColumns
         Title = 0
@@ -32,7 +53,6 @@ Partial Public Class AutUserUpload
         EMailAdress = 11
         Telephone = 12
         ValidFrom = 13
-        ID = 14 'NICHT LÖSCHEN!!!
     End Enum
 
 #End Region
@@ -50,6 +70,13 @@ Partial Public Class AutUserUpload
 
             lblError.Text = ""
             lblMessage.Text = ""
+
+            If Session("RechtWarenkorbNurEigene") IsNot Nothing Then
+                _rechtWarenkorbNurEigene = CBool(Session("RechtWarenkorbNurEigene"))
+            End If
+            If Session("RechtDarfNichtAbsenden") IsNot Nothing Then
+                _rechtDarfNichtAbsenden = CBool(Session("RechtDarfNichtAbsenden"))
+            End If
 
             If Not IsPostBack Then
                 FillCustomer()
@@ -230,7 +257,7 @@ Partial Public Class AutUserUpload
                               TempRow(UploadExcelColumns.Reference), _
                               TempRow(UploadExcelColumns.Reference2), _
                               TempRow(UploadExcelColumns.Reference3), _
-                              False, _
+                              (RechtWarenkorbNurEigene AndAlso TempRow(14).ToString.ToUpper() = "JA"), _
                               blnTestUser, _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _
@@ -291,6 +318,10 @@ Partial Public Class AutUserUpload
                 'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
                 InsertIntoWebUserUpload(_User.UserID, HttpUtility.UrlEncode(confirmationToken), chkKeineMailsSenden.Checked, _User.ValidFrom)
 
+                'kundenindividuelle Einstellungen speichern
+                If RechtDarfNichtAbsenden Then
+                    RightList.SaveRightPerUser(_User.UserName, "AUFTRAEGE_NICHT_ABSENDEN", TempRow(IIf(RechtWarenkorbNurEigene, 15, 14)).ToString().ToUpper() = "JA", m_User.UserName)
+                End If
             Else
                 lblError.Text = _User.ErrorMessage
             End If
@@ -334,7 +365,7 @@ Partial Public Class AutUserUpload
                 ' Referenzfelder
                 If Not String.IsNullOrEmpty(_customer.ReferenceType1) Then
                     lblRef1.Text = _customer.ReferenceType1Name
-            Else
+                Else
                     lblRef1.Text = ""
                 End If
                 If Not String.IsNullOrEmpty(_customer.ReferenceType2) Then
@@ -347,6 +378,12 @@ Partial Public Class AutUserUpload
                 Else
                     lblRef3.Text = ""
                 End If
+
+                'kundenspezifische Einstellungen
+                _rechtWarenkorbNurEigene = (_customer.ReferenceType4 = "AH_WK_NUR_EIGENE")
+                Dim rightsOfCustomer = RightList.ShowRightsPerCustomer(_customer.CustomerId)
+                _rechtDarfNichtAbsenden = rightsOfCustomer.Contains("AUFTRAEGE_NICHT_ABSENDEN")
+                ApplyCustomerSpecificSettings()
             Else
                 trBenutzerFreigeben.Visible = False
                 trRemoteLoginKey.Visible = False
@@ -550,13 +587,12 @@ Partial Public Class AutUserUpload
                 'Datei gespeichert -> Auswertung
                 TempTable = getDataTableFromExcel(filepath, filename)
 
-                If TempTable.Columns.Count = ANZAHLEXCELSPALTEN Then
+                If TempTable.Columns.Count = AnzahlExcelspalten Then
                     If TempTable.Rows.Count < 1 Then
                         Err.Raise(-1, , "Die Exceldatei enthält keine Daten.")
                     End If
                 Else
                     Err.Raise(-1, , "Die Exceldatei hat nicht die korrekte Anzahl an Spalten.")
-
                 End If
 
             End If
@@ -585,9 +621,10 @@ Partial Public Class AutUserUpload
 
         Dim wSheet As Aspose.Cells.Worksheet = wBook.Worksheets(0)
 
+        Dim colCount As Integer = wSheet.Cells.Columns.Count
         'x wird hinzugefügt, da über OLEBD nur 8 Zeilen ausgelesen werden,
         'um den Datentyp zu bestimmen. Das führt zu Problemen.
-        For i As Integer = 0 To 13
+        For i As Integer = 0 To (colCount - 1)
             wSheet.Cells(1, i).PutValue("x" & wSheet.Cells(1, i).Value)
         Next
 
@@ -608,7 +645,7 @@ Partial Public Class AutUserUpload
         'x wieder entfernen 
         Dim Row As DataRow = dt.Rows(0)
 
-        For i As Integer = 0 To 13
+        For i As Integer = 0 To (colCount - 1)
             Row(i) = Mid(Row(i), 2)
         Next
 
@@ -620,19 +657,21 @@ Partial Public Class AutUserUpload
 
     Private Sub CheckTableData(ByVal TempTable As DataTable)
 
-        Dim Column As New DataColumn
-        Dim TempRow As DataRow
+        'ggf. Dummy-Spalten ergänzen, damit das DataBinding funktioniert
+        If TempTable.Columns.Count = 14 Then
+            TempTable.Columns.Add("WarenkorbNurEigene")
+        End If
+        If TempTable.Columns.Count = 15 Then
+            TempTable.Columns.Add("DarfNichtAbsenden")
+        End If
 
-        Column.DataType = Type.GetType("System.Int32")
-        Column.ColumnName = "ID"
-
-        TempTable.Columns.Add(Column)
+        TempTable.Columns.Add("ID", Type.GetType("System.Int32"))
         TempTable.AcceptChanges()
 
         Dim e As Integer = 0
         Dim blnShowPrefixField As Boolean = False
 
-        For Each TempRow In TempTable.Rows
+        For Each TempRow As DataRow In TempTable.Rows
 
             TempRow("ID") = e
 
@@ -666,19 +705,20 @@ Partial Public Class AutUserUpload
 
         Dim EnumArray() As String = [Enum].GetNames(GetType(UploadExcelColumns))
 
-        Dim i As Integer = 0
-
-        Column = New DataColumn
-
-        For Each Column In TempTable.Columns
-            Column.ColumnName = EnumArray(i)
-            i += 1
+        For i As Integer = 0 To 13
+            TempTable.Columns(i).ColumnName = EnumArray(i)
         Next
 
-        Column = New DataColumn
+        If RechtWarenkorbNurEigene Then
+            TempTable.Columns(14).ColumnName = "WarenkorbNurEigene"
+            If RechtDarfNichtAbsenden Then
+                TempTable.Columns(15).ColumnName = "DarfNichtAbsenden"
+            End If
+        ElseIf RechtDarfNichtAbsenden Then
+            TempTable.Columns(14).ColumnName = "DarfNichtAbsenden"
+        End If
 
-        Column.DataType = Type.GetType("System.Boolean")
-        Column.ColumnName = "Error"
+        Dim Column As New DataColumn("Error", Type.GetType("System.Boolean"))
         Column.DefaultValue = False
 
         TempTable.Columns.Add(Column)
@@ -972,11 +1012,11 @@ Partial Public Class AutUserUpload
             End If
 
             'Update in der Tabelle
-            RowSet = TempTable.Select("ID = " & GridRow.Cells(UploadExcelColumns.ID + 1).Text)
+            RowSet = TempTable.Select("ID = " & GridRow.Cells(17).Text)
 
             RowSet(0).BeginEdit()
 
-            For i As Integer = 0 To 11
+            For i As Integer = 0 To 15
                 For Each GridControl In GridRow.Cells(i).Controls
 
                     If TypeOf GridControl Is TextBox Then
@@ -1310,38 +1350,36 @@ Partial Public Class AutUserUpload
 
     Private Function CheckCustomerMaxUser(ByVal AnzahlUserInUploadTable As Integer) As Boolean
 
-        Dim TempTable As New DataTable
-        Dim SQL As String
-        Dim HaveUsers As Integer
+        Dim intCustomerID As Integer = CInt(ddlFilterCustomer.SelectedValue)
+        Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
+
+        Dim UsersInDb As Integer
 
         lblError.Text = String.Empty
 
-        SQL = " SELECT "
-        SQL = SQL & "   COUNT(dbo.WebUser.UserID) AS AnzahlUser,"
-        SQL = SQL & "   dbo.Customer.MaxUser"
-        SQL = SQL & " FROM "
-        SQL = SQL & "   dbo.WebUser INNER JOIN dbo.Customer ON dbo.WebUser.CustomerID = dbo.Customer.CustomerID"
-        SQL = SQL & " WHERE "
-        SQL = SQL & "   (dbo.WebUser.CustomerID = @CustomerID)"
-        SQL = SQL & " GROUP BY dbo.Customer.MaxUser"
+        Using cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
 
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        cn.Open()
+            cn.Open()
 
-        Dim cmdMaxUser As SqlClient.SqlDataAdapter
-        cmdMaxUser = New SqlClient.SqlDataAdapter(SQL, cn)
-        cmdMaxUser.SelectCommand.Parameters.AddWithValue("@CustomerID", ddlFilterCustomer.SelectedValue)
+            Using cmd As SqlClient.SqlCommand = cn.CreateCommand()
 
-        cmdMaxUser.Fill(TempTable)
+                cmd.CommandType = CommandType.Text
 
-        cn.Close()
-        cn.Dispose()
+                cmd.CommandText = "SELECT COUNT(*) FROM WebUser WHERE CustomerID = @CustomerID"
 
-        HaveUsers = CInt(TempTable.Rows(0)("AnzahlUser"))
+                cmd.Parameters.AddWithValue("@CustomerID", intCustomerID)
 
-        If (HaveUsers + AnzahlUserInUploadTable) >= CInt(TempTable.Rows(0)("MaxUser")) Then
-            lblError.Text = "Max. Useranzahl zum Kunden(" & CInt(TempTable.Rows(0)("MaxUser")) & ") wird überschritten." & vbCrLf & _
-                            "Bereits angelegt: " & HaveUsers & ". Anzahl User im Upload: " & AnzahlUserInUploadTable & "."
+                UsersInDb = CInt(cmd.ExecuteScalar())
+
+            End Using
+
+            cn.Close()
+
+        End Using
+
+        If (UsersInDb + AnzahlUserInUploadTable) >= _customer.MaxUser Then
+            lblError.Text = "Max. Useranzahl zum Kunden(" & _customer.MaxUser & ") wird überschritten." & vbCrLf & _
+                            "Bereits angelegt: " & UsersInDb & ". Anzahl User im Upload: " & AnzahlUserInUploadTable & "."
             Return True
         Else
             Return False
@@ -1368,6 +1406,24 @@ Partial Public Class AutUserUpload
         Return erg
 
     End Function
+
+    Private Sub ApplyCustomerSpecificSettings()
+
+        lblWarenkorbNurEigene.Visible = RechtWarenkorbNurEigene
+        lblWarenkorbNurEigeneZeile1.Visible = RechtWarenkorbNurEigene
+        lblWarenkorbNurEigeneZeile2.Visible = RechtWarenkorbNurEigene
+
+        lblDarfNichtAbsenden.Visible = RechtDarfNichtAbsenden
+        lblDarfNichtAbsendenZeile1.Visible = RechtDarfNichtAbsenden
+        lblDarfNichtAbsendenZeile2.Visible = RechtDarfNichtAbsenden
+
+        grvAusgabe.Columns(14).Visible = RechtWarenkorbNurEigene
+        grvAusgabe.Columns(15).Visible = RechtDarfNichtAbsenden
+
+        Session("RechtWarenkorbNurEigene") = RechtWarenkorbNurEigene
+        Session("RechtDarfNichtAbsenden") = RechtDarfNichtAbsenden
+
+    End Sub
 
 #End Region
 

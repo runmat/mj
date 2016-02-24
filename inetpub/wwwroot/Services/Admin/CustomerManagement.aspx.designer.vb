@@ -1607,6 +1607,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtSDSignatur2 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''Settings-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Settings As Global.AjaxControlToolkit.TabPanel
+
+    '''<summary>
+    '''rgRights-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rgRights As Global.Telerik.Web.UI.RadGrid
+
+    '''<summary>
     '''lbtnDelete-Steuerelement
     '''</summary>
     '''<remarks>

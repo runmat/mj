@@ -122,6 +122,11 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();
         }
 
+        public string GetCategorySettingsForWebUser(string rightName)
+        {
+            return Database.SqlQuery<string>("SELECT SettingsValue FROM CategorySettingsWebUser WHERE UserName = {0} AND CategoryID = {1}", UserName, rightName).FirstOrDefault();
+        }
+
         public List<User> GetUserForCustomer(Customer customer)
         {
             return Database.SqlQuery<User>("select * from vwWebUser where CustomerID = {0}", customer.CustomerID).ToListOrEmptyList();

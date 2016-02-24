@@ -693,6 +693,8 @@ Partial Public Class UserManagement
                 Return False
             End If
 
+            ShowRightsPerUser(_User.UserName, _User.Customer.CustomerId)
+
             Return True
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "FillEdit", ex.ToString)
@@ -1268,7 +1270,7 @@ Partial Public Class UserManagement
                 Matrix.Rows.Add(Row)
             Next
         End If
-        
+
     End Sub
 
     '-----------
@@ -2201,6 +2203,9 @@ Partial Public Class UserManagement
                 If _User.Save() Then
                     txtUserID.Text = _User.UserID.ToString
 
+                    ' Rechte zuordnen
+                    SaveRightsForUser(_User.UserID.ToString)
+
                     ' Wenn Passwortänderung
                     If Not String.IsNullOrEmpty(strPwd) Then
                         Dim pword As String = strPwd
@@ -2218,6 +2223,8 @@ Partial Public Class UserManagement
 
                     _User.SetLastLogin(Now)
                     _User.Organization.ReAssignUserToOrganization(m_User.UserName, strTemp, _User.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
+
+
                 Else
                     lblError.Text = _User.ErrorMessage
                 End If
@@ -2991,4 +2998,34 @@ Partial Public Class UserManagement
 
         Return Nothing
     End Function
+
+    Public Sub ShowRightsPerUser(ByVal strUsername As String, ByVal intCustomerId As Integer)
+        drUserRights.DataSource = RightList.ShowRightsPerUser(strUsername, intCustomerId)
+        drUserRights.Rebind()
+    End Sub
+
+    Public Sub SaveRightsForUser(ByVal userId As String)
+
+        Dim strUserRightValue As String
+
+        For Each item As GridDataItem In drUserRights.Items
+
+            Dim lblKategorie = CType(item("CategoryID").FindControl("Kategorie"), Label)
+            Dim txtRecht1 = CType(item("SettingsValue").FindControl("Recht1"), TextBox)
+            Dim cbxRecht2 = CType(item("SettingsValue").FindControl("Recht2"), CheckBox)
+
+            If txtRecht1.Visible Then
+                strUserRightValue = txtRecht1.Text
+            End If
+
+            If cbxRecht2.Visible Then
+                strUserRightValue = cbxRecht2.Checked
+            End If
+
+            RightList.SaveRightPerUser(txtUserName.Text, lblKategorie.Text, strUserRightValue, m_User.UserName)
+
+        Next
+
+    End Sub
+
 End Class

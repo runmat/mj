@@ -45,6 +45,8 @@ namespace CkgDomainLogic.General.Services
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
 
+        public string RightName { get; set; }
+
         public virtual bool HasLocalizationTranslationRights { get { return false; } }
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
@@ -147,6 +149,11 @@ namespace CkgDomainLogic.General.Services
         }
 
         virtual public string GetUserNameFromUrlRemoteLoginKey(string urlRemoteLoginKey)
+        {
+            return "";
+        }
+
+        virtual public string GetCategorySettingsForWebUser(string rightname)
         {
             return "";
         }

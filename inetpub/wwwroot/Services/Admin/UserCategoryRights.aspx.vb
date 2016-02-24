@@ -19,15 +19,21 @@ Partial Public Class UserCategoryRights
     Private m_CategoryName As String = "LOKALISIERUNGS_RECHT"
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
         m_User = GetUser(Me)
 
         If (Not Request.QueryString("category") Is Nothing And Not String.IsNullOrEmpty(Request.QueryString("category"))) Then
             m_CategoryName = Request.QueryString("category")
         End If
 
-        lblHead.Text = m_CategoryName.ToLowerFirstUpperWithFragments
+        'lblHead.Text = m_CategoryName.ToLowerFirstUpperWithFragments
+
+        lblHead.Text = m_CategoryName.ToLowerFirstUpper
+
         cbNurMitRechten.Text = "Nur User mit " & lblHead.Text
+
         Dim categoryTemplateField = dgSearchResult.Columns.OfType(Of TemplateField).FirstOrDefault(Function(r) r.HeaderText = "Category")
+
         If (Not categoryTemplateField Is Nothing) Then
             categoryTemplateField.HeaderText = lblHead.Text
         End If

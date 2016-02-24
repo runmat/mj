@@ -1,4 +1,11 @@
-﻿<style type="text/css">
+﻿@{
+    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+
+    var _submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
+}
+
+
+<style type="text/css">
     
     .shopping-cart-menu {
         margin-top: 0; 
@@ -70,6 +77,9 @@
 <div class="shopping-cart-body"></div>
 
 <script type="text/javascript">
+
+
+    var _submitRightAuftraegeNichtAbsenden = '@_submitRightAuftraegeNichtAbsenden';
 
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
@@ -273,7 +283,13 @@
             return;
         }
 
-        $(".shopping-cart-item-selection-count").removeClass('hide');
+
+        if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
+            $(".shopping-cart-item-selection-count").hide();
+        } else {
+            $(".shopping-cart-item-selection-count").show();
+        }
+
         $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
