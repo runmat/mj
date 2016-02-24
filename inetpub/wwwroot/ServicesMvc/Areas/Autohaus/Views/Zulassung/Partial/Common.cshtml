@@ -28,13 +28,10 @@
         padding-right: 44px;
     }
     
-    #EvbInfo {
-        width: 430px;
-    }
-    
     .form-actions-top {
         padding-left: 162px !important;
     }
+
 </style>
 
 <script type="text/javascript">
@@ -487,8 +484,6 @@
     }
 
     function InitZulassungsdatenControls() {
-        $("#EvbInfo").closest(".controls").addClass("no-left-margin");
-
         ApplyZulassungsart();
 
         if ($(":radio[name=HaltereintragVorhanden]").length) {
@@ -510,17 +505,17 @@
 
         if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
-            $("#Expressversand").closest(".control-group").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
         } else {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
-            $("#Expressversand").closest(".control-group").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").hide();
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest("label").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").show();
         }
         else {
-            $("#Expressversand").closest("label").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").hide();
         }
         $.uniform.update($("#Expressversand"));
     }

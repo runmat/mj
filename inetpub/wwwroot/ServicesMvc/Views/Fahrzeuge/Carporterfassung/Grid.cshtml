@@ -7,20 +7,20 @@
     @Html.Partial("Carporterfassung/CarportSelectionForm", Model.CarportSelectionModel)
 </div>
 
-@(Html.Telerik()
-    .Grid<CarporterfassungModel>()
+@(Html.XTelerik()
+    .XGrid<CarporterfassungModel>()
     .Name(gridName)
     .XAjaxDataBinding("CarporterfassungAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        columns.XBound(c => c.Action).Width(145).Title("").Filterable(false).Sortable(false).Visible(!Model.ModusNacherfassung)
+        columns.XBound(c => c.Action).Width(145).Filterable(false).Sortable(false).Visible(!Model.ModusNacherfassung)
             .ClientTemplate(
                 "<a href='#' onclick='return FahrzeugBearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
                   + "&nbsp;" +
                 "<a href='#' onclick='return FahrzeugDelete(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Delete + "' data-placement='right'><i class='halflings-icon white remove'></i></a>"
             );
 
-        columns.XBound(c => c.Action).Width(75).Title("").Filterable(false).Sortable(false).Visible(Model.ModusNacherfassung)
+        columns.XBound(c => c.Action).Width(75).Filterable(false).Sortable(false).Visible(Model.ModusNacherfassung)
             .ClientTemplate(
                 "<a href='#' onclick='return FahrzeugNachbearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
             );

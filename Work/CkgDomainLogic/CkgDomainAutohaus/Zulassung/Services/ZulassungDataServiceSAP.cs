@@ -263,26 +263,26 @@ namespace CkgDomainLogic.Autohaus.Services
                 return SAP.ResultMessage;
 
             var checkResults = Z_ZLD_CHECK_48H.ES_VERSAND_48H.GetExportList(SAP);
-            if (checkResults.Any())
+            if (!checkResults.Any())
+                return "";
+
+            var item = checkResults.First();
+
+            zulassung.Ist48hZulassung = item.IST_48H.XToBool();
+            zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
+
+            var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
+
+            // Abweichende Versandadresse?
+            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
             {
-                var item = checkResults.First();
-
-                zulassung.Ist48hZulassung = item.IST_48H.XToBool();
-                zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
-
-                var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
-
-                // Abweichende Versandadresse?
-                if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
-                {
-                    var adr = zulassung.VersandAdresse.Adresse;
-                    adr.Name1 = item.NAME1;
-                    adr.Name2 = item.NAME2;
-                    adr.Strasse = item.STREET;
-                    adr.HausNr = "";
-                    adr.PLZ = item.POST_CODE1;
-                    adr.Ort = item.CITY1;
-                }
+                var adr = zulassung.VersandAdresse.Adresse;
+                adr.Name1 = item.NAME1;
+                adr.Name2 = item.NAME2;
+                adr.Strasse = item.STREET;
+                adr.HausNr = "";
+                adr.PLZ = item.POST_CODE1;
+                adr.Ort = item.CITY1;
             }
 
             return "";

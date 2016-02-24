@@ -154,7 +154,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         public static string HaltereintragVorhandenOptions { get { return String.Format("J,{0};N,{1}", Localize.Yes, Localize.No); } }
 
-        [LocalizedDisplay(LocalizeConstants.ExtraChargeExpressShipping48h)]
+        [LocalizedDisplay(LocalizeConstants.Autohaus_KroschkePrimeExpressversand_Info)]
         public bool Expressversand { get; set; }
 
         public bool UiUpdateOnly { get; set; }

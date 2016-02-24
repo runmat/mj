@@ -948,7 +948,7 @@
                     return;
                 }
                 $('#' + infoDivId).show();
-                $('#' + infoDivId).html("<span>" + result.message + "</span>");
+                $('#' + infoDivId + " div").html("<span>" + result.message + "</span>");
                 if (result.isValid) {
                     $('#' + infoDivId).removeClass("alert-warning");
                     $('#' + infoDivId).addClass("alert-success");

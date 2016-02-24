@@ -65,12 +65,16 @@ namespace MvcTools.Models
 
         public IHtmlString PrimeControlHtml { get; set; }
 
+        public bool LabelPositionRight { get; set; }
+
         /// <summary>
         /// optionally collapse whole control with all surrounding html templates
         /// </summary>
         public bool IsCollapsed { get; set; }
 
         public bool IsGrayed { get; set; }
+
+        public bool UseRawTemplate { get; set; }
 
         private FormMultiColumnMode _columnMode = FormMultiColumnMode.None;
         public FormMultiColumnMode ColumnMode

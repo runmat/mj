@@ -1016,9 +1016,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             UpdateZulassungsdatenModel(model);
 
-            var zulDat = Zulassung.Zulassungsdaten;
+            var zulDaten = Zulassung.Zulassungsdaten;
 
-            Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDat.ZulassungsartMatNr;
+            Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDaten.ZulassungsartMatNr;
 
             var defaultKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
             if (defaultKg != null)
@@ -1034,14 +1034,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             
             // 20150602 MMA
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
-            if (zulDat.MindesthaltedauerDays != null && zulDat.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
-                Zulassung.OptionenDienstleistungen.HaltedauerBis = zulDat.Zulassungsdatum.Value.AddDays((double)zulDat.MindesthaltedauerDays);
+            if (zulDaten.MindesthaltedauerDays != null && zulDaten.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = zulDaten.Zulassungsdatum.Value.AddDays((double)zulDaten.MindesthaltedauerDays);
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
-            if (ModusVersandzulassung || zulDat.Zulassungsart.Auf48hVersandPruefen)
+            if (ModusVersandzulassung || zulDaten.Zulassungsart.Auf48hVersandPruefen)
             {
-                Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDat.Zulassungskreis);
+                Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDaten.Zulassungskreis);
 
                 if (ModusVersandzulassung)
                 {
@@ -1052,7 +1052,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
-                if (zulDat.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                if (zulDaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
                     state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);

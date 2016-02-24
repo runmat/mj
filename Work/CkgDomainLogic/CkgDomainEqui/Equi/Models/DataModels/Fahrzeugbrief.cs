@@ -11,6 +11,7 @@ namespace CkgDomainLogic.Equi.Models
     /// <summary>
     /// Fahrzeugbrief-Datensatz
     /// </summary>
+    [GridColumnsAutoPersist]
     public class Fahrzeugbrief : IAddressStreetHouseNo
     {
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
@@ -135,5 +136,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [ModelMappingCompareIgnore]
         public bool IsMissing { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ActionDot)]
+        public string Action { get; set; }
     }
 }
