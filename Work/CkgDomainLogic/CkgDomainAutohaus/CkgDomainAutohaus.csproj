@@ -107,6 +107,9 @@
     <Compile Include="Zulassung\Models\AuslieferAdressen.cs" />
     <Compile Include="Zulassung\Models\DataModels\Adressdaten.cs" />
     <Compile Include="Zulassung\Models\DataModels\Kennzeichengroesse.cs" />
+    <Compile Include="Zulassung\Models\DataModels\ZiPoolGrunddaten.cs" />
+    <Compile Include="Zulassung\Models\DataModels\ZiPoolDetaildaten.cs" />
+    <Compile Include="Zulassung\Models\DataModels\ZiPoolDaten.cs" />
     <Compile Include="Zulassung\Models\DataModels\Zulassungskreis.cs" />
     <Compile Include="Zulassung\Models\DataModels\Zusatzdienstleistung.cs" />
     <Compile Include="Zulassung\Models\DataModels\Kunde.cs" />
@@ -143,11 +146,14 @@
     <Compile Include="General\Models\UiModel.cs" />
     <Compile Include="Zulassung\Models\BankAdressdaten.cs" />
     <Compile Include="Zulassung\Models\Fahrzeugdaten.cs" />
+    <Compile Include="Zulassung\Models\Versanddaten.cs" />
     <Compile Include="Zulassung\Models\PdfFormular.cs" />
     <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportModel.cs" />
     <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportSelektor.cs" />
     <Compile Include="Zulassung\Models\DataModels\Bankdaten.cs" />
     <Compile Include="Zulassung\Models\UIModels\FormulareSelektor.cs" />
+    <Compile Include="Zulassung\Models\UIModels\ZiPoolSelektor.cs" />
+    <Compile Include="Zulassung\Models\VersandDienstleister.cs" />
     <Compile Include="Zulassung\Models\Vorgang.cs" />
     <Compile Include="Zulassung\Models\OptionenDienstleistungen.cs" />
     <Compile Include="Zulassung\Models\Zulassungsdaten.cs" />

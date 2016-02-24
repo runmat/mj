@@ -1,27 +1,23 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @model FormulareSelektor
 
-@{
-    var zulassungskreiseList = (List<Zulassungskreis>)ViewData["ZulassungskreiseList"];
-    zulassungskreiseList = zulassungskreiseList.ToListOrEmptyList().CopyAndInsertAtTop(new Zulassungskreis { KreisKz = "", KreisBez = Localize.DropdownDefaultOptionPleaseChoose });
-}
-
 <div id="divFormulareSuche">
-    @using (Ajax.BeginForm("LoadFormulare", "Formulare", null,
-        new MvcAjaxOptions("divFormulareSuche") { OnComplete = "ShowFormulare();" }, new { id = "FormulareForm" }))
+    @using (Ajax.BeginForm("LoadFormulareAndZiPoolDaten", "Formulare", null,
+        new MvcAjaxOptions("divFormulareSuche") { OnComplete = "ShowFormulareAndZiPoolDaten();" }, new { id = "FormulareForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             
             @Html.FormValidationSummary()
 
 
-            @Html.FormDropDownListFor(m => m.Zulassungskreis, zulassungskreiseList.ToSelectList(), new { @class = "m-wrap" })
+            @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onblur = "TryLoadKreisByPlz();" })
+            @Html.FormDropDownListFor(m => m.Zulassungskreis, FormulareSelektor.Zulassungskreise.ToSelectList(), new { @class = "m-wrap", col = "right", @onchange = "ClearPlz();" })
 
 
             @Html.FormRequiredFieldsSummary()
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+                <button type="submit" class="btn blue"><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
         </div>  
         
@@ -30,29 +26,3 @@
         </script>
     }
 </div>
-
-
-<script type="text/javascript">
-
-    function ShowFormulare() {
-        
-        FormPreparePrivateAjax();
-
-        $.ajax({
-            type: "POST",
-            url: "ShowFormulare",
-            loadingShow: true,
-            success: function (result) {
-
-                SearchResultsTryHide();
-
-                if (_modelStateValid) {
-                    ShowFormulareSearchResult(result);
-                }
-
-                LoadingHide();
-            }
-        });
-    }
-
-</script>

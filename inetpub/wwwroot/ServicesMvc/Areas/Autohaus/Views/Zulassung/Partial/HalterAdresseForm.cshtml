@@ -13,10 +13,16 @@
         @Html.HiddenFor(m => m.Typ)
         @Html.HiddenFor(m => m.TmpSelectionKey)
         @Html.HiddenFor(m => m.NoSaveButUiRefreshOnly)
+        @Html.HiddenFor(m => m.Telefon)
+        @Html.HiddenFor(m => m.Email)
 
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium margin-right-50" },
+            postControlHtml: @<text>
+                                 @Html.CheckBoxFor(m => m.Gewerblich)<label for="Gewerblich" class="inline-block">@Localize.Commercial</label>
+                              </text>)
+        
         @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium" })
         @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap small" }, labelText: Localize.StreetHouseNo,
                              postControlHtml: @<text>

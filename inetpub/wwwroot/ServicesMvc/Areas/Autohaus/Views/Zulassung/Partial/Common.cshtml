@@ -1,6 +1,7 @@
 ﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
 
 <style type="text/css">
+    
     .form-wizard .progress {
         margin-bottom: 10px!important;
     }
@@ -31,7 +32,11 @@
     .form-actions-top {
         padding-left: 162px !important;
     }
-
+    
+    .portlet.box.vdl-option-disabled {
+        background-color: #eeeeee !important;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -373,22 +378,29 @@
     }
 
     // AuslieferAdressen
-    function AjaxFormAuslieferAdressenComplete() {
-        FormPrepareAjax();
+    function AjaxFormAuslieferAdressenEdit() {
 
-        $(".mfp-close").trigger("click");
+        $.ajax(
+            {
+                type: "POST",
+                url: "AuslieferAdressen",
+                loadingShow: true,
+                success: function (result) {
+                    $("#InnerAdresseBearbeiten").html(result);
 
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdresseBearbeiten") },
+                        type: 'inline',
+                        closeOnBgClick: false,
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
         }
+            });
 
-        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
-        if (saveSuccessful == 'true') {
-            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
+        return false;
         }
-    }
 
     function OnDataBound_AuslieferAdressenAuswahlGrid() {
         FilteredData_Grid_OnDataBound($(this));
@@ -404,8 +416,53 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
+        $.magnificPopup.open({
+            items: { src: $("#InnerAdresseBearbeiten") },
+            type: 'inline',
+            closeOnBgClick: false,
+            alignTop: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
         $('#SelectedAddressId').val(id);
+
         $("#AjaxFormAuslieferAdressen").submit();
+    }
+
+    function AjaxFormAuslieferAdressenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            $(".mfp-close").trigger("click");
+            UpdateSummary();
+            return;
+        }
+
+        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
+        }
+    }
+
+    function UpdateSummary() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Summary",
+            loadingShow: false,
+            success: function (result) {
+                FormWizard.SetTabHtml("Summary", result);
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
+    }
+
+    function AjaxFormAuslieferAdressenClose() {
+        $(".mfp-close").trigger("click");
     }
 
     function LoadKfzKreisAusHalterAdresse() {
@@ -716,7 +773,45 @@
         });
     };
 
+    function ResizeSummaryContainers() {
+        setTimeout(function () {
+            $('.SummaryItems').closest('.portlet.box').css('height', 'auto');
+            if ($('#ZiPoolInfo').length)
+                $('#ZiPoolInfo').closest('.portlet.box').css('height', 'auto');
+        }, 200);
+
+        var newHeight = 0;
+
+        setTimeout(function () {
+            if ($('#ZiPoolInfo').length) {
+                newHeight = Math.max($('.SummaryItems').closest('.span8').height(), $('#ZiPoolInfo').closest('.portlet.box').height());
+                $('#ZiPoolInfo').closest('.portlet.box').css('height', newHeight);
+            } else {
+                newHeight = Math.max($('.SummaryItems').closest('.span12').height(), 140);
+            }
+            $('.SummaryItems').closest('.portlet.box').css('height', newHeight);
+        }, 200);
+    }
+
+    function SelectVersandDienstleister(id) {
+        $("#VersandDienstleisterId").val(id);
+        $("div[id^='divVdl_']").removeClass("bg-color-ckg-lightgreen");
+        $("#divVdl_" + id).addClass("bg-color-ckg-lightgreen");
+    }
+
+    function AjaxFormVersanddatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
 </script>
 
 <div id="InnerAdressen" class="white-popup mfp-hide">
+</div>
+
+<div id="InnerAdresseBearbeiten" class="white-popup mfp-hide">
 </div>

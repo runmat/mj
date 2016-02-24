@@ -19,6 +19,7 @@ using CkgDomainLogic.Zulassung.Models;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Autohaus.Controllers
@@ -213,6 +214,7 @@ namespace ServicesMvc.Autohaus.Controllers
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             FahrzeugAkteBestand.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            VersandDienstleister.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -489,6 +491,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
+
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
@@ -525,6 +528,11 @@ namespace ServicesMvc.Autohaus.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        private string GetAuslieferAdressenLink()
+        {
+            return this.RenderPartialViewToString("Partial/SummaryAuslieferAdressenLink");
         }
 
         #endregion
@@ -701,6 +709,30 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
+        #region Versanddaten
+
+        [HttpPost]
+        public ActionResult Versanddaten()
+        {
+            // bis auf weiteres DHL als default vorauswählen
+            ViewModel.Zulassung.Versanddaten.VersandDienstleisterId = "DHL";
+
+            return PartialView("Partial/Versanddaten", ViewModel.Zulassung.Versanddaten);
+        }
+
+        [HttpPost]
+        public ActionResult VersanddatenForm(Versanddaten model)
+        {
+            ViewModel.ValidateVersanddatenForm(ModelState.AddModelError, model);
+
+            if (ModelState.IsValid)
+                ViewModel.SetVersanddaten(model);
+
+            return PartialView("Partial/VersanddatenForm", ViewModel.Zulassung.Versanddaten);
+        }
+
+        #endregion
+
         #region Summary + Receipt
 
         [HttpPost]
@@ -726,20 +758,20 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
-            TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
-            TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
-            TempData["IsSchnellabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung;
+            ViewModel.AuslieferAdressenLink = GetAuslieferAdressenLink();
 
-            return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
+            return PartialView("Partial/Summary", ViewModel);
         }
 
-        #region KundenformularAsPdf
+        #region PDF-Formulare
+
         public FileContentResult KundenformularAsPdf(string id)
         {
             var formularPdfBytes = KundenformularAsPdfGetPdfBytes(id);
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
+
         /// <summary>
         /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
         /// </summary>
@@ -755,9 +787,30 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return formularPdfBytes;
         }
-        #endregion
 
-        #region ZusatzformularAsPdf
+        public FileContentResult VersandlabelAsPdf(string id)
+        {
+            var formularPdfBytes = VersandlabelAsPdfGetPdfBytes(id);
+
+            return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.ShippingLabel) };
+        }
+
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private byte[] VersandlabelAsPdfGetPdfBytes(string id)
+        {
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound);
+
+            var formularPdfBytes = zulassung.VersandlabelPdf;
+
+            return formularPdfBytes;
+        }
+
         public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
             string dateiPfad;
@@ -791,9 +844,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return zusatzformularPdfBytes;
         }
-        #endregion
 
-        #region AuftragslisteAsPdf
         public FileContentResult AuftragslisteAsPdf()
         {
             var auftragPdfBytes = AuftragslisteGetPdfBytes();
@@ -819,7 +870,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return auftragPdfBytes;
         }
-        #endregion
 
         /// <summary>
         /// 20150527 MMA Generate one PDF file with all downloadable documents
@@ -835,15 +885,16 @@ namespace ServicesMvc.Autohaus.Controllers
             foreach (var zulassung in ViewModel.ZulassungenForReceipt)
             {
                 if (zulassung.KundenformularPdf != null)
-                {
                     pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
-                }
 
                 foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
                 {
                     string dateiPfad;
                     pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ, out dateiPfad));
                 }
+
+                if (zulassung.VersandlabelPdf != null)
+                    pdfsToMerge.Add(VersandlabelAsPdfGetPdfBytes(zulassung.BelegNr));
             }
 
             var mergedPdf = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge);
@@ -852,6 +903,8 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         #endregion   
+
+        #endregion
 
         #region Shopping Cart 
 

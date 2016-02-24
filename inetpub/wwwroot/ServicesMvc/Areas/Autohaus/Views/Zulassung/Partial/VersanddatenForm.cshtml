@@ -1,0 +1,104 @@
+﻿@model CkgDomainLogic.Autohaus.Models.Versanddaten
+
+@{
+    var spanClass = "";
+    var spanClassFillerBefore = "";
+    var spanClassFillerAfter = "";
+    var showFillerBefore = false;
+    var showFillerAfter = false;
+
+    switch (Model.VersandDienstleisterListe.Count)
+    {
+        case 0:
+            spanClass = "span12";
+            break;
+
+        case 1:
+            spanClass = "span4";
+            spanClassFillerBefore = "span4";
+            spanClassFillerAfter = "span4";
+            showFillerBefore = true;
+            showFillerAfter = true;
+            break;
+
+        case 2:
+            spanClass = "span4";
+            spanClassFillerBefore = "span2";
+            spanClassFillerAfter = "span2";
+            showFillerBefore = true;
+            showFillerAfter = true;
+            break;
+            
+        case 3:
+        case 4:
+        case 6:
+        case 12:
+            spanClass = string.Format("span{0}", (12 / Model.VersandDienstleisterListe.Count));
+            break;
+
+        case 5:
+            spanClass = "span2";
+            spanClassFillerBefore = "span1";
+            spanClassFillerAfter = "span1";
+            showFillerBefore = true;
+            showFillerAfter = true;
+            break;
+
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            spanClass = "span1";
+            spanClassFillerBefore = string.Format("span{0}", ((12 - Model.VersandDienstleisterListe.Count) / 2));
+            spanClassFillerAfter = string.Format("span{0}", (((12 - Model.VersandDienstleisterListe.Count) / 2) + ((12 - Model.VersandDienstleisterListe.Count) % 2)));
+            showFillerBefore = ((12 - Model.VersandDienstleisterListe.Count) > 1);
+            showFillerAfter = true;
+            break;
+    }
+}
+
+<div id="DivVersanddaten" class="margin-top-20">    
+    @using (Ajax.BeginForm("VersanddatenForm", "Zulassung", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivVersanddaten", OnComplete = "AjaxFormVersanddatenComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersanddaten" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.HiddenFor(m => m.VersandDienstleisterId)
+        
+        <div class="row-fluid">
+
+            @if (showFillerBefore)
+            {
+                <div class="@spanClassFillerBefore">
+                </div>
+            }
+
+            @for (var i = 0; i < Model.VersandDienstleisterListe.Count; i++)
+            {
+                <div class="@spanClass">
+                    @Html.PartialFor(m => m.VersandDienstleisterListe[i], "Partial/VersandDienstleisterForm")
+                </div>
+            }
+
+            @if (showFillerAfter)
+            {
+                <div class="@spanClassFillerAfter">
+                </div>
+            }
+
+        </div>
+
+
+        <script type="text/javascript">
+            
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            SelectVersandDienstleister($("#VersandDienstleisterId").val());
+
+        </script>
+    }
+    
+</div>

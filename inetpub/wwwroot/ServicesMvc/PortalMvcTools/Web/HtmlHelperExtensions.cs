@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -942,6 +943,21 @@ namespace PortalMvcTools.Web
             htmlAttributes.Add("class", cssClass);
 
             return htmlAttributes;
+        }
+
+        public static MvcHtmlString TileSimple(this HtmlHelper html, string title, string cssClass = "", string iconCssClass = "", string onclickAction = "", string bodyCssClass = "", string titleCssClass = "")
+        {
+            var model = new TileSimpleModel
+            {
+                Title = title,
+                CssClass = cssClass,
+                IconCssClass = iconCssClass,
+                OnClickAction = onclickAction,
+                BodyCssClass = bodyCssClass,
+                TitleCssClass = titleCssClass
+            };
+            
+            return html.Partial("Partial/TileSimple", model);
         }
 
         #endregion

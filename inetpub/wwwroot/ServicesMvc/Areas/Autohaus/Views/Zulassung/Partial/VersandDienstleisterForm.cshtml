@@ -1,0 +1,30 @@
+﻿@model CkgDomainLogic.Autohaus.Models.VersandDienstleister
+
+@{
+    var divId = "divVdl_" + Model.Id;
+    var imgSrc = "/ServicesMvc/images/shipping-icons/" + Model.LogoFileNameExpress;
+}
+
+<div id="@divId" class="portlet box light-grey position-relative @(Model.Verfuegbar ? "" : "vdl-option-disabled")">
+
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.LogoFileName)
+        @Html.HiddenFor(m => m.LogoFileNameExpress)
+        @Html.HiddenFor(m => m.Verfuegbar)
+
+        <div>
+            <img src="@imgSrc" alt="@Model.Name" onclick="if (@Model.Verfuegbar) SelectVersandDienstleister('@Model.Id');" />
+        </div>
+
+        <div class="padding-left-30 padding-right-30 padding-bottom-15">
+            @Model.Bemerkung
+        </div>
+
+        @*@Html.FormRadioButtonListFor(m => m.VersandOption, Model.VersandOptionen.ToSelectList(), new { @class = "m-wrap" })*@
+
+    </div>
+
+</div>

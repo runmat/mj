@@ -32,6 +32,11 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_FORMULAR", value);
 		}
 
+		public static void SetImportParameter_I_LIFNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_LIFNR", value);
+		}
+
 		public static void SetImportParameter_I_SPEICHERN(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_SPEICHERN", value);
@@ -90,28 +95,64 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string LIFUHRBIS { get; set; }
+
+			public string LAND1 { get; set; }
+
+			public string TELEFON_NR1 { get; set; }
+
+			public string TELEFON_NR2 { get; set; }
+
+			public string SMTPADR { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_ADRS_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_ADRS_IN
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					PARVW = (string)row["PARVW"],
-					KUNNR = (string)row["KUNNR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					PLZ = (string)row["PLZ"],
-					CITY1 = (string)row["CITY1"],
-					STREET = (string)row["STREET"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
+				GT_ADRS_IN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_ADRS_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						PARVW = (string)row["PARVW"],
+						KUNNR = (string)row["KUNNR"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						PLZ = (string)row["PLZ"],
+						CITY1 = (string)row["CITY1"],
+						STREET = (string)row["STREET"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						LIFUHRBIS = (string)row["LIFUHRBIS"],
+						LAND1 = (string)row["LAND1"],
+						TELEFON_NR1 = (string)row["TELEFON_NR1"],
+						TELEFON_NR2 = (string)row["TELEFON_NR2"],
+						SMTPADR = (string)row["SMTPADR"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_ADRS_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -364,96 +405,129 @@ namespace SapORM.Models
 
 			public string VE_AENAM { get; set; }
 
+			public string GEWERBLICH { get; set; }
+
+			public string GEBRAUCHT { get; set; }
+
+			public string VS_DIENSTLEISTER { get; set; }
+
+			public string Z48H_VSZUL { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_BAK_IN
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					VKORG = (string)row["VKORG"],
-					VKBUR = (string)row["VKBUR"],
-					VE_ERNAM = (string)row["VE_ERNAM"],
-					BLTYP = (string)row["BLTYP"],
-					VZD_VKBUR = (string)row["VZD_VKBUR"],
-					KUNNR = (string)row["KUNNR"],
-					ZZREFNR1 = (string)row["ZZREFNR1"],
-					ZZREFNR2 = (string)row["ZZREFNR2"],
-					ZZREFNR3 = (string)row["ZZREFNR3"],
-					ZZREFNR4 = (string)row["ZZREFNR4"],
-					KREISKZ = (string)row["KREISKZ"],
-					KREISBEZ = (string)row["KREISBEZ"],
-					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
-					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
-					RESERVKENN = (string)row["RESERVKENN"],
-					FEINSTAUB = (string)row["FEINSTAUB"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					ZZKENN = (string)row["ZZKENN"],
-					WU_KENNZ2 = (string)row["WU_KENNZ2"],
-					WU_KENNZ3 = (string)row["WU_KENNZ3"],
-					KENNZTYP = (string)row["KENNZTYP"],
-					KENNZFORM = (string)row["KENNZFORM"],
-					EINKENN_JN = (string)row["EINKENN_JN"],
-					ZUSKENNZ = (string)row["ZUSKENNZ"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
-					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
-					ZL_LIFNR = (string)row["ZL_LIFNR"],
-					VK_KUERZEL = (string)row["VK_KUERZEL"],
-					KUNDEN_REF = (string)row["KUNDEN_REF"],
-					KUNDEN_NOTIZ = (string)row["KUNDEN_NOTIZ"],
-					KENNZ_VH = (string)row["KENNZ_VH"],
-					ALT_KENNZ = (string)row["ALT_KENNZ"],
-					ZBII_ALT_NEU = (string)row["ZBII_ALT_NEU"],
-					VH_KENNZ_RES = (string)row["VH_KENNZ_RES"],
-					STILL_DAT = string.IsNullOrEmpty(row["STILL_DAT"].ToString()) ? null : (DateTime?)row["STILL_DAT"],
-					FAHRZ_ART = (string)row["FAHRZ_ART"],
-					MNRESW = (string)row["MNRESW"],
-					ZZEVB = (string)row["ZZEVB"],
-					SERIE = (string)row["SERIE"],
-					SAISON_KNZ = (string)row["SAISON_KNZ"],
-					SAISON_BEG = (string)row["SAISON_BEG"],
-					SAISON_END = (string)row["SAISON_END"],
-					TUEV_AU = (string)row["TUEV_AU"],
-					KURZZEITVS = (string)row["KURZZEITVS"],
-					ZOLLVERS = (string)row["ZOLLVERS"],
-					ZOLLVERS_DAUER = (string)row["ZOLLVERS_DAUER"],
-					VORFUEHR = (string)row["VORFUEHR"],
-					LTEXT_NR = (string)row["LTEXT_NR"],
-					BEB_STATUS = (string)row["BEB_STATUS"],
-					BANKL = (string)row["BANKL"],
-					BANKN = (string)row["BANKN"],
-					EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
-					KOINH = (string)row["KOINH"],
-					SWIFT = (string)row["SWIFT"],
-					IBAN = (string)row["IBAN"],
-					EINZ_JN = (string)row["EINZ_JN"],
-					RECH_JN = (string)row["RECH_JN"],
-					BARZ_JN = (string)row["BARZ_JN"],
-					HALTE_DAUER = string.IsNullOrEmpty(row["HALTE_DAUER"].ToString()) ? null : (DateTime?)row["HALTE_DAUER"],
-					O_G_VERSSCHEIN = (string)row["O_G_VERSSCHEIN"],
-					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
-					ZZREFNR5 = (string)row["ZZREFNR5"],
-					BRIEFNR = (string)row["BRIEFNR"],
-					WEBUSER_ID = (string)row["WEBUSER_ID"],
-					WEBGOUP_ID = (string)row["WEBGOUP_ID"],
-					ETIKETT = (string)row["ETIKETT"],
-					FZGTYP = (string)row["FZGTYP"],
-					FARBE = (string)row["FARBE"],
-					APPID = (string)row["APPID"],
-					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
-					RES_NAME = (string)row["RES_NAME"],
-					HALTEDAUER = string.IsNullOrEmpty(row["HALTEDAUER"].ToString()) ? null : (int?)row["HALTEDAUER"],
-					VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
-					VE_ERZEIT = (string)row["VE_ERZEIT"],
-					VE_AENAM = (string)row["VE_AENAM"],
+				GT_BAK_IN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_BAK_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						VKORG = (string)row["VKORG"],
+						VKBUR = (string)row["VKBUR"],
+						VE_ERNAM = (string)row["VE_ERNAM"],
+						BLTYP = (string)row["BLTYP"],
+						VZD_VKBUR = (string)row["VZD_VKBUR"],
+						KUNNR = (string)row["KUNNR"],
+						ZZREFNR1 = (string)row["ZZREFNR1"],
+						ZZREFNR2 = (string)row["ZZREFNR2"],
+						ZZREFNR3 = (string)row["ZZREFNR3"],
+						ZZREFNR4 = (string)row["ZZREFNR4"],
+						KREISKZ = (string)row["KREISKZ"],
+						KREISBEZ = (string)row["KREISBEZ"],
+						WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
+						RESERVKENN_JN = (string)row["RESERVKENN_JN"],
+						RESERVKENN = (string)row["RESERVKENN"],
+						FEINSTAUB = (string)row["FEINSTAUB"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						ZZKENN = (string)row["ZZKENN"],
+						WU_KENNZ2 = (string)row["WU_KENNZ2"],
+						WU_KENNZ3 = (string)row["WU_KENNZ3"],
+						KENNZTYP = (string)row["KENNZTYP"],
+						KENNZFORM = (string)row["KENNZFORM"],
+						EINKENN_JN = (string)row["EINKENN_JN"],
+						ZUSKENNZ = (string)row["ZUSKENNZ"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
+						ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
+						ZL_LIFNR = (string)row["ZL_LIFNR"],
+						VK_KUERZEL = (string)row["VK_KUERZEL"],
+						KUNDEN_REF = (string)row["KUNDEN_REF"],
+						KUNDEN_NOTIZ = (string)row["KUNDEN_NOTIZ"],
+						KENNZ_VH = (string)row["KENNZ_VH"],
+						ALT_KENNZ = (string)row["ALT_KENNZ"],
+						ZBII_ALT_NEU = (string)row["ZBII_ALT_NEU"],
+						VH_KENNZ_RES = (string)row["VH_KENNZ_RES"],
+						STILL_DAT = string.IsNullOrEmpty(row["STILL_DAT"].ToString()) ? null : (DateTime?)row["STILL_DAT"],
+						FAHRZ_ART = (string)row["FAHRZ_ART"],
+						MNRESW = (string)row["MNRESW"],
+						ZZEVB = (string)row["ZZEVB"],
+						SERIE = (string)row["SERIE"],
+						SAISON_KNZ = (string)row["SAISON_KNZ"],
+						SAISON_BEG = (string)row["SAISON_BEG"],
+						SAISON_END = (string)row["SAISON_END"],
+						TUEV_AU = (string)row["TUEV_AU"],
+						KURZZEITVS = (string)row["KURZZEITVS"],
+						ZOLLVERS = (string)row["ZOLLVERS"],
+						ZOLLVERS_DAUER = (string)row["ZOLLVERS_DAUER"],
+						VORFUEHR = (string)row["VORFUEHR"],
+						LTEXT_NR = (string)row["LTEXT_NR"],
+						BEB_STATUS = (string)row["BEB_STATUS"],
+						BANKL = (string)row["BANKL"],
+						BANKN = (string)row["BANKN"],
+						EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
+						KOINH = (string)row["KOINH"],
+						SWIFT = (string)row["SWIFT"],
+						IBAN = (string)row["IBAN"],
+						EINZ_JN = (string)row["EINZ_JN"],
+						RECH_JN = (string)row["RECH_JN"],
+						BARZ_JN = (string)row["BARZ_JN"],
+						HALTE_DAUER = string.IsNullOrEmpty(row["HALTE_DAUER"].ToString()) ? null : (DateTime?)row["HALTE_DAUER"],
+						O_G_VERSSCHEIN = (string)row["O_G_VERSSCHEIN"],
+						KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
+						ZZREFNR5 = (string)row["ZZREFNR5"],
+						BRIEFNR = (string)row["BRIEFNR"],
+						WEBUSER_ID = (string)row["WEBUSER_ID"],
+						WEBGOUP_ID = (string)row["WEBGOUP_ID"],
+						ETIKETT = (string)row["ETIKETT"],
+						FZGTYP = (string)row["FZGTYP"],
+						FARBE = (string)row["FARBE"],
+						APPID = (string)row["APPID"],
+						BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
+						RES_NAME = (string)row["RES_NAME"],
+						HALTEDAUER = string.IsNullOrEmpty(row["HALTEDAUER"].ToString()) ? null : (int?)row["HALTEDAUER"],
+						VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
+						VE_ERZEIT = (string)row["VE_ERZEIT"],
+						VE_AENAM = (string)row["VE_AENAM"],
+						GEWERBLICH = (string)row["GEWERBLICH"],
+						GEBRAUCHT = (string)row["GEBRAUCHT"],
+						VS_DIENSTLEISTER = (string)row["VS_DIENSTLEISTER"],
+						Z48H_VSZUL = (string)row["Z48H_VSZUL"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_BAK_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -574,30 +648,51 @@ namespace SapORM.Models
 
 			public string LOEKZ { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_BANK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_BANK_IN
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					PARVW = (string)row["PARVW"],
-					BANKL = (string)row["BANKL"],
-					BANKN = (string)row["BANKN"],
-					EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
-					KOINH = (string)row["KOINH"],
-					EINZ_JN = (string)row["EINZ_JN"],
-					RECH_JN = (string)row["RECH_JN"],
-					SWIFT = (string)row["SWIFT"],
-					IBAN = (string)row["IBAN"],
-					LOEKZ = (string)row["LOEKZ"],
+				GT_BANK_IN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_BANK_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						PARVW = (string)row["PARVW"],
+						BANKL = (string)row["BANKL"],
+						BANKN = (string)row["BANKN"],
+						EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
+						KOINH = (string)row["KOINH"],
+						EINZ_JN = (string)row["EINZ_JN"],
+						RECH_JN = (string)row["RECH_JN"],
+						SWIFT = (string)row["SWIFT"],
+						IBAN = (string)row["IBAN"],
+						LOEKZ = (string)row["LOEKZ"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_BANK_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -704,23 +799,44 @@ namespace SapORM.Models
 
 			public string MESSAGE { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_ERROR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_ERROR
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					LFDNR = (string)row["LFDNR"],
-					SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
-					MESSAGE = (string)row["MESSAGE"],
+				GT_ERROR o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_ERROR
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						LFDNR = (string)row["LFDNR"],
+						SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
+						MESSAGE = (string)row["MESSAGE"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_ERROR
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -827,23 +943,44 @@ namespace SapORM.Models
 
 			public string NAME { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_FILENAME Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_FILENAME
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					FILENAME = (string)row["FILENAME"],
-					FORMART = (string)row["FORMART"],
-					NAME = (string)row["NAME"],
+				GT_FILENAME o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_FILENAME
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						FILENAME = (string)row["FILENAME"],
+						FORMART = (string)row["FORMART"],
+						NAME = (string)row["NAME"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_FILENAME
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -950,23 +1087,44 @@ namespace SapORM.Models
 
 			public string MENGE { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_POS_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_POS_IN
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					LFDNR = (string)row["LFDNR"],
-					MATNR = (string)row["MATNR"],
-					MENGE = (string)row["MENGE"],
+				GT_POS_IN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_POS_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						LFDNR = (string)row["LFDNR"],
+						MATNR = (string)row["MATNR"],
+						MENGE = (string)row["MENGE"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_POS_IN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

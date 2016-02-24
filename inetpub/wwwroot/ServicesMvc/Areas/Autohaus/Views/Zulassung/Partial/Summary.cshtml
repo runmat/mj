@@ -1,18 +1,20 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
-@model GeneralSummary
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
-@{
-    var isMassenzulassung = (bool)TempData["IsMassenzulassung"];
-    var isMassenabmeldung = (bool) TempData["IsMassenabmeldung"];
-    var isSchnellabmeldung = (bool) TempData["IsSchnellabmeldung"];
-}
-
-<h4>@Model.Header</h4>
+<h4>@Model.ZulassungSummary.Header</h4>
 
 @Html.SpanAlert("WaitHint")
 
+<div class="form-horizontal">
+
+    <div class="row-fluid">
+
+        <div class="@(Model.ModusAbmeldung || Model.ModusSonderzulassung ? "span12" : "span8")">
+            
+            @using (Html.PortletBox("", "icon-table", isCollapsible: false))
+            {
 <div class="SummaryItems">
-    @foreach (var item in Model.Items)
+                    @foreach (var item in Model.ZulassungSummary.Items)
     {
         <div class="SummaryItem @item.Tag">
             <h5 class="SummaryItemTitle">@item.TitleAsHtml</h5>
@@ -23,8 +25,27 @@
         </div>
     }
 </div>
+            }
 
-@if (isMassenzulassung)
+        </div>
+
+    @if (!Model.ModusAbmeldung && !Model.ModusSonderzulassung)
+{
+        <div class="span4">
+
+            @using (Html.PortletBox(Localize.RequiredDocumentsForRegistration, "icon-file", isCollapsible: false))
+            {
+                @Html.Partial("Partial/ZiPoolInfoListe", Model.ZiPoolDetails)
+            }
+
+        </div>
+    }
+
+    </div>
+
+</div>
+
+@if (Model.Zulassung.Zulassungsdaten.IsMassenzulassung)
 {
 <div id="divPortletFahrzeugauswahl">
     @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
@@ -54,7 +75,7 @@
     }
 </div>
 }
-else if (isMassenabmeldung)
+else if (Model.Zulassung.Zulassungsdaten.IsMassenabmeldung)
 {
 <div id="divPortletFahrzeugauswahl">
     @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
@@ -79,7 +100,7 @@ else if (isMassenabmeldung)
     }
 </div>
 }
-else if (isSchnellabmeldung)
+else if (Model.Zulassung.Zulassungsdaten.IsSchnellabmeldung)
 {
 <div id="divPortletFahrzeugauswahl">
     @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
@@ -108,5 +129,12 @@ else if (isSchnellabmeldung)
 }
 
 <script type="text/javascript">
+
     FormWizardShowHideSaveButton(true);
+    setTimeout(function () { ResizeSummaryContainers(); }, 200);
+
+    $(window).on('resize', function () {
+        ResizeSummaryContainers();
+    });
+
 </script>

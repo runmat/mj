@@ -56,6 +56,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError);
 
+        ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError);
+
         #endregion
     }
 }

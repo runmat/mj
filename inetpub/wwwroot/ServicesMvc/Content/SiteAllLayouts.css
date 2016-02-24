@@ -299,6 +299,18 @@ textarea[readonly].m-wrap {
 .label-width-120 .controls {
     margin-left: 130px !Important;
 }
+.label-width-130 .control-label {
+    width: 130px !Important;
+}
+.label-width-130 .controls {
+    margin-left: 140px !Important;
+}
+.label-width-140 .control-label {
+    width: 140px !Important;
+}
+.label-width-140 .controls {
+    margin-left: 150px !Important;
+}
 .label-width-150 .control-label {
     width: 150px !Important;
 }

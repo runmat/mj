@@ -100,31 +100,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 return PropertyCacheGet(() =>
                 {
-                    var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsKroschkeZulassung.xml"));
+                    var xmlFileName = "StepsKroschkeZulassung.xml";
 
-                    if (!ModusAbmeldung)
-                        return dict;
+                    if (ModusAbmeldung)
+                        xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
+                    else if (ModusVersandzulassung)
+                        xmlFileName = "StepsKroschkeVersandzulassung.xml";
 
-                    var abmeldungsDict = new XmlDictionary<string, string>();
-                    dict.ToList().ForEach(entry =>
-                        {
-                            if (entry.Key == "Zulassungsdaten")
-                            {
-                                abmeldungsDict.Add(entry.Key, Localize.Cancellation);
-                                return;
-                            }
-
-                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer" || entry.Key == "AuslieferAdressen")
-                                return;
-
-                            if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && (entry.Key == "HalterAdresse" || entry.Key == "Fahrzeugdaten"))
-                                return;
-
-                            abmeldungsDict.Add(entry.Key, entry.Value);
+                    return XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
                         });
-
-                    return abmeldungsDict;
-                });
             }
         }
 
@@ -821,6 +805,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
         }
 
+        public string AuslieferAdressenLink { get; set; }
+
         public AuslieferAdressen GetAuslieferAdressenModel()
         {
             var newModel = new AuslieferAdressen
@@ -978,6 +964,50 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
 
+        [XmlIgnore]
+        public ZiPoolDaten ZiPoolDaten
+        {
+            get { return PropertyCacheGet(() => new ZiPoolDaten()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public string DienstleistungsartZiPool
+        {
+            get
+            {
+                switch (Zulassung.Zulassungsdaten.Belegtyp)
+                {
+                    case "AU":
+                        return "UMK";
+
+                    case "AN":
+                        return "ZUL";
+
+                    case "AG":
+                        return "UMS";
+
+                    case "AV":
+                    case "AK":
+                    case "AF":
+                        return (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J" ? "UMS" : "ZUL");
+
+                    default:
+                        return "XXX";
+                }
+            }
+        }
+
+        public ZiPoolDetaildaten ZiPoolDetails
+        {
+            get
+            {
+                if (ZiPoolDaten == null)
+                    return new ZiPoolDetaildaten();
+
+                return ZiPoolDaten.Details.FirstOrDefault(d => d.Gewerblich == Zulassung.HalterGewerblich && d.Dienstleistung == DienstleistungsartZiPool);
+            }
+        }
+
         public void UpdateZulassungsdatenModel(Zulassungsdaten model)
         {
             var zulDat = Zulassung.Zulassungsdaten;
@@ -1057,6 +1087,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);
             }
+
+            if (ModusVersandzulassung)
+                zulDaten.HaltereintragVorhanden = (zulDaten.Zulassungsart.Belegtyp == "AN" ? "N" : "J");
+
+            ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, state.AddModelError);
         }
 
         #endregion
@@ -1130,7 +1165,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
+        #region Versanddaten
+
+        public void SetVersanddaten(Versanddaten model)
+        {
+            Zulassung.Versanddaten = model;
+        }
+
+        #endregion
+
+
         #region Misc + Summaries + Savings
+
+        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(AuslieferAdressenLink); } }
 
         public bool SaveDataToErpSystem { get; set; }
 
@@ -1252,6 +1299,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungDataService.MarkForRefresh();
             zul.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
+        }
+
+        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
+        {
+            return Zulassung.CreateSummaryModel(auslieferAdressenLink);
         }
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
@@ -1502,37 +1554,40 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             // AuslieferAdresseZ7
             if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
-            {
                 model.ErrorMsgAdresseZ7 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-            }
+
             if (model.AuslieferAdresseZ7.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ7.Adressdaten.Bemerkung.IsNullOrEmpty())
-            {
                 model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.CommentRequired);
-            }
+
+            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ7.Adressdaten.Adresse.Land != "DE")
+                model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
+
             if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty())
                 model.ErrorMsgAdresseZ7 = model.ErrorMsgAdresseZ7.Substring(0, model.ErrorMsgAdresseZ7.Length -2);
 
             // AuslieferAdresseZ8
             if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
-            {
                 model.ErrorMsgAdresseZ8 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-            }
+
             if (model.AuslieferAdresseZ8.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ8.Adressdaten.Bemerkung.IsNullOrEmpty())
-            {
                 model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.CommentRequired);
-            }
+
+            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ8.Adressdaten.Adresse.Land != "DE")
+                model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
+
             if (model.ErrorMsgAdresseZ8.IsNotNullOrEmpty())
                 model.ErrorMsgAdresseZ8 = model.ErrorMsgAdresseZ8.Substring(0, model.ErrorMsgAdresseZ8.Length - 2);
 
             // AuslieferAdresseZ9
             if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
-            {
                 model.ErrorMsgAdresseZ9 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-            }
+
             if (model.AuslieferAdresseZ9.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ9.Adressdaten.Bemerkung.IsNullOrEmpty())
-            {
                 model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.CommentRequired);
-            }
+
+            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ9.Adressdaten.Adresse.Land != "DE")
+                model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
+
             if (model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
                 model.ErrorMsgAdresseZ9 = model.ErrorMsgAdresseZ9.Substring(0, model.ErrorMsgAdresseZ9.Length - 2);
 
@@ -1542,6 +1597,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return false;
 
             return true;
+        }
+
+        public void ValidateVersanddatenForm(Action<string, string> addModelError, Versanddaten versanddatenModel)
+        {
+            if (ModusVersandzulassung && string.IsNullOrEmpty(versanddatenModel.VersandDienstleisterId))
+                addModelError(string.Empty, Localize.PleaseSelectAShippingServiceProvider);
         }
 
         public void UpdateAnzahlAbmeldungen(string anzAbmeldungen)

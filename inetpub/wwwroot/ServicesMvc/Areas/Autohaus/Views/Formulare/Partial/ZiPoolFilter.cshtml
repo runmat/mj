@@ -1,0 +1,10 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model ZiPoolSelektor
+
+<div class="form-horizontal">
+
+    @Html.FormCheckBoxFor(m => m.Gewerblich, new {onchange = "RefreshZiPoolListe()"})
+
+    @Html.FormDropDownListFor(m => m.Dienstleistung, ZiPoolSelektor.Dienstleistungen.ToSelectList(), new {@class = "m-wrap", onchange = "RefreshZiPoolListe()"})
+
+</div>
