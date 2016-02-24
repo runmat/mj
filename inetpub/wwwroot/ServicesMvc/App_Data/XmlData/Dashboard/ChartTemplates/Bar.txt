@@ -27,5 +27,11 @@
 	"legend": 
 	{
 		"show": true
+	},
+	"grid": 
+	{
+		"horizontalLines": true,
+		"verticalLines": false,
+		"outline": "sw"
 	}
 }

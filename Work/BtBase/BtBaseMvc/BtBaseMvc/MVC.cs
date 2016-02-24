@@ -100,7 +100,7 @@ namespace BtBaseMvc
                     rootFolderMvc = "ServicesMvc";
                 }
 
-                var crypteduserName = CryptoMd5.EncryptToUrlEncoded(userName);
+                var crypteduserName = CryptoMd5Web.EncryptToUrlEncoded(userName);
 
                 var urlParameterChar = "?";
                 if (relativeUrl.NotNullOrEmpty().Contains("?"))

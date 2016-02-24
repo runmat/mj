@@ -1,8 +1,16 @@
 ﻿{
 	"pie": 
 	{
-		"show" : true
+		"show" : true,
+		"explode": 0
 	},
+	"legend" : {
+		"show": true
+    },
+	    "mouse": {
+        "track": false,
+        "relative": true
+    },
 	"xaxis": 
 	{
 		"showLabels": false
@@ -14,6 +22,7 @@
 	"grid" : 
 	{
 		"verticalLines" : false,
-		"horizontalLines" : false
+		"horizontalLines" : false,
+		"outlineWidth" : 0
 	}
 }

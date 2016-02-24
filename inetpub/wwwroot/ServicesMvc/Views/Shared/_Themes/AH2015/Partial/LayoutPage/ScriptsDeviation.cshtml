@@ -111,6 +111,11 @@
             e.css("width", containerWidth);
 
             HandleResponsiveFormWizardStepBar(containerWidth - margin);
+
+            $(".report-generator-wrapper").each(function() {
+                $(this).closest(".form-actions").css("text-align", "left");
+                $(this).closest(".form-actions .btn.blue").css("margin-left", "15px");
+            });
         });
 
     }

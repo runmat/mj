@@ -1,6 +1,7 @@
-﻿@using CkgDomainLogic.DomainCommon.ViewModels
-@using CkgDomainLogic.General.Database.Models
-@model DokumentViewModel
+﻿@using CkgDomainLogic.General.Database.Models
+
+@model CkgDomainLogic.DomainCommon.ViewModels.DocumentViewModel
+
 @{ 
     var gridName = "DocumentTypeGrid";
 }
@@ -18,7 +19,7 @@
                 + "<button onclick='DeleteDocumentType(\"<#= data.DocumentTypeID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
             )
             .HeaderTemplate(
-                "<button onclick='CreatedocumentType();' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentAddNewDocumentType + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                "<button onclick='CreateDocumentType();' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentAddNewDocumentType + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
             )
         ;
 

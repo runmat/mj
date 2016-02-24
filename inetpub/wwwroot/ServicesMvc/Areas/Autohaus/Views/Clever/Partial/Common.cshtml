@@ -1,0 +1,132 @@
+﻿<style>
+
+    .dd-handle {
+        height: auto;
+        cursor: auto !important; /* ggf. ändern, wenn onclick-Action benötigt */
+    }
+    
+    .dd-handle table td {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .form-horizontal .control-group {
+        margin-bottom: 10px;
+    }
+
+    .validation-summary-errors {
+        margin-bottom: 0;
+    }
+    
+    span.kennzeichen {
+        padding-top: 0 !important;
+    }
+
+    span.m-wrap {
+        margin-left: 15px;
+    }
+    
+    .CleverSearchStatusContainer {
+        top: 0;
+        right: 0;
+        position: absolute;
+        z-index: 4;
+    }
+
+    .CleverSearchStatusIcon {
+        width: 72px;
+        height: 72px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .CleverSearchStatusOk {
+        background-image: url(/ServicesMvc/images/icons/72x72/ok.png);
+    }
+
+    .CleverSearchStatusWarning {
+        background-image: url(/ServicesMvc/images/icons/72x72/warning.png);
+    }
+
+    .CleverSearchStatusError {
+        background-image: url(/ServicesMvc/images/icons/72x72/delete.png);
+    }
+    
+    .CleverSearchFieldContainer label {
+        font-size: x-large;
+        font-weight: bold;
+        margin-top: 7px;
+    }
+    
+    .CleverSearchVehicleList {
+        min-height: 60px;
+    }
+    
+    .CleverSearchOption span {
+        font-size: large;
+    }
+
+</style>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function PerformCleverSearch(anfrageTyp) {
+        FormPreparePrivateAjax();
+
+        if (!$("#AnfrageText").val()) {
+            $("#divCleverResult").html("");
+            SpanAlertWarning("spanAlertCleverSearch", '@Localize.SearchTextRequired.ToJavascriptString()', 5000);
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "PerformSearch",
+            data: { anfrageText: $("#AnfrageText").val(), anfrageTyp: anfrageTyp },
+            loadingShow: true,
+            success: function (result) {
+                ShowCleverSearchResult(result);
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCleverSearchResult(result) {
+        $("#divCleverResult").html(result);
+        FormPreparePrivateAjax();
+    }
+
+    function ShowStatusverfolgungDetails(belegNr) {
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusverfolgung",
+            data: { belegNr: belegNr },
+            loadingShow: true,
+            success: function (result) {
+                $("#StatusverfolgungDialog").html(result);
+                LoadingHide();
+
+                $.magnificPopup.open({
+                    items: { src: $("#StatusverfolgungDialog") },
+                    type: 'inline',
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+    }
+
+    function CloseDetails() {
+        $(".mfp-close").trigger("click");
+    }
+
+</script>
+
+<div id="StatusverfolgungDialog" class="white-popup mfp-hide"></div>

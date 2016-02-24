@@ -2739,7 +2739,7 @@ Graph.prototype = {
   },
   drawTooltip: function(content, x, y, options) {
     var mt = this.getMouseTrack(),
-        style = 'opacity:0.7;background-color:#000;color:#fff;display:none;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;',
+        style = 'opacity:1.0;background-color:#000;color:#fff;display:none;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;',
         p = options.position,
         m = options.margin,
         plotOffset = this.plotOffset;
@@ -3776,7 +3776,7 @@ Flotr.addType('bars', {
 
   options: {
     show: false,           // => setting to true will show bars, false will hide
-    lineWidth: 2,          // => in pixels
+    lineWidth: 0,          // => in pixels
     barWidth: 1,           // => in units of the x axis
     fill: true,            // => true to fill the area from the line to the x axis, false for (transparent) no fill
     fillColor: null,       // => fill color
@@ -3845,6 +3845,14 @@ Flotr.addType('bars', {
       if (options.lineWidth) {
         context.strokeRect(left, top, width, height);
       }
+
+      if (options.ShowBarLabelsInside) {
+            var label = data[i][1];
+            var x = left + (width / 2) - (3 * label.toString().length);
+            var y = top + (height / 2) - 5;
+            if (height < 10) y -= 3;
+            Flotr.drawText(context, label, x, y, { textBaseline: 'top', textAlign: 'left', size: options.fontSize, color: "#333333" });
+        }
     }
   },
 
@@ -4683,7 +4691,7 @@ Flotr.addType('markers', {
     
       x = data[i][0];
       y = data[i][1];
-        
+
       if (stack) {
         if (stackType == 'b') {
           if (options.horizontal) y = stackPos(y, x);
@@ -4824,7 +4832,7 @@ Flotr.addType('pie', {
     context.scale(1, vScale);
 
     x = Math.cos(bisection) * explode;
-    y = Math.sin(bisection) * explode;
+    y = Math.sin(bisection) * explode + (_chartOptions.OffsetY || 0); //((globalOptions && globalOptions.OffsetY) || 0)
 
     // Shadows
     if (shadowSize > 0) {
@@ -4851,22 +4859,31 @@ Flotr.addType('pie', {
     };
 
     if (label) {
-      if (options.htmlText || !options.textEnabled) {
-        divStyle = 'position:absolute;' + textBaseline + ':' + (height / 2 + (textBaseline === 'top' ? distY : -distY)) + 'px;';
-        divStyle += textAlign + ':' + (width / 2 + (textAlign === 'right' ? -distX : distX)) + 'px;';
-        html.push('<div style="', divStyle, '" class="flotr-grid-label">', label, '</div>');
-      }
-      else {
-        style.textAlign = textAlign;
-        style.textBaseline = textBaseline;
-        Flotr.drawText(context, label, distX, distY, style);
-      }
+        var floatThreshold = _chartOptions.PieLabelValueThreshold || 0;
+        var floatVal = 100;
+        try {
+            floatVal = parseFloat(label.replace(/%/g, ""));
+        } catch (e) {
+            floatVal = 100;
+        }
+        if (floatVal >= floatThreshold) {
+            distY += (_chartOptions.OffsetY || 0);
+            if (options.htmlText || !options.textEnabled) {
+                divStyle = 'position:absolute;' + textBaseline + ':' + (height / 2 + (textBaseline === 'top' ? distY : -distY)) + 'px;';
+                divStyle += textAlign + ':' + (width / 2 + (textAlign === 'right' ? -distX : distX)) + 'px;';
+                html.push('<div style="', divStyle, '" class="flotr-grid-label">', label, '</div>');
+            } else {
+                style.textAlign = textAlign;
+                style.textBaseline = textBaseline;
+                Flotr.drawText(context, label, distX, distY, style);
+            }
+        }
     }
-    
+
     if (options.htmlText || !options.textEnabled) {
-      var div = Flotr.DOM.node('<div style="color:' + options.fontColor + '" class="flotr-labels"></div>');
-      Flotr.DOM.insert(div, html.join(''));
-      Flotr.DOM.insert(options.element, div);
+        var div = Flotr.DOM.node('<div style="color:' + options.fontColor + '" class="flotr-labels"></div>');
+        Flotr.DOM.insert(div, html.join(''));
+        Flotr.DOM.insert(options.element, div);
     }
     
     context.restore();
@@ -4892,6 +4909,7 @@ Flotr.addType('pie', {
   },
   hit : function (options) {
 
+    //console.log(_globalOptions);
     var
       data      = options.data[0],
       args      = options.args,
@@ -4900,7 +4918,7 @@ Flotr.addType('pie', {
       n         = args[1],
       slice     = this.slices[index],
       x         = mouse.relX - options.width / 2,
-      y         = mouse.relY - options.height / 2,
+      y         = mouse.relY - options.height / 2 - (_globalOptions.OffsetY || 0),
       r         = Math.sqrt(x * x + y * y),
       theta     = Math.atan(y / x),
       circle    = Math.PI * 2,
@@ -5637,18 +5655,20 @@ Flotr.addPlugin('graphGrid', {
 
 })();
 
+var _globalOptions = null;
+
 (function () {
 
 var
   D = Flotr.DOM,
   _ = Flotr._,
   flotr = Flotr,
-  S_MOUSETRACK = 'opacity:0.7;background-color:#000;color:#fff;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;';
+  S_MOUSETRACK = 'opacity:1.0;background-color:#000;color:#fff;position:absolute;padding:2px 8px;-moz-border-radius:4px;border-radius:4px;white-space:nowrap;';
 
 Flotr.addPlugin('hit', {
   callbacks: {
     'flotr:mousemove': function(e, pos) {
-      this.hit.track(pos);
+        this.hit.track(pos);
     },
     'flotr:click': function(pos) {
       var
@@ -5667,9 +5687,10 @@ Flotr.addPlugin('hit', {
       this.mouseTrack = null;
     }
   },
-  track : function (pos) {
-    if (this.options.mouse.track || _.any(this.series, function(s){return s.mouse && s.mouse.track;})) {
-      return this.hit.hit(pos);
+  track: function (pos) {
+      if (this.options.mouse.track || _.any(this.series, function (s) { return s.mouse && s.mouse.track; })) {
+          _globalOptions = this.options;
+          return this.hit.hit(pos);
     }
   },
   /**
@@ -5978,7 +5999,7 @@ Flotr.addPlugin('hit', {
       oTop = offset.top;
       oLeft = offset.left;
     }
-
+      
     if (!n.mouse.relative) { // absolute to the canvas
       pos += 'top:';
       if      (p.charAt(0) == 'n') pos += (oTop + m + top);
@@ -5997,7 +6018,7 @@ Flotr.addPlugin('hit', {
         radius = (Math.min(this.canvasWidth, this.canvasHeight) * s.pie.sizeRatio) / 2,
         bisection = n.sAngle<n.eAngle ? (n.sAngle + n.eAngle) / 2: (n.sAngle + n.eAngle + 2* Math.PI) / 2;
       
-      pos += 'bottom:' + (m - top - center.y - Math.sin(bisection) * radius/2 + this.canvasHeight) + 'px;top:auto;';
+      pos += 'bottom:' + (m - top - center.y - Math.sin(bisection) * radius / 2 + this.canvasHeight - (_globalOptions.OffsetY || 0)) + 'px;top:auto;';
       pos += 'left:' + (m + left + center.x + Math.cos(bisection) * radius/2) + 'px;right:auto;';
 
     // Default

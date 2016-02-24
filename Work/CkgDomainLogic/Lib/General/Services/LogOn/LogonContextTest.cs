@@ -15,8 +15,10 @@ using GeneralTools.Services;
 namespace CkgDomainLogic.General.Services
 {
     public class LogonContextTest : Store, ILogonContextDataService
+
     {
         public string CurrentGridColumns { get; set; }
+        public AdminLevel HighestAdminLevel { get; private set; }
 
         public string UserNameForDisplay { get; set; }
 
@@ -102,7 +104,7 @@ namespace CkgDomainLogic.General.Services
                     AccountingArea = 1010,
                 };
 
-            Organization = new Organization
+            Organization = new UserOrganization
             {
                 AllOrganizations = true,
                 CustomerID = 209,
@@ -194,7 +196,7 @@ namespace CkgDomainLogic.General.Services
 
         public UserGroup Group { get; set; }
 
-        public Organization Organization { get; set; }
+        public UserOrganization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
@@ -372,6 +374,19 @@ namespace CkgDomainLogic.General.Services
 
         public IPersistanceService PersistanceService { get; set; }
 
+        public string RightName
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public int GetAppIdCurrent()
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
@@ -380,6 +395,11 @@ namespace CkgDomainLogic.General.Services
         public string GetEmailAddressForUser()
         {
             return "";
+        }
+
+        public string GetCategorySettingsForWebUser(string rightname)
+        {
+            throw new NotImplementedException();
         }
     }
 }

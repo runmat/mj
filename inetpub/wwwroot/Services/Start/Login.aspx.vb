@@ -9,6 +9,7 @@ Imports System.IO
 Imports System.Reflection
 Imports WebTools.Services
 Imports CKG.Base.Business.HelpProcedures
+Imports GeneralTools.Services
 
 Partial Public Class Login
     Inherits System.Web.UI.Page
@@ -296,7 +297,7 @@ Partial Public Class Login
                             Session("objUser") = m_User
 
                             'FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), False)
-                            Response.Redirect(String.Format("{0}{1}un={2}", returnUrl, urlParameterChar, CryptoMd5.EncryptToUrlEncoded(m_User.UserName)))
+                            Response.Redirect(String.Format("{0}{1}un={2}", returnUrl, urlParameterChar, CryptoMd5Web.EncryptToUrlEncoded(m_User.UserName)))
                             Exit Sub
                         End If
                     End If
@@ -655,7 +656,7 @@ Partial Public Class Login
 
         Dim un As String = Request.QueryString("unm").ToString
         un = un.Replace(" ", "%2b")
-        Dim unDecoded As String = CryptoMd5.DecryptFromUrlEncoded(un)
+        Dim unDecoded As String = CryptoMd5Web.DecryptFromUrlEncoded(un)
 
         Dim ar = Split(unDecoded, "_")
         If (ar(0).ToString.ToLower() <> "frommvc") Then Return False

@@ -261,6 +261,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.HausNr = s.HOUSE_NUM1;
                         d.PLZ = s.POST_CODE1;
                         d.Ort = s.CITY1;
+                        d.Land = s.LAND1;
+                        d.Telefon = string.Format("{0} {1}", s.TEL_NUMBER, s.TEL_EXTENS);
+                        d.Email = s.SMTP_ADDR;
                     }));
             }
         }
@@ -332,6 +335,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Zulassungsdaten.Kennzeichen = s.ZZKENN;
                         d.Zulassungsdaten.Wunschkennzeichen2 = s.WU_KENNZ2;
                         d.Zulassungsdaten.Wunschkennzeichen3 = s.WU_KENNZ3;
+                        d.Zulassungsdaten.HaltereintragVorhanden = (s.GEBRAUCHT.XToBool() ? "J" : "N");
 
                         // Versandzulassung
                         d.VersandAdresse.Adresse.KundenNr = s.ZL_LIFNR;
@@ -350,7 +354,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
                         d.Fahrzeugdaten.Farbe = s.FARBE;
                         d.Fahrzeugdaten.FzgModell = s.FZGTYP;
-                        
+
+                        d.Versanddaten.VersandDienstleisterId = s.VS_DIENSTLEISTER;
+                        //d.Versanddaten.VersandDienstleister.VersandOption = s.VS_OPTION;
+                        d.Ist48hZulassung = s.Z48H_VSZUL.XToBool();
                     }));
             }
         }
@@ -373,6 +380,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Adresse.PLZ = s.PLZ;
                         d.Adresse.Ort = s.CITY1;
                         d.Bemerkung = s.BEMERKUNG;
+                        d.LieferuhrzeitBis = s.LIFUHRBIS;
+                        d.Adresse.Land = s.LAND1;
+                        d.Adresse.Telefon = s.TELEFON_NR1;
+                        d.Adresse.Email = s.SMTPADR;
                     }));
             }
         }
@@ -410,6 +421,202 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.KontoNr = s.BANKN;
                         d.Bankleitzahl = s.BANKL;
                         d.Geldinstitut = s.EBPP_ACCNAME;
+                    }));
+            }
+        }
+
+        public static ModelMapping<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB, ZiPoolDaten> Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB, ZiPoolDaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Grunddaten.Kreis = s.ZKFZKZ;
+                        d.Grunddaten.ZuletztGeaendertAm = s.AEDAT;
+                        d.Grunddaten.ZuletztGeaendertVon = s.AENAM;
+                        d.Grunddaten.UrlZulst = s.STVALN;
+                        d.Grunddaten.UrlZulstFormulare = s.STVALNFORM;
+                        d.Grunddaten.UrlZulstGebuehreninformation = s.STVALNGEB;
+                        d.Grunddaten.UrlZulstWunschkennzeichen = s.URL;
+
+                        // ZUL = Zulassung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "ZUL",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PZUL_BRIEF,
+                            FahrzeugscheinErforderlich = s.PZUL_SCHEIN,
+                            CocErforderlich = s.PZUL_COC,
+                            EvbNrErforderlich = s.PZUL_DECK,
+                            VollmachtErforderlich = s.PZUL_VOLLM,
+                            PersonalausweisErforderlich = s.PZUL_AUSW,
+                            GewerbeanmeldungErforderlich = s.PZUL_GEWERB,
+                            HandelsregisterErforderlich = s.PZUL_HANDEL,
+                            LastschrifteinzugErforderlich = s.PZUL_LAST,
+                            Bemerkung = s.PZUL_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "ZUL",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UZUL_BRIEF,
+                            FahrzeugscheinErforderlich = s.UZUL_SCHEIN,
+                            CocErforderlich = s.UZUL_COC,
+                            EvbNrErforderlich = s.UZUL_DECK,
+                            VollmachtErforderlich = s.UZUL_VOLLM,
+                            PersonalausweisErforderlich = s.UZUL_AUSW,
+                            GewerbeanmeldungErforderlich = s.UZUL_GEWERB,
+                            HandelsregisterErforderlich = s.UZUL_HANDEL,
+                            LastschrifteinzugErforderlich = s.UZUL_LAST,
+                            Bemerkung = s.UZUL_BEM
+                        });
+
+                        // UMS = Umschreibung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMS",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PUMSCHR_BRIEF,
+                            FahrzeugscheinErforderlich = s.PUMSCHR_SCHEIN,
+                            CocErforderlich = s.PUMSCHR_COC,
+                            EvbNrErforderlich = s.PUMSCHR_DECK,
+                            VollmachtErforderlich = s.PUMSCHR_VOLLM,
+                            PersonalausweisErforderlich = s.PUMSCHR_AUSW,
+                            GewerbeanmeldungErforderlich = s.PUMSCHR_GEWERB,
+                            HandelsregisterErforderlich = s.PUMSCHR_HANDEL,
+                            LastschrifteinzugErforderlich = s.PUMSCHR_LAST,
+                            Bemerkung = s.PUMSCHR_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMS",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UUMSCHR_BRIEF,
+                            FahrzeugscheinErforderlich = s.UUMSCHR_SCHEIN,
+                            CocErforderlich = s.UUMSCHR_COC,
+                            EvbNrErforderlich = s.UUMSCHR_DECK,
+                            VollmachtErforderlich = s.UUMSCHR_VOLLM,
+                            PersonalausweisErforderlich = s.UUMSCHR_AUSW,
+                            GewerbeanmeldungErforderlich = s.UUMSCHR_GEWERB,
+                            HandelsregisterErforderlich = s.UUMSCHR_HANDEL,
+                            LastschrifteinzugErforderlich = s.UUMSCHR_LAST,
+                            Bemerkung = s.UUMSCHR_BEM
+                        });
+
+                        // UMK = Umkennzeichnung
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMK",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PUMK_BRIEF,
+                            FahrzeugscheinErforderlich = s.PUMK_SCHEIN,
+                            CocErforderlich = s.PUMK_COC,
+                            EvbNrErforderlich = s.PUMK_DECK,
+                            VollmachtErforderlich = s.PUMK_VOLLM,
+                            PersonalausweisErforderlich = s.PUMK_AUSW,
+                            GewerbeanmeldungErforderlich = s.PUMK_GEWERB,
+                            HandelsregisterErforderlich = s.PUMK_HANDEL,
+                            LastschrifteinzugErforderlich = s.PUMK_LAST,
+                            Bemerkung = s.PUMK_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "UMK",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UUMK_BRIEF,
+                            FahrzeugscheinErforderlich = s.UUMK_SCHEIN,
+                            CocErforderlich = s.UUMK_COC,
+                            EvbNrErforderlich = s.UUMK_DECK,
+                            VollmachtErforderlich = s.UUMK_VOLLM,
+                            PersonalausweisErforderlich = s.UUMK_AUSW,
+                            GewerbeanmeldungErforderlich = s.UUMK_GEWERB,
+                            HandelsregisterErforderlich = s.UUMK_HANDEL,
+                            LastschrifteinzugErforderlich = s.UUMK_LAST,
+                            Bemerkung = s.UUMK_BEM
+                        });
+
+                        // EFS = Ersatzfahrzeugschein
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "EFS",
+                            Gewerblich = false,
+                            FahrzeugbriefErforderlich = s.PERS_BRIEF,
+                            FahrzeugscheinErforderlich = s.PERS_SCHEIN,
+                            CocErforderlich = s.PERS_COC,
+                            EvbNrErforderlich = s.PERS_DECK,
+                            VollmachtErforderlich = s.PERS_VOLLM,
+                            PersonalausweisErforderlich = s.PERS_AUSW,
+                            GewerbeanmeldungErforderlich = s.PERS_GEWERB,
+                            HandelsregisterErforderlich = s.PERS_HANDEL,
+                            LastschrifteinzugErforderlich = s.PERS_LAST,
+                            Bemerkung = s.PERS_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "EFS",
+                            Gewerblich = true,
+                            FahrzeugbriefErforderlich = s.UERS_BRIEF,
+                            FahrzeugscheinErforderlich = s.UERS_SCHEIN,
+                            CocErforderlich = s.UERS_COC,
+                            EvbNrErforderlich = s.UERS_DECK,
+                            VollmachtErforderlich = s.UERS_VOLLM,
+                            PersonalausweisErforderlich = s.UERS_AUSW,
+                            GewerbeanmeldungErforderlich = s.UERS_GEWERB,
+                            HandelsregisterErforderlich = s.UERS_HANDEL,
+                            LastschrifteinzugErforderlich = s.UERS_LAST,
+                            Bemerkung = s.UERS_BEM
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "XXX",
+                            Gewerblich = false
+                        });
+                        d.Details.Add(new ZiPoolDetaildaten
+                        {
+                            Dienstleistung = "XXX",
+                            Gewerblich = true
+                        });
+                    }));
+            }
+        }
+
+        public static ModelMapping<Z_ZLD_CHECK_48H.ES_VERSAND_48H, Adresse> Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_CHECK_48H.ES_VERSAND_48H, Adresse>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Strasse = s.STREET;
+                        AddressService.ApplyStreetAndHouseNo(d);
+                        d.PLZ = s.POST_CODE1;
+                        d.Ort = s.CITY1;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_2015_ZULSTATUS.GT_OUT, StatusverfolgungZulassungModel> Z_ZLD_AH_2015_ZULSTATUS_GT_OUT_To_StatusverfolgungZulassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_2015_ZULSTATUS.GT_OUT, StatusverfolgungZulassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Bemerkung = s.BEMERKUNG;
+                        d.PartnerRolle = s.PARVW;
+                        d.Status = s.BEB_STATUS;
+                        d.StatusDatum = s.STADATE;
+                        d.StatusUhrzeit = s.STATIME;
+                        d.TrackingId = s.TRACKING_ID;
+                        d.VersandDienstleister = s.VS_DIENSTLEISTER;
+                        d.ErledigtDatum = s.ERDAT;
+                        d.Beauftragungsart = s.BEAUFTRAGUNGSART;
                     }));
             }
         }
@@ -467,6 +674,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             // Halter
                             var halterNameSap = s.HalterName.NotNullOrEmpty().ToUpper();
                             d.ZZREFNR1 = halterNameSap.Substring(0, Math.Min(20, halterNameSap.Length));
+                            d.GEWERBLICH = s.HalterGewerblich.BoolToX();
 
                             // Zulassung
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
@@ -489,6 +697,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZKENN = formatKennzeichen(s.Zulassungsdaten.Kennzeichen);
                             d.WU_KENNZ2 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen2);
                             d.WU_KENNZ3 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen3);
+                            d.GEBRAUCHT = (s.Zulassungsdaten.HaltereintragVorhanden == "J").BoolToX();
 
                             // Versandzulassung
                             d.ZL_LIFNR = (s.Zulassungsdaten.ModusVersandzulassung ? s.VersandAdresse.Adresse.KundenNr : "");
@@ -509,6 +718,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.FARBE = s.Fahrzeugdaten.Farbe;
                             d.FZGTYP = s.Fahrzeugdaten.FzgModell;
 
+                            d.VS_DIENSTLEISTER = s.Versanddaten.VersandDienstleisterId;
+                            //d.VS_OPTION = s.Versanddaten.VersandDienstleister.VersandOption;
+                            d.Z48H_VSZUL = s.Ist48hZulassung.BoolToX();
                         }));
             }
         }
@@ -531,6 +743,10 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.PLZ = s.Adresse.PLZ;
                             d.CITY1 = s.Adresse.Ort;
                             d.BEMERKUNG = s.Bemerkung;
+                            d.LIFUHRBIS = s.LieferuhrzeitBis;
+                            d.LAND1 = s.Adresse.Land;
+                            d.TELEFON_NR1 = s.Adresse.Telefon;
+                            d.SMTPADR = s.Adresse.Email;
                         }));
             }
         }

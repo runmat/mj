@@ -68,6 +68,11 @@ namespace CkgDomainLogic.Autohaus.Services
             return null;
         }
 
+        public ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Zulassungen
@@ -125,7 +130,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 };
         }
 
-        public Bankdaten GetBankdaten(string iban)
+        public Bankdaten GetBankdaten(string iban, Action<string, string> addModelError)
         {
             return null;
         }
@@ -215,7 +220,7 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
-        public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
+        public List<ZulassungsReportModel> GetZulassungsReportItems(IZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
             var list = (_zulassungsReportItems ?? (_zulassungsReportItems = CreateZulassungsReportItems()));
 
@@ -274,6 +279,15 @@ namespace CkgDomainLogic.Autohaus.Services
             var groupedList = list.GroupBy(item => item.KundenNr).Select(g => new { Kunde = g.Key, Anzahl = g.Count() }).ToList();
 
             return list;
+        }
+
+        #endregion
+
+        #region Statusverfolgung
+
+        public List<StatusverfolgungZulassungModel> GetStatusverfolgungItems(string belegNr)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

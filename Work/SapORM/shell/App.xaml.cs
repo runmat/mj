@@ -441,6 +441,7 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_CARPORT_MELD_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_INS_CARPORT_NACHLIEF_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULSTATUS");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_STL_02");
 
             #endregion

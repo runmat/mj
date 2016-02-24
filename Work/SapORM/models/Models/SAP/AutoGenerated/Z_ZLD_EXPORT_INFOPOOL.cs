@@ -57,6 +57,8 @@ namespace SapORM.Models
 
 			public string CITY1 { get; set; }
 
+			public string LAND1 { get; set; }
+
 			public string VERKF { get; set; }
 
 			public string TEL_NUMBER { get; set; }
@@ -85,43 +87,65 @@ namespace SapORM.Models
 
 			public string KBANR { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_EX_ZUSTLIEF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_EX_ZUSTLIEF
-				{
-					KREISKZ_DIREKT = (string)row["KREISKZ_DIREKT"],
-					MATNR = (string)row["MATNR"],
-					LIFNR = (string)row["LIFNR"],
-					ADRNR = (string)row["ADRNR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					STREET = (string)row["STREET"],
-					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
-					POST_CODE1 = (string)row["POST_CODE1"],
-					CITY1 = (string)row["CITY1"],
-					VERKF = (string)row["VERKF"],
-					TEL_NUMBER = (string)row["TEL_NUMBER"],
-					TEL_EXTENS = (string)row["TEL_EXTENS"],
-					FAX_NUMBER = (string)row["FAX_NUMBER"],
-					FAX_EXTENS = (string)row["FAX_EXTENS"],
-					SMTP_ADDR = (string)row["SMTP_ADDR"],
-					ZTXT1 = (string)row["ZTXT1"],
-					ZTXT2 = (string)row["ZTXT2"],
-					ZTXT3 = (string)row["ZTXT3"],
-					REMARK = (string)row["REMARK"],
-					KBETR = string.IsNullOrEmpty(row["KBETR"].ToString()) ? null : (decimal?)row["KBETR"],
-					KNUMH = (string)row["KNUMH"],
-					KREISKZ = (string)row["KREISKZ"],
-					KBANR = (string)row["KBANR"],
+				GT_EX_ZUSTLIEF o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_EX_ZUSTLIEF
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KREISKZ_DIREKT = (string)row["KREISKZ_DIREKT"],
+						MATNR = (string)row["MATNR"],
+						LIFNR = (string)row["LIFNR"],
+						ADRNR = (string)row["ADRNR"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						STREET = (string)row["STREET"],
+						HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
+						POST_CODE1 = (string)row["POST_CODE1"],
+						CITY1 = (string)row["CITY1"],
+						LAND1 = (string)row["LAND1"],
+						VERKF = (string)row["VERKF"],
+						TEL_NUMBER = (string)row["TEL_NUMBER"],
+						TEL_EXTENS = (string)row["TEL_EXTENS"],
+						FAX_NUMBER = (string)row["FAX_NUMBER"],
+						FAX_EXTENS = (string)row["FAX_EXTENS"],
+						SMTP_ADDR = (string)row["SMTP_ADDR"],
+						ZTXT1 = (string)row["ZTXT1"],
+						ZTXT2 = (string)row["ZTXT2"],
+						ZTXT3 = (string)row["ZTXT3"],
+						REMARK = (string)row["REMARK"],
+						KBETR = string.IsNullOrEmpty(row["KBETR"].ToString()) ? null : (decimal?)row["KBETR"],
+						KNUMH = (string)row["KNUMH"],
+						KREISKZ = (string)row["KREISKZ"],
+						KBANR = (string)row["KBANR"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_EX_ZUSTLIEF
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

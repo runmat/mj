@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
+
+@if (Model.AnfrageOption == "KENNZ")
+{
+    @Html.FormTextBlockFor(m => m.AnfrageText, new { @class = "m-wrap uppercase kennzeichen" }, labelText: Localize.DataForLicNo)
+}
+else
+{
+    @Html.FormTextBlockFor(m => m.AnfrageText, new { @class = "m-wrap uppercase" }, labelText: Localize.DataForVin)
+}
+
+<div class="CleverSearchVehicleList margin-top-20 padding-left-5 padding-right-5">
+    <ul class="dd-list">
+    
+        @foreach (var item in Model.ZulassungsReportItems)
+        {
+            @Html.Partial("Partial/VehicleListItem", item)
+        }
+
+    </ul>
+</div>

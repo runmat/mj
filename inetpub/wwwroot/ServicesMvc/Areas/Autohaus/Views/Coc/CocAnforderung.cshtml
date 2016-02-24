@@ -1,0 +1,42 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.CocAnforderungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Autohaus_CocAnforderung <small></small></h3>
+
+<div id="divKopf">
+    @Html.Partial("Partial/FormKopf", Model.CocAnforderung.Kopfdaten)
+</div>
+
+<div id="divDetails"></div>
+
+<div id="divReceipt"></div>
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowDetails(result) {
+        $("#divKopf").slideUp();
+        $("#divDetails").html(result);
+        $("#divDetails").slideDown();
+    }
+
+    function CloseDetails() {
+        $("#divDetails").slideUp();
+        $("#divKopf").slideDown();
+    }
+
+    function ShowReceipt(result) {
+        $("#divKopf").slideUp();
+        $("#divDetails").slideUp();
+        $("#divReceipt").html(result);
+        $("#divReceipt").slideDown();
+    }
+
+</script>

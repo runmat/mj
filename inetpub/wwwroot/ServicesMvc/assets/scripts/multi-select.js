@@ -9,6 +9,8 @@
 * http://sam.zoy.org/wtfpl/COPYING for more details.
 */
 
+var _multiSelectHoverDisabled = false;
+
 !function ($) {
 
   "use strict";
@@ -75,7 +77,11 @@
         var action = that.options.dblClick ? 'dblclick' : 'click';
 
         that.$selectableUl.on(action, '.ms-elem-selectable', function(){
-          that.select($(this).data('ms-value'));
+            that.select($(this).data('ms-value'));
+            _multiSelectHoverDisabled = true;
+            setTimeout(function() {
+                _multiSelectHoverDisabled = false;
+            }, 1000);
         });
         that.$selectionUl.on(action, '.ms-elem-selection', function(){
           that.deselect($(this).data('ms-value'));
@@ -294,7 +300,8 @@
 
         elems.on('mouseenter', function () {
             elems.removeClass('ms-hover');
-            $(this).addClass('ms-hover');
+            if (!_multiSelectHoverDisabled)
+                $(this).addClass('ms-hover');
         });
         elems.on('mouseleave', function () {
             elems.removeClass('ms-hover');
@@ -322,11 +329,13 @@
           selections = this.$selectionUl.find('#' + msIds.join('-selection, #') + '-selection').filter(':not(.'+that.options.disabledClass+')'),
           options = ms.find('option:not(:disabled)').filter(function(){ return($.inArray(this.value, value) > -1); });
 
-      if (selectables.length > 0){
+      if (selectables.length > 0) {
+          
         selectables.addClass('ms-selected').hide();
         selections.addClass('ms-selected').show();
-        options.prop('selected', true);
 
+        options.prop('selected', true);
+          
         var selectableOptgroups = that.$selectableUl.children('.ms-optgroup-container');
         if (selectableOptgroups.length > 0){
           selectableOptgroups.each(function(){

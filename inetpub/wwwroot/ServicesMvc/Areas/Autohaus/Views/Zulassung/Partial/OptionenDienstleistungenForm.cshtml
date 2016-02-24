@@ -87,28 +87,7 @@
             CheckKennzeichenSondergroesse();
             CheckSaisonkennzeichen();
             
-            MultiSelectPreparePrivate();
-
-            function MultiSelectPreparePrivate() {
-                $('#pre-selected-options').multiSelect();
-
-                $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    $(this).append('<i class="icon-chevron-right"></i>');
-                });
-                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
-                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
-                    $(this).append('<i class="icon-remove"></i>');
-                });
-                $('#ms-pre-selected-options').removeClass('hide');
-
-                $('#pre-selected-options').change(function() {
-                    var selectedOptions = '';
-                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
-                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
-                    });
-                    $("#GewaehlteDienstleistungenString").val(selectedOptions);
-                });
-            }
+            MultiSelectPreparePublic(true);
 
         </script>
     }

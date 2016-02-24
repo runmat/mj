@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.Autohaus.Models.StatusverfolgungStatusItem
+
+@{ var imgSrc = "/ServicesMvc/images/icons-sendungsverfolgung/" + Model.StatusIconFileName; }
+
+<div class="position-relative">
+
+    <div class="form-horizontal">
+
+        <div>
+            <img src="@imgSrc" alt="@Model.StatusText" />
+        </div>
+
+        <div class="margin-top-5 text-center">
+            @Model.StatusText
+        </div>
+
+        <div class="margin-top-10 text-center">
+            @foreach (var item in Model.TrackingInfos)
+            {
+                <div class="margin-top-10">
+                    <a class="btn mini gray tooltips" data-original-title="@item.TrackingLinkHint" data-placement="right" target="_blank" href="@item.TrackingUrl">@item.TrackingId @item.VersandDienstleister</a>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>

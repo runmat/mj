@@ -7,6 +7,7 @@ using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Autohaus.Contracts;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
@@ -61,7 +62,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Adresse.Name1);
         }
 
-        public Bankdaten GetBankdaten(string iban)
+        public Bankdaten GetBankdaten(string iban, Action<string, string> addModelError)
         {
             var erg = new Bankdaten();
 
@@ -75,7 +76,11 @@ namespace CkgDomainLogic.Autohaus.Services
                 erg.KontoNr = SAP.GetExportParameter("E_BANK_ACCOUNT");
                 erg.Bankleitzahl = SAP.GetExportParameter("E_BANK_NUMBER");
                 erg.Geldinstitut = SAP.GetExportParameter("E_BANKA");
-            }           
+            }
+            else
+            {
+                addModelError("", SAP.ResultMessage);
+            }
 
             return erg;
         }
@@ -259,26 +264,27 @@ namespace CkgDomainLogic.Autohaus.Services
                 return SAP.ResultMessage;
 
             var checkResults = Z_ZLD_CHECK_48H.ES_VERSAND_48H.GetExportList(SAP);
-            if (checkResults.Any())
+            if (!checkResults.Any())
+                return "";
+
+            var item = checkResults.First();
+
+            zulassung.Ist48hZulassung = item.IST_48H.XToBool();
+            zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
+
+            var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
+
+            // Abweichende Versandadresse?
+            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
             {
-                var item = checkResults.First();
+                    var adrs48h = AppModelMappings.Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse.Copy(item);
 
-                zulassung.Ist48hZulassung = item.IST_48H.XToBool();
-                zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
-
-                var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
-
-                // Abweichende Versandadresse?
-                if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
-                {
-                    var adr = zulassung.VersandAdresse.Adresse;
-                    adr.Name1 = item.NAME1;
-                    adr.Name2 = item.NAME2;
-                    adr.Strasse = item.STREET;
-                    adr.HausNr = "";
-                    adr.PLZ = item.POST_CODE1;
-                    adr.Ort = item.CITY1;
-                }
+                    zulassung.VersandAdresse.Adresse.Name1 = adrs48h.Name1;
+                    zulassung.VersandAdresse.Adresse.Name2 = adrs48h.Name2;
+                    zulassung.VersandAdresse.Adresse.Strasse = adrs48h.Strasse;
+                    zulassung.VersandAdresse.Adresse.HausNr = adrs48h.HausNr;
+                    zulassung.VersandAdresse.Adresse.PLZ = adrs48h.PLZ;
+                    zulassung.VersandAdresse.Adresse.Ort = adrs48h.Ort;
             }
 
             return "";
@@ -296,6 +302,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 SAP.SetImportParameter("I_AUFRUF", "2");
                 SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone2);
+                SAP.SetImportParameter("I_EMAIL", LogonContext.UserInfo.Mail);
                 SAP.SetImportParameter("I_SPEICHERN", (saveDataToSap ? "A" : "S"));
 
                 if (!saveFromShoppingCart && zulassungen.Count == 1 && zulassungen[0].BankAdressdaten.Cpdkunde)
@@ -373,6 +380,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     if (vorgang.Zulassungsdaten.ModusVersandzulassung)
                     {
                         vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
+                        vorgang.VersandAdresse.LieferuhrzeitBis = vorgang.LieferuhrzeitBis;
                         adressen.Add(ModelMapping.Copy(vorgang.VersandAdresse));                // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
                     }
 
@@ -423,6 +431,7 @@ namespace CkgDomainLogic.Autohaus.Services
             var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
             
             var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
+
             // alle relativen Pfade zu absoluten Pfaden konvertieren:
             fileNames.ForEach(f =>
                 {
@@ -434,7 +443,7 @@ namespace CkgDomainLogic.Autohaus.Services
             {
                 var bnr = vorgang.BelegNr;
 
-                vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr));
+                vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr && !f.IstVersandLabel));
 
                 if (auftragsListePath != null)
                     vorgang.Zusatzformulare.Add(auftragsListePath);
@@ -444,6 +453,20 @@ namespace CkgDomainLogic.Autohaus.Services
                     try { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
                     catch { vorgang.KundenformularPdf = null; }
                 }
+
+                // Versandlabel
+                var vsLabels = fileNames.Where(f => f.Belegnummer == bnr && f.IstVersandLabel);
+                if (vsLabels.Any())
+                {
+                    var pdfsToMerge = new List<byte[]>();
+
+                    foreach (var vsLabel in vsLabels)
+                    {
+                        pdfsToMerge.Add(File.ReadAllBytes(vsLabel.DateiPfad));
+            }
+
+                    vorgang.VersandlabelPdf = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge, false);
+                }
             }
 
             return "";
@@ -452,7 +475,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         #region Zulassungs Report
 
-        public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
+        public List<ZulassungsReportModel> GetZulassungsReportItems(IZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
             var iKunnr = selector.KundenNr;
             var iVkOrg = LogonContext.Customer.AccountingArea.ToString();
@@ -473,6 +496,9 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 SAP.SetImportParameter("I_ZZKENN", selector.Kennzeichen);
                 SAP.SetImportParameter("I_LISTE", selector.AuftragsArt);
+
+                if (selector.NurHauptDienstleistungen)
+                    SAP.SetImportParameter("I_NUR_HAUPT_DL", "X");
 
                 if (selector.ZulassungsDatumRange.IsSelected)
                 {
@@ -528,7 +554,7 @@ namespace CkgDomainLogic.Autohaus.Services
         #endregion
 
 
-        #region Dokumentencenter Formulare
+        #region Dokumentencenter Formulare bzw. Infocenter Zulassung
 
         private IEnumerable<Zulassungskreis> LoadZulassungskreiseFromSap()
         {
@@ -558,6 +584,25 @@ namespace CkgDomainLogic.Autohaus.Services
 
             return AppModelMappings.Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular.Copy(sapItems).OrderBy(f => f.Typ).ToList();
         }
+
+        public ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError)
+        {
+            try
+            {
+                Z_M_ZGBS_BEN_ZULASSUNGSUNT.Init(SAP, "I_ZKFZKZ", kreis);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                addModelError("", e.FormatSapSaveException());
+            }
+
+            if (SAP.ResultCode != 0)
+                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+
+            return AppModelMappings.Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten.Copy(Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB.GetExportList(SAP)).FirstOrDefault();
+        } 
 
         #endregion
 
@@ -614,6 +659,7 @@ namespace CkgDomainLogic.Autohaus.Services
                         vorgang.Halter = adrsZH;
                         vorgang.Halter.Adresse.Kennung = "HALTER";
                         vorgang.Halter.Adresse.Land = "DE";
+                        vorgang.Halter.Adresse.Gewerblich = item.GEWERBLICH.XToBool();
                     }
 
                     var adrsZ6 = adrsItems.FirstOrDefault(a => a.Partnerrolle == "Z6");
@@ -660,6 +706,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     {
                         vorgang.VersandAdresse = adrsZZ;
                         vorgang.VersandAdresse.Adresse.Land = "DE";
+                        vorgang.LieferuhrzeitBis = adrsZZ.LieferuhrzeitBis;
                     }
                 }
 
@@ -711,6 +758,18 @@ namespace CkgDomainLogic.Autohaus.Services
             var ergList = Z_ZLD_DELETE_AH_WARENKORB.GT_BAK.GetExportListWithExecute(SAP);
 
             return (ergList.Any(e => e.ZULBELN == belegNr) ? ergList.First(e => e.ZULBELN == belegNr).MESSAGE : "");
+        }
+
+        #endregion
+
+
+        #region Statusverfolgung
+
+        public List<StatusverfolgungZulassungModel> GetStatusverfolgungItems(string belegNr)
+        {
+            var sapList = Z_ZLD_AH_2015_ZULSTATUS.GT_OUT.GetExportListWithInitExecute(SAP, "I_ZULBELN", belegNr);
+
+            return AppModelMappings.Z_ZLD_AH_2015_ZULSTATUS_GT_OUT_To_StatusverfolgungZulassungModel.Copy(sapList).OrderBy(z => z.StatusDatumUhrzeit).ToList();
         }
 
         #endregion

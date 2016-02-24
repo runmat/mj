@@ -45,6 +45,8 @@ namespace CkgDomainLogic.General.Services
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
 
+        public string RightName { get; set; }
+
         public virtual bool HasLocalizationTranslationRights { get { return false; } }
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
@@ -85,7 +87,7 @@ namespace CkgDomainLogic.General.Services
 
         public UserGroup Group { get; set; }
 
-        public Organization Organization { get; set; }
+        public UserOrganization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
@@ -147,6 +149,11 @@ namespace CkgDomainLogic.General.Services
         }
 
         virtual public string GetUserNameFromUrlRemoteLoginKey(string urlRemoteLoginKey)
+        {
+            return "";
+        }
+
+        virtual public string GetCategorySettingsForWebUser(string rightname)
         {
             return "";
         }
@@ -429,6 +436,26 @@ namespace CkgDomainLogic.General.Services
         {
             if (Customer != null)
                 LogoutUrl = Customer.LogoutLink;
+        }
+
+        public AdminLevel HighestAdminLevel
+        {
+            get
+            {
+                if (Customer.Master && User.CustomerAdmin)
+                    return AdminLevel.Master;
+
+                if (User.FirstLevelAdmin)
+                    return AdminLevel.FirstLevel;
+
+                if (User.CustomerAdmin)
+                    return AdminLevel.Customer;
+
+                if (Organization.OrganizationAdmin)
+                    return AdminLevel.Organization;
+
+                return AdminLevel.None;
+            }
+        }
     }
-}
 }

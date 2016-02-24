@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Models;
 
 namespace CkgDomainLogic.DomainCommon.Contracts
 {
@@ -28,6 +29,6 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 
         void DeleteAdresse(Adresse adresse);
 
-        void GetEvbVersInfo(string evb, out string message, out bool isValid);
+        EvbInfo GetEvbVersInfo(string evb, out string message, out bool isValid);
     }
 }

@@ -100,6 +100,7 @@ Enjoy!
             spanTag.html(btnText);
 
             $el.css("opacity", 0);
+            $el.css("display", "none");
             $el.wrap(divTag);
             $el.wrap(spanTag);
 
@@ -252,6 +253,7 @@ Enjoy!
             //hide normal input and add focus classes
             $(elem)
       .css("opacity", 0)
+      .css("display", "none")
       .bind({
           "focus.uniform": function () {
               divTag.addClass(options.focusClass);
@@ -263,9 +265,11 @@ Enjoy!
               if (!$(elem).attr("checked")) {
                   //box was just unchecked, uncheck span
                   spanTag.removeClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").removeClass(options.checkedClass);
               } else {
                   //box was just checked, check span.
                   spanTag.addClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").addClass(options.checkedClass);
               }
           },
           "mousedown.uniform touchbegin.uniform": function () {
@@ -287,6 +291,7 @@ Enjoy!
             if ($(elem).attr("checked")) {
                 //box is checked by default, check our box
                 spanTag.addClass(options.checkedClass);
+                spanTag.closest("label.checkbox").addClass(options.checkedClass);
             }
 
             //handle disabled state
@@ -325,6 +330,7 @@ Enjoy!
             //hide normal input and add focus classes
             $(elem)
       .css("opacity", 0)
+      .css("display", "none")
       .bind({
           "focus.uniform": function () {
               divTag.addClass(options.focusClass);
@@ -336,11 +342,13 @@ Enjoy!
               if (!$(elem).attr("checked")) {
                   //box was just unchecked, uncheck span
                   spanTag.removeClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").removeClass(options.checkedClass);
               } else {
                   //box was just checked, check span
                   var classes = options.radioClass.split(" ")[0];
                   $("." + classes + " span." + options.checkedClass + ":has([name='" + $(elem).attr('name') + "'])").removeClass(options.checkedClass);
                   spanTag.addClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").addClass(options.checkedClass);
               }
           },
           "mousedown.uniform touchend.uniform": function () {
@@ -511,6 +519,7 @@ Enjoy!
 
                 //reset inline style
                 $(this).css("opacity", "1");
+                $(this).css("display", "inline");
 
                 //remove item from list of uniformed elements
                 var index = $.inArray($(elem), $.uniform.elements);
@@ -577,15 +586,19 @@ Enjoy!
                     var divTag = $e.closest("div");
 
                     divTag.removeClass(options.hoverClass + " " + options.focusClass + " " + options.activeClass);
+
                     spanTag.removeClass(options.checkedClass);
+                    spanTag.closest("label.checkbox").removeClass(options.checkedClass);
 
                     if ($e.is(":checked")) {
                         spanTag.addClass(options.checkedClass);
+                        spanTag.closest("label.checkbox").addClass(options.checkedClass);
                     }
                     if ($e.is(":disabled")) {
                         divTag.addClass(options.disabledClass);
                     } else {
                         divTag.removeClass(options.disabledClass);
+                        spanTag.closest("label.checkbox").removeClass(options.checkedClass);
                     }
 
                 } else if ($e.is(":radio")) {

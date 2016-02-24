@@ -152,11 +152,11 @@ namespace DocumentTools.Services
         /// 20150528 MMA Erstellt aus mehreren PDF-Documenten eine einzige PDF-Datei und gibt diese als byte[] zurück.
         /// </summary>
         /// <param name="pdfBytes"></param>
+        /// <param name="printPageCount"></param>
         /// <returns>PDF-Datei als byte[]</returns>
-        public static byte[] MergePdfDocuments(List<byte[]> pdfBytes)
+        public static byte[] MergePdfDocuments(List<byte[]> pdfBytes, bool printPageCount = true)
         {
-            var mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
-            return mergedPdf;
+            return PdfMerger.MergeFiles(pdfBytes, printPageCount);
         }
     }
 }

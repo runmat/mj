@@ -7,8 +7,8 @@ var Login = function () {
                 return;
             
             $.backstretch([
-		        "/servicesmvc/assets/img/bg/1.jpg",
-		        "/servicesmvc/assets/img/bg/2.jpg"
+		        "/servicesmvc/assets/img/bg/11.jpg",
+		        "/servicesmvc/assets/img/bg/12.jpg"
 		        ], {
 		            fade: 1500,
 		            duration: 5000
