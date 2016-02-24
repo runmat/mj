@@ -135,7 +135,6 @@
     <Compile Include="General\Models\Attributes\VIN.cs" />
     <Compile Include="General\Models\ChartItemsPackage.cs" />
     <Compile Include="General\Models\ChartItemsTick.cs" />
-    <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
     <Compile Include="General\Models\DataModels\Hersteller.cs" />
     <Compile Include="General\Models\DataModels\EvbInfo.cs" />
@@ -151,8 +150,8 @@
     <Compile Include="General\Services\Dashboard\ChartService.cs" />
     <Compile Include="General\Services\Database\Models\CustomerDocument.cs" />
     <Compile Include="General\Services\Database\Models\CustomerDocumentCategory.cs" />
-    <Compile Include="General\Services\Database\Models\Dokument.cs" />
-    <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
+    <Compile Include="General\Services\Database\Models\Document.cs" />
+    <Compile Include="General\Services\Database\Models\DocumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
     <Compile Include="General\Services\Database\Models\AccountingArea.cs" />

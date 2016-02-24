@@ -1,35 +1,34 @@
-﻿@using CkgDomainLogic.DomainCommon.ViewModels
-@using CkgDomainLogic.General.Database.Models
-@model DokumentViewModel
+﻿@using CkgDomainLogic.General.Database.Models
+
+@model CkgDomainLogic.DomainCommon.ViewModels.DocumentViewModel
+
 @{ 
     var gridName = "DokumentGrid";
 }
    
 @(Html.Telerik()
-    .Grid<Dokument>()
+    .Grid<Document>()
     .Name(gridName)
     .XAjaxDataBinding("DocumentsAjaxBinding", "Document")
     .Columns(columns =>
     {
-        if (Model.IsAdministrator)
-        {
-            columns.XBound(c => c.DocumentID).Width(145).Title("").Filterable(false).Sortable(false)
-                 .ClientTemplate(
-                    "<button onclick='DocumentEdit(\"<#= data.DocumentID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                    + "&nbsp;"
-                    + "<button onclick='DocumentRemove(\"<#= data.DocumentID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
-                )
-                .HeaderTemplate(
-                    "<button onclick='DocumentCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentUploadDocumentMulti + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
-                )
-            ;
-        }
+        columns.XBound(c => c.DocumentID).Width(145).Title("").Filterable(false).Sortable(false).Visible(Model.AdminMode)
+            .ClientTemplate(
+                "<button onclick='DocumentEdit(\"<#= data.DocumentID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                + "&nbsp;"
+                + "<button onclick='DocumentRemove(\"<#= data.DocumentID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+            )
+            .HeaderTemplate(
+                "<button onclick='DocumentCreate();' class='btn mini gray tooltips' data-original-title='" + Localize.DocumentUploadDocumentMulti + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+            )
+        ;
 
         // Spalte "DocTypeName" muss in jedem Fall definiert sein, damit die lokalisierte Feldbezeichnung im Gruppenheader korrekt angezeigt wird
         columns.XBound(c => c.DocTypeName);
         columns.XBound(c => c.FileName);
         columns.XBound(c => c.FileType);
         columns.XBound(c => c.LastEdited);
+        columns.XBound(c => c.Tags).Visible(Model.GeneralMode);
         columns.XBound(c => c.DocumentID).ClientTemplate("<a target='_blank' class='btn mini gray tooltips a_btn_mini' data-original-title='Download' data-placement='right' href='Get/<#= DocumentID #>' ><i class='halflings-icon white file'></i></a>").Title("Download");
     })
     .XAutoColumnConfiguration()

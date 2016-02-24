@@ -3509,9 +3509,7 @@
     <Content Include="Views\Fahrzeuge\Abmeldungen\SucheFahrzeuge.cshtml" />
     <Content Include="Views\Document\DocumentTypeIndex.cshtml" />
     <Content Include="Views\Document\DocumentTypeGrid.cshtml" />
-    <Content Include="Views\Document\EditDocumentType.cshtml" />
-    <Content Include="Views\Document\CreateDocumentType.cshtml" />
-    <Content Include="Views\Document\_CreateOrEditDocumentType.cshtml" />
+    <Content Include="Views\Document\CreateOrEditDocumentType.cshtml" />
     <Content Include="Views\Fahrzeuge\Abmeldungen\FahrzeugeGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Abmeldungen\Historie.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\EasyAccessArchive.cshtml" />

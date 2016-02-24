@@ -1673,3 +1673,70 @@ div.span-alert-placeholder .alert {
 .portlet.box {
     overflow-x: hidden;
 }
+
+
+
+.kroschkedokumentencenter-grid {
+    float: left;
+    margin-right: 20px;
+}
+    
+.kroschkedokumentencenter-grid div.t-grouping-header {
+    height: 36px;
+    background-color: #dff0d8;
+    color: #888888;
+    border-radius: 4px !important;
+    margin-bottom: 5px;
+}
+    
+.kroschkedokumentencenter-grid div.t-grouping-header .t-group-indicator  {
+    margin-top: 3px;
+    font-size: 18px;
+    background-color: #cddf9a;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar,
+.kroschkedokumentencenter-grid .t-grid-bottom {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.kroschkedokumentencenter-grid .t-grid-toolbar,
+.kroschkedokumentencenter-grid .t-grid-toolbar:first-child {
+    padding-top: 0 !important;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar {
+    height: 48px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_length {
+    margin-top: 3px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_filter button {
+    margin-top: 5px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_filter label {
+    font-size: 20px !important;
+}
+    
+.kroschkedokumentencenter-grid input.grid-column-overall-filter {
+    width: 200px !important;
+    background-color: #fcf8e3;
+    font-size: 20px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .outer-export-menu {
+    margin-top: 3px;
+}
+    
+.kroschkedokumentencenter-hint {
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    border-radius: 4px !important;
+}

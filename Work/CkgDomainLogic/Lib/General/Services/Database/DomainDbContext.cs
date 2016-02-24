@@ -5,7 +5,6 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Transactions;
 using CkgDomainLogic.General.Database.Models;
-using CkgDomainLogic.General.Models.DataModels;
 using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Services;
 using GeneralTools.Models;
@@ -400,13 +399,13 @@ namespace CkgDomainLogic.General.Database.Services
 
         #region Dokument
 
-        public DbSet<Dokument> Dokuments { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
-        public List<Dokument> DokumentsForAdmin
+        public List<Document> DocumentsForAll
         {
             get
             {
-                var doks = Dokuments.Where(x => x.CustomerID == User.CustomerID).ToList();
+                var doks = Documents.Where(x => x.CustomerID == 1).ToList();
 
                 doks.ForEach(x => x.DocTypeName = DocumentTypesForCustomer.Find(t => t.DocumentTypeID == x.DocTypeID).DocTypeName);
 
@@ -414,15 +413,11 @@ namespace CkgDomainLogic.General.Database.Services
             }
         }
 
-        public List<Dokument> DokumentsForGroup
+        public List<Document> DocumentsForCustomer
         {
             get
             {
-                var dokumentIds = from dokumentRight in DokumentRights
-                                 where dokumentRight.GroupID == UserGroup.GroupID
-                                 select dokumentRight.DocumentID;
-
-                var doks = Dokuments.Where(x => dokumentIds.Contains(x.DocumentID)).ToList();
+                var doks = Documents.Where(x => x.CustomerID == User.CustomerID).ToList();
 
                 doks.ForEach(x => x.DocTypeName = DocumentTypesForCustomer.Find(t => t.DocumentTypeID == x.DocTypeID).DocTypeName);
 
@@ -430,73 +425,86 @@ namespace CkgDomainLogic.General.Database.Services
             }
         }
 
-        public Dokument SaveDokument(Dokument dokument)
+        public List<Document> DocumentsForGroup
         {
-            // hier können weitere Validierungen vorgenommen werden
-
-            // wenn es sich um ein neues Dokument handelt dann trage es in die Liste ein, sonst gehe ich davon aus dass das Dokument aus der Auflistung eingelesen wurde
-            if (dokument.DocumentID == 0)
+            get
             {
-                Dokuments.Add(dokument);                
+                var documentIds = from documentRight in DocumentRights
+                                 where documentRight.GroupID == UserGroup.GroupID
+                                 select documentRight.DocumentID;
+
+                var doks = Documents.Where(x => documentIds.Contains(x.DocumentID)).ToList();
+
+                doks.ForEach(x => x.DocTypeName = DocumentTypesForCustomer.Find(t => t.DocumentTypeID == x.DocTypeID).DocTypeName);
+
+                return doks;
             }
+        }
+
+        public Document SaveDocument(Document document)
+        {
+            // ID = 0 => neues Dokument
+            if (document.DocumentID == 0)
+                Documents.Add(document);                
 
             SaveChanges();
 
-            return dokument;
+            return document;
         }
 
         /// <summary>
         /// Dokument DocTypeId anpassen und die Zuordnung zu den Gruppen neu erstellen
         /// </summary>
-        /// <param name="documentBearbeiten"></param>
         /// <returns></returns>
-        public bool SaveDokument(DocumentErstellenBearbeiten documentBearbeiten)
+        public bool SaveDocument(int documentId, int? docTypeId, List<string> selectedWebGroups, string tags)
         {
             // DokumentRights für das Dokument ausfüllen
-            var dokumentRights = DokumentRights.Where(x => x.DocumentID == documentBearbeiten.ID);
+            var documentRights = DocumentRights.Where(x => x.DocumentID == documentId);
 
             // Dokument ermitteln
-            var dokument = Dokuments.Single(x => x.DocumentID == documentBearbeiten.ID);
+            var document = Documents.Single(x => x.DocumentID == documentId);
 
             // Alte DokumentRights Elemente als gelöscht kennzeichnen, keine Prüfung hinsichtlich wiederverwendbarkeit
-            dokumentRights.ToList().ForEach(x => DokumentRights.Remove(x));
+            documentRights.ToList().ForEach(x => DocumentRights.Remove(x));
 
             // Neue DokumentRights eintragen
-            foreach (var webGroup in documentBearbeiten.SelectedWebGroups)
+            if (selectedWebGroups != null)
             {
-                var documentID = documentBearbeiten.ID;
-                var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
+                foreach (var webGroup in selectedWebGroups)
+                {
+                    var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
 
-                var newDokumentRight = new DokumentRight
+                    var newDocumentRight = new DocumentRight
                     {
-                        DocumentID = documentID,
+                        DocumentID = documentId,
                         GroupID = groupID
                     };
 
-                DokumentRights.Add(newDokumentRight);
+                    DocumentRights.Add(newDocumentRight);
+                }
             }
 
-            // Dokument Wert DocTypeID überschreiben
-            dokument.DocTypeID = documentBearbeiten.DocTypeID;
-            dokument.LastEdited = DateTime.Now;
+            document.DocTypeID = docTypeId;
+            document.Tags = tags;
+            document.LastEdited = DateTime.Now;
 
             // Jetzt alles auf ein mal schreiben! EF kümmert sich um die Transaction
             var itemsSaved = SaveChanges();
             return itemsSaved > 0;
         }
 
-        public bool DeleteDokument(Dokument dokument)
+        public bool DeleteDocument(int documentId)
         {
-            var dokumentRights = DokumentRights.Where(x => x.DocumentID == dokument.DocumentID);
-            var dokumentToRemove = Dokuments.Single(x => x.DocumentID == dokument.DocumentID);
+            var documentRights = DocumentRights.Where(x => x.DocumentID == documentId);
+            var documentToRemove = Documents.Single(x => x.DocumentID == documentId);
 
             using (var scope = new TransactionScope())
             {
                 // Alte DokumentRights Elemente als gelöscht kennzeichnen, keine Prüfung hinsichtlich wiederverwendbarkeit
-                dokumentRights.ToList().ForEach(x => DokumentRights.Remove(x));
+                documentRights.ToList().ForEach(x => DocumentRights.Remove(x));
                 SaveChanges();
 
-                Dokuments.Remove(dokumentToRemove);
+                Documents.Remove(documentToRemove);
                 SaveChanges();
 
                 scope.Complete();
@@ -511,44 +519,55 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<DocumentType> DocumentTypes { get; set; }
 
-        private List<DocumentType> _documentTypesForCustomer;
+        public List<DocumentType> DocumentTypesForAll
+        {
+            get
+            {
+                // DocType mit ID 1 ist der default-Wert für alle Kunden
+                return DocumentTypes.Where(x => x.CustomerID == 1 || x.DocumentTypeID == 1).ToList();
+            }
+        }
+
         public List<DocumentType> DocumentTypesForCustomer
         {
             get
             {
                 // DocType mit ID 1 ist der default-Wert für alle Kunden
-                return _documentTypesForCustomer ?? (_documentTypesForCustomer = DocumentTypes.Where(x => x.CustomerID == User.CustomerID || x.DocumentTypeID == 1).ToList());
+                return DocumentTypes.Where(x => x.CustomerID == User.CustomerID || x.DocumentTypeID == 1).ToList();
             }
         }
 
-        public DocumentType CreateDocumentType(DocumentType documentType)
+        public DocumentType SaveDocumentType(DocumentType documentType)
         {
-            documentType.CustomerID = User.CustomerID;
-            DocumentTypes.Add(documentType);
+            // ID = 0 => neuer Dokumenttyp
+            if (documentType.DocumentTypeID == 0)
+            {
+                DocumentTypes.Add(documentType);
+            }
+            else
+            {
+                var documentTypeToUpdate = DocumentTypes.Single(x => x.DocumentTypeID == documentType.DocumentTypeID);
+                documentTypeToUpdate.DocTypeName = documentType.DocTypeName;
+            }
+
             SaveChanges();
+
             return documentType;
         }
 
-        public DocumentType UpdateDocumentType(DocumentType documentType)
+        public bool DeleteDocumentType(int documentTypeId)
         {
-            var documentTypeToUpdate = DocumentTypes.Single(x => x.DocumentTypeID == documentType.DocumentTypeID);
-            documentTypeToUpdate.DocTypeName = documentType.DocTypeName;
-            SaveChanges();
-            return documentType;
-        }
-
-        public int DeleteDokumentType(DocumentType documentType)
-        {
-            DocumentTypes.Remove(documentType);
+            var documentTypeToRemove = DocumentTypes.Single(x => x.DocumentTypeID == documentTypeId);
+            DocumentTypes.Remove(documentTypeToRemove);
             var itemsDeleted = SaveChanges();
-            return itemsDeleted;
+            return itemsDeleted > 0;
         }
 
         #endregion
 
-        #region DokumentRight
+        #region DocumentRight
 
-        public DbSet<DokumentRight> DokumentRights { get; set; }
+        public DbSet<DocumentRight> DocumentRights { get; set; }
 
         #endregion
 

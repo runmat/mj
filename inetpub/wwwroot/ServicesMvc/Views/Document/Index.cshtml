@@ -1,14 +1,8 @@
-﻿@using CkgDomainLogic.DomainCommon.ViewModels
-@model DokumentViewModel
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.DocumentViewModel
 
-<h3 class="page-title" id="headerTitle">Infocenter 
-    @if (Model.IsAdministrator)
-    {
-        <small>Admin</small>
-    }
-</h3>
+<h3 class="page-title" id="headerTitle">@Localize.Document_KroschkeDokumentencenter <small>@(Model.AdminMode ? "Admin" : "")</small></h3>
 
-@if (Model.IsAdministrator)
+@if (Model.AdminMode)
 {
     <div class="tabbable tabbable-custom margin-top-15">
         <ul class="nav nav-tabs">
