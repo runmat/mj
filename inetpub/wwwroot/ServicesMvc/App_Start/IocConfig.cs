@@ -40,7 +40,10 @@ using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
 
 using CkgDomainLogic.AppUserOverview.Contracts; // MaihoferM
-using CkgDomainLogic.AppUserOverview.Services;  // MaihoferM
+using CkgDomainLogic.AppUserOverview.Services;
+using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.Autohaus.Services;
+// MaihoferM
 
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
@@ -63,6 +66,8 @@ using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using Telerik.Web.Mvc.Infrastructure;
 using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
+using IZulassungDataService = CkgDomainLogic.CoC.Contracts.IZulassungDataService;
+using ZulassungDataServiceSAP = CkgDomainLogic.CoC.Services.ZulassungDataServiceSAP;
 
 namespace ServicesMvc
 {
@@ -241,6 +246,9 @@ namespace ServicesMvc
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
+
+            builder.RegisterType<CocAnforderungDataServiceSAP>().As<ICocAnforderungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<EsdBeauftragungDataServiceSAP>().As<IEsdBeauftragungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

@@ -529,7 +529,7 @@ textarea[readonly].m-wrap {
     padding-top: 2px;
 }
 .form-horizontal .checker {
-    padding-top: 0;
+    padding-top: 3px;
 }
 
 .form-horizontal span.validation-message {
@@ -1551,6 +1551,7 @@ div.span-alert-placeholder .alert {
     position: relative;
 }
 
+
 .color-ckg-green {
     color: #a0C539 !important;
 }
@@ -1563,15 +1564,15 @@ div.span-alert-placeholder .alert {
     color: #dff0d8 !important;
 }
 
-.bg-color-ckg-green {
+.bg-color-ckg-green, .portlet.box.bg-color-ckg-green {
     background-color: #a0C539 !important;
 }
 
-.bg-color-ckg-lightgreen {
+.bg-color-ckg-lightgreen, .portlet.box.bg-color-ckg-lightgreen {
     background-color: #cddf9a !important;
 }
 
-.bg-color-ckg-palegreen {
+.bg-color-ckg-palegreen, .portlet.box.bg-color-ckg-palegreen {
     background-color: #dff0d8 !important;
 }
 
@@ -1587,15 +1588,15 @@ div.span-alert-placeholder .alert {
     color: #fff9e5 !important;
 }
 
-.bg-color-ckg-yellow {
+.bg-color-ckg-yellow, .portlet.box.bg-color-ckg-yellow {
     background-color: #ffcc00 !important;
 }
 
-.bg-color-ckg-lightyellow {
+.bg-color-ckg-lightyellow, .portlet.box.bg-color-ckg-lightyellow {
     background-color: #ffff72 !important;
 }
 
-.bg-color-ckg-paleyellow {
+.bg-color-ckg-paleyellow, .portlet.box.bg-color-ckg-paleyellow {
     background-color: #fff9e5 !important;
 }
 
@@ -1611,16 +1612,16 @@ div.span-alert-placeholder .alert {
     color: #fcf8e3 !important;
 }
 
-.bg-color-ckg-orange {
+.bg-color-ckg-orange, .portlet.box.bg-color-ckg-orange {
     background-color: #ffb848 !important;
 }
 
-.bg-color-ckg-lightorange {
+.bg-color-ckg-lightorange, .portlet.box.bg-color-ckg-lightorange {
     background-color: #ffce46 !important;
 }
 
-.bg-color-ckg-paleorange {
-    background-color: #fcf8e3 !important;
+.bg-color-ckg-paleorange, .portlet.box.bg-color-ckg-paleorange {
+    background-color: #FCFBF3 !important;
 }
 
 .color-ckg-red {
@@ -1635,14 +1636,22 @@ div.span-alert-placeholder .alert {
     color: #f2dede !important;
 }
 
-.bg-color-ckg-red {
+.bg-color-ckg-red, .portlet.box.bg-color-ckg-red {
     background-color: #c11823 !important;
 }
 
-.bg-color-ckg-lightred {
+.bg-color-ckg-lightred, .portlet.box.bg-color-ckg-lightred {
     background-color: #d37166 !important;
 }
 
-.bg-color-ckg-palered {
+.bg-color-ckg-palered, .portlet.box.bg-color-ckg-palered {
     background-color: #f2dede !important;
+}
+
+.bg-white, .portlet.box.bg-white {
+    background-color: white !important;
+}
+
+.portlet.box {
+    overflow-x: hidden;
 }

@@ -475,7 +475,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 
 
 .portlet.box{
-    border-radius: 4px !important;
+    border-radius: 10px !important;
 }
 
 .portlet-title,
@@ -535,9 +535,11 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 .ms-container .ms-selectable ul.ms-list li span{
     display: table-cell;
     width: 298px;
+    vertical-align: middle;
 }
 .ms-container .ms-selectable ul.ms-list li i.icon-ok {
     display: table-cell;
+    vertical-align: middle;
 }
 /* Rechte Box ("gewählt") */
 .ms-container .ms-selection ul.ms-list li {
@@ -550,13 +552,16 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     display: table-cell;
     width: 262px;
     padding-left: 10px;
+    vertical-align: middle;
 }
 .ms-container .ms-selection ul.ms-list li i.icon-ok {
     display: table-cell;
+    vertical-align: middle;
 }
 .ms-container .ms-selection ul.ms-list li i.icon-remove {
     display: table-cell;
     margin-left: 0;
+    vertical-align: middle;
 }
 
 
@@ -829,7 +834,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 
 
 /* Mediaquerys */
-@@media (min-width: 1080px) { 
+@@media (min-width: 1280px) { 
     .page-sidebar {
 		position: absolute;
  		width: 246px;
@@ -839,7 +844,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     }
 }
 
-@@media all and (max-width: 1079px){
+@@media all and (max-width: 1279px){
     /* rechte Nav blendet aus */
     .page-content {
         padding-top: 1px !important;
@@ -853,7 +858,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     }
 }
 
-@@media (max-width: 1079px){
+@@media (max-width: 1279px){
     .body-container{
         margin: 15px;
     }

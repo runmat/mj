@@ -15,16 +15,15 @@ namespace GeneralTools.Services
             return GetConfigValue(context, keyName);
         }
 
-        public IDictionary<string, string> GetConfigAllServersVals(string context, string connectionString = null, string filterClause = null)
-        {
-            return GetConfigAllServersValues(context, connectionString, filterClause);
-        }
-
         public string GetConfigAllServerVal(string context, string keyName)
         {
             return GetConfigAllServerValue(context, keyName);
         }
 
+        public IDictionary<string, string> GetConfigAllServersVals(string context, string connectionString = null, string filterClause = null)
+        {
+            return GetConfigAllServersValues(context, connectionString, filterClause);
+        }
 
         public void SetConfigVal(string context, string keyName, string value, string connectionString = null)
         {
