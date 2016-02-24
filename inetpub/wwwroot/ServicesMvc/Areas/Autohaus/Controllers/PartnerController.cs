@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Web.Mvc;
+using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -8,6 +9,7 @@ using CkgDomainLogic.Partner.Models;
 using CkgDomainLogic.Partner.ViewModels;
 using GeneralTools.Contracts;
 using Telerik.Web.Mvc;
+// ReSharper disable RedundantAnonymousTypePropertyName
 
 namespace ServicesMvc.Autohaus.Controllers
 {
@@ -20,10 +22,10 @@ namespace ServicesMvc.Autohaus.Controllers
         public override AdressenPflegeViewModel AdressenPflegeViewModel { get { return ViewModel; } }
 
 
-        public PartnerController(IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService)
+        public PartnerController(IAppSettings appSettings, ILogonContextDataService logonContext, IPartnerDataService partnerDataService, IZulassungDataService zulassungDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, partnerDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, partnerDataService, zulassungDataService);
             InitModelStatics();
         }
 
@@ -59,6 +61,14 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.LoadPartners();
 
             return PartialView("Partial/PartnerSuche", ViewModel.PartnerSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult LoadBankdatenAusIban(string iban)
+        {
+            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
+
+            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
         }
 
 

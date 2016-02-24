@@ -41,7 +41,21 @@
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap medium uppercase", col = "left", maxlength = 7 })
             @Html.FormDatePickerFor(m => m.Stichtagsabbuchung, new { @class = "m-wrap medium", col = "right" })
         </div>
+
+
+        @Html.HiddenFor(m => m.KontoNr)
+        @Html.HiddenFor(m => m.Bankleitzahl)
+
+        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap medium uppercase", col = "left", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+                        postControlHtml: @<text>@Html.SpanAlert("bankDataHint")</text>)
+
+        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap medium uppercase", col = "right", @readonly = "readonly" },
+                        postControlHtml: @<text><span class="no-break-container">(@Localize.WillBeCalculated.ToLower())</span></text>)
+
+        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap medium", @readonly = "readonly"},
+                        postControlHtml: @<text><span class="no-break-container">(@Localize.WillBeCalculated.ToLower())</span></text>)
         
+
         if (Model.InsertModeTmp)
         {
             @Html.FormMultiSelectListFor(m => m.KennungenToInsert, CkgDomainLogic.Partner.Models.PartnerSelektor.PartnerKennungen.ToSelectList(), new { @class = "m-wrap chosen" },
@@ -60,6 +74,8 @@
         <script type="text/javascript">
             _modelIsValid = @Model.IsValid.ToString().ToLower();
             _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+
+            InitBankdaten();
 
             $(function(){ 
                 if ($('#Kennung').val() == 'HALTER') {

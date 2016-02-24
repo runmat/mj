@@ -340,6 +340,8 @@ namespace ServicesMvc.Autohaus.Controllers
                 if (model.Adressdaten.Adresse == null)
                     return new EmptyResult();
 
+                model.Bankdaten.Iban = model.Adressdaten.Adresse.Iban;
+
                 ModelState.Clear();
                 model.Adressdaten.Adresse.IsValid = false;
                 return PartialView("Partial/ZahlerKfzSteuerForm", model);

@@ -14,7 +14,8 @@
         @Html.HiddenFor(m => m.Adressdaten.Adresse.Typ)
         @Html.HiddenFor(m => m.Adressdaten.Adresse.TmpSelectionKey)
         @Html.HiddenFor(m => m.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-        
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.Iban)
+
         @Html.FormValidationSummary()
         
         <div class="row-fluid">
@@ -66,6 +67,8 @@
             
             DocumentReadyBind(AjaxFormZahlerKfzSteuerInit);
             AjaxFormZahlerKfzSteuerInit();
+
+            InitBankdaten();
         </script>
     }
 </div>
