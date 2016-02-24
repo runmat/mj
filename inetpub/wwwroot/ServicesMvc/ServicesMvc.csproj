@@ -229,6 +229,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="assets\img\bg\1.jpg" />
+    <Content Include="assets\img\bg\11.jpg" />
+    <Content Include="assets\img\bg\12.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
