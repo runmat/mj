@@ -66,7 +66,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult LoadBankdatenAusIban(string iban)
         {
-            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
+            // ReSharper disable once NotAccessedVariable
+            string errorMessage;
+            var bankdaten = ViewModel.LoadBankdatenAusIban(iban, (prop, message) => errorMessage = message);
 
             return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
         }

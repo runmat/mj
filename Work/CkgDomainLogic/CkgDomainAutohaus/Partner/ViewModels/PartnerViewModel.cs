@@ -96,9 +96,9 @@ namespace CkgDomainLogic.Partner.ViewModels
             return Adressen.FirstOrDefault(c => c.KundenNr.ToSapKunnr() == id.ToString().ToSapKunnr());
         }
 
-        public Bankdaten LoadBankdatenAusIban(string iban)
+        public Bankdaten LoadBankdatenAusIban(string iban, Action<string, string> addModelError)
         {
-            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper());
+            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper(), addModelError);
         }
     }
 }
