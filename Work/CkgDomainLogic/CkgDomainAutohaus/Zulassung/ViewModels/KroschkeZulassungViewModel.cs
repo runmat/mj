@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -23,6 +24,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
+    [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
@@ -60,6 +62,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
 
         public bool ModusAbmeldung { get; set; }
+
+        public bool ShoppingCartInitialShow { get; set; }
 
         public bool ModusVersandzulassung { get; set; }
 
@@ -168,6 +172,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamAbmeldung(string abmeldung)
         {
             ModusAbmeldung = abmeldung.IsNotNullOrEmpty();
+        }
+        public void SetParamShowShoppingCart(string showShoppingcart)
+        {
+            ShoppingCartInitialShow = showShoppingcart.NotNullOrEmpty() == "1";
         }
 
         public void SetParamVersandzulassung(string versandzulassung)
@@ -554,9 +562,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen);
         }
 
-        static bool KennzeichenIsValid(string kennnzeichen)
+        static bool KennzeichenIsValid(string kennzeichen)
         {
-            return Zulassungsdaten.KennzeichenIsValid(kennnzeichen);
+            return Zulassungsdaten.KennzeichenIsValid(kennzeichen);
         }
 
         public void DataMarkForRefreshHalterAdressen()
@@ -1529,5 +1537,42 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 PropertyCacheClear(this, m => m.FinListFiltered);
             }
         }
+
+
+        #region Dashboard functionality
+
+        static KeyValuePair<int, string> GetChartShoppingCartStackedKey(Vorgang item)
+        {
+            var date = (item.BeauftragungsArt.NotNullOrEmpty() == "ABMELDUNG" ? item.Abmeldedatum : item.Zulassungsdatum).GetValueOrDefault();
+            var today = DateTime.Today;
+
+            if (date < today)
+                return new KeyValuePair<int, string>(1, "überfällig");
+            if (date.Year == today.Year && date.GetWeekNumber() == today.GetWeekNumber())
+                return new KeyValuePair<int, string>(2, "fällig");
+
+            return new KeyValuePair<int, string>(3, "geplant");
+        }
+
+
+        [DashboardItemsLoadMethod("ZulassungShoppingCart")]
+        public ChartItemsPackage NameNotRelevant01()
+        {
+            DataInit();
+
+            var items = LoadZulassungenFromShoppingCart().ToListOrEmptyList();
+
+            items = items.OrderBy(item => GetChartShoppingCartStackedKey(item).Key).ToListOrEmptyList();
+            Func<Vorgang, string> xAxisKeyModel = (groupKey => groupKey.BeauftragungsArt.ToLowerFirstUpper());
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKeyModel,
+                    xAxisList => xAxisList.Insert(0, ""),
+                    item => GetChartShoppingCartStackedKey(item).Value
+                );
+        }
+
+        #endregion
     }
 }

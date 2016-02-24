@@ -10,6 +10,7 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using WebTools.Services;
 

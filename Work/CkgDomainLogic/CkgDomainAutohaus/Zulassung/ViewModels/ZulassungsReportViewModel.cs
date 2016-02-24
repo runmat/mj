@@ -194,6 +194,35 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 );
         }
 
+        [DashboardItemsLoadMethod("ZulassungenProMaterialLetzte30TagePie")]
+        public ChartItemsPackage NameNotRelevant08()
+        {
+            var selector = new ZulassungsReportSelektor
+            {
+                ZulassungsDatumRange = new DateRange(DateRangeType.Last30Days, true),
+                NurHauptDienstleistungen = true
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            var items = GetAllItems(selector, null);
+
+            Func<ZulassungsReportModel, string> getTitleFunc = (groupKey => groupKey.MaterialKurztext.NotNullOrEmpty().Crop(30));
+            Func<ZulassungsReportModel, string> xAxisKeyModel = (groupKey => getTitleFunc(groupKey));
+
+            double countTotal = items.Count;
+            if (countTotal > 0)
+            {
+                var percentThreshold = 1.0;
+                var validMaterialTexts = items.GroupBy(xAxisKeyModel).Where(g => g.Count(i => true) / countTotal*100.0 > percentThreshold).Select(g => g.Key);
+
+                xAxisKeyModel = (groupKey => validMaterialTexts.Contains(getTitleFunc(groupKey)) ? getTitleFunc(groupKey) : " Sonstige");
+            }
+            return ChartService.GetPieChartGroupedItemsWithLabels(
+                    items,
+                    xAxisKeyModel
+                );
+        }
+
         [DashboardItemsLoadMethod("ZulassungenProKundeGesamtBar")]
         public ChartItemsPackage NameNotRelevant06()
         {
@@ -243,25 +272,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 );
         }
 
-        [DashboardItemsLoadMethod("ZulassungenAlleKunden")]
+        [DashboardItemsLoadMethod("ZulassungenAlleKunden2015")]
         public ChartItemsPackage NameNotRelevant04()
         {
             var selector = new ZulassungsReportSelektor
                 {
-                    ZulassungsDatumRange = new DateRange(DateRangeType.Last90Days, true)
+                    ZulassungsDatumRange = new DateRange(new DateTime(2015, 01, 01), new DateTime(2015, 12, 31), true)
                 };
             DashboardSessionSaveCurrentReportSelector(selector);
 
             var items = GetAllItems(selector, null);
-
+            items = items.OrderBy(item => item.ZulassungDatum).ToListOrEmptyList();
 
             Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
             Func<ZulassungsReportModel, DateTime> xAxisKeyModel = (groupKey => groupKey.ZulassungDatum.ToFirstDayOfMonth());
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items, 
-                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
-                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
+                    //, xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
                 );
         }
 

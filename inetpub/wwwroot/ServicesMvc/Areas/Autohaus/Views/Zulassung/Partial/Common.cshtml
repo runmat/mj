@@ -41,6 +41,7 @@
 
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
+    var _showShoppingcartInitial = @(Model.ShoppingCartInitialShow.ToString().ToLower());
     var _skipBankAddressData = false;
 
     function KroschkeZulassungFormPreparePrivate() {
@@ -51,6 +52,11 @@
         try { FormWizardInitPrivate(); } catch (e) { }
         try { MultiSelectPreparePrivate(); } catch (e) { }
         ShoppingCartMenuRefreshCount();
+
+        if (_showShoppingcartInitial) {
+            LoadingShow();
+            ShoppingCartShow();
+        }
     };
 
     function FormPreparePrivateAjax() {
@@ -65,7 +71,7 @@
             FormWizard.ButtonCustom1Show(show, _customButtonText);
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
-    
+
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
@@ -144,7 +150,7 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
-                
+
                 if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             }
@@ -166,7 +172,7 @@
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
 
-                if (nextTabKey.toLowerCase() == "receipt") 
+                if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             },
             error: function (jqXhr, exception) {
@@ -322,7 +328,7 @@
         if (_ibanPrev == $(textbox).val())
             return;
         _ibanPrev = $(textbox).val();
-        
+
         if ($(textbox).val().length < 22)
             return;
 
@@ -545,7 +551,7 @@
             controlGroup.hide();
         }
     }
-    
+
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();

@@ -228,6 +228,24 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Areas\Common\Content\Weather\images\01d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\01n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\02d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\02n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\03d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\03n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\04d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\04n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\09d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\09n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\10d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\10n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\11d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\11n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\13d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\13n.png" />
+    <Content Include="Areas\Common\Content\Weather\images\50d.png" />
+    <Content Include="Areas\Common\Content\Weather\images\50n.png" />
     <Content Include="assets\img\bg\1.jpg" />
     <Content Include="assets\img\bg\11.jpg" />
     <Content Include="assets\img\bg\12.jpg" />
@@ -239,7 +257,13 @@
     <Content Include="Images\Commands\24x24\OK.png" />
     <Content Include="Images\Commands\24x24\warning.png" />
     <Content Include="Images\Commands\alert.png" />
+    <Content Include="Images\Commands\close.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-1.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-2.png" />
+    <Content Include="Images\Commands\dashboard-item-row-span-3.png" />
     <Content Include="Images\Commands\OK.png" />
+    <Content Include="Images\Commands\dashboard-item-settings.png" />
+    <Content Include="Images\Commands\settings.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -281,7 +305,16 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\KaeuferAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Weather.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\NoTranslationAvailable.cshtml" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.AT.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.CH.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.DE.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.ES.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.FR.json" />
+    <Content Include="App_Data\XmlData\Weather\JsonData\city.list.IT.json" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\WeatherWidgetCollection.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\RowSpanDropDownMenu.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -714,11 +747,17 @@
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemOptions.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Contracts\IWeatherDataService.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Models\WeatherData.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Models\WeatherWidgetUserSettings.cs" />
+    <Compile Include="Areas\Common\lib\Weather\Services\WeatherDataServiceOpenWeatherMap.cs" />
+    <Compile Include="Areas\Common\lib\Weather\ViewModels\WeatherViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
@@ -1034,8 +1073,8 @@
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefeErweitertGrid.cshtml" />
     <Content Include="Views\Equi\ReportErweiterterBriefbestand.cshtml" />
     <Content Include="Views\Equi\ErweiterterBriefbestand\FahrzeugbriefErweitertSuche.cshtml" />
-    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtons.cshtml" />
-    <Content Include="Views\DomainCommon\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+    <Content Include="Views\Shared\AppFavorites\AppFavoriteButtons.cshtml" />
+    <Content Include="Views\Shared\AppFavorites\AppFavoriteButtonsCore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\animate.css" />
@@ -2836,7 +2875,7 @@
     <Content Include="Views\Shared\Partial\ImpressumCkg.cshtml" />
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
-    <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
     <Content Include="Views\ModellId\Verwaltung.cshtml" />
     <Content Include="Views\ModellId\Partial\Common.cshtml" />
     <Content Include="Views\ModellId\Partial\Grid.cshtml" />
@@ -2940,6 +2979,11 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Test\ATest.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieNoDocumentsFound.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\Common.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carportnacherfassung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugnacherfassungForm.cshtml" />
+    <Content Include="Views\Shared\AppFavorites\UserMessages.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Common.cshtml" />
     <Content Include="Views\Fahrzeuge\Carportnacherfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\NacherfassungSuche.cshtml" />

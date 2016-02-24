@@ -3,6 +3,7 @@ using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 
@@ -45,7 +46,12 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             return (LogonContext.UserApps == null) 
                             ? items.ToList() 
-                            : items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+                            : items.Where(item => 
+                                item.Options.IsAuthorized
+                                || LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))
+                                || LogonContext.UserApps.Any(userApp => item.Options.AuthorizedIfAppUrlsAuth.NotNullOrEmpty().Split(';')
+                                                            .Any(authorizedApp => UserAppUrlContainsUrl(userApp.AppURL, authorizedApp)))
+                        ).ToList();
         }
 
         static bool UserAppUrlContainsUrl(string userAppUrl, string url)
@@ -55,22 +61,36 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return translatedAppUrl.ToLower() == url;
         }
 
-        public void DashboardItemsSave(string commaSeparatedIds)
+        public void DashboardItemsSave(string commaSeparatedIds = null)
         {
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
-        public object GetChartData(string id)
+        public IDashboardItem GetDashboardItem(string id)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
-            var dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+            return DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
+        }
 
-            if (dashboardItem == null)
-                return new { };
+        public ChartItemsPackage GetChartData(string id, IDashboardItem dashboardItem)
+        {
+            if (dashboardItem.IsPartialView)
+                return new ChartItemsPackage();
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
+        }
+
+        public void DashboardItemUserRowSpanSave(int userRowSpanOverride, int rawWidgetId )
+        {
+            var dashboardItem = GetDashboardItem(rawWidgetId.ToString());
+            if (dashboardItem == null)
+                return;
+
+            dashboardItem.ItemAnnotator.RowSpanOverride = userRowSpanOverride;
+
+            DashboardItemsSave();
         }
     }
 }
