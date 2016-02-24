@@ -27,6 +27,11 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_AUFRUF", value);
 		}
 
+		public static void SetImportParameter_I_EMAIL(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_EMAIL", value);
+		}
+
 		public static void SetImportParameter_I_FORMULAR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FORMULAR", value);

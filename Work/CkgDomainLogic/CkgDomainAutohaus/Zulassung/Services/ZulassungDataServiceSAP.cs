@@ -302,6 +302,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 SAP.SetImportParameter("I_AUFRUF", "2");
                 SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone2);
+                SAP.SetImportParameter("I_EMAIL", LogonContext.UserInfo.Mail);
                 SAP.SetImportParameter("I_SPEICHERN", (saveDataToSap ? "A" : "S"));
 
                 if (!saveFromShoppingCart && zulassungen.Count == 1 && zulassungen[0].BankAdressdaten.Cpdkunde)
