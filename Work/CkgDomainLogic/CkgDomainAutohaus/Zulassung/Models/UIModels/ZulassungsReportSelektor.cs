@@ -8,7 +8,7 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class ZulassungsReportSelektor : Store, IValidatableObject
+    public class ZulassungsReportSelektor : Store, IZulassungsReportSelektor, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.Customer)]
         [FormPersistable]

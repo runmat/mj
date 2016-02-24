@@ -46,7 +46,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         #region Zulassungs Report
 
-        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
+        List<ZulassungsReportModel> GetZulassungsReportItems(IZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
 
         #endregion
 
@@ -57,6 +57,12 @@ namespace CkgDomainLogic.Autohaus.Contracts
         List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError);
 
         ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError);
+
+        #endregion
+
+        #region Statusverfolgung
+
+        List<StatusverfolgungZulassungModel> GetStatusverfolgungItems(string belegNr);
 
         #endregion
     }

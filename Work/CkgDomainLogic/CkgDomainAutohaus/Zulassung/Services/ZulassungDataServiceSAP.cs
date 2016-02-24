@@ -474,7 +474,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         #region Zulassungs Report
 
-        public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
+        public List<ZulassungsReportModel> GetZulassungsReportItems(IZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {
             var iKunnr = selector.KundenNr;
             var iVkOrg = LogonContext.Customer.AccountingArea.ToString();
@@ -757,6 +757,18 @@ namespace CkgDomainLogic.Autohaus.Services
             var ergList = Z_ZLD_DELETE_AH_WARENKORB.GT_BAK.GetExportListWithExecute(SAP);
 
             return (ergList.Any(e => e.ZULBELN == belegNr) ? ergList.First(e => e.ZULBELN == belegNr).MESSAGE : "");
+        }
+
+        #endregion
+
+
+        #region Statusverfolgung
+
+        public List<StatusverfolgungZulassungModel> GetStatusverfolgungItems(string belegNr)
+        {
+            var sapList = Z_ZLD_AH_2015_ZULSTATUS.GT_OUT.GetExportListWithInitExecute(SAP, "I_ZULBELN", belegNr);
+
+            return AppModelMappings.Z_ZLD_AH_2015_ZULSTATUS_GT_OUT_To_StatusverfolgungZulassungModel.Copy(sapList).OrderBy(z => z.StatusDatumUhrzeit).ToList();
         }
 
         #endregion

@@ -102,6 +102,7 @@
     <Compile Include="Controllers\AutohausPartnerUndFahrzeugdaten\AutohausPartnerUndFahrzeugdatenController.cs" />
     <Compile Include="Uebfuehrg\Models\DataModels\WebUploadProtokoll.cs" />
     <Compile Include="Zulassung\Contracts\IZulassungDataService.cs" />
+    <Compile Include="Zulassung\Contracts\IZulassungsReportSelektor.cs" />
     <Compile Include="Zulassung\Models\AuslieferAdresse.cs" />
     <Compile Include="Zulassung\Models\AppModelMappings.cs" />
     <Compile Include="Zulassung\Models\AuslieferAdressen.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Zulassung\Models\DataModels\ZiPoolGrunddaten.cs" />
     <Compile Include="Zulassung\Models\DataModels\ZiPoolDetaildaten.cs" />
     <Compile Include="Zulassung\Models\DataModels\ZiPoolDaten.cs" />
+    <Compile Include="Zulassung\Models\DataModels\StatusverfolgungZulassungModel.cs" />
     <Compile Include="Zulassung\Models\DataModels\Zulassungskreis.cs" />
     <Compile Include="Zulassung\Models\DataModels\Zusatzdienstleistung.cs" />
     <Compile Include="Zulassung\Models\DataModels\Kunde.cs" />
@@ -147,9 +149,12 @@
     <Compile Include="Zulassung\Models\BankAdressdaten.cs" />
     <Compile Include="Zulassung\Models\Fahrzeugdaten.cs" />
     <Compile Include="Zulassung\Models\Versanddaten.cs" />
+    <Compile Include="Zulassung\Models\StatusverfolgungTrackingInfo.cs" />
     <Compile Include="Zulassung\Models\PdfFormular.cs" />
-    <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportModel.cs" />
-    <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportSelektor.cs" />
+    <Compile Include="Zulassung\Models\DataModels\ZulassungsReportModel.cs" />
+    <Compile Include="Zulassung\Models\StatusverfolgungStatusItem.cs" />
+    <Compile Include="Zulassung\Models\UIModels\StatusverfolgungZulassungSelektor.cs" />
+    <Compile Include="Zulassung\Models\UIModels\ZulassungsReportSelektor.cs" />
     <Compile Include="Zulassung\Models\DataModels\Bankdaten.cs" />
     <Compile Include="Zulassung\Models\UIModels\FormulareSelektor.cs" />
     <Compile Include="Zulassung\Models\UIModels\ZiPoolSelektor.cs" />
@@ -158,10 +163,12 @@
     <Compile Include="Zulassung\Models\OptionenDienstleistungen.cs" />
     <Compile Include="Zulassung\Models\Zulassungsdaten.cs" />
     <Compile Include="Zulassung\Models\Rechnungsdaten.cs" />
+    <Compile Include="Zulassung\Models\StatusverfolgungDetails.cs" />
     <Compile Include="Zulassung\Services\Database\ZulassungSqlDbContext.cs" />
     <Compile Include="Zulassung\Services\ZulassungDataServiceTest.cs" />
     <Compile Include="Zulassung\Services\ZulassungDataServiceSAP.cs" />
     <Compile Include="Zulassung\ViewModels\FormulareViewModel.cs" />
+    <Compile Include="Zulassung\ViewModels\StatusverfolgungZulassungViewModel.cs" />
     <Compile Include="Zulassung\ViewModels\ZulassungsReportViewModel.cs" />
     <Compile Include="Zulassung\ViewModels\KroschkeZulassungViewModel.cs" />
     <Compile Include="Partner\Contracts\IPartnerDataService.cs" />

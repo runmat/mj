@@ -1,7 +1,13 @@
 ﻿<style>
 
     .dd-handle {
+        height: auto;
         cursor: auto !important; /* ggf. ändern, wenn onclick-Action benötigt */
+    }
+    
+    .dd-handle table td {
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
     .form-horizontal .control-group {
@@ -97,4 +103,30 @@
         FormPreparePrivateAjax();
     }
 
+    function ShowStatusverfolgungDetails(belegNr) {
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusverfolgung",
+            data: { belegNr: belegNr },
+            loadingShow: true,
+            success: function (result) {
+                $("#StatusverfolgungDialog").html(result);
+                LoadingHide();
+
+                $.magnificPopup.open({
+                    items: { src: $("#StatusverfolgungDialog") },
+                    type: 'inline',
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+    }
+
+    function CloseDetails() {
+        $(".mfp-close").trigger("click");
+    }
+
 </script>
+
+<div id="StatusverfolgungDialog" class="white-popup mfp-hide"></div>
