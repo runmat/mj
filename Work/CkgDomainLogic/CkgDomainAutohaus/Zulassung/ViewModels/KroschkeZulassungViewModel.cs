@@ -178,14 +178,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Rechnungsdaten
 
         [XmlIgnore, ScriptIgnore]
+        public List<Kunde> KundenAll { get { return PropertyCacheGet(() => ZulassungDataService.Kunden); } }
+
+        [XmlIgnore, ScriptIgnore]
         public List<Kunde> Kunden
         {
             get
             {
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
-                    return ZulassungDataService.Kunden.Where(k => !k.Cpdkunde).ToList();
+                    return KundenAll.Where(k => !k.Cpdkunde).ToList();
 
-                return ZulassungDataService.Kunden;
+                return KundenAll;
             }
         }
 
@@ -894,7 +897,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Fahrzeugdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten; } }
+        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => ZulassungDataService.Fahrzeugarten); } }
 
         public void SetFahrzeugdaten(Fahrzeugdaten model)
         {
@@ -1104,7 +1107,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region OptionenDienstleistungen
 
         [XmlIgnore, ScriptIgnore]
-        public List<Kennzeichengroesse> Kennzeichengroessen { get { return ZulassungDataService.Kennzeichengroessen; } }
+        public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => ZulassungDataService.Zusatzdienstleistungen); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => ZulassungDataService.Kennzeichengroessen); } }
 
         public void SetOptionenDienstleistungen(OptionenDienstleistungen model)
         {
@@ -1273,6 +1279,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataMarkForRefresh()
         {
+            PropertyCacheClear(this, m => m.Kunden);
+            PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
+
             InitZulassung(Zulassung);
 
             InitKundenauswahlWarenkorb();
@@ -1297,7 +1306,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (!WarenkorbNurEigeneAuftraege)
             {
                 KundenauswahlWarenkorb.Add(new Kunde("*", Localize.All));
-                KundenauswahlWarenkorb.AddRange(ZulassungDataService.KundenauswahlWarenkorb);
+                KundenauswahlWarenkorb.AddRange(KundenAll);
             }
         }
 
@@ -1305,8 +1314,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             zul.Kunden = Kunden;
 
-            ZulassungDataService.MarkForRefresh();
-            zul.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
+            zul.OptionenDienstleistungen.InitDienstleistungen(Zusatzdienstleistungen);
         }
 
         public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)

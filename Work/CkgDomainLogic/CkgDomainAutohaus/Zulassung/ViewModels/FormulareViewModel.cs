@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Zulassungskreis> Zulassungskreise { get { return DataService.Zulassungskreise; } }
+        public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => DataService.Zulassungskreise); } }
 
         [XmlIgnore]
         public string GewaehlterKreisText {
@@ -53,7 +53,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> FahrzeugArten { get { return DataService.Fahrzeugarten; } }
+        public List<Domaenenfestwert> FahrzeugArten { get { return PropertyCacheGet(() => DataService.Fahrzeugarten); } }
 
         [XmlIgnore]
         public ZiPoolDaten ZiPoolDaten
@@ -75,7 +75,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataInit()
         {
-            DataService.MarkForRefresh();
         }
 
         public string GetKreisByPlz(string plz)

@@ -48,10 +48,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Kunde> Kunden
-        {
-            get { return PropertyCacheGet(() => DataService.Kunden); }
-        }
+        public List<Kunde> Kunden { get { return PropertyCacheGet(() => DataService.Kunden); } }
 
         public StatusverfolgungDetails StatusverfolgungDetails { get; set; }
 

@@ -31,7 +31,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten.Where(f => !string.IsNullOrEmpty(f.Wert)).OrderBy(f => f.Wert).ToList(); } }
+        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => ZulassungDataService.Fahrzeugarten.Where(f => !string.IsNullOrEmpty(f.Wert)).OrderBy(f => f.Wert).ToList()); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Land> LaenderAuswahlliste
@@ -55,8 +55,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataInit()
         {
-            DataMarkForRefresh();
-
             EsdBeauftragung = new EsdBeauftragung
             {
                 AnsprechVorname = LogonContext.FirstName,
@@ -65,11 +63,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AnsprechTelefonNr = LogonContext.UserInfo.Telephone2
             };
             EsdBeauftragung.InitDienstleistungen();
-        }
-
-        public void DataMarkForRefresh()
-        {
-            ZulassungDataService.MarkForRefresh();
         }
 
         public void SetCountryCode(string countryCode)
