@@ -54,7 +54,7 @@
 <script type="text/javascript">
 
     var _logonTimeoutSeconds = @((Session.Timeout - 1) * 60);
-    //_logonTimeoutSeconds = 10;
+    //_logonTimeoutSeconds = 1;
 
     var _logonTimeoutCheckDisabled = false;
     var _logonTimeoutCheckIntervalSeconds = 1;
@@ -290,13 +290,35 @@
         if (!_logonTimeoutCheckDisabled) {
             _logonTimeoutIdleSeconds += _logonTimeoutCheckIntervalSeconds;
             if (_logonTimeoutIdleSeconds > _logonTimeoutSeconds) {
-                alert("Sicherheitshinweis:  Ihre Sitzung ist abgelaufen, aus Sicherheitsgründen bitten wir Sie sich neu anzumelden.");
-                UserLogout();
+                var content =
+                    $("<div></div>")
+                        .addClass("session-timeout-info")
+                        .append($("<div></div>")
+                                    .addClass("alert alert-warning")
+                                    .html("<i class='icon-bell'></i> Sicherheitshinweis:  Ihre Sitzung ist abgelaufen, aus Sicherheitsgründen bitten wir Sie sich neu anzumelden."))
+                        .append($("<button>Ok</button>").addClass("btn blue").attr("onclick", "return InvokeSessionUserLogout();"));
+                        
+                $("#global-popup").html(content);
+                $.magnificPopup.open({
+                    items: { src: $("#global-popup") },
+                    type: 'inline',
+                    alignTop: false,
+                    closeBtnInside: false,
+                    closeOnContentClick: false,
+                    closeOnBgClick: false,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+
                 return;
             }
         }
 
         PrepareCheckSessionTimeout();
+    }
+
+    function InvokeSessionUserLogout() {
+        UserLogout();
+        return false;
     }
 
     function SpanAlert(id, message, delay) {
