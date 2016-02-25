@@ -760,4 +760,50 @@
         <exportPathZip>C:\TEMP\_Test\ARCHIV_WKDA</exportPathZip>
     </TaskKonfiguration>
 
+    <TaskKonfiguration>
+        <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+        <Name>StarCar2</Name>
+        <!--Kundennummer (10-stellig), optional-->
+        <Kundennummer>0000350979</Kundennummer>
+        <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet/SixtMobility)-->
+        <Ablauf>StarCar2</Ablauf>
+        <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+        <AbfrageNachDatum>true</AbfrageNachDatum>
+        <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+        <Abfragedatum>1900-01-01</Abfragedatum>
+        <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+        <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+        <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+        <VerzeichnisseLeeren>true</VerzeichnisseLeeren>
+        <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+        <MailsSenden>true</MailsSenden>
+        <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+        <MailEmpfaenger></MailEmpfaenger>
+        <!--Sollen NoData-Mails (Info, dass Dokument nicht gefunden) versendet werden?-->
+        <NoDataMailsSenden>false</NoDataMailsSenden>
+        <!--Empfänger für NoData-Mails (Info, dass Dokument nicht gefunden)-->
+        <NoDataMailEmpfaenger></NoDataMailEmpfaenger>
+        <!--Archiv-Lagerort-->
+        <easyLocation>STARCAR</easyLocation>
+        <!--<easyBlobPathLocal>C:\TEMP\StarCar\</easyBlobPathLocal>-->
+        <easyBlobPathLocal>C:\TEMP\_Test\StarCar</easyBlobPathLocal>
+        <Archive>
+            <ArchivDefinition>
+                <!--Archivname-->
+                <Name>STARCA</Name>
+                <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+                <Typ>Standard</Typ>
+                <!--Enthält Archivname die Jahreszahl? (true/false)-->
+                <IstJahresarchiv>true</IstJahresarchiv>
+                <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+                <IstJahrVierstellig>false</IstJahrVierstellig>
+            </ArchivDefinition>
+        </Archive>
+        <exportPathZBII></exportPathZBII>
+        <exportPathSteuerB></exportPathSteuerB>
+        <exportPathZip></exportPathZip>
+    </TaskKonfiguration>
+
 </ArrayOfTaskKonfiguration>
