@@ -282,15 +282,6 @@ Namespace Kernel.Security
             End Set
         End Property
 
-        Public Property CurrentLogAccessASPXID() As Integer
-            Get
-                Return m_intCurrentLogAccessASPXID
-            End Get
-            Set(ByVal Value As Integer)
-                m_intCurrentLogAccessASPXID = Value
-            End Set
-        End Property
-
         Public Property DoubleLoginTry() As Boolean
             Get
                 Return m_blnDoubleLoginTry
