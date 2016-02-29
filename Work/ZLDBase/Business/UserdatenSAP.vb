@@ -24,11 +24,8 @@ Namespace Business
 
             If Not m_blnGestartet Then
                 m_blnGestartet = True
-                Dim intID = -1
 
                 Try
-                    intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_ZLD_FILIALEN_ZUM_LZLD", strAppID, strSessionID, m_objUser.CurrentLogAccessASPXID)
-
                     Dim proxy = DynSapProxy.getProxy("Z_ZLD_FILIALEN_ZUM_LZLD", m_objApp, m_objUser, PageHelper.GetCurrentPage())
 
                     proxy.setImportParameter("I_BUKRS", m_objUser.Reference.Substring(0, 4))
@@ -37,16 +34,11 @@ Namespace Business
 
                     proxy.callBapi()
 
-                    If intID > -1 Then
-                        m_objLogApp.WriteEndDataAccessSAP(intID, True)
-                    End If
-
                     Dim gt_web = proxy.getExportTable("GT_ZLD")
                     gt_web.DefaultView.Sort = "VKBUR"
 
                     tempTable = gt_web.DefaultView.ToTable()
 
-                    WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, tempTable, False)
                 Catch ex As Exception
                     m_intStatus = -9999
                     Select Case ex.Message
@@ -55,21 +47,14 @@ Namespace Business
                         Case Else
                             m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                     End Select
-                    If intID > -1 Then
-                        m_objLogApp.WriteEndDataAccessSAP(intID, False, m_strMessage)
-                    End If
-                    WriteLogEntry(False, "KUNNR=" & m_objUser.KUNNR & ", " & Replace(m_strMessage, "<br>", " "), tempTable, False)
                 Finally
-                    If intID > -1 Then
-                        m_objLogApp.WriteStandardDataAccessSAP(intID)
-                    End If
-
                     m_blnGestartet = False
                 End Try
             End If
 
             Return tempTable
         End Function
+
     End Class
 
 End Namespace

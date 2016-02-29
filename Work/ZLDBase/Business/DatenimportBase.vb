@@ -15,11 +15,13 @@ Namespace Business
         Inherits ReportBase
 
 #Region " Declarations"
-        Private m_blnAll As Boolean
+
         Protected m_strFiliale As String
+
 #End Region
 
 #Region " Properties"
+
         Public Property Filiale() As String
             Get
                 Return m_strFiliale
@@ -28,16 +30,17 @@ Namespace Business
                 m_strFiliale = value
             End Set
         End Property
+
 #End Region
 
 #Region " Methods"
+
         Public Sub New(ByRef objUser As Kernel.Security.User, ByVal objApp As Kernel.Security.App, ByVal strFilename As String)
             MyBase.New(objUser, objApp, strFilename)
-            m_blnAll = False
         End Sub
 
         Public Overloads Overrides Sub Fill()
-            FILL(m_strAppID, m_strsessionid)
+            Fill(m_strAppID, m_strSessionID)
         End Sub
 
         '§§§ JVE 13.01.2006
@@ -46,7 +49,7 @@ Namespace Business
         '       Evtl. hilft diese Konstruktion, den Fehler in Zukunft zu vermeiden....
 
         Public Sub FillData(ByVal strAppID As String, ByVal strSessionID As String)
-            FILL(strAppID, strSessionID)
+            Fill(strAppID, strSessionID)
         End Sub
         '-----------------------------------------------------------------------------------------
         Public Overloads Sub FILL(ByVal strAppID As String, ByVal strSessionID As String)
@@ -56,11 +59,7 @@ Namespace Business
             If Not m_blnGestartet Then
                 m_blnGestartet = True
 
-                Dim intID = -1
-
                 Try
-                    intID = m_objLogApp.WriteStartDataAccessSAP(m_objUser.UserName, m_objUser.IsTestUser, "Z_M_Datenimport_Ohne_Briefe", strAppID, strSessionID, m_objUser.CurrentLogAccessASPXID)
-
                     Dim proxy = DynSapProxy.getProxy("Z_M_DATENIMPORT_OHNE_BRIEFE", m_objApp, m_objUser, PageHelper.GetCurrentPage())
                     proxy.setImportParameter("I_KNRZE", m_strFiliale)
                     proxy.setImportParameter("I_KONZS", Right("0000000000" & m_objUser.KUNNR, 10))
@@ -69,14 +68,10 @@ Namespace Business
 
                     proxy.callBapi()
 
-                    If intID > -1 Then
-                        m_objLogApp.WriteEndDataAccessSAP(intID, True)
-                    End If
-
                     Dim tblTemp2 As DataTable = proxy.getExportTable("GT_WEB")
 
                     CreateOutPut(tblTemp2, strAppID)
-                    WriteLogEntry(True, "KNRZE=" & m_strFiliale & ", KONZS=" & m_objUser.KUNNR & ", KUNNR=", m_tblResult, False)
+
                 Catch ex As Exception
                     m_intStatus = -1111
                     Select Case ex.Message
@@ -90,15 +85,7 @@ Namespace Business
                         Case Else
                             m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                     End Select
-                    If intID > -1 Then
-                        m_objlogApp.WriteEndDataAccessSAP(intID, False, m_strMessage)
-                    End If
-                    WriteLogEntry(False, "KNRZE=" & m_strFiliale & ", KONZS=" & m_objUser.KUNNR & ", KUNNR= , " & Replace(m_strMessage, "<br>", " "), m_tblResult, False)
                 Finally
-                    If intID > -1 Then
-                        m_objlogApp.WriteStandardDataAccessSAP(intID)
-                    End If
-
                     m_blnGestartet = False
                 End Try
             End If
@@ -174,54 +161,8 @@ Namespace Business
                 m_tblResult.Rows.Add(rowNew)
             Next
         End Sub
+
 #End Region
+
     End Class
 End Namespace
-
-' ************************************************
-' $History: DatenimportBase.vb $
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 15:02
-' Updated in $/CKAG/Base/Business
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 5.12.08    Time: 12:54
-' Updated in $/CKAG/Base/Business
-' Anpassung ColumnTranslation für DynProxy
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 10.04.08   Time: 17:37
-' Updated in $/CKAG/Base/Business
-' Migration
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 3.04.08    Time: 16:42
-' Created in $/CKAG/Base/Business
-' 
-' *****************  Version 9  *****************
-' User: Uha          Date: 9.08.07    Time: 11:09
-' Updated in $/CKG/Base/Base/Business
-' Spalte "IstZeit" in Translation übernommen
-' 
-' *****************  Version 8  *****************
-' User: Uha          Date: 2.07.07    Time: 15:39
-' Updated in $/CKG/Base/Base/Business
-' Verbindung ASPX-Logging mit BAPI-Logging
-' 
-' *****************  Version 7  *****************
-' User: Uha          Date: 23.05.07   Time: 15:51
-' Updated in $/CKG/Base/Base/Business
-' Aspose.Total.lic ist in eingebettete Ressource umgewandelt; Methode
-' CreateOutPut in DatenimportBase.vb gibt jetzt wieder Datumswerte zurück
-' 
-' *****************  Version 6  *****************
-' User: Uha          Date: 22.05.07   Time: 9:31
-' Updated in $/CKG/Base/Base/Business
-' Nacharbeiten + Bereinigungen
-' 
-' *****************  Version 5  *****************
-' User: Uha          Date: 1.03.07    Time: 16:32
-' Updated in $/CKG/Base/Base/Business
-' 
-' ************************************************
