@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using CKG.Base.Common;
-using System.Data;
 using CKG.Base.Business;
 
 namespace AutohausPortal.lib
@@ -14,10 +10,13 @@ namespace AutohausPortal.lib
     public class Report99 : CKG.Base.Business.DatenimportBase
     {
         #region "Declarations"
+
         String strKennzeichen;
+
         #endregion
 
         #region "Properties"
+
         /// <summary>
         /// Selektierte StVa zur Übergabe an das Bapi.
         /// </summary>
@@ -30,6 +29,7 @@ namespace AutohausPortal.lib
         #endregion
 
         #region "Methods"
+
         /// <summary>
         /// Kontruktor
         /// </summary>
@@ -39,6 +39,7 @@ namespace AutohausPortal.lib
         public Report99(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         { }
+
         /// <summary>
         ///  Datenselektion für die Ausgabe der Dokumentenanforderung(Z_M_ZGBS_BEN_ZULASSUNGSUNT).
         /// </summary>
@@ -68,9 +69,7 @@ namespace AutohausPortal.lib
 
                     myProxy.callBapi();
 
-                    DataTable m_tblResultRaw = new DataTable();
                     m_tblResult = myProxy.getExportTable("GT_WEB");
-                    WriteLogEntry(true, "I_ZKFZKZ=" + strKennzeichen, ref m_tblResult, false);
                 }
 
                 catch (Exception ex)
@@ -80,18 +79,17 @@ namespace AutohausPortal.lib
                         case "NO_DATA":
                             m_intStatus = -5555;
                             m_strMessage = "Keine Daten gefunden.";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
                             break;
                         default:
                             m_intStatus = -9999;
                             m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
                             break;
                     }
                 }
                 finally { m_blnGestartet = false; }
             }
         }
+
         #endregion
     }
 }

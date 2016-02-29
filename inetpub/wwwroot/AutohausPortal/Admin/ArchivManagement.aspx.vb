@@ -7,9 +7,10 @@ Partial Public Class ArchivManagement
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -41,7 +42,9 @@ Partial Public Class ArchivManagement
             m_App.WriteErrorText(1, m_User.UserName, "ArchivManagement", "PageLoad", lblError.Text)
         End Try
     End Sub
+
 #Region " Data and Function "
+
     Private Sub FillForm()
         trEditUser.Visible = False
         trSearchResult.Visible = False
@@ -220,116 +223,9 @@ Partial Public Class ArchivManagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "Archiv")
-        Dim logArchiv As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("ArchivID")) ' intSource 
-        Dim strTask As String = "Admin - Archivverwaltung" ' strTask
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logArchiv.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intArchivId As Int32, ByVal tblPar As DataTable) As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim _Archiv As New Kernel.Archiv(intArchivId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Archiv-Name") = _Archiv.EasyArchivName
-                .Rows(.Rows.Count - 1)("Lagerort-Name") = _Archiv.EasyLagerortName
-                .Rows(.Rows.Count - 1)("QueryIndex") = _Archiv.EasyQueryIndex.ToString
-                .Rows(.Rows.Count - 1)("QueryIndex-Name") = _Archiv.EasyQueryIndexName
-                .Rows(.Rows.Count - 1)("Titel") = _Archiv.EasyTitleName
-                .Rows(.Rows.Count - 1)("DefaultQuery") = _Archiv.DefaultQuery
-                .Rows(.Rows.Count - 1)("Archivetype") = _Archiv.Archivetype
-                .Rows(.Rows.Count - 1)("SortOrder") = _Archiv.SortOrder.ToString
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "ArchivManagement", "SetOldLogParameters", ex.ToString)
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Archiv-Name") = txtEasyArchivName.Text
-                .Rows(.Rows.Count - 1)("Freundlicher Name") = txtEasyLagerortName.Text
-                .Rows(.Rows.Count - 1)("QueryIndex") = txtEasyQueryIndex.Text
-                .Rows(.Rows.Count - 1)("QueryIndex-Name") = txtEasyQueryIndexName.Text
-                .Rows(.Rows.Count - 1)("Titel") = txtEasyTitleName.Text
-                .Rows(.Rows.Count - 1)("DefaultQuery") = txtDefaultQuery.Text
-                .Rows(.Rows.Count - 1)("Archivetype") = txtArchivetype.Text
-                .Rows(.Rows.Count - 1)("SortOrder") = txtSortOrder.Text
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "ArchivManagement", "SetNewLogParameters", ex.ToString)
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Archiv-Name", System.Type.GetType("System.String"))
-            .Columns.Add("Lagerort-Name", System.Type.GetType("System.String"))
-            .Columns.Add("QueryIndex", System.Type.GetType("System.String"))
-            .Columns.Add("QueryIndex-Name", System.Type.GetType("System.String"))
-            .Columns.Add("Titel", System.Type.GetType("System.String"))
-            .Columns.Add("Gehört zu", System.Type.GetType("System.String"))
-            .Columns.Add("DefaultQuery", System.Type.GetType("System.String"))
-            .Columns.Add("Archivetype", System.Type.GetType("System.String"))
-            .Columns.Add("SortOrder", System.Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
-    'Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-    '    Search(True, True, True, True)
-    'End Sub
-
 
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         If dgSearchResult.Rows.Count = 0 Then
@@ -347,20 +243,12 @@ Partial Public Class ArchivManagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
-            Dim conn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-
             cn.Open()
             Dim intArchivId As Integer = CInt(txtArchivID.Text)
-            Dim strLogMsg As String = "Archiv anlegen"
-            If Not (intArchivId = -1) Then
-                strLogMsg = "Archiv ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intArchivId, tblLogParameter)
-            End If
+
             Dim _Archiv As New Kernel.Archiv(intArchivId, _
                                                  txtEasyLagerortName.Text, _
                                                  txtEasyArchivName.Text, _
@@ -372,11 +260,8 @@ Partial Public Class ArchivManagement
                                                  CInt(txtSortOrder.Text))
             Dim typ As Boolean
             _Archiv.Save(cn, typ)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_Archiv.ArchivId.ToString, strLogMsg, tblLogParameter)
-            Search(True, True, , True)
 
+            Search(True, True, , True)
 
             lblMessage.Text = "Die Änderungen wurden gespeichert."
         Catch ex As Exception
@@ -385,8 +270,6 @@ Partial Public Class ArchivManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtArchivID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -395,16 +278,12 @@ Partial Public Class ArchivManagement
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _Archiv As New Kernel.Archiv(CInt(txtArchivID.Text))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_Archiv.ArchivId, tblLogParameter)
             _Archiv.Delete(cn)
-            Log(_Archiv.ArchivId.ToString, "Archiv löschen", tblLogParameter)
             Search(True, True, True, True)
             lblMessage.Text = "Das Archiv wurde gelöscht."
         Catch ex As Exception
@@ -413,8 +292,6 @@ Partial Public Class ArchivManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtArchivID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -425,6 +302,7 @@ Partial Public Class ArchivManagement
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
         Search(True, True, True, True)
     End Sub
+
 #End Region
 
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged

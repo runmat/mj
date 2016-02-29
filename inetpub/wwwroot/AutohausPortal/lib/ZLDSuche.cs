@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data;
 using CKG.Base.Common;
 using System.Data.SqlClient;
 using CKG.Base.Business;
 using System.Configuration;
+
 namespace AutohausPortal.lib
 {   
     /// <summary>
@@ -15,14 +14,17 @@ namespace AutohausPortal.lib
     public class ZLD_Suche : CKG.Base.Business.DatenimportBase
     {
         #region "Declarations"
+
         DataTable m_tblResultRaw;
         String m_strKennzeichen;
         String m_strPLZ;
         String m_strZulassungspartner;
         String m_strZulassungspartnerNr;
+
         #endregion
 
         #region "Properties"
+
         public String Zulassungspartner
         {
             get { return m_strZulassungspartner; }
@@ -154,16 +156,19 @@ namespace AutohausPortal.lib
             get;
             set;
         }
+
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public ZLD_Suche(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         { } 
+
         #endregion
         
         #region "Methods"
+
         /// <summary>
         /// Dokumentenanforderung der Zulassungsstellen
         /// Bapi Z_M_BAPIRDZ
@@ -214,7 +219,6 @@ namespace AutohausPortal.lib
                         default:
                             m_intStatus = -9999;
                             m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            WriteLogEntry(false, "ZKFZKZ=" + m_strKennzeichen + ", POST_CODE1=" + m_strPLZ + ", NAME1=" + m_strZulassungspartner + ", REMARK=" + m_strZulassungspartnerNr + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
                             break;
                     }
                 }

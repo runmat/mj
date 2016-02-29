@@ -1,5 +1,4 @@
 ﻿Imports CKG.Base.Kernel.Admin
-Imports CKG.Base.Kernel.Security.Crypto
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Business
@@ -13,10 +12,7 @@ End Structure
 Partial Public Class UserManagement
     Inherits System.Web.UI.Page
 
-    Private objSuche As CKG.Base.Kernel.Common.Search
-
     Protected WithEvents GridNavigation1 As Global.Admin.GridNavigation
-    Private Const CONST_LOESCHKENNZEICHEN As String = "X"
 
 #Region " Membervariables "
     Private m_User As User
@@ -49,6 +45,7 @@ Partial Public Class UserManagement
     End Sub
 
 #Region " Data and Function "
+
     Private Sub FillHierarchy()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -904,143 +901,6 @@ Partial Public Class UserManagement
         If blnRefillDataGrid Then FillDataGrid(blnNotApproved)
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Benutzerverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intUserId As Int32, ByVal tblPar As DataTable) As DataTable
-        Try
-            Dim _User As New User(intUserId, m_User.App.Connectionstring)
-
-            If tblPar Is Nothing OrElse tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Benutzername") = _User.UserName
-                .Rows(.Rows.Count - 1)("Kunden- referenz") = _User.Reference
-                .Rows(.Rows.Count - 1)("Test") = _User.IsTestUser
-                .Rows(.Rows.Count - 1)("Firmen- Administrator") = _User.IsCustomerAdmin
-                .Rows(.Rows.Count - 1)("Firma") = _User.Customer.CustomerName
-                If _User.Groups.HasGroups Then
-                    .Rows(.Rows.Count - 1)("Gruppe") = _User.Groups(0).GroupName
-                Else
-                    .Rows(.Rows.Count - 1)("Gruppe") = "-"
-                End If
-                .Rows(.Rows.Count - 1)("Organisations- Administrator") = _User.Organization.OrganizationAdmin
-                .Rows(.Rows.Count - 1)("Organisation") = _User.Organization.OrganizationName
-                .Rows(.Rows.Count - 1)("letzte Kennwortänderung") = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
-                .Rows(.Rows.Count - 1)("Kennwort läuft nie ab") = _User.PasswordNeverExpires
-                .Rows(.Rows.Count - 1)("fehlgeschlagene Anmeldungen") = _User.FailedLogins.ToString
-                .Rows(.Rows.Count - 1)("Konto gesperrt") = _User.AccountIsLockedOut
-                .Rows(.Rows.Count - 1)("Angemeldet") = _User.LoggedOn
-                .Rows(.Rows.Count - 1)("ReadMessageCount") = _User.ReadMessageCount
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal _User As User, ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing OrElse tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Benutzername") = txtUserName.Text
-                .Rows(.Rows.Count - 1)("Kunden- referenz") = txtReference.Text
-                .Rows(.Rows.Count - 1)("Test") = cbxTestUser.Checked
-                .Rows(.Rows.Count - 1)("Firmen- Administrator") = cbxCustomerAdmin.Checked
-                .Rows(.Rows.Count - 1)("Firma") = ddlCustomer.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Gruppe") = ddlGroups.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Organisations- Administrator") = cbxOrganizationAdmin.Checked
-                .Rows(.Rows.Count - 1)("Organisation") = ddlOrganizations.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Kennwort läuft nie ab") = cbxPwdNeverExpires.Checked
-                Dim strPw As String = ""
-                'Dim intCount As Integer
-                'For intCount = 1 To txtPassword.Text.Length
-                strPw &= "*"
-                'Next
-                .Rows(.Rows.Count - 1)("neues Kennwort") = strPw
-                Dim strPw2 As String = ""
-                'For intCount = 1 To txtConfirmPassword.Text.Length
-                strPw2 &= "*"
-                'Next
-                .Rows(.Rows.Count - 1)("Kennwortbestätigung") = strPw2
-
-                .Rows(.Rows.Count - 1)("letzte Kennwortänderung") = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
-                .Rows(.Rows.Count - 1)("fehlgeschlagene Anmeldungen") = _User.FailedLogins.ToString
-                .Rows(.Rows.Count - 1)("Konto gesperrt") = _User.AccountIsLockedOut
-                .Rows(.Rows.Count - 1)("Angemeldet") = _User.LoggedOn
-                .Rows(.Rows.Count - 1)("ReadMessageCount") = CInt(txtReadMessageCount.Text)
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Benutzername", System.Type.GetType("System.String"))
-            .Columns.Add("Kunden- referenz", System.Type.GetType("System.String"))
-            .Columns.Add("Test", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firmen- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Gruppe", System.Type.GetType("System.String"))
-            .Columns.Add("Organisations- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Organisation", System.Type.GetType("System.String"))
-            .Columns.Add("letzte Kennwortänderung", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwort läuft nie ab", System.Type.GetType("System.Boolean"))
-            .Columns.Add("fehlgeschlagene Anmeldungen", System.Type.GetType("System.String"))
-            .Columns.Add("Konto gesperrt", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Angemeldet", System.Type.GetType("System.Boolean"))
-            .Columns.Add("neues Kennwort", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwortbestätigung", System.Type.GetType("System.String"))
-            .Columns.Add("ReadMessageCount", System.Type.GetType("System.Int32"))
-        End With
-        Return tblPar
-    End Function
-
     '-------
     'Sperrung durch
     '-------
@@ -1076,77 +936,6 @@ Partial Public Class UserManagement
 #End Region
 
 #Region "SAP / BAPI-Aufrufe"
-
-    '-----------
-    'Liest die Distrikte und Berechtigungen aus SAP
-    '-----------
-    Private Sub ReadDistrictsAndRights()
-        Dim Districts As CKG.Base.Kernel.Common.Search
-        Dim SessionID As String = Session.SessionID.ToString
-        Dim AppID As String = "601"
-        Dim i As Integer
-        Dim _customer As New Customer(CInt(ddlCustomer.SelectedItem.Value), m_User.App.Connectionstring)
-        Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
-        Districts = New CKG.Base.Kernel.Common.Search(m_App, _User, SessionID, AppID)
-        i = Districts.Show(txtUserID.Text, Right("0000000000" & _customer.KUNNR, 10))
-
-        m_Rights = Districts.Rights
-        Dim count As Integer = m_Rights.Rows.Count
-        m_Districts = Districts.Districts
-    End Sub
-
-    '-----------
-    'Speichert die Berechtigungen nach SAP
-    '-----------
-    Private Sub SetDistrictRights(ByVal Rights As DataTable)
-        Dim Districts As CKG.Base.Kernel.Common.Search
-        Dim SessionID As String = Session.SessionID.ToString
-        Dim AppID As String = "601"
-        Dim _User As New User(CInt(txtUserID.Text), m_User.App.Connectionstring)
-
-        Districts = New CKG.Base.Kernel.Common.Search(m_App, _User, SessionID, AppID)
-        Districts.Rights = Rights
-        Districts.Change()
-    End Sub
-
-    Private Function Get_Applications(ByVal GroupId As Integer) As ArrayList
-        Dim Connection As New SqlClient.SqlConnection()
-        Dim Command As New SqlClient.SqlCommand()
-        Dim Applications As ArrayList = New ArrayList()
-
-        Try
-            Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
-
-            With Command
-                .Connection = Connection
-                .CommandType = CommandType.Text
-                'Nur Parent-Applikationen lesen
-                .CommandText = "SELECT DISTINCT Application.AppID As AppID, AppName, AppFriendlyName FROM Rights, Application WHERE Rights.GroupID = @GroupID AND Rights.AppID = Application.AppID AND Application.AppParent = 0 ORDER BY AppFriendlyName ASC"
-                .Parameters.AddWithValue("@GroupID", GroupId)
-            End With
-
-            Connection.Open()
-            Dim DataReader As SqlClient.SqlDataReader
-            DataReader = Command.ExecuteReader()
-            Dim Application As Appl
-            While DataReader.Read
-                Application = New Appl()
-                Application.Id = CType(DataReader("AppID"), Integer)
-                Application.Name = DataReader("AppName").ToString
-                Application.FriendlyName = DataReader("AppFriendlyName").ToString
-                Applications.Add(Application)
-            End While
-            Connection.Close()
-        Catch ex As Exception
-            If Connection.State = ConnectionState.Open Then
-                Connection.Close()
-            End If
-            lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-        End Try
-
-        Return Applications
-
-    End Function
 
     Private Sub SetDomainUser(ByVal intUserId As Integer)
         Dim Connection As New SqlClient.SqlConnection()
@@ -1276,133 +1065,6 @@ Partial Public Class UserManagement
     End Function
 #End Region
 
-#Region "Helper"
-
-    '------------
-    'Liefert einen Filterausdruck für das Rights-DataTable
-    '------------
-    Private Function GetFilterExpression(ByVal kundennr As String, ByVal districtID As String, ByVal groupname As String, ByVal vorbelegung As String, ByVal ApplicationId As String, ByVal ohneGeloeschte As Boolean, ByVal invertDistrikt As Boolean) As String
-
-        'Werte aufbereiten
-        kundennr = Right("0000000000" + kundennr, 10)
-
-        'Ausdruck erstellen
-        Dim needAND As Boolean = False
-
-        Dim res As New System.Text.StringBuilder()
-        If Not kundennr Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" KUNNR = '" + kundennr + "' ")
-            needAND = True
-        End If
-        If Not districtID Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" DISTRIKT ")
-            If invertDistrikt Then
-                res.Append(" <> ")
-            Else
-                res.Append(" = ")
-            End If
-            res.Append(" '" + districtID + "' ")
-            needAND = True
-        End If
-        If Not groupname Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" BENGRP = '" + groupname + "' ") ' groupname=UserID
-            needAND = True
-        End If
-        If Not vorbelegung Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" VORBELEGT = '" + vorbelegung + "' ")
-            needAND = True
-        End If
-        If Not ApplicationId Is Nothing Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" ANWENDUNG = '" + ApplicationId + "' ")
-            needAND = True
-        End If
-        If ohneGeloeschte Then
-            If needAND Then res.Append(" AND ")
-            res.Append(" LOEKZ = '' ")
-            needAND = True
-        End If
-
-        Return res.ToString()
-
-    End Function
-
-    '-----------
-    'Liefert alle Rights-Checkboxes für alle, ein Distrikt oder alle Distrikte außer dem einem
-    '-----------
-    Private Function GetRightsCheckboxes(ByVal ctrls As IEnumerator, ByVal DistriktID As String, ByVal invertDistrikt As Boolean) As CheckBox()
-        Dim cbox As CheckBox
-        Dim row As TableRow
-        Dim cell As TableCell
-        Dim res As New ArrayList()
-        While ctrls.MoveNext
-            If TypeOf ctrls.Current Is TableRow Then
-                row = CType(ctrls.Current, TableRow)
-                If row.HasControls Then
-                    res.AddRange(GetRightsCheckboxes(row.Controls.GetEnumerator(), DistriktID, invertDistrikt))
-                End If
-            End If
-            If TypeOf ctrls.Current Is TableCell Then
-                cell = CType(ctrls.Current, TableCell)
-                If cell.HasControls Then
-                    res.AddRange(GetRightsCheckboxes(cell.Controls.GetEnumerator(), DistriktID, invertDistrikt))
-                End If
-            End If
-            If TypeOf ctrls.Current Is CheckBox Then
-                cbox = CType(ctrls.Current, CheckBox)
-                If Not cbox.Attributes("ApplicationID") Is Nothing Then
-                    'Alle Distrikte ODER (einen distrikt ODER die Invertierung)
-                    If (DistriktID Is Nothing) OrElse (invertDistrikt Xor DistriktID = cbox.Attributes("DistriktId")) Then
-                        res.Add(cbox)
-                    End If
-                End If
-            End If
-        End While
-
-        Return CType(res.ToArray(GetType(CheckBox)), CheckBox())
-
-    End Function
-
-    '-------
-    'Liefert den ausgewählten Radio-Button
-    '-------
-    Private Function GetSelectedDistrictRadioButton(ByVal ctrls As IEnumerator) As RadioButton
-        Dim rdo As RadioButton
-        Dim row As TableRow
-        Dim cell As TableCell
-        While ctrls.MoveNext
-            If TypeOf ctrls.Current Is TableRow Then
-                row = CType(ctrls.Current, TableRow)
-                If row.HasControls Then
-                    Dim res As RadioButton = GetSelectedDistrictRadioButton(row.Controls.GetEnumerator())
-                    If Not res Is Nothing Then Return res
-                End If
-            End If
-            If TypeOf ctrls.Current Is TableCell Then
-                cell = CType(ctrls.Current, TableCell)
-                If cell.HasControls Then
-                    Dim res As RadioButton = GetSelectedDistrictRadioButton(cell.Controls.GetEnumerator())
-                    If Not res Is Nothing Then Return res
-                End If
-            End If
-            If TypeOf ctrls.Current Is RadioButton Then
-                rdo = CType(ctrls.Current, RadioButton)
-                If rdo.Checked Then
-                    Return rdo
-                End If
-            End If
-        End While
-
-        Return Nothing
-
-    End Function
-
-#End Region
-
     Protected Sub btnUpload_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUpload.Click
         Try
             If Not (upFile.PostedFile.FileName = String.Empty) Then
@@ -1464,7 +1126,6 @@ Partial Public Class UserManagement
         End Try
     End Sub
 
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
         SetEndASPXAccess(Me)
         HelpProcedures.FixedGridViewCols(dgSearchResult)
@@ -1485,11 +1146,7 @@ Partial Public Class UserManagement
         BuildExcel()
     End Sub
 
-
 #Region " Events "
-    'Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-    '    Search(True, True, True, True)
-    'End Sub
 
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         Dim editNotApproved As Boolean = False
@@ -1553,7 +1210,6 @@ Partial Public Class UserManagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim strPwd As String = String.Empty
         Dim bInitialPswd As Boolean = False
 
@@ -1688,11 +1344,6 @@ Partial Public Class UserManagement
 
             Dim strLogMsg As String = "User anlegen"
             Dim strTemp As String = txtUserID.Text
-            If Not (txtUserID.Text = "-1") Then
-                strLogMsg = "User ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
-            End If
 
             Dim intGroupID As Integer
 
@@ -1785,9 +1436,6 @@ Partial Public Class UserManagement
             Else
                 lblError.Text = _User.ErrorMessage
             End If
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
-            Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
             If blnSuccess Then
                 lblMessageSave.Text = "Die Änderungen wurden gespeichert."
@@ -1897,18 +1545,13 @@ Partial Public Class UserManagement
             If Not ex.InnerException Is Nothing Then
                 lblErrorSave.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtUserID.Text, lblError.Text, tblLogParameter, "ERR")
         End Try
 
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Try
             Dim _User As New User()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
             If _User.Delete(CInt(txtUserID.Text), m_User.App.Connectionstring, m_User.UserName) Then
                 DeleteDomainUser(_User.UserID)
                 lblMessage.Text = "Das Benutzerkonto wurde gelöscht."
@@ -1916,7 +1559,6 @@ Partial Public Class UserManagement
             Else
                 lblError.Text = _User.ErrorMessage
             End If
-            Log(_User.UserID.ToString, "User löschen", tblLogParameter)
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "UserManagement", "lbtnDelete_Click", ex.ToString)
 
@@ -1924,8 +1566,6 @@ Partial Public Class UserManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtUserID.Text, lblError.Text, tblLogParameter, "ERR")
         End Try
 
         Session("UsernameStart") = Nothing
@@ -2005,7 +1645,6 @@ Partial Public Class UserManagement
 #End Region
 
     Private Sub BuildExcel()
-        Dim _context As HttpContext = HttpContext.Current
         Dim dvUser As DataView
         Dim tableExport As New DataTable()
 
@@ -2199,7 +1838,6 @@ Partial Public Class UserManagement
         ' FillDataGrid(False)
         FillDataGrid(lblNotApprovedMode.Visible)
     End Sub
-
 
     Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
 
