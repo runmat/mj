@@ -118,7 +118,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     BestandsNr = row[0].ToString(),
                     Lizenz = row[1].ToString(),
                     Name1 = row[2].ToString(),
-                    Ansprechpartner = row[3].ToString(),
+                    Name2 = row[3].ToString(),
                     Strasse = row[4].ToString(),
                     PLZ = row[5].ToString(),
                     Ort = row[6].ToString(),
@@ -227,6 +227,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void SaveUploadItems()
         {
+            foreach (var item in ValidUploadItems)
+            {
+                if (item.Name1.NotNullOrEmpty().Length < 2 && !string.IsNullOrEmpty(item.Name2))
+                    item.Name1 = item.Name2;
+            }
+
             SaveErrorMessage = "";
 
             var fatalErrorMessage = DataService.SaveVersandBeauftragung(ValidUploadItems, false,
