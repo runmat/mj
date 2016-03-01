@@ -91,6 +91,9 @@ namespace CkgDomainLogic.CoC.Models
                     case "4":
                         keySuffix = "UPS";
                         break;
+                    case "5":
+                        keySuffix = "GLS";
+                        break;
                 }
 
                 var key = string.Format("Url_{0}", keySuffix);
