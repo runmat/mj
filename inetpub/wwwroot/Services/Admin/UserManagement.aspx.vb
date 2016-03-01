@@ -2909,7 +2909,7 @@ Partial Public Class UserManagement
 
         Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, txtReference2.Text, txtReference3.Text, cbxReference4.Checked, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
                                    cbxCustomerAdmin.Checked, masterUser.PasswordNeverExpires, masterUser.AccountIsLockedOut,
-                                   cbxFirstLevelAdmin.Checked, masterUser.LoggedOn, masterUser.Organization.OrganizationAdmin, m_User.App.Connectionstring, masterUser.ReadMessageCount,
+                                   cbxFirstLevelAdmin.Checked, masterUser.LoggedOn, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring, masterUser.ReadMessageCount,
                                    m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom, masterUser.ValidTo)
 
         Dim intGroupID = If(ddlGroups.Items.Count = 0, 0, CInt(ddlGroups.SelectedValue))
@@ -2936,7 +2936,7 @@ Partial Public Class UserManagement
         Dim intOrganizationID = If(ddlOrganizations.Items.Count = 0, 0, CInt(ddlOrganizations.SelectedValue))
 
         If changedUser.Save() Then
-            changedUser.Organization.ReAssignUserToOrganization(m_User.UserName, changedUser.UserID.ToString, changedUser.UserID, intOrganizationID, masterUser.Organization.OrganizationAdmin, m_User.App.Connectionstring)
+            changedUser.Organization.ReAssignUserToOrganization(m_User.UserName, changedUser.UserID.ToString, changedUser.UserID, intOrganizationID, cbxOrganizationAdmin.Checked, m_User.App.Connectionstring)
 
             lblMasterUser.Text = "Der Masteruser wurde geändert."
             lblMasterUser.CssClass = ""
