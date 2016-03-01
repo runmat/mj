@@ -371,11 +371,11 @@ Public Class Report06
                 For i As Integer = tblTemp.Columns.Count - 1 To 0 Step -1
                     Dim bVisibility As Integer = 0
                     Dim col2 As DataColumn = tblTemp.Columns(i)
-                    If col2.ColumnName.ToUpper = col.SortExpression.ToUpper OrElse col2.ColumnName.ToUpper = col.HeaderText.ToUpper.Replace("COL_", "") Then
+                    If col2.ColumnName = "ZZREFERENZ2" Then
+                        col2.ColumnName = "SLIM_CONFIRMED"
+                    ElseIf col2.ColumnName.ToUpper = col.SortExpression.ToUpper OrElse col2.ColumnName.ToUpper = col.HeaderText.ToUpper.Replace("COL_", "") Then
                         Dim sColName As String = TranslateColLbtn(DataGrid1, tblTranslations, col.HeaderText, bVisibility)
-                        If col2.ColumnName = "ZZREFERENZ2" Then
-                            col2.ColumnName = "SLIM CONFIRMED"
-                        ElseIf bVisibility = 0 Then
+                        If bVisibility = 0 Then
                             tblTemp.Columns.Remove(col2)
                         ElseIf sColName.Length > 0 Then
                             col2.ColumnName = sColName
