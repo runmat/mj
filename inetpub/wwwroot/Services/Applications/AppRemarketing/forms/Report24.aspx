@@ -237,8 +237,12 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="90px" />
                                                         <ItemStyle Wrap="false" />                                                        
+                                                    </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="50px" />
+                                                        <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>

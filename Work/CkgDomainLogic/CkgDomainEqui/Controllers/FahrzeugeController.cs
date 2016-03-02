@@ -58,6 +58,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(UploadAvislisteViewModel, appSettings, logonContext, uploadAvislisteDataService);
             InitViewModel(CarporterfassungViewModel, appSettings, logonContext, carporterfassungDataService);
             InitViewModel(SperrenEntsperrenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
+            InitViewModel(FloorcheckViewModel, appSettings, logonContext, fahrzeugeDataService);
         }
 
         private void InitModelStatics()

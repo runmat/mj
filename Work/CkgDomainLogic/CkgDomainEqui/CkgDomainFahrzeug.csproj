@@ -112,6 +112,7 @@
     <Compile Include="Controllers\Fahrzeuguebersicht\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fahrzeugvoravisierung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
+    <Compile Include="Controllers\Floorcheck\FahrzeugeController.cs" />
     <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
@@ -233,6 +234,8 @@
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenEntsperrenSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugVersand.cs" />
+    <Compile Include="Fahrzeuge\Models\FloorcheckHaendler.cs" />
+    <Compile Include="Fahrzeuge\Models\Floorcheck.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikett.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikettSelektor.cs" />
@@ -282,6 +285,7 @@
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\FloorcheckViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\UploadAvislisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\CarporterfassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\UploadZb2VersandViewModel.cs" />

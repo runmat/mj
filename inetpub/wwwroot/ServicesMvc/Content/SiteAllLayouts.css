@@ -1416,6 +1416,12 @@ div.span-alert-placeholder .alert {
 .grayed {
     opacity: 0.4!important;
 }
+.control-group-raw {
+    display: inline-block;
+}
+.wysiwyg-localization-icon {
+    cursor: pointer;    
+}
 
 .report-generator-buttons, .report-generator-wrapper {
     display: inline-block;

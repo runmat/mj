@@ -659,6 +659,43 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+
+        static public ModelMapping<Z_DPM_RETAIL_FLOORCHECK_01.GT_HAENDLER, FloorcheckHaendler> Z_DPM_RETAIL_FLOORCHECK_01_GT_HAENDLER_To_FloorcheckHaendler
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_RETAIL_FLOORCHECK_01.GT_HAENDLER, FloorcheckHaendler>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {                        
+                        d.HaendlerNummer = s.KUNNR_BEIM_AG;
+                        d.HaendlerOrt = s.CITY1;
+                        d.HaendlerName = s.NAME;                       
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_RETAIL_FLOORCHECK_01.GT_DATEN, Floorcheck> Z_DPM_RETAIL_FLOORCHECK_01_GT_DATEN_To_Floorcheck
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_RETAIL_FLOORCHECK_01.GT_DATEN, Floorcheck>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Marke = s.ZZHERST_TEXT;
+                        d.Handelsname = s.ZZHANDELSNAME;
+                        d.Verwendung = s.FAHRZEUGART;
+                        d.Farbe = s.ZFARBE_TEXT;
+                        d.Versandgrund = s.VERS_GRUND;
+                        d.Kilometerstand = s.KM_STAND;
+                        d.Kreditnummer = s.PAID.TrimStart('0');
+                    }));
+            }
+        }
+
+
         #endregion
 
 
