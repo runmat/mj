@@ -41,7 +41,9 @@ namespace CkgDomainLogic.Equi.Models
                     new Standort("1602", "Ingolstadt SD"),
                     new Standort("1603", "Gebrauchtwagen"),
                     new Standort("1604", "Ingolstadt MFC"),
+                    new Standort("1610", "Ingolstadt E-Neuwagen"),
                     new Standort("1651", "Neckarsulm Neuwagen"),
+                    new Standort("1653", "Neckarsulm E-Neuwagen")
                 };
             }
         }
