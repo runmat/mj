@@ -132,6 +132,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             DataMarkForRefresh();
 
             StoredFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
+
+            // endgültig versendete Vorgänge rausnehmen
+            UploadItems.RemoveAll(u => StoredFahrzeuge.Any(s => s.Ref2 == u.BestandsNr && s.Info == "Bereits endgültig versendet!"));
+
             UploadItems.ForEach(u => ValidateSingleUploadItem(u, StoredFahrzeuge));
         }
 
@@ -230,7 +234,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             foreach (var item in ValidUploadItems)
             {
                 if (item.Name1.NotNullOrEmpty().Length < 2 && !string.IsNullOrEmpty(item.Name2))
+                {
                     item.Name1 = item.Name2;
+                    item.Name2 = "";
+                }
             }
 
             SaveErrorMessage = "";
@@ -242,10 +249,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                     var matchingVersandAuftrag = ValidUploadItems.FirstOrDefault(v => v.VIN == fin);
                     var error = matchingVersandAuftrag != null
-                                    ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage)
-                                    : string.Format("FIN {0}: {1}", fin, errorMessage);
+                                        ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage)
+                                        : string.Format("FIN {0}: {1}", fin, errorMessage);
 
-                    SaveErrorMessage += SaveErrorMessage.ReplaceIfNotNull("; ") + error;
+                    SaveErrorMessage = SaveErrorMessage.ReplaceIfNotNull("; ") + error;
                 });
 
             if (fatalErrorMessage.IsNotNullOrEmpty())
