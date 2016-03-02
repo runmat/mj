@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Configuration;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using GeneralTools.Services;
 
 namespace CkgImportLocalizationResourcesFromDb
 {

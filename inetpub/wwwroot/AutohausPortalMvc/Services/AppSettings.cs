@@ -61,11 +61,13 @@ namespace AutohausPortalMvc.Services
 
         public IEnumerable<string> GetAddressPostcodeCityMappings(string plz)
         {
-            throw new NotImplementedException();
+            return new List<string>();
         }
 
         public int TokenExpirationMinutes { get; private set; }
-
+        public string CustomCssFile { get { return ""; } }
+        public string PortalWelcomeMessageStartLocalized { get { return ""; } }
+        public string PortalWelcomeMessageEndLocalized { get { return ""; } }
 
         #region Implementation of ISmtpSettings
 
