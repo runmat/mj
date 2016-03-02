@@ -629,21 +629,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
                 }
             }
-
-            if (subModel is Fahrzeug)
-            {
-                var storedFahrzeug = (Fahrzeug)LogonContext.DataContextRestore(typeof(Fahrzeug).GetFullTypeName());
-                if (storedFahrzeug != null)
-                {
-                    var subModelFahrzeug = subModel as Fahrzeug;
-
-                    subModelFahrzeug.Fahrzeugklasse = storedFahrzeug.Fahrzeugklasse;
-                    subModelFahrzeug.Fahrzeugwert = storedFahrzeug.Fahrzeugwert;
-                    subModelFahrzeug.FahrzeugZugelassen = storedFahrzeug.FahrzeugZugelassen;
-                    subModelFahrzeug.ZulassungBeauftragt = storedFahrzeug.ZulassungBeauftragt;
-                    subModelFahrzeug.Bereifung = storedFahrzeug.Bereifung;
-                }
-            }
         }
 
         private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten, bool initRgDatenOnly = false)
