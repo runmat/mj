@@ -1021,7 +1021,7 @@ Partial Public Class Login
     End Function
 
     Public Sub RedirectFromLoginPage(webUser As User)
-        If (webUser.Customer.MvcLayoutAsWebFormsInline Or Not webUser.Customer.HasMvcApplicationsOnly) Then
+        If (webUser.Customer.MvcLayoutAsWebFormsInline Or Not webUser.Customer.HasMvcApplicationsOnly Or webUser.HighestAdminLevel > AdminLevel.None) Then
             FormsAuthentication.RedirectFromLoginPage(webUser.UserID.ToString, False)
         Else
             Dim servicesMvsRootUrl As String = ErpBaseMvc.MVC.MvcPrepareUrl("", "", webUser.UserName)

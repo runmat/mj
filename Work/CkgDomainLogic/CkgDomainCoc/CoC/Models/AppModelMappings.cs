@@ -447,7 +447,8 @@ namespace CkgDomainLogic.CoC.Models
                         d.ZulassungsDatum = s.VDATU;
                         d.VersandID = s.ZZSEND2;
                         d.VertragsNr = s.ZZREFNR;
-                        d.VersandKey = s.FRACHRFUEHRER == "DPE" ? "1" : s.FRACHRFUEHRER == "TNT" ? "2" : s.FRACHRFUEHRER == "GO" ? "3" : s.FRACHRFUEHRER == "UPS" ? "4" : "";                        
+                        d.VersandKey = s.FRACHRFUEHRER == "DPE" ? "1" : s.FRACHRFUEHRER == "TNT" ? "2" : s.FRACHRFUEHRER == "GO" ? "3" 
+                                                                      : s.FRACHRFUEHRER == "UPS" ? "4" : s.FRACHRFUEHRER == "GLS" ? "5" : "";                        
                     }));
             }
         }

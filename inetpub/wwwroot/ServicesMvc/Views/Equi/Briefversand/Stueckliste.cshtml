@@ -13,13 +13,13 @@
 
 @Html.SpanAlert("Message")
 
-@(Html.Telerik()
-    .Grid<StuecklistenKomponente>()
+@(Html.XTelerik()
+    .XGrid<StuecklistenKomponente>()
     .Name(gridName)
     .XAjaxDataBinding("StuecklistenAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("")
+            columns.XBound(c => c.Action)
                 .ClientTemplate("<# if (data.EntgueltigVersandt) { #> <span><i class='icon-ok-circle margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.UniqueId #>' onchange='OnSelectionChange_GridStuecklistenAuswahl($(this))' /> <# } #>")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridStuecklistenAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
                 .Filterable(false);
