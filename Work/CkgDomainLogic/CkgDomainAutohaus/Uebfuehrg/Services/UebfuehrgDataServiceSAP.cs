@@ -67,8 +67,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
                 {
                     var sapItems = Z_M_IMP_AUFTRDAT_007.GT_WEB.GetExportListWithInitExecute(SAP,
                                                                                             "I_KUNNR, I_KENNUNG, I_NAME1, I_PSTLZ, I_ORT01",
-                                                                                            AuftragGeberOderKundenNr.ToSapKunnr(),
-                                                                                            //KundenNr.ToSapKunnr(),
+                                                                                            LogonContext.KundenNr.ToSapKunnr(),
                                                                                             type, "*", "*", "*");
                     var webItems = AppModelMappings.Z_M_IMP_AUFTRDAT_007_GT_WEB_To_Adresse.Copy(sapItems).OrderBy(w => w.Name1).ToList();
                     webItems.ForEach(item =>
