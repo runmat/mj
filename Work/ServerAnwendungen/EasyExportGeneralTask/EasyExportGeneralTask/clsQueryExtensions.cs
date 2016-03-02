@@ -297,6 +297,11 @@ namespace EasyExportGeneralTask
                             }
                             cls.SavePictureWKDA(ref LC, logDS, ref row, taskConfig, dataObjWkda);
                             break;
+
+                        case AblaufTyp.StarCar2:
+                            strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
+                            cls.SavePictureStarCar2(ref LC, logDS, ref row, taskConfig);
+                            break;
                     }
                 }
                 else
@@ -1069,6 +1074,28 @@ namespace EasyExportGeneralTask
 
             // ursprüngliche Datei löschen
             File.Delete(row["Filepath"].ToString());
+        }
+
+        public static void SavePictureStarCar2(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
+        {
+            object iStatus;
+            object status = "";
+
+            Console.WriteLine("Wait... for " + row["FAHRGESTELLNUMMER"]);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+
+            Thread.Sleep(2000);
         }
     }
 }

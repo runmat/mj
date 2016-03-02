@@ -5,6 +5,15 @@ using GeneralTools.Contracts;
 
 namespace CkgDomainLogic.General.Database.Models
 {
+    public enum AdminLevel
+    {
+        Master = 4,
+        FirstLevel = 3,
+        Customer = 2,
+        Organization = 1,
+        None = 0
+    }
+
     [Table("WebUser")]
     public class User : IUserSecurityRuleDataProvider
     {
@@ -46,6 +55,10 @@ namespace CkgDomainLogic.General.Database.Models
         public string UserSalutation { get { return string.Format("{0} {1}", Title, LastName); } }
 
         public string UrlRemoteLoginKey { get; set; }
+
+        public bool CustomerAdmin { get; set; }
+
+        public bool FirstLevelAdmin { get; set; }
 
         
         #region User Security Rules

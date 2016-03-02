@@ -57,13 +57,13 @@ else
 
 @Html.SpanAlert("Message")
 
-@(Html.Telerik()
-    .Grid<Fahrzeugbrief>()
+@(Html.XTelerik()
+    .XGrid<Fahrzeugbrief>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Equi")
     .Columns(columns =>
         {
-            columns.XBound("")
+            columns.XBound(c => c.Action)
                 .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' /> <# } #>")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
                 .Filterable(false);
