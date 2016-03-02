@@ -9,22 +9,32 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_DPM_READ_EQUI_STL_02
+	public partial class Z_DPM_READ_MELD_OPAV_02
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_DPM_READ_EQUI_STL_02).Name);
+			sap.Init(typeof(Z_DPM_READ_MELD_OPAV_02).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_DPM_READ_EQUI_STL_02).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_DPM_READ_MELD_OPAV_02).Name, inputParameterKeys, inputParameterValues);
 		}
 
 
-		public static void SetImportParameter_I_EQUNR(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KUNNRS(ISapDataService sap, string value)
 		{
-			sap.SetImportParameter("I_EQUNR", value);
+			sap.SetImportParameter("I_KUNNRS", value);
+		}
+
+		public static void SetImportParameter_I_QMDAT(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_QMDAT", value);
+		}
+
+		public static string GetExportParameter_E_DATA_FOUND(ISapDataService sap)
+		{
+			return sap.GetExportParameter<string>("E_DATA_FOUND").NotNullOrEmpty().Trim();
 		}
 
 		public partial class GT_OUT : IModelMappingApplied
@@ -39,23 +49,13 @@ namespace SapORM.Models
 
 			public string CHASSIS_NUM { get; set; }
 
-			public string LICENSE_NUM { get; set; }
+			public DateTime? REPLA_DATE { get; set; }
 
-			public string IDNRK { get; set; }
+			public string KUNNR_ZP { get; set; }
 
-			public string STLKN { get; set; }
+			public string NAME1_ZP { get; set; }
 
-			public string MAKTX { get; set; }
-
-			public string STATUS_AKTUELL { get; set; }
-
-			public string STATUS_TEXT { get; set; }
-
-			public string MENGE_C { get; set; }
-
-			public DateTime? ANDAT { get; set; }
-
-			public DateTime? ZZTMPDT { get; set; }
+			public string SMTP_ADDR { get; set; }
 
 			private bool MappingErrorProcessed { get; set; }
 
@@ -71,15 +71,10 @@ namespace SapORM.Models
 						DynSapProxyFactory = dynSapProxyFactory,
 
 						CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-						LICENSE_NUM = (string)row["LICENSE_NUM"],
-						IDNRK = (string)row["IDNRK"],
-						STLKN = (string)row["STLKN"],
-						MAKTX = (string)row["MAKTX"],
-						STATUS_AKTUELL = (string)row["STATUS_AKTUELL"],
-						STATUS_TEXT = (string)row["STATUS_TEXT"],
-						MENGE_C = (string)row["MENGE_C"],
-						ANDAT = string.IsNullOrEmpty(row["ANDAT"].ToString()) ? null : (DateTime?)row["ANDAT"],
-						ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
+						REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+						KUNNR_ZP = (string)row["KUNNR_ZP"],
+						NAME1_ZP = (string)row["NAME1_ZP"],
+						SMTP_ADDR = (string)row["SMTP_ADDR"],
 					};
 				}
 				catch(Exception e)
@@ -143,7 +138,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_EQUI_STL_02", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_MELD_OPAV_02", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -173,7 +168,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_OUT>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_EQUI_STL_02", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_MELD_OPAV_02", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -193,7 +188,7 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_EQUI_STL_02.GT_OUT> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_MELD_OPAV_02.GT_OUT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
