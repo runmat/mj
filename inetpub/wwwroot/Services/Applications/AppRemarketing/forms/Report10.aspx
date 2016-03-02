@@ -207,18 +207,22 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCORT" SortExpression="HCORT" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="115px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="115px" />
                                                         <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="GUTAUFTRAGDAT" SortExpression="GUTAUFTRAGDAT" DataFormatString="{0:d}" >
-                                                        <HeaderStyle Width="105px" />
+                                                        <HeaderStyle Width="80px" />
+                                                    </telerik:GridBoundColumn>
+                                                     <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="75px" />
+                                                        <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridTemplateColumn Groupable="false" UniqueName="Bearbeiten" >
                                                         <HeaderStyle Width="30px" />

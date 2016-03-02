@@ -436,7 +436,7 @@ namespace CkgDomainLogic.General.Services
         {
             if (Customer != null)
                 LogoutUrl = Customer.LogoutLink;
-        }
+    }
 
         public AdminLevel HighestAdminLevel
         {
@@ -457,5 +457,5 @@ namespace CkgDomainLogic.General.Services
                 return AdminLevel.None;
             }
         }
-    }
+}
 }

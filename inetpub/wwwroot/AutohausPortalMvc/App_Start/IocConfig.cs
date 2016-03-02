@@ -17,7 +17,9 @@ using GeneralTools.Services;
 using MvcTools.Data;
 using MvcTools.Web;
 using PortalMvcTools.Services;
+using Telerik.Web.Mvc.Infrastructure;
 using WebTools.Services;
+using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
 
 namespace AutohausPortalMvc.App_Start
 {
@@ -50,9 +52,14 @@ namespace AutohausPortalMvc.App_Start
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
+        public static void RegisterTelerikLocalizationAdapterServiceFactory()
+        {
+            DI.Current.Register<ILocalizationServiceFactory>(() => new TelerikLocalizationAdapterServiceFactory());
+        }
 
         public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder)
         {
+            RegisterTelerikLocalizationAdapterServiceFactory();
 
             var appSettingsType = typeof(AppSettings);
             builder.RegisterType(appSettingsType).As<IAppSettings>().InstancePerHttpRequest().PropertiesAutowired();
@@ -61,16 +68,14 @@ namespace AutohausPortalMvc.App_Start
             builder.RegisterType<SmtpMailService>().As<IMailService>().InstancePerHttpRequest();
             builder.RegisterType<WebSecurityService>().As<ISecurityService>().InstancePerHttpRequest();
             builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerHttpRequest();
+            builder.RegisterType<TranslationService>().As<ITranslationService>().InstancePerLifetimeScope();
+            builder.RegisterType<LogonContextProvider>().As<ILogonContextProvider>().InstancePerLifetimeScope();
 
-            //var logonSettingsType = typeof(LogonContextDataServiceAutohaus);
-            //builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest().PropertiesAutowired();
             var appSettings = new CkgDomainAppSettings();
             var logonSettingsType = (appSettings.IsClickDummyMode ? typeof(LogonContextTestAutohaus) : typeof(LogonContextDataServiceAutohaus));
             builder.RegisterType(logonSettingsType).As<ILogonContextDataService>().InstancePerHttpRequest()
                 .PropertiesAutowired();
 
-            builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();
-            builder.RegisterType<SessionDataHelper>().As<ISessionDataHelper>().InstancePerHttpRequest();
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
             builder.RegisterType<UeberfuehrungDataServiceSAP>().As<IUeberfuehrungDataService>().InstancePerHttpRequest();
             builder.RegisterType<AutohausFeinstaubVergabeDataServiceSAP>().As<IAutohausFeinstaubVergabeDataService>().InstancePerHttpRequest();

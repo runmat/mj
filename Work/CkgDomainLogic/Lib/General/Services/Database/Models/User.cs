@@ -60,7 +60,7 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool FirstLevelAdmin { get; set; }
         
-
+        
         #region User Security Rules
 
         public bool UserIsApproved { get { return Approved; } }
