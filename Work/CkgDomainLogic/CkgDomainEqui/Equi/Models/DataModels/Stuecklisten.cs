@@ -1,7 +1,6 @@
 ﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
-
 namespace CkgDomainLogic.Equi.Models
 {
     public class Stuecklisten
@@ -27,5 +26,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]
         public System.DateTime? Eingangsdatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.DateOfDispatch)]
+        public System.DateTime? Versanddatum { get; set; }
     }
 }

@@ -210,12 +210,16 @@
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="115px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" UniqueName="MODELLGRP" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="115px" />
                                                         <ItemStyle Wrap="false" />                                                        
+                                                    </telerik:GridBoundColumn>
+                                                     <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="50px" />
+                                                        <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
