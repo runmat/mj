@@ -2,22 +2,22 @@
 Option Strict On
 Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Base.Business
 
 Public Class Change03
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Declarations"
+
     Private m_App As Security.App
     Private m_User As Security.User
-    Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
+    Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
     Private m_change As VFS03
 
 #End Region
 
-
 #Region "Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
         GetAppIDFromQueryString(Me)
@@ -28,12 +28,12 @@ Public Class Change03
         m_App = New Security.App(m_User)
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
 
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
@@ -46,7 +46,7 @@ Public Class Change03
         FillGrid(pageindex)
     End Sub
 
-    Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridView1.RowCommand
+    Private Sub GridView1_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridView1.RowCommand
 
         If e.CommandName = "Update" Then
 
@@ -79,11 +79,11 @@ Public Class Change03
             ddlAnzahlKennzeichen.Items.Clear()
             Dim item As ListItem
             Dim intLoop As Integer
-            For intLoop = 1 To 4
+            For intLoop = 1 To 19
                 item = New ListItem(intLoop.ToString, intLoop.ToString)
                 ddlAnzahlKennzeichen.Items.Add(item)
             Next
-            For intLoop = 5 To 75 Step 5
+            For intLoop = 20 To 75 Step 5
                 item = New ListItem(intLoop.ToString, intLoop.ToString)
                 ddlAnzahlKennzeichen.Items.Add(item)
             Next
@@ -105,10 +105,7 @@ Public Class Change03
 
             Adresse &= GridView1.Rows(index).Cells(4).Text & "<br />"
 
-            'lbl = CType(GridView1.Rows(index).FindControl("lblSTREET"), Label)
-
-            'Adresse &= lbl.Text & " "
-
+            Adresse &= GridView1.Rows(index).Cells(5).Text & "<br />"
 
             lbl = CType(GridView1.Rows(index).FindControl("lblSTREET"), Label)
 
@@ -133,17 +130,11 @@ Public Class Change03
 
             Adresse &= lbl.Text & "<br/><br/>"
 
-            'Adresse &= "E-Mail: "
-
             lblAdresse.Text = Adresse
 
             lbl = CType(GridView1.Rows(index).FindControl("lblSMTP_ADDR"), Label)
 
             txtEmailAdresse.Text = lbl.Text
-
-
-
-
 
 
             'Abweichende Adresse
@@ -184,7 +175,6 @@ Public Class Change03
                 AdresseWE &= lbl.Text
             End If
 
-            lblAdresse.Text = Adresse
             lblAdresseWe.Text = AdresseWE
 
             lblLastOrder.Text = ""
@@ -209,16 +199,16 @@ Public Class Change03
 
     End Sub
 
-    Private Sub GridView1_RowUpdating(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewUpdateEventArgs) Handles GridView1.RowUpdating
+    Private Sub GridView1_RowUpdating(ByVal sender As Object, ByVal e As GridViewUpdateEventArgs) Handles GridView1.RowUpdating
 
     End Sub
 
-    Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView1.Sorting
+    Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex)
     End Sub
 
-
 #End Region
+
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
 
         Dim AdressTable As DataTable
@@ -306,7 +296,7 @@ Public Class Change03
 
         m_change.SperreGrund = RadioButtonList1.SelectedValue
 
-        m_change.GetGesperrte(CStr(Request.QueryString("AppID")), Session.SessionID.ToString, Me.Page)
+        m_change.GetGesperrte(CStr(Request.QueryString("AppID")), Session.SessionID.ToString, Page)
 
         If m_change.LastOrderAdress Is Nothing OrElse m_change.LastOrderAdress.Rows.Count = 0 Then
             lblError.Text = "Es wurden keine Daten zur Anzeige gefunden."
@@ -319,6 +309,7 @@ Public Class Change03
 
         End If
     End Sub
+
     Private Sub disableControls(ByVal Enable As Boolean)
         GridView1.Enabled = Enable
         NewSearch.Enabled = Enable
@@ -331,6 +322,7 @@ Public Class Change03
         lnkCreateExcel.Enabled = Enable
 
     End Sub
+
     Protected Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
 
 
@@ -366,7 +358,7 @@ Public Class Change03
             ErrorInfo &= "Bitte im Feld ""Anzahl aap-Vordrucke"" einen numerischen Wert eingeben."
         End If
         If ErrorInfo.Length = 0 Then
-            m_change.Freigabe(sAgentur, lblAuftragsnummer.Text, Me.Page)
+            m_change.Freigabe(sAgentur, lblAuftragsnummer.Text, Page)
 
             UpdateValues("Freigegeben")
 
@@ -395,14 +387,13 @@ Public Class Change03
 
         Next
 
-        m_change.Storno(sAgentur, lblAuftragsnummer.Text, Me.Page)
+        m_change.Storno(sAgentur, lblAuftragsnummer.Text, Page)
 
         UpdateValues("Storniert")
 
         disableControls(True)
         mb.Visible = False
     End Sub
-
 
     Private Sub UpdateValues(ByVal Status As String)
 
@@ -430,16 +421,14 @@ Public Class Change03
 
     End Sub
 
-
     Protected Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
         Response.Redirect("../../../Start/Selection.aspx?AppID=" & Session("AppID").ToString, False)
     End Sub
 
-    Private Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lnkCreateExcel.Click
+    Private Sub lnkCreateExcel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkCreateExcel.Click
 
         Dim reportExcel As DataTable
         Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
-        Dim sPath As String = ConfigurationManager.AppSettings("ExcelPath")
         reportExcel = CType(Session("ResultExcel"), DataTable)
 
         reportExcel.AcceptChanges()
@@ -448,7 +437,7 @@ Public Class Change03
         excelFactory.CreateDocumentAndSendAsResponse(strFileName, reportExcel, Me)
     End Sub
 
-    Private Sub NewSearch_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles NewSearch.Click
+    Private Sub NewSearch_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles NewSearch.Click
         tab1.Visible = Not tab1.Visible
         btnConfirm.Visible = Not btnConfirm.Visible
     End Sub
@@ -457,64 +446,5 @@ Public Class Change03
         disableControls(True)
         mb.Visible = False
     End Sub
+
 End Class
-' ************************************************
-' $History: Change03.aspx.vb $
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 7.02.11    Time: 16:49
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 16.12.10   Time: 12:16
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 14.12.10   Time: 15:18
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 2.12.10    Time: 15:00
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 11.11.10   Time: 14:28
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 26.02.10   Time: 9:29
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 20.01.10   Time: 15:54
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 7  *****************
-' User: Rudolpho     Date: 20.01.10   Time: 15:40
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 6  *****************
-' User: Rudolpho     Date: 20.01.10   Time: 15:29
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 5  *****************
-' User: Rudolpho     Date: 6.01.10    Time: 14:50
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 4  *****************
-' User: Rudolpho     Date: 5.01.10    Time: 15:33
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 3  *****************
-' User: Rudolpho     Date: 27.11.09   Time: 13:18
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 2  *****************
-' User: Rudolpho     Date: 26.11.09   Time: 17:03
-' Updated in $/CKAG2/Applications/AppInsurance/forms
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 26.10.09   Time: 14:30
-' Created in $/CKAG2/Applications/AppInsurance/forms
-' ITA: 3249, 3206
-' 

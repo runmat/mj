@@ -188,11 +188,11 @@
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="KENNZ" SortExpression="KENNZ" >
-                                                        <HeaderStyle Width="85px" />
+                                                        <HeaderStyle Width="75px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="INVENTAR" SortExpression="INVENTAR" >
-                                                        <HeaderStyle Width="85px" />
+                                                        <HeaderStyle Width="75px" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="AVNR" SortExpression="AVNR" >
                                                         <HeaderStyle Width="85px" />
@@ -209,10 +209,14 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
-                                                        <HeaderStyle Width="105px" />
-                                                    </telerik:GridBoundColumn>
+                                                        <HeaderStyle Width="90px" />
+                                                    </telerik:GridBoundColumn>                                                                                                                                                            
                                                     <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="80px" />
+                                                        <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>                                                    
+                                                    <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="75px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >

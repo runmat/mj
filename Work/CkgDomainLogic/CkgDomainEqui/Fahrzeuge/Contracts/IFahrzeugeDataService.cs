@@ -39,5 +39,9 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<Fzg> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
 
         string ZulassungSave(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
+
+        List<FloorcheckHaendler> GetFloorcheckHaendler(FloorcheckHaendler haendler);
+
+        List<Floorcheck> GetFloorchecks(string haendlerNo);
     }
 }
