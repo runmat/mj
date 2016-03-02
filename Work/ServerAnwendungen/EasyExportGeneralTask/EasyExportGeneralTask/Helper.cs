@@ -38,11 +38,12 @@ namespace EasyExportGeneralTask
         /// <param name="text"></param>
         /// <param name="empfaenger"></param>
         /// <param name="dateipfad">sendet die angegebene Datei als Anhang mit</param>
-        public static void SendEMail(string betreff, string text, string empfaenger, string dateipfad)
+        /// <param name="absender">abweichender Absender - optional</param>
+        public static void SendEMail(string betreff, string text, string empfaenger, string dateipfad, string absender = null)
         {
             string strBetreff = betreff;
             string strText = text;
-            string strAbsender = Konfiguration.mailAbsender;
+            string strAbsender = (absender ?? Konfiguration.mailAbsender);
             string strEmpfaenger = empfaenger;
             string strDateiname = dateipfad;
 
@@ -63,6 +64,46 @@ namespace EasyExportGeneralTask
             if ((!String.IsNullOrEmpty(strDateiname)) && (File.Exists(strDateiname)))
             {
                 mail.Attachments.Add(new Attachment(strDateiname));
+            }
+
+            SmtpClient mailserver = new SmtpClient(Konfiguration.mailSmtpServer);
+            mailserver.Send(mail);
+        }
+
+        /// <summary>
+        /// EMail versenden
+        /// </summary>
+        /// <param name="betreff"></param>
+        /// <param name="text"></param>
+        /// <param name="empfaenger"></param>
+        /// <param name="dateiBytes">sendet die angegebene Datei als Anhang mit</param>
+        /// <param name="dateiName">Name für den Dateianhang</param>
+        /// <param name="absender">abweichender Absender - optional</param>
+        public static void SendEMail(string betreff, string text, string empfaenger, byte[] dateiBytes, string dateiName, string absender = null)
+        {
+            string strBetreff = betreff;
+            string strText = text;
+            string strAbsender = (absender ?? Konfiguration.mailAbsender);
+            string strEmpfaenger = empfaenger;
+
+            // Für Tests Mailempfänger umschalten
+            if (!Konfiguration.isProdSap)
+            {
+                strEmpfaenger = Konfiguration.mailEmpfaengerTest;
+            }
+
+            MailMessage mail = new MailMessage
+            {
+                From = new MailAddress(strAbsender),
+                Subject = strBetreff,
+                Body = strText
+            };
+
+            mail.To.Add(strEmpfaenger.Replace(';', ','));
+
+            if (dateiBytes != null)
+            {
+                mail.Attachments.Add(new Attachment(new MemoryStream(dateiBytes), dateiName));
             }
 
             SmtpClient mailserver = new SmtpClient(Konfiguration.mailSmtpServer);

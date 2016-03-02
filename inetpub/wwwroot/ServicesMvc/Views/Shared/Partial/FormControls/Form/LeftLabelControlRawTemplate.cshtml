@@ -1,0 +1,64 @@
+﻿@using MvcTools.Contracts
+@using MvcTools.Models
+@model FormControlModel
+
+@{
+    var formSettingsAdminMode = ViewContext.Controller.GetPropertyValueIfIs<IGridSettingsAdministrationProvider, bool>(o => o.GridSettingsAdminMode);
+    var formSettingsButtonAvailable = (formSettingsAdminMode && Model.ControlHtml != null && !Model.ModelTypeName.NotNullOrEmpty().ToLower().Contains("gridadminviewmodel"));
+    var partialViewContext = SessionHelper.GetPartialViewContextCurrent();
+
+    var additionalClass = "";
+    if (Model.IsCollapsed)
+    {
+        additionalClass = " hide";
+    }
+    else if (Model.IsGrayed)
+    {
+        additionalClass = " grayed";
+    }
+}
+
+<div class="control-group-raw @additionalClass">
+    
+    @if (!Model.LabelHidden && !Model.LabelPositionRight)
+    {
+        @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+    }
+    @if (formSettingsButtonAvailable)
+    {
+        <span>
+            <i class="icon-wrench wysiwyg-localization-icon" 
+                    data-model-type-name="@Model.ModelTypeName" 
+                    data-property-name="@Model.PropertyName" 
+                    data-partial-view-context="@partialViewContext"
+                    onclick="return FormSettingsAdminMode_EditFormControls($(this));">
+            </i>
+        </span>
+    }
+           
+    @if (Model.IsCheckBox && (Model.LabelHidden || Model.LabelPositionRight ) && Model.PostControlHtml == null)
+    {
+        <label class="checkbox">
+            @Model.ControlHtml
+            @Model.DisplayNameHtml @Model.PerstistenceIndicatorHtml
+        </label>
+    }
+    else
+    {
+        @Model.ControlHtml
+        if (Model.IsCheckBox)
+        {
+            <span>&nbsp;</span>
+        }
+        if (Model.LabelPositionRight)
+        {
+            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+        }
+    }
+
+    @if (Model.ValidationMessageHtml != null)
+    {
+        @Model.ValidationMessageHtml
+    }
+        
+</div>

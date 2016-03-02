@@ -331,7 +331,7 @@ Namespace Kernel.Security
                     If cn.State = ConnectionState.Closed Then
                         cn.Open()
                     End If
-                    Dim cmd As New SqlClient.SqlCommand("select COUNT(cr.AppID) from CustomerRights cr left outer join Application app on cr.AppID = app.AppID and app.AppURL like 'mvc/%' where cr.CustomerID = @CustomerID and app.AppID is null", cn)
+                    Dim cmd As New SqlClient.SqlCommand("select COUNT(cr.AppID) from CustomerRights cr left outer join Application app on cr.AppID = app.AppID and (app.AppURL like 'mvc/%' or app.AppURL like 'http%') where cr.CustomerID = @CustomerID and app.AppID is null", cn)
                     cmd.Parameters.AddWithValue("@CustomerID", m_intCustomerID)
                     countNoMvcApps = CInt(cmd.ExecuteScalar)
 

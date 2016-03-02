@@ -165,7 +165,7 @@
                                                 <HeaderStyle ForeColor="White" />
                                                 <Columns>
                                                     <telerik:GridBoundColumn DataField="POS_TEXT" SortExpression="POS_TEXT" >
-                                                        <HeaderStyle Width="100px" />
+                                                        <HeaderStyle Width="70px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="FAHRGNR" SortExpression="FAHRGNR" >
@@ -181,19 +181,23 @@
                                                         <HeaderStyle Width="80px" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="KMSTAND" SortExpression="KMSTAND" >
-                                                        <HeaderStyle Width="80px" />
+                                                        <HeaderStyle Width="70px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="GUTADAT" SortExpression="GUTADAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="105px" />
                                                     </telerik:GridBoundColumn>
                                                    <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="130px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" SortExpression="MODELLGRP" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="130px" />
                                                         <ItemStyle Wrap="false" />                                                        
+                                                    </telerik:GridBoundColumn>
+                                                     <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="50px" />
+                                                        <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>

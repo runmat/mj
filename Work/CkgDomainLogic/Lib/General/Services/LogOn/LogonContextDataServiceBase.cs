@@ -48,7 +48,7 @@ namespace CkgDomainLogic.General.Services
         public string RightName { get; set; }
 
         public virtual bool HasLocalizationTranslationRights { get { return false; } }
-        
+
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserNameForDisplay { get; set; }
 
@@ -87,7 +87,7 @@ namespace CkgDomainLogic.General.Services
 
         public UserGroup Group { get; set; }
 
-        public Organization Organization { get; set; }
+        public UserOrganization Organization { get; set; }
 
         public List<IApplicationUserMenuItem> UserApps { get; set; }
 
@@ -437,5 +437,25 @@ namespace CkgDomainLogic.General.Services
             if (Customer != null)
                 LogoutUrl = Customer.LogoutLink;
     }
+
+        public AdminLevel HighestAdminLevel
+        {
+            get
+            {
+                if (Customer.Master && User.CustomerAdmin)
+                    return AdminLevel.Master;
+
+                if (User.FirstLevelAdmin)
+                    return AdminLevel.FirstLevel;
+
+                if (User.CustomerAdmin)
+                    return AdminLevel.Customer;
+
+                if (Organization.OrganizationAdmin)
+                    return AdminLevel.Organization;
+
+                return AdminLevel.None;
+            }
+        }
 }
 }
