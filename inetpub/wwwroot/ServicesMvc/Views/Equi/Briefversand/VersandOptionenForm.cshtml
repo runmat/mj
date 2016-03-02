@@ -10,6 +10,8 @@
 
         @Html.FormValidationSummary()
 
+        @Html.FormMultiColumnModeStart("auto")
+
 
         @Html.FormDropDownListFor(m => m.VersandOptionKey, Model.OptionenList.ToSelectList(), new {@class = "m-wrap large"},
             postControlHtml: @<text><div id="hint-postfach-adresse" class="alert alert-warning no-margin hide">@Localize.EnforcePostDeliveryHint</div> </text>)
@@ -34,6 +36,9 @@
             @Html.HiddenFor(m => m.Bemerkung)
             @Html.HiddenFor(m => m.VersandGrundKey)
         }
+
+        @Html.FormMultiColumnModeEnd("auto")
+
 
         @Html.FormRequiredFieldsSummary()
 

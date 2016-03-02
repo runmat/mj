@@ -1,0 +1,121 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model CkgDomainLogic.Fahrzeuge.ViewModels.FloorcheckViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeug_Floorcheck</h3>
+
+<style type="text/css">  
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div>
+    @using (Html.FormSearchBox())
+    {
+        @*<div id="search1">*@
+            @Html.Partial("Floorcheck/FloorcheckSuche", null)
+        @*</div>*@
+        @*<div id="search2" class="">
+            @Html.Partial("Floorcheck/FloorcheckSuche2", null)
+        </div>*@
+    }
+</div>
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divFloorcheckGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+    var _appStateGridData = 0;
+
+    function FormPreparePrivate() {        
+    }
+  
+    function ShowPreviousSearchForm() {             
+        
+        $.ajax({
+            type: "POST",
+            url: "ResetSelect",
+        });
+      
+        $("#search2").hide();
+        $("#search1").show();
+        $("#btnback").hide();
+    }
+
+    function ShowFloorcheckHaendler() {
+                                                      
+        $("#search1").hide();
+        $("#search2").show();
+        $("#btnback").show();        
+
+        console.log(_appStateGridData);
+
+        if (_appStateGridData > 0)
+            ShowFloorcheck();
+    }
+
+    function OnHaendlerSelect() {
+
+        var sel = $('#FloorcheckHaendler_SelectedHaendlerNummer').val();
+        $.ajax({
+            type: "POST",
+            url: "SelectHaendler",
+            data: { val: sel }
+        });
+    }
+
+
+    function FormPreparePrivateAjax() {
+        //$("#divFloorcheckSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+
+    function ShowFloorcheck() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFloorcheck",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowFloorcheckSearchResult(result);
+                LoadingHide();
+            }
+        });       
+    }
+
+    function OnDataBound_GridFloorcheck() {
+        //alert("Entry_OnDataBound_GridFloorcheck");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        //alert("OnDataBound_GridFloorcheck");
+    }
+
+    function OnLoad_GridFloorcheck() {        
+        //$('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridFloorcheck() {        
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFloorcheck() {        
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowFloorcheckSearchResult(result) {
+        SearchFormHide();
+        $("#divFloorcheckGrid").html(result);      
+        GridAllColumnFilterApplyToGrid("GridFloorcheck");
+        $("#divFloorcheckGrid").slideDown();      
+    }
+
+    
+</script>
