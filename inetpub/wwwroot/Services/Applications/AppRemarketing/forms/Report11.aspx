@@ -296,15 +296,19 @@
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCNAME" SortExpression="HCNAME" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="80px" />
                                                         <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="MODELLGRP" UniqueName="MODELLGRP" >
-                                                        <HeaderStyle Width="140px" />
+                                                        <HeaderStyle Width="115px" />
                                                         <ItemStyle Wrap="false" />                                                        
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="HCEINGDAT" SortExpression="HCEINGDAT" DataFormatString="{0:d}" >
-                                                        <HeaderStyle Width="118px" />
+                                                        <HeaderStyle Width="118px" />                                                                                                                                                      
+                                                    </telerik:GridBoundColumn>                                                    
+                                                    <telerik:GridBoundColumn DataField="MODELL" SortExpression="MODELL" >
+                                                        <HeaderStyle Width="75px" />
+                                                        <ItemStyle Wrap="false" />
                                                     </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="GUTAUFTRAGDAT" SortExpression="GUTAUFTRAGDAT" DataFormatString="{0:d}" >
                                                         <HeaderStyle Width="132px" />

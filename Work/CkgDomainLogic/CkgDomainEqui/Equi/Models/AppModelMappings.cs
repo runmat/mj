@@ -856,11 +856,12 @@ namespace CkgDomainLogic.Equi.Models
                     , (s, d) =>
                     {
                         d.Fahrgestellnummer = s.CHASSIS_NUM;
-                        d.Kennzeichen = s.LICENSE_NUM;                        
+                        d.Kennzeichen = s.LICENSE_NUM;
                         d.Materialnummer = s.IDNRK;
                         d.Bezeichnung = s.MAKTX;
                         d.Status = s.STATUS_TEXT;
-                        d.Eingangsdatum = s.ANDAT;                                                                       
+                        d.Eingangsdatum = s.ANDAT;
+                        d.Versanddatum = s.ZZTMPDT;
                     }));
             }
         }

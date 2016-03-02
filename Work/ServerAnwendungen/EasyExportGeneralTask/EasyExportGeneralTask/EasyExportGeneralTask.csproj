@@ -73,6 +73,10 @@
       <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
       <Name>SapORM.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Tools\DocumentTools\DocumentTools.csproj">
+      <Project>{ABF5DC33-24DB-426C-B18A-A09A4D1BF213}</Project>
+      <Name>DocumentTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>

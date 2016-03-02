@@ -129,7 +129,8 @@ namespace EasyExportGeneralTask
         Autoinvest,
         Europcar,
         WKDA,
-        WKDA_Selbstabmelder
+        WKDA_Selbstabmelder,
+        StarCar2
     }
 
     public class ArchivDefinition

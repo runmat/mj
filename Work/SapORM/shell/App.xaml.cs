@@ -447,7 +447,9 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_STAMMDATEN");
 
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_MELD_OPAV_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_STL_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_RETAIL_FLOORCHECK_01");
 
             #endregion
 

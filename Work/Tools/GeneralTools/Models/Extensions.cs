@@ -683,6 +683,30 @@ namespace GeneralTools.Models
             return DateTime.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
 
+        public static DateTime ParseYyyyDateTimeCultureIndependently(this string sDate)
+        {
+            try
+            {
+                if (sDate.IsNullOrEmpty() || sDate.Length < 8)
+                    return DateTime.Today;
+
+                sDate = sDate.Replace("-", ".").Replace("/", ".");
+                if (sDate.Length < 10)
+                    return DateTime.ParseExact(sDate, "dd.MM.yy", new CultureInfo("de-DE"));
+
+                if (sDate.SubstringTry(0, 4).Contains("."))
+                    return DateTime.ParseExact(sDate, "dd.MM.yyyy", new CultureInfo("de-DE"));
+
+                return DateTime.ParseExact(sDate, "yyyy.MM.dd", new CultureInfo("de-DE"));
+            }
+            catch
+            {
+                return DateTime.Today;
+            }
+
+            return DateTime.Today;
+        }
+
         public static bool In(this string stringValue, IEnumerable<string> liste)
         {
             return (stringValue != null && liste.Contains(stringValue));
