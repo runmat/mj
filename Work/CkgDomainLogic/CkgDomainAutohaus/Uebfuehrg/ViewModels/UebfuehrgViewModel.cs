@@ -520,7 +520,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             Laender = DataService.Laender;
             DomainCommon.Models.Adresse.Laender = Laender;
 
-            KundenAusHierarchie = DataService.KundenAusHierarchie;
+            KundenAusHierarchie = (IstKroschke ? DataService.KundenAusHierarchie : new List<KundeAusHierarchie>());
             RechnungsAdressen = DataService.GetRechnungsAdressen();
         }
 
@@ -629,21 +629,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                         subModelRgDaten.ReKundenNr = storedRgDaten.ReKundenNr;
                 }
             }
-
-            if (subModel is Fahrzeug)
-            {
-                var storedFahrzeug = (Fahrzeug)LogonContext.DataContextRestore(typeof(Fahrzeug).GetFullTypeName());
-                if (storedFahrzeug != null)
-                {
-                    var subModelFahrzeug = subModel as Fahrzeug;
-
-                    subModelFahrzeug.Fahrzeugklasse = storedFahrzeug.Fahrzeugklasse;
-                    subModelFahrzeug.Fahrzeugwert = storedFahrzeug.Fahrzeugwert;
-                    subModelFahrzeug.FahrzeugZugelassen = storedFahrzeug.FahrzeugZugelassen;
-                    subModelFahrzeug.ZulassungBeauftragt = storedFahrzeug.ZulassungBeauftragt;
-                    subModelFahrzeug.Bereifung = storedFahrzeug.Bereifung;
-                }
-            }
         }
 
         private void PrepareRgDatenFahrtAdressenTransportTypen(RgDaten rgDaten, bool initRgDatenOnly = false)
@@ -655,6 +640,11 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             {
                 var agKundenNr = userHasSeparateCustomerNo ? userSeparateCustomerNo.ToString() : rgDaten.AgKundenNr;
                 rgDaten.KundenNr = agKundenNr;
+                if (userHasSeparateCustomerNo)
+                {
+                    rgDaten.KundenNrUser = agKundenNr;
+                    rgDaten.AgKundenNr = agKundenNr;
+                }
 
                 if (rgDaten.KundenNr != DataService.KundenNr)
                 {
@@ -667,7 +657,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             rgDaten.GetKundenAusHierarchie = () => KundenAusHierarchie;
             rgDaten.GetRechnungsAdressen = () => RechnungsAdressen;
 
-            if (IstKroschke)
+            if (userHasSeparateCustomerNo || IstKroschke)
             {
                 if (String.IsNullOrEmpty(rgDaten.RgKundenNr))
                     rgDaten.RgKundenNr = rgDaten.RgAdressen.First().KundenNr;
