@@ -377,6 +377,41 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return zulassenErrorMessage;
         }
 
+        public List<FloorcheckHaendler> GetFloorcheckHaendler(FloorcheckHaendler haendler)
+        {            
+            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (!String.IsNullOrEmpty(haendler.HaendlerNummer))
+                SAP.SetImportParameter("I_HAENDLER", haendler.HaendlerNummer);
+
+            if (!String.IsNullOrEmpty(haendler.HaendlerName))
+                SAP.SetImportParameter("I_NAME", haendler.HaendlerName);
+
+            if (!String.IsNullOrEmpty(haendler.HaendlerOrt))
+                SAP.SetImportParameter("I_ORT", haendler.HaendlerOrt);
+
+            SAP.Execute();
+
+            var sapItemsData = Z_DPM_RETAIL_FLOORCHECK_01.GT_HAENDLER.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_DPM_RETAIL_FLOORCHECK_01_GT_HAENDLER_To_FloorcheckHaendler.Copy(sapItemsData).ToList();
+
+            return webItems;          
+        }
+
+        public List<Floorcheck> GetFloorchecks(string haendlerNo)
+        {
+            Z_DPM_RETAIL_FLOORCHECK_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+           
+            SAP.SetImportParameter("I_HAENDLER", haendlerNo);
+           
+            SAP.Execute();
+
+            var sapItemsData = Z_DPM_RETAIL_FLOORCHECK_01.GT_DATEN.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_DPM_RETAIL_FLOORCHECK_01_GT_DATEN_To_Floorcheck.Copy(sapItemsData).ToList();
+
+            return webItems;           
+        }
+
         string ZulassungFahrzeugeSperren(List<Fzg> fahrzeuge)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
@@ -472,5 +507,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return kennzeichenSerie.Substring(0, indexKlammer).Trim();
         }
+
+       
     }
 }

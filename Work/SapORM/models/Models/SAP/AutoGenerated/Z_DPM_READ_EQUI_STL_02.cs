@@ -55,6 +55,8 @@ namespace SapORM.Models
 
 			public DateTime? ANDAT { get; set; }
 
+			public DateTime? ZZTMPDT { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -77,6 +79,7 @@ namespace SapORM.Models
 						STATUS_TEXT = (string)row["STATUS_TEXT"],
 						MENGE_C = (string)row["MENGE_C"],
 						ANDAT = string.IsNullOrEmpty(row["ANDAT"].ToString()) ? null : (DateTime?)row["ANDAT"],
+						ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
 					};
 				}
 				catch(Exception e)

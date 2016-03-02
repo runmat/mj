@@ -1,0 +1,24 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model FloorcheckViewModel
+
+<div id="divFloorcheckSuche">
+    @using (Ajax.BeginForm("LoadFloorcheck", "Fahrzeuge", null,
+        new MvcAjaxOptions("divFloorcheckSuche2") { OnComplete = "ShowFloorcheck()" }, new { id = "FloorcheckForm2" } ))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm2">
+
+            @Html.ValidationSummary()
+
+            @Html.FormDropDownListFor(m => m.FloorcheckHaendler.HaendlerNummer, FloorcheckViewModel.FloorcheckHaendlerSelectItems, new { @class = "m-wrap"})
+                                                               
+            <div class="form-actions">                            
+                <button type="button" class="btn" onclick="ShowPreviousSearchForm();">@Localize.Back</button>    
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
