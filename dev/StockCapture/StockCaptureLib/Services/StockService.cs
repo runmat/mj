@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Helpers;
 using System.Xml;
 using StockCapture.Models;
@@ -101,7 +102,15 @@ namespace StockCapture
 
         static string GetStockXml(string yahooSymbol)
         {
-            var url = string.Format("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%3D%22{0}%22&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", yahooSymbol);
+            // Error: "No definition found for Table quotes"
+            // replace table "yahoo.finance.quotes" with "quotes"
+            // Fix: use "http://github.com/spullara/yql-tables/raw/d60732fd4fbe72e5d5bd2994ff27cf58ba4d3f84/yahoo/finance/yahoo.finance.quotes.xml" as quotes;
+
+            const string tableFix = "use \"http://github.com/spullara/yql-tables/raw/d60732fd4fbe72e5d5bd2994ff27cf58ba4d3f84/yahoo/finance/yahoo.finance.quotes.xml\" as quotes;";
+            var tableFixUrlEncoded = HttpUtility.UrlEncode(tableFix);
+
+            var url = string.Format("http://query.yahooapis.com/v1/public/yql?q={1}select%20*%20from%20quotes%20where%20symbol%3D%22{0}%22&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", 
+                yahooSymbol, tableFixUrlEncoded);
 
             try
             {
