@@ -79,11 +79,11 @@ Public Class Change03
             ddlAnzahlKennzeichen.Items.Clear()
             Dim item As ListItem
             Dim intLoop As Integer
-            For intLoop = 1 To 4
+            For intLoop = 1 To 19
                 item = New ListItem(intLoop.ToString, intLoop.ToString)
                 ddlAnzahlKennzeichen.Items.Add(item)
             Next
-            For intLoop = 5 To 75 Step 5
+            For intLoop = 20 To 75 Step 5
                 item = New ListItem(intLoop.ToString, intLoop.ToString)
                 ddlAnzahlKennzeichen.Items.Add(item)
             Next
