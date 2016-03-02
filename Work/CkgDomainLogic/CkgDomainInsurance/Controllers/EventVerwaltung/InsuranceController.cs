@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using System.Globalization;
 using System.Web.Mvc;
 using CkgDomainLogic.Insurance.Models;
 using CkgDomainLogic.General.Controllers;
@@ -383,8 +384,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult TermineSchadenfaelleKalenderAjaxSelect(string boxID, string startDate, string endDate)
         {
-            var dateStart = DateTime.Parse(startDate);
-            var dateEnd = DateTime.Parse(endDate);
+            var dateStart = startDate.ParseYyyyDateTimeCultureIndependently();
+            var dateEnd = endDate.ParseYyyyDateTimeCultureIndependently();
 
             var termin = EventsViewModel.TerminCurrent;
             var boxArt = termin.GetCachedBoxArt();

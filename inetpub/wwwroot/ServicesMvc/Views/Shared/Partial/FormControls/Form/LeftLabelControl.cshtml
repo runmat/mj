@@ -39,14 +39,14 @@
 <div class="control-group @additionalClass">
     
     <label class="control-label">
-        @if (!Model.LabelHidden)
+        @if (!Model.LabelHidden && !Model.LabelPositionRight)
         {
             @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
         }
         @if (formSettingsButtonAvailable)
         {
             <span>
-                <i class="icon-wrench" 
+                <i class="icon-wrench wysiwyg-localization-icon" 
                      data-model-type-name="@Model.ModelTypeName" 
                      data-property-name="@Model.PropertyName" 
                      data-partial-view-context="@partialViewContext"
@@ -64,7 +64,7 @@
         }
            
        
-        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+        @if (Model.IsCheckBox && (Model.LabelHidden || Model.LabelPositionRight) && Model.PostControlHtml == null)
         {
             <label class="checkbox">
                 @Model.ControlHtml
@@ -77,7 +77,11 @@
             if (Model.IsCheckBox)
              {
                  <span>&nbsp;</span>
-             }
+            }
+            if (Model.LabelPositionRight)
+            {
+                @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
+            }
         }
 
 

@@ -37,7 +37,7 @@ namespace CkgDomainLogic.General.Contracts
 
         UserGroup Group { get; set; }
 
-        Organization Organization { get; set; }
+        UserOrganization Organization { get; set; }
 
         List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get; }
 
@@ -49,6 +49,8 @@ namespace CkgDomainLogic.General.Contracts
 
         // only for backward compatibility:
         string CurrentGridColumns { get; }
+
+        AdminLevel HighestAdminLevel { get; }
 
         IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem);
 

@@ -14,6 +14,7 @@
         columns.XBound(c => c.Status);
         columns.XBound(c => c.Menge);
         columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
     })
     .Reorderable(r => r.Columns(false))
     .Resizable(r => r.Columns(false))
