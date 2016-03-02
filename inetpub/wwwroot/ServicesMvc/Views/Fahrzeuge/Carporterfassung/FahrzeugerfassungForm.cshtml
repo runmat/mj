@@ -8,6 +8,8 @@
     {
         @Html.FormValidationSummary()
 
+        @Html.FormMultiColumnModeStart("auto")
+
 
         @Html.HiddenFor(m => m.ObjectKey)
 
@@ -32,44 +34,47 @@
         if (Model.UserHasCarportId)
         {
             @Html.HiddenFor(m => m.CarportId)
-            @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap large", col = "left" })
+            @Html.FormTextBlockFor(m => m.CarportId, new { @class = "m-wrap large", col = "auto" })
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.CarportId, Model.OrganizationCarportPdis.ToSelectList(), new { @class = "m-wrap large", col = "left" })
+            @Html.FormDropDownListFor(m => m.CarportId, Model.OrganizationCarportPdis.ToSelectList(), new { @class = "m-wrap large", col = "auto" })
         }
-        @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
+        @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "auto", @onkeypress = "return NumbersOnly(false);" })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase" },
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase margin-right-5" },
             postControlHtml: @<text>
-                                    @Html.CheckBoxFor(m => m.Ausland)<label for="Ausland">@Localize.LicenseNoForeignCountries</label>
+                                    @Html.FormCheckBoxFor(m => m.Ausland, 
+                                                            useRawTemplate: true, labelPositionRight: true)
                               </text>)
 
         @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 },
             postControlHtml: @<text>
-                                @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1 })
-                                <span>@Localize.CheckDigit</span>
+                                @Html.FormTextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5 margin-right-5", maxlength = 1 }, 
+                                                            useRawTemplate: true, labelPositionRight: true)
                               </text>)
 
-        @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "auto" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium", col = "auto" })
 
-        @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
-        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "right", onchange = "ApplySelection(false, false)" })
+        @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "auto" })
+        @Html.FormDropDownListFor(m => m.AnzahlKennzeichen, CarporterfassungModel.AnzahlKennzeichenOptionen, new { @class = "m-wrap medium", col = "auto", onchange = "ApplySelection(false, false)" })
         
-        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left", onchange = "ApplySelection(true, false)" }, labelHidden: true)
-        @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "auto", onchange = "ApplySelection(true, false)" }, labelPositionRight: true)
+        @Html.FormDropDownListFor(m => m.Zb1Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
 
-        @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormDropDownListFor(m => m.Zb2Vorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
+        @Html.FormDropDownListFor(m => m.CocVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
 
-        @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
+        @Html.FormDropDownListFor(m => m.ServiceheftVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
+        @Html.FormDropDownListFor(m => m.HuAuBerichtVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
 
-        @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.ZweitschluesselVorhandenOptionen, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "right" })
-        
-        
+        @Html.FormDropDownListFor(m => m.ZweitschluesselVorhanden, CarporterfassungModel.ZweitschluesselVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
+        @Html.FormDropDownListFor(m => m.NaviCdVorhanden, CarporterfassungModel.MaterialVorhandenOptionen, new { @class = "m-wrap medium", col = "auto" })
+
+
+        @Html.FormMultiColumnModeEnd("auto")
+
         @Html.FormRequiredFieldsSummary()
         
         <div class="form-actions">

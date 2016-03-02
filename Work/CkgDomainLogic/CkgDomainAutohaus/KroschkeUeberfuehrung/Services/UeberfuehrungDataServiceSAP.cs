@@ -330,6 +330,8 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
                         "AG, RE, RG, WEB_USER, EMAIL_WEB_USER",
                         AuftragGeberOderKundenNr.ToSapKunnr(), reAdresse.KundenNr.ToSapKunnr(), rgAdresse.KundenNr.ToSapKunnr(), webUser, webUserEmail);
 
+            fahrtAdressen.Add(CreateWebUserAdresse());
+
             var fahrtenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FAHRTEN_To_Fahrt.CopyBack(fahrten).ToList();
             var adressenList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_ADRESSEN_To_Adresse.CopyBack(fahrtAdressen).ToList();
             var fahrzeugeList = AppModelMappings.Z_UEB_CREATE_ORDER_01_GT_FZG_To_Fahrzeug.CopyBack(fahrzeuge).ToList();
@@ -353,6 +355,18 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
             return returnList;
         }
 
+        Adresse CreateWebUserAdresse()
+        {
+            return new Adresse
+            {
+                FahrtIndexAktuellTmp = "AP",
+                KundenNr = LogonContext.KundenNr.ToSapKunnr(),
+                Firma = LogonContext.FirstName,
+                Ansprechpartner = LogonContext.LastName,
+                Telefon = LogonContext.UserInfo.Telephone2,
+                Email = LogonContext.UserInfo.Mail
+            };
+        }
     }
 }
 
