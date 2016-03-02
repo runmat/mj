@@ -272,7 +272,7 @@ namespace CkgDomainLogic.General.Services
                     }
                 }
 
-                if (customer.PortalType.NotNullOrEmpty().ToLower() != "mvc")
+                if (customer.PortalType.NotNullOrEmpty().ToLower() != "mvc" || dbContext.User.FirstLevelAdmin || dbContext.User.CustomerAdmin || dbContext.Organization.OrganizationAdmin)
                 {
                     var urlParam = "FromMvc_" + dbContext.User.UserID + "_" + DateTime.Now.ToString("dd.MM.yyyy-HH:mm");
                     var crypted = CryptoMd5Web.EncryptToUrlEncoded(urlParam);

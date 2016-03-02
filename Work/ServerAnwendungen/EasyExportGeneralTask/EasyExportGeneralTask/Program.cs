@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using SapORM.Models;
 using UniversalFileBasedLogging;
@@ -42,6 +43,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "Europcar" };
             //args = new[] { "WKDA" };
             //args = new[] { "WKDA_Selbstabmelder" };
+            //args = new[] { "StarCar2" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -304,6 +306,14 @@ namespace EasyExportGeneralTask
                     #region WKDA_Selbstabmelder
 
                     QueryWKDA(true);
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.StarCar2:
+                    #region StarCar2
+
+                    QueryStarCar2();
 
                     #endregion
                     break;
@@ -1966,9 +1976,7 @@ namespace EasyExportGeneralTask
                         if (!Directory.Exists(zipOrdnerPfad))
                             Directory.CreateDirectory(zipOrdnerPfad);
 
-                        var dateien = Directory.GetFiles(taskConfiguration.easyBlobPathLocal);
-
-                        foreach (var datei in dateien)
+                        foreach (var datei in aryFi)
                         {
                             var zipPfad = zipOrdnerPfad + "\\" + zipName + "_" + archivNummer.ToString() + ".zip";
 
@@ -2008,6 +2016,137 @@ namespace EasyExportGeneralTask
                     }
 
                     #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für StarCar - Variante 2
+        /// </summary>
+        private static void QueryStarCar2()
+        {
+            try
+            {
+                Z_DPM_READ_MELD_OPAV_02.Init(S.AP, "I_KUNNRS, I_QMDAT", taskConfiguration.Kundennummer, DateTime.Today);
+
+                if (taskConfiguration.AbfrageNachDatum)
+                    S.AP.SetImportParameter("I_QMDAT", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today));
+
+                var sapResults = Z_DPM_READ_MELD_OPAV_02.GT_OUT.GetExportListWithExecute(S.AP);
+
+                if (sapResults.None())
+                    return;
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                var groupedList = sapResults.GroupBy(r => new { r.KUNNR_ZP, r.REPLA_DATE }).ToList();
+
+                var dokumentenTypen = new[] { "ZB1", "ZB2" };
+
+                foreach (var itemGroup in groupedList)
+                {
+                    foreach (var dokumentenTyp in dokumentenTypen)
+                    {
+                        #region Dokumente aus Archiv holen
+
+                        foreach (var item in itemGroup)
+                        {
+                            result.clear();
+
+                            string queryexpression = ".1001=" + item.CHASSIS_NUM + " & .110=" + dokumentenTyp;
+
+                            string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                            if (status != "Keine Daten gefunden.")
+                            {
+                                if (!string.IsNullOrEmpty(status))
+                                    throw new Exception(status);
+
+                                int iIndex = 0;
+
+                                if (result.hitCounter > 1)
+                                {
+                                    string strDate = "";
+
+                                    for (int i = 0; i < result.hitList.Rows.Count; i++)
+                                    {
+                                        string datum = result.hitList.Rows[i][2].ToString();
+
+                                        if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
+                                        {
+                                            strDate = datum;
+                                            iIndex = i;
+                                        }
+                                    }
+                                }
+
+                                status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
+
+                                if (!string.IsNullOrEmpty(status))
+                                    Console.WriteLine(status);
+                            }
+                        }
+
+                        #endregion
+
+                        #region Dokumente zusammenfügen und als Mailanhang versenden
+
+                        if (taskConfiguration.MailsSenden)
+                        {
+                            var aryFi = Directory.GetFiles(taskConfiguration.easyBlobPathLocal, "*.pdf", SearchOption.TopDirectoryOnly);
+
+                            if (aryFi.Length > 0)
+                            {
+                                var pdfsToMerge = new List<byte[]>();
+
+                                foreach (var datei in aryFi)
+                                {
+                                    pdfsToMerge.Add(File.ReadAllBytes(datei));
+                                }
+
+                                var mergedPdf = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge);
+
+                                var firstItem = itemGroup.First();
+
+                                var mailBetreff = string.Format("{0} - {1} - {2}", firstItem.NAME1_ZP, firstItem.REPLA_DATE.ToString("dd.MM.yyyy"), dokumentenTyp);
+                                var mailText = string.Join(Environment.NewLine, new[]
+                                {
+                                    "Sehr geehrte Damen und Herren,",
+                                    "",
+                                    "in Anlage erhalten Sie die laut Betreff genannten Kopien der Zulassungsdokumente.",
+                                    "Für Rückfragen stehen wir Ihnen gerne zur Verfügung.",
+                                    "",
+                                    "Mit freundlichen Grüßen",
+                                    "",
+                                    "Team Starcar",
+                                    "DAD Deutscher Auto Dienst GmbH",
+                                    "Ladestraße 1",
+                                    "22926 Ahrensburg",
+                                    "http://www.dad.de",
+                                    "Tel: +49 4102 804 5913",
+                                    "Fax: +49 4102 804 451",
+                                    "starcar@dad.de"
+                                });
+
+                                var anhangName = string.Format("{0}_{1}.pdf", firstItem.REPLA_DATE.ToString("yyyyMMdd"), dokumentenTyp);
+
+                                Helper.SendEMail(mailBetreff, mailText, firstItem.SMTP_ADDR, mergedPdf, anhangName, "starcar@dad.de");
+
+                                clearFolders();
+
+                                Thread.Sleep(2000);
+                            }
+                        }
+
+                        #endregion
+                    }
                 }
             }
             catch (Exception ex)

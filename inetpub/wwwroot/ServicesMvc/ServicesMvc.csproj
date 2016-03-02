@@ -3168,6 +3168,10 @@
     <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\ReportFloorcheck.cshtml" />
+    <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche2.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

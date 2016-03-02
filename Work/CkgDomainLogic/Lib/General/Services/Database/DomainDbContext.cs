@@ -241,7 +241,7 @@ namespace CkgDomainLogic.General.Database.Services
             get
             {
                 return _organization ?? (_organization = Database.SqlQuery<UserOrganization>(" SELECT " +
-                                                                                  " og.*, om.OrganizationAdmin " +
+                                                                  " og.*, om.OrganizationAdmin " +
                                                                                   " FROM WebUser wu " +
                                                                                   " INNER JOIN OrganizationMember om ON om.UserID = wu.UserID " +
                                                                                   " INNER JOIN Organization og ON om.OrganizationID = og.OrganizationID " +

@@ -7,18 +7,20 @@
         <div class="form-horizontal">
 
             @Html.FormValidationSummary()
+            
+            @Html.FormMultiColumnModeStart("auto")
 
-            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "auto" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "auto" })
 
-            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap", col = "right" })
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "auto" })
+            @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap", col = "auto" })
 
 
             @if (!Html.FormIsInvisible(m => m.Ref1) && !Html.FormIsInvisible(m => m.Ref2))
             {
-                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap", col = "left" })
-                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap", col = "right" })
+                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap", col = "auto" })
+                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap", col = "auto" })
             }
             else if (!Html.FormIsInvisible(m => m.Ref1))
             {
@@ -28,6 +30,10 @@
             {
                 @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap" })
             }
+
+            @Html.FormMultiColumnModeEnd("auto")
+
+            @Html.FormRequiredFieldsSummary()
 
         </div>
 
