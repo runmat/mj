@@ -57,7 +57,7 @@ else
         columns.XBound(c => c.Status).HtmlAttributes(new { @class = "" });
         columns.XBound(c => c.BestandsNr);
         columns.XBound(c => c.Name1);
-        columns.XBound(c => c.Ansprechpartner);
+        columns.XBound(c => c.Name2).Title(Localize.Contactperson);
         columns.XBound(c => c.Strasse);
         columns.XBound(c => c.PLZ);
         columns.XBound(c => c.Ort);
