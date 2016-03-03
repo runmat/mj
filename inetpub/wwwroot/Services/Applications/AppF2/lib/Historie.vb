@@ -13,6 +13,7 @@ Public Class Historie
     Private m_tblBRIEFLEBENSLAUF_LPTable As DataTable
     Private m_tblQMEL_DATENTable As DataTable
     Private m_tblQMMIDATENTable As DataTable
+    Private m_tblLLSCHDATENTable As DataTable
     Private mGT_ADDR As DataTable
     Private mGT_EQUI As DataTable
     Private mGT_TEXT As DataTable
@@ -64,6 +65,12 @@ Public Class Historie
     Public ReadOnly Property QMEL_DATENTable() As DataTable
         Get
             Return m_tblQMEL_DATENTable
+        End Get
+    End Property
+
+    Public ReadOnly Property LLSCHDATENTable() As DataTable
+        Get
+            Return m_tblLLSCHDATENTable
         End Get
     End Property
 
@@ -422,6 +429,7 @@ Public Class Historie
                 mGT_ADDR = proxy.getExportTable("GT_ADDR")
                 m_tblQMEL_DATENTable = proxy.getExportTable("GT_QMEL")
                 m_tblQMMIDATENTable = proxy.getExportTable("GT_QMMA")
+                m_tblLLSCHDATENTable = proxy.getExportTable("GT_LLSCH")
                 m_tblBRIEFLEBENSLAUF_LPTable = proxy.getExportTable("GT_WEB")
                 mGT_EQUI = proxy.getExportTable("GT_EQUI")
                 mGT_TEXT = proxy.getExportTable("GT_TEXT")
@@ -450,6 +458,15 @@ Public Class Historie
                         If row("AEZEIT").ToString <> String.Empty Then
                             row("AEZEIT") = Left(row("AEZEIT").ToString, 2) & ":" & row("AEZEIT").ToString.Substring(2, 2)
                         End If
+                    End If
+                Next
+
+                For Each row As DataRow In m_tblLLSCHDATENTable.Rows
+                    If Not row("STRMN") Is Nothing Then
+                        row("STRMN") = row("STRMN").ToString.TrimStart("0"c)
+                    End If
+                    If Not TypeOf row("ERDAT") Is DBNull Then
+                        row("ERDAT") = row("ERDAT").ToString.TrimStart("0"c)
                     End If
                 Next
 
@@ -498,6 +515,7 @@ Public Class Historie
                 m_tblBRIEFLEBENSLAUF_LPTable = Nothing
                 m_tblQMEL_DATENTable = Nothing
                 m_tblQMMIDATENTable = Nothing
+                m_tblLLSCHDATENTable = Nothing
                 mGT_EQUI = Nothing
                 mGT_TEXT = Nothing
 

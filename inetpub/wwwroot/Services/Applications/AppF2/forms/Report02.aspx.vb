@@ -8,12 +8,13 @@ Partial Public Class Report02
 #Region "Declarations"
 
     Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
-
     Private m_App As App
     Private m_User As User
+
 #End Region
 
 #Region "Events"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Session("ShowLink") = "False"
         m_User = GetUser(Me)
@@ -36,7 +37,6 @@ Partial Public Class Report02
         Session("ShowLink") = "True"
         DoSubmit()
     End Sub
-
 
     Private Sub gvSelectOne_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvSelectOne.RowCommand
         If e.CommandName = "weiter" Then
@@ -73,7 +73,6 @@ Partial Public Class Report02
         End If
     End Sub
 
-
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
         HelpProcedures.FixedGridViewCols(gvSelectOne)
@@ -86,6 +85,7 @@ Partial Public Class Report02
 #End Region
 
 #Region "Methods"
+
     Private Sub DoSubmit(Optional ByVal equnr As String = "")
 
         Session("DataTable") = Nothing
@@ -133,6 +133,7 @@ Partial Public Class Report02
                         Session("BRIEFLEBENSLAUF_LPTable") = m_Report.BRIEFLEBENSLAUF_LPTable
                         Session("QMEL_DATENTable") = m_Report.QMEL_DATENTable
                         Session("QMMIDATENTable") = m_Report.QMMIDATENTable
+                        Session("LLSCHDATENTable") = m_Report.LLSCHDATENTable
                         Session("GT_ADDR") = m_Report.GT_ADDR
 
                         If Not m_Report.AnzBemerkungen Is Nothing Then
@@ -141,21 +142,14 @@ Partial Public Class Report02
 
                         Session("objReport") = m_Report
 
-                        Dim cw As String = ""
+                        Dim strShowZweitschluessel As String = GetApplicationConfigValue("FzgHistorieServicesZweitschluesselAnzeigen", Session("AppID").ToString, m_User.Customer.CustomerId)
+                        Session("History_ShowZweitschluessel") = (strShowZweitschluessel.ToLower() = "true")
 
                         If Request.QueryString("Linked") = "false" Then 'wenn aus hauptmenü aufgerufen
                             Response.Redirect("Report02_2.aspx?AppID=" & Session("AppID").ToString)
                         Else 'wenn verlinkung
-
-                            If Not Request.QueryString.Item("cw") Is Nothing Then
-                                cw = "&cw=true"
-                            End If
-
-
-
-                            Response.Redirect("Report02_2.aspx?AppID=" & Session("AppID").ToString & "&Linked=true" & cw)
+                            Response.Redirect("Report02_2.aspx?AppID=" & Session("AppID").ToString & "&Linked=true" & IIf(Request.QueryString.Item("cw") Is Nothing, "", "&cw=true"))
                         End If
-
 
                     End If
                 Else
@@ -226,8 +220,6 @@ Partial Public Class Report02
 
 
     End Sub
-
-
 
 #End Region
 
