@@ -23,6 +23,7 @@
     <Image x:Shared="False" x:Key="image/16x16/winword_mailmerge" Source="pack://application:,,,/WpfTools4;component/Images/16x16/winword_mailmerge.png" SnapsToDevicePixels="True" Width="16" Height="16"  />
     <Image x:Shared="False" x:Key="image/16x16/exit" Source="pack://application:,,,/WpfTools4;component/Images/16x16/exit.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/undo" Source="pack://application:,,,/WpfTools4;component/Images/16x16/undo.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/toggle" Source="pack://application:,,,/WpfTools4;component/Images/16x16/toggle.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/excel" Source="pack://application:,,,/WpfTools4;component/Images/16x16/excel.png" SnapsToDevicePixels="True" Width="16" Height="16" />
 
     <Image x:Shared="False" x:Key="image/16x16/up_top" Source="pack://application:,,,/WpfTools4;component/Images/16x16/up_top.png" SnapsToDevicePixels="True" Width="16" Height="16" />

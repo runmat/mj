@@ -112,7 +112,7 @@ namespace WatchlistViewer
                 var window = _driver.Manage().Window;
 
                 var width = 1000;
-                var height = 600;
+                var height = 250;
 
                 var screenBounds = Screen.PrimaryScreen.Bounds;
                 _driver.FindElement(By.TagName("body")).SendKeys(Keys.F11);

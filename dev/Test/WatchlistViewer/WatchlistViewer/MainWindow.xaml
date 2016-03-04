@@ -4,7 +4,7 @@
         xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
         SizeChanged="MainWindow_OnSizeChanged"
-        Top="25" Topmost="True" 
+        Top="30" Topmost="True" 
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
         Title="Watchlist Viewer" SizeToContent="WidthAndHeight">
     <Window.Background>
@@ -27,6 +27,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <Button Command="{Binding WatchlistToggleCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/toggle}" ToolTip="Watchlist-Anzeige toggeln" Opacity="0.4" />
             <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
            
         </StackPanel>

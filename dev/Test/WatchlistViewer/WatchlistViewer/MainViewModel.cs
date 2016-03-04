@@ -7,9 +7,6 @@ using WpfTools4.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace WatchlistViewer
 {
@@ -17,6 +14,8 @@ namespace WatchlistViewer
     {
         private List<Stock> _stockItems;
         private bool _stockItemsVisible;
+
+        private static bool _browserVisible;
 
         public List<Stock> StockItems
         {
@@ -31,8 +30,8 @@ namespace WatchlistViewer
         }
         
 
-        //public ICommand WatchlistShowCommand { get; private set; }
-        //public ICommand WatchlistHideCommand { get; private set; }
+        public ICommand WatchlistToggleCommand { get; private set; }
+
         public ICommand GetStockDataCommand { get; private set; }
 
         public ICommand QuitCommand { get; private set; }
@@ -42,8 +41,7 @@ namespace WatchlistViewer
 
         public MainViewModel()
         {
-            //WatchlistShowCommand = new DelegateCommand(e => WatchlistShow(), e => true);
-            //WatchlistHideCommand = new DelegateCommand(e => WatchlistHide(), e => true);
+            WatchlistToggleCommand = new DelegateCommand(e => WatchlistToggle(), e => true);
             GetStockDataCommand = new DelegateCommand(e => GetStockData(), e => true);
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
@@ -63,7 +61,7 @@ namespace WatchlistViewer
             _initialDelayTimer.Stop();
             _initialDelayTimer.Dispose();
 
-            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
+            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
             _workTimer.Tick += WorkTimerTick;
         }
 
@@ -94,6 +92,26 @@ namespace WatchlistViewer
             });
 
             StockItemsVisible = true;
+        }
+
+        private static void WatchlistToggle()
+        {
+            _browserVisible = !_browserVisible;
+
+            if (_browserVisible)
+                WatchlistShow();
+            else
+                WatchlistHide();
+        }
+
+        private static void WatchlistShow()
+        {
+            FirefoxWebDriver.ShowBrowser();
+        }
+
+        private static void WatchlistHide()
+        {
+            FirefoxWebDriver.HideBrowser();
         }
 
         public void ShowWknAtComdirect(Stock stock)

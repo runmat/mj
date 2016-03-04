@@ -1,13 +1,10 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WpfTools4.Commands;
 // ReSharper disable RedundantUsingDirective
 using System.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GeneralTools.Models;
 
 namespace WatchlistViewer
@@ -19,6 +16,8 @@ namespace WatchlistViewer
         private DateTime _dateTime;
         private double _value;
         private double _openValue;
+        private double _topValue;
+        private double _bottomValue;
         private double _change;
 
         public static double PixelAbsPercentChangeMaxForUI = 25;
@@ -51,8 +50,8 @@ namespace WatchlistViewer
         public double Value
         {
             get { return _value; }
-            set 
-            { 
+            set
+            {
                 _value = value;
                 SendPropertyChanged("Value");
                 SendPropertyChanged("ValueFormatted");
@@ -61,7 +60,41 @@ namespace WatchlistViewer
                 SendPropertyChanged("ForeColor");
                 SendPropertyChanged("AbsPercentChangeForUI");
                 SendPropertyChanged("PixelAbsPercentChangeForUI");
-                SendPropertyChanged("ToolTipChangePercent"); 
+                SendPropertyChanged("ToolTipChangePercent");
+            }
+        }
+
+        public double TopValue
+        {
+            get { return _topValue; }
+            set
+            {
+                _topValue = value;
+                SendPropertyChanged("TopValue");
+                SendPropertyChanged("TopValueFormatted");
+                SendPropertyChanged("Change");
+                SendPropertyChanged("ChangeFormatted");
+                SendPropertyChanged("ForeColor");
+                SendPropertyChanged("AbsPercentChangeForUI");
+                SendPropertyChanged("PixelAbsPercentChangeForUI");
+                SendPropertyChanged("ToolTipChangePercent");
+            }
+        }
+
+        public double BottomValue
+        {
+            get { return _bottomValue; }
+            set
+            {
+                _bottomValue = value;
+                SendPropertyChanged("BottomValue");
+                SendPropertyChanged("BottomValueFormatted");
+                SendPropertyChanged("Change");
+                SendPropertyChanged("ChangeFormatted");
+                SendPropertyChanged("ForeColor");
+                SendPropertyChanged("AbsPercentChangeForUI");
+                SendPropertyChanged("PixelAbsPercentChangeForUI");
+                SendPropertyChanged("ToolTipChangePercent");
             }
         }
 
@@ -101,7 +134,16 @@ namespace WatchlistViewer
 
         public string ToolTip { get { return string.Format("Zeit {0:HH:mm:ss} vom {0:dd.MM.yyyy}", DateTime); } }
 
-        public string ToolTipChangePercent { get { return string.Format("Change: {0}    Open: {1}    Percent: {2:0.00}", ChangeFormatted, OpenValueFormatted, PercentChange); } }
+        public string ToolTipChangePercent
+        {
+            get
+            {
+                return $"% {PercentChange:0.00}   " +
+                       $"^ {TopValueFormatted}   " +
+                       $"¬ {BottomValueFormatted}   " +
+                       $"       (Open: {OpenValueFormatted}  Change: {ChangeFormatted})";
+            }
+        }
 
         public string ShortName { get { return GetPartOfValue(0, "{self}"); } }
 
@@ -111,6 +153,8 @@ namespace WatchlistViewer
 
         public string ValueFormatted { get { return Value.ToString(GetPartOfValue(3, "#,##0.00")); } }
         public string OpenValueFormatted { get { return OpenValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
+        public string TopValueFormatted { get { return TopValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
+        public string BottomValueFormatted { get { return BottomValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
         public string ChangeFormatted { get { return Change.ToString(GetPartOfValue(3, "#,##0.00")); } }
 
         public double AbsPercentChangeMaxForUI { get { return double.Parse(GetPartOfValue(4, "1.0")); } }

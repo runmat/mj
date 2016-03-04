@@ -26,14 +26,19 @@ namespace WatchlistViewer
 
                 var subItems = itemArray[1].Split(' ');
                 var subItemsIndex = (subItems[0].Contains(":") ? 0 : 1);
+                var changeValue = double.Parse(subItems[subItemsIndex + 4]);
+
                 var stockItem = new Stock
                 {
                     Name = itemArray[0].Replace("_", " ").SubstringTry(0, 16),
                     Wkn = (subItemsIndex > 0 ? subItems[0] : ""),
                     DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + subItems[subItemsIndex], "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture),
-                    Value = Double.Parse(subItems[subItemsIndex + 2]),
-                    //Change = Double.Parse(subItems[subItemsIndex + 4]),
+                    Value = double.Parse(subItems[subItemsIndex + 2]),
                 };
+
+                stockItem.OpenValue = stockItem.Value - changeValue;
+                stockItem.TopValue = double.Parse(itemArray[3].Replace("-", "").Trim());
+                stockItem.BottomValue = double.Parse(itemArray[4].Replace("-", "").Trim());
 
                 stockList.Add(stockItem);
             }
