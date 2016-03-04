@@ -148,10 +148,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\StockCapture\StockCaptureLib\StockCaptureLib.csproj">
-      <Project>{602a55b9-946d-42c7-a62e-5a1e78eabe36}</Project>
-      <Name>StockCaptureLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{a4f36243-8d89-460f-acb3-ef7df37d6fca}</Project>
       <Name>GeneralTools</Name>

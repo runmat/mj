@@ -48,8 +48,6 @@ namespace WatchlistViewer
             set { _dateTime = value; SendPropertyChanged("DateTime"); SendPropertyChanged("ToolTip"); }
         }
 
-        public Func<string> CustomFuncGetValue { get; set; }
-
         public double Value
         {
             get { return _value; }

@@ -47,10 +47,10 @@ namespace WatchlistViewer
             GetStockDataCommand = new DelegateCommand(e => GetStockData(), e => true);
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
-            FirefoxWebDriver.InvokeDax();
+            FirefoxWebDriver.InvokeWatchlist();
             StockItems = new List<Stock>
             {
-                new Stock { Name = "DAX", Parent = this, CustomFuncGetValue = () => FirefoxWebDriver.GetDaxValue() },
+                new Stock { Name = "DAX", Parent = this },
                 new Stock { Name = "Goldpreis", Parent = this },
                 new Stock { Name = "Euro / US", Parent = this },
             };
@@ -63,63 +63,13 @@ namespace WatchlistViewer
             _initialDelayTimer.Stop();
             _initialDelayTimer.Dispose();
 
-            //WatchlistHide();
             _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
             _workTimer.Tick += WorkTimerTick;
         }
 
         void WorkTimerTick(object sender, EventArgs e)
         {
-            TaskService.StartLongRunningTask(GetNextStockData);
-        }
-
-
-        private int _index;
-
-        private void GetNextStockData()
-        {
-            var stock = StockItems.ToArray()[_index];
-
-            
-            GetStockDataFromStockCaptureStockService(stock, stock.CustomFuncGetValue == null);
-            if (stock.CustomFuncGetValue != null)
-                GetStockDataFromFirefox(stock);
-
-            _index = (++_index % StockItems.Count);
-        }
-
-        private void GetStockDataFromFirefox(Stock stock)
-        {
-            var stockText = stock.CustomFuncGetValue().SubstringTry(0, 16);
-            var pi = stockText.NotNullOrEmpty().IndexOf("Punkte", StringComparison.InvariantCulture);
-            if (pi < 0)
-                return;
-
-            var stockPriceText = stockText.SubstringTry(0, pi);
-            double stockPrice;
-            if (!double.TryParse(stockPriceText, out stockPrice))
-                return;
-
-            stock.DateTime = DateTime.Now;
-            stock.Value = stockPrice;
-            StockItemsVisible = true;
-        }
-
-        private void GetStockDataFromStockCaptureStockService(Stock stock, bool setCurrentValue)
-        {
-            double price;
-            double openPrice;
-            DateTime dateTime;
-
-            StockCapture.StockService.CaptureStockQuote(stock.YahooSymbol, out price, out openPrice, out dateTime);
-
-            stock.DateTime = DateTime.Now;
-            stock.OpenValue = openPrice;
-            if (setCurrentValue)
-            {
-                stock.Value = price;
-                StockItemsVisible = true;
-            }
+            TaskService.StartLongRunningTask(GetStockData);
         }
 
         private void GetStockData()
@@ -135,13 +85,15 @@ namespace WatchlistViewer
 
             items.ForEach(item =>
             {
-                var stockItem = StockItems.FirstOrDefault(si => si.Name == item.Name);
+                var stockItem = StockItems.FirstOrDefault(si => si.ShortName == item.ShortName);
                 if (stockItem == null)
                     return;
                 
                 ModelMapping.Copy(item, stockItem);
                 stockItem.Parent = this;
             });
+
+            StockItemsVisible = true;
         }
 
         public void ShowWknAtComdirect(Stock stock)

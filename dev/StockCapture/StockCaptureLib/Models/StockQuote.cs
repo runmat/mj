@@ -24,26 +24,6 @@ namespace StockCapture.Models
         public virtual bool? EmailAlertSent { get; set; }
 
         public virtual string EmailAlertSentAsString { get { return EmailAlertSent.GetValueOrDefault() ? "X" : ""; } }
-
-        public virtual string RowCssClass
-        {
-            get
-            {
-                var thresholdTicks = StockService.EmailWarningThreshold * 1000;
-
-                if (DiffToPrevTicks >= thresholdTicks)
-                    return "success2";
-                if (DiffToPrevTicks > 0)
-                    return "success";
-
-                if (DiffToPrevTicks <= (thresholdTicks * -1))
-                    return "danger2";
-                if (DiffToPrevTicks < 0)
-                    return "danger";
-
-                return "active";
-            }
-        }
     }
 }
 
