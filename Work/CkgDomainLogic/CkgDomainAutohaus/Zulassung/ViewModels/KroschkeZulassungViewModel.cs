@@ -1356,7 +1356,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung || Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
-                foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => !string.IsNullOrEmpty(x.FIN)))
+                foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => !string.IsNullOrEmpty(x.FIN) || (Zulassung.Zulassungsdaten.IsSchnellabmeldung && x.IsSchnellabmeldungSpeicherrelevant)))
                 {
                     if (Zulassung.Zulassungsdaten.IsSchnellabmeldung && !fahrzeugAkteBestand.IsSchnellabmeldungSpeicherrelevant)
                         continue;
@@ -1554,17 +1554,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
-                if (FinList.None(x => !string.IsNullOrEmpty(x.FIN) && x.IsSchnellabmeldungSpeicherrelevant))
+                if (FinList.None(x => x.IsSchnellabmeldungSpeicherrelevant))
                     addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
 
-                if (FinList.Any(x => !string.IsNullOrEmpty(x.FIN) && x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
 
-                if (FinList.Any(x => !string.IsNullOrEmpty(x.FIN) && x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.CarOwner, Localize.Required.NotNullOrEmpty().ToLower()));
 
                 var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
-                if (FinList.Any(x => !string.IsNullOrEmpty(x.FIN) && x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
                     addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
             }
         }
