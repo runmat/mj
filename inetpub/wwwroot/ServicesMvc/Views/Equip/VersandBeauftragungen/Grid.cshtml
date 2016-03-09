@@ -16,7 +16,7 @@
     .XAjaxDataBinding("VersandBeauftragungenAjaxBinding", "Equip")
     .Columns(columns =>
         {
-            columns.XBound("")
+            columns.XBound(c => c.Equipmentnummer).Title(Localize.Selection)
                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='GridVersandBeauftragungen_OnSelectionChange($(this))' />")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridVersandBeauftragungen_OnAllSelectionChange($(this))' />")
                 .Filterable(false).Sortable(false);
