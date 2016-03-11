@@ -92,6 +92,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\CuteWebUI.AjaxUploader.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentTools, Version=1.0.5884.27884, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\DocumentTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -127,6 +139,10 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\BtBase\BtBaseMvc\BtBaseMvc\BtBaseMvc.csproj">
+      <Project>{A5A55959-BB66-46D5-BE2E-7DD6CF967DB7}</Project>
+      <Name>BtBaseMvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
       <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
       <Name>SapORM.Contracts</Name>
@@ -139,6 +155,8 @@
   </ItemGroup>
   <ItemGroup>
     <Import Include="CKG" />
+    <Import Include="DocumentTools" />
+    <Import Include="GeneralTools" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
