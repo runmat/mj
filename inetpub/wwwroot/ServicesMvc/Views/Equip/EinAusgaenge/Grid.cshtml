@@ -6,8 +6,8 @@
     var isInput = (Model.EinAusgangSelektor.FilterEinAusgangsTyp == "Inputs");
 }
 
-@(Html.Telerik()
-    .Grid<Fahrzeugbrief>()
+@(Html.XTelerik()
+    .XGrid<Fahrzeugbrief>()
     .Name(gridName)
 
     .XAjaxDataBinding("EinAusgaengeAjaxBinding", "Equip")
