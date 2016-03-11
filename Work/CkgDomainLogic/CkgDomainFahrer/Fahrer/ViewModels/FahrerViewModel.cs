@@ -343,12 +343,20 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();
         }
 
-        public void SaveUploadedImageFile(string clientFileName, Action<string> saveAction)
+        public bool SaveUploadedImageFile(string clientFileName, Action<string> saveAction)
         {
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
+
+            // validation
+            var auftragsNrFriendly = auftrag.AuftragsNrFriendly;
+            var extension = Path.GetExtension(clientFileName);
+
+            if (auftragsNrFriendly.Trim().Length == 0 || extension.ToLower() == ".exe")
+                return false;
+
             var serverFileName = string.Format("{0}{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
+                                               GetUploadedImageFileName(auftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
                                                Path.GetExtension(clientFileName));
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);
@@ -369,6 +377,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             ImagingService.ScaleAndSaveImage(destinationFileName, thumbnailFileName, ModeProtokoll ? 600 : 200);
             
             DataMarkForRefreshUploadedImageFiles();
+
+            return true;
         }
 
         public bool DeleteUploadedImage(string imageFileName)
