@@ -61,6 +61,7 @@
     <WarningLevel>1</WarningLevel>
     <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -112,6 +113,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentTools">
+      <HintPath>..\..\..\Work\GAC\DocumentTools.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\..\Work\GAC\Elmah\Elmah.dll</HintPath>
     </Reference>
@@ -138,6 +142,9 @@
     <Reference Include="Interop.WMDWebLink32Client">
       <HintPath>..\..\..\Work\GAC\Interop.WMDWebLink32Client.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PdfSharp">
+      <HintPath>..\..\..\Work\GAC\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
