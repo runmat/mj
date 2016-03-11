@@ -229,12 +229,22 @@ namespace ServicesMvc.Controllers
                 return new EmptyResult();
 
             var file = files.First();
-            ViewModel.SaveUploadedImageFile(file.FileName, file.SaveAs);
+            var res = ViewModel.SaveUploadedImageFile(file.FileName, file.SaveAs);
 
-            return Json(new
+            if (res)
             {
-                files = new object[] { new { url = "-" } }   
-            });
+                return Json(new
+                {
+                    files = new object[] { new { url = "-" } }
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    files = new object[] { new { error = "Das Bild konnte nicht gespeichert werde. Bitte erneut versuchen oder ein anderes Bild wählen." } }
+                });
+            }
         }
 
         public void GetUploadedImageFiles()
