@@ -51,7 +51,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "")
+        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
@@ -59,7 +59,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.DataInit(zulassungFromShoppingCart, schnellabmeldung);
 
-            ViewModel.SetParamFahrzeugAkte(fin);
+            ViewModel.SetParamFahrzeugAkte(finid);
             ViewModel.SetParamHalter(halterNr);
 
             ShoppingCartLoadAndCacheItems();
@@ -209,21 +209,21 @@ namespace ServicesMvc.Autohaus.Controllers
         #endregion
 
         [CkgApplication]
-        public ActionResult Abmeldung(string fin, string halterNr)
+        public ActionResult Abmeldung(string finid, string halterNr)
         {
-            return Index(fin, halterNr, abmeldung: "1");
+            return Index(finid, halterNr, abmeldung: "1");
         }
 
         [CkgApplication]
-        public ActionResult Versandzulassung(string fin, string halterNr)
+        public ActionResult Versandzulassung(string finid, string halterNr)
         {
-            return Index(fin, halterNr, versandzulassung: "1");
+            return Index(finid, halterNr, versandzulassung: "1");
         }
 
         [CkgApplication]
-        public ActionResult Sonderzulassung(string fin, string halterNr)
+        public ActionResult Sonderzulassung(string finid, string halterNr)
         {
-            return Index(fin, halterNr, sonderzulassung: "1");
+            return Index(finid, halterNr, sonderzulassung: "1");
         }
 
         [CkgApplication]

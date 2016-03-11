@@ -34,12 +34,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        public FahrzeugAkteBestandSelektor FinSearchSelektor
-        {
-            get { return PropertyCacheGet(() => new FahrzeugAkteBestandSelektor()); }
-            set { PropertyCacheSet(value); }
-        }
-
         [XmlIgnore]
         public List<FahrzeugAkteBestand> FahrzeugeAkteBestand
         {
@@ -73,7 +67,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             }
 
             if (!String.IsNullOrEmpty(fzgId))
-                FahrzeugAkteBestandSelektor.FIN = CryptoMd5.Decrypt(fzgId);
+                FahrzeugAkteBestandSelektor.FinId = CryptoMd5.Decrypt(fzgId);
         }
 
         public override void DataMarkForRefresh()
@@ -92,7 +86,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public void LoadFahrzeuge()
         {
-            FahrzeugeAkteBestand = DataService.GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor);
+            FahrzeugeAkteBestand = DataService.GetFahrzeuge(FahrzeugAkteBestandSelektor);
 
             DataMarkForRefresh();
         }
@@ -103,47 +97,41 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             return Adressen;
         }
 
-        public void ValidateFinSearch(Action<string, string> addModelError)
-        {
-            if (FinSearchSelektor.FIN.IsNullOrEmpty())
-                addModelError("", Localize.PleaseFillOutForm);
-        }
-
         public FahrzeugAkteBestand GetTypDaten(string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
         {
-            return DataService.GetTypDaten(FinSearchSelektor.FIN, herstellerSchluessel, typSchluessel, vvsSchluessel);
+            return DataService.GetTypDaten(herstellerSchluessel, typSchluessel, vvsSchluessel);
         }
 
-        FahrzeugAkteBestand GetFahrzeugBestandUsingFin(string fin)
+        FahrzeugAkteBestand GetFahrzeugBestandUsingFinId(string finId)
         {
-            return FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == fin);
+            return FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == finId);
         }
 
-        public FahrzeugAkteBestand TryLoadFahrzeugDetailsUsingFin(string fin)
+        public FahrzeugAkteBestand TryLoadFahrzeugDetailsUsingFinId(string finId)
         {
-            CurrentFahrzeug = GetFahrzeugBestandUsingFin(fin);
+            CurrentFahrzeug = GetFahrzeugBestandUsingFinId(finId);
             if (CurrentFahrzeug == null)
-                CurrentFahrzeug = DataService.GetTypDaten(fin, null, null, null) ?? new FahrzeugAkteBestand { FIN = fin }; 
+                CurrentFahrzeug = DataService.GetTypDaten(null, null, null) ?? new FahrzeugAkteBestand { FinID = finId }; 
 
             return CurrentFahrzeug;
         }
 
-        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, string fin, Action<string, string> addModelError)
+        public void UpdateFahrzeugDetails(FahrzeugAkteBestand model, string finId, Action<string, string> addModelError)
         {
-            var savedModel = GetFahrzeugBestandUsingFin(fin);
+            var savedModel = GetFahrzeugBestandUsingFinId(finId);
 
             var akteHasBeenValid = CurrentFahrzeug != null && CurrentFahrzeug.AkteIsValid;
             var bestandAlreadyExistedForThisCustomer = (savedModel != null);
             
             if (!bestandAlreadyExistedForThisCustomer)
-                savedModel = new FahrzeugAkteBestand { FIN = fin };
+                savedModel = new FahrzeugAkteBestand { FinID = finId };
 
             if (model != null)
                 ModelMapping.Copy(model, savedModel);
 
             CurrentFahrzeug = savedModel;
 
-            var errorMessage = DataService.SaveFahrzeugAkteBestand(savedModel);
+            var errorMessage = DataService.SaveFahrzeuge(new List<FahrzeugAkteBestand> { savedModel });
             if (errorMessage.IsNotNullOrEmpty() && addModelError != null)
                 addModelError("", errorMessage);
 
@@ -154,7 +142,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
             if (!akteHasBeenValid)
             {
-                savedModel = GetFahrzeugBestandUsingFin(fin);
+                savedModel = GetFahrzeugBestandUsingFinId(finId);
                 savedModel.AkteJustCreated = true;
                 CurrentFahrzeug = savedModel;
             }
@@ -173,15 +161,36 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             allCount = FahrzeugeAkteBestandFiltered.Count;
         }
 
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        public void SelectFahrzeug(string finId, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == vin);
+            var fzg = FahrzeugeAkteBestand.FirstOrDefault(f => f.FinID == finId);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
             allSelectionCount = FahrzeugeAkteBestand.Count(c => c.IsSelected);
+        }
+
+        public string DeleteSelectedVehicles()
+        {
+            var fzgeToDelete = FahrzeugeAkteBestand.Where(f => f.IsSelected);
+
+            foreach (var fzg in fzgeToDelete)
+            {
+                fzg.Loeschen = true;
+            }
+
+            var errorMessage = DataService.SaveFahrzeuge(fzgeToDelete);
+
+            if (!string.IsNullOrEmpty(errorMessage))
+                return errorMessage;
+
+            FahrzeugeAkteBestand.RemoveAll(f => f.IsSelected);
+
+            PropertyCacheClear(this, m => m.FahrzeugeAkteBestandFiltered);
+
+            return "";
         }
 
         public Adresse GetPartnerAdresse(string partnerArt, string id)

@@ -141,9 +141,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
-        public void SetParamFahrzeugAkte(string fin)
+        public void SetParamFahrzeugAkte(string finid)
         {
-            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();
+            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeuge(new FahrzeugAkteBestandSelektor { FinId = finid.NotNullOrEmpty("-") }).FirstOrDefault();
             if (ParamFahrzeugAkte == null)
                 return;
 

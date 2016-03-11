@@ -39,7 +39,8 @@
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "left" })
             @Html.FormTextBoxFor(m => m.Briefnummer, new { @class = "m-wrap", col = "right" })
                     
-            @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+            @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.CocAvailable</label></text>)
+            @Html.FormTextBoxFor(m => m.KundenReferenz, new { @class = "m-wrap", col = "right" })
 
 
             @*@Html.FormRequiredFieldsSummary()*@

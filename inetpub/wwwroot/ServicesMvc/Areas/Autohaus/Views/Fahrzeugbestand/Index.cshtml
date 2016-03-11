@@ -80,8 +80,8 @@
         $("#divGrid").slideDown();
     }
 
-    function FahrzeugShowAjax(fin) {
-        FahrzeugShowCreateAjax(fin);
+    function FahrzeugShowAjax(finid) {
+        FahrzeugShowCreateAjax(finid);
 
         return false;
     }
@@ -92,11 +92,11 @@
         return false;
     }
     
-    function FahrzeugShowCreateAjax(fin) {
+    function FahrzeugShowCreateAjax(finid) {
         $.ajax({
             type: "POST",
             url: "ShowFahrzeugAkteBestandDetails",
-            data: { finToLoad: fin },
+            data: { finIdToLoad: finid },
             loadingShow: true,
             success: function (result) {
                 ShowFahrzeugDetails(result);
@@ -146,24 +146,6 @@
         }, 150);
     }
 
-    function FinSearchTryLoadFahrzeugDetails() {
-        if (!_modelStateValid) {
-            FormPrepareAjax();
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "ShowFahrzeugAkteBestandDetails",
-            data: { finToLoad: "useModelFin" },
-            loadingShow: true,
-            success: function (result) {
-                ShowFahrzeugDetailsComingFromFinSearch(result);
-                LoadingHide();
-            }
-        });
-    }
-
     function TryCloseFahrzeugDetails() {
 
         SetFahrzeugakteFormToReadOnly(_akteIsValid);
@@ -201,18 +183,17 @@
     
     function InitCheckTypDaten() {
         $("#HerstellerSchluessel,#TypSchluessel,#VvsSchluessel").change(function () { TryCheckTypDaten(); });
-
-        $("#FabrikName,#HandelsName").attr("readonly", true);
     }
     
     function TryCheckTypDaten() {
+        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
+        var typDatenBereitsVorhanden = $("#FabrikName").val().length > 0 || $("#HandelsName").val().length > 0;
+
+        if (!typDatenComplete || typDatenBereitsVorhanden)
+            return;
 
         var submitButton = $("button[type='submit']");
         submitButton.attr("disabled", "disabled");
-
-        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
-        if (!typDatenComplete)
-            return;
 
         $.ajax(
         {
@@ -221,13 +202,12 @@
             data: {
                 herstellerSchluessel: $("#HerstellerSchluessel").val(),
                 typSchluessel: $("#TypSchluessel").val().toUpperCase(),
-                vvsSchluessel: $("#VvsSchluessel").val(),
+                vvsSchluessel: $("#VvsSchluessel").val()
             },
             loadingShow: false,
             success: function (result) {
                 submitButton.removeAttr("disabled");
-                $("#FabrikName").val("");
-                $("#HandelsName").val("");
+
                 if (!result.success)
                     return;
 
