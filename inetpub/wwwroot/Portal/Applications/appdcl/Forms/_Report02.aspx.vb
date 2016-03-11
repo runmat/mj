@@ -3,6 +3,10 @@ Imports CKG.Base.Kernel.Common.Common
 Imports System.IO
 Imports System.Linq
 Imports System.Collections.Generic
+'Imports GeneralTools.Models
+'Imports GeneralTools.Services
+Imports DocumentTools.Services
+
 
 <CLSCompliant(False)> Partial Class _Report02
     Inherits System.Web.UI.Page
@@ -233,16 +237,29 @@ Imports System.Collections.Generic
                 lblError.Text = "Fehler beim Erstellen des Verzeichnisses<br/>" & ex.ToString
                 Return
             End Try
+
         End If
+
+        Dim fileList = New List(Of String)
 
         For Each file In auftrag.Files
             Try
                 file.Archive(targetArchiv)
+                fileList.Add(Path.Combine(targetArchiv, file.Filename))
             Catch ex As Exception
                 lblError.Text = "Fehler beim Archivieren der Bilder<br/>" & ex.ToString
                 Return
             End Try
         Next
+
+        ' PDF herstellen
+        Dim pdfFileName = "Bilder_" + auftrag.AuftragsNummer.ToString("0000000000") + "_" + auftrag.Fahrt.ToString("0000") + ".pdf"
+        Try
+            PdfDocumentFactory.CreatePdfFromImages(fileList, Path.Combine(targetArchiv, pdfFileName))
+        Catch ex As Exception
+            lblError.Text = "Fehler beim Erstellen des PDF-Dokuments <br/>" & ex.ToString
+            Return
+        End Try
 
         Try
             Dim ueberf = New Ueberfuehrung(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
