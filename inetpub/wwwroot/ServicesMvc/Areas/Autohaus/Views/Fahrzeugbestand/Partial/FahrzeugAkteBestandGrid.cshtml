@@ -152,6 +152,9 @@
     }
 
     function DeleteFahrzeuge() {
+        if (!confirm('@Localize.SelectedItemsDoYouReallyWantToDelete.ToJavascriptString()'))
+            return false;
+
         $.ajax({
             type: "POST",
             url: "DeleteFahrzeuge",

@@ -237,7 +237,7 @@
                     hiddenFieldName = "Kaeufer";
                 else if (result.partnerKennung.toLowerCase().substr(0, 1) == "z")
                     hiddenFieldName = "ZahlerKfzSteuer";
-                $("#fahrzeuge-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
+                $("#divFahrzeugDetails input[name='" + hiddenFieldName + "']").val(result.partnerID);
 
                 ClosePartnerAddressGrid();
             },
