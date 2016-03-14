@@ -46,7 +46,7 @@
         @Html.HiddenFor(m => m.KontoNr)
         @Html.HiddenFor(m => m.Bankleitzahl)
 
-        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap medium uppercase", col = "left", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap medium uppercase", col = "left", @onchange = "return TryLoadBankdatenAusIban(this)" },
                         postControlHtml: @<text>@Html.SpanAlert("bankDataHint")</text>)
 
         @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap medium uppercase", col = "right", @readonly = "readonly" },
