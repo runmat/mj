@@ -112,7 +112,11 @@
 
         $("#FahrzeugAuswahlCount").removeClass('hide');
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-        $("#uncheckAllRecords").attr("checked", true);        
+        $("#uncheckAllRecords").attr("checked", true);
+    }
+
+    function RefreshFahrzeugGrid() {
+        $("#GridFahrzeugAkteBestand").data("tGrid").ajaxRequest();
     }
 
     function RefreshZulassungenCountForDateAndPdi(zulassungenAnzahlGesamtTotal, zulassungenAnzahlPdiTotal) {        
@@ -156,7 +160,7 @@
 
                 if (result.success) {
 
-                    $("#GridFahrzeugAkteBestand").data("tGrid").ajaxRequest();
+                    RefreshFahrzeugGrid();
 
                     _selectedItemsCount = result.allSelectionCount;
                     GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);

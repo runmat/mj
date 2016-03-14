@@ -120,7 +120,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         {
             var savedModel = GetFahrzeugBestandUsingFinId(finId);
 
-            var akteHasBeenValid = CurrentFahrzeug != null && CurrentFahrzeug.AkteIsValid;
             var bestandAlreadyExistedForThisCustomer = (savedModel != null);
             
             if (!bestandAlreadyExistedForThisCustomer)
@@ -139,13 +138,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
             if (!bestandAlreadyExistedForThisCustomer)
                 LoadFahrzeuge();
-
-            if (!akteHasBeenValid)
-            {
-                savedModel = GetFahrzeugBestandUsingFinId(finId);
-                savedModel.AkteJustCreated = true;
-                CurrentFahrzeug = savedModel;
-            }
         }
 
         public void FilterFahrzeugeAkteBestand(string filterValue, string filterProperties)

@@ -8,6 +8,7 @@
         @Html.FormValidationSummary()
             
         @Html.HiddenFor(m => m.FinID)
+        @Html.HiddenFor(m => m.IsSelected)
 
 
         @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase", col = "left" })
@@ -77,7 +78,7 @@
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">
-            <button type="submit" class='btn blue'><i class='icon-ok margin-right-10'></i><span>@Localize.Save</span></button>
+            <button type="submit" class='btn blue'><i class='icon-ok margin-right-10'></i><span>@(string.IsNullOrEmpty(Model.FinID) ? Localize.VehicleCreate : Localize.Save)</span></button>
             <button type="button" onclick="CloseFahrzeugDetails();" class='btn'><i class='halflings-icon remove margin-right-10'></i>@Localize.Cancel</button>
 
             <button type="button" onclick="ToggleFzgAkte();" class='hide btn purple margin-left-50'><i class='icon-search margin-right-10'></i>@Localize.Temporary</button>
@@ -85,8 +86,6 @@
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            _akteJustCreated = @Model.AkteJustCreated.ToString().ToLower();
-            _akteIsValid = @Model.AkteIsValid.ToString().ToLower();
 
             InitCheckTypDaten();
         </script>

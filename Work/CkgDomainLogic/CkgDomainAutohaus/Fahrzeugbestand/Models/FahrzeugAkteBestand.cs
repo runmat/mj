@@ -30,6 +30,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CustomerReference)]
+        public string KundenReferenz { get; set; }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
@@ -126,22 +129,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.TradeName)]
         [Length(25)]
         public string HandelsName { get; set; }
-
-
-        [GridHidden, NotMapped]
-        public bool AkteIsValid
-        {
-            get
-            {
-                return HerstellerSchluessel.IsNotNullOrEmpty() && 
-                       TypSchluessel.IsNotNullOrEmpty() &&
-                       VvsSchluessel.IsNotNullOrEmpty() && 
-                       VvsPruefZiffer.IsNotNullOrEmpty();
-            }
-        }
-
-        [GridHidden, NotMapped]
-        public bool AkteJustCreated { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
@@ -294,10 +281,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                 return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
             }
         }
-
-        [LocalizedDisplay(LocalizeConstants.CustomerReference)]
-        [Length(50)]
-        public string KundenReferenz { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Delete)]
         public bool Loeschen { get; set; }

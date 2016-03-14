@@ -87,7 +87,7 @@
     }
 
     function FahrzeugCreateAjax() {
-        FahrzeugShowCreateAjax(null);
+        FahrzeugShowCreateAjax();
 
         return false;
     }
@@ -105,12 +105,8 @@
         });
     }
 
-    var _akteJustCreated = false;
-    var _akteIsValid = false;
-
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
-        SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
         setTimeout("HandleResponsiveControlWidths()", 500);
@@ -126,16 +122,12 @@
         catch(e){}
     }
 
-    function ShowFahrzeugDetailsComingFromFinSearch(result) {
-        $("#divFahrzeugDetails").html(result);
-        SetFahrzeugakteFormToReadOnly(_akteIsValid);
-        FormPrepareAjax();
-    }
-
     function CloseFahrzeugDetails() {
         setTimeout(function () {
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
+            RefreshFahrzeugGrid();
+            OnAllSelectionChange_GridFahrzeugAuswahl(false);
             setTimeout('LoadingHide();', 500);
             scrollToTop();
             BreadcrumbsMovePrev();
@@ -147,17 +139,7 @@
     }
 
     function TryCloseFahrzeugDetails() {
-
-        SetFahrzeugakteFormToReadOnly(_akteIsValid);
-        
         if (_modelStateValid) {
-            if (_akteJustCreated) {
-                var message = '@Localize.VehicleCreatedPleaseEditVehicleStock';
-                SpanAlertSuccess("Message", message, 4000);
-                FormPrepareAjax();
-                return;
-            }
-
             FormPrepareAjax();
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");
@@ -167,20 +149,6 @@
         FormPrepareAjax();
     }
 
-    function SetFahrzeugakteFormToReadOnly(readonly) {
-        $("#fahrzeuge-akte input[type=text]").attr("readonly", readonly);
-        $("#FabrikName,#HandelsName").attr("readonly", true);
-        $("#fahrzeuge-akte input[name='FIN']").attr("readonly", true);
-
-        if (readonly) {
-            $("#fahrzeuge-bestand").show();
-            $("button[type=submit] span").text('@Localize.Save');
-        } else {
-            $("#fahrzeuge-bestand").hide();
-            $("button[type=submit] span").text('@Localize.VehicleCreate');
-        }
-    }
-    
     function InitCheckTypDaten() {
         $("#HerstellerSchluessel,#TypSchluessel,#VvsSchluessel").change(function () { TryCheckTypDaten(); });
     }
