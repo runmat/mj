@@ -354,14 +354,13 @@
                         columns.XBound(c => c.HandelsName).ClientTemplate(
                                 Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
                             );
-                          
-                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
-                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
-                            );
 
                         columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>");
                         columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>");
 
+                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
+                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
+                            );
                     })
                     .XPageSize(10)
                     .XAutoColumnConfiguration()

@@ -120,16 +120,15 @@ else
                 {
                     columns.XBound(c => c.FinID).Visible(false);
                     columns.XBound(c => c.FIN);
-                    columns.XBound(c => c.ZulassungFahrzeugart);
                     columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                     columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
                     columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
                     columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
                     columns.XBound(c => c.ResKennz).ClientTemplate("<input id='ResKennz_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockrk blockdisabled' data-fieldname='ResKennz' value='<#= data.ResKennz #>' />");
                     columns.XBound(c => c.ReservationNr).ClientTemplate("<input id='ReservationNr_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationNr' value='<#= data.ReservationNr #>' />");
                     columns.XBound(c => c.ReservationName).ClientTemplate("<input id='ReservationName_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationName' value='<#= data.ReservationName #>' />");
-
-                    columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
+                    columns.XBound(c => c.ZulassungFahrzeugart);
                 })
                 .XAutoColumnConfiguration()
                 .ClientEvents(events => events.OnRowDataBound("OnRowDataBound_" + gridName))
