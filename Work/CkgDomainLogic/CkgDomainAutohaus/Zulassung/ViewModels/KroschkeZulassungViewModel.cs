@@ -931,7 +931,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             for (var i = 0; i < anzFahrzeuge; i++)
             {
                 var maxId = FinList.Max(f => f.FinID).ToInt(0);
-                FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3"), ZulassungNeuesFzg = true, ZulassungFahrzeugartId = fahrzeugartId });
+                var kreisKz = (string.IsNullOrEmpty(Zulassung.Zulassungsdaten.Zulassungskreis) ? "" : string.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis));
+                FinList.Add(new FahrzeugAkteBestand
+                {
+                    FinID = (maxId + 1).ToString("D3"),
+                    ZulassungNeuesFzg = true,
+                    ZulassungFahrzeugartId = fahrzeugartId,
+                    WunschKennz1 = kreisKz,
+                    WunschKennz2 = kreisKz,
+                    WunschKennz3 = kreisKz,
+                    Evb = Zulassung.Zulassungsdaten.EvbNr
+                });
             }
 
             PropertyCacheClear(this, m => m.FinListFiltered);
