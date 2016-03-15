@@ -28,6 +28,18 @@ namespace CarDocu.Models
             }
         }
 
+        private bool _askForDomainSelectionAtLogin;
+
+        public bool AskForDomainSelectionAtLogin
+        {
+            get { return _askForDomainSelectionAtLogin; }
+            set
+            {
+                _askForDomainSelectionAtLogin = value;
+                SendPropertyChanged("AskForDomainSelectionAtLogin");
+            }
+        }
+
         private bool _onlineStatusAutoCheckDisabled;
 
         public bool OnlineStatusAutoCheckDisabled
