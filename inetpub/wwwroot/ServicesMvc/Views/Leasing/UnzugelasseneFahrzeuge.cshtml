@@ -1,0 +1,94 @@
+﻿@model CkgDomainLogic.Leasing.ViewModels.UnzugelasseneFahrzeugeViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Leasing_UnzugelasseneFahrzeuge<small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div id="divGrid">
+    @Html.Partial("UnzugelasseneFahrzeuge/Grid", Model)
+</div>
+
+<div id="InnerEquiBemerkungErfassen" class="white-popup mfp-hide"></div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridUnzugelasseneFahrzeuge");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridUnzugelasseneFahrzeuge").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridUnzugelasseneFahrzeugeItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridUnzugelasseneFahrzeuge() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridUnzugelasseneFahrzeuge() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridUnzugelasseneFahrzeuge() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUnzugelasseneFahrzeuge() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function EditBemerkung(equiNr) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "BemerkungErfassenAendern",
+            data: { equiNr: equiNr },
+            loadingShow: true,
+            success: function (result) {
+                $("#InnerEquiBemerkungErfassen").html(result);
+
+                $.magnificPopup.open({
+                    items: { src: $("#InnerEquiBemerkungErfassen") },
+                    closeOnBgClick: false,
+                    type: 'inline',
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+
+                setTimeout('LoadingHide()', 1000);
+                $("#InnerEquiBemerkungErfassen #Bemerkung").focus();
+            }
+        });
+
+        return false;
+    }
+
+    function AjaxFormBemerkungErfassenAendernComplete() {
+        CloseBemerkungErfassenAendernForm();
+        GridRefresh();
+    }
+
+    function AjaxFormBemerkungErfassenAendernClose() {
+        CloseBemerkungErfassenAendernForm();
+    }
+
+    function CloseBemerkungErfassenAendernForm() {
+        $(".mfp-close").trigger("click");
+    }
+
+</script>
