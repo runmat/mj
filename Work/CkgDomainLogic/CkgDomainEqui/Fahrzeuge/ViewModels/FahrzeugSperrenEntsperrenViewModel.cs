@@ -123,7 +123,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             success = message.NotNullOrEmpty().ToLower().StartsWith("versandsperre geändert");
             var newFzgMitStatus = Fahrzeuge.Where(f => oldSelected.Contains(f.Fahrgestellnummer) && f.Gesperrt == sperren);
 
-            if (success && newFzgMitStatus.Count() != oldSelected.Count())
+            if (success && FahrzeugSelektor.Auswahl.NotNullOrEmpty() == "ALLE" && newFzgMitStatus.Count() != oldSelected.Count())
             {
                 message = "Achtung: Es wurde nicht genau die Anzahl an Fahrzeugen " + (sperren ? "gesperrt" : "entsperrt") + " die Sie ausgewählt hatten!";
                 success = false;
