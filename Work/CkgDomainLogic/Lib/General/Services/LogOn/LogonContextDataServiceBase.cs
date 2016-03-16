@@ -48,7 +48,7 @@ namespace CkgDomainLogic.General.Services
         public string RightName { get; set; }
 
         public virtual bool HasLocalizationTranslationRights { get { return false; } }
-        
+
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserNameForDisplay { get; set; }
 
@@ -456,6 +456,6 @@ namespace CkgDomainLogic.General.Services
 
                 return AdminLevel.None;
             }
-        }
     }
 }
+    }

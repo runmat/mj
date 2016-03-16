@@ -1740,3 +1740,12 @@ div.span-alert-placeholder .alert {
     padding: 5px;
     border-radius: 4px !important;
 }
+
+.session-timeout-info .alert-warning i {
+    margin-right: 10px;
+}
+.session-timeout-info .btn {
+    width: 120px;
+    float: right;
+    margin-bottom: 20px;
+}
