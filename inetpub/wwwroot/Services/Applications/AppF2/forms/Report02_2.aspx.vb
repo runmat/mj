@@ -12,7 +12,14 @@ Partial Public Class Report02_2
     Private BRIEFLEBENSLAUF_LPTable As DataTable
     Private QMMIDATENTable As DataTable
     Private QMEL_DATENTable As DataTable
+    Private LLSCHDATENTable As DataTable
     Private objPDIs As ABEDaten
+
+    Public ReadOnly Property ShowZweitschluessel As Boolean
+        Get
+            Return (Session("History_ShowZweitschluessel") IsNot Nothing AndAlso CBool(Session("History_ShowZweitschluessel")))
+        End Get
+    End Property
 
 #End Region
 
@@ -53,7 +60,13 @@ Partial Public Class Report02_2
                 'Fülle Händlerdaten
                 FillHaendleradresse()
 
+                'Fülle Zweitschlüssel-Lebenslauf
+                If ShowZweitschluessel Then FillGrid3(0)
+
             End If
+
+            ihShowZweitschluessel.Value = ShowZweitschluessel.ToString.ToLower()
+
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
@@ -73,6 +86,14 @@ Partial Public Class Report02_2
 
     Private Sub Datagrid2_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles Datagrid2.SortCommand
         FillGrid2(Datagrid2.CurrentPageIndex, e.SortExpression)
+    End Sub
+
+    Private Sub DataGrid3_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles Datagrid3.PageIndexChanged
+        FillGrid3(e.NewPageIndex)
+    End Sub
+
+    Private Sub DataGrid3_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles Datagrid3.SortCommand
+        FillGrid3(Datagrid2.CurrentPageIndex, e.SortExpression)
     End Sub
 
     Protected Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
@@ -622,6 +643,101 @@ Partial Public Class Report02_2
         End If
     End Sub
 
+    Private Sub FillGrid3(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
+        If Not (Session("LLSCHDATENTable") Is Nothing) Then
+            LLSCHDATENTable = CType(Session("LLSCHDATENTable"), DataTable)
+
+            If LLSCHDATENTable.Rows.Count > 0 Then
+                Dim tmpDataView As DataView = LLSCHDATENTable.DefaultView
+
+                Dim intTempPageIndex As Int32 = intPageIndex
+                Dim strTempSort As String = ""
+                Dim strDirection As String = ""
+
+                If strSort.Trim(" "c).Length > 0 Then
+                    intTempPageIndex = 0
+                    strTempSort = strSort.Trim(" "c)
+                    If (ViewState("Sort") Is Nothing) OrElse (ViewState("Sort").ToString = strTempSort) Then
+                        If ViewState("Direction") Is Nothing Then
+                            strDirection = "desc"
+                        Else
+                            strDirection = ViewState("Direction").ToString
+                        End If
+                    Else
+                        strDirection = "desc"
+                    End If
+
+                    If strDirection = "asc" Then
+                        strDirection = "desc"
+                    Else
+                        strDirection = "asc"
+                    End If
+
+                    ViewState("Sort") = strTempSort
+                    ViewState("Direction") = strDirection
+                Else
+                    If Not ViewState("Sort") Is Nothing Then
+                        strTempSort = ViewState("Sort").ToString
+                        If ViewState("Direction") Is Nothing Then
+                            strDirection = "asc"
+                            ViewState("Direction") = strDirection
+                        Else
+                            strDirection = ViewState("Direction").ToString
+                        End If
+                    End If
+                End If
+
+                If Not strTempSort.Length = 0 Then
+                    tmpDataView.Sort = strTempSort & " " & strDirection
+                End If
+
+                Datagrid3.CurrentPageIndex = intTempPageIndex
+                Datagrid3.DataSource = tmpDataView
+
+                Datagrid3.DataBind()
+
+                If Datagrid3.PageCount > 1 Then
+                    Datagrid3.PagerStyle.CssClass = "PagerStyle"
+                    Datagrid3.DataBind()
+                    Datagrid3.PagerStyle.Visible = True
+                Else
+                    Datagrid3.PagerStyle.Visible = False
+                End If
+
+                Dim item As DataGridItem
+                Dim cell As TableCell
+                Dim control As Control
+                Dim label As Label
+                Dim literal As Literal
+                Dim text As String
+
+                For Each item In Datagrid3.Items
+                    cell = item.Cells(2)
+
+                    text = ""
+                    For Each control In cell.Controls
+                        If TypeOf control Is Label Then
+                            If control.ID = "Label1" Or control.ID = "Label2" Or control.ID = "Label3" Then
+                                label = CType(control, Label)
+                                text &= label.Text
+                            End If
+                        End If
+                    Next
+                    If text.Trim(" "c).Length = 0 Then
+                        For Each control In cell.Controls
+                            If TypeOf control Is Literal Then
+                                literal = CType(control, Literal)
+                                literal.Text = ""
+                            End If
+                        Next
+                    End If
+                Next
+
+            End If
+
+        End If
+    End Sub
+
     Private Sub FillHaendleradresse()
 
         Dim TempTable As DataTable
@@ -698,54 +814,3 @@ Partial Public Class Report02_2
 #End Region
 
 End Class
-
-' ************************************************
-' $History: Report02_2.aspx.vb $
-' 
-' *****************  Version 12  *****************
-' User: Fassbenders  Date: 23.05.11   Time: 11:32
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 11  *****************
-' User: Fassbenders  Date: 23.05.11   Time: 10:40
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 16.07.10   Time: 9:53
-' Updated in $/CKAG2/Applications/AppF2/forms
-' ITA: 3855
-' 
-' *****************  Version 9  *****************
-' User: Fassbenders  Date: 10.03.10   Time: 17:10
-' Updated in $/CKAG2/Applications/AppF2/forms
-' ITA: 2918
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 13.11.09   Time: 16:35
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 7  *****************
-' User: Fassbenders  Date: 29.09.09   Time: 17:11
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 6  *****************
-' User: Fassbenders  Date: 3.09.09    Time: 11:35
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 18.08.09   Time: 9:20
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 4.08.09    Time: 11:42
-' Updated in $/CKAG2/Applications/AppF2/forms
-' ITA: 3019
-' 
-' *****************  Version 3  *****************
-' User: Fassbenders  Date: 3.08.09    Time: 18:01
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 30.07.09   Time: 17:51
-' Updated in $/CKAG2/Applications/AppF2/forms
-' 
