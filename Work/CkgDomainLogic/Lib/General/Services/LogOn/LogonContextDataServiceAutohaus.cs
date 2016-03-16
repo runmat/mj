@@ -82,7 +82,7 @@ namespace CkgDomainLogic.General.Services
             FirstName = User.FirstName;
             LastName = User.LastName;
 
-            UserNameEncryptedToUrlEncoded = CryptoMd5.EncryptToUrlEncoded(User.Username);
+            UserNameEncryptedToUrlEncoded = CryptoMd5Web.EncryptToUrlEncoded(User.Username);
             UserApps = dbContext.UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
             UserApps.ForEach(ua =>
                 {

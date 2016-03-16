@@ -28,6 +28,8 @@
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Typ)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Telefon)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Email)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressOnly)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressSuccessful)
@@ -61,6 +63,8 @@
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Typ)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.TmpSelectionKey)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Telefon)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Email)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Partnerrolle)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressOnly)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressSuccessful)
@@ -94,6 +98,8 @@
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Typ)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.TmpSelectionKey)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Telefon)
+                @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Email)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Partnerrolle)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressOnly)
                 @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressSuccessful)
@@ -118,6 +124,11 @@
         </div>
 
         @*@Html.FormRequiredFieldsSummary()*@
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormAuslieferAdressenClose();"> @Localize.Cancel</button>
+        </div>
 
         <script type="text/javascript">
 

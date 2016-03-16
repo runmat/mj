@@ -276,3 +276,4 @@ Work/GAC/System.Web.WebPages.dll
 Work/GAC/System.Web.WebPages.xml
 inetpub/wwwroot/ServicesMvc/.vs/config/applicationhost.config
 inetpub/wwwroot/Services/packages/
+inetpub/wwwroot/ServicesMvc/App_Data/FileUpload/Temp/*

@@ -18,8 +18,8 @@
             @foreach (var dashBoardItem in Model.DashboardItems)
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
-                
-                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title', '@JSon.Serialize(dashBoardItem.Options)', '@JSon.Serialize(dashBoardItem.ItemAnnotator)')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
 
         </ul>
@@ -40,6 +40,16 @@
 @foreach (var dashBoardItem in Model.VisibleSortedDashboardItems)
 {
     <script type="text/javascript">
+
+        var widgetOptionsAsString = "@JSon.Serialize(dashBoardItem.Options)";
+        widgetOptionsAsString = widgetOptionsAsString.replace(/&quot;/g, "\"");
+        var widgetOptions = jQuery.parseJSON(widgetOptionsAsString);
+
+        var userOptionsAsString = "@JSon.Serialize(dashBoardItem.ItemAnnotator)";
+        userOptionsAsString = userOptionsAsString.replace(/&quot;/g, "\"");
+        var userOptions = jQuery.parseJSON(userOptionsAsString);
+        //console.log(userOptions);
+
         _dashboardJson.push(
             {
                 widgetKey: "@dashBoardItem.ItemKey",
@@ -50,6 +60,8 @@
                 refreshCallBack: function (widgetId) {
                     return _dashboardData;
                 },
+                widgetOptions: widgetOptions,
+                userOptions: userOptions,
                 widgetContent: {
                     data: null,
                     options: null
@@ -71,7 +83,7 @@
         FormPrepareAjax();
     }
 
-    var _dashboardData = { data: null, options: null };
+    var _dashboardData = { data: null, options: null, dashboardItemOptions: null };
 
     function FormPrepareDashboard() {
 
@@ -110,18 +122,27 @@
             {
                 type: "POST",
                 url: "GetChartData",
-                data: { id: widgetId },
+                data: { id: widgetId, clearDataCache: false },
                 loadingShow: false,
                 success: function (result) {
 
-                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
-                    _dashboardData.data = _chartData;
-                    _dashboardData.options = _chartOptions;
+                    var isChart = (typeof (result.data) !== "undefined");
+
+                    if (!isChart) {
+                        $(widgetId + " .sDashboardChart").html(result);
+                    }
+                    else {
+                        _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                        _dashboardData.data = _chartData;
+                        _dashboardData.options = _chartOptions;
+                    }
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
 
-                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    if (isChart)
+                        $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+
                     SetupWidgetToolbar(widgetId);
 
                     _dashboardChainIndex++;
@@ -161,14 +182,20 @@
         return false;
     }
 
-    function ShowDashboardItem(id, key, title) {
+    function ShowDashboardItem(id, key, title, widgetOptionsAsString, userOptionsAsString) {
 
-        AddWidget(id, key, title);
+        AddWidget(id, key, title, widgetOptionsAsString, userOptionsAsString);
 
         return false;
     }
 
-    function AddWidget(rawWidgetId, widgetKey, widgetTitle) {
+    function AddWidget(rawWidgetId, widgetKey, widgetTitle, widgetOptionsAsString, userOptionsAsString) {
+
+        widgetOptionsAsString = widgetOptionsAsString.replace(/&quot;/g, "\"");
+        var widgetOptions = jQuery.parseJSON(widgetOptionsAsString);
+
+        userOptionsAsString = userOptionsAsString.replace(/&quot;/g, "\"");
+        var userOptions = jQuery.parseJSON(userOptionsAsString);
 
         $("#myDashboard").sDashboard("addWidget",
             {
@@ -180,44 +207,114 @@
                 refreshCallBack: function () {
                     return _dashboardData;
                 },
+                widgetOptions: widgetOptions,
+                userOptions: userOptions,
                 widgetContent: {
                     data: null,
-                    options: null
+                    options: null,
+                    dashboardItemOptions: null
                 }
             });
 
+        ShowWidget(rawWidgetId);
+
+        return false;
+    }
+
+    function ShowWidget(rawWidgetId, clearDataCache, afterRefreshFunction) {
+
+        clearDataCache = clearDataCache || false;
+
         var widgetId = "#id_" + rawWidgetId;
         var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
+        busyHintDiv.show();
         showBusy(busyHintDiv, 0, 0);
 
         $.ajax(
             {
                 type: "POST",
                 url: "GetChartData",
-                data: { id: "id_" + rawWidgetId },
+                data: { id: "#id_" + rawWidgetId, clearDataCache: clearDataCache },
                 loadingShow: false,
                 success: function (result) {
 
-                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
-                    _dashboardData.data = _chartData;
-                    _dashboardData.options = _chartOptions;
+                    var isChart = (typeof (result.data) !== "undefined");
 
-                    $(widgetId + " .sDashboard-refresh-icon").trigger("click");
-                    SetupWidgetToolbar(widgetId);
+                    if (!isChart) {
+                        $(widgetId + " .sDashboardChart").html(result);
+                    }
+                    else {
+                        _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                        _dashboardData.data = _chartData;
+                        _dashboardData.options = _chartOptions;
+                    }
+
+                    if (isChart)
+                        $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+
+                    if (!clearDataCache)
+                        SetupWidgetToolbar(widgetId);
+
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
+
+                    if (typeof(afterRefreshFunction) !== 'undefined')
+                        afterRefreshFunction();
                 }
             });
-
-        return false;
     }
 
     function SetupWidgetToolbar(widgetId) {
         var rawId = widgetId.replace(/#id_/g, "");
-        var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-print'></i></a>");
-        printButton.attr("href", $("#report_href_" + rawId).attr("href"));
-        printButton.attr("target", $("#report_href_" + rawId).attr("target"));
-        printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-circle-remove-icon"));
+
+        var widgetDefinition = $(widgetId).data("widgetDefinition");
+        var isPartialView = widgetDefinition.widgetOptions.IsPartialView;
+        var settingsScriptFunction = widgetDefinition.widgetOptions.SettingsScriptFunction;
+
+        if (isPartialView) {
+            if (settingsScriptFunction !== null && settingsScriptFunction !== '') {
+                //console.log(widgetDefinition.widgetOptions);
+                var settingsButton = $("<a class='dashboard-toolbar-item' onclick='return " + settingsScriptFunction +  "($(this), \"" + widgetId + "\");' href='#' title='Einstellungen ändern ...'><img class='dashboard-item-settings' src='/ServicesMvc/Images/Commands/dashboard-item-settings.png'></a>");
+                settingsButton.attr("href", $("#settings_href_" + rawId).attr("href"));
+                settingsButton.attr("target", $("#settings_href_" + rawId).attr("target"));
+                settingsButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+            }
+        }
+        else
+        {
+            var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-stack-overflow'></i></a>");
+            printButton.attr("href", $("#report_href_" + rawId).attr("href"));
+            printButton.attr("target", $("#report_href_" + rawId).attr("target"));
+            printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+        }
+
+        var refreshButton = $("<a class='dashboard-toolbar-item' href='#' onclick='return DashboardWidgetClearCacheAndReload(" + rawId + ", true)' title='Widget aktualisieren'><i class='icon-refresh'></i></a>");
+        refreshButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-remove-icon"));
+    }
+
+    function DashboardWidgetClearCacheAndReload(id, showHint) {
+
+        ShowWidget(id, true, function() {
+            var anchor = $("#id_" + id + " .sDashboardWidgetContent .sDashboardWidgetContentBusyHint");
+
+            var widgetDefinition = $("#id_" + id).data("widgetDefinition");
+            var isPartialView = widgetDefinition.widgetOptions.IsPartialView;
+
+            if (!isPartialView && showHint) {
+                var hint = $("<div></div>").addClass("alert").addClass("alert-success").addClass("dashboard-widget-hint").text("Chart erfolgreich aktualisiert!");
+                hint.hide();
+                hint.insertBefore(anchor);
+
+                setTimeout(function() {
+                    hint.show();
+                    setTimeout(function() {
+                        hint.remove();
+                    }, 2000);
+                }, 200);
+            }
+        });
+
+        return false;
     }
 
     function DashboardWidgetEventAdd(id) {

@@ -46,7 +46,7 @@ namespace Telerik.Web.Mvc.UI
             var propertyNameList =  modelColumnList.Where(slave => modelType.GetScaffoldPropertyLowerNames().Contains(slave.ToLower())).ToList();
             propertyNameList.ForEach(propertyName =>
                         {
-                            if (propertiesToExclude == null || propertiesToExclude.None() || propertiesToExclude.None(pExclude => pExclude.GetPropertyName().ToLower() == propertyName.ToLower()))
+                            if (propertiesToExclude == null || propertiesToExclude.None() || propertiesToExclude.None(pExclude => pExclude.GetPropertyName(true).ToLower() == propertyName.ToLower()))
                                 column = builder.XBound(propertyName, !userSlaveColumnsToHide.Contains(propertyName));
                         });
 

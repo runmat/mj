@@ -1,6 +1,5 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
-using CkgDomainLogic.DomainCommon.Contracts;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
@@ -27,9 +26,11 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             var ct = CreateDbContext();
 
-            IList<int> ids = null;
+            IList<int> ids;
             if (commaSeparatedIds.IsNotNullOrEmpty())
                 ids = commaSeparatedIds.Split(',').Select(s => s.ToInt()).ToList();
+            else
+                ids = items.Where(i => i.IsUserVisible).Select(i => i.ID).ToList();
 
             HideAllAnnotatorItems(items);
             ApplyVisibilityAndSortAnnotatorItems(items, ids, true);
@@ -40,9 +41,14 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         static void PrepareAnnotatorItems(DashboardSqlDbContext ct, IList<IDashboardItem> items, string userName)
         {
+            var annotatorItems = ct.DashboardAnnotatorItemsUserGet(userName);
+
             foreach (var item in items)
             {
-                item.ItemAnnotator = new DashboardItemAnnotator
+                if (annotatorItems != null && annotatorItems.Any())
+                    item.ItemAnnotator = annotatorItems.FirstOrDefault(ai => ai.ItemID == item.ID);
+                else
+                    item.ItemAnnotator = new DashboardItemAnnotator
                     {
                         ItemID = item.ID,
                         IsUserVisible = true,
@@ -50,7 +56,6 @@ namespace CkgDomainLogic.DomainCommon.Services
                     };
             }
 
-            var annotatorItems = ct.DashboardAnnotatorItemsUserGet(userName);
             if (annotatorItems == null || annotatorItems.None())
                 return;
 

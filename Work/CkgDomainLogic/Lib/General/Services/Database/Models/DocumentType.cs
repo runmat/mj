@@ -18,8 +18,5 @@ namespace CkgDomainLogic.General.Database.Models
 
         [Required]
         public int CustomerID { get; set; }
-
-        [NotMapped]
-        public bool IsValid { get; set; }
     }
 }

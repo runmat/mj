@@ -1,10 +1,11 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using GeneralTools.Models;
+
 namespace CkgDomainLogic.General.Models
 {
-    public class ChartItemsPackage 
+    public class ChartItemsPackage : JsonItemsPackage
     {
-        public object data { get; set; }
 
         public string[] labels { get; set; }
 
@@ -12,13 +13,8 @@ namespace CkgDomainLogic.General.Models
 
         public string options { get; set; }
 
+        public string dashboardItemOptions { get; set; }
+
         public string customscriptfunction { get; set; }
-    }
-
-    public class ChartItemsTick
-    {
-        public double Pos { get; set; }
-
-        public string Label { get; set; }
     }
 }

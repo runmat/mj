@@ -161,7 +161,7 @@ Partial Public Class AppManagement
         Else
             strAppID = ddlAppParent.SelectedItem.Value
         End If
-        Dim url As String = "/ServicesMvc/Common/GridAdmin/ReportSolution?un=" & CryptoMd5.EncryptToUrlEncoded(strAppID & "-" & m_User.UserName & "-" & DateTime.Now.Ticks.ToString())
+        Dim url As String = "/ServicesMvc/Common/GridAdmin/ReportSolution?un=" & CryptoMd5Web.EncryptToUrlEncoded(strAppID & "-" & m_User.UserName & "-" & DateTime.Now.Ticks.ToString())
         Response.Redirect(url)
     End Sub
 

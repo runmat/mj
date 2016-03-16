@@ -156,6 +156,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.Gewerblich = s.GEWERBE.XToBool();
                         d.EvbNr = s.EVBNR;                      // 20150612 MMA ITA 8127
                         d.Stichtagsabbuchung = s.SEPA_STICHTAG; // 20150612 MMA ITA 8127
+                        d.Iban = s.IBAN;
                     }));
             }
         }
@@ -179,6 +180,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
                 {"EVBNR", "EvbNr"},
                 {"SEPA_STICHTAG", "Stichtagsabbuchung"},
+                {"IBAN", "Iban"},
 
             };
 

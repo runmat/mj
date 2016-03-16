@@ -1,16 +1,30 @@
-﻿@using CkgDomainLogic.General.Models.DataModels
-@model DocumentErstellenBearbeiten
+﻿@model CkgDomainLogic.DomainCommon.Models.DokumentErstellenBearbeiten
 
-<div id="@MvcAjaxOptions.AjaxFormContainerName" class="">
-    @using (Ajax.BeginForm("Edit", "Document", null, new MvcAjaxOptions { OnComplete = "EditDocumentComplete();" }, new { @class = "form-horizontal form-row-stripped formlabelwidth200", id = "ajaxForm" }))
+<div id="@MvcAjaxOptions.AjaxFormContainerName">
+    
+    @using (Ajax.BeginForm("Edit", "Document", null, new MvcAjaxOptions {OnComplete = "EditDocumentComplete();"}, new {@class = "form-horizontal", id = "ajaxForm"}))
     {
-        @Html.HiddenFor(m => m.ID)
-
         @Html.FormValidationSummary()
-        
-        @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes, new { @class = "m-wrap" })
 
-        @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("Value", "Text"), new { @class = "m-wrap chosen" })
+
+        <div class="space10"></div>
+        
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.Name)
+
+        @Html.FormTextBlockFor(m => m.Name, new { @class = "m-wrap" })
+        
+        @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes.ToSelectList("DocumentTypeID", "DocTypeName"), new { @class = "m-wrap" })
+
+        if (Model.GeneralMode)
+        {
+            @Html.FormTextBoxFor(m => m.Tags, new { @class = "m-wrap", maxlength = 100 })
+        }
+        else
+        {
+            @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("GroupID", "GroupName"), new { @class = "m-wrap chosen" })
+        }
+
 
         @Html.FormRequiredFieldsSummary()
 
@@ -18,16 +32,17 @@
             <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
             <button type="button" class="btn" onclick="CloseDocumentDetails();">@Localize.Cancel</button>
         </div>
-    
+
         <script type="text/javascript">
-            _modelIsValid = @Model.IsValid.ToString().ToLower();
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
             function EditDocumentComplete() {
-                CloseDocumentDetails();
                 FormPreparePrivateAjax();
+
+                if (_modelIsValid)
+                    CloseDocumentDetails();
             }
         </script>
     }
+
 </div>
-
-

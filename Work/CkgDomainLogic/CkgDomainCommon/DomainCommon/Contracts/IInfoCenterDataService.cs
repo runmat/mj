@@ -1,33 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
-using CkgDomainLogic.General.Models.DataModels;
 
 namespace CkgDomainLogic.DomainCommon.Contracts
 {
-    public interface IInfoCenterDataService 
+    public interface IInfoCenterDataService : ICkgGeneralDataService
     {
-        List<Dokument> DokumentsForCurrentCustomer { get; }
+        List<Document> DocumentsForAll { get; }
 
-        List<Dokument> DokumentsForCurrentGroup { get; }
+        List<Document> DocumentsForCurrentCustomer { get; }
+
+        List<Document> DocumentsForCurrentGroup { get; }
 
         List<UserGroup> UserGroupsOfCurrentCustomer { get; }
 
-        Dokument SaveDocument(Dokument dokument, Action<string, string> addModelError);
+        Document SaveDocument(Document document);
 
-        bool SaveDocument(DocumentErstellenBearbeiten documentBearbeiten);
+        bool SaveDocument(DokumentErstellenBearbeiten dokumentBearbeiten);
 
-        bool DeleteDocument(Dokument dokument);
+        bool DeleteDocument(int documentId);
+
+        List<DocumentType> DocumentTypesForAll { get; }
 
         List<DocumentType> DocumentTypes { get; }
 
-        DocumentType CreateDocumentType(DocumentType documentType, Action<string, string> addModelError);
+        DocumentType SaveDocumentType(DocumentType documentType);
 
-        DocumentType EditDocumentType(DocumentType documentType, Action<string, string> addModelError);
+        bool DeleteDocumentType(int documentTypeId);
 
-        int DeleteDocumentType(DocumentType documentType);
-
-        List<DokumentRight> DocumentRights { get; }
+        List<DocumentRight> DocumentRights { get; }
     }
 }
 

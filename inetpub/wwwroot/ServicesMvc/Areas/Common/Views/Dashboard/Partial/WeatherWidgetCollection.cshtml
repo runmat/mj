@@ -1,0 +1,460 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.WeatherViewModel
+@* ReSharper disable once CssBrowserCompatibility *@
+
+<style type="text/css">
+    .selection-div {
+        background-color: ivory;
+        padding: 15px 0 0 0;
+        height: 100px;
+        border: 1px solid #909090;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+    }
+    .selection-div select.m-wrap, .selection-div input.m-wrap {
+        background-color: white !important;
+    }
+    .selection-div.form-horizontal .control-label {
+        width: 70px;
+        font-size: 1.15em;
+    }
+
+    .selection-div.form-horizontal .controls {
+        margin-left: 80px;
+    }
+
+    .weather-widget {
+        display: table;
+        float: none;
+        width: 360px;
+        margin: 0 0 30px 10px;
+        border: 0 solid gray;
+    }
+
+    .weather-widget-header {
+        display: table;
+        width: 100%;
+    }
+
+    .weather-widget-title {
+        display: inline;
+        float: left;
+        font-weight: bold;
+    }
+
+    a.widget-action {
+        float: right;
+    }
+
+    .wd-content {
+        height: 160px;
+    }
+
+    .wd-day {
+        float: left;
+        font-size: 0.7em;
+        display: inline-block;
+        margin: 5px 0 15px 20px;
+        text-align: center;
+    }
+
+    .no-margin-left .wd-day {
+        margin-left: 0;
+    }
+
+    .day-info {
+        margin: 0 0 2px 0;
+    }
+
+    .day-info div.day {
+        font-size: 1.0em;
+        color: #808080 !important;
+    }
+
+    .day-info div.wkday {
+        font-size: 1.3em;
+        font-weight: bold;
+        margin: 0 0 0 0;
+    }
+
+    .temp-info {
+        margin: 0 0 -7px 0;
+    }
+
+    .temp-info hr {
+        margin: -1px 0 -3px -1px;
+    }
+
+    .temp-info div.tlabel {
+        color: #808080 !important;
+        display: inline-block;
+        font-size: 0.95em;
+        width: 6px;
+        text-align: left;
+    }
+
+    .temp-info div.tlabel-degree {
+        display: inline-block;
+        vertical-align: 2px;
+        font-size: 1.5em;
+    }
+
+    .temp-info div.celsius {
+        display: inline-block;
+        width: 30px;
+        text-align: right;
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .temp-info div {
+        color: green;
+    }
+
+    .temp-info div.temp-zero * {
+        color: blue;
+    }
+
+    .temp-info div.temp-freeze * {
+        color: darkmagenta;
+    }
+</style>
+
+@Html.Partial("Partial/RowSpanDropDownMenu")
+
+@for (var i = 0; i < Model.WidgetVisibleCount; i++)
+{
+    var country = Model.WidgetUserSettings[i].Country;
+    var city = Model.WidgetUserSettings[i].City;
+
+    <div id="weather-widget-@i" class="weather-widget">
+
+        <div class="weather-widget-header">
+            <div class="weather-widget-title">
+                @city, @country.ToUpper()
+            </div>
+            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><img src="~/Images/Commands/settings.png" /></a>
+        </div>
+        <div class="form-horizontal selection-div hide">
+
+            <a href="#" onclick="return SettingsToggle(@i)" class="widget-action"><span class="sDashboard-icon sDashboard-remove-icon"></span></a>
+
+            <div class="control-group">
+                <label class="control-label">@Localize.Country</label>
+                <div class="controls">
+                    <select class="m-wrap medium lb-country">
+                        @foreach (var countryEntry in Model.CountryDict)
+                        {
+                            <option @(country == countryEntry.Key ? "selected" : "") value="@countryEntry.Key" label="@countryEntry.Value"></option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">@Localize.City</label>
+                <div class="controls">
+                    <input class="m-wrap medium tb-city" type="text" value="@city">
+                    <button class='btn blue mini margin-left-5 margin-top-5' onclick="SettingsSubmit(@i)"><i class="icon-ok"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="wd-content">
+        </div>
+    </div>
+}
+
+
+<div id="wd-template" class="hide">
+    <div class="wd-day">
+
+        <div class="day-info">
+            <div class="day">
+            </div>
+            <div class="wkday">
+            </div>
+        </div>
+
+        <div class="temp-info">
+            <div class="max-info">
+                <div class="tlabel">max</div> <div class="celsius"></div><div class="tlabel-degree">°</div>
+            </div>
+            <hr />
+            <div class="min-info">
+                <div class="tlabel">min</div> <div class="celsius"></div><div class="tlabel-degree">°</div>
+            </div>
+        </div>
+
+        <div class="picture">
+            <img src="" />
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        InitControls();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    $.each($(".wd-content"), function (index, el) {
+        var wdContent = $(el);
+        showBusy(wdContent, 0, 0);
+    });
+
+    setTimeout("InitControls()", 1000);
+
+
+    function DashboardItemWeatherWidgetSettings(settingsButton, widgetId) {
+
+        DashboardItemRowspanSelectMenuShow(widgetId, function (rowSpan) {
+            return DashboardItemOnRowSpanSelect(widgetId, rowSpan);
+        });
+
+        return false;
+    }
+
+    function DashboardItemOnRowSpanSelect(widgetId, rowSpan) {
+
+        var widgetDefinition = $(widgetId).data("widgetDefinition");
+
+        var rowSpanPrev = widgetDefinition.userOptions.RowSpanOverride > 0 ? widgetDefinition.userOptions.RowSpanOverride : widgetDefinition.widgetOptions.RowSpan;
+
+        console.log("prev: " + rowSpanPrev);
+        console.log("next: " + rowSpan);
+
+        // (client only) save user defined rowspan
+        widgetDefinition.userOptions.RowSpanOverride = rowSpan;
+        $(widgetId).data("widgetDefinition", widgetDefinition);
+
+        SetRowSpan($(widgetId), rowSpan);
+        SetRowSpan($(widgetId + " .sDashboardWidgetContent"), rowSpan);
+        SetRowSpan($(widgetId + " .sDashboardWidgetContentBusyHint"), rowSpan);
+
+        // (server) persist user defined rowspan
+        $.ajax({
+            type: "POST",
+            url: "DashboardItemUserRowSpanSave",
+            data: {
+                userRowSpanOverride: rowSpan,
+                rawWidgetId: widgetDefinition.widgetId.replace(/id_/g, "")
+            },
+            success: function (result) {
+                if (rowSpanPrev < rowSpan) {
+                    // if we have more weather items in our widget now, 
+                    // ==> refresh our weather widget to enforce the additional weather items being calculated and properly displayed:
+                    var rawId = widgetId.replace(/#id_/g, "");
+
+                    DashboardWidgetClearCacheAndReload(rawId, false);
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function SetRowSpan(el, rowSpan) {
+        el.removeClass("height1");
+        el.removeClass("height2");
+        el.removeClass("height3");
+
+        el.addClass("height" + rowSpan);
+    }
+
+    function SettingsToggle(index) {
+        var widgetId = "#weather-widget-" + index;
+
+        var header = $(widgetId + " .weather-widget-header");
+        var settingsForm = $(widgetId + " .selection-div");
+
+        var isSettingsOpen = $(widgetId).data("IsSettingsOpen");
+        isSettingsOpen = !isSettingsOpen;
+        $(widgetId).data("IsSettingsOpen", isSettingsOpen);
+
+        if (isSettingsOpen) {
+            header.hide();
+            settingsForm.slideDown(200);
+        } else {
+            settingsForm.slideUp(200, function() {
+                header.show();
+            });
+        }
+
+        return false;
+    }
+
+    function InitControls() {
+        
+        $.each($(".weather-widget .lb-country"), function (index, lbCountry) {
+            InitCountryDropdown($(lbCountry), index);
+        });
+        $.each($(".weather-widget .tb-city"), function (index, tbCity) {
+            InitCityTextbox($(tbCity), index);
+        });
+    }
+
+    function InitCountryDropdown(lbCountry, index) {
+
+        var widgetId = "#weather-widget-" + index;
+        $(widgetId).data("IsSettingsOpen", false);
+
+        lbCountry.change(function() {
+
+            var tbCity = $(widgetId + " .tb-city");
+            tbCity.val("");
+            if (tbCity.data('ui-autocomplete') != undefined) {
+                tbCity.autocomplete("destroy");
+                tbCity.removeData("autocomplete");
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "PrepareWeatherCountryDropdown",
+                data: { country: lbCountry.val(), index: index },
+                success: function (result) {
+                    tbCity.focus();
+                }
+            });
+        });
+    }
+
+    function SettingsSubmit(index) {
+        var widgetId = "#weather-widget-" + index;
+        var tbCity = $(widgetId + " .tb-city");
+        var tbCountryDropdown = $(widgetId + " .lb-country");
+
+        SettingsToggle(index);
+        PrepareWeatherWidget(tbCity.val(), index);
+
+        $(widgetId + " .weather-widget-title").html(tbCity.val() + ", " + tbCountryDropdown.val().toUpperCase());
+    }
+
+    function InitCityTextbox(tbCity, index)
+    {
+        var widgetId = "#weather-widget-" + index;
+        var autoCompleteMinLength = 3;
+
+        if (tbCity.val().length >= autoCompleteMinLength) {
+            PrepareWeatherWidget(tbCity.val(), index);
+        }
+
+        tbCity.on("keyup", function(e) {
+
+            if (e.keyCode === 13 && tbCity.val().length >= autoCompleteMinLength) {
+                SettingsSubmit(index);
+            }
+
+            if (tbCity.val().length < autoCompleteMinLength && tbCity.data('ui-autocomplete') != undefined) {
+                tbCity.autocomplete("destroy");
+                tbCity.removeData("autocomplete");
+            }
+
+            var okButton = $(widgetId + " button.btn.blue");
+            if (tbCity.val().length >= autoCompleteMinLength) okButton.show(); else okButton.hide();
+
+            if (tbCity.val().length >= autoCompleteMinLength && tbCity.data('ui-autocomplete') == undefined)
+            {
+                if (!tbCity.data('insideAutoComplete')) {
+                    tbCity.data('insideAutoComplete', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "PrepareWeatherCityTextbox",
+                        data: { city: tbCity.val(), index: index },
+                        success: function (result) {
+                            //console.log(result.data.length);
+                            InitAutoComplete(tbCity, result.data);
+                        }
+                    });
+                }
+            }
+        });
+
+        setTimeout(function () {
+        }, 100);
+    }
+
+    function InitAutoComplete(tb, items) {
+        tb.autocomplete({
+            minLength: 2,
+            source: items
+        });
+        tb.autocomplete("enable");
+        if (tb.val() !== "")
+            tb.autocomplete("search");
+
+        tb.data('insideAutoComplete', false);
+    }
+
+    function OnCityChanged(city) {
+        alert(city);
+    }
+
+    function PrepareWeatherWidget(city, index) {
+
+        var imagePath = '@Url.ContentArea("Content/Weather/images/")';
+        var widgetId = "#weather-widget-" + index;
+
+        var wdContent = $(widgetId + " .wd-content");
+
+        wdContent.html("");
+        showBusy(wdContent, 0, 0);
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "PrepareWeatherWidget",
+            data: { city: city, index: index },
+            loadingShow: false,
+            success: function (result) {
+
+                var maxDays = result.data.list.length;
+                if (maxDays > 5)
+                    maxDays = 5;
+
+                for (var i = 0; i < maxDays; i++) {
+                    var wd = result.data.list[i];
+                    //console.log(wd);
+
+                    var content = $("#wd-template").clone();
+                    content.removeClass("hide");
+
+                    var subId = ((index * 100) + i);
+                    content.attr("id", "wd-" + subId);
+
+                    if (i === 0)
+                        content.addClass("no-margin-left");
+
+                    wdContent.append(content);
+
+                    var minTemperature = toCelsiusTemperature(wd.main.temp_min) - 0;
+                    var maxTemperature = toCelsiusTemperature(wd.main.temp_max) + 0;
+
+                    $("#wd-" + subId + " .wd-day .day-info div.day").html(wd.dateHeaderTop);
+                    $("#wd-" + subId + " .wd-day .day-info div.wkday").html(wd.dateHeaderBottomBold);
+
+                    $("#wd-" + subId + " .wd-day .min-info div.celsius").html(minTemperature).parent().addClass(minTemperature <= -8 ? "temp-freeze" : minTemperature <= 0 ? "temp-zero" : "");
+                    $("#wd-" + subId + " .wd-day .max-info div.celsius").html(maxTemperature).parent().addClass(minTemperature <= -8 ? "temp-freeze" : maxTemperature <= 0 ? "temp-zero" : "");
+
+                    $("#wd-" + subId + " .wd-day .picture img").attr("src", imagePath + wd.weatherFirst.icon + ".png");
+                }
+
+                hideBusy(wdContent);
+            }
+        });
+
+        return false;
+    }
+
+    function toCelsiusTemperature(kelvin) {
+        var celsius = Math.round(parseFloat(kelvin)) - 273.0;
+
+        return celsius;
+    }
+
+</script>

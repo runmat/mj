@@ -20,7 +20,7 @@ namespace DocumentTools.Services
         {
             var contents = File.ReadAllText(fileName);
             var separators = new [] { ';', ',', '\t' };
-            var selectedSeparator = ',';
+            var selectedSeparator = separators.First();
             var maxSeparatorOccurences = 0;
             for (var i = 0; i < separators.Length; i++)
             {
@@ -42,7 +42,7 @@ namespace DocumentTools.Services
                     return null;
 
                 var extension = Path.GetExtension(excelFileName);
-                if (extension == null)
+                if (string.IsNullOrEmpty(extension))
                     return null;
 
                 if (separator == '*')
@@ -53,12 +53,15 @@ namespace DocumentTools.Services
                 if (maintainLeadingZeros)
                     workbook.ConvertNumericData = false;
 
-                if (extension.ToLower().StartsWith(".xls"))
-                    workbook.Open(excelFileName, FileFormatType.Default);
-                else if (extension.ToLower() == ".csv")
+                if (extension.ToLower() == ".csv")
+                {
                     workbook.Open(excelFileName, separator);
+                }
                 else
-                    return null;
+                {
+                    var csvStream = SpireXlsFactory.ConvertExcelToCsvStream(excelFileName, separator);
+                    workbook.Open(csvStream, separator);
+                }
 
                 //Get the first worksheet in the workbook
                 var worksheet = workbook.Worksheets[0];
@@ -115,6 +118,11 @@ namespace DocumentTools.Services
             return ReadToDataTable(excelFileName, "", CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
         }
 
+        public IEnumerable<object> ReadToDataTableForMappedUpload(string excelFileName, bool headerRowAvailable, Func<DataRow, object> createFromDataRow, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
+        {
+            return ReadToDataTableForMappedUploadInternal(excelFileName, headerRowAvailable, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
+        }
+
         private static IEnumerable<T> ReadToDataTableInternal<T>(string excelFileName, bool headerRowAvailable, string commaSeparatedAutoPropertyNamesToIgnore, Func<DataRow, T> createFromDataRow, char separator, bool skipDataReformatting, bool maintainLeadingZeros)
            where T : class, new()
         {
@@ -128,10 +136,26 @@ namespace DocumentTools.Services
 
                 return dataTable.AsEnumerable()
                             .Where(row => dataTable.Rows.IndexOf(row) > rowToStart)
-                            // skip the first row, we asume it's the header row
                             .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row, commaSeparatedAutoPropertyNamesToIgnore));
             }
             catch { return new List<T>(); }
+        }
+
+        private static IEnumerable<object> ReadToDataTableForMappedUploadInternal(string excelFileName, bool headerRowAvailable, Func<DataRow, object> createFromDataRow, char separator, bool skipDataReformatting, bool maintainLeadingZeros)
+        {
+            try
+            {
+                var dataTable = ReadToDataTable(excelFileName, skipDataReformatting, separator, maintainLeadingZeros);
+                if (dataTable.Columns.Count == 0)
+                    return new List<object>();
+
+                var rowToStart = headerRowAvailable ? 0 : -1;
+
+                return dataTable.AsEnumerable()
+                            .Where(row => dataTable.Rows.IndexOf(row) > rowToStart)
+                            .Select(createFromDataRow);
+            }
+            catch { return new List<object>(); }
         }
 
         static T AutoCreateFromDataRow<T>(DataRow row, string commaSeparatedAutoPropertyNamesToIgnore)

@@ -8,11 +8,6 @@
     kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde("", Localize.DropdownDefaultOptionAll));
 }
 
-@*<div id="popup" class="white-popup mfp-hide">
-    <h2>My Popup</h2>
-    <div>This is my popup!</div>
-</div>*@
-
 <div id="divZulassungsReportSuche">
     @using (Ajax.BeginForm("LoadZulassungsReport", "ZulassungsReport", null,
         new MvcAjaxOptions("divZulassungsReportSuche") { OnComplete = "ShowZulassungsReport();" }, new { id = "ZulassungsReportForm" }))
@@ -44,6 +39,8 @@
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+                
+                @Html.FormPersistenceMenu(Model)
             </div>
         </div>  
         

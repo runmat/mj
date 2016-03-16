@@ -349,6 +349,15 @@ namespace GeneralTools.Models
             return s.Substring(0, 1).ToUpper() + s.Substring(1).ToLower();
         }
 
+        public static string ToFirstLower(this string s)
+        {
+            s = s.NotNullOrEmpty();
+            if (s.Length <= 1)
+                return s;
+
+            return s.Substring(0, 1).ToLower() + s.Substring(1);
+        }
+
         public static string ToLowerAndHyphens(this string s)
         {
             var ret = "";
@@ -613,6 +622,14 @@ namespace GeneralTools.Models
             return (Int64)tmp;
         }
 
+        public static Int64? ToNullableLong(this string stringValue)
+        {
+            Int64 tmp;
+            if (!Int64.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return null;
+            return tmp;
+        }
+
         public static string ToEmailWithoutAtSymbol(this string email)
         {
             return email.NotNullOrEmpty().Replace("@", "(at)");
@@ -654,7 +671,9 @@ namespace GeneralTools.Models
 
         public static bool ToBool(this string stringValue)
         {
-            return (stringValue.NotNullOrEmpty().ToUpper() == "TRUE");
+            var strUppercaseText = stringValue.NotNullOrEmpty().ToUpper();
+
+            return (strUppercaseText == "TRUE" || strUppercaseText == "JA" || strUppercaseText == "X");
         }
 
         public static bool IsInteger(this string stringValue)
@@ -671,6 +690,30 @@ namespace GeneralTools.Models
             return tmp;
         }
 
+        public static double? ToNullableDouble(this string stringValue)
+        {
+            double tmp;
+            if (!double.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return null;
+            return tmp;
+        }
+
+        public static float ToFloat(this string stringValue, float defaultValue = -1)
+        {
+            float tmp;
+            if (!float.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return defaultValue;
+            return tmp;
+        }
+
+        public static float? ToNullableFloat(this string stringValue)
+        {
+            float tmp;
+            if (!float.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return null;
+            return tmp;
+        }
+
         public static bool IsDecimal(this string stringValue)
         {
             decimal tmp;
@@ -681,6 +724,81 @@ namespace GeneralTools.Models
         {
             DateTime tmp;
             return DateTime.TryParse(stringValue.NotNullOrEmpty(), out tmp);
+        }
+
+        public static object TryConvertToDestinationType(this string stringValue, PropertyInfo propertyDst, bool useDbNullInsteadOfNullForEmptyDateTimeValues = false)
+        {
+            if (propertyDst.PropertyType == typeof (string))
+                return stringValue;
+
+            if (propertyDst.PropertyType == typeof (int))
+                return stringValue.ToInt(0);
+
+            if (propertyDst.PropertyType == typeof (int?))
+                return stringValue.ToNullableInt();
+
+            if (propertyDst.PropertyType == typeof (long))
+                return stringValue.ToLong(0);
+
+            if (propertyDst.PropertyType == typeof (long?))
+                return stringValue.ToNullableLong();
+
+            if (propertyDst.PropertyType == typeof (decimal))
+                return stringValue.ToDecimal(0);
+
+            if (propertyDst.PropertyType == typeof (decimal?))
+                return stringValue.ToNullableDecimal();
+
+            if (propertyDst.PropertyType == typeof(float))
+                return stringValue.ToFloat(0);
+
+            if (propertyDst.PropertyType == typeof(float?))
+                return stringValue.ToNullableFloat();
+
+            if (propertyDst.PropertyType == typeof (double))
+                return stringValue.ToDouble(0);
+
+            if (propertyDst.PropertyType == typeof (double?))
+                return stringValue.ToNullableDouble();
+
+            if (propertyDst.PropertyType == typeof (DateTime))
+                return stringValue.ToNullableDateTime() ?? DateTime.MinValue;
+
+            if (propertyDst.PropertyType == typeof (DateTime?))
+            {
+                if (useDbNullInsteadOfNullForEmptyDateTimeValues)
+                    return stringValue.ToDateTimeOrDbNull();
+
+                return stringValue.ToNullableDateTime();
+            }
+
+            if (propertyDst.PropertyType == typeof (bool))
+                return stringValue.ToBool();
+
+            if (propertyDst.PropertyType == typeof(bool?))
+                return (bool?)stringValue.ToBool();
+
+            return null;
+        }
+
+
+        public static bool In(this string stringValue, IEnumerable<string> liste)
+        {
+            return ( stringValue != null && liste.Contains(stringValue));
+        }
+        public static bool In(this string stringValue, string listeAsCommaSeparatedString)
+        {
+            return (stringValue != null && !string.IsNullOrEmpty(listeAsCommaSeparatedString) && listeAsCommaSeparatedString.Split(',').Contains(stringValue));
+        }
+
+        public static bool NotIn(this string stringValue, IEnumerable<string> liste)
+        {
+            return (stringValue == null || !liste.Contains(stringValue));
+    }
+
+        public static bool NotIn(this string stringValue, string listeAsCommaSeparatedString)
+        {
+            return (stringValue == null || string.IsNullOrEmpty(listeAsCommaSeparatedString) || !listeAsCommaSeparatedString.Split(',').Contains(stringValue));
         }
 
         public static DateTime ParseYyyyDateTimeCultureIndependently(this string sDate)
@@ -707,10 +825,9 @@ namespace GeneralTools.Models
             return DateTime.Today;
         }
     }
-
     public static class ExpressionExtensions
     {
-        public static string GetPropertyName(this LambdaExpression lambda)
+        public static string GetPropertyName(this LambdaExpression lambda, bool forGridBinding = false)
         {
             MemberExpression memberExpr = null;
 
@@ -727,7 +844,13 @@ namespace GeneralTools.Models
             if (memberExpr == null)
                 throw new ArgumentException("method");
 
-            return memberExpr.Member.Name;
+            var memberExprExpr = memberExpr.Expression.ToString();
+            var memberExprMember = memberExpr.Member.Name;
+
+            if (forGridBinding && memberExprExpr.Contains("."))
+                return string.Format("{0}.{1}", memberExprExpr.Split('.').Last(), memberExprMember);
+
+            return memberExprMember;
         }
     }
 

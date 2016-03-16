@@ -99,7 +99,7 @@ namespace ZLDBaseMvc
                     rootFolderMvc = string.Format("{0}Mvc", rootFolder);
                 }
 
-                var crypteduserName = CryptoMd5.EncryptToUrlEncoded(userName);
+                var crypteduserName = CryptoMd5Web.EncryptToUrlEncoded(userName);
 
                 relativeUrl = string.Format("/{0}/{1}?un={2}&appID={3}", rootFolderMvc, relativeUrl, crypteduserName, appID);
                 if (mvcLayoutAsWebFormsInline && !forceMvcLayout)

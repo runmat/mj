@@ -1,12 +1,31 @@
-﻿@using CkgDomainLogic.General.Models.DataModels
-@model DocumentErstellenBearbeiten
+﻿@model CkgDomainLogic.DomainCommon.Models.DokumentErstellenBearbeiten
 
-<div id="divDocumentProperties">
-    @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes, new { @class = "m-wrap" })
+<div id="divDocumentProperties" class="form-horizontal">
 
-    @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("Value", "Text"), new { @class = "m-wrap chosen" })
+    @Html.FormValidationSummary()
+
+
+    <div class="space10"></div>
+
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.Name)
+
+    @Html.FormDropDownListFor(m => m.DocTypeID, Model.AvailableDocumentTypes.ToSelectList("DocumentTypeID", "DocTypeName"), new {@class = "m-wrap"})
+
+@if (Model.GeneralMode)
+{
+    @Html.HiddenFor(m => m.SelectedWebGroups)
+    @Html.FormTextBoxFor(m => m.Tags, new { @class = "m-wrap", maxlength = 100 })
+}
+else
+{
+    @Html.HiddenFor(m => m.Tags)
+    @Html.FormMultiSelectListFor(m => m.SelectedWebGroups, Model.AvailableWebGroups.ToSelectList("GroupID", "GroupName"), new { @class = "m-wrap chosen" })
+}
+
 
     @Html.FormRequiredFieldsSummary()
+
 </div>
 
 <div class="space20"></div>
@@ -16,21 +35,24 @@
 </div>
 
 <script type="text/javascript">
+
     function SetDocumentProperties() {
         // Gruppenzuordnung muss gesetzt sein, damit Upload fortgesetzt werden kann
-        if ($("#SelectedWebGroups").val() == null) {
+        if ($("#SelectedWebGroups").val() == null && !@Model.GeneralMode) {
             return false;
         }
-        
+
         var docTypeId = $("#DocTypeID").val().toString();
         var userGroups = $("#SelectedWebGroups").val().toString();
+        var tags = $("#Tags").val().toString();
 
         $.ajax({
             type: "POST",
             url: "SetDocumentProperties",
-            data: { docTypeId: docTypeId, userGroups: userGroups },
+            data: { docTypeId: docTypeId, userGroups: userGroups, tags: tags }
         });
-        
+
         return true;
     }
+
 </script>

@@ -5,6 +5,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
         <script src="../JScript/Jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
@@ -430,7 +431,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td valign="top">
                                                         <table id="tblLeft" style="border-color: #ffffff; padding-right: 50px;" cellspacing="0" cellpadding="0">
                                                             <tr class="formquery" id="trCustomer" runat="server">
                                                                 <td class="firstLeft active">
@@ -547,7 +548,7 @@
                                                             </tr>
                                                             <tr class="formquery" id="trPhone" runat="server">
                                                                 <td class="firstLeft active">
-                                                                    Telefon:
+                                                                    Telefon::
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:TextBox ID="txtPhone" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
@@ -562,7 +563,7 @@
                                                                         <asp:CheckBox ID="cbxTestUser" runat="server"></asp:CheckBox></span>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" runat="server">
+                                                            <tr id="Tr1" class="formquery" runat="server">
                                                                 <td class="firstLeft active">
                                                                     Gültig ab:
                                                                 </td>
@@ -570,7 +571,7 @@
                                                                     <asp:TextBox ID="txtValidFrom" runat="server" Width="160px" MaxLength="10"></asp:TextBox>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" runat="server">
+                                                            <tr id="Tr2" class="formquery" runat="server">
                                                                 <td class="firstLeft active">
                                                                     Gültig bis:
                                                                 </td>
@@ -824,7 +825,42 @@
                                                                 </td>
                                                                 <td>&nbsp;</td>
                                                             </tr>
+
                                                         </table>
+
+                                                           <div id="BenutzerPanel" style="padding-right: 5px">
+                                                              <h4>User-Rechte</h4>
+                                                              <telerik:RadGrid ID="drUserRights" runat="server" AllowSorting="False" 
+                                                                  AutoGenerateColumns="False" GridLines="None" Culture="de-DE">
+                                                                  <ClientSettings>
+                                                                      <Scrolling ScrollHeight="170px" AllowScroll="True"  />
+                                                                  </ClientSettings>
+                                                                  <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="false" >
+                                                                      <SortExpressions>
+                                                                          <telerik:GridSortExpression FieldName="CategoryID" SortOrder="Ascending" />
+                                                                      </SortExpressions>
+                                                                      <HeaderStyle ForeColor="White" />
+                                                                      <Columns>  
+                                                                          <telerik:GridTemplateColumn SortExpression="CategoryID" HeaderText="Recht / Setting" UniqueName="CategoryID">
+                                                                              <HeaderStyle Width="150px" />
+                                                                              <ItemTemplate>
+                                                                                  <asp:Label ID="Kategorie" runat="server" text='<%# Eval("CategoryID") %>' ToolTip='<%# Eval("Description") %>' />
+                                                                              </ItemTemplate>
+                                                                          </telerik:GridTemplateColumn>
+                                                                          <telerik:GridTemplateColumn SortExpression="SettingsValue" HeaderText="Wert" UniqueName="SettingsValue" >
+                                                                              <HeaderStyle Width="150px" />
+                                                                              <ItemTemplate>
+                                                                                  <asp:TextBox ID="Recht1" Visible='<%# Eval("IsTextBoxVisible") %>' 
+                                                                                      name='<%# Eval("CategoryId") %>' runat="server" text='<%# Eval("SettingsValue") %>' />
+                                                                                  <asp:Checkbox ID="Recht2" Visible='<%# Eval("IsCheckBoxVisible") %>' 
+                                                                                      name='<%# Eval("CategoryId") %>' runat="server" Checked='<%# Eval("SettingsValue").ToString().NotNullOrEmpty().ToLower() = "true" %>' />
+                                                                              </ItemTemplate>
+                                                                          </telerik:GridTemplateColumn>
+                                                                    </Columns>
+                                                                </MasterTableView>
+                                                            </telerik:RadGrid>
+														</div>
+
                                                     </td>
                                                 </tr>
                                             </table>
@@ -873,6 +909,26 @@
                                                 CssClass="Tablebutton" Height="16px" Width="78px" />
                                         </div>
                                     </asp:Panel>
+                                    
+                                    
+                                    <asp:Panel ID="rightPanel" runat="server" Width="385px" Height="150px" BackColor="White"
+                                        BorderColor="red" BorderStyle="Solid" BorderWidth="1" Style="display: none">
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <h2>Rechte</h2>
+                                        </div>
+
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            
+                                        </div>
+
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            
+                                        </div>
+                                    </asp:Panel>
+                                    
+                                    
+                                    
+
                                 </div>
                             </div>
                         </div>

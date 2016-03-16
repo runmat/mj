@@ -31,6 +31,13 @@
         FormPrepareAjax();
     }
 
+    function InitBankdaten() {
+        setTimeout(function() {
+            _ibanPrev = null;
+            TryLoadBankdatenAusIban("#Iban", true);
+        }, 100);
+    }
+
     function TryShowPartnerGrid() {
         FormPreparePrivateAjax();
 
@@ -84,4 +91,59 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox, suppressMessage) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+
+        $("#Swift").val('');
+        $("#Geldinstitut").val('');
+
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban(suppressMessage);
+    }
+
+    function LoadBankdatenAusIban(suppressMessage) {
+
+        var iban = $("#Iban").val();
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadBankdatenAusIban",
+                data: { iban: iban },
+                loadingShow: true,
+                success: function (result) {
+                    if (result.Swift == null || result.Swift == '') {
+                        $("#Swift").attr("readonly", false);
+                        $("#Swift").attr("placeholder", "");
+                        $("#Swift").val("");
+                        $("#Geldinstitut").attr("readonly", false);
+                        $("#Geldinstitut").attr("placeholder", "");
+                        $("#Geldinstitut").val("");
+                        return;
+                    }
+
+                    $("#Swift").val(result.Swift);
+                    $("#Swift").attr("readonly", true);
+
+                    $("#Geldinstitut").val(result.Geldinstitut);
+                    $("#Geldinstitut").attr("readonly", true);
+
+                    $("#KontoNr").val(result.KontoNr);
+                    $("#Bankleitzahl").val(result.Bankleitzahl);
+
+                    if (typeof (suppressMessage) === 'undefined' || !suppressMessage)
+                        SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+                }
+            });
+
+        return false;
+
+    }
 </script>

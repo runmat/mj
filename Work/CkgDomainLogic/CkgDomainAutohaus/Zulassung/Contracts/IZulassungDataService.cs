@@ -22,7 +22,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         void MarkForRefresh();
 
-        Bankdaten GetBankdaten(string iban);
+        Bankdaten GetBankdaten(string iban, Action<string, string> addModelError);
 
         void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen);
         
@@ -46,7 +46,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         #region Zulassungs Report
 
-        List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
+        List<ZulassungsReportModel> GetZulassungsReportItems(IZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError);
 
         #endregion
 
@@ -55,6 +55,14 @@ namespace CkgDomainLogic.Autohaus.Contracts
         List<Zulassungskreis> Zulassungskreise { get; }
 
         List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError);
+
+        ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError);
+
+        #endregion
+
+        #region Statusverfolgung
+
+        List<StatusverfolgungZulassungModel> GetStatusverfolgungItems(string belegNr);
 
         #endregion
     }

@@ -1,0 +1,457 @@
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
+
+<div id="DivKonfiguration">
+    <h4>@Localize.Configuration @Model.MappingName</h4>
+
+    <div class="w hidden no-padding no-margin">DUMMY</div>
+    <div class="float-left">
+        <button class="btn white tooltips" data-original-title="@Localize.FirstEntry" data-placement="bottom" onclick="GotoRecord('first');"><i class="halflings-icon fast-backward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.Backward" data-placement="bottom" onclick="GotoRecord('-1');"><i class="halflings-icon backward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.Forward" data-placement="bottom" onclick="GotoRecord('+1');"><i class="halflings-icon forward"></i></button>
+        <button class="btn white tooltips" data-original-title="@Localize.LastEntry" data-placement="bottom" onclick="GotoRecord('last');"><i class="halflings-icon fast-forward"></i></button>
+
+        <div id="RecordPosition" class="margin-left-15 badge margin-right-15">
+            @Model.MappingModel.RecordInfoText
+        </div>
+    </div>
+
+    <div class="float-left">
+        <button class="btn white tooltips" data-original-title="@Localize.AddProcessor" data-placement="bottom" onclick="AddProcessor();"><i class="halflings-icon plus"></i></button>
+        <button class="btn white tooltips margin-left-5" data-original-title="@Localize.RemoveEverything" data-placement="bottom" onclick="ClearAll();"><i class="halflings-icon remove"></i></button>
+        <button class="btn white tooltips margin-left-5" data-original-title="@Localize.HideProcessors" data-placement="bottom" onclick="ShowHideProcessors(false);"><i class="halflings-icon eye-close"></i></button>
+        <button class="btn white tooltips margin-left-5" data-original-title="@Localize.ShowProcessors" data-placement="bottom" onclick="ShowHideProcessors(true);"><i class="halflings-icon eye-open"></i></button>
+        <a class="btn white tooltips margin-left-5" data-original-title="@Localize.TestExportToXml" data-placement="bottom" href="TestExportXml" target="_blank"><i class="halflings-icon share-alt"></i><i class="halflings-icon file"></i></a>
+        <button class="btn margin-left-20" onclick="CloseDataMappingDetails();">@Localize.Cancel</button>
+        <button class="btn green margin-left-5" onclick="SaveKonfiguration();"><i class="icon-ok"></i> @Localize.Save</button>
+    </div>
+
+    <div id="divFileContainsHeadings" class="form-horizontal label-width-0">
+        @Html.FormCheckBoxFor(m => m.FileContainsHeadings, new { @class = "m-wrap xsmall", onchange = "ApplyFileContainsHeadings()" }, labelHidden: true)
+    </div>
+
+    <div id="DataConverterContainer">
+        <div id="source" class="no-padding">
+            @foreach (var item in Model.MappingModel.SourceFile.Fields)
+            {
+                <div class="w" id="@item.Id">
+                    <div class="field">@item.Bezeichnung</div>
+                    <div class="data">@item.Records[0]</div>
+                    <div class="sp"></div>
+                </div>
+            }
+        </div>
+
+        <div id="destination">
+            @Html.Action("ShowDestinationDiv")
+        </div>
+    </div>
+</div>
+
+<div id="processorTemplate" class="processor hidden">
+    <div class="title">
+        <div class="processortitle float-left margin-left-15">@Localize.Processor</div>
+        <button class="processorclose float-right no-padding"><i class="icon-remove"></i></button>
+    </div>
+    <div class="content">
+        <select name="ProcessorType" class="processortype" onchange="SyncUiData();">
+            <option value="1">@Localize.ProcessorTypeSplit</option>
+            <option value="2">@Localize.ProcessorTypeConcat</option>
+            <option value="3">@Localize.ProcessorTypeFixedValue</option>
+        </select>
+        <input type="hidden" name="Title" value=""/>
+        <input type="hidden" name="Number" value=""/>
+        <input type="text" name="ProcessorPara1" value="X" class="processorpara1" onchange="SyncUiData();"/>
+        <input type="text" name="ProcessorPara2" value="1" class="processorpara2" onchange="SyncUiData();"/>
+        <div class="space5"></div>
+        <div class="data datain width-160 margin-top-5 datastyle">@Localize.DirectionIn: </div>
+        <div class="space5"></div>
+        <div class="data dataout width-160 datastyle">@Localize.DirectionOut: </div>
+    </div>
+    <div id="tmpprozin" class="prozin"></div>
+    <div id="tmpprozout" class="prozout"></div>
+</div>
+
+<script type="text/javascript">
+
+    var jsonProcessors; 
+    var jsonConnections;
+
+    var startpointOptions = {
+        isSource: true,
+        isTarget: false,
+        anchor: "Right",
+        allowLoopback: false
+    };
+
+    var endpointOptions = {
+        isSource: false,
+        isTarget: true,
+        maxConnections: 1,
+        anchor: "Left",
+        ConnectionsDetachable: true,
+        ReattachConnections: true,
+        allowLoopback: false
+    };
+
+    var startpointOptionsProzessor = {
+        isSource: true,
+        isTarget: false,
+        anchor: "Right",
+        allowLoopback: false
+    };
+
+    var endpointOptionsProzessor = {
+        isSource: false,
+        isTarget: true,
+        anchor: "Left",
+        ConnectionsDetachable: true,
+        ReattachConnections: true,
+        allowLoopback: false
+    };
+
+    $(function () {
+        if (@Model.MappingId != 0)
+            $("#FileContainsHeadings").attr('disabled', "disabled");
+
+        LoadUiData();
+        setTimeout(function () {
+            refreshPlumb();
+            resizeBodyContainer();
+        }, 1000);
+    });
+
+    jsPlumb.ready(function () {
+        jsPlumb.importDefaults({
+            Connector: ["Straight"], 
+            Endpoint: ["Dot", { radius: 1}],
+            Anchors: ["Right", "Left"],
+            ConnectionOverlays: [
+                [
+                    "Arrow", {
+                        location: 1,
+                        id: "arrow",
+                        length: 11,
+                        foldback: 0.8
+                    }
+                ]
+            ],
+            Container: $('#DataConverterContainer')
+        });
+
+        jsPlumb.makeSource($(".w"), startpointOptions);
+        jsPlumb.makeTarget($(".ept"), endpointOptions);
+        
+        // Prozessor-Template
+        jsPlumb.draggable("processorTemplate", {
+            clone: true
+        });
+
+        // Events
+        window.addEventListener("resize", refreshPlumb);
+
+        $('#source').on("scroll", function () {
+            refreshPlumb();
+        });
+
+        $('#destination').on("scroll", function () {
+            refreshPlumb();
+        });
+
+        jsPlumb.bind("dblclick", function (c) {
+            jsPlumb.detach(c);
+            SyncUiData();
+        });
+
+        jsPlumb.unbind("connection").bind("connection", function (info) {
+            SyncUiData();
+        });
+    });
+
+    function refreshPlumb() {
+        jsPlumb.repaintEverything();
+    }
+
+    function resetPlumb() {
+        jsPlumb.reset();
+    }
+
+    function ResetKonfiguration() {
+        ClearAll(true);
+        resetPlumb();
+    }
+
+    function resizeBodyContainer() {
+        var newHeight = 175 + Math.max($('#source').outerHeight(), $('#destination').outerHeight());
+        $('.body-container').css('height', newHeight);
+    }
+    
+    // Show Processor in UI
+    function ShowProcessor(processorId, number, title, posLeft, posTop, type, para1, para2) {
+
+        // Clone template div...
+        var div = document.getElementById('processorTemplate');
+        var clone = div.cloneNode(true);
+
+        clone.id = processorId;
+        document.body.appendChild(clone);
+
+        var newProcessor = $("#" + processorId);
+        newProcessor.addClass("processorobj");
+        newProcessor.removeClass("hidden");
+
+        newProcessor.offset({ left: posLeft, top: posTop });
+
+        $(newProcessor).find('.processortitle').html(title);
+        $(newProcessor).find(('[name="Title"]')).val(title);
+        $(newProcessor).find(('[name="Number"]')).val(number);
+
+        $(newProcessor).find(('[name="ProcessorType"]')).val(type);
+        $(newProcessor).find(('[name="ProcessorPara1"]')).val(para1);
+        $(newProcessor).find(('[name="ProcessorPara2"]')).val(para2);
+
+        var prozin = $(newProcessor).find("#tmpprozin");
+        var prozout = $(newProcessor).find("#tmpprozout");
+
+        prozin.attr("id", "prozin-" + processorId);
+        prozout.attr("id", "prozout-" + processorId);
+
+        jsPlumb.makeSource($("#prozout-" + processorId), startpointOptionsProzessor);
+        jsPlumb.makeTarget($("#prozin-" + processorId), endpointOptionsProzessor);
+
+        switch (type) {
+            case 1:
+                $(newProcessor).find(('[name="ProcessorPara2"]')).show();
+                break;
+            case 2:
+                $(newProcessor).find(('[name="ProcessorPara2"]')).hide();
+                break;
+            case 3:
+                $(newProcessor).find(('[name="ProcessorPara2"]')).hide();                
+                break;
+        }
+
+        jsPlumb.draggable(newProcessor);
+
+        $(newProcessor).find(".processorclose").click(function () {
+            jsPlumb.remove($(this).closest(".processor"));              // Alle Verbindungen incl. Prozessorobjekt entfernen
+        });
+    }
+
+    // Add Processor via controller and refresh UI via uiResult
+    function AddProcessor() {
+        $.ajax({
+            type: "POST",
+            url: "AddProcessor",
+            data: { processors: UiProcessors, connections: UiConnections },
+            loadingShow: false,
+            success: function (uiResult) {
+                RefreshUi(uiResult);
+            }
+        });
+    }
+
+    function AddConnection(connectionId, source, dest) {
+        jsPlumb.connect({
+            source: source,
+            target: dest
+        });
+        jsPlumb.revalidate(connectionId);
+    }
+
+    function UiProcessors() {
+        jsonProcessors = [];
+        $(".processorobj").each(function () {
+            var processor = $(this);
+            var processorId = $(processor).attr("id");
+            var title = $(processor).find('.processortitle').html();
+
+            var number = $(processor).find(('[name="Number"]')).html();
+            if (number == "") { number = 0; }
+            var posTop = Math.round($(processor).position().top);
+            var posLeft = Math.round($(processor).position().left);
+            var processorType = $(processor).find('[name="ProcessorType"]').val();
+            var processorPara1 = $(processor).find('[name="ProcessorPara1"]').val();
+            var processorPara2 = $(processor).find('[name="ProcessorPara2"]').val();
+            jsonProcessors.push({ Guid: processorId, Title: title, Number: number, Operation: processorType, OperationPara1: processorPara1, OperationPara2: processorPara2, PosLeft: posLeft, PosTop: posTop });
+        });
+        return JSON.stringify(jsonProcessors);
+    }
+
+    function UiConnections() {
+        jsonConnections = [];
+        var connectionList = jsPlumb.getConnections();
+        connectionList.forEach(function (item) {
+            var id = item.id;
+            var source = item.sourceId;
+            var dest = item.targetId;
+            jsonConnections.push({ "ConnectionId": id, GuidSource: source, GuidDest: dest });
+        });
+        return JSON.stringify(jsonConnections);
+    }
+
+    function SyncUiData() {
+        $.ajax({
+            type: "POST",
+            url: "SyncUiData",
+            loadingShow: false,
+            data: { processors: UiProcessors, connections: UiConnections },
+            dataType: 'json',
+            success: function (result) {
+                RefreshUi(result);
+            }
+        });
+    }
+
+    function LoadUiData() {
+        ClearAll(true);
+
+        $.ajax({
+            type: "POST",
+            url: "RefreshUi",
+            data: { recordOffset: 0 },
+            loadingShow: false,
+            success: function (result) {
+                RefreshUi(result, true);
+            }
+        });
+    }
+
+    function ClearAll(suppressSync) {
+        jsPlumb.detachEveryConnection();
+
+        $(".processorobj").each(function (index) {
+            jsPlumb.remove($(this).attr("id"));
+        });
+
+        $("#destination").each(function (index) {
+            $(this).find(".data").html("");
+        });
+
+        if (!suppressSync)
+            SyncUiData();
+    }
+
+    function ShowHideLines(obj) {
+        jsPlumb.hide(obj, true);
+
+        var icon = $(obj).find(".updown");
+        if (icon.hasClass('icon-angle-down')) {
+            $(icon).removeClass('icon-angle-down').addClass('icon-angle-up');
+        } else {
+            $(icon).removeClass('icon-angle-up').addClass('icon-angle-down');
+        }
+
+        var top = $(obj).parent().parent();
+        $(top).children('.ept').each(function () {
+            var id = $(this).attr("id");
+            var visible = $(this).is(":visible");
+            if (visible) {
+                jsPlumb.hide(id);
+            } else {
+                jsPlumb.show(id);
+            }
+            $(this).toggle("slow", function() {
+                refreshPlumb();
+            });
+        });
+        refreshPlumb();
+    }
+
+    function ShowHideProcessors(value) {
+        $(".processorobj").each(function (index) {
+            $(this).find(".content").toggle(value);
+            if (value) {
+                $(this).css("height", "85px");
+            } else {
+                $(this).css("height", "14px");
+            }
+        });
+    }
+
+    function GotoRecord(value) {
+        $.ajax({
+            type: "POST",
+            url: "RefreshUi",
+            data: { recordOffset: value, processors: UiProcessors, connections: UiConnections },
+            loadingShow: false,
+            success: function (result) {
+                RefreshUi(result);
+            }
+        });
+    }
+
+    function RefreshUi(uiObject, initConnections) {
+        var guid;
+        var name;
+        var value;
+        var i;
+
+        $('#RecordPosition').html(uiObject.RecordInfoText);
+
+        // Refresh SourceField data
+        for (i = 0; i < uiObject.SourceFieldList.length; i++) {
+            guid = uiObject.SourceFieldList[i].Id;
+            name = uiObject.SourceFieldList[i].Bezeichnung;
+            value = uiObject.SourceFieldList[i].Wert;
+            $('#' + guid).find(".field").html(name);
+            $('#' + guid).find(".data").html(value);
+        }
+
+        // Refresh processors
+        for (i = 0; i < uiObject.ProcessorList.length; i++) {
+            var processorId = uiObject.ProcessorList[i].Guid;
+            var number = uiObject.ProcessorList[i].Number;
+            var title = uiObject.ProcessorList[i].Title;
+            var posLeft = uiObject.ProcessorList[i].PosLeft;
+            var posTop = uiObject.ProcessorList[i].PosTop;
+            var valueIn = uiObject.ProcessorList[i].Input;
+            var valueOut = uiObject.ProcessorList[i].Output;
+
+            var type = uiObject.ProcessorList[i].Operation;
+            var para1 = uiObject.ProcessorList[i].OperationPara1;
+            var para2 = uiObject.ProcessorList[i].OperationPara2;
+
+            ShowProcessor(processorId, number, title, posLeft, posTop, type, para1, para2);
+
+            $('#' + processorId).find(".datain").html("In: " + valueIn);
+            $('#' + processorId).find(".dataout").html("Out: " + valueOut);
+        }
+
+        // Refresh DestField data
+        for (i = 0; i < uiObject.DestFieldList.length; i++) {
+            guid = uiObject.DestFieldList[i].Key;
+            value = uiObject.DestFieldList[i].Text;         
+            $('#' + guid).find(".data").html(value);
+        }
+
+        if (initConnections)
+            InitConnections(uiObject.ConnectionList);
+
+        refreshPlumb();
+    }
+
+    function InitConnections(connectionList) {
+        jsPlumb.unbind("connection");
+
+        for (var i = 0; i < connectionList.length; i++) {
+            AddConnection(connectionList[i].Guid, connectionList[i].GuidSource, connectionList[i].GuidDest);
+        }
+
+        jsPlumb.bind("connection", function (info) {
+            SyncUiData();
+        });
+    }
+
+    function ApplyFileContainsHeadings() {
+        $.ajax({
+            type: "POST",
+            url: "ApplyFileContainsHeadings",
+            data: { fileContainsHeadings: $("#FileContainsHeadings").is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                RefreshUi(result);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,39 @@
+﻿@using CkgDomainLogic.General.Contracts
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+    bool isDashBoard = ViewBag.IsDashboard ?? false;
+}
+
+@if (isDashBoard)
+{
+    <style type="text/css">
+        h4 {
+             font-size: 1.0em;
+        }
+        .alert-block {
+            padding: 3px !important;
+        }
+        h5.user-messages-title {
+                    margin: 0 0 8px 0 !important;
+                    font-size: 0.9em;
+            display: none;
+        }
+        h4.alert-heading {
+            font-size: 0.9em;
+        }
+        p {
+            font-size: 0.80em;
+            line-height: 14px;
+            padding-bottom: 3px;
+        }
+        p br {
+            display: none;
+        }
+    </style>
+}
+
+
+@Html.Partial("Partial/UserMessagesDetails", logonContext.MaintenanceInfo)
+
+
+

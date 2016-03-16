@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -223,6 +224,16 @@ namespace CkgDomainLogic.General.ViewModels
         protected bool GetApplicationConfigBoolValueForCustomer(string configValue, bool considerGroupId = false)
         {
             return GetApplicationConfigValueForCustomer(configValue, considerGroupId).ToBool();
+        }
+
+        protected static void ValidateSingleUploadItem(IUploadItem item)
+        {
+            var liste = new List<ValidationResult>();
+
+            item.ValidationOk = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
+
+            var ser = new JavaScriptSerializer();
+            item.ValidationErrorsJson = ser.Serialize(liste);
         }
     }
 }

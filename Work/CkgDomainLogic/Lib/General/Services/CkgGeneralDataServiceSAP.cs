@@ -145,7 +145,7 @@ namespace CkgDomainLogic.General.Services
             {
                 return PropertyCacheGet(() =>
                     AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller.Copy(GetSapHersteller())
-                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionNotSpecified } })
+                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionPleaseChoose } })
                             .OrderBy(w => w.Name).ToList());
             }
         }
@@ -178,7 +178,7 @@ namespace CkgDomainLogic.General.Services
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = LogonContext.Organization.OrganizationReference;
+            var orgRef = LogonContext.Organization == null ? "" : LogonContext.Organization.OrganizationReference;
 
             if (!String.IsNullOrEmpty(orgRef))
             {
