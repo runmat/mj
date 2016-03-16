@@ -1,8 +1,6 @@
-﻿
-Imports CKG.Base.Kernel.Security
+﻿Imports CKG.Base.Kernel.Security
 Imports System.Web.UI
 Imports CKG.Base.Common
-Imports System.Globalization
 
 Namespace Business
 
@@ -464,23 +462,6 @@ Namespace Business
                 mBewertungsfrist = CDate(rows(0)("BW_FRIST")).ToString("dd.MM.yyyy")
             End If
         End Sub
-
-        Private Function InitSapTable() As DataTable
-            Dim tmpTable As New DataTable
-
-            tmpTable.Columns.Add("KVPID", GetType(String))
-            tmpTable.Columns.Add("KOSTL", GetType(String))
-            tmpTable.Columns.Add("KTEXT", GetType(String))
-            tmpTable.Columns.Add("UNAME", GetType(String))
-            tmpTable.Columns.Add("NAME", GetType(String))
-            tmpTable.Columns.Add("ABTEILUNG", GetType(String))
-            tmpTable.Columns.Add("STANDORT", GetType(String))
-            tmpTable.Columns.Add("FUNKTION", GetType(String))
-            tmpTable.Columns.Add("VORGESETZTER", GetType(String))
-            tmpTable.Columns.Add("STATUS", GetType(Integer))
-
-            Return tmpTable
-        End Function
 
         Public Overrides Sub Show()
         End Sub

@@ -27,11 +27,8 @@ Namespace Common
         Private mBapiLoadet As Date
         Private mImport As DataTable
         Private mExport As DataTable
-        'Private mbizTalkImportParameter As New Generic.List(Of SAPParameter)
-        'Private mbizTalkExportParameter As New Generic.List(Of SAPParameter)
         Private mCommandText As String = ""
         Private mClearMe As Boolean = False
-        Private mObjLogApp As CKG.Base.Kernel.Logging.Trace
         Private mObjMyApplication As CKG.Base.Kernel.Security.App
         Private mObjMyUser As CKG.Base.Kernel.Security.User
         Private mObjMyPage As Web.UI.Page

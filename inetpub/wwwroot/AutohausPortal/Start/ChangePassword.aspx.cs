@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Data;
 using System.Drawing;
 using System.Web.UI;
 using AutohausPortal.lib;
-using CKG.Base.Kernel.Logging;
 using CKG.Base.Kernel.Security;
 
 namespace AutohausPortal.Start
@@ -105,7 +103,6 @@ namespace AutohausPortal.Start
                     //tdValidation2.Visible = false;
                     cmdSave.Enabled = false;
                     lblMessage.Text = "Ihr Kennwort wurde erfolgreich geändert";
-                    Log(m_User.UserID.ToString(), "Eigenes Kennwort ändern", "APP");
                 }
                 else 
                 {
@@ -116,66 +113,6 @@ namespace AutohausPortal.Start
             catch (Exception ex)
             {
                 lblError.Text = ex.Message;
-                Log(m_User.UserID.ToString(), lblError.Text, "ERR");
-            }
-        }
-        private void Log(string strIdentification, string strDescription, string strCategory)
-        {
-            Trace logApp = new Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel);
-            string strUserName = m_User.UserName;
-            // strUserName
-            string strSessionID = Session.SessionID;
-            // strSessionID
-            int intSource = Convert.ToInt32(Request.QueryString["AppID"]);
-            // intSource 
-            string strTask = "Admin - Kennwortänderung";
-            // strTask
-            string strCustomerName = m_User.CustomerName;
-            // strCustomername
-            bool blnIsTestUser = m_User.IsTestUser;
-            // blnIsTestUser
-            int intSeverity = 0;
-            // intSeverity 
-            DataTable tblParameters = GetLogParameters();
-            // tblParameters
-
-            logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser,
-            intSeverity, tblParameters);
-        }
-        private DataTable GetLogParameters()
-        {
-            try
-            {
-                DataTable tblPar = new DataTable();
-                tblPar.Columns.Add("neues Kennwort", typeof(String));
-                tblPar.Columns.Add("Kennwortbestätigung", typeof(String));
-                tblPar.Rows.Add(tblPar.NewRow());
-                string strPw = "";
-                int intCount = 0;
-                for (intCount = 1; intCount <= txtNewPwd.Text.Length; intCount++)
-                {
-                    strPw += "*";
-                }
-                tblPar.Rows[0]["neues Kennwort"] = strPw;
-                string strPw2 = "";
-                for (intCount = 1; intCount <= txtNewPwdConfirm.Text.Length; intCount++)
-                {
-                    strPw2 += "*";
-                }
-                return tblPar;
-            }
-            catch (Exception ex)
-            {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Fehler beim erstellen der Log-Parameter", Type.GetType("System.String"));
-                dt.Rows.Add(dt.NewRow());
-                string str = ex.Message;
-                if ((ex.InnerException != null))
-                {
-                    str += ": " + ex.InnerException.Message;
-                }
-                dt.Rows[0]["Fehler beim erstellen der Log-Parameter"] = str;
-                return dt;
             }
         }
 
@@ -247,7 +184,6 @@ namespace AutohausPortal.Start
             catch (Exception ex)
             {
                 this.lblError.Text = ex.Message;
-                Log(m_User.UserID.ToString(), this.lblError.Text, "ERR");
             }
         }
 
@@ -268,6 +204,7 @@ namespace AutohausPortal.Start
             }
             SetFocus(txtOldPwd);
         }
+
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("/AutohausPortal/(S(" + Session.SessionID + "))/Start/Selection.aspx");
@@ -277,7 +214,5 @@ namespace AutohausPortal.Start
         {
             Response.Redirect("/AutohausPortal/(S(" + Session.SessionID + "))/Start/Logout.aspx");
         }
-
-
     }
 }
