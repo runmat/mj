@@ -10,6 +10,7 @@ Imports System.Reflection
 Imports WebTools.Services
 Imports CKG.Base.Business.HelpProcedures
 Imports GeneralTools.Services
+Imports GeneralTools.Models
 
 Partial Public Class Login
     Inherits System.Web.UI.Page
@@ -33,9 +34,9 @@ Partial Public Class Login
         Try
             conn.Open()
 
-            command = New SqlClient.SqlCommand("SELECT IpStandardUser FROM Customer" & _
-                    " WHERE" & _
-                    " CustomerID = " & intCust.ToString, _
+            command = New SqlClient.SqlCommand("SELECT IpStandardUser FROM Customer" &
+                    " WHERE" &
+                    " CustomerID = " & intCust.ToString,
                     conn)
 
             result = command.ExecuteScalar
@@ -62,9 +63,9 @@ Partial Public Class Login
         Try
             conn.Open()
 
-            command = New SqlClient.SqlCommand("SELECT CustomerID FROM IpAddresses" & _
-                    " WHERE" & _
-                    " IpAddress = '" & Request.UserHostAddress & "'", _
+            command = New SqlClient.SqlCommand("SELECT CustomerID FROM IpAddresses" &
+                    " WHERE" &
+                    " IpAddress = '" & Request.UserHostAddress & "'",
                     conn)
 
             result = command.ExecuteScalar
@@ -87,8 +88,8 @@ Partial Public Class Login
         Dim blnReturn As Boolean = True
 
         Try
-            command.CommandText = "SELECT id FROM LogWebAccess" & _
-                    " WHERE" & _
+            command.CommandText = "SELECT id FROM LogWebAccess" &
+                    " WHERE" &
                     " idSession = @idSession"
 
             command.Parameters.AddWithValue("@idSession", CStr(Session.SessionID))
@@ -153,8 +154,8 @@ Partial Public Class Login
 
                 Dim command As SqlClient.SqlCommand = conn.CreateCommand()
 
-                command.CommandText = "SELECT * FROM LoginUserMessage" & _
-                    " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND LockLoginTo)" & _
+                command.CommandText = "SELECT * FROM LoginUserMessage" &
+                    " WHERE (@jetzt BETWEEN ShowMessageFrom AND ShowMessageTo) OR (@jetzt BETWEEN LockLoginFrom AND LockLoginTo)" &
                     " ORDER BY ID DESC"
 
                 command.Parameters.AddWithValue("@jetzt", jetzt)
@@ -208,7 +209,7 @@ Partial Public Class Login
                 conn.Close()
             End Using
 
-            Repeater1.DataSource = Table
+            Repeater1.DataSource = table
             Repeater1.DataBind()
         Catch
         End Try
@@ -253,7 +254,7 @@ Partial Public Class Login
         Try
             MessageLabel.Text = ""
             Dim blnPasswdlink As Boolean = trPasswortVergessen.Visible
-            If Not Me.Session("objUser") Is Nothing AndAlso _
+            If Not Me.Session("objUser") Is Nothing AndAlso
                 Me.User.Identity.IsAuthenticated = False AndAlso blnPasswdlink = False Then
                 '---JVE: User nicht mehr in der Session gespeichert bzw. nicht Authentifiziert---
                 Response.Redirect(BouncePage(Me), True)
@@ -515,7 +516,7 @@ Partial Public Class Login
             Me.DoubleLogin2.Visible = False
             Session("CaptchaGen1") = GenerateRandomCode()
             Session("CaptchaGen2") = GenerateRandomCode()
-            
+
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)
@@ -571,7 +572,7 @@ Partial Public Class Login
         Dim userIsEmpty As Boolean = (Session("objUser") Is Nothing)
         Dim urlReferrerIsValid As Boolean = (urlReferrer <> "")
         Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx") And Not requestReturnUrl.ToLower().Contains("servicesmvc"))
-        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
+        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost") Or ConfigurationManager.AppSettings("ForceMvcLogin").NotNullOrEmpty().ToUpper() = "TRUE")
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
             Try
