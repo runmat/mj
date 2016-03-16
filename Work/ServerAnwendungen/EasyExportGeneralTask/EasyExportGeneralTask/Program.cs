@@ -2062,6 +2062,9 @@ namespace EasyExportGeneralTask
 
                             string queryexpression = ".1001=" + item.CHASSIS_NUM + " & .110=" + dokumentenTyp;
 
+                            if (taskConfiguration.AbfrageNachDatum)
+                                queryexpression += " & .103=#" + (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today).ToShortDateString();
+
                             string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                             if (status != "Keine Daten gefunden.")
