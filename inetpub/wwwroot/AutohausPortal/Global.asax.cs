@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 namespace AutohausPortal
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
         private long m_lngCurrentDate;
 
         void Application_Start(object sender, EventArgs e)
         {
-
             SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString());
             try
             {
@@ -43,7 +40,6 @@ namespace AutohausPortal
         void Application_End(object sender, EventArgs e)
         {
             //  Code, der beim Herunterfahren der Anwendung ausgeführt wird.
-
         }
 
         void Application_Error(object sender, EventArgs e)
@@ -93,8 +89,6 @@ namespace AutohausPortal
 
             try
             {
-                CKG.Base.Kernel.Security.User m_User;
-                m_User = (CKG.Base.Kernel.Security.User)Session["objUser"];
                 //if (HttpContext.Current != null) 
                 //{ 
                 //    HttpContext.Current.Cache.Remove("myAppListView");
@@ -108,25 +102,15 @@ namespace AutohausPortal
                 //    HttpContext.Current.Cache.Remove("myUserListView");
                 //    HttpContext.Current.Cache.Remove("m_objTrace");           
                 //}
-                CKG.Base.Kernel.Logging.LogWebAccess log;
-                Boolean mode = false;
-                mode = Convert.ToString(Session["logoutMode"]) == null;
-                log = (CKG.Base.Kernel.Logging.LogWebAccess)Session["log"];
-                log.updateEndTime(mode);
-                log.Dispose();
-                m_User = null;
 
                 //Session.RemoveAll();
 
                 //GC.Collect();
-
             }
             catch (Exception)
             {
                 
             }
-
         }
-
     }
 }

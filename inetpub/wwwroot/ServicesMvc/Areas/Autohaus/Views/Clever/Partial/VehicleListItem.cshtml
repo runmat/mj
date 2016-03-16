@@ -1,0 +1,16 @@
+﻿@model CkgDomainLogic.Autohaus.Models.ZulassungsReportModel
+
+<li class="dd-item">
+    <div class="dd-handle">
+        <table>
+            <tr>
+                <td>
+                    @Html.TextBlockFor(m => m.FahrzeugAsString, new Dictionary<string, object>())
+                </td>
+                <td>
+                    <button class="btn mini gray" onclick="ShowStatusverfolgungDetails('@Model.BelegNummer')">@Localize.Status</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</li>

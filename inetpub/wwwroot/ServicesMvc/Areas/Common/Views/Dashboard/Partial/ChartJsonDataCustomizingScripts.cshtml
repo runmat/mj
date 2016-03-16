@@ -4,12 +4,14 @@
 
     var _chartData = null;
     var _chartOptions = null;
+    var _dashboardItemOptions = null;
 
     function _ChartPrepareJsonResult(result, widgetKey) {
         _chartData = result.data;
         _chartOptions = jQuery.parseJSON(result.options);
+        _dashboardItemOptions = jQuery.parseJSON(result.dashboardItemOptions);
 
-        if (result.customscriptfunction != "")
+        if (result.customscriptfunction !== "")
             eval(result.customscriptfunction + "('" + widgetKey + "');");
     }
 
@@ -61,6 +63,43 @@
                 return point.y.replace(/\.0/g, "") + "";
             return "";
         };
+    }
+
+    function ZulassungShoppingCart(widgetKey) {
+
+        _chartOptions.grid.horizontalLines = false;
+        _chartOptions.bars.ShowBarLabelsInside = true;
+        _chartOptions.colors = ["#BB0000", "#00BB00", "#0000BB"];
+
+    }
+
+    function ZulassungenWithBarLabelsInside(widgetKey) {
+
+        _chartOptions.bars.ShowBarLabelsInside = true;
+
+    }
+
+    function ZulassungenProMaterialLetzte30TagePie(widgetKey) {
+
+        _chartOptions.OffsetY = -95;
+
+        _chartOptions.legend.position = 'sw';
+        _chartOptions.legend.noColumns = 2;
+        _chartOptions.PieLabelValueThreshold = 3.0;
+        _chartOptions.pie.sizeRatio = 0.4;
+
+        _chartOptions.mouse.track = true;
+        _chartOptions.mouse.position = 'nw';
+        _chartOptions.mouse.trackFormatter = function (point) {
+            var groupLabel = point.series.label;
+            return groupLabel;
+        };
+
+        var style = document.createElement("style");
+        document.head.appendChild(style);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend { left: 0!important; }", 0);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend .flotr-legend-label { width: 45%; }", 0);
+        style.sheet.insertRule("." + widgetKey + " .flotr-legend-bg { left:0!important; width: 100%; }", 0);
     }
 
     function ZBIIEinAusgaenge(widgetKey) {

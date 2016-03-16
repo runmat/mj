@@ -30,7 +30,7 @@ Partial Public Class Services
                         Select Case m_User.CustomerName
                             Case "Firma 1"
                                 strCSSLink &= ("<link href=""/PortalZLD/Customize/Admin/adminIE6.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
-                                imgLogo.ImageUrl = "/PortalZLD/Images/kroschke.jpg"
+                                imgLogo.ImageUrl = "/PortalZLD/Images/kroschke_inside_logo.png"
                             Case Else
                                 strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                                 Dim strCSS() As String
@@ -54,7 +54,7 @@ Partial Public Class Services
                             Select Case m_User.CustomerName
                                 Case "Firma 1"
                                     strCSSLink &= ("<link href=""/PortalZLD/Customize/Admin/admin.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
-                                    imgLogo.ImageUrl = "/PortalZLD/Images/kroschke.jpg"
+                                    imgLogo.ImageUrl = "/PortalZLD/Images/kroschke_inside_logo.png"
                                 Case Else
                                     strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                                     If m_User.Customer.AccountingArea = 1010 Then
@@ -118,7 +118,7 @@ Partial Public Class Services
                     Select Case m_User.CustomerName
                         Case "Firma 1"
                             strCSSLink &= ("<link href=""/PortalZLD/Customize/Admin/admin.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
-                            imgLogo.ImageUrl = "/PortalZLD/Images/kroschke.jpg"
+                            imgLogo.ImageUrl = "/PortalZLD/Images/kroschke_inside_logo.png"
                         Case "DAD"
                             strCSSLink &= ("<link href=""/PortalZLD/Styles/dad.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
                         Case Else

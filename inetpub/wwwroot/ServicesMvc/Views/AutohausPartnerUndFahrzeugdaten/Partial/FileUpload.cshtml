@@ -1,0 +1,23 @@
+﻿@model CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels.UploadPartnerUndFahrzeugdatenViewModel
+
+<div class="control-group margin-top-20">
+    <label class="control-label">@Localize.UploadExcelFile:</label>
+    <div class="controls">
+                
+        @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Localizable("de-DE")
+            .Async(async => async
+            .Save("UploadStart", "AutohausPartnerUndFahrzeugdaten")
+            .SaveField("uploadFiles")
+            .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                .OnUpload("UploadStart")
+                .OnSuccess("UploadFinished")
+                .OnError("UploadError")
+            )
+        )
+    </div>
+</div>

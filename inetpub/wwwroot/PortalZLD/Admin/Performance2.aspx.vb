@@ -1,16 +1,11 @@
-﻿
-Imports CKG.Base.Kernel.Security
+﻿Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.PortalZLD.PageElements
-Imports CKG
 
 Public Class Performance2
     Inherits System.Web.UI.Page
 
     Private m_User As User
     Private m_App As App
-    Private m_intPerformanceCounterID As Int32
-    Private intValuesPerDateEntry As Int32
 
 #Region " Declarations"
     Protected WithEvents cmdCreate As System.Web.UI.WebControls.LinkButton
@@ -112,123 +107,8 @@ Public Class Performance2
     End Sub
 
     Private Sub FillData()
-        If ((Session("PerformanceCounterID") Is Nothing) OrElse (Not IsNumeric(Session("PerformanceCounterID")))) And ((Request.QueryString("PerformanceCounterID") Is Nothing) OrElse (Not IsNumeric(Request.QueryString("PerformanceCounterID")))) Then
-            Try
-                Response.Redirect("Performance.aspx")
-            Catch
-            End Try
-        Else
-            If (Not Request.QueryString("PerformanceCounterID") Is Nothing) AndAlso (IsNumeric(Request.QueryString("PerformanceCounterID"))) Then
-                m_intPerformanceCounterID = CInt(Request.QueryString("PerformanceCounterID"))
-            Else
-                m_intPerformanceCounterID = CInt(Session("PerformanceCounterID"))
-            End If
-        End If
-
-        Dim objTrace1 As Base.Kernel.Logging.Trace
-        objTrace1 = New Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP)
-        If objTrace1.PerformanceData_All Then
-            Dim rowSingle() As DataRow = objTrace1.StandardLog.Select("PerformanceCounterID = " & m_intPerformanceCounterID.ToString)
-            Dim objTrace2 As Base.Kernel.Logging.Trace
-            Dim decMax As Decimal
-            Dim decMin As Decimal
-            objTrace2 = New Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP)
-            If objTrace2.PerformanceData_Detail(m_intPerformanceCounterID, 400, decMin, decMax) Then
-                lblMin.Text = Format(decMin, CStr(rowSingle(0)("FormatString")))
-                lblMax.Text = Format(decMax, CStr(rowSingle(0)("FormatString")))
-                lblCategoryName.Text = CStr(rowSingle(0)("CategoryName"))
-                lblCounterName.Text = CStr(rowSingle(0)("CounterName"))
-                lblInstanceName.Text = CStr(rowSingle(0)("InstanceName"))
-                lblCounterUnit.Text = CStr(rowSingle(0)("CounterUnit"))
-                lblValue.Text = CStr(rowSingle(0)("PerformanceCounterValue"))
-
-                If Not IsPostBack Then
-                    Dim listitem As New listitem()
-                    listitem.Text = "2 h"
-                    listitem.Value = "20"
-                    ddlPageSize.Items.Add(listitem)
-
-                    If objTrace2.StandardLog.Rows.Count > 720 Then
-                        listitem = New listitem()
-                        listitem.Text = "3 h"
-                        listitem.Value = "30"
-                        ddlPageSize.Items.Add(listitem)
-                    End If
-                    If objTrace2.StandardLog.Rows.Count > 1440 Then
-                        listitem = New listitem()
-                        listitem.Text = "6 h"
-                        listitem.Value = "60"
-                        ddlPageSize.Items.Add(listitem)
-                    End If
-                    If objTrace2.StandardLog.Rows.Count > 2880 Then
-                        listitem = New listitem()
-                        listitem.Text = "12 h"
-                        listitem.Value = "120"
-                        ddlPageSize.Items.Add(listitem)
-                    End If
-                    If objTrace2.StandardLog.Rows.Count > 5760 Then
-                        listitem = New listitem()
-                        listitem.Text = "24 h"
-                        listitem.Value = "240"
-                        ddlPageSize.Items.Add(listitem)
-                    End If
-                    ddlPageSize.SelectedIndex = 0
-                End If
-                intValuesPerDateEntry = CInt(ddlPageSize.SelectedItem.Value)
-
-                Dim i As Int32 = 0
-                Dim j As Int32
-                Dim k As Int32 = 1
-
-                Dim intLastValue As Int32 = objTrace2.StandardLog.Rows.Count
-                If intValuesPerDateEntry * 24 < intLastValue Then
-                    intLastValue = intValuesPerDateEntry * 24
-                End If
-
-                Dim tbl2Temp As New DataTable()
-                tbl2Temp.Columns.Add("IntValue", System.Type.GetType("System.Int32"))
-
-                Dim control As control
-                Dim control2 As control
-                Dim label As label
-                Dim repeater As repeater
-
-                For j = 0 To intLastValue - 1
-                    If i = 0 Then
-                        For Each control In Result.Controls
-                            If TypeOf control Is Label Then
-                                control = control.FindControl("Label" & k.ToString)
-                                If Not control Is Nothing Then
-                                    label = CType(control, Label)
-                                    label.Text = CStr(objTrace2.StandardLog.Rows(j)("InsertDate"))
-                                End If
-                            End If
-                        Next
-            End If
-                    Dim rowNew As DataRow
-                    rowNew = tbl2Temp.NewRow
-                    rowNew("IntValue") = CInt(objTrace2.StandardLog.Rows(j)("IntValue"))
-                    tbl2Temp.Rows.Add(rowNew)
-                    i += 1
-                    If (i = intValuesPerDateEntry) Or (j = intLastValue - 1) Then
-                        For Each control In Result.Controls
-                            control2 = control.FindControl("Repeater" & k.ToString)
-                            If Not control2 Is Nothing Then
-                                repeater = CType(control2, Repeater)
-                                repeater.DataSource = tbl2Temp
-                                repeater.DataBind()
-                            End If
-                        Next
-                        tbl2Temp = New DataTable()
-                        tbl2Temp.Columns.Add("IntValue", System.Type.GetType("System.Int32"))
-                        i = 0
-                        k += 1
-                        If k > 24 Then Exit For
-                    End If
-
-                Next
-            End If
-        End If
+        lblError.Text = "Keine Daten vorhanden. Dieses Logging ist veraltet."
+        lblError.Visible = True
     End Sub
 
     Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCreate.Click
@@ -245,4 +125,5 @@ Public Class Performance2
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdcreate.Click
         Response.Redirect("Performance.aspx?Return=True")
     End Sub
+
 End Class

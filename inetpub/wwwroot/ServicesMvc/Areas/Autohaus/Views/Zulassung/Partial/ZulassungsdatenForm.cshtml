@@ -28,12 +28,116 @@
         margin-top: 5px !important;
         margin-bottom: 0 !important;
         line-height: 20px;
-        width: 360px;
     }
     
     .m-wrap.tiny {
         width: 30px !Important;
     }
+
+    .zulassungsdaten {
+        float: left;
+        margin: 0!important;
+    }
+
+    .zulassungsdaten-required-fields-summary {
+        float: none;
+        display: table;
+        width: 100%;
+    }
+
+
+
+    .zulassungsdaten .prime-control {
+        margin: 20px 0 0 60px !important;
+        padding-bottom: 15px!important;
+    }
+
+    span.expressversand {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        width: 100px;
+        height: 64px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/express-versand.png) 0 0 no-repeat;
+        padding: 0 0 0 0;
+    }
+
+    .control-label.k-header {
+        text-align: left;
+    }
+    .kroschke-evb-control-group-border {
+        border: 1px solid #e0e0e0;
+        border-radius: 12px!important;
+        padding: 10px!important;
+        margin-bottom: 20px;
+        min-height: 33px;
+    }
+    .kroschke-evb-control-group-border .control-group {
+        margin-bottom: 0 !important;
+    }
+    .kroschke-evb-control-group {
+        margin-bottom: 0!important;
+    }
+    .kroschke-evb-control-group .control-label {
+        padding-top: 24px;
+    }
+    .kroschke-evb-control-group .controls {
+        padding-top: 20px;
+    }
+    .kroschke-evb {
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-evb.png) 55px 0px no-repeat;
+        height: 53px;
+    }
+
+    #evb-info {
+        display: block;
+        min-height: 48px;
+        vertical-align: middle;
+        margin: 5px 0 0 0 !important;
+        border: 0 !important;
+        border-radius: 10px !important;
+    }
+    #evb-info i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 48px;
+        height: 48px;
+        background: 0 0 no-repeat;
+    }
+    #evb-info.alert-warning i {
+        background: url(/ServicesMvc/images/icons/48x48/delete.png) 0 0 no-repeat;
+    }
+    #evb-info.alert-success i {
+        background: url(/ServicesMvc/images/icons/48x48/ok.png) 0 0 no-repeat;
+    }
+    #evb-info div {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+    }
+
+    #hint-versandzulassung {
+        display: block;
+        vertical-align: middle;
+        margin: 0 0 0 0 !important;
+        border: 0 !important;
+        border-radius: 10px !important;
+    }
+    #hint-versandzulassung i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 48px;
+        height: 48px;
+        background: 0 0 no-repeat;
+    }
+    #hint-versandzulassung.alert-success i {
+        background: url(/ServicesMvc/images/icons/48x48/ok.png) 0 0 no-repeat;
+    }
+    #hint-versandzulassung div {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+    }
+
 
 </style>
 
@@ -103,8 +207,18 @@
             SetZulassungskreis(zulassungskreis);
         });  
         
-        InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
+        InitEvbVersInfo("EvbNr", "evb-info"); // Anzeige der Versichererdaten gem. EVB
+
+        EvbTest();
     });
+
+    function EvbTest() {
+        var group = $("#EvbNr").closest(".control-group");
+        var label = group.find(".control-label");
+
+        group.addClass("kroschke-evb-control-group");
+        label.addClass("kroschke-evb");
+    }
 
     function UpdateAnzahlAbmeldungen() {
         var anzAbm = $("#AnzahlAbmeldungen").val();
@@ -167,6 +281,9 @@
         
                 // Kennzeichenänderung bei Massenzulassung
                 SetFinValue_Textbox("GridFahrzeugAuswahlZulassung", '.editkennz', true);
+
+                // Änderung Kennzeichenreservierung bei Massenzulassung
+                SetFinValue_Textbox("GridFahrzeugAuswahlZulassung", '.editreskennz', true);
         
                 // Kennzeichenänderung bei Massen-/Schnellabmeldung
                 SetFinValue_Textbox("GridFahrzeugAuswahlAbmeldung", '.editkennzabm', true);
@@ -235,6 +352,7 @@
 
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
+
 </script>
 
 <div id="DivZulassungsdaten" class="margin-top-20">
@@ -255,6 +373,7 @@
         @Html.HiddenFor(m => m.ExpressversandMoeglich)
         @Html.HiddenFor(m => m.IsSchnellabmeldung)
         @Html.HiddenFor(m => m.AnzahlAbmeldungenAenderbar)
+        @Html.HiddenFor(m => m.ModusPartnerportal)
 
         if (Model.ModusAbmeldung)
         {
@@ -264,8 +383,10 @@
         {
             @Html.Partial("Partial/ZulassungsdatenFormAnmeldung", Model)
         }
-                
-        @Html.FormRequiredFieldsSummary()
-        
+
+        <div class="zulassungsdaten-required-fields-summary">
+            @Html.FormRequiredFieldsSummary()
+        </div>
+
     }
 </div>

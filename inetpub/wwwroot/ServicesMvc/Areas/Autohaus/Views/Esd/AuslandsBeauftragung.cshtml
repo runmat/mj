@@ -1,0 +1,98 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.EsdBeauftragungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Autohaus_EsdAnforderung_PageTitle <small></small></h3>
+
+<div id="divKopf">
+    @Html.Partial("Partial/FormKopf", Model)
+</div>
+
+<div id="divDetails"></div>
+
+<div id="divReceipt"></div>
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        BindUpCountryDropDown();
+    }
+
+    function ShowDetailsForm(countryCode) {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDetailsForm",
+            loadingShow: true,
+            data: { countryCode: countryCode },
+            success: function (result) {
+                ShowDetails(result);
+                LoadingHide();
+            }
+        });
+
+        return false;
+    }
+
+    function ShowDetails(result) {
+        $("#divKopf").slideUp(200, function() {
+            $("#divDetails").html(result);
+            FormPreparePrivateAjax();
+            $("#divDetails").slideDown(500);
+        });
+    }
+
+    function CloseDetails() {
+        $("#divDetails").slideUp(200, function () {
+            $("#divKopf").slideDown(500);
+        });
+    }
+
+    function ShowReceiptAjax() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowReceipt",
+            loadingShow: true,
+            success: function (result) {
+                if (_modelStateValid)
+                    ShowReceipt(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowReceipt(result) {
+        $("#divKopf").slideUp();
+        $("#divDetails").slideUp();
+        $("#divReceipt").html(result);
+        $("#divReceipt").slideDown();
+    }
+
+    function BindUpCountryDropDown() {
+        ShowCountryIcon();
+        $("#Land").change(function () {
+            ShowCountryIcon();
+        });
+        $("#land-icon").click(function () {
+            return CloseDetails();
+        });
+    }
+
+    function ShowCountryIcon() {
+        if ($("#Land").val() === "-") $("#land-icon").hide();
+        else $("#land-icon").show();
+
+        $("#land-icon").attr("title", "Land ändern, über die Karte grafisch auswählen");
+
+        $("#land-icon i").css("background-image", "url(/ServicesMvc/Images/flags/64x64/" + $("#Land").val() + ".png)");
+    }
+
+</script>

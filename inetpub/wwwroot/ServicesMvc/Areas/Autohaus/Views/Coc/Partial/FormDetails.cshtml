@@ -1,0 +1,104 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model CocAnforderung
+
+<style>
+    
+    .validation-summary-errors {
+        margin-top: 0;
+    }
+    
+    .box.portlet {
+        padding: 10px !important;
+    }
+    
+    .form-actions .btn i {
+        display: inline !important;
+    }
+    
+</style>
+
+<div id="divFormDetails">
+    @using (Ajax.BeginForm("CocAnfordern", "Coc", null,
+        new MvcAjaxOptions("divFormDetails") { OnComplete = "ShowReceiptAjax();" }, new { id = "CocAnforderungDetailsAjaxForm" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            
+            @Html.HiddenFor(m => m.Kopfdaten.FahrzeugTyp)
+            @Html.HiddenFor(m => m.Kopfdaten.Hersteller)
+            @Html.HiddenFor(m => m.Kopfdaten.LandDerErstenZulassung)
+
+            <h5>
+                <span class="bold">@Localize.VehicleType: </span>@Model.Kopfdaten.FahrzeugTypBezeichnung
+                <span class="margin-left-10 bold">@Localize.Manufacturer: </span>@Model.Kopfdaten.HerstellerBezeichnung
+                <span class="margin-left-10 bold">@Localize.CountryOfFirstRegistration: </span>@Model.Kopfdaten.LandDerErstenZulassungBezeichnung
+            </h5>
+
+            @Html.FormValidationSummary()
+
+            <div class="portlet box light-grey bg-color-ckg-paleorange">
+
+                <div class="row-fluid">
+                
+                    <div class="span6">
+
+                        @using (Html.PortletBox(Localize.VehicleData, "icon-car", "light-grey bg-white", false))
+                        {
+                            @Html.FormDropDownListFor(m => m.JahrDerErstzulassung, CocAnforderung.Jahre.ToSelectList(), new { @class = "m-wrap small" })
+                        
+                            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+                        }
+
+                    </div>
+
+                    <div class="span6">
+
+                        @using (Html.PortletBox(Localize.Contactperson, "icon-user", "light-grey bg-white", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.TelefonNr, new { @class = "m-wrap" })
+                        }
+
+                    </div>
+
+                </div>
+        
+                @Html.FormRequiredFieldsSummary()
+
+            </div>
+
+            <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
+                <button type="button" class="btn" onclick="CloseDetails();">@Localize.Back</button>
+                <button type="submit" class="btn green"><i class="icon-file-text margin-right-10"></i>@Localize.RequestCoc</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowReceiptAjax() {    
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowReceipt",
+            loadingShow: true,
+            success: function (result) {
+                if (_modelStateValid)
+                    ShowReceipt(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

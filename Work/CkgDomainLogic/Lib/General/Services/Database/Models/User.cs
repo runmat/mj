@@ -59,7 +59,7 @@ namespace CkgDomainLogic.General.Database.Models
         public bool CustomerAdmin { get; set; }
 
         public bool FirstLevelAdmin { get; set; }
-
+        
         
         #region User Security Rules
 

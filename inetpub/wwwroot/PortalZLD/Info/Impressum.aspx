@@ -100,7 +100,7 @@
                                             <table id="Table1" cellspacing="1" cellpadding="1" border="0" class="tableInfo">
                                                 <tr>
                                                     <td style="padding-bottom:27px">
-                                                        <asp:Image ID="Image2" runat="server"   ImageUrl="../Images/Kroschke.jpg" AlternateText="Kroschke" />
+                                                        <asp:Image ID="Image2" runat="server"   ImageUrl="../Images/kroschke_inside_logo.png" AlternateText="Kroschke" />
                                                     </td>
                                                 </tr>
                                                 <tr>

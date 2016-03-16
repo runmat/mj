@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
@@ -78,7 +77,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.Remark)]
         public string Bemerkung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants._blank)]
+        [LocalizedDisplay(LocalizeConstants.Commercial)]
         public bool Gewerblich { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
@@ -121,6 +120,30 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
         public List<string> KennungenToInsert { get; set; }
 
+
+        #region Bankdaten
+
+        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
+        public string Kontoinhaber { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Iban)]
+        public string Iban { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Swift)]
+        public string Swift { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AccountNo)]
+        public string KontoNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BankCode)]
+        public string Bankleitzahl { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CreditInstitution)]
+        public string Geldinstitut { get; set; }
+
+        #endregion
+
+
         public Adresse SetInsertMode(bool insertMode)
         {
             InsertModeTmp = insertMode;
@@ -144,6 +167,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         public string GetPostLabelString()
         {
             return string.Format("{0}{1}<br/>{2}<br/>{3}{4} {5}", Name1, (Name2.IsNullOrEmpty() ? "" : " " + Name2), StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
+        }
+        public string GetFullName()
+        {
+            return Name2.IsNullOrEmpty() ? Name1 : string.Format("{0}, {1}", Name1, Name2);
         }
 
         public static string LandAsFormatted(string land)

@@ -1,0 +1,261 @@
+﻿@using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
+@model UploadPartnerUndFahrzeugdatenViewModel
+
+<h3 class="page-title">@Model.ModusName <small>@Localize.ExcelUpload</small>
+</h3>
+
+<div class="portlet app-view">
+    
+    @Html.FormWizard("icon-arrow-up", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+    var _formWizardForceHideSubmitButton = false;
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        FormWizardInitPrivate();
+    }
+
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            var showSubmitButtonInitially = (FormWizard.stepKeys.indexOf("MappingSelection") > -1);
+            FormWizard.ActionsShow(showSubmitButtonInitially);
+            FormWizard.tabClickDisabled = true;
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+            var stepName = FormWizard.GetStepKey(step - 1);
+
+            if (stepName == "Grid") {
+                CheckUpload();
+                return false;
+            }
+
+            try {
+                $("#AjaxForm" + stepName).submit();
+                window.scrollTo(0, 0);
+                return false;
+            }
+            catch (e) {
+                return true;
+            }
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            var stepName = FormWizard.GetStepKey(step + 1);
+
+            if (stepName == "Grid" && _formWizardForceHideSubmitButton == false) {
+                ResetSubmitMode();
+                return false;
+            }
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            var nextTabKey = FormWizard.GetNextTabKey();
+
+            if (nextTabKey == "Receipt") {
+                SubmitUpload();
+            } else {
+                AjaxRequestNextStep();
+            }
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            location.reload();
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $(".t-status").hide();
+        //alert("private ajax...");
+    }
+
+    function OnDataBound_GridUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnDataBound_GridSaveUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnRowDataBound_GridUploadPartnerUndFahrzeugdaten(e) {
+        var grid = $(this).data("tGrid");
+        var validationErrors = JSON.parse(e.dataItem.ValidationErrorsJson);
+
+        for (var i = 0; i < grid.columns.length; i++) {
+            for (var j = 0; j < validationErrors.length; j++) {
+                if (validationErrors[j].MemberNames.indexOf(grid.columns[i].member) > -1) {
+                    $(e.row.cells[i]).addClass("grid-cellError");
+                    break;
+                }
+            }
+        }
+    }
+
+    function OnColumnShowHide_GridUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnShowHide_GridSaveUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnColumnReorder_GridSaveUploadPartnerUndFahrzeugdaten() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function AjaxRequestNextStep() {
+        $.ajax({
+            type: "POST",
+            url: FormWizard.GetNextTabKey(),
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                window.scrollTo(0, 0);
+            }
+        });
+    }
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.csv') < 0 && fileName.toLowerCase().indexOf('.xls') < 0) {
+            alert('@Localize.FileUploadOnlyXlsCsvLegal.ToJavascriptString()');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(true);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved');
+    }
+
+    function ShowGrid() {
+        $.ajax({
+            type: "POST",
+            url: "ShowGrid",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("Grid") + 1, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+                SetButtonVisibility();
+            }
+        });
+    }
+
+    function CheckUpload() {
+        $.ajax({
+            type: "POST",
+            url: "CheckUpload",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("Grid") + 1, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                SetButtonVisibility();
+            }
+        });
+    }
+
+    function SubmitUpload() {
+        $.ajax({
+            type: "POST",
+            url: "SubmitUpload",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("Receipt") + 1, result);
+                window.scrollTo(0, 0);
+                GridAllColumnFilterApplyToGrid("GridSaveUploadPartnerUndFahrzeugdaten");
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+            }
+        });
+    }
+
+    function ResetSubmitMode() {
+        $.ajax({
+            type: "POST",
+            url: "ResetSubmitMode",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(FormWizard.GetStepIndex("Grid") + 1, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                SetButtonVisibility();
+            }
+        });
+    }
+
+    function SetButtonVisibility() {
+        if (_formWizardForceHideSubmitButton) {
+            FormWizard.ButtonSubmitShow(false);
+            FormWizard.ButtonNextShow(true);
+        } else {
+            FormWizard.ButtonSubmitShow(true);
+            FormWizard.ButtonNextShow(false);
+        }
+    }
+
+    function AjaxFormMappingSelectionComplete() {
+        FormPrepareAjax();
+
+        if (_modelStateValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+</script>

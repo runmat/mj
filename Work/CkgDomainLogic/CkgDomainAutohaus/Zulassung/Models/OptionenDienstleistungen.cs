@@ -48,7 +48,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public void InitDienstleistungen(List<Zusatzdienstleistung> dienstleistungen = null)
         {
             if (dienstleistungen != null)
-                AlleDienstleistungen = dienstleistungen;
+                AlleDienstleistungen = dienstleistungen.Copy();
 
             if (GewaehlteDienstleistungenString.IsNullOrEmpty())
                 GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.MaterialNr).ToList());

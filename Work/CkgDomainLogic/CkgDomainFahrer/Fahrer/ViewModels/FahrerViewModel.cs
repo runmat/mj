@@ -141,6 +141,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             var pdfBytesList = new List<byte[]>();
 
             var pdfBytesAuftrag = DataService.GetAuftragsPdfBytes(auftragsNr);
+            if (pdfBytesAuftrag == null)
+                return null;
 
             pdfBytesList.Add(pdfBytesAuftrag);
 

@@ -1,0 +1,17 @@
+﻿
+<div class="hide dashboard-item-row-span-dropdown-menu">
+
+    <div class="row-span-header">
+        <span class="row-span-header-text"> Gewünschte Widget Größe:</span>
+        <a class="row-span-cancel" href="#"><span class="sDashboard-icon sDashboard-remove-icon"></span></a>
+    </div>
+    
+    @for (var row = 1; row <= 3; row++)
+    {
+        var rowHint = row + " Zeile" + (row == 1 ? "" : "n");
+
+        <a class="row-span-item row-span-item-@row" href="#" alt="@rowHint"><img src="~/images/commands/dashboard-item-row-span-@(row).png" /></a>
+    }
+
+
+</div>

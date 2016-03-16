@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
@@ -10,6 +13,7 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using WebTools.Services;
 
@@ -17,13 +21,16 @@ namespace CkgDomainLogic.Partner.ViewModels
 {
     public class PartnerViewModel : AdressenPflegeViewModel
     {
-        [XmlIgnore]
+        [XmlIgnore, ScriptIgnore]
         public IPartnerDataService DataService { get { return CacheGet<IPartnerDataService>(); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public IZulassungDataService ZulassungDataService { get { return CacheGet<IZulassungDataService>(); } }
 
         [XmlIgnore]
         public override IAdressenDataService AdressenDataService { get { return DataService; } }
 
-        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(AdressenKennung == "HALTER" ? Localize.Holder : Localize.Buyer); } }
+        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(AdressenKennung == "HALTER" ? Localize.Holder : AdressenKennung == "ZAHLERKFZSTEUER" ? Localize.CarTaxPayer : Localize.Buyer); } }
 
 
         public PartnerSelektor PartnerSelektor
@@ -87,6 +94,11 @@ namespace CkgDomainLogic.Partner.ViewModels
         public override Adresse GetItem(int id)
         {
             return Adressen.FirstOrDefault(c => c.KundenNr.ToSapKunnr() == id.ToString().ToSapKunnr());
+        }
+
+        public Bankdaten LoadBankdatenAusIban(string iban, Action<string, string> addModelError)
+        {
+            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper(), addModelError);
         }
     }
 }

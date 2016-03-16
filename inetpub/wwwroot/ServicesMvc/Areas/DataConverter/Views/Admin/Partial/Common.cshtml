@@ -1,0 +1,414 @@
+﻿@model CkgDomainLogic.DataConverter.ViewModels.DataConverterViewModel
+
+<style type="text/css">
+    
+    #source 
+    {
+        width: 250px;
+        position: absolute;
+        padding: 0;
+        overflow: auto;
+        overflow-x: hidden;
+        -ms-overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    #destination 
+    {
+        width: 250px;
+        right: 3%;
+        position: absolute;
+        overflow: auto;
+        overflow-x: hidden;
+        -ms-overflow-x: hidden;
+        margin-top: 10px;
+    }
+
+    .w {
+        width: 95%;
+        height: 20px;
+        border: solid 1px gray;
+        margin: 0;
+        margin-right: 5px;
+        margin-top: 5px;
+        white-space: nowrap;
+    }
+
+    #divContainer {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        padding: 2px;
+        overflow: auto;
+        overflow-y: hidden;
+        -ms-overflow-y: hidden;
+    }
+
+    .a {
+        width: 30px;
+        border: solid gray 1px;
+        height: 20px;
+        display: inline-block;
+    }
+
+    .sp {
+        background-color: red;
+        width: 5px;
+        height: 5px;
+        margin: 5px;
+        padding: 5px;
+        margin-top: 2px;
+    }
+
+    .ep {
+        background-color: blue;
+        width: 5px;
+        height: 5px;
+        margin: 5px;
+        padding: 5px;
+        margin-top: 3px;
+    }
+
+    .processor {
+        width: 150px;
+        height: 85px;
+        padding: 5px;
+        padding-top: 5px;
+        padding-bottom: 0;
+        position: absolute;
+        z-index: 4;
+        border: 1px solid #2e6f9a;
+        box-shadow: 2px 2px 19px #e0e0e0;
+        -o-box-shadow: 2px 2px 19px #e0e0e0;
+        -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-box-shadow: 2px 2px 19px #e0e0e0;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        opacity: 0.8;
+        cursor: move;
+        background-color: white;
+        font-size: 11px;
+        -webkit-transition: background-color 0.25s ease-in;
+        -moz-transition: background-color 0.25s ease-in;
+        transition: background-color 0.25s ease-in;
+        top: 10px;
+        left: 45%;
+    }
+
+    .processor .title {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+
+    .processor .content {
+        cursor: pointer;
+    }
+
+    .prozin {
+        position: absolute;
+        left: -3px;
+        top: -3px;
+        cursor: pointer;
+        box-shadow: 0 0 2px black;
+        -webkit-transition: -webkit-box-shadow 0.25s ease-in;
+        -moz-transition: -moz-box-shadow 0.25s ease-in;
+        transition: box-shadow 0.25s ease-in;
+        background-color: blue;
+        width: 5px;
+        height: 5px;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .prozin:hover {
+        box-shadow: 0 0 6px black;
+    }
+
+    .prozout {
+        position: absolute;
+        right: -3px;
+        top: -3px;
+        cursor: pointer;
+        box-shadow: 0 0 2px black;
+        -webkit-transition: -webkit-box-shadow 0.25s ease-in;
+        -moz-transition: -moz-box-shadow 0.25s ease-in;
+        transition: box-shadow 0.25s ease-in;
+        background-color: red;
+        width: 5px;
+        height: 5px;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .prozout:hover {
+        box-shadow: 0 0 6px black;
+    }
+
+    .field {
+        width: 90px;
+        float: left;
+    }
+
+    .data 
+    {
+        font-style: italic;
+        float: left;
+        margin-right: 3px;
+        padding-right: 3px;
+        width: 90px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .btnfirst {
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    .menutop {
+        border: solid 1px lightblue;
+        background-color: lightcyan;
+        width: 100%;
+        height: 50px;
+    }
+
+    .marginright-10 {
+        margin-right: 10px;
+    }
+    
+    .width-160 {
+         width: 160px;
+    }
+    
+    .datastyle {
+        margin-left: -5px;     
+        line-height: 90%;   
+    }
+    
+    .processortype {
+        width: 151px;
+        margin-top: 5px;
+        margin-bottom: 1px;
+    }
+    
+    .processorpara1 {
+        width: 60px;
+        float: left !important;
+        margin-left: 2px;
+        margin-bottom: 2px;
+    }
+    
+    .processorpara2 {
+        width: 60px;
+        float: left !important;
+        margin-left: 2px;
+        margin-bottom: 2px;
+        display: none;
+    }
+    
+    .nodetitle-div {
+        margin-left: 0 !important;
+    }
+
+    .nodetitle {
+        font-size: 12px;
+        margin-top: 2px;
+        margin-bottom: -3px;
+        background-color: #add8e6;
+        padding-left: 4px;
+        font-weight: bold;
+        border: 1px solid gray;
+    }
+    
+    .btn-xs {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 4px;
+    }
+    
+    .processortitle {
+        margin-top: -5px;
+    }
+    
+    .processorclose {
+        margin-right: 18px;
+        margin-top: -3px;
+        border: 0;
+    }
+    
+    #divFileContainsHeadings {
+        clear: both;
+    }
+    
+    #divFileContainsHeadings .control-group {
+        margin-bottom: 5px !important;
+    }
+    
+</style>
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+    };
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $('.tooltips').tooltip();
+        setTimeout('LoadingHide()', 1000);
+    }
+
+    function GetGrid(gridName) {
+        return $("#" + gridName).data("tGrid");
+    }
+
+    function GridRefresh(gridName) {
+        GetGrid(gridName).pageTo(1);
+    }
+
+    function AjaxFormProzessauswahlComplete() {
+        FormPreparePrivateAjax();
+        if (_modelStateValid) {
+            ShowKonfiguration(0);
+        }
+    }
+
+    function OnDataBound_GridDataMappings() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridDataMappings() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDataMappings() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetGrid() {
+        return $("#GridDataMappings").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridDataMappingsItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function TryGridRefresh() {
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().ajaxRequest();
+        }
+    }
+
+    function ShowDataMappingsSearchResult(result) {
+        SearchFormHide();
+        $("#divGridDataMappings").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        setTimeout(function () {
+            GridAllColumnFilterApplyToGrid("GridDataMappings");
+            $("#divGridDataMappings").slideDown();
+        }, 500);
+    }
+
+    function ShowProzessauswahl() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ShowProzessauswahl",
+            loadingShow: true,
+            success: function (result) {
+                ShowDataMappingDetails(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowKonfiguration(id) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ShowKonfiguration",
+            data: { mappingId: id },
+            loadingShow: true,
+            success: function (result) {
+                ShowDataMappingDetails(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function DeleteKonfiguration(id) {
+        if (!confirm('@Localize.MappingDeleteConfirm.ToJavascriptString()')) {
+            return;
+        }
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteKonfiguration",
+            data: { mappingId: id },
+            loadingShow: true,
+            success: function (result) {
+                TryGridRefresh();
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowDataMappingDetails(result) {
+        $("#divDataMappingDetails").html(result);
+        $("#divSearchAndGrid").slideUp();
+        $("#divDataMappingDetails").slideDown();
+        FormPreparePrivateAjax();
+        scrollToTop();
+    }
+
+    function CloseDataMappingDetails() {
+        if (typeof ResetKonfiguration !== "undefined")
+            ResetKonfiguration();
+
+        setTimeout(function () {
+            FormPreparePrivateAjax();
+            $("#divDataMappingDetails").slideUp();
+            $("#divSearchAndGrid").slideDown();
+            setTimeout('LoadingHide();', 500);
+            scrollToTop();
+        }, 150);
+
+        TryGridRefresh();
+    }
+
+    function SaveKonfiguration() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SaveKonfiguration",
+            loadingShow: true,
+            success: function (result) {
+                FormPreparePrivateAjax();
+
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertDataConverterAdmin", result.message, 1800);
+                    CloseDataMappingDetails();
+                }
+                else {
+                    SpanAlertError("spanAlertDataConverterAdmin", result.message, 3000);
+                }
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+</script>

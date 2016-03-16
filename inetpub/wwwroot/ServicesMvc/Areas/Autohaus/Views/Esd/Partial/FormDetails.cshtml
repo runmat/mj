@@ -1,0 +1,144 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model EsdBeauftragung
+
+<style>
+    
+    .validation-summary-errors {
+        margin-top: 0;
+    }
+    
+    .box.portlet {
+        padding: 10px !important;
+    }
+    
+    .form-actions .btn i {
+        display: inline !important;
+    }
+
+    #EsdAnforderungDetailsAjaxForm .dienstleistungen-wrapper.two-row {
+        border: 0 !important;
+    }
+
+    #EsdAnforderungDetailsAjaxForm .portlet.box .portlet-body {
+        padding-bottom: 0 !important;
+    }
+
+    #EsdAnforderungDetailsAjaxForm .form-horizontal .control-group {
+        margin-bottom: 20px !important;
+    }
+    
+    #EsdAnforderungDetailsAjaxForm .ms-container.two-row .ms-selection ul.ms-list li span{
+        width: 177px;
+    }
+    .ms-container .ms-selectable ul.ms-list li span{
+        width: 198px;
+    }    
+
+    #EsdAnforderungDetailsAjaxForm .box-top {
+        min-height: 320px !important;
+    }
+    @@media (min-width: 868px) {
+        #EsdAnforderungDetailsAjaxForm .box-bottom {
+            margin-bottom: 0 !important;
+        }
+    }
+
+</style>
+
+<div id="divFormDetails">
+    @using (Ajax.BeginForm("EsdBeauftragen", "Esd", null,
+        new MvcAjaxOptions("divFormDetails") { OnComplete = "ShowReceiptAjax();" }, new { id = "EsdAnforderungDetailsAjaxForm" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            
+            @*@Html.HiddenFor(m => m.Kopfdaten.FahrzeugTyp)*@
+
+            @Html.FormValidationSummary()
+
+            <div class="portlet box light-grey bg-color-ckg-paleorange">
+
+                <div class="row-fluid">
+                
+                    <div class="span6">
+
+                        @using (Html.PortletBox(Localize.Country + " / " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
+                        {
+                            @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new {@class = "m-wrap small"},
+                                                                        postControlHtml:@<text><div id="land-icon"><i></i></div></text>)
+
+                            @Html.FormDropDownListFor(m => m.FahrzeugTyp, EsdBeauftragung.FahrzeugTypList.ToSelectList(), new { @class = "m-wrap small" })
+
+                            @Html.FormCheckBoxFor(m => m.IsLeasingFahrzeug)
+
+                            @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium" })
+                        }
+
+                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white box-bottom", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
+                        }
+
+                    </div>
+
+                    <div class="span6">
+                        
+                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white box-top", false))
+                        {
+                            <div class="dienstleistungen-wrapper">
+
+                                @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+
+                                <div class="dienstleistungen-header">
+                                    <span class="header-left">@Localize.AvailableServices</span>
+                                    <span class="header-right">@Localize.SelectedServices</span>
+                                </div>
+
+                                <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
+                                    @foreach (var dl in Model.AvailableDienstleistungen)
+                                    {
+                                        <option value="@dl.MaterialNr" @dl.SelectedAsString>@dl.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+
+                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white box-bottom", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.KundeVorname, new {@class = "m-wrap"})
+
+                            @Html.FormTextBoxFor(m => m.KundeNachname, new {@class = "m-wrap"})
+
+                            @Html.FormTextBoxFor(m => m.KundeEmail, new {@class = "m-wrap"})
+
+                            @Html.FormTextBoxFor(m => m.KundeTelefonNr, new {@class = "m-wrap"})
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-actions no-bottom-margin padding-top-5 padding-bottom-5">
+                @Html.FormRequiredFieldsSummary()
+                <button type="button" class="btn" onclick="CloseDetails();">@Localize.Back</button>
+                <button type="submit" class="btn green"><i class="icon-file-text margin-right-10"></i>@Localize.Request</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            MultiSelectPreparePublic(true);
+
+        </script>
+    }
+</div>
+

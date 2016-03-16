@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CaptchaService.cs" />
-    <Compile Include="Services\CryptoMd5.cs" />
+    <Compile Include="Services\CryptoMd5Web.cs" />
     <Compile Include="Services\UserSecurityService.cs" />
   </ItemGroup>
   <ItemGroup>

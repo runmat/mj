@@ -56,6 +56,14 @@
     <Reference Include="Ionic.Zip">
       <HintPath>..\..\GAC\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GAC\NUnit\nunit.framework.dll</HintPath>
@@ -88,15 +96,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="DataConverter\Contracts\IDataConverterDataService.cs" />
+    <Compile Include="DataConverter\Models\DataConnection.cs" />
+    <Compile Include="DataConverter\Models\DataMappingModel.cs" />
+    <Compile Include="DataConverter\Models\DataMappingSelektor.cs" />
+    <Compile Include="DataConverter\Models\Field.cs" />
+    <Compile Include="DataConverter\Models\SourceFieldInfo.cs" />
+    <Compile Include="DataConverter\Models\MappedUpload\MappedUploadMappingSelectionModel.cs" />
+    <Compile Include="DataConverter\Models\NewDataMappingSelektor.cs" />
+    <Compile Include="DataConverter\Models\Operation.cs" />
+    <Compile Include="DataConverter\Models\Processor.cs" />
+    <Compile Include="DataConverter\Models\ProcessStructure.cs" />
+    <Compile Include="DataConverter\Models\SourceFile.cs" />
+    <Compile Include="DataConverter\Models\JsonStructureGeneration\DataConverterStructure.cs" />
+    <Compile Include="DataConverter\Services\DataConverterDataService.cs" />
+    <Compile Include="DataConverter\Services\DataConverterStructureGenerationService.cs" />
+    <Compile Include="DataConverter\ViewModels\DataConverterViewModel.cs" />
+    <Compile Include="Controllers\ZldPartnerController.cs" />
     <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
     <Compile Include="DomainCommon\Models\CommonSummary.cs" />
     <Compile Include="DomainCommon\Models\CommonUiModel.cs" />
     <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
+    <Compile Include="General\Contracts\DashboardItem\IDashboardItemOptions.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItem.cs" />
     <Compile Include="General\Contracts\IKennzeichenAttribute.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItemAnnotator.cs" />
+    <Compile Include="General\Contracts\IUploadItem.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />
     <Compile Include="General\Controllers\CkgDomainController.cs" />
@@ -108,9 +135,10 @@
     <Compile Include="General\Models\Attributes\ZulassungsKreisAttribute.cs" />
     <Compile Include="General\Models\Attributes\VIN.cs" />
     <Compile Include="General\Models\ChartItemsPackage.cs" />
-    <Compile Include="General\Models\DataModels\DocumentErstellenBearbeiten.cs" />
+    <Compile Include="General\Models\ChartItemsTick.cs" />
     <Compile Include="General\Models\DataModels\FahrzeugStatus.cs" />
     <Compile Include="General\Models\DataModels\Hersteller.cs" />
+    <Compile Include="General\Models\DataModels\EvbInfo.cs" />
     <Compile Include="General\Models\DataModels\KundeAusHierarchie.cs" />
     <Compile Include="General\Models\DataModels\VersandGrund.cs" />
     <Compile Include="General\Models\DataModels\ZulassungsDienstleistung.cs" />
@@ -123,17 +151,20 @@
     <Compile Include="General\Services\Dashboard\ChartService.cs" />
     <Compile Include="General\Services\Database\Models\CustomerDocument.cs" />
     <Compile Include="General\Services\Database\Models\CustomerDocumentCategory.cs" />
-    <Compile Include="General\Services\Database\Models\Dokument.cs" />
-    <Compile Include="General\Services\Database\Models\DokumentRight.cs" />
+    <Compile Include="General\Services\Database\Models\Document.cs" />
+    <Compile Include="General\Services\Database\Models\DocumentRight.cs" />
     <Compile Include="General\Services\Database\Models\DocumentType.cs" />
     <Compile Include="General\Services\Database\Models\Contact.cs" />
     <Compile Include="General\Services\Database\Models\AccountingArea.cs" />
     <Compile Include="General\Services\Database\Models\GroupArchiveAssigned.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterProcessStructure.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterMappingInfo.cs" />
+    <Compile Include="General\Services\Database\Models\DataConverterMappingData.cs" />
     <Compile Include="General\Services\Database\Models\OrganizationBase.cs" />
+    <Compile Include="General\Services\Database\Models\UserOrganization.cs" />
     <Compile Include="General\Services\Database\Models\PersistableObjectContainer.cs" />
     <Compile Include="General\Services\Database\Models\LoginUserMessageConfirmations.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResource_UserLogs.cs" />
-    <Compile Include="General\Services\Database\Models\UserOrganization.cs" />
     <Compile Include="General\Services\Database\Models\WebUserInfo.cs" />
     <Compile Include="General\Services\Database\Models\Organization.cs" />
     <Compile Include="General\Services\Database\Models\TranslatedResourceCustom.cs" />
@@ -215,6 +246,17 @@
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceSAP.cs" />
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceTest.cs" />
     <Compile Include="Zulassung\MobileErfassung\ViewModels\ZulMobileErfassungViewModel.cs" />
+    <Compile Include="Zulassung\ZldPartner\Contracts\IZldPartnerZulassungenDataService.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\AppModelMappings.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassung.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassungenSuchparameter.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\AddPositionModel.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\StornoModel.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\Material.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\StornoGrund.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\OffeneZulassung.cs" />
+    <Compile Include="Zulassung\ZldPartner\Services\ZldPartnerZulassungenDataServiceSap.cs" />
+    <Compile Include="Zulassung\ZldPartner\ViewModels\ZldPartnerZulassungenViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SapORM\models\SapORM.Models.csproj">

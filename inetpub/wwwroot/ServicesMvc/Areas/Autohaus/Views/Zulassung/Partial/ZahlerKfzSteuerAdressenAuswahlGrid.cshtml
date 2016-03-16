@@ -22,6 +22,7 @@
         columns.Bound(c => c.PLZ);
         columns.Bound(c => c.Ort);
         columns.Bound(c => c.Land);
+        columns.Bound(c => c.Iban);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnComplete("OnComplete_AdressenAuswahlGrid"))

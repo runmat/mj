@@ -189,7 +189,7 @@ namespace AppZulassungsdienst.forms
             else if (objNacherf.SelAenderungAngenommene)
             {
                 objNacherf.SelVorgang = "A";
-                objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung       
+                objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ,VZ,AV,OK"; // alle Autohausvorgänge und normal Nacherfassung       
                 objNacherf.SelFlieger = false;
                 objNacherf.SelNochNichtAbgesendete = false;
             }

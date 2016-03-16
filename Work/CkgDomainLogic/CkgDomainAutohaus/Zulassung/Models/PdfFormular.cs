@@ -19,6 +19,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool IstAuftragsListe { get { return Typ.IsNullOrEmpty() && DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"); } }
 
+        public bool IstVersandLabel { get { return Typ == "VS-LABEL"; } }
+
         public string LabelForGui { get { return IstAuftragsZettel ? Localize.OrderForm : Label; } }
     }
 }

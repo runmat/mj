@@ -171,6 +171,12 @@
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             Gültigkeitsdatum
                                                                         </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblWarenkorbNurEigene" Text="Warenkorb nur eigene" Visible="False"/>
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblDarfNichtAbsenden" Text="Darf Vorgänge nicht absenden" Visible="False"/>
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
@@ -215,6 +221,12 @@
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             01.01.2012
                                                                         </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblWarenkorbNurEigeneZeile1" Text="ja" Visible="False"/>
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblDarfNichtAbsendenZeile1" Text="ja" Visible="False"/>
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
@@ -258,6 +270,12 @@
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             &nbsp;
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblWarenkorbNurEigeneZeile2" Text="" Visible="False"/>
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblDarfNichtAbsendenZeile2" Text="" Visible="False"/>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -454,6 +472,20 @@
                                                             <ItemTemplate>
                                                                 <asp:TextBox ID="txtGueltigkeitsdatum" runat="server" MaxLength="10" Text='<%# DataBinder.Eval(Container, "DataItem.ValidFrom","{0:d}") %>'
                                                                     Width="80px"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Warenkorb nur eigene" SortExpression="WarenkorbNurEigene" Visible="False">
+                                                            <HeaderStyle Width="110px" />
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtWarenkorbNurEigene" runat="server" MaxLength="4" Text='<%# Bind("WarenkorbNurEigene") %>'
+                                                                    Width="30px"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Darf Vorgänge nicht absenden" SortExpression="DarfNichtAbsenden" Visible="False">
+                                                            <HeaderStyle Width="150px" />
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtDarfNichtAbsenden" runat="server" MaxLength="4" Text='<%# Bind("DarfNichtAbsenden") %>'
+                                                                    Width="30px"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Error" SortExpression="Error" HeaderStyle-Width="50px"

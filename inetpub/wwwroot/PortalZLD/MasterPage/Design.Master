@@ -22,7 +22,7 @@
 
         <div id="header">
             <div id="PlaceHeader" runat="Server" class="dvHead">
-            <asp:Image ID="imgLogo"  ImageUrl="../Images/kroschke.jpg" 
+            <asp:Image ID="imgLogo"  ImageUrl="../Images/kroschke_inside_logo.png" 
                 alt="DAD Logo" class="dadLogo2" runat="server"  /></div>
             
             <ul id="navigation" ><!-- style="display:none" -->

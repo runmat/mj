@@ -52,6 +52,8 @@ namespace CkgDomainLogic.General.ViewModels
 
         public bool AppFavoritesAvailable { get { return LogonContext != null && LogonContext.Customer != null && LogonContext.Customer.MvcSelectionType.NotNullOrEmpty().ToLower() == "favorites"; } }
 
+        public bool BoolDummy { get; set; }
+
         #endregion
     }
 }

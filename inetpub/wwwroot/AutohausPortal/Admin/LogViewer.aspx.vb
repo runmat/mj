@@ -1,8 +1,6 @@
-﻿
-Imports CKG.Base.Kernel.Admin
+﻿Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports Admin.PageElements
 Imports CKG.Base.Kernel
 Imports CKG
 
@@ -24,12 +22,10 @@ Public Class LogViewer
 
 #End Region
 
-    Private m_context As HttpContext = HttpContext.Current
     Private m_User As User
     Private m_App As App
 
     Private m_blnShowDetails() As Boolean
-    Private m_objTrace As Base.Kernel.Logging.Trace
 
     Protected WithEvents DataGrid1 As System.Web.UI.WebControls.DataGrid
     Protected WithEvents Label2 As System.Web.UI.WebControls.Label
@@ -38,6 +34,7 @@ Public Class LogViewer
     Protected WithEvents lnkExcel As System.Web.UI.WebControls.HyperLink
 
 #Region "Events"
+
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         m_User = GetUser(Me)
         AdminAuth(Me, m_User, AdminLevel.Organization)
@@ -54,10 +51,6 @@ Public Class LogViewer
                 TblLog.Visible = False
                 trGruppe.Visible = False
                 trOrganisation.Visible = False
-            Else
-                If Not m_context.Cache("m_objTrace") Is Nothing Then
-                    m_objTrace = CType(m_context.Cache("m_objTrace"), Base.Kernel.Logging.Trace)
-                End If
             End If
 
             ReDim m_blnShowDetails(DataGrid1.PageSize)
@@ -75,7 +68,7 @@ Public Class LogViewer
 
     Private Sub DataGrid1_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGrid1.SortCommand
         ShrinkGrid()
-        FillGrid(datagrid1.CurrentPageIndex, e.SortExpression)
+        FillGrid(DataGrid1.CurrentPageIndex, e.SortExpression)
     End Sub
 
     Private Sub DataGrid1_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGrid1.PageIndexChanged
@@ -87,14 +80,14 @@ Public Class LogViewer
         If e.CommandSource.ToString = "System.Web.UI.WebControls.ImageButton" Then
             Dim item As DataGridItem
             Dim cell As TableCell
-            Dim checkbox As checkbox
-            Dim control As control
+            Dim checkbox As CheckBox
+            Dim control As Control
 
-            For Each item In datagrid1.Items
+            For Each item In DataGrid1.Items
                 cell = item.Cells(0)
                 For Each control In cell.Controls
-                    If TypeOf control Is checkbox Then
-                        checkbox = CType(control, checkbox)
+                    If TypeOf control Is CheckBox Then
+                        checkbox = CType(control, CheckBox)
                         If checkbox.Checked Then
                             m_blnShowDetails(item.ItemIndex) = checkbox.Checked
                         End If
@@ -103,7 +96,7 @@ Public Class LogViewer
             Next
 
             m_blnShowDetails(e.Item.ItemIndex) = Not m_blnShowDetails(e.Item.ItemIndex)
-            FillGrid(datagrid1.CurrentPageIndex)
+            FillGrid(DataGrid1.CurrentPageIndex)
         End If
     End Sub
 
@@ -144,89 +137,7 @@ Public Class LogViewer
     End Sub
 
     Private Sub lbcreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbCreate.Click
-        lblError.Text = ""
-        If Not IsDate(txtVonDatum.Text) Then
-            If Not IsStandardDate(txtVonDatum.Text) Then
-                If Not IsSAPDate(txtVonDatum.Text) Then
-                    lblError.Text = "Geben Sie bitte ein gültiges Datum ein!<br>"
-                End If
-            End If
-        End If
-        If Not IsDate(txtBisDatum.Text) Then
-            If Not IsStandardDate(txtBisDatum.Text) Then
-                If Not IsSAPDate(txtBisDatum.Text) Then
-                    lblError.Text = "Geben Sie bitte ein gültiges Datum ein!<br>"
-                End If
-            End If
-        End If
-        Dim datAb As Date = CDate(txtVonDatum.Text)
-        Dim datBis As Date = CDate(txtBisDatum.Text)
-        If datAb > datBis Then
-            lblError.Text = "Das Enddatum darf nicht vor dem Anfangsdatum liegen!<br>"
-        End If
-        If lblError.Text.Length > 0 Then
-            Exit Sub
-        End If
-
-        m_objTrace = New Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP)
-        Dim blnFill As Boolean = False
-        If Me.txtUserID.Text = "-1" Then
-            If Me.ddlFilterGroup.SelectedItem.Value = "0" Then
-                If Me.ddlFilterCustomer.SelectedItem.Value = "0" Then
-                    m_objTrace.AllData(Me.ddlAction.SelectedItem.Value, Me.txtVonDatum.Text, Me.txtBisDatum.Text)
-                    blnFill = True
-                Else
-                    m_objTrace.CustomerData(Me.ddlFilterCustomer.SelectedItem.Text, Me.ddlAction.SelectedItem.Value, Me.txtVonDatum.Text, Me.txtBisDatum.Text)
-                    blnFill = True
-                End If
-            Else
-                m_objTrace.GroupData(Me.ddlFilterCustomer.SelectedItem.Text, Me.ddlFilterGroup.SelectedItem.Value, Me.ddlAction.SelectedItem.Value, Me.txtVonDatum.Text, Me.txtBisDatum.Text)
-                blnFill = True
-            End If
-        Else
-            If Me.ddlAction.SelectedItem.Value = String.Empty Then
-                m_objTrace.UserData(Me.lblUserName.Text, Me.txtVonDatum.Text, Me.txtBisDatum.Text)
-                blnFill = True
-            Else
-                m_objTrace.UserData(Me.lblUserName.Text, Me.ddlAction.SelectedItem.Value, Me.txtVonDatum.Text, Me.txtBisDatum.Text)
-                blnFill = True
-            End If
-        End If
-        If blnFill Then
-            Me.Result.Visible = False
-            FillGrid(0)
-            m_context.Cache.Insert("m_objTrace", m_objTrace, New System.Web.Caching.CacheDependency(Server.MapPath("Logviewer.aspx")), DateTime.Now.AddMinutes(20), TimeSpan.Zero)
-            ''######################################################################
-            '' Excel
-            ''######################################################################
-            '' Dieser Teil fliegt evtl. wieder heraus, wenn kein Excel-Export erwuenscht.
-            '' Dabei auch an die Methode GetOverView in clsTrace denken!!!
-            ''######################################################################
-            'If Me.ddlAction.SelectedItem.Value <> String.Empty Then
-            '    Dim tblResult As DataTable
-            '    tblResult = m_objTrace.GetLogOverView
-            '    If tblResult.Rows.Count = 0 Then
-            '        'lblError.Text = "Fehler: Excel-Export nicht möglich."
-            '    Else
-            '        Dim objExcelExport As New Base.Kernel.Excel.ExcelExport()
-            '        Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls"
-            '        Try
-            '            Base.Kernel.Excel.ExcelExport.WriteExcel(tblResult, ConfigurationManager.AppSettings("ExcelPath") & strFileName)
-            '        Catch
-            '        End Try
-            '        lblDownloadTip.Visible = True
-            '        lnkExcel.Visible = True
-            '        lnkExcel.NavigateUrl = "/Services/Temp/Excel/" & strFileName
-            '    End If
-            'Else
-            '    lblDownloadTip.Visible = False
-            '    lnkExcel.Visible = False
-            '    lnkExcel.NavigateUrl = ""
-            'End If
-            ''######################################################################
-        Else
-            Me.lblError.Text = "Diese Selektion ist nicht auswertbar."
-        End If
+        lblError.Text = "Dieses Logging ist veraltet. Bitte verwenden Sie die Logs aus MySQL."
     End Sub
 
     Private Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
@@ -255,179 +166,16 @@ Public Class LogViewer
 
         End If
     End Sub
+
 #End Region
+
 #Region "Methods"
+
     Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
-        If m_objTrace.StandardLog.Rows.Count = 0 Then
-            TblLog.Visible = False
-            NavExcel.Visible = False
-            lblError.Text = "Keine Daten zur Anzeige gefunden."
-            lblError.Visible = True
-        Else
-            TblLog.Visible = True
-            TblUser.Visible = False
-            Result.Visible = True
-            NavExcel.Visible = False
-            Dim tmpDataView As New DataView()
-            tmpDataView = m_objTrace.StandardLog.DefaultView
-
-            Label2.Text = "Datenanzeige: Es wurden " & m_objTrace.StandardLog.Rows.Count & " Datensätze ermittelt."
-
-            Dim intTempPageIndex As Int32 = intPageIndex
-            Dim strTempSort As String = ""
-            Dim strDirection As String = ""
-
-            If strSort.Trim(" "c).Length > 0 Then
-                intTempPageIndex = 0
-                strTempSort = strSort.Trim(" "c)
-                If (ViewState("Sort") Is Nothing) OrElse (ViewState("Sort").ToString = strTempSort) Then
-                    If ViewState("Direction") Is Nothing Then
-                        strDirection = "desc"
-                    Else
-                        strDirection = ViewState("Direction").ToString
-                    End If
-                Else
-                    strDirection = "desc"
-                End If
-
-                If strDirection = "asc" Then
-                    strDirection = "desc"
-                Else
-                    strDirection = "asc"
-                End If
-
-                ViewState("Sort") = strTempSort
-                ViewState("Direction") = strDirection
-            Else
-                If Not ViewState("Sort") Is Nothing Then
-                    strTempSort = ViewState("Sort").ToString
-                    If ViewState("Direction") Is Nothing Then
-                        strDirection = "asc"
-                        ViewState("Direction") = strDirection
-                    Else
-                        strDirection = ViewState("Direction").ToString
-                    End If
-                End If
-            End If
-
-            If Not strTempSort.Length = 0 Then
-                tmpDataView.Sort = strTempSort & " " & strDirection
-            End If
-
-            DataGrid1.CurrentPageIndex = intTempPageIndex
-
-            DataGrid1.DataSource = tmpDataView
-            DataGrid1.DataBind()
-
-            If DataGrid1.PageCount > 1 Then
-                DataGrid1.PagerStyle.Visible = True
-                DataGrid1.PagerStyle.CssClass = "PagerStyle"
-                If DataGrid1.CurrentPageIndex = DataGrid1.PageCount - 1 Then
-                    DataGrid1.PagerStyle.NextPageText = "<img border=""0"" src=""/PortalZLD/images/empty.gif"" width=""12"" height=""11"">"
-                Else
-                    DataGrid1.PagerStyle.NextPageText = "<img border=""0"" src=""/PortalZLD/images/arrow_right.gif"" width=""12"" height=""11"">"
-                End If
-
-                If DataGrid1.CurrentPageIndex = 0 Then
-                    DataGrid1.PagerStyle.PrevPageText = "<img border=""0"" src=""/PortalZLD//images/empty.gif"" width=""12"" height=""11"">"
-                Else
-                    DataGrid1.PagerStyle.PrevPageText = "<img border=""0"" src=""/PortalZLD//images/arrow_left.gif"" width=""12"" height=""11"">"
-                End If
-                DataGrid1.DataBind()
-            Else
-                DataGrid1.PagerStyle.Visible = False
-            End If
-
-            Dim item As DataGridItem
-            Dim cell As TableCell
-            Dim label As Label
-            Dim checkbox As CheckBox
-            Dim button As ImageButton
-            Dim control As Control
-            Dim tblDetails As DataTable = Nothing
-
-            For Each item In DataGrid1.Items
-                Dim blnDetailsExist As Boolean = False
-                cell = item.Cells(0)
-
-                'Prüft, ob Log-Details in DB vorhanden sind
-                For Each control In cell.Controls
-                    If TypeOf control Is Label Then
-                        label = CType(control, Label)
-
-                        tblDetails = m_objTrace.LogDetails(CInt(label.Text))
-                        If Not tblDetails Is Nothing Then
-                            If Not tblDetails.Rows.Count = 0 Then
-                                blnDetailsExist = True
-                            End If
-                        End If
-                    End If
-                Next
-
-                If blnDetailsExist Then
-                    'Detail existieren
-
-                    For Each control In cell.Controls
-                        If TypeOf control Is CheckBox Then
-                            checkbox = CType(control, CheckBox)
-                            checkbox.Checked = m_blnShowDetails(item.ItemIndex)
-
-                            'Prüft, ob Plus-Button gedrückt wurde
-                            If checkbox.Checked Then
-
-                                'Hinzufügen einer neuen Zeile mit Datagrid, das die Details enthält
-                                Dim NewLiteral As New Literal()
-                                NewLiteral.Text = "</td></tr><tr><td>&nbsp;</td><td colspan=""" & item.Cells.Count - 1 & """>"
-                                item.Cells(item.Cells.Count - 1).Controls.Add(NewLiteral)
-
-                                Dim NewDatagrid As New DataGrid()
-                                NewDatagrid.Width = New Unit("100%")
-                                NewDatagrid.ItemStyle.CssClass = "ItemStyle"
-                                NewDatagrid.AlternatingItemStyle.CssClass = "GridTableAlternate"
-                                NewDatagrid.HeaderStyle.CssClass = "GridTableHead"
-                                NewDatagrid.DataSource = tblDetails
-                                NewDatagrid.DataBind()
-
-                                'Übersetzt die Texte "True" und "False" ins Deutsche
-                                Dim newItem As DataGridItem
-                                Dim newCell As TableCell
-                                For Each newItem In NewDatagrid.Items
-                                    For Each newCell In newItem.Cells
-                                        If UCase(newCell.Text) = "FALSE" Then
-                                            newCell.Text = "Nein"
-                                        End If
-                                        If UCase(newCell.Text) = "TRUE" Then
-                                            newCell.Text = "Ja"
-                                        End If
-                                    Next
-                                Next
-                                item.Cells(item.Cells.Count - 1).Controls.Add(NewDatagrid)
-                            End If
-                        End If
-                    Next
-
-                    'Schaltet Grafik des Imagebuttons um (bei + auf - und umgekehrt)
-                    For Each control In cell.Controls
-                        If TypeOf control Is ImageButton Then
-                            button = CType(control, ImageButton)
-                            If Not m_blnShowDetails(item.ItemIndex) Then
-                                button.ImageUrl = "/PortalZLD/Images/Plus1.gif"
-                            Else
-                                button.ImageUrl = "/PortalZLD/Images/Plus1.gif"
-                            End If
-                        End If
-                    Next
-                Else
-                    'wenn keine Log-Details vorhanden, Button nicht anzeigen!
-                    For Each control In cell.Controls
-                        If TypeOf control Is ImageButton Then
-                            button = CType(control, ImageButton)
-                            button.Visible = False
-                        End If
-                    Next
-                End If
-            Next
-        End If
+        TblLog.Visible = False
+        NavExcel.Visible = False
+        lblError.Text = "Keine Daten zur Anzeige gefunden."
+        lblError.Visible = True
     End Sub
 
     Private Sub ShrinkGrid()
@@ -706,6 +454,7 @@ Public Class LogViewer
         End With
         SearchMode(True)
     End Sub
+
 #End Region
 
 End Class

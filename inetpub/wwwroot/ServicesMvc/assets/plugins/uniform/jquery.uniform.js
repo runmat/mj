@@ -263,9 +263,11 @@ Enjoy!
               if (!$(elem).attr("checked")) {
                   //box was just unchecked, uncheck span
                   spanTag.removeClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").removeClass(options.checkedClass);
               } else {
                   //box was just checked, check span.
                   spanTag.addClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").addClass(options.checkedClass);
               }
           },
           "mousedown.uniform touchbegin.uniform": function () {
@@ -287,6 +289,7 @@ Enjoy!
             if ($(elem).attr("checked")) {
                 //box is checked by default, check our box
                 spanTag.addClass(options.checkedClass);
+                spanTag.closest("label.checkbox").addClass(options.checkedClass);
             }
 
             //handle disabled state
@@ -336,11 +339,13 @@ Enjoy!
               if (!$(elem).attr("checked")) {
                   //box was just unchecked, uncheck span
                   spanTag.removeClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").removeClass(options.checkedClass);
               } else {
                   //box was just checked, check span
                   var classes = options.radioClass.split(" ")[0];
                   $("." + classes + " span." + options.checkedClass + ":has([name='" + $(elem).attr('name') + "'])").removeClass(options.checkedClass);
                   spanTag.addClass(options.checkedClass);
+                  spanTag.closest("label.checkbox").addClass(options.checkedClass);
               }
           },
           "mousedown.uniform touchend.uniform": function () {
@@ -577,15 +582,19 @@ Enjoy!
                     var divTag = $e.closest("div");
 
                     divTag.removeClass(options.hoverClass + " " + options.focusClass + " " + options.activeClass);
+
                     spanTag.removeClass(options.checkedClass);
+                    spanTag.closest("label.checkbox").removeClass(options.checkedClass);
 
                     if ($e.is(":checked")) {
                         spanTag.addClass(options.checkedClass);
+                        spanTag.closest("label.checkbox").addClass(options.checkedClass);
                     }
                     if ($e.is(":disabled")) {
                         divTag.addClass(options.disabledClass);
                     } else {
                         divTag.removeClass(options.disabledClass);
+                        spanTag.closest("label.checkbox").removeClass(options.checkedClass);
                     }
 
                 } else if ($e.is(":radio")) {

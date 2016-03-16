@@ -14,11 +14,14 @@ Partial Public Class ColumnTranslation
             ViewState.Item("refferer") = value
         End Set
     End Property
+
 #End Region
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -80,6 +83,7 @@ Partial Public Class ColumnTranslation
     End Sub
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         trEditUser.Visible = False
 
@@ -93,6 +97,7 @@ Partial Public Class ColumnTranslation
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
 
         Dim dvColumnTranslation As DataView
@@ -256,120 +261,6 @@ Partial Public Class ColumnTranslation
         If blnRefillDataGrid Then FillDataGrid()
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = 0 ' intSource 
-        'Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Spaltenübersetzungen" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal strOrgName As String, ByVal tblPar As DataTable) As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim _ColTrans As New Kernel.ColumnTranslation(intAppId, strOrgName, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Anwendung") = lblAppFriendlyName.Text
-                .Rows(.Rows.Count - 1)("SAP-Name") = _ColTrans.OrgNameAlt
-                .Rows(.Rows.Count - 1)("Übersetzung") = _ColTrans.NewName
-                If Not _ColTrans.DisplayOrder = 0 Then .Rows(.Rows.Count - 1)("Reihenfolge-Nr.") = _ColTrans.DisplayOrder.ToString
-                .Rows(.Rows.Count - 1)("Nullen entfernen") = _ColTrans.NullenEntfernen
-                .Rows(.Rows.Count - 1)("Text bereinigen") = _ColTrans.TextBereinigen
-                .Rows(.Rows.Count - 1)("ist Datum") = _ColTrans.IstDatum
-                .Rows(.Rows.Count - 1)("ist Zeit") = _ColTrans.IstZeit
-                .Rows(.Rows.Count - 1)("ABE-Daten") = _ColTrans.ABEDaten
-                .Rows(.Rows.Count - 1)("Ausrichtung") = _ColTrans.Alignment
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "ColumnTranslation", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Anwendung") = lblAppFriendlyName.Text
-                .Rows(.Rows.Count - 1)("SAP-Name") = txtAppID.Text
-                .Rows(.Rows.Count - 1)("Übersetzung") = txtNewName.Text
-                .Rows(.Rows.Count - 1)("Reihenfolge-Nr.") = txtDisplayOrder.Text
-                .Rows(.Rows.Count - 1)("Nullen entfernen") = cbxNullenEntfernen.Checked
-                .Rows(.Rows.Count - 1)("Text bereinigen") = cbxTextBereinigen.Checked
-                .Rows(.Rows.Count - 1)("ist Datum") = cbxIstDatum.Checked
-                .Rows(.Rows.Count - 1)("ist Zeit") = cbxIstZeit.Checked
-                .Rows(.Rows.Count - 1)("ABE-Daten") = cbxABEDaten.Checked
-                .Rows(.Rows.Count - 1)("Ausrichtung") = ddlAlignment.SelectedItem.Text
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "ColumnTranslation", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", Type.GetType("System.String"))
-            .Columns.Add("Anwendung", Type.GetType("System.String"))
-            .Columns.Add("SAP-Name", Type.GetType("System.String"))
-            .Columns.Add("Übersetzung", Type.GetType("System.String"))
-            .Columns.Add("Reihenfolge-Nr.", Type.GetType("System.String"))
-            .Columns.Add("Nullen entfernen", Type.GetType("System.Boolean"))
-            .Columns.Add("Text bereinigen", Type.GetType("System.Boolean"))
-            .Columns.Add("ist Datum", Type.GetType("System.Boolean"))
-            .Columns.Add("ist Zeit", Type.GetType("System.Boolean"))
-            .Columns.Add("ABE-Daten", Type.GetType("System.Boolean"))
-            .Columns.Add("Ausrichtung", Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
@@ -386,18 +277,11 @@ Partial Public Class ColumnTranslation
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
             Dim intAppId As Integer = CInt(txtAppID.Text)
-            Dim strLogMsg As String = "Spaltenübersetzungen anlegen"
-            If Not (txtOrgNameAlt.Text = String.Empty) Then
-                strLogMsg = "Spaltenübersetzungen ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intAppId, txtOrgNameAlt.Text, tblLogParameter)
-            End If
 
             Dim intDisplayOrder As Integer
             If IsNumeric(txtDisplayOrder.Text) Then
@@ -417,9 +301,7 @@ Partial Public Class ColumnTranslation
                                                 cbxABEDaten.Checked, _
                                                 ddlAlignment.SelectedItem.Value)
             _ColTrans.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_ColTrans.AppId.ToString, strLogMsg, tblLogParameter)
+
             Search(True, True, , True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
         Catch ex As Exception
@@ -429,8 +311,6 @@ Partial Public Class ColumnTranslation
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -439,16 +319,12 @@ Partial Public Class ColumnTranslation
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _ColTrans As New Kernel.ColumnTranslation(CInt(txtAppID.Text), txtOrgNameAlt.Text)
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtAppID.Text), txtOrgNameAlt.Text, tblLogParameter)
             _ColTrans.Delete(cn)
-            Log(_ColTrans.AppId.ToString, "Spaltenübersetzungen löschen", tblLogParameter)
             Search(True, True, True, True)
             lblMessage.Text = "Die Spaltenübersetzung wurde gelöscht."
         Catch ex As Exception
@@ -458,8 +334,6 @@ Partial Public Class ColumnTranslation
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -479,12 +353,14 @@ Partial Public Class ColumnTranslation
     Private Sub lnkBack_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkBack.Click
         responseBack()
     End Sub
+
 #End Region
 
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
         dgSearchResult.PageIndex = PageIndex
         FillDataGrid()
     End Sub
+
     Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
         FillDataGrid()
     End Sub
@@ -519,9 +395,9 @@ Partial Public Class ColumnTranslation
         ViewState("ResultSort") = strSort
         FillDataGrid(strSort)
     End Sub
+
     Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
 
- 
 End Class

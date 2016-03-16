@@ -25,7 +25,8 @@ namespace ServicesMvc.Controllers
             ILeasingCargateCsvUploadDataService cargateCsvUploadService, 
             ILeasingSicherungsscheineDataService sicherungsscheineDataService,
             INichtDurchfuehrbZulDataService nichtDurchfuehrbZulDataService, 
-            IUeberfaelligeRuecksendungenDataService ueberfaelligeRuecksendungenDataService
+            IUeberfaelligeRuecksendungenDataService ueberfaelligeRuecksendungenDataService,
+            IUnzugelasseneFahrzeugeDataService unzugelasseneFahrzeugeDataService
             )
             : base(appSettings, logonContext)
         {
@@ -37,6 +38,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(SicherungsscheineViewModel, appSettings, logonContext, sicherungsscheineDataService);
             InitViewModel(NichtDurchfuehrbZulViewModel, appSettings, logonContext, nichtDurchfuehrbZulDataService);
             InitViewModel(UeberfaelligeRuecksendungenViewModel, appSettings, logonContext, ueberfaelligeRuecksendungenDataService);
+            InitViewModel(UnzugelasseneFahrzeugeViewModel, appSettings, logonContext, unzugelasseneFahrzeugeDataService);
         }
 
         public ActionResult Index(string un, string appID)

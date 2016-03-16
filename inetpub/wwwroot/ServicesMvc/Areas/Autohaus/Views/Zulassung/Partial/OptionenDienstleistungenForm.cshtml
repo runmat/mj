@@ -33,6 +33,7 @@
         @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenSondergroesse()" },
                                     postControlHtml: @<text>
                                                             @Html.DropDownListFor(m => m.KennzeichenGroesseId, Model.KennzeichengroesseListForMatNr.ToSelectList(), new { @class = "m-wrap small margin-left-50" })
+                                                            <a href="~/Documents/Templates/KfzKennzeichengroessen.pdf" target="_blank" class="btn yellow tooltips margin-right-5 margin-bottom-0" data-original-title='@Localize.KennzeichenGroessenPDF' data-placement="top"> @Localize._Kennzeichen <i class="icon-info-sign"></i></a>
                                                         </text>)
 
         @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap xsmall", onchange = "CheckSaisonkennzeichen()" },
@@ -87,28 +88,7 @@
             CheckKennzeichenSondergroesse();
             CheckSaisonkennzeichen();
             
-            MultiSelectPreparePrivate();
-
-            function MultiSelectPreparePrivate() {
-                $('#pre-selected-options').multiSelect();
-
-                $('#ms-pre-selected-options > .ms-selectable > .ms-list > li').each(function () {
-                    $(this).append('<i class="icon-chevron-right"></i>');
-                });
-                $('#ms-pre-selected-options > .ms-selection > .ms-list > li').each(function () {
-                    $(this).prepend('<i class="icon-ok dienstleistung-gewaehlt"></i>');
-                    $(this).append('<i class="icon-remove"></i>');
-                });
-                $('#ms-pre-selected-options').removeClass('hide');
-
-                $('#pre-selected-options').change(function() {
-                    var selectedOptions = '';
-                    $('.ms-selection > .ms-list > .ms-selected').each(function () {
-                        selectedOptions += (selectedOptions != '' ? ',' : '') + $(this).attr('id').replace(/-selection/, '');
-                    });
-                    $("#GewaehlteDienstleistungenString").val(selectedOptions);
-                });
-            }
+            MultiSelectPreparePublic(true);
 
         </script>
     }

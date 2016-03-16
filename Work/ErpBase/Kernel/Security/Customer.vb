@@ -957,7 +957,7 @@ Namespace Kernel.Security
             End Try
         End Sub
 
-        Public Sub Save(ByVal cn As SqlClient.SqlConnection)
+        Public Sub Save(ByVal cn As SqlClient.SqlConnection, Optional ByVal blnAutoCreateStandardOrganization As Boolean = True)
             Try
                 Dim strInsert As String = "INSERT INTO Customer(Customername, " & _
                                                "KUNNR, " & _
@@ -1232,22 +1232,26 @@ Namespace Kernel.Security
                     'Wenn Customer neu ist dann ID ermitteln, damit bei nachfolgendem Fehler und erneutem Speichern Datensatz nicht doppelt angelegt wird.
                     m_intCustomerID = CInt(cmd.ExecuteScalar)
 
-                    'Standard-Organisation anlegen
-                    cmd = New SqlClient.SqlCommand()
-                    cmd.Connection = cn
+                    If blnAutoCreateStandardOrganization Then
 
-                    cmd.CommandText = "INSERT INTO Organization(OrganizationName, " & _
-                                                                   "CustomerID, " & _
-                                                                   "OrganizationReference) " & _
-                                              "VALUES(@OrganizationName, " & _
-                                                     "@CustomerID, " & _
-                                                     "@OrganizationReference)"
-                    With cmd.Parameters
-                        .AddWithValue("@OrganizationName", "Standard")
-                        .AddWithValue("@CustomerID", m_intCustomerID)
-                        .AddWithValue("@OrganizationReference", "999")
-                    End With
-                    cmd.ExecuteNonQuery()
+                        'Standard-Organisation anlegen
+                        cmd = New SqlClient.SqlCommand()
+                        cmd.Connection = cn
+
+                        cmd.CommandText = "INSERT INTO Organization(OrganizationName, " & _
+                                                                       "CustomerID, " & _
+                                                                       "OrganizationReference) " & _
+                                                  "VALUES(@OrganizationName, " & _
+                                                         "@CustomerID, " & _
+                                                         "@OrganizationReference)"
+                        With cmd.Parameters
+                            .AddWithValue("@OrganizationName", "Standard")
+                            .AddWithValue("@CustomerID", m_intCustomerID)
+                            .AddWithValue("@OrganizationReference", "999")
+                        End With
+                        cmd.ExecuteNonQuery()
+
+                    End If
 
                     'TeamViewer Flag in den Groups setzen
                     SetTVShowInGroups(m_blnTVShow, cn.ConnectionString)

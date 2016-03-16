@@ -5,8 +5,10 @@ using System.IO;
 using System.Reflection;
 using System.Web;
 using CkgDomainLogic.General.Database.Services;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Services
@@ -80,6 +82,26 @@ namespace CkgDomainLogic.Services
         public string SmtpServer { get { return ConfigurationManager.AppSettings["SmtpMailServer"]; } }
 
         public string SmtpSender { get { return ConfigurationManager.AppSettings["SmtpMailSender"]; } }
+
+        public string CustomCssFile { get { return ConfigurationManager.AppSettings["CustomCssFile"]; } }
+
+        public string PortalWelcomeMessageStartLocalized
+        {
+            get
+            {
+                var locConstant = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "LocalizeConstant_WelcomeAtPortalDadStart").NotNullOr(LocalizeConstants.WelcomeAtPortalDadStart);
+                return Localize.TranslateResourceKey(locConstant);
+            }
+        }
+
+        public string PortalWelcomeMessageEndLocalized
+        {
+            get
+            {
+                var locConstant = GeneralTools.Services.GeneralConfiguration.GetConfigValue("Global", "LocalizeConstant_WelcomeAtPortalDadEnd").NotNullOr(LocalizeConstants.WelcomeAtPortalDadEnd);
+                return Localize.TranslateResourceKey(locConstant);
+            }
+        }
 
         public ISecurityService SecurityService { get; set; }
 

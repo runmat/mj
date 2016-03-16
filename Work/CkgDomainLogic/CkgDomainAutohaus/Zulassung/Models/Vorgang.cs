@@ -39,6 +39,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
+                if (BeauftragungsArt == "VERSANDZULASSUNGPARTNER")
+                    return "?versandzulassung=1&partnerportal=1";
+
                 return "";
             }
         }
@@ -112,6 +115,8 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        public bool HalterGewerblich { get { return (Halter != null && Halter.Adresse != null && Halter.Adresse.Gewerblich); } }
+
         public string ZahlerKfzSteuerName
         {
             get
@@ -143,6 +148,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         public byte[] KundenformularPdf { get; set; }
 
+        [XmlIgnore]
+        public byte[] VersandlabelPdf { get; set; }
+
         public static List<SelectItem> AuslieferAdressenPartnerRollen
         {
             get
@@ -155,6 +163,8 @@ namespace CkgDomainLogic.Autohaus.Models
                     };
             }
         }
+
+        public Versanddaten Versanddaten { get; set; }
 
         public bool IsSelected { get; set; }
 
@@ -171,6 +181,7 @@ namespace CkgDomainLogic.Autohaus.Models
             VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };
             Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();
+            Versanddaten = new Versanddaten();
         }
 
         [XmlIgnore, ScriptIgnore]
@@ -285,11 +296,13 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             foreach (var item in AuslieferAdressen)
             {
-                item.Materialien = AuslieferAdresse.AlleMaterialien.Where(m => AuslieferAdressen.None(a => a.Adressdaten.Partnerrolle != item.Adressdaten.Partnerrolle && a.ZugeordneteMaterialien.Contains(m.Key))).ToList();
+                var auslieferAdresse = item;
+
+                item.Materialien = AuslieferAdresse.AlleMaterialien.Where(m => AuslieferAdressen.None(a => a.Adressdaten.Partnerrolle != auslieferAdresse.Adressdaten.Partnerrolle && a.ZugeordneteMaterialien.Contains(m.Key))).ToList();
             }
         }
 
-        public GeneralSummary CreateSummaryModel()
+        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
         {
             var summaryModel = new GeneralSummary
             {
@@ -311,7 +324,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = Localize.VehicleData,
-                                        Body = Fahrzeugdaten.GetSummaryString(),
+                                        Body = Fahrzeugdaten.GetSummaryString()
                                     }),
 
                             (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
@@ -319,21 +332,21 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = Localize.Holder,
-                                        Body = Halter.Adresse.GetPostLabelString(),
+                                        Body = Halter.Adresse.GetPostLabelString()
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung
+                            (Zulassungsdaten.ModusAbmeldung || Zulassungsdaten.ModusPartnerportal
                                     ? null :
                                     new GeneralEntity
                                     {
                                         Title = Localize.CarTaxPayer,
-                                        Body = ZahlerKfzSteuer.GetSummaryString(),
+                                        Body = ZahlerKfzSteuer.GetSummaryString()
                                     }),
 
                             new GeneralEntity
                             {
                                 Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
-                                Body = Zulassungsdaten.GetSummaryString(),
+                                Body = Zulassungsdaten.GetSummaryString()
                             },
 
                             (Zulassungsdaten.ModusAbmeldung 
@@ -341,7 +354,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = Localize.RegistrationOptions,
-                                        Body = OptionenDienstleistungen.GetSummaryString(),
+                                        Body = OptionenDienstleistungen.GetSummaryString()
                                     }),
 
                             (!Zulassungsdaten.ModusVersandzulassung
@@ -349,7 +362,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = Localize.ShippingAddress,
-                                        Body = VersandAdresseSummaryString,
+                                        Body = VersandAdresseSummaryString
                                     }),
 
                             (BankAdressdaten.GetSummaryString().IsNullOrEmpty()
@@ -357,15 +370,23 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = Localize.DataForEndCustomerInvoice,
-                                        Body = BankAdressdaten.GetSummaryString(),
+                                        Body = BankAdressdaten.GetSummaryString()
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung || AuslieferAdressenSummaryString.IsNullOrEmpty()
+                            (Zulassungsdaten.ModusAbmeldung
                                     ? null :
                                     new GeneralEntity
                                     {
                                         Title = Localize.DeliveryAddresses,
-                                        Body = AuslieferAdressenSummaryString,
+                                        Body = AuslieferAdressenSummaryString + auslieferAdressenLink
+                                    }),
+
+                            (!Zulassungsdaten.ModusVersandzulassung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.Shipping,
+                                        Body = Versanddaten.GetSummaryString()
                                     })
                         )
             };

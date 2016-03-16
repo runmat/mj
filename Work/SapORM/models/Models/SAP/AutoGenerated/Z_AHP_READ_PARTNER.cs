@@ -105,6 +105,8 @@ namespace SapORM.Models
 
 			public DateTime? SEPA_STICHTAG { get; set; }
 
+			public string IBAN { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -128,6 +130,7 @@ namespace SapORM.Models
 					REFKUNNR2 = (string)row["REFKUNNR2"],
 					EVBNR = (string)row["EVBNR"],
 					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
+					IBAN = (string)row["IBAN"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

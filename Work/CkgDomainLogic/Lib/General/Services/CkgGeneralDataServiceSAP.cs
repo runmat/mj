@@ -145,7 +145,7 @@ namespace CkgDomainLogic.General.Services
             {
                 return PropertyCacheGet(() =>
                     AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller.Copy(GetSapHersteller())
-                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionNotSpecified } })
+                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionPleaseChoose } })
                             .OrderBy(w => w.Name).ToList());
             }
         }
@@ -178,7 +178,7 @@ namespace CkgDomainLogic.General.Services
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = LogonContext.Organization.OrganizationReference;
+            var orgRef = LogonContext.Organization == null ? "" : LogonContext.Organization.OrganizationReference;
 
             if (!String.IsNullOrEmpty(orgRef))
             {
@@ -325,6 +325,34 @@ namespace CkgDomainLogic.General.Services
 
             return "";
         }
+
+        #region Langtexte
+
+        public string ReadLangtext(string langtextNr)
+        {
+            Z_BC_LTEXT_READ.Init(SAP, "I_LTEXT_NR", langtextNr);
+            return SAP.GetExportParameterWithExecute("E_STRING");
+        }
+
+        public string InsertLangtext(string langtext)
+        {
+            Z_BC_LTEXT_INSERT.Init(SAP, "I_LTEXT_ID, I_STRING, I_UNAME", "UMLT", langtext, LogonContext.UserName);
+            return SAP.GetExportParameterWithExecute("E_LTEXT_NR");
+        }
+
+        public void UpdateLangtext(string langtextNr, string langtext)
+        {
+            Z_BC_LTEXT_UPDATE.Init(SAP, "I_LTEXT_NR, I_STRING, I_UNAME", langtextNr, langtext, LogonContext.UserName);
+            SAP.Execute();
+        }
+
+        public void DeleteLangtext(string langtextNr)
+        {
+            Z_BC_LTEXT_DELETE.Init(SAP, "I_LTEXT_NR", langtextNr);
+            SAP.Execute();
+        }
+
+        #endregion
     }
 }
 

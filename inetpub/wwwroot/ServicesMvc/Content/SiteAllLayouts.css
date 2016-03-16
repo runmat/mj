@@ -36,6 +36,9 @@
 .m-wrap.hasDatepicker {
     width: 180px;
 }
+.m-wrap.smaller {
+    width: 90px !important;
+}
 .m-wrap.xlarge {
     width: 520px !important;
 }
@@ -115,6 +118,22 @@ textarea[readonly].m-wrap {
     padding-left: 40px;
 }
 
+.padding-right-5 {
+    padding-right: 5px;
+}
+.padding-right-10 {
+    padding-right: 10px;
+}
+.padding-right-15 {
+    padding-right: 15px;
+}
+.padding-right-30 {
+    padding-right: 30px;
+}
+.padding-right-40 {
+    padding-right: 40px;
+}
+
 
 .padding-top-2 {
     padding-top: 2px;
@@ -138,6 +157,9 @@ textarea[readonly].m-wrap {
     padding-top: 15px;
 }
 
+.padding-bottom-1 {
+    padding-bottom: 1px;
+}
 .padding-bottom-5 {
     padding-bottom: 5px;
 }
@@ -262,6 +284,12 @@ textarea[readonly].m-wrap {
     margin-top: 5px!important;
 }
 
+.label-width-0 .control-label {
+    width: 0 !Important;
+}
+.label-width-0 .controls {
+    margin-left: 10px !Important;
+}
 .label-width-100 .control-label {
     width: 100px !Important;
 }
@@ -273,6 +301,18 @@ textarea[readonly].m-wrap {
 }
 .label-width-120 .controls {
     margin-left: 130px !Important;
+}
+.label-width-130 .control-label {
+    width: 130px !Important;
+}
+.label-width-130 .controls {
+    margin-left: 140px !Important;
+}
+.label-width-140 .control-label {
+    width: 140px !Important;
+}
+.label-width-140 .controls {
+    margin-left: 150px !Important;
 }
 .label-width-150 .control-label {
     width: 150px !Important;
@@ -297,6 +337,18 @@ textarea[readonly].m-wrap {
 }
 .label-width-250 .controls {
     margin-left: 260px !Important;
+}
+.label-width-275 .control-label {
+    width: 275px !Important;
+}
+.label-width-275 .controls {
+    margin-left: 285px !Important;
+}
+.label-width-300 .control-label {
+    width: 300px !Important;
+}
+.label-width-300 .controls {
+    margin-left: 310px !Important;
 }
 
 .uppercase {
@@ -498,7 +550,7 @@ textarea[readonly].m-wrap {
     padding-top: 2px;
 }
 .form-horizontal .checker {
-    padding-top: 0;
+    padding-top: 3px;
 }
 
 .form-horizontal span.validation-message {
@@ -523,6 +575,9 @@ textarea[readonly].m-wrap {
 
 .validation-summary-errors {
     margin-top: 20px;
+}
+.validation-summary-errors.alert-success {
+    color: darkgreen;
 }
 /*
 .validation-summary-errors {
@@ -1387,6 +1442,16 @@ div.span-alert-placeholder .alert {
     min-height: 30px;
 }
 
+.report-generator-wrapper li.persistable-form-dropdown-menu {
+    text-align: left;
+}
+
+.report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
+    display: inline-block;
+    width: 80%;
+}
+}
+
 #divFormControlsTranslations {
     width: 800px;
 }
@@ -1431,4 +1496,266 @@ div.span-alert-placeholder .alert {
 }
 .report-generator-wrapper li.persistable-form-dropdown-menu span.li-button span {
     display: inline-block;
+}
+
+
+.prime-control {
+    display: inline-block;
+    margin-top: -15px !important;
+}
+.prime-control .control-label {
+    display: none!important;
+}
+.prime-control .controls {
+    margin-left: 0!important;
+}
+.prime-control label.checkbox {
+    vertical-align: top;
+    font-weight: bold;
+    margin: 0 0 0 0!important;
+    white-space: nowrap;
+}
+
+.prime-control div.checker span {
+    display: inline-block;
+    margin: 15px 0 0 0px!important;
+    background: url(/ServicesMvc/_Themes/AH2015/images/uniform/prime-checkbox-sprite.png) 0 0 no-repeat;
+    -webkit-font-smoothing: antialiased;
+    width: 30px;
+    height: 30px;
+}
+.prime-control div.checker span.checked {
+    background-position: 0 -30px;
+}
+.prime-control div.checker:hover span, 
+.prime-control label.checkbox:hover div.checker span:not(.checked) {
+    background-position: -30px 0;
+}
+.prime-control div.checker:hover span.checked, 
+.prime-control label.checkbox:hover div.checker span.checked {
+    background-position: -30px -30px;
+}
+.prime-control .prime-checkbox-image {
+    display: inline-block;
+    margin: 0 0 0 20px;
+    width: 200px;
+    height: 65px;
+    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;
+}
+.prime-control label.checkbox.checked .prime-checkbox-image {
+    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;
+}
+
+.prime-control span.prime-helphint-icon {
+    display: inline-block;
+    vertical-align: top;
+    margin: 3px 0 0 2px;
+    background: url(/ServicesMvc/images/kroschke-prime-info-icon.png) 0 0 no-repeat;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+.prime-control div.prime-helphint-content {
+    width: 400px;
+    margin: 10px 0 0 1px;
+    padding: 10px;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.25)!important;
+    background-color: #FBF6EC;
+    line-height: 20px;
+    white-space: normal;
+}
+.prime-control div.prime-helphint-content .close-button {
+    margin: -4px -2px 0 5px;
+    float: right;
+    background: url(/ServicesMvc/images/close-button-16x16.png) no-repeat;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.position-relative {
+    position: relative;
+}
+
+
+.color-ckg-green {
+    color: #a0C539 !important;
+}
+
+.color-ckg-lightgreen {
+    color: #cddf9a !important;
+}
+
+.color-ckg-palegreen {
+    color: #dff0d8 !important;
+}
+
+.bg-color-ckg-green, .portlet.box.bg-color-ckg-green {
+    background-color: #a0C539 !important;
+}
+
+.bg-color-ckg-lightgreen, .portlet.box.bg-color-ckg-lightgreen {
+    background-color: #cddf9a !important;
+}
+
+.bg-color-ckg-palegreen, .portlet.box.bg-color-ckg-palegreen {
+    background-color: #dff0d8 !important;
+}
+
+.color-ckg-yellow {
+    color: #ffcc00 !important;
+}
+
+.color-ckg-lightyellow {
+    color: #ffff72 !important;
+}
+
+.color-ckg-paleyellow {
+    color: #fff9e5 !important;
+}
+
+.bg-color-ckg-yellow, .portlet.box.bg-color-ckg-yellow {
+    background-color: #ffcc00 !important;
+}
+
+.bg-color-ckg-lightyellow, .portlet.box.bg-color-ckg-lightyellow {
+    background-color: #ffff72 !important;
+}
+
+.bg-color-ckg-paleyellow, .portlet.box.bg-color-ckg-paleyellow {
+    background-color: #fff9e5 !important;
+}
+
+.color-ckg-orange {
+    color: #ffb848 !important;
+}
+
+.color-ckg-lightorange {
+    color: #ffce46 !important;
+}
+
+.color-ckg-paleorange {
+    color: #fcf8e3 !important;
+}
+
+.bg-color-ckg-orange, .portlet.box.bg-color-ckg-orange {
+    background-color: #ffb848 !important;
+}
+
+.bg-color-ckg-lightorange, .portlet.box.bg-color-ckg-lightorange {
+    background-color: #ffce46 !important;
+}
+
+.bg-color-ckg-paleorange, .portlet.box.bg-color-ckg-paleorange {
+    background-color: #fcf8e3 !important;
+}
+
+.color-ckg-red {
+    color: #c11823 !important;
+}
+
+.color-ckg-lightred {
+    color: #d37166 !important;
+}
+
+.color-ckg-palered {
+    color: #f2dede !important;
+}
+
+.bg-color-ckg-red, .portlet.box.bg-color-ckg-red {
+    background-color: #c11823 !important;
+}
+
+.bg-color-ckg-lightred, .portlet.box.bg-color-ckg-lightred {
+    background-color: #d37166 !important;
+}
+
+.bg-color-ckg-palered, .portlet.box.bg-color-ckg-palered {
+    background-color: #f2dede !important;
+}
+
+.bg-white, .portlet.box.bg-white {
+    background-color: white !important;
+}
+
+.portlet.box {
+    overflow-x: hidden;
+}
+
+
+
+.kroschkedokumentencenter-grid {
+    float: left;
+    margin-right: 20px;
+}
+    
+.kroschkedokumentencenter-grid div.t-grouping-header {
+    height: 36px;
+    background-color: #dff0d8;
+    color: #888888;
+    border-radius: 4px !important;
+    margin-bottom: 5px;
+}
+    
+.kroschkedokumentencenter-grid div.t-grouping-header .t-group-indicator  {
+    margin-top: 3px;
+    font-size: 18px;
+    background-color: #cddf9a;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar,
+.kroschkedokumentencenter-grid .t-grid-bottom {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.kroschkedokumentencenter-grid .t-grid-toolbar,
+.kroschkedokumentencenter-grid .t-grid-toolbar:first-child {
+    padding-top: 0 !important;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar {
+    height: 48px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_length {
+    margin-top: 3px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_filter button {
+    margin-top: 5px;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .dataTables_filter label {
+    font-size: 20px !important;
+}
+    
+.kroschkedokumentencenter-grid input.grid-column-overall-filter {
+    width: 200px !important;
+    background-color: #fcf8e3;
+    font-size: 20px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+}
+    
+.kroschkedokumentencenter-grid .t-grid-toolbar .grid-toolbar .outer-export-menu {
+    margin-top: 3px;
+}
+    
+.kroschkedokumentencenter-hint {
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    border-radius: 4px !important;
+}
+
+.session-timeout-info .alert-warning i {
+    margin-right: 10px;
+}
+.session-timeout-info .btn {
+    width: 120px;
+    float: right;
+    margin-bottom: 20px;
 }

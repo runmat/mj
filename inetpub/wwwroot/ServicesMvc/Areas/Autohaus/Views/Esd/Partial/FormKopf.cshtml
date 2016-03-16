@@ -1,0 +1,280 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.EsdBeauftragungViewModel
+
+<style>
+
+    .validation-summary-errors {
+        margin-top: 0;
+    }
+
+    .box.portlet {
+        padding: 10px !important;
+    }
+
+    @@media (max-width: 1580px) {
+        .row-fluid .span4 {
+            display: block;
+            float: none;
+            width: 100%;
+            margin-left: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    }
+
+    .europe-map {
+        display: inline-block;
+        float: left;
+        text-align: left;
+        overflow: hidden;
+        height: 460px;
+        width: 605px;
+    }
+    .europe-map-hint {
+        display: table-cell;
+        vertical-align: middle;
+        height: 420px;
+    }
+    @@media (max-width: 855px) {
+        .europe-map-hint {
+            height: auto;
+            padding-bottom: 20px;
+            padding-left: 191px;
+        }
+    }
+    .europe-map-hint .inner {
+        display: table-cell;
+        vertical-align: middle;
+        width: 370px;
+
+        border: 3px solid #6E8CBF;
+        border-radius: 12px !important;
+        box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
+        padding: 5px;
+    }
+    .europe-map-hint .hint1, .europe-map-hint .hint2 {
+        padding: 10px 15px 10px 15px;
+    }
+    .europe-map-hint .inner i {
+        display: inline-block;
+        float: left;
+        vertical-align: middle;
+        width: 45px;
+        height: 45px;
+        background: center center no-repeat;
+        background-size: 50px 64px;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.10)!important;
+        background-image: url(/ServicesMvc/Images/flags/64x64/EU.png);
+        margin: 12px 15px 0px 12px!important;
+    }
+
+    #europe-svg {
+        overflow: hidden; 
+        position: relative; 
+        left: -175px; 
+        top: -90px;
+        background-color: transparent;    
+    }
+    #country-others {
+        display: table;
+        position: relative; 
+        z-index: 9999;
+    }
+    @@media (max-width: 650px) {
+        #country-others {
+            left: 385px; 
+            top: -150px;
+        }
+    }
+    @@media (min-width: 651px) {
+        #country-others {
+        left: 440px; 
+        top: -165px;
+        }
+    }
+
+    .country-hint {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 99999;
+        display: none;
+        background-color: white;
+        padding: 10px;
+        border: 3px solid #6E8CBF;
+        border-radius: 12px !important;
+        box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
+    }
+    .country-hint i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 38px;
+        height: 38px;
+        background: center center no-repeat;
+        background-size: 50px 64px;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.07)!important;
+    }
+    .country-hint span {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 10px;
+        font-weight: bold;
+    }
+
+    path.svg-country {
+        fill: #d0d1d5; 
+    }
+    path.svg-country.enabled {
+        fill: #6E8CBF;
+        cursor: pointer;
+    }
+    
+    .control-group .controls select {
+        vertical-align: top;
+    }
+    #land-icon {
+        display: inline-block;
+        cursor: pointer;
+    }
+    #land-icon i {
+        display: table-cell;
+        vertical-align: middle;
+        width: 32px;
+        height: 32px;
+        background: center center no-repeat;
+        background-size: 40px 54px;
+        border-radius: 50%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.03)!important;
+    }
+
+</style>
+
+
+<script type="text/javascript" src="~/Scripts/snap.svg.js?v=20160208"></script>
+
+<script type="text/javascript">
+
+    var _validCountriesAsString = '@string.Join(",", Model.LaenderAuswahlliste.Select(c => c.ID))';
+    var _validCountries = @Html.Raw(Json.Encode(Model.LaenderAuswahlliste));
+
+    function CountryIsEnabled(elem) {
+        var node = $(elem.node);
+        return _validCountriesAsString.indexOf(node.attr("dataid")) >= 0;
+    }
+
+    function GetCountryItem(elem) {
+        var node = $(elem.node);
+        return $.grep(_validCountries, function (e) { return e.ID === node.attr("dataid"); })[0];
+    }
+
+    $(function () {
+
+        var countryHintVisible = false;
+
+        document.onmousemove = function (e) {
+
+            $(".country-hint").css("left", (e.pageX - 60) + "px");
+            $(".country-hint").css("top", (e.pageY - 120) + "px");
+
+            if (countryHintVisible)
+                $(".country-hint").show();
+            else
+                $(".country-hint").hide();
+        }
+
+        var s = Snap("#europe-svg");
+        Snap.load("/ServicesMvc/Images/maps/europe.svg", function (f) {
+
+            var g = f.select("g");
+            var paths = g.selectAll("path");
+
+            paths.forEach(function (elem, i) {
+
+                var node = $(elem.node);
+                if (CountryIsEnabled(elem))
+                    node.attr("class", node.attr("class") + " enabled");
+
+                elem.hover(
+                    function () {
+                        if (!CountryIsEnabled(elem))
+                            return;
+
+                        // hover opacity
+                        elem.attr("fill-opacity", "0.5");
+
+                        var countryItem = GetCountryItem(elem);
+                        $(".country-hint i").css("background-image", "url(/ServicesMvc/Images/flags/64x64/" + countryItem.ID + ".png)");
+                        $(".country-hint span").html(countryItem.Name);
+
+                        countryHintVisible = true;
+                    },
+                    function () {
+                        if (!CountryIsEnabled(elem))
+                            return;
+
+                        // unhover opacity
+                        elem.attr("fill-opacity", "");
+
+                        countryHintVisible = false;
+                    }
+                );
+                elem.click(function () {
+                    if (!CountryIsEnabled(elem))
+                        return;
+
+                    countryHintVisible = false;
+                    $(".country-hint").hide();
+
+                    ShowDetailsForm(node.attr("dataid"));
+
+                });
+            });
+
+            s.append(g);
+        });
+    });
+
+
+</script>
+
+<div class="country-hint hide">
+    <i></i>
+    <span></span>
+</div>
+
+<h4 class="no-margin">
+    @Localize.CountrySelection, @Localize.PleaseChooseOneCountry.ToFirstLower():
+</h4>
+
+
+<div class="europe-map">
+
+    <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin"></svg>
+
+    <button id="country-others" onclick="return ShowDetailsForm('-');" class="btn blue">@Localize.MoreCountries</button>
+
+</div>
+
+<div class="europe-map-hint">
+    <div class="inner">
+        <i></i>
+        <div class="hint1">
+            @Localize.Autohaus_EsdAnforderung_MapHint1
+        </div>
+        <div class="hint2">
+            @Localize.Autohaus_EsdAnforderung_MapHint2
+        </div>
+    </div>
+</div>
+

@@ -31,17 +31,29 @@
         @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap medium", col = "right" })
 
+
+        @Html.HiddenFor(m => m.KontoNr)
+        @Html.HiddenFor(m => m.Bankleitzahl)
+
         @Html.FormTextBoxFor(m => m.Fax, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
+        @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap medium uppercase", col = "right", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+                        postControlHtml: @<text>@Html.SpanAlert("bankDataHint")</text>)
+
+        @Html.FormCheckBoxFor(m => m.Gewerblich, new { @class = "m-wrap medium", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.Commercial</label></text>)
+        @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap medium uppercase", col = "right", @readonly = "readonly" },
+                        postControlHtml: @<text><span class="no-break-container">(@Localize.WillBeCalculated.ToLower())</span></text>)
 
         @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium", col = "right" })
-
+        @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap medium", col = "right", @readonly = "readonly"},
+                        postControlHtml: @<text><span class="no-break-container">(@Localize.WillBeCalculated.ToLower())</span></text>)
+        
         <div id="divEvbInfo">
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap medium uppercase", col = "left", maxlength = 7 })
             @Html.FormDatePickerFor(m => m.Stichtagsabbuchung, new { @class = "m-wrap medium", col = "right" })
         </div>
-        
+
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium" })
+
         if (Model.InsertModeTmp)
         {
             @Html.FormMultiSelectListFor(m => m.KennungenToInsert, CkgDomainLogic.Partner.Models.PartnerSelektor.PartnerKennungen.ToSelectList(), new { @class = "m-wrap chosen" },
@@ -60,6 +72,8 @@
         <script type="text/javascript">
             _modelIsValid = @Model.IsValid.ToString().ToLower();
             _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+
+            InitBankdaten();
 
             $(function(){ 
                 if ($('#Kennung').val() == 'HALTER') {

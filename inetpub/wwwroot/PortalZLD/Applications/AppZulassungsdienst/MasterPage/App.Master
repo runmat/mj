@@ -51,7 +51,7 @@
     
     <div id="website">
         <div id="header">
-        <asp:Image ID="imgLogo" ImageUrl="/PortalZLD/Images/Kroschke.jpg" alt="Kroschke Logo" class="dadLogo2"
+        <asp:Image ID="imgLogo" ImageUrl="/PortalZLD/Images/kroschke_inside_logo.png" alt="Kroschke Logo" class="dadLogo2"
                 runat="server" />
             <div id="PlaceHeader" runat="Server" class="dvHead">
             </div>

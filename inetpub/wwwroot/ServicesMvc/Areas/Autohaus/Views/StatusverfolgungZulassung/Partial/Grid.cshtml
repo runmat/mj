@@ -1,0 +1,43 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+
+@{ var gridName = "GridZulassungen"; }
+
+@(Html.XTelerik()
+    .XGrid<ZulassungsReportModel>()
+    .Name(gridName)
+    .XAjaxDataBinding("ItemsAjaxBinding", "StatusverfolgungZulassung")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DokumentName).ClientTemplate(
+                "<button onclick='ShowDetailsAjax(\"<#= data.BelegNummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Status + "' data-placement='right'><i class='halflings-icon white search'></i></button>" +
+                "<# if (data.DokumentNameIsValid) { #>" +
+                "   <a class='btn mini gray tooltips' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DokumentName #>' ><i class='icon-download-alt'></i></a> " +
+                "<# } #> "
+            ).Title(Localize.Action).Sortable(false).Filterable(false);
+
+        columns.XBound(c => c.KundenNrAndName);
+        columns.XBound(c => c.BelegNummer);
+        columns.XBound(c => c.StatusAsText);
+        columns.XBound(c => c.Referenz1);
+        columns.XBound(c => c.Referenz2);
+        columns.XBound(c => c.Referenz3);
+        columns.XBound(c => c.Referenz4);
+        columns.XBound(c => c.Referenz5);
+        columns.XBound(c => c.EvbNummmer);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.ErfassungsDatum);
+        columns.XBound(c => c.ZulassungDatum);
+        columns.XBound(c => c.MaterialKurztext);
+        columns.XBound(c => c.FeinstaubAmt);
+        columns.XBound(c => c.KennzeichenMerkmal);
+        columns.XBound(c => c.VkUser);
+        columns.XBound(c => c.KundenReferenz);
+        columns.XBound(c => c.KundenNotiz);
+        columns.XBound(c => c.Vorerfasser);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.KundenNrAndName).Descending())
+    .XToolBar("StatusverfolgungZulassung")
+)

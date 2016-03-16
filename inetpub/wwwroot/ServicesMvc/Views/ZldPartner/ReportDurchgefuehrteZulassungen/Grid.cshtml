@@ -1,0 +1,40 @@
+﻿@using CkgDomainLogic.ZldPartner.Models
+@using CkgDomainLogic.ZldPartner.ViewModels
+@model ZldPartnerZulassungenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridDurchgefuehrteZulassungen"; }
+
+@(Html.Telerik()
+    .Grid<DurchgefuehrteZulassung>()
+    .Name(gridName)
+    .XAjaxDataBinding("DurchgefuehrteZulassungenAjaxBinding", "ZldPartner")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzId).Visible(false);
+        columns.XBound(c => c.BelegNr);
+        columns.XBound(c => c.BelegPosition).Visible(false);
+        columns.XBound(c => c.Kunde);
+        columns.XBound(c => c.Halter);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Zb2Nr);
+        columns.XBound(c => c.MaterialText);
+        columns.XBound(c => c.ZulassungsKreis);
+        columns.XBound(c => c.ZulassungsDatum);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Gebuehr);
+        columns.XBound(c => c.Preis);
+        columns.XBound(c => c.StatusText);
+        columns.XBound(c => c.AbrechnungErstellt);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzId).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDurchgefuehrteZulassungenFilteredExcel", "ZldPartner");
+        commands.FilteredDataCommand("ExportDurchgefuehrteZulassungenFilteredPDF", "ZldPartner");
+    })
+)

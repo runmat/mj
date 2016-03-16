@@ -8,13 +8,13 @@
             <string>Auftrag&amp;shy;geber</string>
         </value>
     </item>
-    <item>
-        <key>
-            <string>HalterAdresse</string>
-        </key>
-        <value>
-            <string>Halter</string>
-        </value>
+  <item>
+      <key>
+        <string>HalterAdresse</string>
+      </key>
+      <value>
+        <string>Halter</string>
+      </value>
     </item>
     <item>
         <key>
@@ -34,21 +34,13 @@
     </item>
     <item>
         <key>
-            <string>AuslieferAdressen</string>
-        </key>
-        <value>
-            <string>Ausliefer&amp;shy;adressen</string>
-        </value>
-    </item>
-    <item>
-        <key>
-            <string>Fahrzeugdaten</string>
-        </key>
-        <value>
-            <string>Fahrzeug</string>
-        </value>
-    </item>
-    <item>
+      <string>Fahrzeugdaten</string>
+    </key>
+    <value>
+      <string>Fahrzeug</string>
+    </value>
+  </item>
+  <item>
         <key>
             <string>Zulassungsdaten</string>
         </key>
@@ -57,13 +49,14 @@
         </value>
     </item>
     <item>
-        <key>
-            <string>OptionenDienstleistungen</string>
-        </key>
-        <value>
-            <string>Optionen</string>
-        </value>
+      <key>
+        <string>OptionenDienstleistungen</string>
+      </key>
+      <value>
+        <string>Optionen</string>
+      </value>
     </item>
+    
     <item>
         <key>
             <string>Summary</string>

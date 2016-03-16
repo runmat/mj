@@ -275,6 +275,15 @@ Partial Public Class CustomerManagement
     Protected WithEvents ihCustomerID As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
+    '''ihIsCopyOfCustomerID-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ihIsCopyOfCustomerID As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
     '''txtCustomerName-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1607,6 +1616,24 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtSDSignatur2 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''Settings-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Settings As Global.AjaxControlToolkit.TabPanel
+
+    '''<summary>
+    '''rgRights-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents rgRights As Global.Telerik.Web.UI.RadGrid
+
+    '''<summary>
     '''lbtnDelete-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1670,13 +1697,49 @@ Partial Public Class CustomerManagement
     Protected WithEvents mb As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''keepApplications-Steuerelement
+    '''chkKeepCustomerContactData-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents keepApplications As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkKeepCustomerContactData As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''chkKeepApplications-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents chkKeepApplications As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''chkKeepGroupsWithApplications-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents chkKeepGroupsWithApplications As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''chkKeepOrganizations-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents chkKeepOrganizations As Global.System.Web.UI.WebControls.CheckBox
+
+    '''<summary>
+    '''chkKeepContacts-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents chkKeepContacts As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
     '''lbtnCopy-Steuerelement
