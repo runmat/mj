@@ -84,69 +84,53 @@ Namespace Kernel.Admin
 
         End Function
 
-        Public Shared Sub SaveRightPerCustomer(ByVal customerId As Integer, ByVal categoryId As String, ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
+        Public Shared Sub SaveRightPerCustomer(ByVal cn As SqlConnection, ByVal customerId As Integer, ByVal categoryId As String, ByVal isChecked As Boolean, ByVal strUsernameBearbeiter As String)
 
-            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+            Using cmd As SqlCommand = cn.CreateCommand()
 
-                cn.Open()
+                cmd.CommandType = CommandType.Text
 
-                Using cmd As SqlCommand = cn.CreateCommand()
+                cmd.CommandText = "SELECT COUNT(*) FROM CategorySettingsCustomer WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
 
-                    cmd.CommandType = CommandType.Text
+                cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                cmd.Parameters.AddWithValue("@CategoryID", categoryId)
 
-                    cmd.CommandText = "SELECT COUNT(*) FROM CategorySettingsCustomer WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
+                Dim rowCount As Integer = CInt(cmd.ExecuteScalar())
 
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
-                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
+                cmd.Parameters.Clear()
 
-                    Dim rowCount As Integer = CInt(cmd.ExecuteScalar())
+                If rowCount > 0 Then
+                    cmd.CommandText = "UPDATE CategorySettingsCustomer SET HasSettings = @HasSettings, EditUserName = @EditUserName, EditDate = @EditDate " & _
+                    "WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
+                Else
+                    cmd.CommandText = "INSERT INTO CategorySettingsCustomer (HasSettings, EditUserName, EditDate, CustomerID, CategoryID) " & _
+                        "VALUES (@HasSettings, @EditUserName, @EditDate, @CustomerID, @CategoryID)"
+                End If
 
-                    cmd.Parameters.Clear()
+                cmd.Parameters.AddWithValue("@HasSettings", isChecked)
+                cmd.Parameters.AddWithValue("@EditUserName", strUsernameBearbeiter)
+                cmd.Parameters.AddWithValue("@EditDate", DateTime.Now)
+                cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                cmd.Parameters.AddWithValue("@CategoryID", categoryId)
 
-                    If rowCount > 0 Then
-                        cmd.CommandText = "UPDATE CategorySettingsCustomer SET HasSettings = @HasSettings, EditUserName = @EditUserName, EditDate = @EditDate " & _
-                        "WHERE CustomerID = @CustomerID AND CategoryID = @CategoryID"
-                    Else
-                        cmd.CommandText = "INSERT INTO CategorySettingsCustomer (HasSettings, EditUserName, EditDate, CustomerID, CategoryID) " & _
-                            "VALUES (@HasSettings, @EditUserName, @EditDate, @CustomerID, @CategoryID)"
-                    End If
-
-                    cmd.Parameters.AddWithValue("@HasSettings", isChecked)
-                    cmd.Parameters.AddWithValue("@EditUserName", strUsernameBearbeiter)
-                    cmd.Parameters.AddWithValue("@EditDate", DateTime.Now)
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
-                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
-
-                    cmd.ExecuteNonQuery()
-
-                End Using
-
-                cn.Close()
+                cmd.ExecuteNonQuery()
 
             End Using
 
         End Sub
 
-        Public Shared Sub DeleteRightSettingForAllUsersOfThisCustomer(ByVal customerId As Integer, ByVal categoryId As String)
+        Public Shared Sub DeleteRightSettingForAllUsersOfThisCustomer(ByVal cn As SqlConnection, ByVal customerId As Integer, ByVal categoryId As String)
 
-            Using cn As New SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+            Using cmd As SqlCommand = cn.CreateCommand()
 
-                cn.Open()
+                cmd.CommandType = CommandType.Text
 
-                Using cmd As SqlCommand = cn.CreateCommand()
+                cmd.CommandText = "DELETE FROM CategorySettingsWebUser WHERE Username IN (SELECT Username FROM WebUser WHERE CustomerID = @CustomerID) AND CategoryID = @CategoryID"
 
-                    cmd.CommandType = CommandType.Text
+                cmd.Parameters.AddWithValue("@CustomerID", customerId)
+                cmd.Parameters.AddWithValue("@CategoryID", categoryId)
 
-                    cmd.CommandText = "DELETE FROM CategorySettingsWebUser WHERE Username IN (SELECT Username FROM WebUser WHERE CustomerID = @CustomerID) AND CategoryID = @CategoryID"
-
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId)
-                    cmd.Parameters.AddWithValue("@CategoryID", categoryId)
-
-                    cmd.ExecuteNonQuery()
-
-                End Using
-
-                cn.Close()
+                cmd.ExecuteNonQuery()
 
             End Using
 

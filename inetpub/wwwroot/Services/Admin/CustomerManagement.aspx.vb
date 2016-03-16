@@ -10,9 +10,8 @@ Imports System.IO
 Partial Public Class CustomerManagement
     Inherits Page
 
-
-
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As GridNavigation
@@ -406,7 +405,6 @@ Partial Public Class CustomerManagement
         tblApps.Columns.Add("AppIsMvcDefaultFavorite", Type.GetType("System.Boolean"))
     End Sub
 
-
     Private Sub InitRightsTable()
         tblRights = New DataTable()
         tblRights.Columns.Add("CustomerID")
@@ -414,7 +412,6 @@ Partial Public Class CustomerManagement
         tblRights.Columns.Add("HasSettings")
         tblRights.Columns.Add("Description")
     End Sub
-
 
     Private Sub FillApps(ByVal intCustomerID As Integer, ByVal strCustomerPortalType As String, ByVal cn As SqlClient.SqlConnection)
 
@@ -580,8 +577,8 @@ Partial Public Class CustomerManagement
 
     End Sub
 
-
     Private Sub ClearEdit()
+        ihIsCopyOfCustomerID.Value = "-1"
         ihCustomerID.Value = "-1"
         txtCustomerName.Text = ""
         txtKUNNR.Text = "0"
@@ -1425,7 +1422,7 @@ Partial Public Class CustomerManagement
 
     End Function
 
-    Private Sub deleteFromCustomerInfoTable(ByVal ID As String)
+    Private Sub deleteFromCustomerInfoTable(ByVal strID As String)
 
         Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
         Dim cmd As New SqlClient.SqlCommand
@@ -1437,7 +1434,7 @@ Partial Public Class CustomerManagement
             End If
 
             sqlQuery = "Delete FROM CustomerInfo WHERE ID=@ID;"
-            cmd.Parameters.AddWithValue("@ID", ID)
+            cmd.Parameters.AddWithValue("@ID", strID)
 
             cmd.CommandText = sqlQuery
             cmd.ExecuteNonQuery()
@@ -1573,6 +1570,136 @@ Partial Public Class CustomerManagement
 
     End Sub
 
+    Private Sub SaveRightsForCustomer(ByVal customerID As Integer, ByVal cn As SqlClient.SqlConnection)
+
+        For Each item As GridDataItem In rgRights.Items
+
+            Dim isChecked = CType(item("Auswahl1").FindControl("cbxSetRight"), CheckBox).Checked
+            Dim itemCategoryValue = item("CategoryID").Text
+
+            RightList.SaveRightPerCustomer(cn, customerID, itemCategoryValue, isChecked, m_User.UserName)
+
+            If Not isChecked Then
+                RightList.DeleteRightSettingForAllUsersOfThisCustomer(cn, customerID, itemCategoryValue)
+            End If
+
+        Next
+
+        rgRights.Rebind()
+
+    End Sub
+
+    Private Sub CopyGroupsWithApplications(ByVal intIsCopyOfCustomerID As Integer, ByVal intCustomerId As Integer, ByVal blnWithContacts As Boolean, ByVal cn As SqlClient.SqlConnection)
+
+        Dim dtGroupsToCopy As DataTable = New Kernel.GroupList("*", intIsCopyOfCustomerID, cn, -1)
+
+        For Each row As DataRow In dtGroupsToCopy.Rows
+
+            Dim _group As New Group(-1, _
+                                row("GroupName").ToString(), _
+                                intCustomerId, _
+                                row("DocuPath").ToString(), _
+                                CInt(row("Authorizationright").ToString()), _
+                                CBool(row("IsCustomerGroup").ToString()), _
+                                True, _
+                                row("StartMethod").ToString(), _
+                                row("Message").ToString(), _
+                                CInt(row("MaxReadMessageCount").ToString()), _
+                                CBool(row("TVShow").ToString()), _
+                                CBool(row("IsServiceGroup").ToString()))
+
+            _group.Save(cn)
+
+            'Anwendungen zuordnen
+            Dim _AppAssigned As New ApplicationList(CInt(row("GroupID").ToString()), intIsCopyOfCustomerID, cn)
+            _AppAssigned.GetAssigned()
+
+            Dim lstAssignedApps As New List(Of String)
+            For Each appRow As DataRow In _AppAssigned.Rows
+                lstAssignedApps.Add(appRow("AppId"))
+            Next
+            Dim _assignment As New Kernel.AppAssignments(_group.GroupId, Kernel.AssignmentType.Group)
+            _assignment.Save(Nothing, lstAssignedApps, cn)
+
+            'Ansprechpartner zuordnen
+            If (blnWithContacts) Then
+                CopyContacts(intIsCopyOfCustomerID, intCustomerId, CInt(row("GroupID").ToString()), _group.GroupId, cn)
+            End If
+
+        Next
+
+    End Sub
+
+    Private Sub CopyOrganizations(ByVal intIsCopyOfCustomerID As Integer, ByVal intCustomerId As Integer, ByVal cn As SqlClient.SqlConnection)
+
+        Dim dtOrganizationsToCopy As DataTable = New OrganizationList("*", intIsCopyOfCustomerID, cn, -1)
+
+        For Each row As DataRow In dtOrganizationsToCopy.Rows
+
+            Dim _organization As New Organization(-1, row("OrganizationName").ToString(), _
+                                                intCustomerId, row("OrganizationReference").ToString(), row("OrganizationReference2").ToString(), _
+                                                CBool(row("AllOrganizations").ToString), False, _
+                                                row("LogoPath").ToString(), row("CssPath").ToString(), _
+                                                row("OName").ToString(), row("OAddress").ToString(), _
+                                                row("OMailDisplay").ToString(), row("OMail").ToString(), _
+                                                row("OWebDisplay").ToString(), row("OWeb").ToString(), _
+                                                True)
+
+            If cn.State = ConnectionState.Closed Then
+                cn.Open()
+            End If
+
+            _organization.Save(cn)
+
+        Next
+
+    End Sub
+
+    Private Sub CopyContacts(ByVal intIsCopyOfCustomerID As Integer, ByVal intCustomerId As Integer, ByVal intIsCopyOfGroupId As Integer, ByVal intGroupId As Integer, ByVal cn As SqlClient.SqlConnection)
+
+        Dim contactList As New List(Of Integer)
+
+        Using cmd As SqlClient.SqlCommand = cn.CreateCommand()
+
+            cmd.CommandType = CommandType.Text
+
+            cmd.CommandText = "SELECT ContactID FROM ContactGroups WHERE CustomerID = @CustomerID AND GroupID = @GroupID"
+
+            cmd.Parameters.AddWithValue("@CustomerID", intIsCopyOfCustomerID)
+            cmd.Parameters.AddWithValue("@GroupID", intIsCopyOfGroupId)
+
+            Using reader As SqlClient.SqlDataReader = cmd.ExecuteReader()
+
+                Do While reader.Read()
+                    contactList.Add(reader.GetInt32(0))
+                Loop
+
+                reader.Close()
+
+            End Using
+
+        End Using
+
+        For Each intContactId In contactList
+
+            Using cmd As SqlClient.SqlCommand = cn.CreateCommand()
+
+                cmd.CommandType = CommandType.Text
+
+                cmd.CommandText = "INSERT INTO ContactGroups (ContactID, CustomerID, GroupID) VALUES (@ContactID, @CustomerID, @GroupID)"
+
+                cmd.Parameters.AddWithValue("@ContactID", intContactId)
+                cmd.Parameters.AddWithValue("@CustomerID", intCustomerId)
+                cmd.Parameters.AddWithValue("@GroupID", intGroupId)
+
+                cmd.ExecuteNonQuery()
+
+            End Using
+
+        Next
+
+    End Sub
+
 #End Region
 
 #Region " Events "
@@ -1608,39 +1735,34 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub lbtnOpenCopyOptions_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnOpenCopyOptions.Click
-
-        keepApplications.Checked = False
+        chkKeepCustomerContactData.Checked = False
+        chkKeepApplications.Checked = False
+        chkKeepGroupsWithApplications.Checked = False
+        chkKeepOrganizations.Checked = False
+        chkKeepContacts.Checked = False
         copyOptions.Show()
     End Sub
 
     Private Sub lbtnCopy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCopy.Click
 
         ' Reiter Kundendaten
+        ihIsCopyOfCustomerID.Value = ihCustomerID.Value
         ihCustomerID.Value = "-1"
         txtCustomerName.Text = String.Empty
         txtKUNNR.Text = String.Empty
-        ddlAccountingArea.SelectedIndex = 0
-        ddlPortalLink.SelectedIndex = 0
-        ddlPortalType.SelectedValue = ""
-        cbxForceSpecifiedLoginLink.Checked = False
-        txtLogoutLink.Text = ""
-        ddlReferenzTyp1.SelectedValue = ""
-        ddlReferenzTyp2.SelectedValue = ""
-        ddlReferenzTyp3.SelectedValue = ""
-        ddlReferenzTyp4.SelectedValue = ""
-        txtMvcSelectionUrl.Text = String.Empty
-        ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False
-        chkTeamviewer.Checked = False
-        txtCName.Text = String.Empty
-        EditCAddress.Content = String.Empty
-        txtCMailDisplay.Text = String.Empty
-        txtCMail.Text = String.Empty
-        txtCWebDisplay.Text = String.Empty
-        txtCWeb.Text = String.Empty
-        txtKundepostfach.Text = String.Empty
-        txtKundenhotline.Text = String.Empty
-        txtKundenfax.Text = String.Empty
+
+        If Not chkKeepCustomerContactData.Checked Then
+            txtCName.Text = String.Empty
+            EditCAddress.Content = String.Empty
+            txtCMailDisplay.Text = String.Empty
+            txtCMail.Text = String.Empty
+            txtCWebDisplay.Text = String.Empty
+            txtCWeb.Text = String.Empty
+            txtKundepostfach.Text = String.Empty
+            txtKundenhotline.Text = String.Empty
+            txtKundenfax.Text = String.Empty
+        End If
 
         ' Reiter IP-Adressen und Style
         txtLogoPath.Text = String.Empty
@@ -1663,8 +1785,8 @@ Partial Public Class CustomerManagement
             lstArchivAssigned.Items.Remove(i)
         Next
 
-        ' abhängig von keepApplications.Checked Applikationen beibehalten
-        If Not keepApplications.Checked Then
+        ' Applikationen beibehalten?
+        If Not chkKeepApplications.Checked Then
             FillApps(CInt(ihCustomerID.Value), "", New SqlClient.SqlConnection(m_User.App.Connectionstring))
         End If
 
@@ -1773,10 +1895,10 @@ Partial Public Class CustomerManagement
 
             cn.Open()
             Dim intCustomerId As Integer = CInt(ihCustomerID.Value)
+            Dim intIsCopyOfCustomerID As Integer = CInt(ihIsCopyOfCustomerID.Value)
             Dim strLogMsg As String = "Firma anlegen"
             If Not (intCustomerId = -1) Then
                 strLogMsg = "Firma ändern"
-                tblLogParameter = SetOldLogParameters(intCustomerId)
             End If
             Dim KundenAdministration As Integer
             If rbKeine.Checked = True Then
@@ -1869,7 +1991,9 @@ Partial Public Class CustomerManagement
                 StrDaysDelMessage = "Der Wert für Tage bis zur automatischen Löschung muss mindestens 5 betragen! Der Wert wurde automatisch auf den Standardwert (9999 Tage) gesetzt. </br>"
             End If
 
-            _customer.Save(cn)
+            Dim blnAutoCreateStandardOrganization As Boolean = (intIsCopyOfCustomerID = -1 OrElse Not chkKeepOrganizations.Checked)
+
+            _customer.Save(cn, blnAutoCreateStandardOrganization)
 
             tblLogParameter = SetNewLogParameters()
             Log(_customer.CustomerId.ToString, strLogMsg, tblLogParameter)
@@ -1907,14 +2031,21 @@ Partial Public Class CustomerManagement
             Dim _archivassignment As New Kernel.ArchivAssignments(intCustomerId, Kernel.AssignmentType.Customer)
             _archivassignment.Save(dvArchivAssigned, lstArchivAssigned.Items, cn)
 
-
             ' Rechte zuordnen
-            SaveRightsForCustomer()
+            SaveRightsForCustomer(intCustomerId, cn)
+
+            ' bei Kundenkopie ggf. Gruppen etc. mit kopieren
+            If Not intIsCopyOfCustomerID = -1 Then
+                If chkKeepGroupsWithApplications.Checked Then
+                    CopyGroupsWithApplications(intIsCopyOfCustomerID, intCustomerId, chkKeepContacts.Checked, cn)
+                End If
+
+                If chkKeepOrganizations.Checked Then
+                    CopyOrganizations(intIsCopyOfCustomerID, intCustomerId, cn)
+                End If
+            End If
 
             Search(True, True, , True)
-
-
-
 
             lblMessage.Text = StrDaysLockMessage & StrDaysDelMessage & "Die Änderungen wurden gespeichert."
         Catch ex As Exception
@@ -2384,29 +2515,6 @@ Partial Public Class CustomerManagement
             cn.Close()
         End Try
     End Sub
-
-
-    Public Sub SaveRightsForCustomer()
-
-        Dim customerID As Integer = ihCustomerID.Value
-
-        For Each item As GridDataItem In rgRights.Items
-
-            Dim isChecked = CType(item("Auswahl1").FindControl("cbxSetRight"), CheckBox).Checked
-            Dim itemCategoryValue = item("CategoryID").Text
-
-            RightList.SaveRightPerCustomer(customerID, itemCategoryValue, isChecked, m_User.UserName)
-
-            If Not isChecked Then
-                RightList.DeleteRightSettingForAllUsersOfThisCustomer(customerID, itemCategoryValue)
-            End If
-
-        Next
-
-        rgRights.Rebind()
-
-    End Sub
-
 
 #End Region
 
