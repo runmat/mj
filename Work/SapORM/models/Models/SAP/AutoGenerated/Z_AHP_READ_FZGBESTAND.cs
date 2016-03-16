@@ -57,6 +57,11 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_FIN", value);
 		}
 
+		public static void SetImportParameter_I_FIN_ID(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_FIN_ID", value);
+		}
+
 		public static void SetImportParameter_I_HALTER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_HALTER", value);
@@ -65,6 +70,11 @@ namespace SapORM.Models
 		public static void SetImportParameter_I_KAEUFER(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_KAEUFER", value);
+		}
+
+		public static void SetImportParameter_I_KD_REF(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KD_REF", value);
 		}
 
 		public static void SetImportParameter_I_KENNZ(ISapDataService sap, string value)
@@ -101,7 +111,15 @@ namespace SapORM.Models
 
 			public string FIN { get; set; }
 
+			public string KUNDENREFERENZ { get; set; }
+
 			public DateTime? ERDAT { get; set; }
+
+			public string ERF_USER { get; set; }
+
+			public DateTime? AENDAT { get; set; }
+
+			public string AEN_USER { get; set; }
 
 			public string ZZHERSTELLER_SCH { get; set; }
 
@@ -157,49 +175,74 @@ namespace SapORM.Models
 
 			public string KONTOINHABER { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_WEBOUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_WEBOUT
-				{
-					FIN_ID = (string)row["FIN_ID"],
-					FIN = (string)row["FIN"],
-					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
-					ZZHERSTELLER_SCH = (string)row["ZZHERSTELLER_SCH"],
-					ZZTYP_SCHL = (string)row["ZZTYP_SCHL"],
-					ZZVVS_SCHLUESSEL = (string)row["ZZVVS_SCHLUESSEL"],
-					ZZTYP_VVS_PRUEF = (string)row["ZZTYP_VVS_PRUEF"],
-					ZZFABRIKNAME = (string)row["ZZFABRIKNAME"],
-					ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
-					KUNNR = (string)row["KUNNR"],
-					KAEUFER = (string)row["KAEUFER"],
-					HALTER = (string)row["HALTER"],
-					BRIEFBESTAND = (string)row["BRIEFBESTAND"],
-					LGORT = (string)row["LGORT"],
-					STANDORT = (string)row["STANDORT"],
-					ERSTZULDAT = string.IsNullOrEmpty(row["ERSTZULDAT"].ToString()) ? null : (DateTime?)row["ERSTZULDAT"],
-					AKTZULDAT = string.IsNullOrEmpty(row["AKTZULDAT"].ToString()) ? null : (DateTime?)row["AKTZULDAT"],
-					ABMDAT = string.IsNullOrEmpty(row["ABMDAT"].ToString()) ? null : (DateTime?)row["ABMDAT"],
-					KENNZ = (string)row["KENNZ"],
-					BRIEFNR = (string)row["BRIEFNR"],
-					COCVORHANDEN = (string)row["COCVORHANDEN"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					FZGART = (string)row["FZGART"],
-					VKSPARTE = (string)row["VKSPARTE"],
-					FZGNR = (string)row["FZGNR"],
-					AUFNR = (string)row["AUFNR"],
-					FAREF1 = (string)row["FAREF1"],
-					FAREF2 = (string)row["FAREF2"],
-					KOSTL = (string)row["KOSTL"],
-					KONTOINHABER = (string)row["KONTOINHABER"],
+				GT_WEBOUT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_WEBOUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						FIN_ID = (string)row["FIN_ID"],
+						FIN = (string)row["FIN"],
+						KUNDENREFERENZ = (string)row["KUNDENREFERENZ"],
+						ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+						ERF_USER = (string)row["ERF_USER"],
+						AENDAT = string.IsNullOrEmpty(row["AENDAT"].ToString()) ? null : (DateTime?)row["AENDAT"],
+						AEN_USER = (string)row["AEN_USER"],
+						ZZHERSTELLER_SCH = (string)row["ZZHERSTELLER_SCH"],
+						ZZTYP_SCHL = (string)row["ZZTYP_SCHL"],
+						ZZVVS_SCHLUESSEL = (string)row["ZZVVS_SCHLUESSEL"],
+						ZZTYP_VVS_PRUEF = (string)row["ZZTYP_VVS_PRUEF"],
+						ZZFABRIKNAME = (string)row["ZZFABRIKNAME"],
+						ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
+						KUNNR = (string)row["KUNNR"],
+						KAEUFER = (string)row["KAEUFER"],
+						HALTER = (string)row["HALTER"],
+						BRIEFBESTAND = (string)row["BRIEFBESTAND"],
+						LGORT = (string)row["LGORT"],
+						STANDORT = (string)row["STANDORT"],
+						ERSTZULDAT = string.IsNullOrEmpty(row["ERSTZULDAT"].ToString()) ? null : (DateTime?)row["ERSTZULDAT"],
+						AKTZULDAT = string.IsNullOrEmpty(row["AKTZULDAT"].ToString()) ? null : (DateTime?)row["AKTZULDAT"],
+						ABMDAT = string.IsNullOrEmpty(row["ABMDAT"].ToString()) ? null : (DateTime?)row["ABMDAT"],
+						KENNZ = (string)row["KENNZ"],
+						BRIEFNR = (string)row["BRIEFNR"],
+						COCVORHANDEN = (string)row["COCVORHANDEN"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						FZGART = (string)row["FZGART"],
+						VKSPARTE = (string)row["VKSPARTE"],
+						FZGNR = (string)row["FZGNR"],
+						AUFNR = (string)row["AUFNR"],
+						FAREF1 = (string)row["FAREF1"],
+						FAREF2 = (string)row["FAREF2"],
+						KOSTL = (string)row["KOSTL"],
+						KONTOINHABER = (string)row["KONTOINHABER"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_WEBOUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

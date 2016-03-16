@@ -1,23 +1,12 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.DomainCommon.Services;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.Partner.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeugbestand.Models.AppModelMappings;
-
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Fahrzeugbestand.Services
 {
@@ -28,14 +17,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
         {
         }
 
-        #region Load Fahrzeug-Akte-Bestand
-
-        public FahrzeugAkteBestand GetTypDaten(string fin, string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
+        public FahrzeugAkteBestand GetTypDaten(string herstellerSchluessel, string typSchluessel, string vvsSchluessel)
         {
             Z_AHP_READ_TYPDAT_BESTAND.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-            SAP.SetImportParameter("I_FIN", fin);
             SAP.SetImportParameter("I_ZZHERSTELLER_SCH", herstellerSchluessel);
             SAP.SetImportParameter("I_ZZTYP_SCHL", typSchluessel);
             SAP.SetImportParameter("I_ZZVVS_SCHLUESSEL", vvsSchluessel);
@@ -43,32 +29,19 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
             SAP.Execute();
 
             var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportList(SAP);
-            var list = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
-            var item = list.FirstOrDefault();
-            if (item != null)
-                item.FIN = fin;
 
-            return item;
+            return AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList).FirstOrDefault();
         }
 
-        public List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
-        {
-            return
-                AppModelMappings.Z_AHP_READ_FZGBESTAND_GT_WEBOUT_To_FahrzeugAkteBestand.Copy(
-                    GetSapFahrzeugeAkteBestand(model)).ToList();
-        }
-
-        private IEnumerable<Z_AHP_READ_FZGBESTAND.GT_WEBOUT> GetSapFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model)
+        public List<FahrzeugAkteBestand> GetFahrzeuge(FahrzeugAkteBestandSelektor model)
         {
             Z_AHP_READ_FZGBESTAND.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-            
             SAP.SetImportParameter("I_FIN", model.FIN);
-
+            SAP.SetImportParameter("I_FIN_ID", model.FinId);
             SAP.SetImportParameter("I_HALTER", model.Halter);
             SAP.SetImportParameter("I_KAEUFER", model.Kaeufer);
-
             SAP.SetImportParameter("I_BRIEFBESTAND", model.BriefbestandsInfo);
             SAP.SetImportParameter("I_LGORT", model.BriefLagerort);
             SAP.SetImportParameter("I_STANDORT", model.FahrzeugStandort);
@@ -78,16 +51,16 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
             SAP.SetImportParameter("I_KENNZ", model.Kennzeichen);
             SAP.SetImportParameter("I_BRIEFNR", model.Briefnummer);
             SAP.SetImportParameter("I_COCVORHANDEN", model.CocVorhanden.BoolToX());
+            SAP.SetImportParameter("I_KD_REF", model.KundenReferenz);
 
             SAP.Execute();
 
-            return Z_AHP_READ_FZGBESTAND.GT_WEBOUT.GetExportList(SAP);
+            var sapList = Z_AHP_READ_FZGBESTAND.GT_WEBOUT.GetExportList(SAP);
+
+            return AppModelMappings.Z_AHP_READ_FZGBESTAND_GT_WEBOUT_To_FahrzeugAkteBestand.Copy(sapList).ToList();
         }
 
-        #endregion
-
-
-        public string SaveFahrzeugAkteBestand(FahrzeugAkteBestand fahrzeugAkteBestand)
+        public string SaveFahrzeuge(IEnumerable<FahrzeugAkteBestand> fahrzeuge)
         {
             var error = SAP.ExecuteAndCatchErrors(
 
@@ -95,12 +68,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
                 () =>
                 {
                     Z_AHP_CRE_CHG_FZG_AKT_BEST.Init(SAP);
+
                     SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
                     SAP.SetImportParameter("I_USER", LogonContext.UserName);
 
-                    var fzgList = Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP.GetImportList(SAP);
-
-                    CreateRowForFahrzeug(fzgList, fahrzeugAkteBestand);
+                    var fzgList = AppModelMappings.Z_AHP_CRE_CHG_FZG_AKT_BEST_GT_WEB_IMP_To_FahrzeugAkteBestand.CopyBack(fahrzeuge);
 
                     SAP.ApplyImport(fzgList);
 
@@ -112,21 +84,19 @@ namespace CkgDomainLogic.Fahrzeugbestand.Services
                 {
                     var sapResultList = Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_OUT_ERR.GetExportList(SAP);
 
-                    var sapResult = sapResultList.FirstOrDefault();
-                    if (sapResult != null)
-                        return string.Format("Fehler, folgendes Fahrzeug konnte nicht gespeichert werden: FIN {0}, Fin-ID {1}", sapResult.FIN, sapResult.FIN_ID);
+                    if (sapResultList.Any())
+                    {
+                        var erg = "Fehler, folgende Fahrzeuge konnten nicht gespeichert werden: ";
+
+                        sapResultList.ForEach(sapResult => erg += string.Format(" FIN {0}, Fin-ID {1},", sapResult.FIN, sapResult.FIN_ID));
+
+                        return erg.TrimEnd(',');
+                    }
 
                     return "";
                 });
 
             return error;
-        }
-
-        private static void CreateRowForFahrzeug(List<Z_AHP_CRE_CHG_FZG_AKT_BEST.GT_WEB_IMP> fzgList, FahrzeugAkteBestand f)
-        {
-            var sapFahrzeug = AppModelMappings.Z_AHP_CRE_CHG_FZG_AKT_BEST_GT_WEB_IMP_To_FahrzeugAkteBestand.CopyBack(f);
-
-            fzgList.Add(sapFahrzeug);
         }
     }
 }

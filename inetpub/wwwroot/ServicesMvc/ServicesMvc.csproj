@@ -2830,7 +2830,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Shared\Partial\BreadCrumbs.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerAdressenGrid.cshtml" />

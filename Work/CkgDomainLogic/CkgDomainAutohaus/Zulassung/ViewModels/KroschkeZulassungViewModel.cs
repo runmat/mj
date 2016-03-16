@@ -128,12 +128,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
-        public void SetParamFahrzeugAkte(string fin)
+        public void SetParamFahrzeugAkte(string finid)
         {
-            if (fin.IsNullOrEmpty())
-                return;
-
-            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();
+            ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeuge(new FahrzeugAkteBestandSelektor { FinId = finid.NotNullOrEmpty("-") }).FirstOrDefault();
             if (ParamFahrzeugAkte == null)
                 return;
 
@@ -230,10 +227,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (FinList.Any())
             {
                 var firstFahrzeug = FinList.First();
-                var isEqual = true;
+            var isEqual = true;
 
                 foreach (var item in FinList)
-                {
+            {
                     var fahrzeugAkteBestand = item;
 
                     var fzgArt = Fahrzeugarten.FirstOrDefault(a => a.Beschreibung.NotNullOrEmpty().ToUpper() == fahrzeugAkteBestand.FahrzeugArt.NotNullOrEmpty().ToUpper());
@@ -244,13 +241,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     if (fahrzeugAkteBestand.SelectedHalter == null || firstFahrzeug.SelectedHalter == null ||
                         ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
-                    {
-                        isEqual = false;
-                    }
+                {
+                    isEqual = false;
                 }
+            }
 
                 if (isEqual) // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
-                    SetParamHalter(firstFahrzeug.Halter);
+                SetParamHalter(firstFahrzeug.Halter);
             }
             else
             {
@@ -1428,7 +1425,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 zulassungenToSave = zulassungen;
             }
-
+            
             if (saveDataToSap)
             {
                 var zulOhneEvb = zulassungenToSave.Where(z => !z.Zulassungsdaten.ModusAbmeldung && string.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));

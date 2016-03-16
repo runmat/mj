@@ -1,5 +1,4 @@
 ﻿// ReSharper disable InconsistentNaming
-// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
@@ -22,7 +21,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FIN = s.FIN;
                         d.FinID = s.FIN_ID;
 
-                        // Fahrzeug Akte
                         d.FabrikName = s.ZZFABRIKNAME;
                         d.HandelsName = s.ZZHANDELSNAME;
                         d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
@@ -30,7 +28,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.VvsSchluessel = s.ZZVVS_SCHLUESSEL;
                         d.VvsPruefZiffer = s.ZZTYP_VVS_PRUEF;
 
-                        // Fahrzeug Bestand
                         d.Halter = s.HALTER;
                         d.Kaeufer = s.KAEUFER;
                         d.ZahlerKfzSteuer = s.KONTOINHABER;
@@ -51,10 +48,12 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FahrzeugNummer = s.FZGNR;
                         d.AuftragsNummer = s.AUFNR;
                         d.FirmenReferenz1 = s.FAREF1;
-                        d.FirmenReferenz2 = s.FAREF2;                        
+                        d.FirmenReferenz2 = s.FAREF2;
+                        d.KundenReferenz = s.KUNDENREFERENZ;
                     }));
             }
         }
+
         static public ModelMapping<Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN, FahrzeugAkteBestand> Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand
         {
             get
@@ -92,7 +91,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FIN_ID = s.FinID;
                         d.FIN = s.FIN;
 
-                        // Fahrzeug Akte
                         d.ZZFABRIKNAME = s.FabrikName;
                         d.ZZHANDELSNAME = s.HandelsName;
                         d.ZZTYP_SCHL = s.TypSchluessel;
@@ -100,7 +98,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.ZZVVS_SCHLUESSEL = s.VvsSchluessel;
                         d.ZZTYP_VVS_PRUEF = s.VvsPruefZiffer;
 
-                        // Fahrzeug Bestand
                         d.KAEUFER = s.Kaeufer;
                         d.HALTER = s.Halter;
                         d.KONTOINHABER = s.ZahlerKfzSteuer;
@@ -121,7 +118,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FZGNR = s.FahrzeugNummer;
                         d.AUFNR = s.AuftragsNummer;
                         d.FAREF1 = s.FirmenReferenz1;
-                        d.FAREF2 = s.FirmenReferenz2;                        
+                        d.FAREF2 = s.FirmenReferenz2;
+                        d.KUNDENREFERENZ = s.KundenReferenz;
+                        d.LOEVM = s.Loeschen.BoolToX();
                     }));
             }
         }

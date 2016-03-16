@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
 using System.Web.Mvc;
-using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -74,29 +73,10 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/FahrzeugAkteBestandSuche", model);
         }
 
-
         [HttpPost]
-        public ActionResult FinSearchFormSubmit(FahrzeugAkteBestandSelektor model)
+        public ActionResult ShowFahrzeugAkteBestandDetails(string finIdToLoad)
         {
-            ViewModel.FinSearchSelektor = model;
-            ViewModel.ValidateFinSearch(ModelState.AddModelError);
-            if (!ModelState.IsValid)
-                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", model);
-
-            return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", ViewModel.FinSearchSelektor);
-        }
-
-
-        [HttpPost]
-        public ActionResult ShowFahrzeugAkteBestandDetails(string finToLoad)
-        {
-            if (finToLoad.IsNullOrEmpty() || finToLoad == "null")
-                return PartialView("Partial/FahrzeugAkteBestandDetailsFinSuche", ViewModel.FinSearchSelektor);
-
-            if (finToLoad == "useModelFin")
-                finToLoad = ViewModel.FinSearchSelektor.FIN;
-
-            ViewModel.TryLoadFahrzeugDetailsUsingFin(finToLoad);
+            ViewModel.TryLoadFahrzeugDetailsUsingFinId(finIdToLoad);
 
             return PartialView("Partial/FahrzeugAkteBestandDetails", ViewModel.CurrentFahrzeug);
         }
@@ -107,7 +87,7 @@ namespace ServicesMvc.Autohaus.Controllers
             if (!ModelState.IsValid)
                 return PartialView("Partial/FahrzeugAkteBestandDetails", model);
 
-            ViewModel.UpdateFahrzeugDetails(model, model.FIN, ModelState.AddModelError);
+            ViewModel.UpdateFahrzeugDetails(model, model.FinID, ModelState.AddModelError);
 
             if (ModelState.IsValid)
                 ModelState.Clear();
@@ -233,13 +213,13 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)  
+        public JsonResult FahrzeugAuswahlSelectionChanged(string id, bool isChecked)  
         {
             int allSelectionCount, allCount = 0;
-            if (vin.IsNullOrEmpty())
+            if (id.IsNullOrEmpty())
                 ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
-                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                ViewModel.SelectFahrzeug(id, isChecked, out allSelectionCount);
             
             return Json(new
             {
@@ -274,6 +254,20 @@ namespace ServicesMvc.Autohaus.Controllers
             TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
 
             return RedirectToAction("IndexMultiCancellation", "Zulassung");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteFahrzeuge()
+        {
+            var errorMessage = ViewModel.DeleteSelectedVehicles();
+
+            if (!string.IsNullOrEmpty(errorMessage))
+                return Json(new { success = false, message = errorMessage });
+
+            int allSelectionCount, allCount;
+            ViewModel.SelectFahrzeuge(false, f => true, out allSelectionCount, out allCount);
+
+            return Json(new { success = true, allSelectionCount, allCount });
         }
 
         #region Export

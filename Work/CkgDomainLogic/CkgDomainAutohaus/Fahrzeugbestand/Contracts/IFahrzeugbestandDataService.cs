@@ -6,10 +6,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Contracts
 {
     public interface IFahrzeugAkteBestandDataService : IPartnerDataService
     {
-        List<FahrzeugAkteBestand> GetFahrzeugeAkteBestand(FahrzeugAkteBestandSelektor model);
+        List<FahrzeugAkteBestand> GetFahrzeuge(FahrzeugAkteBestandSelektor model);
 
-        string SaveFahrzeugAkteBestand(FahrzeugAkteBestand fahrzeugAkteBestand);
+        string SaveFahrzeuge(IEnumerable<FahrzeugAkteBestand> fahrzeuge);
 
-        FahrzeugAkteBestand GetTypDaten(string fin, string herstellerSchluessel, string typSchluessel, string vvsSchluessel);
+        FahrzeugAkteBestand GetTypDaten(string herstellerSchluessel, string typSchluessel, string vvsSchluessel);
     }
 }
