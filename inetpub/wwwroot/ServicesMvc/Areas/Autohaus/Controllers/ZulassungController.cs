@@ -53,7 +53,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "")
+        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "")
         {
             ViewModel.SetParamShowShoppingCart(showShoppingcart);
             ViewModel.SetParamAbmeldung(abmeldung);
@@ -192,7 +192,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Versandzulassung(string fin, string halterNr)
+        public ActionResult Versandzulassung(string finid, string halterNr)
         {
             return Index(finid, halterNr, versandzulassung: "1");
         }
