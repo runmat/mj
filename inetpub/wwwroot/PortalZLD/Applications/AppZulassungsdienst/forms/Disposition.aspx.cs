@@ -30,7 +30,7 @@ namespace AppZulassungsdienst.forms
 
             if (Session["objDispo"] == null)
             {
-                objDispo = new clsDisposition(m_User.Reference);
+                objDispo = new clsDisposition(m_User.Reference, m_User.UserName);
                 Session["objDispo"] = objDispo;
             }
             else
