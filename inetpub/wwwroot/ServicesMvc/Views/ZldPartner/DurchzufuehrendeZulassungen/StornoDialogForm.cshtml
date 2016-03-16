@@ -1,0 +1,32 @@
+﻿@model CkgDomainLogic.ZldPartner.Models.StornoModel
+
+<div id="DivStorno">
+    @using (Ajax.BeginForm("StornoDialogForm", "ZldPartner", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivStorno", OnComplete = "AjaxFormDialogComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal no-bottom-margin", id = "StornoDialogAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.HiddenFor(m => m.DatensatzId)
+        @Html.HiddenFor(m => m.Status)
+        
+        @Html.FormDropDownListFor(m => m.GrundId, Model.Gruende.ToSelectList(true), new { @class = "m-wrap large", onchange = "ApplyGrund()" })
+
+        @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions no-bottom-margin padding-bottom-5">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sendingEnabled = @Model.SendingEnabled.ToString().ToLower();
+
+            ShowHideBemerkung(@Model.Grund.MitBemerkung.ToString().ToLower());
+        </script>
+    }
+</div>

@@ -1,14 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 @Html.Partial("Partial/LayoutPage/HtmlTag")
-<head>
+    <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>@ViewBag.Title</title>
+        <title>@ViewBag.Title</title>
+        
+        @Html.Partial("Partial/LayoutPage/Styles")
+        @Html.Partial("Partial/LayoutPage/StylesDeviationAllLayoutPages")
+        @Html.Partial("Partial/LayoutPage/StylesDeviationPortalDependent")
+        @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
-    @Html.Partial("Partial/LayoutPage/Styles")
-    @Html.Partial("Partial/LayoutPage/StylesDeviationAllLayoutPages")
-    @Html.Partial("Partial/LayoutPage/ScriptsPreload")
-
-</head>
+    </head>
     <body class="@ViewBag.BodyCssClass">
         @Html.Partial("Partial/LayoutPageHeaderHint")
 

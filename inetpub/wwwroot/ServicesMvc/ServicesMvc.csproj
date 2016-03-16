@@ -380,6 +380,7 @@
     <Content Include="_Themes\AH2015\images\kroschke-evb.png" />
     <Content Include="_Themes\AH2015\images\kroschke-prime-flag-down.png" />
     <Content Include="_Themes\AH2015\images\kroschke-prime-flag-up.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_costar_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
@@ -415,6 +416,8 @@
     <Content Include="Documents\Templates\Bestellung.doc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen.cshtml" />
+    <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAbmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandSuche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\HalterAdressenAuswahlGrid.cshtml" />
@@ -3132,6 +3135,11 @@
     <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\OffeneZulassungStatus.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Grid.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Suche.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationPortalDependent.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdressenAuswahlGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresse.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\VersandAdresseForm.cshtml" />
@@ -3156,6 +3164,7 @@
     <Content Include="Views\Haendler\Partial\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\TileSimple.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\ProtokollUpload.cshtml" />
+    <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen\StornoDialogForm.cshtml" />
     <Content Include="Views\Shared\Partial\FormControls\Form\LeftLabelControlRawTemplate.cshtml" />
     <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Index.cshtml" />
     <Content Include="Views\AutohausPartnerUndFahrzeugdaten\Partial\FileUpload.cshtml" />
@@ -3167,6 +3176,7 @@
     <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
+    <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen\AddPositionDialogForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFloorcheck.cshtml" />

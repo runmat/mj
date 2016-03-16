@@ -241,12 +241,6 @@ namespace CkgDomainLogic.Uebfuehrg.Models
             return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
         }
 
-        static string LandAsFormatted(string land)
-        {
-            return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
-        }
-
-
 
         #region Route Info
 

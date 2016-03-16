@@ -17,12 +17,12 @@ namespace SapORM.Contracts
         /// <summary>
         /// Ein Objekt für eine gültige SAP Verbindung.
         /// </summary>
-        ISapConnection SapConnection { get; set; }
+        ISapConnection SapConnection { get; }
 
         /// <summary>
         /// Ein Factory Objekt für eine Kombination aus Zugriff (IDynSapProxyObj) + SAP BAPI Caching (IDynSapProxyCache).
         /// </summary>
-        IDynSapProxyFactory DynSapProxyFactory { get; set; }
+        IDynSapProxyFactory DynSapProxyFactory { get; }
 
         /// <summary>
         /// Der Rückgabe Code aus SAP
@@ -143,7 +143,7 @@ namespace SapORM.Contracts
         /// <summary>
         /// Liefert einen Byte Array-Wert eines bestimmten Export-Parameters aus SAP zurück. 
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="paramName"></param>
         /// <returns></returns>
         byte[] GetExportParameterByte(string paramName);
 
@@ -222,6 +222,5 @@ namespace SapORM.Contracts
         #endregion
 
         #endregion
-
     }
 }

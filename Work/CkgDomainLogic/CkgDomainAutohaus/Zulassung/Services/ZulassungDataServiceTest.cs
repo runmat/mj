@@ -247,7 +247,7 @@ namespace CkgDomainLogic.Autohaus.Services
     //        for (var i = 0; i < 1500; i++)
     //        {
     //            var kundenIndex = random.Next(1, 10000) % Kunden.Count;
-                
+
     //            if (Kunden.Count >= 4)
     //            {
     //                kundenIndex = 0;
@@ -260,10 +260,10 @@ namespace CkgDomainLogic.Autohaus.Services
     //            }
 
     //            var kunde = Kunden.GetRange(kundenIndex, 1).First();
-                
+
     //            var erfDatum = DateTime.Today.AddDays(-1*random.Next(20, 365));
     //            var zulDatum = DateTime.Today.AddDays(-1*random.Next(20, 365));
-
+                
     //            list.Add(new ZulassungsReportModel
     //                {
     //                    KundenNr = kunde.KundenNr,
@@ -277,7 +277,7 @@ namespace CkgDomainLogic.Autohaus.Services
     //        }
 
     //        var groupedList = list.GroupBy(item => item.KundenNr).Select(g => new { Kunde = g.Key, Anzahl = g.Count() }).ToList();
-
+                
     //        return list;
     //    }
 

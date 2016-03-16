@@ -14,14 +14,14 @@
     if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 
-    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];
+    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];  
 }
 
 <style>
     
-     .fontUnderline {
-         text-decoration: underline;
-     }
+    .fontUnderline {
+        text-decoration: underline;
+    }
 
     .inputwidth {
         width: 100px;
@@ -32,7 +32,7 @@
         margin: 0!important;
     }
 
-    
+
     .fahrzeug-daten .prime-control {
         margin-top: -15px !important;
     }
@@ -43,7 +43,7 @@
         width: 150px;
         height: 64px;
         background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png?v=20160307) 0 0 no-repeat;
-    }
+        }
     .kroschke-prime-etikette-form {
         background: url(/ServicesMvc/images/kroschke-prime-etikette-bg.png);
         margin: 5px 0 20px 15px;
@@ -77,15 +77,15 @@
         border-color: #a0a0a0 !important;
         border-radius: 7px !important;
         background-color: ivory;
-    }
+            }
     .kroschke-prime-etikette-form .controls input.no-border-bottom:not(.input-validation-error){
         border-bottom: 0 !important;
     }
-    
+
     
     .m-wrap.tiny {
         width: 30px !Important;
-    }
+            }
 </style>
 
 <script type="text/javascript">
@@ -250,13 +250,13 @@
 
 </script>
 
-<div id="DivFahrzeugdaten" class="margin-top-20">
+<div id="DivFahrzeugdaten" class="margin-top-20">    
     @using (Ajax.BeginForm("FahrzeugdatenForm", "Zulassung", null,
-                                           new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
-                                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
+                           new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
     {
         @Html.FormValidationSummary()
-
+        
         if (isMassenzulassung || isMassenabmeldung)
         {
             @Html.Hidden("IsMassenzulassung", isMassenzulassung)
@@ -270,7 +270,7 @@
 
             @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
             @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
-
+            
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
             @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelColumns();" })
@@ -278,7 +278,7 @@
         else
         {
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-left">
-                
+
                 @Html.FormTextBoxFor(m => m.AuftragsNr, new {@class = "m-wrap medium uppercase"})
                 @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new {@class = "m-wrap small"})
 
@@ -289,18 +289,18 @@
                 @Html.FormTextBoxFor(m => m.Zb2Nr, new {@class = "m-wrap medium uppercase"})
 
                 @if (modusAbmeldung)
-                {
+            {
                     @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
                     @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4},
                         postControlHtml: @<text>
                                             <span class="margin-left-10">@string.Format("{0}: {1}", Localize.Format, Localize.DateFormat_MMJJ)</span>
                                         </text>)
-                }
-                else
-                {
+            }
+            else
+            {
                     @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
-                }
-
+            }
+            
             </div>
 
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
@@ -310,7 +310,7 @@
                     @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
                 }
 
-                <div id="ValidationMsgHasEtikett"></div>
+            <div id="ValidationMsgHasEtikett"></div>
                 <div id="KennzeichenLabelFields" class="kroschke-prime-etikette-form">
                     <div class="kroschke-signs-services"></div>
                     @Html.FormTextBlockFor(m => m.KennzeichenHinweis, new { @class = "m-wrap medium" })
@@ -329,20 +329,20 @@
             </div>
         }
     }
-
+    
     @if (isMassenzulassung || isMassenabmeldung)
     {
         using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
         {
             var gridName = "GridFahrzeugAuswahl";
             
-            @(Html.Telerik()
-                    .Grid<FahrzeugAkteBestand>()
-                    .Name(gridName)
+                @(Html.Telerik()
+                      .Grid<FahrzeugAkteBestand>()
+                      .Name(gridName)
                     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Fahrzeugliste anzeigen
-                    .Columns(columns =>
-                    {
-                        columns.XBound(c => c.FinID).Visible(false);
+                      .Columns(columns =>
+                      {
+                          columns.XBound(c => c.FinID).Visible(false);
 
                         columns.XBound(c => c.Aktion).Filterable(false).ClientTemplate(
                             "<button onclick='return ZulassungVehicleRemove(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>");
@@ -361,13 +361,13 @@
                         columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
                                 Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
                             );
-                    })
-                    .XPageSize(10)
-                    .XAutoColumnConfiguration()
-                    .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
-                    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                      })
+                      .XPageSize(10)
+                      .XAutoColumnConfiguration()
+                      .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+                      .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                     .XToolBar("Zulassung")
-                )
+                          )
         
             <div class="form-actions clearfix">
                 <div class="pull-left">
@@ -377,5 +377,5 @@
             </div>
         }
     }
-
+    
 </div>

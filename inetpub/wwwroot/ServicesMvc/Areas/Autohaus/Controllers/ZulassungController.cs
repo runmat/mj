@@ -53,12 +53,13 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "")
+        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "", string partnerportal = "")
         {
             ViewModel.SetParamShowShoppingCart(showShoppingcart);
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
             ViewModel.SetParamSonderzulassung(sonderzulassung);
+            ViewModel.SetParamPartnerportal(partnerportal);
 
             ViewModel.DataInit(zulassungFromShoppingCart, schnellabmeldung);
 
@@ -81,6 +82,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
             ViewModel.SetParamSonderzulassung("");
+            ViewModel.SetParamPartnerportal("");
 
             ViewModel.DataInit();
             ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
@@ -161,6 +163,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamAbmeldung("x");
             ViewModel.SetParamVersandzulassung("");
             ViewModel.SetParamSonderzulassung("");
+            ViewModel.SetParamPartnerportal("");
 
             ViewModel.DataInit();
             ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
@@ -192,6 +195,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult VersandzulassungPartner(string finid, string halterNr)
+        {
+            return Index(finid, halterNr, versandzulassung: "1", partnerportal: "1");
+        }
+
+        [CkgApplication]
         public ActionResult Versandzulassung(string finid, string halterNr)
         {
             return Index(finid, halterNr, versandzulassung: "1");
@@ -215,6 +224,7 @@ namespace ServicesMvc.Autohaus.Controllers
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             FahrzeugAkteBestand.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             VersandDienstleister.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
+            CkgDomainLogic.Autohaus.Models.Rechnungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
         #region Rechnungsdaten
@@ -567,6 +577,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
             ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
             ViewData["ModusAbmeldung"] = ViewModel.ModusAbmeldung;
+            ViewData["ModusPartnerportal"] = ViewModel.ModusPartnerportal;
             ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
@@ -977,9 +988,9 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "")
+        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "", string partnerportal = "")
         {
-            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung);
+            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung, partnerportal: partnerportal);
         }
 
         [HttpPost]
