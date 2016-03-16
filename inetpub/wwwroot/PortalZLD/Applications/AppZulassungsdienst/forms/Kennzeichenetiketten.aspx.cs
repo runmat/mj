@@ -9,7 +9,7 @@ using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.forms
 {
-    public partial class Kennzeichenetiketten : System.Web.UI.Page
+    public partial class Kennzeichenetiketten : Page
     {
         private User m_User;
         private DruckKennzeichenetiketten mObjDruckKennzeichenetiketten;
@@ -176,8 +176,8 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Fehler: Es wurden keine Vorgänge selektiert";
                 return;
             }
-
-            mObjDruckKennzeichenetiketten.PrintEtiketten();
+            
+            mObjDruckKennzeichenetiketten.PrintEtiketten(rgGrid1.MasterTableView.SortExpressions[0]);
 
             if (mObjDruckKennzeichenetiketten.ErrorOccured)
             {
