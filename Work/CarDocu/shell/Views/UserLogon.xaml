@@ -12,25 +12,44 @@
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="90" />
                     <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0,0,15,0">Domain nicht dabei?</TextBlock>
+                        <CheckBox IsChecked="{Binding SpecifyDomainManually}">Domain manuell eingeben</CheckBox>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding SpecifyDomainManually, Converter={StaticResource BooleanVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal" Height="30">
+                            <TextBlock Text="Domain Pfad:" Width="90" />
+                            <TextBox Text="{Binding DomainPath}" Width="300" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="30">
+                            <TextBlock Text="Domain Name:" Width="90" />
+                            <TextBox Text="{Binding DomainName}" Width="300" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="User:" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding UserLoginName, UpdateSourceTrigger=PropertyChanged}" Name="tbUserLogon" HorizontalAlignment="Stretch" Common:EnterKeyToTab.IsEnabled="False" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="User:" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding UserLoginName, UpdateSourceTrigger=PropertyChanged}" Name="tbUserLogon" HorizontalAlignment="Stretch" Common:EnterKeyToTab.IsEnabled="False" />
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Standort:" />
-                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DomainLocations}" 
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Standort:" />
+                <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DomainLocations}" 
                               SelectedValue="{Binding DomainLocationCode, UpdateSourceTrigger=PropertyChanged}" 
                               SelectedValuePath="SapCode" DisplayMemberPath="Name"
                               Height="25" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
 
-                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,15,0,0">
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,15,0,0">
                     <Button Command="{Binding OkCommand}" Width="120" Height="25" Content="Ok" IsDefault="True" Click="OkClick" />
                     <Button Command="{Binding CancelCommand}" Width="120" Height="25" Content="Abbrechen" HorizontalAlignment="Right" Margin="10,0,0,0" IsCancel="True" />
                 </StackPanel>

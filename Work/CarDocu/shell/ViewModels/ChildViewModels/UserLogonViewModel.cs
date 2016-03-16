@@ -4,20 +4,14 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
 using WpfTools4.Commands;
-using WpfTools4.ViewModels;
 
 namespace CarDocu.ViewModels
 {
-    public class UserLogonViewModel : ViewModelBase
+    public class UserLogonViewModel : AppSettingsEditViewModel
     {
         #region Properties
 
-        public string Title { get { return string.Format("{0}, Login", DomainService.AppName); } }
-
-        public static DomainGlobalSettings GlobalSettings
-        {
-            get { return DomainService.Repository.GlobalSettings; }
-        }
+        public string Title { get { return $"{DomainService.AppName}, Login"; } }
 
         public List<DomainLocation> DomainLocations { get { return GlobalSettings.DomainLocations; } }
 
@@ -47,12 +41,23 @@ namespace CarDocu.ViewModels
 
         public string LoginData { get; set; }
 
+        bool _specifyDomainManually;
+        public bool SpecifyDomainManually
+        {
+            get { return _specifyDomainManually; }
+            set
+            {
+                _specifyDomainManually = value;
+                SendPropertyChanged("SpecifyDomainManually");
+            }
+        }
+
         #endregion
 
 
         public UserLogonViewModel()
         {
-            OkCommand = new DelegateCommand(e => LoginData = string.Format("{0}~{1}", UserLoginName, DomainLocationCode), 
+            OkCommand = new DelegateCommand(e => LoginData = $"{UserLoginName}~{DomainLocationCode}", 
                                             e => !string.IsNullOrEmpty(UserLoginName) && !string.IsNullOrEmpty(DomainLocationCode));
         }
     }

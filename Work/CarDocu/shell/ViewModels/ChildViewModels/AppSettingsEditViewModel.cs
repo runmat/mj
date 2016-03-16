@@ -28,13 +28,13 @@ namespace CarDocu.ViewModels
             get { return DomainService.Repository.GlobalSettings; }
         }
 
-        public IEnumerable<Archive> Archives { get { return GlobalSettings == null ? null : GlobalSettings.Archives; } }
+        public IEnumerable<Archive> Archives { get { return GlobalSettings?.Archives; } }
 
-        public SmtpSettings SmtpSettings { get { return GlobalSettings == null ? null : GlobalSettings.SmtpSettings; } }
+        public SmtpSettings SmtpSettings { get { return GlobalSettings?.SmtpSettings; } }
 
-        public SapSettings SapSettings { get { return GlobalSettings == null ? null : GlobalSettings.SapSettings; } }
+        public SapSettings SapSettings { get { return GlobalSettings?.SapSettings; } }
 
-        public ScanSettings ScanSettings { get { return GlobalSettings == null ? null : GlobalSettings.ScanSettings; } }
+        public ScanSettings ScanSettings { get { return GlobalSettings?.ScanSettings; } }
 
         public string UserHintForArchives { get; set; }
 
