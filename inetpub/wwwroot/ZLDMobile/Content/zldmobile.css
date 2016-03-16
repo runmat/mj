@@ -328,9 +328,10 @@
 
 .ui-header {
     height: 80px;
-    background-image: url(../Images/LogoHeaderKroschke.jpg);
+    background-image: url(../Images/kroschke_inside_mobile_logo.png);
     background-repeat: no-repeat;
     background-position: top right;
+    background-size: 240px 80px;
 }
 
 .ui-footer {
