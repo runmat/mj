@@ -1,16 +1,18 @@
-﻿@using CkgDomainLogic.Autohaus.ViewModels
-@model FormulareViewModel
+﻿@model CkgDomainLogic.Autohaus.ViewModels.FormulareViewModel
 
-<h3 class="page-title" id="headerTitle">@Localize.Autohaus_Formulare <small></small></h3>
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<h3 class="page-title" id="headerTitle">@Localize.Autohaus_InfocenterZulassung <small></small></h3>
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Partial/Suche", Model.Selektor, new ViewDataDictionary{{ "ZulassungskreiseList", Model.Zulassungskreise }})
+    @Html.Partial("Partial/Suche", Model.FormulareSelektor)
 }
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>
+    <div id="divResult"></div>
 }
 
 <script type="text/javascript">
@@ -18,34 +20,100 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        InitDropDownLists();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        InitDropDownLists();
+    }
+
+    function InitDropDownLists() {
+
+        setTimeout(function () {
+            $("#Zulassungskreis").select2({
+                allowClear: true
+            });
+        }, 100);
+    }
+
+    function TryLoadKreisByPlz() {
+        var plz = $("#Postleitzahl").val();
+
+        if (!plz)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "LoadKreisByPlz",
+            data: { plz: plz },
+            loadingShow: false,
+            success: function (result) {
+                if (result.success) {
+                    $("#Zulassungskreis").select2('val', result.kreis);
+                }
+            }
+        });
+    }
+
+    function ClearPlz() {
+        $("#Postleitzahl").val("");
+    }
+
+    function ShowFormulareAndZiPoolDaten() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFormulareAndZiPoolDaten",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowFormulareSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
     }
 
     function ShowFormulareSearchResult(result) {
         SearchFormHide();
-        $("#divGrid").html(result);
-
-        // move our grid filter form into grid's toolbar:
-        GridAllColumnFilterApplyToGrid("GridFormulare");
-
-        $("#divGrid").slideDown();
+        $("#divResult").html(result);
+        $("#divResult").slideDown();
+        FormPreparePrivateAjax();
+        setTimeout(function () { ResizeTilesContainer(); }, 200);
     }
 
-    function OnDataBound_GridFormulare() {
-        FilteredData_Grid_OnDataBound($(this));
-        jQuery('.tooltips').tooltip();
-        LoadingHide();
+    function ResizeTilesContainer() {
+        var newHeight = Math.max(140 , $('#ZiPoolInfo').closest('.portlet-body').height());
+        $('#FormulareArea').closest('.portlet-body').css('height', newHeight);
     }
 
-    function OnColumnShowHide_GridFormulare() {
-        FilteredData_Grid_OnColumnShowHide($(this));
+    function ShowPdfFormular(docName) {
+        window.open("PdfDocumentDownload?docName=" + docName);
     }
 
-    function OnColumnReorder_GridFormulare() {
-        FilteredData_Grid_OnColumnReorder($(this));
+    function RefreshZiPoolListe() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "RefreshZiPoolListe",
+            data: { gewerblich: $("#Gewerblich").is(':checked'), dienstleistung: $("#Dienstleistung").val() },
+            loadingShow: true,
+            success: function (result) {
+
+                if (_modelStateValid) {
+                    ShowFormulareSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
     }
-    
+
 </script>

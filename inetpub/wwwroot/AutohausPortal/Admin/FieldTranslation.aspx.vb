@@ -14,13 +14,16 @@ Partial Public Class FieldTranslation
             ViewState.Item("refferer") = value
         End Set
     End Property
+
 #End Region
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
     Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.Admin.GridNavigation
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -165,6 +168,7 @@ Partial Public Class FieldTranslation
     End Sub
 
 #Region " Data and Function "
+
     Private Sub EnableRadioButtons(ByVal blnValue As Boolean)
         rbLabel.Enabled = blnValue
         rbLinkButton.Enabled = blnValue
@@ -188,6 +192,7 @@ Partial Public Class FieldTranslation
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         Result.Visible = True 'tabellenZeile die DataGrid beinhaltet auf anzeigen JJ2007.11.12
         Dim dvFieldTranslation As DataView
@@ -287,7 +292,6 @@ Partial Public Class FieldTranslation
         txtContent.Text = FTrans.Content
         txt_Tooltip.Text = FTrans.ToolTip
     End Sub
-
 
     Private Function FillEdit(ByVal strAppURL As String, ByVal strFieldType As String, ByVal strFieldName As String,
                               ByVal intCustomerID As Integer, ByVal intLanguageID As Integer, ByVal intGroupID As Integer) As Boolean
@@ -500,6 +504,7 @@ Partial Public Class FieldTranslation
         If blnRefillDataGrid Then FillDataGrid() 'wenn Parameter blnRefillDataGrid =true DataGrid neu Füllen
         ProofRights()
     End Sub
+
     Private Sub ProofRights()
         ddlCustomer.Enabled = False
         ddlGroup.Enabled = False
@@ -510,136 +515,10 @@ Partial Public Class FieldTranslation
             ddlGroup.Enabled = True
         End If
     End Sub
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
 
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = 0 ' intSource 
-        'Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Spaltenübersetzungen" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal tblPar As DataTable) As DataTable
-        'Fehler in der logik der Funktion, JJ  2007.11.09
-        Dim cn As SqlClient.SqlConnection
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim _FieldTrans As New Kernel.FieldTranslation(intAppId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("ApplicationFieldID") = _FieldTrans.ApplicationFieldID
-                .Rows(.Rows.Count - 1)("AppURL") = _FieldTrans.AppURL
-                .Rows(.Rows.Count - 1)("FieldType") = _FieldTrans.FieldType
-                .Rows(.Rows.Count - 1)("FieldName") = _FieldTrans.FieldName
-                .Rows(.Rows.Count - 1)("CustomerID") = _FieldTrans.CustomerID
-                .Rows(.Rows.Count - 1)("LanguageID") = _FieldTrans.LanguageID
-                .Rows(.Rows.Count - 1)("Visibility") = _FieldTrans.Visibility
-                .Rows(.Rows.Count - 1)("Content") = _FieldTrans.Content
-                .Rows(.Rows.Count - 1)("ToolTip") = _FieldTrans.ToolTip
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "FieldTranslation", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        'Fehler in der logik der Function, JJ  2007.11.09
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("ApplicationFieldID") = CInt(lblFieldID.Text)
-                .Rows(.Rows.Count - 1)("AppURL") = lblAppURL.Text
-                If rbLabel.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "lbl"
-                ElseIf rbTableRow.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "tr"
-                ElseIf rbLinkButton.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "lb"
-                ElseIf rbRadioButton.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "rb"
-                ElseIf rbGridColumn.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "col"
-                ElseIf rbTextBox.Checked Then
-                    .Rows(.Rows.Count - 1)("FieldType") = "txt"
-                End If
-                .Rows(.Rows.Count - 1)("FieldName") = txtFieldName.Text
-                .Rows(.Rows.Count - 1)("CustomerID") = CInt(ddlCustomer.SelectedItem.Value)
-                .Rows(.Rows.Count - 1)("LanguageID") = CInt(ddlLanguage.SelectedItem.Value)
-                .Rows(.Rows.Count - 1)("Visibility") = cbxVisible.Checked
-                .Rows(.Rows.Count - 1)("Content") = txtContent.Text
-                .Rows(.Rows.Count - 1)("ToolTip") = txtContent.Text
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "FieldTranslation", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", Type.GetType("System.String"))
-            .Columns.Add("ApplicationFieldID", Type.GetType("System.Integer"))
-            .Columns.Add("AppURL", Type.GetType("System.String"))
-            .Columns.Add("FieldType", Type.GetType("System.String"))
-            .Columns.Add("FieldName", Type.GetType("System.String"))
-            .Columns.Add("CustomerID", Type.GetType("System.Integer"))
-            .Columns.Add("LanguageID", Type.GetType("System.Integer"))
-            .Columns.Add("Visibility", Type.GetType("System.Boolean"))
-            .Columns.Add("Content", Type.GetType("System.String"))
-            .Columns.Add("ToolTip", Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
-
 
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
         Search(False, , True)
@@ -653,19 +532,12 @@ Partial Public Class FieldTranslation
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
             Dim intApplicationFieldID As Integer = CInt(lblFieldID.Text)
-            Dim strLogMsg As String = "Spaltenübersetzungen anlegen"
-            If Not (intApplicationFieldID = -1) Then
-                strLogMsg = "Spaltenübersetzungen ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intApplicationFieldID, tblLogParameter)
-            End If
 
             Dim strFieldType As String = ""
             If rbLabel.Checked Then
@@ -694,9 +566,6 @@ Partial Public Class FieldTranslation
                                                 chkEingabe.Checked, _
                                                  CInt(ddlGroup.SelectedItem.Value))
             _FieldTranslation.Save(cn, "")
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_FieldTranslation.ApplicationFieldID.ToString, strLogMsg, tblLogParameter)
             Search(False, True, True, , True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
         Catch ex As Exception
@@ -706,8 +575,6 @@ Partial Public Class FieldTranslation
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(lblFieldID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -716,16 +583,12 @@ Partial Public Class FieldTranslation
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _FieldTranslation As New Kernel.FieldTranslation(CInt(lblFieldID.Text), m_User)
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(lblFieldID.Text), tblLogParameter)
             _FieldTranslation.Delete(cn)
-            Log(_FieldTranslation.ApplicationFieldID.ToString, "Spaltenübersetzungen löschen", tblLogParameter)
             Search(False, True, True, True, True)
             lblMessage.Text = "Die Spaltenübersetzung wurde gelöscht."
         Catch ex As Exception
@@ -735,8 +598,6 @@ Partial Public Class FieldTranslation
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(lblFieldID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -808,8 +669,8 @@ Partial Public Class FieldTranslation
             End If
         End If
     End Sub
-#End Region
 
+#End Region
 
     Private Sub rbTextBox_checkedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbTextBox.CheckedChanged, rbLinkButton.CheckedChanged, rbGridColumn.CheckedChanged, rbRadioButton.CheckedChanged, rbTableRow.CheckedChanged
 
@@ -830,6 +691,7 @@ Partial Public Class FieldTranslation
         dgSearchResult.PageIndex = PageIndex
         FillDataGrid()
     End Sub
+
     Private Sub GridNavigation1_PageSizeChanged() Handles GridNavigation1.PageSizeChanged
         FillDataGrid()
     End Sub

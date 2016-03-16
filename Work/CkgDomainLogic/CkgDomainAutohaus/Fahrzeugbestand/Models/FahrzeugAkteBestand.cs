@@ -11,6 +11,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using System.Linq;
+using CkgDomainLogic.Autohaus.ViewModels;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Models
 {
@@ -21,7 +22,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         private string _typSchluessel;
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        [Required]
         public string FIN
         {
             get { return _fin.NotNullOrEmpty().ToUpper(); }
@@ -31,8 +31,14 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.VinID)]
         public string FinID { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CustomerReference)]
+        public string KundenReferenz { get; set; }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
-        public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
+        public static Func<FahrzeugbestandViewModel> GetBestandViewModel { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
 
         public bool IsSelected { get; set; } 
 
@@ -47,29 +53,45 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         #region Massenzulassung // MMA Für Massenzulassung erforderliche Properties
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string Zb2Nr { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
         public string WunschKennz1 { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
         public string WunschKennz2 { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
         public string WunschKennz3 { get; set; }
 
-        [Length(5)]
-        public string ResKennz { get; set; }   
+        [LocalizedDisplay(LocalizeConstants.ReservedLicenseNo)]
+        public string ResKennz { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ReservationNo)]
         public string ReservationNr { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.ReservationName)]
         public string ReservationName { get; set; }
 
-        [Length(5)]
+        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
         public string Evb { get; set; }
+
+        public bool ZulassungNeuesFzg { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        public string ZulassungFahrzeugartId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        public string ZulassungFahrzeugart
+        {
+            get
+            {
+                var fzgArt = (GetZulassungViewModel != null ? GetZulassungViewModel().Fahrzeugarten.FirstOrDefault(a => a.Wert == ZulassungFahrzeugartId) : null);
+
+                return (fzgArt != null ? fzgArt.Beschreibung : ZulassungFahrzeugartId);
+            }
+        }
 
         #endregion
 
@@ -98,15 +120,13 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         #endregion
 
-        #region Fahrzeug Akte
+        #region Fahrzeug Akte / Bestand
 
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        [Required]
         [Length(5)]
         public string HerstellerSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
-        [Required]
         [Length(3)]
         public string TypSchluessel
         {
@@ -115,12 +135,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
-        [Required]
         [Length(5)]
         public string VvsSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
-        [Required]
         [Length(1)]
         public string VvsPruefZiffer { get; set; }
 
@@ -131,26 +149,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.TradeName)]
         [Length(25)]
         public string HandelsName { get; set; }
-
-
-        [GridHidden, NotMapped]
-        public bool AkteIsValid
-        {
-            get
-            {
-                return HerstellerSchluessel.IsNotNullOrEmpty() && 
-                       TypSchluessel.IsNotNullOrEmpty() &&
-                       VvsSchluessel.IsNotNullOrEmpty() && 
-                       VvsPruefZiffer.IsNotNullOrEmpty();
-            }
-        }
-
-        [GridHidden, NotMapped]
-        public bool AkteJustCreated { get; set; }
-
-        #endregion
-
-        #region Fahrzeug Bestand
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
@@ -282,7 +280,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("HALTER", Halter) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("HALTER", Halter) : null);
             }
         }
 
@@ -291,7 +289,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
             }
         }
 
@@ -300,9 +298,12 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
+                return (GetBestandViewModel != null ? GetBestandViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
             }
         }
+
+        [LocalizedDisplay(LocalizeConstants.Delete)]
+        public bool Loeschen { get; set; }
 
         #endregion
     }

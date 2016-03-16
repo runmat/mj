@@ -229,12 +229,6 @@
     <Compile Include="Kernel\Excel\ExcelFile.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Kernel\Logging\LogWebAccess.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Kernel\Logging\Trace.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Kernel\Security\App.vb">
       <SubType>Code</SubType>
     </Compile>

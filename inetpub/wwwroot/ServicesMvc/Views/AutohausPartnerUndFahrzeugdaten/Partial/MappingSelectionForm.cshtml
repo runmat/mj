@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.DataConverter.Models.MappedUploadMappingSelectionModel
+
+<div id="DivMappingSelection" class="margin-top-20">
+    @using (Ajax.BeginForm("MappingSelectionForm", "AutohausPartnerUndFahrzeugdaten", null,
+        new MvcAjaxOptions { UpdateTargetId = "DivMappingSelection", OnComplete = "AjaxFormMappingSelectionComplete();" },
+        htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormMappingSelection" }))
+    {
+        @Html.FormValidationSummary()
+
+
+        @Html.FormDropDownListFor(m => m.MappingId, Model.MappingList.ToSelectList("Id", "Title"), new { @class = "m-wrap" })
+
+
+        @Html.FormRequiredFieldsSummary()
+
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

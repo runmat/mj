@@ -34,6 +34,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusSonderzulassung { get; set; }
 
+        public bool ModusPartnerportal { get; set; }
+
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
@@ -110,9 +112,9 @@ namespace CkgDomainLogic.Autohaus.Models
             return kennzeichen.NotNullOrEmpty().ToUpper().RemoveDigits().AppendIfNotNull("-");
         }
 
-        public static bool KennzeichenIsValid(string kennnzeichen)
+        public static bool KennzeichenIsValid(string kennzeichen)
         {
-            return kennnzeichen.IsNotNullOrEmpty() && !kennnzeichen.LastCharIs('-');
+            return kennzeichen.IsNotNullOrEmpty() && !kennzeichen.LastCharIs('-');
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
@@ -154,7 +156,7 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         public static string HaltereintragVorhandenOptions { get { return String.Format("J,{0};N,{1}", Localize.Yes, Localize.No); } }
 
-        [LocalizedDisplay(LocalizeConstants.ExtraChargeExpressShipping48h)]
+        [LocalizedDisplay(LocalizeConstants.Autohaus_KroschkePrimeExpressversand_Info)]
         public bool Expressversand { get; set; }
 
         public bool UiUpdateOnly { get; set; }

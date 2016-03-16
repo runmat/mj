@@ -121,6 +121,7 @@
     <Compile Include="DomainCommon\Contracts\IInfoCenterDataService.cs" />
     <Compile Include="DomainCommon\Contracts\IHaendlerAdressenDataService.cs" />
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
+    <Compile Include="DomainCommon\Models\DokumentErstellenBearbeiten.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
     <Compile Include="DomainCommon\Models\HaendlerAdresse.cs" />
@@ -138,7 +139,7 @@
     <Compile Include="DomainCommon\Services\TranslationService.cs" />
     <Compile Include="DomainCommon\Services\HaendlerAdressenDataServiceSAP.cs" />
     <Compile Include="DomainCommon\ViewModels\CustomerDocumentViewModel.cs" />
-    <Compile Include="DomainCommon\ViewModels\DokumentViewModel.cs" />
+    <Compile Include="DomainCommon\ViewModels\DocumentViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\HaendlerAdressenViewModel.cs" />
     <Compile Include="DomainCommon\ViewModels\XarisViewModel.cs" />
     <Compile Include="Logs\Contracts\ILogsDataService.cs" />

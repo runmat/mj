@@ -92,7 +92,7 @@ Namespace Kernel
 
             Dim strToAdd() As String = Nothing
             Dim intAdd As Integer = 0
-            If dvAppOriginallyAssigned Is Nothing Or dvAppOriginallyAssigned.Table Is Nothing Then
+            If dvAppOriginallyAssigned Is Nothing OrElse dvAppOriginallyAssigned.Table Is Nothing Then
                 For Each li As String In lstAppNowAssigned
                     ReDim Preserve strToAdd(intAdd)
                     strToAdd(intAdd) = li

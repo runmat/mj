@@ -224,6 +224,7 @@
     <Content Include="Images\FahneGruen.png" />
     <Content Include="Images\FahneGelb.png" />
     <Content Include="Images\FahneRot.png" />
+    <Content Include="Images\kroschke_inside_mobile_logo.png" />
     <Content Include="Images\LogoHeaderKroschke.jpg" />
     <Content Include="Images\LogoKroschke.jpg" />
     <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />

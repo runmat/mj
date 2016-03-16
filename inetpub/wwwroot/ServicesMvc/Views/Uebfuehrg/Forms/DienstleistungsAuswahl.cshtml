@@ -1,10 +1,10 @@
-﻿@model CkgDomainLogic.Uebfuehrg.Models.DienstleistungsAuswahl  
+﻿@model CkgDomainLogic.Uebfuehrg.Models.DienstleistungsAuswahl
 
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
         @Html.FormValidationSummary(excludePropertyErrors: false)
-        
+
         <div id="dienstleistungen-wrapper-@Model.UiIndex" class="dienstleistungen-wrapper-uebfuehrg">
 
             @Html.HiddenFor(m => m.UiIndex)
@@ -72,14 +72,14 @@
 
                 CheckRequiredDienstleistungsAuswahl();
             }
-            
+
             function CheckRequiredDienstleistungsAuswahl() {
                 $(".validation-summary-errors ul li").each(function(index, elem) {
                     var validationMessage = $(elem).text();
                     var splits = validationMessage.split("'");
                     if (splits.length < 2)
                         return;
-                    
+
                     var requredDienstleistungsName = splits[1];
                     $(".ms-elem-selectable span").each(function(index2, elem2) {
                         if ($(elem2).text() == requredDienstleistungsName) {

@@ -1,0 +1,33 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.FormulareViewModel
+
+<h4 class="margin-bottom-20">@Localize.RegistrationDistrict <span class="bold"> @Model.GewaehlterKreisText</span>:</h4>
+
+<div class="form-horizontal">
+
+    <div class="row-fluid">
+
+        <div class="span6">
+
+            @using (Html.PortletBox(Localize.Forms, "icon-th-large", isCollapsible: false))
+            {
+                @Html.Partial("Partial/FormulareInfoArea", Model.Formulare)
+            }
+
+        </div>
+
+        <div class="span6">
+
+            @using (Html.PortletBox(Localize.RequiredDocuments, "icon-file", isCollapsible: false))
+            {
+                @Html.Partial("Partial/ZiPoolFilter", Model.ZiPoolSelektor)
+
+                <div class="space10"></div>
+
+                @Html.Partial("Partial/ZiPoolInfoListe", Model.ZiPoolDetails)
+            }
+
+        </div>
+
+    </div>
+
+</div>

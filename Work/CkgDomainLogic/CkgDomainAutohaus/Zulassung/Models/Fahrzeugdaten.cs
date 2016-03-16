@@ -18,6 +18,7 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _kostenstelle;
         private string _bestellNr;
         private string _auftragsNr;
+        private string _fahrgestellNr;
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
@@ -31,12 +32,16 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
         [Required]
-        public string FahrgestellNr { get; set; }
+        public string FahrgestellNr
+        {
+            get { return _fahrgestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _fahrgestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string Zb2Nr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.HasEtikett)]
+        [LocalizedDisplay(LocalizeConstants.Autohaus_KroschkePrimeKennzeichenetikette_Info)]
         public bool HasEtikett { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CarColor)]
@@ -93,6 +98,23 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.TuevAu)]
         [RequiredConditional]
         public string TuevAu { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterName { get { return GetZulassungViewModel().Zulassung.Halter.Adresse.GetFullName(); } }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string KennzeichenHinweis { get { return Localize.WillBeFilledAutomatically; } }
+
+        [XmlIgnore]
+        Rechnungsdaten AG { get { return GetZulassungViewModel().Zulassung.Rechnungsdaten; } }
+        [XmlIgnore]
+        public Adresse AgAdresse { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse; } }
+        [XmlIgnore]
+        public string AgName { get { return AG.GetKunde(GetZulassungViewModel().Kunden).Adresse.GetFullName(); } }
+        [XmlIgnore]
+        public string AgKundenNr { get { return AG.GetKunde(GetZulassungViewModel().Kunden).KundenNr.NotNullOrEmpty().TrimStart('0'); } }
+
+        public int AnzahlHinzuzufuegendeFahrzeuge { get; set; }
 
         public string GetSummaryString()
         {

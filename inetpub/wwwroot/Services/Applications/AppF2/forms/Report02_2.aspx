@@ -42,22 +42,26 @@
                     </div>
                             
                     <div class="DivHistTabContainer">
-                                                        
+                        <input type="hidden" id="ihShowZweitschluessel" runat="server"/>                               
                         <ul class="HistTabContainer" >
-                            <li id="First" onclick="javascript:clickFirst()"  class="HistbuttonFirst" >
-                                    Übersicht
-                                </li>
-                            <li id="Second" onclick="javascript:clickSecond()" class="Histbutton">
-                            Typdaten
-                                </li>
-                            <li id="Third" onclick="javascript:clickThird()" class="Histbutton">Lebenslauf
-                                                                </li>
-                            <li id="Fourth" onclick="javascript:clickFourth()" class="Histbutton">
-                            Übermittlung
-                                </li>
-                                <li id="Last" onclick="javascript:clickLast()" class="HistButtonLast">
+                            <li id="HistTab1" onclick="javascript:clickHistTab(1);" class="HistbuttonFirst" >
+                                Übersicht
+                            </li>
+                            <li id="HistTab2" onclick="javascript:clickHistTab(2);" class="Histbutton">
+                                Typdaten
+                            </li>
+                            <li id="HistTab3" onclick="javascript:clickHistTab(3);" class="Histbutton">
+                                Lebenslauf
+                            </li>
+                            <li id="HistTab4" onclick="javascript:clickHistTab(4);" class="Histbutton">
+                                Übermittlung
+                            </li>
+                            <li id="HistTab5" onclick="javascript:clickHistTab(5);" class="Histbutton">
                                 Händlerdaten
-                                </li>
+                            </li>
+                            <li id="HistTab6" onclick="javascript:clickHistTab(6);" class="HistButtonLast">
+                                Zweitschlüssel
+                            </li>
                         </ul>
                     </div>
                     <div id="HistTabPanel1" class="HistTabPanel">
@@ -796,78 +800,121 @@
                             </tr>
                         </table>
                     </div>
+                    <div id="HistTabPanel6" class="HistTabPanel"  style="display: none">
+                        <div style="height:30px"></div>
+                        <asp:DataGrid ID="Datagrid3" runat="server" BackColor="White" AutoGenerateColumns="False"
+                            Width="100%" AllowSorting="True" bodyHeight="300" CssClass="GridView" PageSize="50">
+                            <AlternatingItemStyle CssClass="GridTableAlternate"></AlternatingItemStyle>
+                            <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
+                            <ItemStyle CssClass="ItemStyle" />
+                            <Columns>
+                                <asp:BoundColumn DataField="KURZTEXT" SortExpression="KURZTEXT" HeaderText="Vorgang">
+                                </asp:BoundColumn>
+                                <asp:BoundColumn DataField="STRMN" SortExpression="STRMN" HeaderText="Durchf&#252;hrungs-&lt;br&gt;datum"
+                                    DataFormatString="{0:dd.MM.yyyy}"></asp:BoundColumn>
+                                <asp:TemplateColumn HeaderText="Versandadresse">
+                                    <ItemTemplate>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.NAME1_Z5") & " " & DataBinder.Eval(Container, "DataItem.NAME2_Z5") %>'>
+                                        </asp:Label><asp:Literal ID="Literal1" runat="server" Text="<br>"></asp:Literal><asp:Label
+                                            ID="Label2" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.STREET_Z5") & " " & DataBinder.Eval(Container, "DataItem.HOUSE_NUM1_Z5") %>'>
+                                        </asp:Label><asp:Literal ID="Literal2" runat="server" Text="<br>"></asp:Literal><asp:Label
+                                            ID="Label3" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.POST_CODE1_Z5") & " " & DataBinder.Eval(Container, "DataItem.CITY1_Z5") %>'>
+                                        </asp:Label><asp:Literal ID="Literal3" runat="server" Text="<br>"></asp:Literal><asp:Label
+                                            ID="Label4" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LANDX_Z5") %>'>
+                                        </asp:Label></ItemTemplate>
+                                </asp:TemplateColumn>
+                                <asp:BoundColumn Visible="False" DataField="ERDAT" SortExpression="ERDAT" HeaderText="Erfassungs-&lt;br&gt;datum"
+                                    DataFormatString="{0:dd.MM.yyyy}"></asp:BoundColumn>
+                                <asp:BoundColumn DataField="ZZDIEN1" SortExpression="ZZDIEN1" HeaderText="Versandart">
+                                </asp:BoundColumn>
+                                <asp:BoundColumn DataField="QMNAM" SortExpression="QMNAM" HeaderText="Beauftragt&lt;br&gt;durch">
+                                </asp:BoundColumn>
+                                <asp:BoundColumn Visible="False" DataField="QMNUM" SortExpression="QMNUM" HeaderText="Meldungsnummer">
+                                </asp:BoundColumn>
+                            </Columns>
+                            <PagerStyle NextPageText="n&#228;chste&amp;gt;" PrevPageText="&amp;lt;vorherige"
+                                HorizontalAlign="Left" Position="Top" Wrap="False" Mode="NumericPages"></PagerStyle>
+                        </asp:DataGrid>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" >
 
-        function clickFirst() 
-        {
-            document.getElementById("First").className = "HistbuttonFirst";
-            document.getElementById("Second").className = "Histbutton";
-            document.getElementById("Third").className = "Histbutton";
-            document.getElementById("Fourth").className = "Histbutton";
-            document.getElementById("Last").className = "HistButtonLast";
-            document.getElementById("HistTabPanel1").style.display = "block";
-            document.getElementById("HistTabPanel2").style.display = "none";
-            document.getElementById("HistTabPanel3").style.display = "none";
-            document.getElementById("HistTabPanel4").style.display = "none";
-            document.getElementById("HistTabPanel5").style.display = "none";
-        }
-        function clickSecond() {
-            document.getElementById("First").className = "HistButtonBeforActive";
-            document.getElementById("Second").className = "HistButtonMiddleActive";
-            document.getElementById("Third").className = "Histbutton";
-            document.getElementById("Fourth").className = "Histbutton";
-            document.getElementById("Last").className = "HistButtonLast";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel2").style.display = "block";
-            document.getElementById("HistTabPanel3").style.display = "none";
-            document.getElementById("HistTabPanel4").style.display = "none";
-            document.getElementById("HistTabPanel5").style.display = "none";
+        InitializeHistTabs();
 
+        function InitializeHistTabs() {
+            var showZweitschluessel = (document.getElementById("<%=ihShowZweitschluessel.ClientID %>").value == 'true');
+
+            if (showZweitschluessel) {
+                document.getElementById("HistTab5").className = "Histbutton";
+                document.getElementById("HistTab6").style.display = "block";
+            } else {
+                document.getElementById("HistTab5").className = "HistButtonLast";
+                document.getElementById("HistTab6").style.display = "none";
+            }
         }
 
-        function clickThird() {
-            document.getElementById("First").className = "Histbutton";
-            document.getElementById("Second").className = "HistButtonBeforActive";
-            document.getElementById("Third").className = "HistButtonMiddleActive";
-            document.getElementById("Fourth").className = "Histbutton";
-            document.getElementById("Last").className = "HistButtonLast";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel2").style.display = "none";
-            document.getElementById("HistTabPanel3").style.display = "block";
-            document.getElementById("HistTabPanel4").style.display = "none";
-            document.getElementById("HistTabPanel5").style.display = "none";
+        function clickHistTab(tabid) {
+            var showZweitschluessel = (document.getElementById("<%=ihShowZweitschluessel.ClientID %>").value == 'true');
 
-        }
-        function clickFourth() {
-            document.getElementById("First").className = "Histbutton";
-            document.getElementById("Second").className = "Histbutton";
-            document.getElementById("Third").className = "HistButtonBeforActive";
-            document.getElementById("Fourth").className = "HistButtonMiddleActive";
-            document.getElementById("Last").className = "HistButtonLast";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel2").style.display = "none";
-            document.getElementById("HistTabPanel3").style.display = "none";
-            document.getElementById("HistTabPanel4").style.display = "block";
-            document.getElementById("HistTabPanel5").style.display = "none";
-        }
+            var classHistTab5 = "HistButtonLast";
+            var classHistTab5Active = "HistButtonLastActive";
+            if (showZweitschluessel) {
+                classHistTab5 = "Histbutton";
+                classHistTab5Active = "HistButtonMiddleActive";
+            }
 
-        function clickLast() {
-            document.getElementById("First").className = "Histbutton";
-            document.getElementById("Second").className = "Histbutton";
-            document.getElementById("Third").className = "Histbutton";
-            document.getElementById("Fourth").className = "HistButtonBeforActive";
-            document.getElementById("Last").className = "HistButtonLastActive";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel1").style.display = "none";
-            document.getElementById("HistTabPanel2").style.display = "none";
-            document.getElementById("HistTabPanel3").style.display = "none";
-            document.getElementById("HistTabPanel4").style.display = "none";
-            document.getElementById("HistTabPanel5").style.display = "block";
-        }              
+            if (tabid == 1)
+                document.getElementById("HistTab1").className = "HistbuttonFirst";
+            else if (tabid == 2)
+                document.getElementById("HistTab1").className = "HistButtonBeforActive";
+            else
+                document.getElementById("HistTab1").className = "Histbutton";
+
+            if (tabid == 2)
+                document.getElementById("HistTab2").className = "HistButtonMiddleActive";
+            else if (tabid == 3)
+                document.getElementById("HistTab2").className = "HistButtonBeforActive";
+            else
+                document.getElementById("HistTab2").className = "Histbutton";
+
+            if (tabid == 3)
+                document.getElementById("HistTab3").className = "HistButtonMiddleActive";
+            else if (tabid == 4)
+                document.getElementById("HistTab3").className = "HistButtonBeforActive";
+            else
+                document.getElementById("HistTab3").className = "Histbutton";
+
+            if (tabid == 4)
+                document.getElementById("HistTab4").className = "HistButtonMiddleActive";
+            else if (tabid == 5)
+                document.getElementById("HistTab4").className = "HistButtonBeforActive";
+            else
+                document.getElementById("HistTab4").className = "Histbutton";
+
+            if (tabid == 5)
+                document.getElementById("HistTab5").className = classHistTab5Active;
+            else if (tabid == 6)
+                document.getElementById("HistTab5").className = "HistButtonBeforActive";
+            else
+                document.getElementById("HistTab5").className = classHistTab5;
+
+            if (tabid == 6)
+                document.getElementById("HistTab6").className = "HistButtonLastActive";
+            else
+                document.getElementById("HistTab6").className = "HistButtonLast";
+
+            for (var i = 1; i < 7; i++) {
+                var tabpanelid = "HistTabPanel" + i.toString();
+
+                if (i == tabid)
+                    document.getElementById(tabpanelid).style.display = "block";
+                else
+                    document.getElementById(tabpanelid).style.display = "none";
+            }
+        }
+                     
     </script>
 </asp:Content>

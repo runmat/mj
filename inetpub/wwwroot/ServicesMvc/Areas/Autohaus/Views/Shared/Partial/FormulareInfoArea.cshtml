@@ -1,0 +1,10 @@
+﻿@model List<CkgDomainLogic.Autohaus.Models.PdfFormular>
+
+<div id="FormulareArea" class="tiles">
+    
+    @foreach (var item in Model)
+    {
+        @Html.TileSimple(item.Typ, "bg-tile-pdf", "icon-file-pdf-o", "return ShowPdfFormular(\"" + item.DateiPfad + "\");")
+    }
+
+</div>

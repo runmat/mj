@@ -1,13 +1,14 @@
-﻿@model CkgCommonViewModel
+﻿@using GeneralTools.Contracts
+@{
+    var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+}
 
-<h3 class="page-title">@Localize.WelcomeAtPortalDadStart <small>@Localize.WelcomeAtPortalDadEnd</small></h3>
+@model CkgCommonViewModel
 
-<script type="text/javascript">
-    function FormPreparePrivate() {
-    }
-</script>
+<h3 class="page-title">@appSettings.PortalWelcomeMessageStartLocalized <small>@appSettings.PortalWelcomeMessageEndLocalized</small></h3>
 
 @if (Model.AppFavoritesAvailable)
 {
     @Html.Partial("AppFavorites/AppFavoriteButtons")
 }
+

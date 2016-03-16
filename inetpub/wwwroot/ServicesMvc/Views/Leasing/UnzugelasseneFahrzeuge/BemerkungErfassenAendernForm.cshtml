@@ -1,0 +1,25 @@
+﻿@model CkgDomainLogic.Leasing.Models.EquiBemerkungErfassenModel
+
+<div id="DivBemerkungErfassen" class="margin-top-20">
+    @using (Ajax.BeginForm("BemerkungErfassenAendernForm", "Leasing", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivBemerkungErfassen", OnComplete = "AjaxFormBemerkungErfassenAendernComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "BemerkungErfassenAendernAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        @Html.HiddenFor(m => m.EquiNr)
+        
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+
+        <div class="space20"></div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormBemerkungErfassenAendernClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

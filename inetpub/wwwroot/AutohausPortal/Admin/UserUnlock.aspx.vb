@@ -7,8 +7,10 @@ Partial Public Class UserUnlock
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -35,6 +37,7 @@ Partial Public Class UserUnlock
     End Sub
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
@@ -106,6 +109,7 @@ Partial Public Class UserUnlock
             End If
         End If
     End Sub
+
     Private Sub FillGroup(ByVal ddl As DropDownList, ByVal blnAllNone As Boolean, ByVal dtgroups As Kernel.GroupList)
         If blnAllNone Then dtgroups.AddAllNone(True, True)
         With ddl
@@ -140,6 +144,7 @@ Partial Public Class UserUnlock
         FillOrganization(ddlFilterOrganization, False, dtOrganizations)
         FillOrganization(ddlFilterOrganization, True, dtOrganizations)
     End Sub
+
     Private Sub FillOrganization(ByVal ddl As DropDownList, ByVal blnAllNone As Boolean, ByVal dtOrganizations As OrganizationList)
         If blnAllNone Then dtOrganizations.AddAllNone(True, True)
         With ddl
@@ -202,6 +207,7 @@ Partial Public Class UserUnlock
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         trSearchResult.Visible = True
 
@@ -481,146 +487,9 @@ Partial Public Class UserUnlock
         If blnRefillDataGrid Then FillDataGrid()
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Benutzerverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intUserId As Int32, ByVal tblPar As DataTable) As DataTable
-        Try
-            Dim _User As New User(intUserId, m_User.App.Connectionstring)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Benutzername") = _User.UserName
-                .Rows(.Rows.Count - 1)("Kunden- referenz") = _User.Reference
-                .Rows(.Rows.Count - 1)("Test") = _User.IsTestUser
-                .Rows(.Rows.Count - 1)("Firmen- Administrator") = _User.IsCustomerAdmin
-                .Rows(.Rows.Count - 1)("Firma") = _User.Customer.CustomerName
-                If _User.Groups.HasGroups Then
-                    .Rows(.Rows.Count - 1)("Gruppe") = _User.Groups(0).GroupName
-                Else
-                    .Rows(.Rows.Count - 1)("Gruppe") = "-"
-                End If
-                .Rows(.Rows.Count - 1)("Organisations- Administrator") = _User.Organization.OrganizationAdmin
-                .Rows(.Rows.Count - 1)("Organisation") = _User.Organization.OrganizationName
-                .Rows(.Rows.Count - 1)("letzte Kennwortänderung") = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
-                .Rows(.Rows.Count - 1)("Kennwort läuft nie ab") = _User.PasswordNeverExpires
-                .Rows(.Rows.Count - 1)("fehlgeschlagene Anmeldungen") = _User.FailedLogins.ToString
-                .Rows(.Rows.Count - 1)("Konto gesperrt") = _User.AccountIsLockedOut
-                .Rows(.Rows.Count - 1)("Angemeldet") = _User.LoggedOn
-                .Rows(.Rows.Count - 1)("ReadMessageCount") = _User.ReadMessageCount
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "UserUnlock", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal _User As User, ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Benutzername") = txtUserName.Text
-                .Rows(.Rows.Count - 1)("Kunden- referenz") = txtReference.Text
-                .Rows(.Rows.Count - 1)("Test") = cbxTestUser.Checked
-                .Rows(.Rows.Count - 1)("Firmen- Administrator") = cbxCustomerAdmin.Checked
-                .Rows(.Rows.Count - 1)("Firma") = ddlCustomer.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Gruppe") = ddlGroups.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Organisations- Administrator") = cbxOrganizationAdmin.Checked
-                .Rows(.Rows.Count - 1)("Organisation") = ddlOrganizations.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Kennwort läuft nie ab") = cbxPwdNeverExpires.Checked
-                Dim strPw As String = ""
-                Dim intCount As Integer
-                For intCount = 1 To txtPassword.Text.Length
-                    strPw &= "*"
-                Next
-                .Rows(.Rows.Count - 1)("neues Kennwort") = strPw
-                Dim strPw2 As String = ""
-                For intCount = 1 To txtConfirmPassword.Text.Length
-                    strPw2 &= "*"
-                Next
-                .Rows(.Rows.Count - 1)("Kennwortbestätigung") = strPw2
-
-                .Rows(.Rows.Count - 1)("letzte Kennwortänderung") = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
-                .Rows(.Rows.Count - 1)("fehlgeschlagene Anmeldungen") = _User.FailedLogins.ToString
-                .Rows(.Rows.Count - 1)("Konto gesperrt") = _User.AccountIsLockedOut
-                .Rows(.Rows.Count - 1)("Angemeldet") = _User.LoggedOn
-                .Rows(.Rows.Count - 1)("ReadMessageCount") = CInt(txtReadMessageCount.Text)
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "UserUnlock", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Benutzername", System.Type.GetType("System.String"))
-            .Columns.Add("Kunden- referenz", System.Type.GetType("System.String"))
-            .Columns.Add("Test", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firmen- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Gruppe", System.Type.GetType("System.String"))
-            .Columns.Add("Organisations- Administrator", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Organisation", System.Type.GetType("System.String"))
-            .Columns.Add("letzte Kennwortänderung", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwort läuft nie ab", System.Type.GetType("System.Boolean"))
-            .Columns.Add("fehlgeschlagene Anmeldungen", System.Type.GetType("System.String"))
-            .Columns.Add("Konto gesperrt", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Angemeldet", System.Type.GetType("System.Boolean"))
-            .Columns.Add("neues Kennwort", System.Type.GetType("System.String"))
-            .Columns.Add("Kennwortbestätigung", System.Type.GetType("System.String"))
-            .Columns.Add("ReadMessageCount", System.Type.GetType("System.Int32"))
-        End With
-        Return tblPar
-    End Function
 #End Region
+
 #Region " Events "
-
-
 
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
         dgSearchResult.PageIndex = PageIndex
@@ -643,7 +512,6 @@ Partial Public Class UserUnlock
     Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
-
 
     Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
 
@@ -711,7 +579,6 @@ Partial Public Class UserUnlock
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim strPwd As String = String.Empty
         Try
             Dim _customer As New Customer(CInt(ddlCustomer.SelectedItem.Value), m_User.App.Connectionstring)
@@ -771,11 +638,6 @@ Partial Public Class UserUnlock
                 End If
             End If
 
-            Dim strTemp As String = txtUserID.Text
-            Dim strLogMsg As String = "User ändern"
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtUserID.Text), tblLogParameter)
-
             Dim intGroupID As Integer
 
             If Not ddlGroups.Items.Count = 0 Then
@@ -811,9 +673,6 @@ Partial Public Class UserUnlock
             Else
                 lblError.Text = _User.ErrorMessage
             End If
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(_User, tblLogParameter)
-            Log(_User.UserID.ToString, strLogMsg, tblLogParameter)
 
             If blnSuccess Then
                 lblMessage.Text = "Die Änderungen wurden gespeichert."
@@ -834,8 +693,6 @@ Partial Public Class UserUnlock
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtUserID.Text, lblError.Text, tblLogParameter, "ERR")
         End Try
     End Sub
 
@@ -903,4 +760,5 @@ Partial Public Class UserUnlock
         End Try
     End Function
 #End Region
+
 End Class

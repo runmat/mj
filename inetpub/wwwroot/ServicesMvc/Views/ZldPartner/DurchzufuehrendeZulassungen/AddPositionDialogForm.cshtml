@@ -1,0 +1,33 @@
+﻿@model CkgDomainLogic.ZldPartner.Models.AddPositionModel
+
+<div id="DivAddPosition">
+    @using (Ajax.BeginForm("AddPositionDialogForm", "ZldPartner", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAddPosition", OnComplete = "AjaxFormDialogComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal no-bottom-margin", id = "AddPositionDialogAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        
+        @Html.HiddenFor(m => m.BelegNr)
+        @Html.HiddenFor(m => m.Werk)
+        
+        @Html.FormDropDownListFor(m => m.MaterialNr, Model.Materialien.ToSelectList(true), new { @class = "m-wrap large", onchange = "ApplyMaterial()" })
+
+        @Html.FormTextBoxFor(m => m.Preis, new { @class = "m-wrap xsmall", @onkeypress = "return NumbersOnly($(this), true);" })
+
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions no-bottom-margin padding-bottom-5">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Apply</button>
+            <button type="button" class="btn" onclick="AjaxFormDialogClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sendingEnabled = @Model.SendingEnabled.ToString().ToLower();
+
+            ShowHidePreis(@Model.Material.PreisEingebbar.ToString().ToLower());
+        </script>
+    }
+</div>

@@ -63,7 +63,7 @@
                 },
                 update: function (event, ui) {
                     var newPosition = ui.item.index();
-                    console.log(_dashboardData[newPosition].widgetId.replace);
+                    //console.log(_dashboardData[newPosition].widgetId.replace);
                     try {
                         DashboardWidgetEventOrderChanged(_dashboardData[newPosition].widgetId.replace(/id_/g, ""));
                     }
@@ -167,14 +167,14 @@
             });
 
             //delete widget by clicking the 'x' icon on the widget
-            this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-circle-remove-icon ", function (e) {
+            this.element.on("click", ".sDashboardWidgetHeader div.sDashboard-icon.sDashboard-remove-icon ", function (e) {
                 var widget = $(e.currentTarget).parents("li:first");
                 //show hide effect
                 widget.hide("fold", {}, 300, function () {
                     self._removeWidgetFromWidgetDefinitions(this.id);
                     $(this).remove();
                     $(".sDashboard-overlay").hide();
-                    console.log("remove widget " + this.id);
+                    //console.log("remove widget " + this.id);
                     try {
                         DashboardWidgetEventRemove(this.id.replace(/id_/g, ""));
                     }
@@ -204,17 +204,20 @@
         },
 
         _constructWidget: function (widgetDefinition) {
+            //@dashBoardItem.ItemKey
+            //console.log(widgetDefinition.widgetKey);
+
             //create an outer list item
             var widget = $("<li/>").attr("id", widgetDefinition.widgetId);
             widget.data("widgetDefinition", widgetDefinition);
             //create a widget container
-            var widgetContainer = $("<div/>").addClass("sDashboardWidget");
+            var widgetContainer = $("<div/>").addClass("sDashboardWidget").addClass(widgetDefinition.widgetKey);
 
             //create a widget header
             var widgetHeader = $("<div/>").addClass("sDashboardWidgetHeader sDashboard-clearfix");
             var maximizeButton = $('<div title="Maximize" class="sDashboard-icon sDashboard-circle-plus-icon "></span>');
 
-            var deleteButton = $('<div title="Chart verbergen" class="sDashboard-icon sDashboard-circle-remove-icon"></div>');
+            var deleteButton = $('<div title="Chart verbergen" class="sDashboard-icon sDashboard-remove-icon"></div>');
 
             //add delete button
             widgetHeader.append(deleteButton);
@@ -231,6 +234,7 @@
             widgetHeader.append(widgetDefinition.widgetTitle);
 
             //create a widget content
+            //console.log(widgetDefinition.widgetOptions.RowSpan);
             var widgetContent = $("<div/>").addClass("sDashboardWidgetContent");
 
             if (widgetDefinition.widgetType === 'table') {
@@ -251,11 +255,23 @@
             //add widgetHeader to widgetContainer
             widgetContainer.append(widgetHeader);
             //add widgetContent to widgetContainer
-            widgetContent.prepend($("<div></div>").addClass("sDashboardWidgetContentBusyHint"));
+            var busyHint = $("<div></div>");
+            busyHint.addClass("sDashboardWidgetContentBusyHint");
+            widgetContent.prepend(busyHint);
             widgetContainer.append(widgetContent);
 
             //append the widgetContainer to the widget
             widget.append(widgetContainer);
+
+            var rowSpan = widgetDefinition.userOptions.RowSpanOverride > 0 ? widgetDefinition.userOptions.RowSpanOverride : widgetDefinition.widgetOptions.RowSpan;
+            //console.log(widgetDefinition);
+            //console.log(userRowSpan);
+
+            if (rowSpan > 1) {
+                widget.addClass("height" + rowSpan);
+                widgetContent.addClass("height" + rowSpan);
+                busyHint.addClass("height" + rowSpan);
+            }
 
             //return widget
             return widget;
@@ -359,10 +375,10 @@
                 if (currentWidget.widgetId === widgetId) {
                     widgetDefs.splice(i, 1);
                     this._trigger("stateChanged", null, {
-                        triggerAction: 'widgetRemoved',
-                        affectedWidget: currentWidget
-                    }
-						);
+                            triggerAction: 'widgetRemoved',
+                            affectedWidget: currentWidget
+                        }
+				    );
                     break;
                 }
             }
@@ -395,17 +411,17 @@
             } else {
                 this.options.dashboardData.unshift(widgetDefinition);
                 var widget = this._constructWidget(widgetDefinition);
-                this.element.prepend(widget);
+                this.element.append(widget);
                 this._renderChart(widgetDefinition);
                 this._renderTable(widgetDefinition);
                 this._trigger("stateChanged", null, {
                     triggerAction: 'widgetAdded',
                     affectedWidget: widgetDefinition
-                }
-					);
+                    }
+                );
             }
 
-            console.log("added widget " + widgetDefinition.widgetId);
+            //console.log("added widget " + widgetDefinition.widgetId);
             try {
                 DashboardWidgetEventAdd(widgetDefinition.widgetId.replace(/id_/g, ""));
             }
@@ -441,3 +457,35 @@
 
 }));
 
+
+function DashboardItemRowspanSelectMenuShow(widgetId, onRowSpanSelectFunction) {
+
+    var rowSpanDropdownMenu = $(widgetId + " .dashboard-item-row-span-dropdown-menu");
+    //console.log(widgetId);
+    var maxRows = 3;
+    var a;
+    for (var i = 1; i <= maxRows; i++) {
+        a = rowSpanDropdownMenu.find("a.row-span-item-" + i);
+        a.data("i", i);
+        a.click(function() {
+            DashboardItemRowspanSelectMenuHide(widgetId);
+            return onRowSpanSelectFunction($(this).data("i"));
+        });
+    }
+
+    a = rowSpanDropdownMenu.find("a.row-span-cancel");
+    a.click(function () { return DashboardItemRowspanSelectMenuHide(widgetId); });   
+
+    rowSpanDropdownMenu.slideDown(200);
+
+    return false;
+}
+
+function DashboardItemRowspanSelectMenuHide(widgetId) {
+
+    var rowSpanDropdownMenu = $(widgetId + " .dashboard-item-row-span-dropdown-menu");
+
+    rowSpanDropdownMenu.slideUp(200);
+
+    return false;
+}

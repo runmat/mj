@@ -157,9 +157,9 @@ namespace CkgDomainLogic.Fahrer.Services
                 pdfBytes = SAP.GetExportParameterByteWithInitExecute("Z_M_CRE_FAHRER_AUFTRAG_PDF", "E_XSTRING",
                                                                      "I_VBELN", auftragsNr.PadLeft10());
             }
-            catch 
+            catch
             {
-                throw new Exception(string.Format("Fehler: Ihr PDF Auftrag #{0} konnte nicht aus unserem System geladen werden!", auftragsNr));
+                return null;
             }
 
             return pdfBytes;

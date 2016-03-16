@@ -1,0 +1,62 @@
+﻿@using CkgDomainLogic.ZldPartner.Models
+@model DurchgefuehrteZulassungenSuchparameter
+
+<div id="divSuche">
+    @using (Ajax.BeginForm("LoadDurchgefuehrteZulassungen", "ZldPartner", null,
+        new MvcAjaxOptions("divSuche") { OnComplete = "ShowDurchgefuehrteZulassungen();" }, new { id = "DurchgefuehrteZulassungenForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormRadioButtonListFor(m => m.Kunde, Model.Kunden.ToSelectList())
+
+            @Html.FormDateRangePickerFor(m => m.ZulassungsDatumRange, new {@class = "m-wrap"})
+            @Html.FormTextBlockFor(m => m.ZulassungsDatumRangeHinweis, labelHidden: true)
+
+            @Html.FormRadioButtonListFor(m => m.Auswahl, Model.AuswahlOptionen.ToSelectList())
+
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase" })
+
+            @Html.FormTextBoxFor(m => m.Halter, new { @class = "m-wrap medium" })
+
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowDurchgefuehrteZulassungen() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDurchgefuehrteZulassungen",
+            loadingShow: true,
+            success: function(result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowDurchgefuehrteZulassungenSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

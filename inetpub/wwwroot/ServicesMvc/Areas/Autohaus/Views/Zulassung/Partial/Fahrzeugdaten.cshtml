@@ -1,7 +1,6 @@
-﻿@using CkgDomainLogic.Fahrzeugbestand.Models
-@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <h4>@Localize.VehicleData</h4> 
 
-@Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten, new ViewDataDictionary { { "IsMassenzulassung", Model.Zulassung.Zulassungsdaten.IsMassenzulassung }, { "IsMassenabmeldung", Model.Zulassung.Zulassungsdaten.IsMassenabmeldung }, { "ModusAbmeldung", Model.ModusAbmeldung }, { "FahrzeugfarbenList", Model.Fahrzeugfarben } })
+@Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten, new ViewDataDictionary { { "IsMassenzulassung", Model.Zulassung.Zulassungsdaten.IsMassenzulassung }, { "IsMassenabmeldung", Model.Zulassung.Zulassungsdaten.IsMassenabmeldung }, { "ModusAbmeldung", Model.ModusAbmeldung }, { "ModusPartnerportal", Model.ModusPartnerportal }, { "FahrzeugfarbenList", Model.Fahrzeugfarben } })
 

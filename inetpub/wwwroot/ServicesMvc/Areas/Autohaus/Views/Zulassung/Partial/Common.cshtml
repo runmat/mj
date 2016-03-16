@@ -1,6 +1,16 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+﻿@using CkgDomainLogic.General.Contracts
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
+@{
+    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+
+    var submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
+}
+
+
+
 
 <style type="text/css">
+    
     .form-wizard .progress {
         margin-bottom: 10px!important;
     }
@@ -28,20 +38,24 @@
         padding-right: 44px;
     }
     
-    #EvbInfo {
-        width: 430px;
-    }
-    
     .form-actions-top {
         padding-left: 162px !important;
     }
+    
+    .portlet.box.vdl-option-disabled {
+        background-color: #eeeeee !important;
+    }
+    
 </style>
 
 <script type="text/javascript">
 
     var _modelIsValid = false;
     var _customButtonText = '@(Model.ObjectKey.IsNullOrEmpty() ? Localize.AddToShoppingCart : Localize.UpdateShoppingCart)';
+    var _showShoppingcartInitial = @(Model.ShoppingCartInitialShow.ToString().ToLower());
     var _skipBankAddressData = false;
+    var _submitRightAuftraegeNichtAbsenden = '@submitRightAuftraegeNichtAbsenden';
+
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -51,6 +65,11 @@
         try { FormWizardInitPrivate(); } catch (e) { }
         try { MultiSelectPreparePrivate(); } catch (e) { }
         ShoppingCartMenuRefreshCount();
+
+        if (_showShoppingcartInitial) {
+            LoadingShow();
+            ShoppingCartShow();
+        }
     };
 
     function FormPreparePrivateAjax() {
@@ -60,12 +79,20 @@
     }
 
     function FormWizardShowHideSaveButton(show, delay) {
+
         setTimeout(function () {
             $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
             FormWizard.ButtonCustom1Show(show, _customButtonText);
+
+            // Verbergen des Absenden Buttons wenn Haken gesetzt
+            if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
+
+                $(".button-submit").hide();
+            }
+
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
-    
+
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
@@ -144,7 +171,7 @@
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
-                
+
                 if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             }
@@ -166,7 +193,7 @@
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
                 FormPreparePrivateAjax();
 
-                if (nextTabKey.toLowerCase() == "receipt") 
+                if (nextTabKey.toLowerCase() == "receipt")
                     ShoppingCartMenuRefreshCount();
             },
             error: function (jqXhr, exception) {
@@ -317,19 +344,27 @@
     }
 
     var _ibanPrev = null;
-    function TryLoadBankdatenAusIban(textbox) {
+
+    function InitBankdaten() {
+        setTimeout(function () {
+            _ibanPrev = null;
+            TryLoadBankdatenAusIban("#Bankdaten_Iban", true);
+        }, 100);
+    }
+
+    function TryLoadBankdatenAusIban(textbox, suppressMessage) {
 
         if (_ibanPrev == $(textbox).val())
             return;
         _ibanPrev = $(textbox).val();
-        
-        if ($(textbox).val().length < 22)
-            return;
 
-        LoadBankdatenAusIban();
+        $("#Bankdaten_Swift").val('');
+        $("#Bankdaten_Geldinstitut").val('');
+
+        LoadBankdatenAusIban(suppressMessage);
     }
 
-    function LoadBankdatenAusIban() {
+    function LoadBankdatenAusIban(suppressMessage) {
 
         var iban = $("#Bankdaten_Iban").val();
 
@@ -352,10 +387,15 @@
 
                     $("#Bankdaten_Swift").val(result.Swift);
                     $("#Bankdaten_Swift").attr("readonly", true);
+
+                    $("#Bankdaten_Geldinstitut").val(result.Geldinstitut);
+                    $("#Bankdaten_Geldinstitut").attr("readonly", true);
+
                     $("#Bankdaten_KontoNr").val(result.KontoNr);
                     $("#Bankdaten_Bankleitzahl").val(result.Bankleitzahl);
-                    $("#Bankdaten_Geldinstitut").val(result.Geldinstitut);
-                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+
+                    if (typeof (suppressMessage) === 'undefined' || !suppressMessage)
+                        SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
                 }
             });
 
@@ -370,22 +410,29 @@
     }
 
     // AuslieferAdressen
-    function AjaxFormAuslieferAdressenComplete() {
-        FormPrepareAjax();
+    function AjaxFormAuslieferAdressenEdit() {
 
-        $(".mfp-close").trigger("click");
+        $.ajax(
+            {
+                type: "POST",
+                url: "AuslieferAdressen",
+                loadingShow: true,
+                success: function (result) {
+                    $("#InnerAdresseBearbeiten").html(result);
 
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdresseBearbeiten") },
+                        type: 'inline',
+                        closeOnBgClick: false,
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
         }
+            });
 
-        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
-        if (saveSuccessful == 'true') {
-            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
+        return false;
         }
-    }
 
     function OnDataBound_AuslieferAdressenAuswahlGrid() {
         FilteredData_Grid_OnDataBound($(this));
@@ -401,8 +448,53 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
+        $.magnificPopup.open({
+            items: { src: $("#InnerAdresseBearbeiten") },
+            type: 'inline',
+            closeOnBgClick: false,
+            alignTop: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
         $('#SelectedAddressId').val(id);
+
         $("#AjaxFormAuslieferAdressen").submit();
+    }
+
+    function AjaxFormAuslieferAdressenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            $(".mfp-close").trigger("click");
+            UpdateSummary();
+            return;
+        }
+
+        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
+        }
+    }
+
+    function UpdateSummary() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "Summary",
+            loadingShow: false,
+            success: function (result) {
+                FormWizard.SetTabHtml("Summary", result);
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
+    }
+
+    function AjaxFormAuslieferAdressenClose() {
+        $(".mfp-close").trigger("click");
     }
 
     function LoadKfzKreisAusHalterAdresse() {
@@ -442,11 +534,17 @@
                 data: { zulassungsKreis: $("#Zulassungskreis").val() },
                 loadingShow: false,
                 success: function (result) {
-                    $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
-                    $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
-                    $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Kennzeichen").val() == "undefined" || $("#Kennzeichen").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Wunschkennzeichen2").val() == "undefined" || $("#Wunschkennzeichen2").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
+                    if (typeof $("#Wunschkennzeichen3").val() == "undefined" || $("#Wunschkennzeichen3").val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                        $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
 
-                    $('.editkennz').val(result.kennzeichenLinkeSeite); // MMA
+                    $('.editkennz').each(function() {
+                        if (typeof $(this).val() == "undefined" || $(this).val().indexOf(result.kennzeichenLinkeSeite) != 0)
+                            $(this).val(result.kennzeichenLinkeSeite);
+                    });
 
                     // MMA ITA8083
                     $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);
@@ -481,8 +579,6 @@
     }
 
     function InitZulassungsdatenControls() {
-        $("#EvbInfo").closest(".controls").addClass("no-left-margin");
-
         ApplyZulassungsart();
 
         if ($(":radio[name=HaltereintragVorhanden]").length) {
@@ -504,17 +600,18 @@
 
         if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
-            $("#Expressversand").closest(".control-group").show();
-        } else {
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
+        }
+        else {
             $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
-            $("#Expressversand").closest(".control-group").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border").hide();
         }
 
         if ((typeof (exprVers) !== "undefined") && exprVers.toString().toLowerCase() == 'true') {
-            $("#Expressversand").closest("label").show();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").show();
         }
         else {
-            $("#Expressversand").closest("label").hide();
+            $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").hide();
         }
         $.uniform.update($("#Expressversand"));
     }
@@ -525,7 +622,8 @@
         $('#LinkWunschkennzeichen').attr('href', url);
         if (url == undefined || url == '') {
             $('#divWkzLink').hide();
-        } else {
+        }
+        else {
             $('#divWkzLink').show();
         }
     }
@@ -536,16 +634,18 @@
         if (id == "000000000000000619") {                   // Firmeneigene Zulassung
             if (tagHaltedauer.val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
                 tagHaltedauer.val("0");
-            } else {
+            }
+            else {
                 // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
             }
             controlGroup.show();
-        } else {
+        }
+        else {
             tagHaltedauer.val("");
             controlGroup.hide();
         }
     }
-    
+
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();
@@ -562,7 +662,8 @@
         var kennzSondergr = $("#KennzeichenSondergroesse").is(":checked");
         if (kennzSondergr) {
             kennzGr.attr('disabled', false);
-        } else {
+        }
+        else {
             kennzGr.attr('disabled', true);
         }
     }
@@ -575,7 +676,8 @@
         if (saisKennz) {
             sais1.attr('disabled', false);
             sais2.attr('disabled', false);
-        } else {
+        }
+        else {
             sais1.attr('disabled', true);
             sais2.attr('disabled', true);
         }
@@ -715,7 +817,45 @@
         });
     };
 
+    function ResizeSummaryContainers() {
+        setTimeout(function () {
+            $('.SummaryItems').closest('.portlet.box').css('height', 'auto');
+            if ($('#ZiPoolInfo').length)
+                $('#ZiPoolInfo').closest('.portlet.box').css('height', 'auto');
+        }, 200);
+
+        var newHeight = 0;
+
+        setTimeout(function () {
+            if ($('#ZiPoolInfo').length) {
+                newHeight = Math.max($('.SummaryItems').closest('.span8').height(), $('#ZiPoolInfo').closest('.portlet.box').height());
+                $('#ZiPoolInfo').closest('.portlet.box').css('height', newHeight);
+            } else {
+                newHeight = Math.max($('.SummaryItems').closest('.span12').height(), 140);
+            }
+            $('.SummaryItems').closest('.portlet.box').css('height', newHeight);
+        }, 200);
+    }
+
+    function SelectVersandDienstleister(id) {
+        $("#VersandDienstleisterId").val(id);
+        $("div[id^='divVdl_']").removeClass("bg-color-ckg-lightgreen");
+        $("#divVdl_" + id).addClass("bg-color-ckg-lightgreen");
+    }
+
+    function AjaxFormVersanddatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
 </script>
 
 <div id="InnerAdressen" class="white-popup mfp-hide">
+</div>
+
+<div id="InnerAdresseBearbeiten" class="white-popup mfp-hide">
 </div>

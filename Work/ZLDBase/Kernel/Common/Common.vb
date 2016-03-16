@@ -5,7 +5,6 @@ Imports System.Configuration
 Imports System.IO
 Imports System.Web
 Imports System.Web.UI
-Imports CKG.Base.Kernel.Logging
 Imports CKG.Base.Kernel.Security
 Imports System.Web.SessionState
 Imports Telerik.Web.UI
@@ -539,14 +538,6 @@ Namespace Kernel.Common
                     CheckAllControl(outerControl, tblTranslations)
                 Next
             End If
-
-            'Endzeitpunkt schreiben
-            If (Not page.Session("log") Is Nothing) AndAlso (Not page.Session("objUser") Is Nothing) Then
-                Dim log As LogWebAccess = CType(page.Session("log"), LogWebAccess)
-                log.setEndTimeASPX()
-                log.Dispose()
-                page.Session.Remove("log") ' log disposed, remove from session
-            End If
         End Sub
 
         Public Shared Function GetUser(ByVal Form As System.Web.UI.Page) As User
@@ -556,55 +547,15 @@ Namespace Kernel.Common
                 _user.GetCurrentSessionID(_user.UserName)
             Else
                 _user = New User(CInt(Form.User.Identity.Name), ConfigurationManager.AppSettings("Connectionstring"))
-                If _user.FailedLogins = 0 Then
-                    '_user.SetLoggedOn(_user.UserName, True, Form.Session.SessionID.ToString)
-                    ' Rausgenommen OR 05102009
-                    ' Mir ist der Sinn nicht klar! Kein User-Objekt in der Session aber wenn kein "FailedLogin" dann sofort einloggen!?
-                    ' Alte Bounce Application???
-                End If
-            End If
-
-            _user.CurrentLogAccessASPXID = -1
-
-            Dim log As CKG.Base.Kernel.Logging.LogWebAccess
-            If Form.Session("log") Is Nothing Then
-                log = New Logging.LogWebAccess(Form.Request(), _user)
-                If ConfigurationManager.AppSettings("LogDurationASPX") = "ON" Then
-                    log.LogDurationASPX = True
-                Else
-                    log.LogDurationASPX = False
-                End If
-                If ConfigurationManager.AppSettings("ClearDurationASPX") = "ON" Then
-                    log.ClearDurationASPX = True
-                Else
-                    log.ClearDurationASPX = False
-                End If
-                Form.Session.Add("log", log)
-            Else
-                log = CType(Form.Session("log"), CKG.Base.Kernel.Logging.LogWebAccess)
-            End If
-            If Not Form.Request.QueryString("AppID") Is Nothing Then
-                If (Form.Request.QueryString("AppID").Length > 0) AndAlso IsNumeric(Form.Request.QueryString("AppID")) Then
-                    Dim tmpRows() As DataRow = _user.Applications.Select("AppID = '" & Form.Request.QueryString("AppID").ToString & "'")
-                    If (Not tmpRows Is Nothing) AndAlso (tmpRows.Length > 0) Then
-                        If CType(_user.Applications.Select("AppID = '" & Form.Request.QueryString("AppID").ToString & "'")(0)("LogDuration"), Boolean) Then
-                            log.setStartTimeASPX(Left(Form.Request.Url.AbsolutePath, 500), CInt(Form.Request.QueryString("AppID")))
-                            _user.CurrentLogAccessASPXID = log.LogAccessASPXID
-                        End If
-                    End If
-                End If
             End If
 
             Form.Session("objUser") = _user
-            log.Dispose()
-
 
             'Benutzerbezogen Setzen des Kundenlogos
             Try
                 AddKndLogoToMasterPage(Form, _user.Customer.LogoPath)
             Catch
             End Try
-
 
             Return _user
         End Function

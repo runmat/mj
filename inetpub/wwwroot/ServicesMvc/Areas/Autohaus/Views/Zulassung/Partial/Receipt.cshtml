@@ -67,11 +67,15 @@ else
                     {
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
                     }
-            
-                    @*@foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))*@
+
                     @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && p.Belegnummer == zulassungBelegNr))
                     {
                         <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
+                    }
+
+                    @if (zulassung.VersandlabelPdf != null)
+                    {
+                        <a href="VersandlabelAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.ShippingLabelAsPdfFile' data-placement="top"> @Localize.ShippingLabel <i class="icon-download-alt"></i></a>
                     }
                 </div>
             </div>
@@ -109,6 +113,7 @@ else
         var isVersandzulassung = '@Model.ModusVersandzulassung';
         var isSonderzulassung = '@Model.ModusSonderzulassung';
         var isAbmeldung = '@Model.ModusAbmeldung';
+        var isPartnerportal = '@Model.ModusPartnerportal';
 
         if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
             window.location = "../Fahrzeugbestand/index";
@@ -118,7 +123,11 @@ else
             if (isSchnellabmeldung == "True") {
                 replaceAction = "Schnellabmeldung";
             } else if (isVersandzulassung == "True") {
-                replaceAction = "Versandzulassung";
+                if (isPartnerportal == "True") {
+                    replaceAction = "VersandzulassungPartner";
+                } else {
+                    replaceAction = "Versandzulassung";
+                }
             } else if (isSonderzulassung == "True") {
                 replaceAction = "Sonderzulassung";
             } else if (isAbmeldung == "True") {

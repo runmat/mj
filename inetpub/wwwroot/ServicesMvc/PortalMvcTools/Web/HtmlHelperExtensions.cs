@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -224,7 +225,7 @@ namespace PortalMvcTools.Web
             return html.Label(propertyName, new { @class = cssClass });
         }
 
-        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null)
+        public static MvcHtmlString FormLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = null, string labelText = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var model = new FormControlModel
             {
@@ -233,6 +234,8 @@ namespace PortalMvcTools.Web
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -507,27 +510,28 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
-        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes)
+        private static FormControlModel GetFormPlaceHolderModel(Func<object, HelperResult> controlHtml, object controlHtmlAttributes, string labelText="")
         {
             var model = new FormControlModel
             {
                 PostControlHtml = controlHtml == null ? null : controlHtml.Invoke(null),
                 ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
+                DisplayNameHtml = new MvcHtmlString(labelText)
             };
 
             return model;
         }
 
-        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null, string labelText = "")
         {
-            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes);
+            var model = GetFormPlaceHolderModel(controlHtml, controlHtmlAttributes, labelText);
 
             return html.FormLeftLabelControl(model);
         }
 
-        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false)
+        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool useRawTemplate = false)
         {
-            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml, useRawTemplate: useRawTemplate);
+            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml, labelText, useRawTemplate);
         }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false)
@@ -677,7 +681,15 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null, bool labelPositionRight = false, bool useRawTemplate = false)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression,
+            object controlHtmlAttributes = null,
+            string iconCssClass = null,
+            Func<object, HelperResult> preControlHtml = null, 
+            Func<object, HelperResult> postControlHtml = null, 
+            bool labelHidden = false, string labelText = null, 
+            bool isPrime = false,
+            Func<object, HelperResult> primeControlHtml = null,
+            bool labelPositionRight = false, bool useRawTemplate = false)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -688,6 +700,8 @@ namespace PortalMvcTools.Web
             {
                 IsCheckBox = true,
                 LabelHidden = labelHidden,
+                IsPrime = isPrime,
+                PrimeControlHtml = primeControlHtml == null ? null : primeControlHtml.Invoke(null),
                 DisplayNameHtml = (labelText.IsNullOrEmpty() ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
                 PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
@@ -704,6 +718,15 @@ namespace PortalMvcTools.Web
             };
 
             return html.FormLeftLabelControlConditional(expression, model);
+        }
+
+        public static MvcHtmlString FormPrimeCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression,
+            Func<object, HelperResult> primeControlHtml,
+            object controlHtmlAttributes = null,
+            string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, 
+            bool labelHidden = false, string labelText = null)
+        {
+            return html.FormCheckBoxFor(expression, controlHtmlAttributes, iconCssClass, preControlHtml, postControlHtml, labelHidden, labelText, true, primeControlHtml);
         }
 
         public static MvcHtmlString FormCheckBoxListFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, object>> labelExpression, params Expression<Func<TModel, bool>>[] expressionArray)
@@ -920,6 +943,21 @@ namespace PortalMvcTools.Web
             htmlAttributes.Add("class", cssClass);
 
             return htmlAttributes;
+        }
+
+        public static MvcHtmlString TileSimple(this HtmlHelper html, string title, string cssClass = "", string iconCssClass = "", string onclickAction = "", string bodyCssClass = "", string titleCssClass = "")
+        {
+            var model = new TileSimpleModel
+            {
+                Title = title,
+                CssClass = cssClass,
+                IconCssClass = iconCssClass,
+                OnClickAction = onclickAction,
+                BodyCssClass = bodyCssClass,
+                TitleCssClass = titleCssClass
+            };
+            
+            return html.Partial("Partial/TileSimple", model);
         }
 
         #endregion

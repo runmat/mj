@@ -1,6 +1,5 @@
 ﻿Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports Admin.PageElements
 Imports CKG.Base.Kernel
 Imports CKG
 
@@ -22,31 +21,13 @@ Public Class jve_ZugriffsHistorie
 
 #End Region
 
-    Private m_context As HttpContext = HttpContext.Current
     Private m_User As User
     Private m_App As App
 
     Private m_blnShowDetails() As Boolean
-    Private m_objTrace As Base.Kernel.Logging.Trace
 
-    'Protected WithEvents btnOpenSelectAb As Button
-    'Protected WithEvents calAbDatum As Calendar
-    'Protected WithEvents cmdCreate As LinkButton
-    'Protected WithEvents TblLog As HtmlTable
-    'Protected WithEvents lblDownloadTip As Label
-    'Protected WithEvents lnkExcel As HyperLink
-    'Protected WithEvents lblInfo As Label
-    'Protected WithEvents ddlPageSize As DropDownList
-    'Protected WithEvents btnOpenSelectBis As System.Web.UI.WebControls.Button
-    'Protected WithEvents calBisDatum As System.Web.UI.WebControls.Calendar
-    'Protected WithEvents txtUserID As System.Web.UI.WebControls.TextBox
-    'Protected WithEvents cbxOnline As System.Web.UI.WebControls.RadioButton
-    'Protected WithEvents cbxAll As System.Web.UI.WebControls.RadioButton
-    'Protected WithEvents cbxError As System.Web.UI.WebControls.RadioButton
-    'Protected WithEvents lblPageTitle As System.Web.UI.WebControls.Label
-
-    'Dim da As New SqlClient.SqlDataAdapter("SELECT UserName AS Benutzer, IsTestUser AS Testbenutzer, BAPI, StartTime AS Start, EndTime AS Ende, DATEDIFF(second, StartTime, EndTime) As Dauer, Sucess AS Erfolg, ErrorMessage AS Fehlermeldung FROM LogAccessSAP WHERE BAPI LIKE @BAPI AND StartTime BETWEEN CONVERT ( Datetime , '" & txtAbDatum.Text & "' , 104 ) AND CONVERT ( Datetime , '" & strTemp & "' , 104 ) ORDER BY BAPI", cn)
 #Region "Events"
+
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         m_User = GetUser(Me)
 
@@ -107,10 +88,6 @@ Public Class jve_ZugriffsHistorie
 
                 cn.Close()
 
-            Else
-                If Not m_context.Cache("m_objTrace") Is Nothing Then
-                    m_objTrace = CType(m_context.Cache("m_objTrace"), Base.Kernel.Logging.Trace)
-                End If
             End If
             ReDim m_blnShowDetails(HGZ.PageSize)
             'ReDim m_blnShowDetails(DataGrid1.PageSize)
@@ -137,10 +114,6 @@ Public Class jve_ZugriffsHistorie
     Private Sub DataGrid1_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs)
         FillDataGrid(False, e.NewPageIndex)
     End Sub
-
-    'Private Sub btnOpenSelectAb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenSelectAb.Click
-    '    calAbDatum.Visible = True
-    'End Sub
 
     Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbCreate.Click
         'Dieser Code wird abgearbeitet, wenn der Link "Als Excel downloaden" ausgeführt wird
@@ -233,9 +206,11 @@ Public Class jve_ZugriffsHistorie
             End If
         End If
     End Sub
+
 #End Region
 
 #Region "Methods"
+
     Private Sub FillDataGrid(ByVal blnForceNew As Boolean, Optional ByVal intPageIndex As Int32 = 0, Optional ByVal strSort As String = "")
         Dim dsLogData As DataSet
         Dim dtUser As DataTable
@@ -342,13 +317,13 @@ Public Class jve_ZugriffsHistorie
         End If
 
         lblError.Text = "Datenanzeige (keine Datensätze gefunden)"
-        lblInfo.Text = ""
+        lblinfo.Text = ""
         HGZ.Visible = False
         'DataGrid1.Visible = False
 
         If (dtUser.Rows.Count > 0) Then
             lblError.Text = ""
-            lblInfo.Text = "Datenanzeige: " & dtUser.Rows.Count & " Datensätze gefunden"
+            lblinfo.Text = "Datenanzeige: " & dtUser.Rows.Count & " Datensätze gefunden"
             HGZ.Visible = True
             'DataGrid1.Visible = True
             If strSort.Length > 0 Then
@@ -389,20 +364,8 @@ Public Class jve_ZugriffsHistorie
             'TblLog.Visible = True
         End If
     End Sub
+
 #End Region
-    'Private Sub calAbDatum_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles calAbDatum.SelectionChanged
-    '    txtAbDatum.Text = calAbDatum.SelectedDate.ToShortDateString
-    'End Sub
-
-    
-
-    'Private Sub calAbDatum_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles calAbDatum.Load
-    '    calAbDatum.Visible = False
-    'End Sub
-
-    'Private Sub calAbDatum_VisibleMonthChanged(ByVal sender As Object, ByVal e As MonthChangedEventArgs) Handles calAbDatum.VisibleMonthChanged
-    '    calAbDatum.Visible = True
-    'End Sub
 
     Private Sub HGZ_TemplateSelection(ByVal sender As Object, ByVal e As DBauer.Web.UI.WebControls.HierarGridTemplateSelectionEventArgs) Handles HGZ.TemplateSelection
         Select Case (e.Row.Table.TableName)
@@ -413,7 +376,6 @@ Public Class jve_ZugriffsHistorie
         End Select
     End Sub
 
-
     Private Sub HGZ_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles HGZ.SortCommand
         FillDataGrid(False, 0, e.SortExpression)
     End Sub
@@ -422,19 +384,4 @@ Public Class jve_ZugriffsHistorie
         FillDataGrid(False, e.NewPageIndex)
     End Sub
 
-    'Private Sub btnOpenSelectBis_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenSelectBis.Click
-    '    calBisDatum.Visible = True
-    'End Sub
-
-    'Private Sub calBisDatum_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles calBisDatum.SelectionChanged
-    '    txtBisDatum.Text = calBisDatum.SelectedDate.ToShortDateString
-    'End Sub
-
-    'Private Sub calBisDatum_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles calBisDatum.Load
-    '    calBisDatum.Visible = False
-    'End Sub
-
-    'Private Sub calBisDatum_VisibleMonthChanged(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles calBisDatum.VisibleMonthChanged
-    '    calBisDatum.Visible = True
-    'End Sub
 End Class

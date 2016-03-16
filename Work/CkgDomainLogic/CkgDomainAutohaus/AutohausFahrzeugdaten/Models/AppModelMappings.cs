@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Models;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 {

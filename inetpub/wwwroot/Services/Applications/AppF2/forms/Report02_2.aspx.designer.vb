@@ -131,6 +131,15 @@ Partial Public Class Report02_2
     Protected WithEvents lblLagerortShow As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''ihShowZweitschluessel-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ihShowZweitschluessel As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
     '''lbl_Fahrzeugdaten-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1299,4 +1308,13 @@ Partial Public Class Report02_2
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblFinanzierungsartShow As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''Datagrid3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents Datagrid3 As Global.System.Web.UI.WebControls.DataGrid
 End Class

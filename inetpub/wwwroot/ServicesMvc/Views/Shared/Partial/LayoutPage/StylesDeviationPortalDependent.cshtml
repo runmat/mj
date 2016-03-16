@@ -1,0 +1,11 @@
+@using GeneralTools.Contracts
+@{
+    var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+}
+
+<!-- Durch Angabe einer separaten css-Datei kann der Style Portal-abhängig übersteuert werden -->
+<!-- Diese Datei muss direkt im wwwroot-, also außerhalb des ServicesMvc-Anwendungsverzeichnisses liegen, damit sie Deployment-unabhängig ist -->
+@if (!string.IsNullOrEmpty(appSettings.CustomCssFile))
+{
+    <link href='/@appSettings.CustomCssFile' rel="stylesheet" type="text/css" />
+}

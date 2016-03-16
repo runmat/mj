@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 
@@ -53,7 +54,8 @@ namespace GeneralTools.Services
                 var p = (o as IPersistableObject);
                 p.ObjectKey = objectContainer.ObjectKey;
                 p.EditUser = objectContainer.EditUser;
-                p.EditDate = objectContainer.EditDate;
+                if (objectContainer.EditDate != null && objectContainer.EditDate.GetValueOrDefault().Hour > 0 && objectContainer.EditDate.GetValueOrDefault().Minute > 0 && objectContainer.EditDate.GetValueOrDefault().Second > 0)
+                    p.EditDate = objectContainer.EditDate;
             }
 
             return o;
@@ -69,11 +71,13 @@ namespace GeneralTools.Services
         public void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2)
         {
             o = o ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
+            if (o.EditDate == null) o.EditDate = DateTime.Now;
             var type = o.GetType();
             var typeName = type.GetFullTypeName();
             var objectData = XmlService.XmlSerializeToString(o);
 
             o2 = o2 ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
+            if (o2.EditDate == null) o2.EditDate = DateTime.Now;
             var type2 = o2.GetType();
             var typeName2 = type2.GetFullTypeName();
             var objectData2 = XmlService.XmlSerializeToString(o2);
@@ -94,8 +98,8 @@ namespace GeneralTools.Services
 
             var persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
 
-            var validPersistedObjectContainersBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object as IPersistableObject != null);
-            var validPersistedObjectContainersAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null);
+            var validPersistedObjectContainersBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object is IPersistableObject);
+            var validPersistedObjectContainersAfterSave = persistedContainersAfterSave.Where(pc => pc.Object is IPersistableObject);
 
             var persistedObjectsBeforeSave = validPersistedObjectContainersBeforeSave.Select(pc => pc.Object as IPersistableObject);
             var persistedObjectsAfterSave = validPersistedObjectContainersAfterSave.Select(pc => pc.Object as IPersistableObject);
@@ -138,6 +142,48 @@ namespace GeneralTools.Services
         public void DeleteObject(string objectKey)
         {
             DeletePersistedObject(objectKey);
+        }
+
+
+        public List<T> GetObjects<T>(string ownerKey, string groupKey)
+        {
+            return GetObjectContainers(ownerKey, groupKey)
+                .Select(pContainer => (T) pContainer.Object)
+                    .ToListOrEmptyList();
+        }
+
+        public JsonItemsPackage GetCachedItemAsJsonPackage(string objectId, string ownerKey, string groupKey, 
+                                                                string editUserName, bool clearDataCache,
+                                                                Func<JsonItemsPackage, bool> expirationCheckFunc,
+                                                                Func<JsonItemsPackage> getItemDataFunc
+                                                                )
+        {
+            var storedDashboardItemExpired = false;
+            var itemData = GetObjects<JsonItemsPackage>(ownerKey, groupKey).FirstOrDefault(c => c.ID == objectId);
+            if (itemData != null && itemData.dataAsText != null)
+            {
+                // load cached json data
+                itemData.data = new JavaScriptSerializer().DeserializeObject(itemData.dataAsText);
+
+                // check for cached data expiration
+                storedDashboardItemExpired = expirationCheckFunc(itemData);
+            }
+
+            if (itemData == null || storedDashboardItemExpired || clearDataCache)
+            {
+                // no cached json data available  or  cached data has expired
+                var storedObjectKey = itemData == null ? null : itemData.ObjectKey;
+
+                itemData = getItemDataFunc(); 
+                itemData.ID = objectId;
+                if (itemData.data != null)
+                {
+                    itemData.dataAsText = new JavaScriptSerializer().Serialize(itemData.data);
+                    SaveObject(storedObjectKey, ownerKey, groupKey, editUserName, itemData);
+                }
+            }
+
+            return itemData;
         }
     }
 }

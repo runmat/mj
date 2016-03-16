@@ -202,6 +202,9 @@
     <Compile Include="Kernel\Admin\OrganizationList.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Kernel\Admin\RightList.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Kernel\Admin\VersichererList.vb">
       <SubType>Component</SubType>
     </Compile>

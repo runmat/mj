@@ -6,6 +6,8 @@ namespace GeneralTools.Contracts
     {
         string GetConfigVal(string context, string keyName);
 
+        string GetConfigAllServerVal(string context, string keyName);
+
         IDictionary<string, string> GetConfigAllServersVals(string context, string connectionString = null, string filterClause = null);
 
 

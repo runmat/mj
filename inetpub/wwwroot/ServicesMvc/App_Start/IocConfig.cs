@@ -40,7 +40,13 @@ using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
 
 using CkgDomainLogic.AppUserOverview.Contracts; // MaihoferM
-using CkgDomainLogic.AppUserOverview.Services;  // MaihoferM
+using CkgDomainLogic.AppUserOverview.Services;
+using CkgDomainLogic.Autohaus.Contracts;
+using CkgDomainLogic.Autohaus.Services;
+// MaihoferM
+
+using CkgDomainLogic.DataConverter.Contracts;
+using CkgDomainLogic.DataConverter.Services;
 
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
@@ -60,8 +66,15 @@ using SapORM.Contracts;
 using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using CkgDomainLogic.General.Database.Models;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services;
+using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
+using CkgDomainLogic.ZldPartner.Contracts;
+using CkgDomainLogic.ZldPartner.Services;
 using Telerik.Web.Mvc.Infrastructure;
 using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
+using IZulassungDataService = CkgDomainLogic.CoC.Contracts.IZulassungDataService;
+using ZulassungDataServiceSAP = CkgDomainLogic.CoC.Services.ZulassungDataServiceSAP;
 
 namespace ServicesMvc
 {
@@ -204,7 +217,9 @@ namespace ServicesMvc
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<DashboardItemOptions>().As<IDashboardItemOptions>().InstancePerLifetimeScope();
             builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope(); 
+            builder.RegisterType<WeatherDataServiceOpenWeatherMap>().As<IWeatherDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
@@ -236,8 +251,16 @@ namespace ServicesMvc
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UnzugelasseneFahrzeugeDataServiceSAP>().As<IUnzugelasseneFahrzeugeDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZldPartnerZulassungenDataServiceSap>().As<IZldPartnerZulassungenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
+
+            builder.RegisterType<CocAnforderungDataServiceSAP>().As<ICocAnforderungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<EsdBeauftragungDataServiceSAP>().As<IEsdBeauftragungDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

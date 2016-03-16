@@ -14,32 +14,33 @@
         @(Html.Telerik()
               .Grid<Adresse>()
                 .Name(gridName)
-        
+
                 .XAjaxDataBinding("AdressenAjaxBinding", currentController)
                 .Columns(columns =>
-                    {
-                        columns.XBound(c => c.KundenNr).Width(145).Title("").Filterable(false).Sortable(false)
-                               .ClientTemplate(
-                                (!addressSelectorAvailable ?
-                                        "" : "<a href='#' onclick='return AddressSelect(\"<#= data.KundenNr #>\");' class='btn mini blue margin-right-5 tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></a>") 
-                                  + "<a href='#' onclick='return AddressEdit(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
-                                  + (!zulassungAvailable ?
-                                        "" : "<a href='../../autohaus/zulassung/index?halterNr=<#= data.KundenNr #>' class='btn mini gray margin-left-10 tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white tag'></i></a>")
-                            ).HeaderTemplate(
-                                (backButtonAvailable ?
-                                    "<a href='#' onclick='return ClosePartnerAddressGrid();' class='btn mini black margin-right-5 tooltips' data-original-title='" + Localize.Back + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></a>" : "") 
-                                + "<a href='#' onclick='return AddressNew();' class='btn mini black tooltips' data-original-title='" + CommonResources.NewAddress + "' data-placement='right'><i class='halflings-icon white plus'></i></a>"
-                            );
+                {
+                    columns.XBound(c => c.KundenNr).Width(145).Title("").Filterable(false).Sortable(false)
+                           .ClientTemplate(
+                            (!addressSelectorAvailable ?
+                                    "" : "<a href='#' onclick='return AddressSelect(\"<#= data.KundenNr #>\");' class='btn mini blue margin-right-5 tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white ok'></i></a>")
+                              + "<a href='#' onclick='return AddressEdit(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.EditAddress + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
+                              + (!zulassungAvailable ?
+                                    "" : "<a href='../../autohaus/zulassung/index?halterNr=<#= data.KundenNr #>' class='btn mini gray margin-left-10 tooltips' data-original-title='" + Localize.VehicleRegister + "' data-placement='right'><i class='halflings-icon white tag'></i></a>")
+                        ).HeaderTemplate(
+                            (backButtonAvailable ?
+                                "<a href='#' onclick='return ClosePartnerAddressGrid();' class='btn mini black margin-right-5 tooltips' data-original-title='" + Localize.Back + "' data-placement='right'><i class='halflings-icon white chevron-left'></i></a>" : "")
+                            + "<a href='#' onclick='return AddressNew();' class='btn mini black tooltips' data-original-title='" + CommonResources.NewAddress + "' data-placement='right'><i class='halflings-icon white plus'></i></a>"
+                        );
 
-                      columns.XBound(c => c.KundenNr);
-                      columns.XBound(c => c.Name1);
-                      columns.XBound(c => c.Name2);
-                      columns.XBound(c => c.StrasseHausNr);
-                      columns.XBound(c => c.PLZ);
-                      columns.XBound(c => c.Ort);
-                      columns.XBound(c => c.Land);
-                      columns.XBound(c => c.Email);
-                  })
+                    columns.XBound(c => c.KundenNr);
+                    columns.XBound(c => c.Name1);
+                    columns.XBound(c => c.Name2);
+                    columns.XBound(c => c.StrasseHausNr);
+                    columns.XBound(c => c.PLZ);
+                    columns.XBound(c => c.Ort);
+                    columns.XBound(c => c.Land);
+                    columns.XBound(c => c.Email);
+                    columns.XBound(c => c.Iban);
+                })
                 .XAutoColumnConfiguration()
                 .ClientEvents(events => events.XAutoClientEvents(gridName))
                 .XPageSize(10)

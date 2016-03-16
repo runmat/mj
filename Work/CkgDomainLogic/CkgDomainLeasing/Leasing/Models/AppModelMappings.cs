@@ -239,6 +239,30 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
+        static public ModelMapping<Z_M_UNZUGELASSENE_FZGE_ARVAL.T_DATA, UnzugelassenesFahrzeug> Z_M_UNZUGELASSENE_FZGE_ARVAL_T_DATA_To_UnzugelassenesFahrzeug
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_UNZUGELASSENE_FZGE_ARVAL.T_DATA, UnzugelassenesFahrzeug>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Bemerkung = s.LTEXT_EQUI;
+                        d.BriefEingang = s.ZBRIEFEINGANG;
+                        d.EquiNr = s.EQUNR;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.HaendlerName = s.NAME1_HAENDLER;
+                        d.HalterName = s.NAME1_ZH;
+                        d.KundenName = s.KUNDENNAME;
+                        d.LeasingVertragsNr = s.ZZLVNR;
+                        d.Nutzer = s.NUTZER;
+                        d.Status = s.STATUS;
+                        d.WunschLieferDatum = s.WUNSCH_LIEF_DAT;
+                    }
+                ));
+            }
+        }
+
         #endregion
 
 

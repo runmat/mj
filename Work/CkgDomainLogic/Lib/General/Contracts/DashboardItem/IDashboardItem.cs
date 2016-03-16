@@ -16,11 +16,21 @@
 
         string ChartJsonDataCustomizingScriptFunction { get; set; }
 
+        string ItemOptions { get; set; }
+
+        IDashboardItemOptions Options { get; }
+
         int? InitialSort { get; set; }
 
         int UserSort { get; }
 
         bool IsUserVisible { get; }
+
+        bool IsChart { get; }
+
+        bool IsPartialView { get; }
+
+        int RowSpanReal { get; }
 
         IDashboardItemAnnotator ItemAnnotator { get; set; }
     }
