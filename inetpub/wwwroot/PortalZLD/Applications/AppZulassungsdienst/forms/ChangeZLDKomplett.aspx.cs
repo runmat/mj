@@ -2053,6 +2053,13 @@ namespace AppZulassungsdienst.forms
                             // eingegebene Preise übernehmen
                             dlPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                             dlPos.SdRelevant = (bool)dRow["SdRelevant"];
+
+                            var gebPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dlPos.PositionsNr && p.WebMaterialart == "G");
+                            if (gebPos != null)
+                            {
+                                gebPos.Preis = dRow["GebPreis"].ToString().ToDecimal(0);
+                                gebPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal(0);
+                            }
                         }
                         else if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() != "10")
                         {
