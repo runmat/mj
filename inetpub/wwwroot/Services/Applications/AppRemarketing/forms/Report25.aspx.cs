@@ -169,6 +169,10 @@ namespace AppRemarketing.forms
         private void Fillgrid()
         {
             rgGrid2.Visible = false;
+            cmdBlock.Visible = false;
+            cmdNoBlock.Visible = false;
+            cmdEdit.Visible = false;
+            cmdSetOpen.Visible = false;
 
             if (m_Report.Result.Rows.Count == 0)
             {
@@ -185,9 +189,14 @@ namespace AppRemarketing.forms
                 if (!IsAV())
                 {
                     rgGrid1.Columns[1].Visible = false;
-                    if (ddlStatus.SelectedValue != "00" && ddlStatus.SelectedValue != "1" && ddlStatus.SelectedValue != "4")
+                    if (ddlStatus.SelectedValue != "00" && ddlStatus.SelectedValue != "4")
                     {
-                        if (ddlStatus.SelectedValue != "9")
+                        if (ddlStatus.SelectedValue == "1")
+                        {
+                            cmdSetOpen.Visible = true;
+                            rgGrid1.Columns[0].Visible = true;
+                        }
+                        else if (ddlStatus.SelectedValue != "9")
                         {
                             cmdBlock.Visible = true;
                             rgGrid1.Columns[0].Visible = true;
@@ -222,6 +231,7 @@ namespace AppRemarketing.forms
             Panel1.Visible = search;
             lbCreate.Visible = search;
             Result.Visible = !search;
+            dataFooter.Visible = !search;
         }
 
         protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
@@ -485,6 +495,36 @@ namespace AppRemarketing.forms
         protected void cmdEdit_Click(object sender, EventArgs e)
         {
             ChangeSelectedRows("3");
+        }
+
+        protected void cmdSetOpen_Click(object sender, EventArgs e)
+        {
+            UpdateTableGrid();
+
+            DataRow[] dRows = m_Report.Result.Select("Auswahl = '1'");
+
+            if (dRows.Length > 0)
+            {
+                m_Report.setOpen((string)Session["AppID"], Session.SessionID, this);
+                if (m_Report.Status != 0)
+                {
+                    lblError.Text = m_Report.Message;
+                    lblError.Visible = true;
+                }
+                else
+                {
+                    foreach (DataRow item in dRows)
+                    {
+                        m_Report.Result.Rows.Remove(item);
+                    }
+                    Session["Belastungsanzeigen2"] = m_Report;
+                    Fillgrid();
+                }
+            }
+            else
+            {
+                lblError.Text = "Bitte wählen Sie min. ein Fahrzeug aus!";
+            }
         }
 
         private void ChangeSelectedRows(string newStatus, string blockText = null)

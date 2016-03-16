@@ -379,7 +379,7 @@
                         <asp:LinkButton ID="lbtnBack" runat="server" CssClass="Tablebutton" Width="78px"
                             OnClick="lbtnBack_Click" Visible="false">» Zurück </asp:LinkButton>
                     </div>
-                    <div id="dataFooter">
+                    <div id="dataFooter" runat="server" style="margin-bottom: 10px;">
                         <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                         <asp:LinkButton ID="cmdBlock" runat="server" Visible="False" CssClass="TablebuttonMiddle"
                             Height="16px" Width="100px" OnClick="cmdBlock_Click">» Blockieren</asp:LinkButton>
@@ -387,6 +387,8 @@
                             Width="100px" Visible="False" OnClick="cmdNoBlock_Click">» Aufheben</asp:LinkButton>
                         <asp:LinkButton ID="cmdEdit" Visible="False" runat="server" CssClass="TablebuttonMiddle"
                             Height="16px" Width="100px" OnClick="cmdEdit_Click">» In Bearbeitung</asp:LinkButton>
+                        <asp:LinkButton ID="cmdSetOpen" runat="server" CssClass="TablebuttonLarge" Height="16px"
+                            Width="128px" Visible="False" OnClick="cmdSetOpen_Click">» auf offen setzen</asp:LinkButton>
                     </div>
                 </div>
                 <div>
