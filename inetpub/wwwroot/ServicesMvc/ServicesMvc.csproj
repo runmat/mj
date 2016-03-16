@@ -466,7 +466,6 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Uebersicht.cshtml" />
     <Content Include="Areas\Autohaus\Views\Shared\Partial\FormulareInfoArea.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\ZiPoolFilter.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\SummaryAuslieferAdressenLink.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Versanddaten.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
@@ -2832,7 +2831,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetails.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Shared\Partial\BreadCrumbs.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerAdressenGrid.cshtml" />

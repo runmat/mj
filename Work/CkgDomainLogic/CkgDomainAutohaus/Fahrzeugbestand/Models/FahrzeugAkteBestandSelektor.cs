@@ -24,6 +24,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
             set { _fin = value.NotNullOrEmpty().ToUpper(); }
         }
 
+        public string FinId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
@@ -94,6 +95,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.CocAvailable)]
         public bool CocVorhanden { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CustomerReference)]
+        public string KundenReferenz { get; set; }
         
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }

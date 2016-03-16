@@ -12,7 +12,8 @@
             @Html.HiddenFor(m => m.TmpSelectionKey)
             @Html.HiddenFor(m => m.TmpSelectionType)
 
-            @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.FIN, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.KundenReferenz, new { @class = "m-wrap", col = "right" })
 
             @Html.HiddenFor(m => m.Halter)
             @Html.HiddenFor(m => m.Kaeufer)

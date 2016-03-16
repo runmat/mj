@@ -3,7 +3,7 @@
 @Html.HiddenFor(m => m.KontoNr)
 @Html.HiddenFor(m => m.Bankleitzahl)
 
-@Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap uppercase", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+@Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap uppercase", @onchange = "return TryLoadBankdatenAusIban(this)" },
                         postControlHtml: @<text>
                                         </text>)
 

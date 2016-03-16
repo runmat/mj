@@ -17,21 +17,17 @@ namespace CkgDomainLogic.Autohaus.Services
 {
     public class ZulassungDataServiceSAP : CkgGeneralDataServiceSAP, IZulassungDataService
     {
-        public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
+        public List<Kunde> Kunden { get { return LoadKundenFromSap().ToList(); } }
 
-        public List<Kunde> KundenauswahlWarenkorb { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
+        public List<Domaenenfestwert> Fahrzeugarten { get { return LoadFahrzeugartenFromSap().ToList(); } }
 
-        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
+        public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return LoadZusatzdienstleistungenFromSap().ToList(); } }
 
-        public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); } }
+        public List<Kennzeichengroesse> Kennzeichengroessen { get { return LoadKennzeichengroessenFromSql().ToList(); } }
 
-        public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
+        public List<Zulassungskreis> Zulassungskreise { get { return LoadZulassungskreiseFromSap().ToList(); } }
 
-        public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
-
-        public List<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> ZulassungskreisKennzeichen { get { return PropertyCacheGet(() => LoadZulassungskreisKennzeichenFromSap().ToList()); } }
-
-        public List<Domaenenfestwert> GetFahrzeugfarben { get { return PropertyCacheGet(() => LoadFahrzeugfarbenFromSap().ToList()); } }
+        public List<Domaenenfestwert> GetFahrzeugfarben { get { return LoadFahrzeugfarbenFromSap().ToList(); } }
 
         public bool WarenkorbNurEigeneAuftraege { get { return GetBoolUserReferenceValueByReferenceType(ReferenzfeldtypBool.AH_WK_NUR_EIGENE); } }
 
@@ -43,16 +39,6 @@ namespace CkgDomainLogic.Autohaus.Services
         public ZulassungDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-        }
-
-        public void MarkForRefresh()
-        {
-            PropertyCacheClear(this, m => m.Kunden);
-            PropertyCacheClear(this, m => m.Fahrzeugarten);
-            PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
-            PropertyCacheClear(this, m => m.Kennzeichengroessen);
-            PropertyCacheClear(this, m => m.Zulassungskreise);
-            PropertyCacheClear(this, m => m.ZulassungskreisKennzeichen);
         }
 
         private IEnumerable<Kunde> LoadKundenFromSap()
@@ -170,7 +156,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public void GetZulassungsKennzeichen(string kreis, out string kennzeichen)
         {
-            var sapList = ZulassungskreisKennzeichen;
+            var sapList = LoadZulassungskreisKennzeichenFromSap().ToList();
 
             kennzeichen = "";
             var sapItem = sapList.FirstOrDefault(s => GetKreis(s) == kreis.NotNullOrEmpty().ToUpper());

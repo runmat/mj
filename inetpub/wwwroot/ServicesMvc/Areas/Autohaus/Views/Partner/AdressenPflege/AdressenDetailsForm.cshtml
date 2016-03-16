@@ -46,7 +46,7 @@
         @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap medium", col = "right", @readonly = "readonly"},
                         postControlHtml: @<text><span class="no-break-container">(@Localize.WillBeCalculated.ToLower())</span></text>)
-
+        
         <div id="divEvbInfo">
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap medium uppercase", col = "left", maxlength = 7 })
             @Html.FormDatePickerFor(m => m.Stichtagsabbuchung, new { @class = "m-wrap medium", col = "right" })

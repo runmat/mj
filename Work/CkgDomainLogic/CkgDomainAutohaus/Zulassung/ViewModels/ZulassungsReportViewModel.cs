@@ -50,11 +50,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return PropertyCacheGet(() => DataService.FahrzeugStatusWerte); }
         }
 
-        [XmlIgnore, ScriptIgnore]
-        public List<Kunde> Kunden
-        {
-            get { return DataService.Kunden; }
-        }
+        [XmlIgnore]
+        public List<Kunde> Kunden { get { return PropertyCacheGet(() => DataService.Kunden); } }
 
         [XmlIgnore]
         public static string AuftragsArtOptionen
@@ -69,12 +66,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataInit()
         {
-            DataMarkForRefresh();
+            DataMarkForRefresh(true);
         }
 
-        public void DataMarkForRefresh()
+        public void DataMarkForRefresh(bool refreshStammdaten = false)
         {
             PropertyCacheClear(this, m => m.ItemsFiltered);
+
+            if (refreshStammdaten)
+            {
+                PropertyCacheClear(this, m => m.Kunden);
+            }
         }
 
         public void Validate(Action<string, string> addModelError)

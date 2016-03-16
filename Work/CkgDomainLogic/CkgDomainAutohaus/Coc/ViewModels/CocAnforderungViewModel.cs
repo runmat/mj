@@ -31,7 +31,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten.Where(f => !string.IsNullOrEmpty(f.Wert)).OrderBy(f => f.Wert).ToList(); } }
+        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => ZulassungDataService.Fahrzeugarten.Where(f => !string.IsNullOrEmpty(f.Wert)).OrderBy(f => f.Wert).ToList()); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Hersteller> Hersteller
@@ -58,8 +58,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataInit()
         {
-            DataMarkForRefresh();
-
             CocAnforderung = new CocAnforderung
             {
                 Vorname = LogonContext.FirstName,
@@ -67,11 +65,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Email = LogonContext.UserInfo.Mail,
                 TelefonNr = LogonContext.UserInfo.Telephone2
             };
-        }
-
-        public void DataMarkForRefresh()
-        {
-            ZulassungDataService.MarkForRefresh();
         }
 
         private static List<SelectItem> GetJahreSelectList()

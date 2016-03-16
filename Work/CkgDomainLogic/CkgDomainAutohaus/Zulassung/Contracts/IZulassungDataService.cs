@@ -12,15 +12,11 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         bool WarenkorbNurEigeneAuftraege { get; }
 
-        List<Kunde> KundenauswahlWarenkorb { get; }
-
         List<Domaenenfestwert> Fahrzeugarten { get; }
 
         List<Zusatzdienstleistung> Zusatzdienstleistungen { get; }
 
         List<Kennzeichengroesse> Kennzeichengroessen { get; }
-
-        void MarkForRefresh();
 
         Bankdaten GetBankdaten(string iban, Action<string, string> addModelError);
 

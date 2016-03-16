@@ -42,7 +42,7 @@
         margin: 0 0 0 10px;
         width: 150px;
         height: 64px;
-        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png) 0 0 no-repeat;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png?v=20160307) 0 0 no-repeat;
     }
     .kroschke-prime-etikette-form {
         background: url(/ServicesMvc/images/kroschke-prime-etikette-bg.png);
@@ -88,7 +88,7 @@
     }
 </style>
 
-<script>
+<script type="text/javascript">
 
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
@@ -291,7 +291,10 @@
                 @if (modusAbmeldung)
                 {
                     @Html.FormTextBoxFor(m => m.Kostenstelle, new {@class = "m-wrap medium uppercase"})
-                    @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4})
+                    @Html.FormTextBoxFor(m => m.TuevAu, new {@class = "m-wrap small", maxlength = 4},
+                        postControlHtml: @<text>
+                                            <span class="margin-left-10">@string.Format("{0}: {1}", Localize.Format, Localize.DateFormat_MMJJ)</span>
+                                        </text>)
                 }
                 else
                 {
@@ -302,7 +305,7 @@
 
             <div class="span6 form-horizontal fahrzeug-daten" id="fahrzeug-daten-right">
 
-                @if (!modusPartnerportal)
+                @if (!modusAbmeldung && !modusPartnerportal)
                 {
                     @Html.FormPrimeCheckBoxFor(m => m.HasEtikett, @<text><span class="kennzeichen-etikette-image">&nbsp;</span></text>, new { onChange = "ShowHideKennzLabelDiv();" })
                 }
@@ -316,7 +319,7 @@
                     @Html.FormTextBoxFor(m => m.FzgModell, new {@class = "m-wrap medium no-border-bottom"})
                     @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete" })
 
-                    @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap medium" })
+                    @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase" })
 
                     <div class="margin-top-5"></div>
 
@@ -351,14 +354,13 @@
                         columns.XBound(c => c.HandelsName).ClientTemplate(
                                 Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
                             );
-                          
-                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
-                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
-                            );
 
                         columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>");
                         columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>");
 
+                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
+                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
+                            );
                     })
                     .XPageSize(10)
                     .XAutoColumnConfiguration()

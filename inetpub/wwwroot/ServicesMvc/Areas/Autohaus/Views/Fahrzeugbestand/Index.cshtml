@@ -80,23 +80,23 @@
         $("#divGrid").slideDown();
     }
 
-    function FahrzeugShowAjax(fin) {
-        FahrzeugShowCreateAjax(fin);
+    function FahrzeugShowAjax(finid) {
+        FahrzeugShowCreateAjax(finid);
 
         return false;
     }
 
     function FahrzeugCreateAjax() {
-        FahrzeugShowCreateAjax(null);
+        FahrzeugShowCreateAjax();
 
         return false;
     }
     
-    function FahrzeugShowCreateAjax(fin) {
+    function FahrzeugShowCreateAjax(finid) {
         $.ajax({
             type: "POST",
             url: "ShowFahrzeugAkteBestandDetails",
-            data: { finToLoad: fin },
+            data: { finIdToLoad: finid },
             loadingShow: true,
             success: function (result) {
                 ShowFahrzeugDetails(result);
@@ -105,12 +105,8 @@
         });
     }
 
-    var _akteJustCreated = false;
-    var _akteIsValid = false;
-
     function ShowFahrzeugDetails(result) {
         $("#divFahrzeugDetails").html(result);
-        SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
         setTimeout("HandleResponsiveControlWidths()", 500);
@@ -126,16 +122,12 @@
         catch(e){}
     }
 
-    function ShowFahrzeugDetailsComingFromFinSearch(result) {
-        $("#divFahrzeugDetails").html(result);
-        SetFahrzeugakteFormToReadOnly(_akteIsValid);
-        FormPrepareAjax();
-    }
-
     function CloseFahrzeugDetails() {
         setTimeout(function () {
             $("#divFahrzeugDetails").slideUp();
             $("#divSearchAndGrid").slideDown();
+            RefreshFahrzeugGrid();
+            OnAllSelectionChange_GridFahrzeugAuswahl(false);
             setTimeout('LoadingHide();', 500);
             scrollToTop();
             BreadcrumbsMovePrev();
@@ -146,36 +138,8 @@
         }, 150);
     }
 
-    function FinSearchTryLoadFahrzeugDetails() {
-        if (!_modelStateValid) {
-            FormPrepareAjax();
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "ShowFahrzeugAkteBestandDetails",
-            data: { finToLoad: "useModelFin" },
-            loadingShow: true,
-            success: function (result) {
-                ShowFahrzeugDetailsComingFromFinSearch(result);
-                LoadingHide();
-            }
-        });
-    }
-
     function TryCloseFahrzeugDetails() {
-
-        SetFahrzeugakteFormToReadOnly(_akteIsValid);
-        
         if (_modelStateValid) {
-            if (_akteJustCreated) {
-                var message = '@Localize.VehicleCreatedPleaseEditVehicleStock';
-                SpanAlertSuccess("Message", message, 4000);
-                FormPrepareAjax();
-                return;
-            }
-
             FormPrepareAjax();
             CloseFahrzeugDetails();
             FilterGrid("GridFahrzeugAkteBestand");
@@ -185,34 +149,19 @@
         FormPrepareAjax();
     }
 
-    function SetFahrzeugakteFormToReadOnly(readonly) {
-        $("#fahrzeuge-akte input[type=text]").attr("readonly", readonly);
-        $("#FabrikName,#HandelsName").attr("readonly", true);
-        $("#fahrzeuge-akte input[name='FIN']").attr("readonly", true);
-
-        if (readonly) {
-            $("#fahrzeuge-bestand").show();
-            $("button[type=submit] span").text('@Localize.Save');
-        } else {
-            $("#fahrzeuge-bestand").hide();
-            $("button[type=submit] span").text('@Localize.VehicleCreate');
-        }
-    }
-    
     function InitCheckTypDaten() {
         $("#HerstellerSchluessel,#TypSchluessel,#VvsSchluessel").change(function () { TryCheckTypDaten(); });
-
-        $("#FabrikName,#HandelsName").attr("readonly", true);
     }
     
     function TryCheckTypDaten() {
+        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
+        var typDatenBereitsVorhanden = $("#FabrikName").val().length > 0 || $("#HandelsName").val().length > 0;
+
+        if (!typDatenComplete || typDatenBereitsVorhanden)
+            return;
 
         var submitButton = $("button[type='submit']");
         submitButton.attr("disabled", "disabled");
-
-        var typDatenComplete = $("#HerstellerSchluessel").val().length > 0 && $("#TypSchluessel").val().length > 0 && $("#VvsSchluessel").val().length > 0;
-        if (!typDatenComplete)
-            return;
 
         $.ajax(
         {
@@ -221,13 +170,12 @@
             data: {
                 herstellerSchluessel: $("#HerstellerSchluessel").val(),
                 typSchluessel: $("#TypSchluessel").val().toUpperCase(),
-                vvsSchluessel: $("#VvsSchluessel").val(),
+                vvsSchluessel: $("#VvsSchluessel").val()
             },
             loadingShow: false,
             success: function (result) {
                 submitButton.removeAttr("disabled");
-                $("#FabrikName").val("");
-                $("#HandelsName").val("");
+
                 if (!result.success)
                     return;
 
@@ -289,7 +237,7 @@
                     hiddenFieldName = "Kaeufer";
                 else if (result.partnerKennung.toLowerCase().substr(0, 1) == "z")
                     hiddenFieldName = "ZahlerKfzSteuer";
-                $("#fahrzeuge-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
+                $("#divFahrzeugDetails input[name='" + hiddenFieldName + "']").val(result.partnerID);
 
                 ClosePartnerAddressGrid();
             },

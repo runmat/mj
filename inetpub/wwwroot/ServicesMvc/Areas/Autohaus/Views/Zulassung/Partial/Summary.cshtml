@@ -59,14 +59,14 @@
                   {
                       columns.XBound(c => c.FinID).Visible(false);
                       columns.XBound(c => c.FIN);
-                      columns.XBound(c => c.ZulassungFahrzeugart);
                       columns.XBound(c => c.HandelsName);
+                      columns.XBound(c => c.Evb);
                       columns.XBound(c => c.WunschKennz1);
                       columns.XBound(c => c.WunschKennz2);
                       columns.XBound(c => c.WunschKennz3);
                       columns.XBound(c => c.ReservationNr);
                       columns.XBound(c => c.ReservationName);
-                      columns.XBound(c => c.Evb);
+                      columns.XBound(c => c.ZulassungFahrzeugart);
                   })
               .XAutoColumnConfiguration()
               .XPageSize(10)
@@ -89,9 +89,9 @@ else if (Model.Zulassung.Zulassungsdaten.IsMassenabmeldung)
                   {
                       columns.XBound(c => c.FinID).Visible(false);
                       columns.XBound(c => c.FIN);
-                      columns.XBound(c => c.ZulassungFahrzeugart);
                       columns.XBound(c => c.HandelsName);
                       columns.XBound(c => c.Kennzeichen);
+                      columns.XBound(c => c.ZulassungFahrzeugart);
                   })
               .XAutoColumnConfiguration()
               .XPageSize(10)

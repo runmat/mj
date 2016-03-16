@@ -28,6 +28,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return CacheGet<IZulassungDataService>(); }
         }
 
+        [XmlIgnore]
+        public List<Kunde> Kunden { get { return PropertyCacheGet(() => ZulassungDataService.Kunden); } }
+
         [LocalizedDisplay(LocalizeConstants.KroschkeCleverSearch)]
         public string AnfrageText { get; set; }
 
@@ -76,6 +79,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             AnfrageText = null;
             AnfrageOption = null;
+
+            DataMarkForRefresh();
+        }
+
+        private void DataMarkForRefresh()
+        {
+            PropertyCacheClear(this, m => m.Kunden);
         }
 
         public void PerformSearch(string anfrageText, string anfrageTyp, Action<string, string> addModelError)
@@ -107,7 +117,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         private void LoadZulassungsReportItems(string fahrgestellNr, string kennzeichen, Action<string, string> addModelError)
         {
             ZulassungsReportItems = ZulassungDataService.GetZulassungsReportItems(
-                    new ZulassungsReportSelektor { Referenz2 = fahrgestellNr, Kennzeichen = kennzeichen, NurHauptDienstleistungen = true }, ZulassungDataService.Kunden, addModelError);
+                    new ZulassungsReportSelektor { Referenz2 = fahrgestellNr, Kennzeichen = kennzeichen, NurHauptDienstleistungen = true }, Kunden, addModelError);
 
             if (ZulassungsReportItems.None())
                 addModelError("", Localize.NoDataFound);
