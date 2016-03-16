@@ -111,13 +111,6 @@ Public Class Global_asax
         '    HttpContext.Current.Cache.Remove("m_objTrace")
         'End If
 
-        Dim log As CKG.Base.Kernel.Logging.LogWebAccess
-        Dim mode As Boolean
-        mode = CType(Session("logoutMode"), String) Is Nothing
-
-        log = CType(Session("log"), CKG.Base.Kernel.Logging.LogWebAccess)
-        log.updateEndTime(mode)
-        log.Dispose()
         m_User = Nothing
 
         'Session.RemoveAll()

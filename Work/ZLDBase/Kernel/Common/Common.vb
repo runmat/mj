@@ -5,7 +5,6 @@ Imports System.Configuration
 Imports System.IO
 Imports System.Web
 Imports System.Web.UI
-Imports CKG.Base.Kernel.Logging
 Imports CKG.Base.Kernel.Security
 Imports System.Web.SessionState
 Imports Telerik.Web.UI

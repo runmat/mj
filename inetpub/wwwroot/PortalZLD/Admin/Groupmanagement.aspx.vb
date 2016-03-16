@@ -1,15 +1,16 @@
-﻿
-Imports CKG.Base.Kernel.Admin
+﻿Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 
 Partial Public Class Groupmanagement
     Inherits System.Web.UI.Page
+
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -43,7 +44,9 @@ Partial Public Class Groupmanagement
             lblError.Visible = True
         End Try
     End Sub
+
 #Region " Data and Function "
+
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -115,6 +118,7 @@ Partial Public Class Groupmanagement
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         trSearchResult.Visible = True
         Dim dvGroup As DataView
@@ -423,147 +427,10 @@ Partial Public Class Groupmanagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Gruppenverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intGroupId As Int32, ByVal tblPar As DataTable) As DataTable
-        Dim cn As SqlClient.SqlConnection
-        cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim _Group As New Group(intGroupId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Gruppenname") = _Group.GroupName
-                .Rows(.Rows.Count - 1)("Aut.- Recht") = _Group.Authorizationright.ToString
-                .Rows(.Rows.Count - 1)("Kunden- Gruppe") = _Group.IsCustomerGroup
-                Dim dvCustomer As New DataView
-                If Not Session("myCustomerListView") Is Nothing Then
-                    dvCustomer = CType(Session("myCustomerListView"), DataView)
-                Else
-                    Dim dtCustomers As Kernel.CustomerList
-                    dtCustomers = New Kernel.CustomerList(m_User.Customer.AccountingArea, cn, True, False)
-
-                    dvCustomer.Sort = "Customername"
-                    dvCustomer = dtCustomers.DefaultView
-                    Session.Add("myCustomerListView", dvCustomer)
-                End If
-                txtCustomerID.Text = _Group.CustomerId.ToString
-                If _Group.CustomerId > 0 Then
-                    dvCustomer.Sort = "CustomerID"
-                    .Rows(.Rows.Count - 1)("Firma") = dvCustomer(dvCustomer.Find(_Group.CustomerId)).Item("CustomerName").ToString
-                End If
-
-                Dim dvAppAssigned As DataView = GetAppAssignedView(intGroupId, _Group.CustomerId, cn)
-                Dim strAnwendungen As String = ""
-                Dim j As Int32
-                For j = 0 To dvAppAssigned.Count - 1
-                    strAnwendungen &= dvAppAssigned(j)("AppFriendlyName").ToString & vbNewLine
-                Next
-                .Rows(.Rows.Count - 1)("Anwendungen") = strAnwendungen
-                .Rows(.Rows.Count - 1)("Handbuch") = _Group.DocuPath
-                .Rows(.Rows.Count - 1)("Startmethode") = _Group.StartMethod
-                .Rows(.Rows.Count - 1)("Message") = _Group.Message
-                .Rows(.Rows.Count - 1)("MaxReadMessageCount") = _Group.MaxReadMessageCount
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Gruppenname") = txtGroupName.Text
-                .Rows(.Rows.Count - 1)("Aut.- Recht") = ddlAuthorizationright.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Kunden- Gruppe") = cbxIsCustomerGroup.Checked
-                .Rows(.Rows.Count - 1)("Firma") = txtCustomer.Text
-                Dim _li As ListItem
-                Dim strAnwendungen As String = ""
-                For Each _li In lstAppAssigned.Items
-                    strAnwendungen &= _li.Text & vbNewLine
-                Next
-                .Rows(.Rows.Count - 1)("Anwendungen") = strAnwendungen
-                .Rows(.Rows.Count - 1)("Handbuch") = txtDocuPath.Text
-                .Rows(.Rows.Count - 1)("Startmethode") = txtStartMethod.Text
-                .Rows(.Rows.Count - 1)("Message") = txtMessage.Text
-                .Rows(.Rows.Count - 1)("MaxReadMessageCount") = CInt(txtMaxReadMessageCount.Text)
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "GroupManagement", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Gruppenname", System.Type.GetType("System.String"))
-            .Columns.Add("Aut.- Recht", System.Type.GetType("System.String"))
-            .Columns.Add("Kunden- Gruppe", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendungen", System.Type.GetType("System.String"))
-            .Columns.Add("Handbuch", System.Type.GetType("System.String"))
-            .Columns.Add("Startmethode", System.Type.GetType("System.String"))
-            .Columns.Add("Message", System.Type.GetType("System.String"))
-            .Columns.Add("MaxReadMessageCount", System.Type.GetType("System.Int32"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
+
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         Search(, True)
     End Sub
@@ -591,7 +458,6 @@ Partial Public Class Groupmanagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
 
         If Not IsNumeric(txtMaxReadMessageCount.Text) Then
@@ -603,12 +469,6 @@ Partial Public Class Groupmanagement
 
             cn.Open()
             Dim intGroupId As Integer = CInt(txtGroupID.Text)
-            Dim strLogMsg As String = "Gruppe anlegen"
-            If Not (intGroupId = -1) Then
-                strLogMsg = "Gruppe ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intGroupId, tblLogParameter)
-            End If
 
             Dim blnNew As Boolean = False
             If CInt(txtGroupID.Text) < 1 Then blnNew = True
@@ -690,10 +550,6 @@ Partial Public Class Groupmanagement
             Dim _Employeeassignment As New Kernel.EmployeeAssignments(intGroupId)
             _Employeeassignment.Save(dvEmployeeAssigned, lstEmployeeAssigned.Items, cn)
 
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_group.GroupId.ToString, strLogMsg, tblLogParameter)
-
             Search(True, True, , True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
         Catch ex As Exception
@@ -703,8 +559,6 @@ Partial Public Class Groupmanagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -713,18 +567,14 @@ Partial Public Class Groupmanagement
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _Group As New Group(CInt(txtGroupID.Text), CInt(ddlFilterCustomer.SelectedItem.Value))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_Group.GroupId, tblLogParameter)
             If Not _Group.HasUser(cn) Then
                 _Group.Delete(cn)
-                Log(_Group.GroupId.ToString, "Gruppe löschen", tblLogParameter)
 
                 Search(True, True, True, True)
                 lblMessage.Text = "Die Gruppe wurde gelöscht."
@@ -738,14 +588,13 @@ Partial Public Class Groupmanagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtGroupID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
             End If
         End Try
     End Sub
+
 #End Region
 
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
@@ -785,8 +634,6 @@ Partial Public Class Groupmanagement
             lstAppAssigned.Items.Remove(_item)
         Next
     End Sub
-
-
 
     Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnAssignArchiv.Click
         Dim _item As ListItem
