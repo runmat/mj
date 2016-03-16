@@ -1320,7 +1320,7 @@ namespace AppZulassungsdienst.forms
                     //var temp = "<%=" + ddl.ClientID + "%>";
                     txtBox.Attributes.Add("onkeyup", "SetNurEinKennzFuerDL(this.value," + gvRow.RowIndex + "," +
                         chkEinKennz.ClientID + ");FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
-                    txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
+                    txtBox.Attributes.Add("onblur", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ");SetDDLValue(this," + ddl.ClientID + ")");
 
                     ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
                     ddl.DataValueField = "MaterialNr";
