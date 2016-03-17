@@ -209,6 +209,7 @@
                                                                 <td class="firstLeft active">
                                                                     Firmenname:
                                                                     <input type="hidden" id="ihCustomerID" runat="server" value="-1" />
+                                                                    <input type="hidden" id="ihIsCopyOfCustomerID" runat="server" value="-1" />
                                                                 </td>
                                                                 <td class="active" width="100%">
                                                                     <asp:TextBox ID="txtCustomerName" runat="server" CssClass="InputTextbox"></asp:TextBox>
@@ -1464,14 +1465,26 @@
                                         PopupControlID="mb" BackgroundCssClass="modalBackground" DropShadow="true" CancelControlID="lbtnCancelOptions"
                                         X="380" Y="250">
                                     </ajaxToolkit:ModalPopupExtender>
-                                    <asp:Panel ID="mb" runat="server" Width="385px" Height="150px" BackColor="White"
+                                    <asp:Panel ID="mb" runat="server" Width="385px" Height="275px" BackColor="White"
                                         BorderColor="#999999" BorderStyle="Solid" BorderWidth="1" Style="display: none">
                                         <div style="padding-left: 10px; padding-top: 15px;">
                                             <h2>
                                                 Optionen</h2>
                                         </div>
                                         <div style="padding-left: 10px; padding-top: 15px;">
-                                            <asp:CheckBox runat="server" ID="keepApplications" Text="Anwendungen beibehalten" />
+                                            <asp:CheckBox runat="server" ID="chkKeepCustomerContactData" Text="Kunden-Kontaktdaten übernehmen" />
+                                        </div>
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <asp:CheckBox runat="server" ID="chkKeepApplications" Text="Anwendungen übernehmen" />
+                                        </div>
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <asp:CheckBox runat="server" ID="chkKeepGroupsWithApplications" Text="Gruppen inkl. Anwendungszuordnungen übernehmen" />
+                                        </div>
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <asp:CheckBox runat="server" ID="chkKeepOrganizations" Text="Organisationen übernehmen" />
+                                        </div>
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <asp:CheckBox runat="server" ID="chkKeepContacts" Text="Ansprechpartner übernehmen (nur möglich bei Gruppen-Übernahme)" />
                                         </div>
                                         <div style="padding-left: 10px; padding-top: 15px;">
                                             <asp:LinkButton class="Tablebutton" ID="lbtnCopy" runat="server" Text="Kopieren&amp;nbsp;&amp;#187; "

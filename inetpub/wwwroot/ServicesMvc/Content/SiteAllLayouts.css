@@ -36,6 +36,9 @@
 .m-wrap.hasDatepicker {
     width: 180px;
 }
+.m-wrap.smaller {
+    width: 90px !important;
+}
 .m-wrap.xlarge {
     width: 520px !important;
 }
@@ -1739,4 +1742,13 @@ div.span-alert-placeholder .alert {
     border: 1px solid #e0e0e0;
     padding: 5px;
     border-radius: 4px !important;
+}
+
+.session-timeout-info .alert-warning i {
+    margin-right: 10px;
+}
+.session-timeout-info .btn {
+    width: 120px;
+    float: right;
+    margin-bottom: 20px;
 }

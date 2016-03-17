@@ -68,6 +68,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusSonderzulassung { get; set; }
 
+        public bool ModusPartnerportal { get; set; }
+
         [XmlIgnore]
         public string ApplicationTitle
         {
@@ -106,8 +108,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
 
-                    return XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
+                    var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
+
+                    if (ModusPartnerportal)
+                    {
+                        var partnerDict = new XmlDictionary<string, string>();
+                        dict.ToList().ForEach(entry =>
+                        {
+                            if (entry.Key == "ZahlerKfzSteuer")
+                                return;
+
+                            partnerDict.Add(entry.Key, entry.Value);
                         });
+
+                        return partnerDict;
+                    }
+
+                    return dict;
+                });
             }
         }
 
@@ -169,6 +187,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamSonderzulassung(string sonderzulassung)
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
+        }
+
+        public void SetParamPartnerportal(string partnerportal)
+        {
+            ModusPartnerportal = partnerportal.IsNotNullOrEmpty();
         }
 
  
@@ -593,7 +616,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
 
-            ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
+            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
+            ZulassungsAbmeldearten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
 
             Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
             Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich));
@@ -1217,6 +1241,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
                                 ModusSonderzulassung = ModusSonderzulassung,
+                                ModusPartnerportal = ModusPartnerportal,
                                 ZulassungsartMatNr = null,
                                 Zulassungskreis = null,
                             },
@@ -1232,6 +1257,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
                 ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
+                ModusPartnerportal = Zulassung.Zulassungsdaten.ModusPartnerportal;
+
+                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
+                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
+
+                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             if (schnellAbmeldung.IsNotNullOrEmpty())
@@ -1348,7 +1379,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     z.Aenderer = LogonContext.UserName;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
                     {
-                        z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
+                        z.BeauftragungsArt = (ModusVersandzulassung ? (ModusPartnerportal ? "VERSANDZULASSUNGPARTNER" : "VERSANDZULASSUNG")
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
@@ -1441,7 +1472,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
             
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusPartnerportal);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Partner.ViewModels
         [XmlIgnore]
         public override IAdressenDataService AdressenDataService { get { return DataService; } }
 
-        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(AdressenKennung == "HALTER" ? Localize.Holder : Localize.Buyer); } }
+        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(AdressenKennung == "HALTER" ? Localize.Holder : AdressenKennung == "ZAHLERKFZSTEUER" ? Localize.CarTaxPayer : Localize.Buyer); } }
 
 
         public PartnerSelektor PartnerSelektor

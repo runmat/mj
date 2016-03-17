@@ -6,13 +6,15 @@ Partial Public Class AppManagement
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.Admin.GridNavigation
+
 #End Region
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         trEditUser.Visible = False
         trSearchResult.Visible = False
@@ -281,115 +283,6 @@ Partial Public Class AppManagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Anwendungsverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intAppId As Int32, ByVal tblPar As DataTable) As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-            cn.Open()
-            Dim _App As New Kernel.Application(intAppId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Anwendungs-Name") = _App.AppName
-                .Rows(.Rows.Count - 1)("Freundlicher Name") = _App.AppFriendlyName
-                .Rows(.Rows.Count - 1)("Typ") = _App.AppType.ToString
-                .Rows(.Rows.Count - 1)("URL") = _App.AppURL.ToString
-                .Rows(.Rows.Count - 1)("in Menü") = _App.AppInMenu
-                .Rows(.Rows.Count - 1)("Kommentar") = _App.AppComment
-                .Rows(.Rows.Count - 1)("Gehört zu") = _App.AppParent.ToString
-                .Rows(.Rows.Count - 1)("Autorisierungslevel") = _App.Authorizationlevel.ToString
-                .Rows(.Rows.Count - 1)("Rang") = _App.AppRank.ToString
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "SetOldLogParameters", ex.ToString)
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Anwendungs-Name") = txtAppName.Text
-                .Rows(.Rows.Count - 1)("Freundlicher Name") = txtAppFriendlyName.Text
-                .Rows(.Rows.Count - 1)("Typ") = ddlAppType.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("URL") = txtAppURL.Text
-                .Rows(.Rows.Count - 1)("in Menü") = cbxAppInMenu.Checked
-                .Rows(.Rows.Count - 1)("Kommentar") = txtAppComment.Text
-                .Rows(.Rows.Count - 1)("Gehört zu") = ddlAppParent.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Autorisierungslevel") = ddlAuthorizationlevel.SelectedItem.Text
-                .Rows(.Rows.Count - 1)("Sammelautorisierung") = cbxBatchAuthorization.Checked
-                .Rows(.Rows.Count - 1)("Rang") = txtAppRank.Text
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "SetNewLogParameters", ex.ToString)
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendungs-Name", System.Type.GetType("System.String"))
-            .Columns.Add("Freundlicher Name", System.Type.GetType("System.String"))
-            .Columns.Add("Typ", System.Type.GetType("System.String"))
-            .Columns.Add("URL", System.Type.GetType("System.String"))
-            .Columns.Add("in Menü", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Kommentar", System.Type.GetType("System.String"))
-            .Columns.Add("Gehört zu", System.Type.GetType("System.String"))
-            .Columns.Add("Autorisierungslevel", System.Type.GetType("System.String"))
-            .Columns.Add("Sammelautorisierung", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Rang", System.Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -443,7 +336,6 @@ Partial Public Class AppManagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
@@ -451,12 +343,7 @@ Partial Public Class AppManagement
 
             cn.Open()
             Dim intAppId As Integer = CInt(txtAppID.Text)
-            Dim strLogMsg As String = "Anwendung anlegen"
-            If Not (intAppId = -1) Then
-                strLogMsg = "Anwendung ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intAppId, tblLogParameter)
-            End If
+
             Dim _App As New Kernel.Application(intAppId, _
                                                 txtAppName.Text, _
                                                 txtAppFriendlyName.Text, _
@@ -477,9 +364,7 @@ Partial Public Class AppManagement
 
             'Save Zuordnungen, falls es sich um ein Child handelt
             _App.ReAssign(conn, _App.AppId, CInt(ddlAppParent.SelectedItem.Value.ToString))
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_App.AppId.ToString, strLogMsg, tblLogParameter)
+
             FillAppParent(cn)
             Search(True, True, , True)
 
@@ -491,8 +376,6 @@ Partial Public Class AppManagement
             If Not ex.InnerException Is Nothing Then
                 lblInputError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblInputError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -501,17 +384,14 @@ Partial Public Class AppManagement
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _app As New Kernel.Application(CInt(txtAppID.Text))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(_app.AppId, tblLogParameter)
+
             If Not _app.HasChildren(cn) Then
                 _app.Delete(cn)
-                Log(_app.AppId.ToString, "Anwendung löschen", tblLogParameter)
                 FillAppParent(cn)
                 Search(True, True, True, True)
                 lblMessage.Text = "Die Anwendung wurde gelöscht."
@@ -524,8 +404,6 @@ Partial Public Class AppManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtAppID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -549,6 +427,7 @@ Partial Public Class AppManagement
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
         Search(True, True, True, True)
     End Sub
+
     Private Sub lnkFieldTranslation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkFieldTranslation.Click
         Dim strAppURL As String
         Dim strRetAppID As String = txtAppID.Text

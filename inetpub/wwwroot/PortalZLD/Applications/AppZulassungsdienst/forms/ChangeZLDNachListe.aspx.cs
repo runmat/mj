@@ -559,7 +559,7 @@ namespace AppZulassungsdienst.forms
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
             string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, Page);
         }
 
         /// <summary>
@@ -1462,22 +1462,36 @@ namespace AppZulassungsdienst.forms
 
         private void ChangeZahlart(string sapId, string posNr, Zahlart zArt)
         {
-            var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == sapId && vg.PositionsNr == posNr);
-            if (pos != null)
+            // Zahlart aktualisieren
+            objNacherf.Vorgangsliste.Where(vg => vg.SapId == sapId).ToList().ForEach(vg =>
             {
-                pos.Zahlart_EC = (zArt == Zahlart.EC);
-                pos.Zahlart_Bar = (zArt == Zahlart.Bar);
-                pos.Zahlart_Rechnung = (zArt == Zahlart.Rechnung);
+                vg.Zahlart_EC = (zArt == Zahlart.EC);
+                vg.Zahlart_Bar = (zArt == Zahlart.Bar);
+                vg.Zahlart_Rechnung = (zArt == Zahlart.Rechnung);
+            });
 
-                // Preise aktualisieren
-                foreach (GridViewRow row in GridView1.Rows)
+            var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == sapId && vg.PositionsNr == posNr);
+
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                if (GridView1.DataKeys[row.RowIndex] != null)
                 {
-                    if (GridView1.DataKeys[row.RowIndex] != null)
+                    if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == sapId)
                     {
-                        if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == pos.SapId && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == pos.PositionsNr)
+                        // Zahlart im Grid bei allen dazugehörigen Positionen aktualisieren
+                        var rbEC = (RadioButton)row.FindControl("rbEC");
+                        var rbBar = (RadioButton)row.FindControl("rbBar");
+                        var rbRE = (RadioButton)row.FindControl("rbRE");
+
+                        rbEC.Checked = (zArt == Zahlart.EC);
+                        rbBar.Checked = (zArt == Zahlart.Bar);
+                        rbRE.Checked = (zArt == Zahlart.Rechnung);
+
+                        // Preise aktualisieren
+                        if (pos != null && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == pos.PositionsNr)
                         {
-                            TextBox txtGebPreis = (TextBox)row.FindControl("txtGebPreis");
-                            TextBox txtPreis_Amt = (TextBox)row.FindControl("txtPreis_Amt");
+                            var txtGebPreis = (TextBox)row.FindControl("txtGebPreis");
+                            var txtPreis_Amt = (TextBox)row.FindControl("txtPreis_Amt");
 
                             pos.Gebuehr = txtGebPreis.Text.ToNullableDecimal();
                             pos.GebuehrAmt = (m_User.Groups[0].Authorizationright == 0 ? txtPreis_Amt.Text.ToNullableDecimal() : txtGebPreis.Text.ToNullableDecimal());

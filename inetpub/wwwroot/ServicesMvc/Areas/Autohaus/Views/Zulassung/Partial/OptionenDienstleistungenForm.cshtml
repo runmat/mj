@@ -33,6 +33,7 @@
         @Html.FormCheckBoxFor(m => m.KennzeichenSondergroesse, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenSondergroesse()" },
                                     postControlHtml: @<text>
                                                             @Html.DropDownListFor(m => m.KennzeichenGroesseId, Model.KennzeichengroesseListForMatNr.ToSelectList(), new { @class = "m-wrap small margin-left-50" })
+                                                            <a href="~/Documents/Templates/KfzKennzeichengroessen.pdf" target="_blank" class="btn yellow tooltips margin-right-5 margin-bottom-0" data-original-title='@Localize.KennzeichenGroessenPDF' data-placement="top"> @Localize._Kennzeichen <i class="icon-info-sign"></i></a>
                                                         </text>)
 
         @Html.FormCheckBoxFor(m => m.Saisonkennzeichen, new { @class = "m-wrap xsmall", onchange = "CheckSaisonkennzeichen()" },

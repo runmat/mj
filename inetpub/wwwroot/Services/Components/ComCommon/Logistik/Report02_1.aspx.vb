@@ -274,6 +274,10 @@ Imports CKG.Components.ComCommon.LogUeberf
 
                     fnameThumb = Right(files(i), files(i).Length - files(i).LastIndexOf("\") - 1)
 
+                    If fname.StartsWith("Bilder_") Then
+                        Continue For
+                    End If
+
                     If checkFilename(fname, pattern) And type = "Bild" Then
                         If fname.IndexOf("THUMB_") >= 0 Then      'Zunächst nur Thumbs laden
                             fname = Right(fname, fname.Length - fname.IndexOf("_") - 1)

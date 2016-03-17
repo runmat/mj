@@ -1,10 +1,9 @@
-﻿Imports CKG.Base.Kernel.Admin
-Imports CKG.Base.Kernel.Security
+﻿Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG
 
 Public Class Performance
     Inherits System.Web.UI.Page
+
     Private m_User As User
     Private m_App As App
 
@@ -34,16 +33,8 @@ Public Class Performance
         Try
             m_App = New App(m_User)
 
-            Dim objTrace As Base.Kernel.Logging.Trace
-            objTrace = New Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP)
-            If objTrace.PerformanceData_All Then
-                DataGrid1.DataSource = objTrace.StandardLog
-                DataGrid1.DataBind()
-                GridNavigation1.setGridElment(DataGrid1)
-            End If
-
             If Not IsPostBack Then
-                lblError.Text = ""
+                lblError.Text = "Keine Daten vorhanden. Dieses Logging ist veraltet."
             End If
         Catch ex As Exception
             m_App.WriteErrorText(1, m_User.UserName, "Performance", "Page_Load", ex.ToString)

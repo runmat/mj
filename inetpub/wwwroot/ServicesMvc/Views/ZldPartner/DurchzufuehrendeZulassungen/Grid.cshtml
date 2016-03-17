@@ -1,0 +1,68 @@
+﻿@using CkgDomainLogic.ZldPartner.Models
+@using CkgDomainLogic.ZldPartner.ViewModels
+@model ZldPartnerZulassungenViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridOffeneZulassungen"; }
+
+@(Html.Telerik()
+    .Grid<OffeneZulassung>()
+    .Name(gridName)
+    .XAjaxDataBinding("OffeneZulassungenAjaxBinding", "ZldPartner")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.BelegNr)
+            .ClientTemplate(
+                "<a href='#' onclick='AddPosition(\"<#= data.BelegNr #>\");' class='tooltips <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.AddPosition + "' data-placement='right'><#= data.BelegNr #></a>" +
+                "<button href='#' onclick='DeletePosition(\"<#= data.DatensatzId #>\");' class='btn mini gray tooltips <# if (!data.NeuePosition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.DeletePosition + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+            );
+        columns.XBound(c => c.Halter);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Zb2Nr);
+        columns.XBound(c => c.MaterialText);
+        columns.XBound(c => c.ZulassungsKreis);
+        columns.XBound(c => c.ZulassungsDatum).Visible(!Model.EditMode);
+        columns.XBound(c => c.ZulassungsDatum).Visible(Model.EditMode)
+            .ClientTemplate(
+                Html.TextBox("ZulassungsDatum", "<#= data.ZulassungsDatum #>", new { @class = "m-wrap smaller <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','ZulassungsDatum',$(this).val());" }).ToHtmlString()
+            );
+        columns.XBound(c => c.Kennzeichen).Visible(!Model.EditMode);
+        columns.XBound(c => c.Kennzeichen).Visible(Model.EditMode)
+            .ClientTemplate(
+                Html.TextBox("Kennzeichen", "<#= data.Kennzeichen #>", new { @class = "m-wrap smaller uppercase <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Kennzeichen',$(this).val());" }).ToHtmlString()
+            );
+        columns.XBound(c => c.Gebuehr).Visible(!Model.EditMode);
+        columns.XBound(c => c.Gebuehr).Visible(Model.EditMode)
+            .ClientTemplate(
+                Html.TextBox("Gebuehr", "<#= data.Gebuehr #>", new { @class = "m-wrap xsmall <# if (!data.Gebuehrenrelevant) { #>" + "hide" + "<# } #>", @onkeypress = "return NumbersOnly($(this), true);", @onblur = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Gebuehr',$(this).val());" }).ToHtmlString()
+            );
+        columns.XBound(c => c.Preis);
+        columns.XBound(c => c.StatusText).Visible(!Model.EditMode);
+        columns.XBound(c => c.Status).Visible(Model.EditMode)
+            .ClientTemplate(
+                Html.DropDownList("Status", Model.StatusWerte.ToSelectList(), new { @class = "m-wrap small <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>", @onchange = "UpdateOffeneZulassung('<#= data.DatensatzId #>','Status',$(this).val());" }).ToHtmlString()
+            );
+        columns.XBound(c => c.BeauftragtVon);
+        columns.XBound(c => c.Telefon);
+        columns.XBound(c => c.Email)
+            .ClientTemplate(
+                "<a href='mailto:<#= data.Email #>'><#= data.Email #></a>"
+            );
+        columns.XBound(c => c.BearbeitungsStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzId).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportOffeneZulassungenFilteredExcel", "ZldPartner");
+        commands.FilteredDataCommand("ExportOffeneZulassungenFilteredPDF", "ZldPartner");
+    })
+)
+
+<script type="text/javascript">
+    _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+</script>
+

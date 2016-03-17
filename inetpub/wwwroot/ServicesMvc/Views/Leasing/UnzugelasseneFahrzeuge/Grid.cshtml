@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Leasing.Models
+
+@{ var gridName = "GridUnzugelasseneFahrzeuge"; }
+
+@(Html.Telerik()
+    .Grid<UnzugelassenesFahrzeug>()
+    .Name(gridName)
+    .XAjaxDataBinding("UnzugelasseneFahrzeugeAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.BriefEingang).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.LeasingVertragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.HalterName);
+        columns.XBound(c => c.HaendlerName);
+        columns.XBound(c => c.KundenName);
+        columns.XBound(c => c.Nutzer);
+        columns.XBound(c => c.WunschLieferDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Status);
+        columns.XBound(c => c.Bemerkung);
+        columns.XBound(c => c.EquiNr).Sortable(false).Filterable(false).Groupable(false).Title("").ClientTemplate(
+                "<a href='#' onclick='return EditBemerkung(\"<#= data.EquiNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditComment + "' data-placement='left'><i class='halflings-icon white pencil'></i></a>"
+            );
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridUnzugelasseneFahrzeuge"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.BriefEingang))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUnzugelasseneFahrzeugeFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportUnzugelasseneFahrzeugeFilteredPDF", "Leasing");
+    })
+)

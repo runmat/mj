@@ -6,10 +6,11 @@ Partial Public Class OrganizationManagement
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -35,6 +36,7 @@ Partial Public Class OrganizationManagement
     End Sub
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
@@ -90,6 +92,7 @@ Partial Public Class OrganizationManagement
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         trSearchResult.Visible = True
         Dim dvOrganization As DataView
@@ -283,149 +286,9 @@ Partial Public Class OrganizationManagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Organisationsverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intOrganizationId As Int32, ByVal tblPar As DataTable) As DataTable
-        Try
-            Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-            cn.Open()
-            Dim _Organization As New Organization(intOrganizationId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Organisationsname") = _Organization.OrganizationName
-                .Rows(.Rows.Count - 1)("Organisationsreferenz") = _Organization.OrganizationReference
-                .Rows(.Rows.Count - 1)("Zeige alle Organisationen") = _Organization.AllOrganizations
-                .Rows(.Rows.Count - 1)("Logo") = _Organization.LogoPath
-                .Rows(.Rows.Count - 1)("Stylesheets") = _Organization.CssPath
-
-                If Not _Organization.OrganizationContact Is Nothing Then
-                    .Rows(.Rows.Count - 1)("Kontakt- Name") = _Organization.OrganizationContact.Name
-                    .Rows(.Rows.Count - 1)("Kontakt- Adresse") = _Organization.OrganizationContact.Address
-                    .Rows(.Rows.Count - 1)("Mailadresse Anzeigetext") = _Organization.OrganizationContact.MailDisplay
-                    .Rows(.Rows.Count - 1)("Mailadresse") = _Organization.OrganizationContact.Mail
-                    .Rows(.Rows.Count - 1)("Web-Adresse Anzeigetext") = _Organization.OrganizationContact.WebDisplay
-                    .Rows(.Rows.Count - 1)("Web-Adresse") = _Organization.OrganizationContact.Web
-                End If
-
-                Dim dvCustomer As New DataView
-                'If Not m_context.Cache("myCustomerListView") Is Nothing Then
-                '    dvCustomer = CType(m_context.Cache("myCustomerListView"), DataView)
-                If Not Session("myCustomerListView") Is Nothing Then
-                    dvCustomer = CType(Session("myCustomerListView"), DataView)
-                Else
-                    Dim dtCustomers As Kernel.CustomerList
-                    dtCustomers = New Kernel.CustomerList(m_User.Customer.AccountingArea, cn, True, False)
-
-                    dvCustomer.Sort = "Customername"
-                    dvCustomer = dtCustomers.DefaultView
-                    'm_context.Cache.Insert("myCustomerListView", dvCustomer, Nothing, DateTime.Now.AddMinutes(20), TimeSpan.Zero)
-                    Session("myCustomerListView") = dvCustomer
-                End If
-                If _Organization.CustomerId > 0 Then
-                    dvCustomer.Sort = "CustomerID"
-                    .Rows(.Rows.Count - 1)("Firma") = dvCustomer(dvCustomer.Find(_Organization.CustomerId)).Item("CustomerName").ToString
-                End If
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "OrganizationManagement", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Organisationsname") = txtOrganizationName.Text
-                .Rows(.Rows.Count - 1)("Organisationsreferenz") = txtOrganizationReference.Text
-                .Rows(.Rows.Count - 1)("Firma") = txtCustomer.Text
-                .Rows(.Rows.Count - 1)("Zeige alle Organisationen") = cbxAllOrganizations.Checked
-                .Rows(.Rows.Count - 1)("Kontakt- Name") = txtCName.Text
-                .Rows(.Rows.Count - 1)("Kontakt- Adresse") = txtCAddress.Text
-                .Rows(.Rows.Count - 1)("Mailadresse Anzeigetext") = txtCMailDisplay.Text
-                .Rows(.Rows.Count - 1)("Mailadresse") = txtCMail.Text
-                .Rows(.Rows.Count - 1)("Web-Adresse Anzeigetext") = txtCWebDisplay.Text
-                .Rows(.Rows.Count - 1)("Web-Adresse") = txtCWeb.Text
-                .Rows(.Rows.Count - 1)("Logo") = txtLogoPath.Text
-                .Rows(.Rows.Count - 1)("Stylesheets") = txtCssPath.Text
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "OrganizationManagement", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Organisationsname", System.Type.GetType("System.String"))
-            .Columns.Add("Organisationsreferenz", System.Type.GetType("System.String"))
-            .Columns.Add("Firma", System.Type.GetType("System.String"))
-            .Columns.Add("Zeige alle Organisationen", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Kontakt- Name", System.Type.GetType("System.String"))
-            .Columns.Add("Kontakt- Adresse", System.Type.GetType("System.String"))
-            .Columns.Add("Mailadresse Anzeigetext", System.Type.GetType("System.String"))
-            .Columns.Add("Mailadresse", System.Type.GetType("System.String"))
-            .Columns.Add("Web-Adresse Anzeigetext", System.Type.GetType("System.String"))
-            .Columns.Add("Web-Adresse", System.Type.GetType("System.String"))
-            .Columns.Add("Logo", System.Type.GetType("System.String"))
-            .Columns.Add("Stylesheets", System.Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
-    'Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
-    '    Search(True, True, True, True)
-    'End Sub
-
-
 
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         Search(, True)
@@ -445,7 +308,6 @@ Partial Public Class OrganizationManagement
     End Sub
 
     Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
-        Dim tblLogParameter As DataTable
         Try
             If txtOrganizationReference.Text = String.Empty And Not cbxAllOrganizations.Checked Then
                 Throw New Exception("Das Feld Organisationsreferenz darf nicht leer sein, wenn ""Zeige ALLE Organisationen"" nicht gesetzt ist!")
@@ -453,13 +315,9 @@ Partial Public Class OrganizationManagement
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
             Dim intOrganizationId As Integer = CInt(txtOrganizationID.Text)
-            Dim strLogMsg As String = "Organisation anlegen"
             Dim blnNew As Boolean = True
             If Not (intOrganizationId = -1) Then
                 blnNew = False
-                strLogMsg = "Organisation ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intOrganizationId, tblLogParameter)
             End If
 
             Dim _Organization As New Organization(intOrganizationId, txtOrganizationName.Text, _
@@ -471,9 +329,6 @@ Partial Public Class OrganizationManagement
                                                 txtCWebDisplay.Text, txtCWeb.Text, _
                                                 blnNew)
             _Organization.Save(cn)
-            tblLogParameter = New DataTable
-            tblLogParameter = SetNewLogParameters(tblLogParameter)
-            Log(_Organization.OrganizationId.ToString, strLogMsg, tblLogParameter)
 
             Search(True, True, True, True)
             lblMessage.Text = "Die Änderungen wurden gespeichert."
@@ -484,13 +339,10 @@ Partial Public Class OrganizationManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtOrganizationID.Text, lblError.Text, tblLogParameter, "ERR")
         End Try
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Try
             Dim _Organization As New Organization(CInt(txtOrganizationID.Text), txtOrganizationName.Text, _
                 CInt(ddlFilterCustomer.SelectedItem.Value), txtOrganizationReference.Text, _
@@ -502,12 +354,9 @@ Partial Public Class OrganizationManagement
                 False)
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtOrganizationID.Text), tblLogParameter)
 
             If Not _Organization.HasUser(cn) Then
                 _Organization.Delete(cn)
-                Log(_Organization.OrganizationId.ToString, "Organisation löschen", tblLogParameter)
 
                 Search(True, True, True, True)
                 lblMessage.Text = "Die Organisation wurde gelöscht."
@@ -521,16 +370,14 @@ Partial Public Class OrganizationManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtOrganizationID.Text, lblError.Text, tblLogParameter, "ERR")
         End Try
     End Sub
+
 #End Region
 
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
         Search(True, True, True, True)
     End Sub
-
 
     Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
         Dim index As Integer

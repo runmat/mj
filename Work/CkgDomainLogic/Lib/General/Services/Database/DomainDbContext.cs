@@ -241,7 +241,7 @@ namespace CkgDomainLogic.General.Database.Services
             get
             {
                 return _organization ?? (_organization = Database.SqlQuery<UserOrganization>(" SELECT " +
-                                                                                  " og.*, om.OrganizationAdmin " +
+                                                                  " og.*, om.OrganizationAdmin " +
                                                                                   " FROM WebUser wu " +
                                                                                   " INNER JOIN OrganizationMember om ON om.UserID = wu.UserID " +
                                                                                   " INNER JOIN Organization og ON om.OrganizationID = og.OrganizationID " +
@@ -477,7 +477,7 @@ namespace CkgDomainLogic.General.Database.Services
             {
                 foreach (var webGroup in selectedWebGroups)
                 {
-                var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
+                    var groupID = UserGroupsOfCurrentCustomer.Single(x => x.GroupID == int.Parse(webGroup)).GroupID;
 
                     var newDocumentRight = new DocumentRight
                     {
@@ -486,7 +486,7 @@ namespace CkgDomainLogic.General.Database.Services
                     };
 
                     DocumentRights.Add(newDocumentRight);
-            }
+                }
             }
 
             document.DocTypeID = docTypeId;
@@ -546,13 +546,13 @@ namespace CkgDomainLogic.General.Database.Services
         {
             // ID = 0 => neuer Dokumenttyp
             if (documentType.DocumentTypeID == 0)
-        {
-            DocumentTypes.Add(documentType);
-        }
+            {
+                DocumentTypes.Add(documentType);
+            }
             else
-        {
-            var documentTypeToUpdate = DocumentTypes.Single(x => x.DocumentTypeID == documentType.DocumentTypeID);
-            documentTypeToUpdate.DocTypeName = documentType.DocTypeName;
+            {
+                var documentTypeToUpdate = DocumentTypes.Single(x => x.DocumentTypeID == documentType.DocumentTypeID);
+                documentTypeToUpdate.DocTypeName = documentType.DocTypeName;
             }
 
             SaveChanges();

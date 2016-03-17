@@ -119,7 +119,7 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_USER_PUT_VG");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_MOB_STAMMD");
 
-            ////Autohaus MVC
+            //// Autohaus MVC
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_003");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_IMP_AUFTRDAT_007");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_Land_Plz_001");
@@ -440,11 +440,19 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_SAVE_REM_VERS_VORG_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_CARPORT_MELD_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_INS_CARPORT_NACHLIEF_01");
+            // CKG Partner-Portal
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_PO_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_SAVE_PO_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_GET_ZULASSUNGEN_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_PP_STAMMDATEN");
+
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULLISTE");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_AH_2015_ZULSTATUS");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_MELD_OPAV_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_EQUI_STL_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_RETAIL_FLOORCHECK_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_M_UNZUGELASSENE_FZGE_ARVAL");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_EQUI_CHANGE_LTEXT_01");
 
             #endregion
 

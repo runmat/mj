@@ -69,6 +69,8 @@ using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Contracts;
+using CkgDomainLogic.ZldPartner.Contracts;
+using CkgDomainLogic.ZldPartner.Services;
 using Telerik.Web.Mvc.Infrastructure;
 using ILocalizationService = GeneralTools.Contracts.ILocalizationService;
 using IZulassungDataService = CkgDomainLogic.CoC.Contracts.IZulassungDataService;
@@ -216,7 +218,7 @@ namespace ServicesMvc
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
             builder.RegisterType<DashboardItemOptions>().As<IDashboardItemOptions>().InstancePerLifetimeScope();
-            builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope(); 
             builder.RegisterType<WeatherDataServiceOpenWeatherMap>().As<IWeatherDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
@@ -249,6 +251,8 @@ namespace ServicesMvc
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UnzugelasseneFahrzeugeDataServiceSAP>().As<IUnzugelasseneFahrzeugeDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZldPartnerZulassungenDataServiceSap>().As<IZldPartnerZulassungenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
 

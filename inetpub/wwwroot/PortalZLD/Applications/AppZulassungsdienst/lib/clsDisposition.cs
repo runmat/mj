@@ -12,6 +12,7 @@ namespace AppZulassungsdienst.lib
 {
     public class clsDisposition : SapOrmBusinessBase
     {
+        public string UserName { get; set; }
         public string ZulDat { get; set; }
         public List<MobileUser> Fahrerliste { get; set; }
         public List<AmtDispos> Dispositionen { get; set; }
@@ -21,10 +22,11 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         public string Modus { get; set; }
 
-        public clsDisposition(string userReferenz)
+        public clsDisposition(string userReferenz, string userName)
         {
             VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
             VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
+            UserName = userName;
 
             ZulDat = DateTime.Today.AddDays(1).ToString("dd.MM.yyyy");
             Modus = "1";
@@ -219,6 +221,7 @@ namespace AppZulassungsdienst.lib
                     SAP.SetImportParameter("I_VKBUR", VKBUR);
                     SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
                     SAP.SetImportParameter("I_FUNCTION", Modus);
+                    SAP.SetImportParameter("I_DISPO_USER", UserName);
 
                     // Nur die disponierten Ämter an SAP übergeben
                     var disposToSave = Dispositionen.Where(d => !String.IsNullOrEmpty(d.MobileUserId));

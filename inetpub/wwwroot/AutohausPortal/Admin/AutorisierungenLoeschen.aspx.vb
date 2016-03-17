@@ -5,9 +5,10 @@ Partial Public Class AutorisierungenLoeschen
     Inherits System.Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
+
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -31,6 +32,7 @@ Partial Public Class AutorisierungenLoeschen
     End Sub
 
 #Region " Data and Function "
+
     Private Sub FillForm()
         trEditUser.Visible = False
         trSearchResult.Visible = False
@@ -45,6 +47,7 @@ Partial Public Class AutorisierungenLoeschen
         End If
         FillDataGrid(strSort)
     End Sub
+
     Private Sub FillDataGrid(ByVal strSort As String)
         trSearchResult.Visible = True
         Dim dvZV As DataView
@@ -174,80 +177,6 @@ Partial Public Class AutorisierungenLoeschen
         If blnRefillDataGrid Then FillDataGrid()
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = m_User.Applications.Select("AppID = '" & CStr(Request.QueryString("AppID")) & "'")(0)("AppFriendlyName").ToString ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intZVId As Int32, ByVal tblPar As DataTable) As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim dtAutorisierungenLoeschenList As New DataTable()
-            Dim daApp As New SqlClient.SqlDataAdapter("SELECT * " & _
-                                                      "FROM vwAuthorizationToDelete WHERE AuthorizationID = " & CInt(intZVId.ToString), cn)
-            daApp.Fill(dtAutorisierungenLoeschenList)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-                .Rows(.Rows.Count - 1)("Anwendung") = CStr(dtAutorisierungenLoeschenList.Rows(0)("AppFriendlyName"))
-                .Rows(.Rows.Count - 1)("Angelegt von") = CStr(dtAutorisierungenLoeschenList.Rows(0)("InitializedBy"))
-                .Rows(.Rows.Count - 1)("Angelegt am") = CDate(dtAutorisierungenLoeschenList.Rows(0)("InitializedWhen"))
-                .Rows(.Rows.Count - 1)("Organisation") = CStr(dtAutorisierungenLoeschenList.Rows(0)("OrganizationName"))
-                .Rows(.Rows.Count - 1)("Kundenreferenz") = CStr(dtAutorisierungenLoeschenList.Rows(0)("CustomerReference"))
-                .Rows(.Rows.Count - 1)("Prozessreferenz") = CStr(dtAutorisierungenLoeschenList.Rows(0)("ProcessReference"))
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "AutorisierungenLoeschen", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendung", System.Type.GetType("System.String"))
-            .Columns.Add("Angelegt von", System.Type.GetType("System.String"))
-            .Columns.Add("Angelegt am", System.Type.GetType("System.DateTime"))
-            .Columns.Add("Organisation", System.Type.GetType("System.String"))
-            .Columns.Add("Kundenreferenz", System.Type.GetType("System.String"))
-            .Columns.Add("Prozessreferenz", System.Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
@@ -257,12 +186,10 @@ Partial Public Class AutorisierungenLoeschen
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable = Nothing
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
 
             cn.Open()
-            tblLogParameter = SetOldLogParameters(CInt(txtAuthorizationID.Text), tblLogParameter)
 
             Dim strDeleteSQL As String = "DELETE " & _
                                           "FROM [Authorization] " & _
@@ -275,7 +202,6 @@ Partial Public Class AutorisierungenLoeschen
             cmd.CommandText = strDeleteSQL
             cmd.ExecuteNonQuery()
 
-            Log(txtAppFriendlyName.Text, "Autorisierung löschen", tblLogParameter)
             Search(True, True, True, True)
             lblMessage.Text = "Die Autorisierung wurde gelöscht."
         Catch ex As Exception
@@ -285,14 +211,13 @@ Partial Public Class AutorisierungenLoeschen
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtAppFriendlyName.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
             End If
         End Try
     End Sub
+
     Private Sub dgSearchResult_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles dgSearchResult.PageIndexChanging
         dgSearchResult.PageIndex = e.NewPageIndex
         FillDataGrid()
@@ -333,6 +258,5 @@ Partial Public Class AutorisierungenLoeschen
     End Sub
 
 #End Region
-
 
 End Class

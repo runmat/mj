@@ -5,14 +5,13 @@ Imports CKG.Base.Business
 Imports CKG.Base.Business.HelpProcedures
 Imports CKG.Base.Common
 
-
 Partial Public Class CustomerManagement
     Inherits Web.UI.Page
 
 #Region " Membervariables "
+
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
     Protected WithEvents GridNavigation1 As Global.CKG.PortalZLD.GridNavigation
 
 #End Region
@@ -271,7 +270,6 @@ Partial Public Class CustomerManagement
         lstArchivAssigned.DataValueField = "ArchivID"
         lstArchivAssigned.DataBind()
     End Sub
-
 
     Private Sub FillAccountingArea(ByVal intCustomerId As Int32, Optional ByVal neuanlage As Boolean = False)
         'AccountingArea
@@ -614,195 +612,13 @@ Partial Public Class CustomerManagement
         End If
     End Sub
 
-    Private Sub Log(ByVal strIdentification As String, ByVal strDescription As String, ByVal tblParameters As DataTable, Optional ByVal strCategory As String = "APP")
-        Dim logApp As New CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel)
-
-        ' strCategory
-        Dim strUserName As String = m_User.UserName ' strUserName
-        Dim strSessionID As String = Session.SessionID ' strSessionID
-        Dim intSource As Integer = CInt(Request.QueryString("AppID")) ' intSource 
-        Dim strTask As String = "Admin - Kundenverwaltung" ' strTask
-        ' strIdentification
-        ' strDescription
-        Dim strCustomerName As String = m_User.CustomerName ' strCustomername
-        Dim blnIsTestUser As Boolean = m_User.IsTestUser ' blnIsTestUser
-        Dim intSeverity As Integer = 0 ' intSeverity 
-
-        logApp.WriteEntry(strCategory, strUserName, strSessionID, intSource, strTask, strIdentification, strDescription, strCustomerName, m_User.Customer.CustomerId, blnIsTestUser, intSeverity, tblParameters)
-    End Sub
-
-    Private Function SetOldLogParameters(ByVal intCustomerId As Int32, ByVal tblPar As DataTable) As DataTable
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        Try
-
-            cn.Open()
-            Dim _Customer As New Customer(intCustomerId, cn)
-
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Alt"
-
-                .Rows(.Rows.Count - 1)("Firmenname") = _Customer.CustomerName
-                .Rows(.Rows.Count - 1)("KUNNR") = _Customer.KUNNR
-                .Rows(.Rows.Count - 1)("Neues Kennwort nach n Tagen") = _Customer.CustomerLoginRules.NewPasswordAfterNDays.ToString
-                .Rows(.Rows.Count - 1)("Konto sperren nach n Fehlversuchen") = _Customer.CustomerLoginRules.LockedAfterNLogins.ToString
-                .Rows(.Rows.Count - 1)("Mehrfaches Login") = _Customer.AllowMultipleLogin
-                .Rows(.Rows.Count - 1)("URL Remote Login") = _Customer.AllowUrlRemoteLogin
-                .Rows(.Rows.Count - 1)("Mindestlänge") = _Customer.CustomerPasswordRules.Length.ToString
-                .Rows(.Rows.Count - 1)("n numerische Zeichen") = _Customer.CustomerPasswordRules.Numeric.ToString
-                .Rows(.Rows.Count - 1)("n Großbuchstaben") = _Customer.CustomerPasswordRules.CapitalLetters.ToString
-                .Rows(.Rows.Count - 1)("n Sonderzeichen") = _Customer.CustomerPasswordRules.SpecialCharacter.ToString
-                .Rows(.Rows.Count - 1)("Sperre letzte n Kennworte") = _Customer.CustomerPasswordRules.PasswordHistoryEntries.ToString
-
-                Dim dvAppAssigned As DataView = GetAppAssignedView(intCustomerId, cn)
-                Dim strAnwendungen As String = ""
-                Dim j As Int32
-                For j = 0 To dvAppAssigned.Count - 1
-                    strAnwendungen &= dvAppAssigned(j)("AppFriendlyName").ToString & vbNewLine
-                Next
-                .Rows(.Rows.Count - 1)("Anwendungen") = strAnwendungen
-
-                If Not _Customer.CustomerContact Is Nothing Then
-                    .Rows(.Rows.Count - 1)("Kontakt- Name") = _Customer.CustomerContact.Name
-                    .Rows(.Rows.Count - 1)("Kontakt- Adresse") = _Customer.CustomerContact.Address
-                    .Rows(.Rows.Count - 1)("Mailadresse Anzeigetext") = _Customer.CustomerContact.MailDisplay
-                    .Rows(.Rows.Count - 1)("Mailadresse") = _Customer.CustomerContact.Mail
-                    .Rows(.Rows.Count - 1)("Web-Adresse Anzeigetext") = _Customer.CustomerContact.WebDisplay
-                    .Rows(.Rows.Count - 1)("Web-Adresse") = _Customer.CustomerContact.Web
-                End If
-                .Rows(.Rows.Count - 1)("Logo") = _Customer.CustomerStyle.LogoPath.ToString
-                .Rows(.Rows.Count - 1)("Logo2") = _Customer.LogoPath2.ToString
-                .Rows(.Rows.Count - 1)("Stylesheets") = _Customer.CustomerStyle.CssPath.ToString
-                .Rows(.Rows.Count - 1)("Handbuch") = _Customer.DocuPath
-                .Rows(.Rows.Count - 1)("Max. Anzahl Benutzer") = _Customer.MaxUser.ToString
-                .Rows(.Rows.Count - 1)("Organisationsanzeige") = _Customer.ShowOrganization
-                .Rows(.Rows.Count - 1)("Nur Kundengruppen administrieren") = _Customer.OrgAdminRestrictToCustomerGroup
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "CustomerManagement", "SetOldLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        Finally
-            If cn.State <> ConnectionState.Closed Then
-                cn.Close()
-            End If
-        End Try
-    End Function
-
-    Private Function SetNewLogParameters(ByVal tblPar As DataTable) As DataTable
-        Try
-            If tblPar Is Nothing Then
-                tblPar = CreateLogTableStructure()
-            ElseIf tblPar.Columns.Count = 0 Then
-                tblPar = CreateLogTableStructure()
-            End If
-            With tblPar
-                .Rows.Add(.NewRow)
-                .Rows(.Rows.Count - 1)("Status") = "Neu"
-                .Rows(.Rows.Count - 1)("Firmenname") = txtCustomerName.Text
-                .Rows(.Rows.Count - 1)("KUNNR") = txtKUNNR.Text
-                .Rows(.Rows.Count - 1)("Neues Kennwort nach n Tagen") = txtNewPwdAfterNDays.Text
-                .Rows(.Rows.Count - 1)("Konto sperren nach n Fehlversuchen") = txtLockedAfterNLogins.Text
-                .Rows(.Rows.Count - 1)("Mehrfaches Login") = chkAllowMultipleLogin.Checked
-                .Rows(.Rows.Count - 1)("URL Remote Login") = chkAllowUrlRemoteLogin.Checked
-                .Rows(.Rows.Count - 1)("Mindestlänge") = txtPwdLength.Text
-                .Rows(.Rows.Count - 1)("n numerische Zeichen") = txtPwdNNumeric.Text
-                .Rows(.Rows.Count - 1)("n Großbuchstaben") = txtNCapitalLetter.Text
-                .Rows(.Rows.Count - 1)("n Sonderzeichen") = txtNSpecialCharacter.Text
-                .Rows(.Rows.Count - 1)("Sperre letzte n Kennworte") = txtPwdHistoryNEntries.Text
-                Dim _li As ListItem
-                Dim strAnwendungen As String = ""
-                For Each _li In lstAppAssigned.Items
-                    strAnwendungen &= _li.Text & vbNewLine
-                Next
-                .Rows(.Rows.Count - 1)("Anwendungen") = strAnwendungen
-                .Rows(.Rows.Count - 1)("Kontakt- Name") = txtCName.Text
-                .Rows(.Rows.Count - 1)("Kontakt- Adresse") = TranslateHTML(EditCAddress.Content, TranslationDirection.SaveHTML) 'txtCAddress.Text
-                .Rows(.Rows.Count - 1)("Mailadresse Anzeigetext") = txtCMailDisplay.Text
-                .Rows(.Rows.Count - 1)("Mailadresse") = txtCMail.Text
-                .Rows(.Rows.Count - 1)("Web-Adresse Anzeigetext") = txtCWebDisplay.Text
-                .Rows(.Rows.Count - 1)("Web-Adresse") = txtCWeb.Text
-                .Rows(.Rows.Count - 1)("Logo") = txtLogoPath.Text
-                .Rows(.Rows.Count - 1)("Logo2") = txtLogoPath2.Text
-                .Rows(.Rows.Count - 1)("Stylesheets") = txtCssPath.Text
-                .Rows(.Rows.Count - 1)("Handbuch") = txtDocuPath.Text
-                .Rows(.Rows.Count - 1)("Max. Anzahl Benutzer") = txtMaxUser.Text
-                .Rows(.Rows.Count - 1)("Organisationsanzeige") = chkShowOrganization.Checked
-                .Rows(.Rows.Count - 1)("Nur Kundengruppen administrieren") = cbxOrgAdminRestrictToCustomerGroup.Checked
-            End With
-            Return tblPar
-        Catch ex As Exception
-            m_App.WriteErrorText(1, m_User.UserName, "CustomerManagement", "SetNewLogParameters", ex.ToString)
-
-            Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
-            dt.Rows.Add(dt.NewRow)
-            Dim str As String = ex.Message
-            If Not ex.InnerException Is Nothing Then
-                str &= ": " & ex.InnerException.Message
-            End If
-            dt.Rows(0)("Fehler beim Erstellen der Log-Parameter") = str
-            Return dt
-        End Try
-    End Function
-
-    Private Function CreateLogTableStructure() As DataTable
-        Dim tblPar As New DataTable()
-        With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Firmenname", System.Type.GetType("System.String"))
-            .Columns.Add("KUNNR", System.Type.GetType("System.String"))
-            .Columns.Add("DAD", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Neues Kennwort nach n Tagen", System.Type.GetType("System.String"))
-            .Columns.Add("Konto sperren nach n Fehlversuchen", System.Type.GetType("System.String"))
-            .Columns.Add("Mehrfaches Login", System.Type.GetType("System.Boolean"))
-            .Columns.Add("URL Remote Login", Type.GetType("Boolean"))
-            .Columns.Add("Mindestlänge", System.Type.GetType("System.String"))
-            .Columns.Add("n numerische Zeichen", System.Type.GetType("System.String"))
-            .Columns.Add("n Großbuchstaben", System.Type.GetType("System.String"))
-            .Columns.Add("n Sonderzeichen", System.Type.GetType("System.String"))
-            .Columns.Add("Sperre letzte n Kennworte", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendungen", System.Type.GetType("System.String"))
-            .Columns.Add("Kontakt- Name", System.Type.GetType("System.String"))
-            .Columns.Add("Kontakt- Adresse", System.Type.GetType("System.String"))
-            .Columns.Add("Mailadresse Anzeigetext", System.Type.GetType("System.String"))
-            .Columns.Add("Mailadresse", System.Type.GetType("System.String"))
-            .Columns.Add("Web-Adresse Anzeigetext", System.Type.GetType("System.String"))
-            .Columns.Add("Web-Adresse", System.Type.GetType("System.String"))
-            .Columns.Add("Logo", System.Type.GetType("System.String"))
-
-            '§§§ JVE 18.09.2006: Logo2
-            .Columns.Add("Logo2", System.Type.GetType("System.String"))
-            '-------------------------
-            .Columns.Add("Stylesheets", System.Type.GetType("System.String"))
-            .Columns.Add("Handbuch", System.Type.GetType("System.String"))
-            .Columns.Add("Max. Anzahl Benutzer", System.Type.GetType("System.String"))
-            .Columns.Add("Organisationsanzeige", System.Type.GetType("System.String"))
-            .Columns.Add("Nur Kundengruppen administrieren", System.Type.GetType("System.String"))
-        End With
-        Return tblPar
-    End Function
 #End Region
 
 #Region " Events "
+
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
         Search(True, True, True, True)
     End Sub
-
 
     Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
         If Not trConfirm.Visible Then
@@ -872,18 +688,13 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             Dim _customer As New Customer(CInt(txtCustomerID.Text))
 
             cn.Open()
-            tblLogParameter = New DataTable
-            tblLogParameter = SetOldLogParameters(CInt(txtCustomerID.Text), tblLogParameter)
             If Not _customer.HasUser(cn) Then
                 _customer.Delete(cn)
-                Log(_customer.CustomerId.ToString, "Firma löschen", tblLogParameter)
-
                 Search(True, True, True, True)
                 lblMessage.Text = "Der Kunde wurde gelöscht."
             Else
@@ -896,8 +707,6 @@ Partial Public Class CustomerManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtCustomerID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
@@ -906,7 +715,6 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub lbtnConfirm_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnConfirm.Click
-        Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
 
         Dim StrDaysLockMessage As String
@@ -916,12 +724,7 @@ Partial Public Class CustomerManagement
 
             cn.Open()
             Dim intCustomerId As Integer = CInt(txtCustomerID.Text)
-            Dim strLogMsg As String = "Firma anlegen"
-            If Not (intCustomerId = -1) Then
-                strLogMsg = "Firma ändern"
-                tblLogParameter = New DataTable
-                tblLogParameter = SetOldLogParameters(intCustomerId, tblLogParameter)
-            End If
+
             Dim KundenAdministration As Integer
             If rbeing.Checked = True Then
                 KundenAdministration = 0
@@ -1001,11 +804,7 @@ Partial Public Class CustomerManagement
                 StrDaysDelMessage = "Der Wert für Tage bis zur automatischen Löschung muss mindestens 5 betragen! Der Wert wurde automatisch auf den Standardwert (9999 Tage) gesetzt. </br>"
             End If
 
-                _customer.Save(cn)
-
-                tblLogParameter = New DataTable
-                tblLogParameter = SetNewLogParameters(tblLogParameter)
-                Log(_customer.CustomerId.ToString, strLogMsg, tblLogParameter)
+            _customer.Save(cn)
 
             'Anwendungen zuordnen
             Dim dvAppAssigned As DataView
@@ -1048,15 +847,12 @@ Partial Public Class CustomerManagement
             If Not ex.InnerException Is Nothing Then
                 lblError.Text &= ": " & ex.InnerException.Message
             End If
-            tblLogParameter = New DataTable
-            Log(txtCustomerID.Text, lblError.Text, tblLogParameter, "ERR")
         Finally
             If cn.State <> ConnectionState.Closed Then
                 cn.Close()
             End If
         End Try
     End Sub
-
 
     Private Sub btnNewIpAddress_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewIpAddress.Click
         If (Not txtCustomerID.Text = "-1") And (Not txtIpAddress.Text.Trim(" "c).Length = 0) Then
@@ -1078,6 +874,7 @@ Partial Public Class CustomerManagement
             End Try
         End If
     End Sub
+
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
         dgSearchResult.PageIndex = PageIndex
         FillDataGrid()
@@ -1110,6 +907,7 @@ Partial Public Class CustomerManagement
     Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
+
     Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
         Dim strSort As String = e.SortExpression
         If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
@@ -1119,10 +917,7 @@ Partial Public Class CustomerManagement
         FillDataGrid(strSort)
     End Sub
 
-
 #End Region
-
-
 
     Protected Sub btnAssign_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnAssign.Click
         Dim _item As ListItem
@@ -1140,7 +935,6 @@ Partial Public Class CustomerManagement
             lstAppUnAssigned.Items.Remove(_item)
         Next
     End Sub
-
 
     Protected Sub btnUnAssign_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnUnAssign.Click
         Dim _item As ListItem
@@ -1193,11 +987,9 @@ Partial Public Class CustomerManagement
         Next
     End Sub
 
-
     Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEmpty.Click
         Search(True, True, True, True)
     End Sub
-
 
     Private Sub Repeater1_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.RepeaterCommandEventArgs) Handles Repeater1.ItemCommand
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
@@ -1214,8 +1006,6 @@ Partial Public Class CustomerManagement
             End If
         End Try
     End Sub
-
-
 
     Private Function setKundenadministrationInfoVisibility(Optional ByVal Value As Integer = 0) As Boolean
 
@@ -1308,4 +1098,5 @@ Partial Public Class CustomerManagement
             cbxForcePasswordQuestion.Enabled = True
         End If
     End Sub
+
 End Class

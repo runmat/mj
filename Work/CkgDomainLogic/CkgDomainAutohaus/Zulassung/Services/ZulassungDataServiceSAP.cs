@@ -276,7 +276,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal)
         {
             try
             {
@@ -286,7 +286,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
-                SAP.SetImportParameter("I_AUFRUF", "2");
+                SAP.SetImportParameter("I_AUFRUF", (partnerportal ? "3" : "2"));
                 SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone2);
                 SAP.SetImportParameter("I_EMAIL", LogonContext.UserInfo.Mail);
                 SAP.SetImportParameter("I_SPEICHERN", (saveDataToSap ? "A" : "S"));
@@ -295,6 +295,9 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_FORMULAR", "X");
 
                 SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
+
+                if (partnerportal)
+                    SAP.SetImportParameter("I_LIFNR", LogonContext.User.Reference.NotNullOrEmpty().ToSapKunnr());
                     
                 var positionen = new List<Zusatzdienstleistung>();
                 var adressen = new List<Adressdaten>();
