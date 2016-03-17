@@ -1,3 +1,4 @@
+@using System.Configuration
 <script type="text/javascript">
 
     function IsIE() {
@@ -57,4 +58,8 @@
         // alle anderen Zeichen nicht zulassen
         return false;
     }
+
+    @{ var layoutTheme = ConfigurationManager.AppSettings["DefaultLayoutTheme"]; }
+    var _defaultLayoutTheme = '@layoutTheme.NotNullOrEmpty().ToUpper()';
+
 </script>
