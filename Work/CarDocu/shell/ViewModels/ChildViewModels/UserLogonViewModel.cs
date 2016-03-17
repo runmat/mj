@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
+using GeneralTools.Models;
 using WpfTools4.Commands;
+using AppDomain = CarDocu.Models.AppDomain;
 
 namespace CarDocu.ViewModels
 {
@@ -41,6 +44,11 @@ namespace CarDocu.ViewModels
 
         public string LoginData { get; set; }
 
+        public bool DomainSelectionAvailable
+        {
+            get { return AppSettings.AskForDomainSelectionAtLogin; }
+        }
+
         bool _specifyDomainManually;
         public bool SpecifyDomainManually
         {
@@ -49,6 +57,90 @@ namespace CarDocu.ViewModels
             {
                 _specifyDomainManually = value;
                 SendPropertyChanged("SpecifyDomainManually");
+            }
+        }
+
+        string _selectedRecentAppDomain;
+        public string SelectedRecentAppDomain
+        {
+            get { return _selectedRecentAppDomain; }
+            set
+            {
+                _selectedRecentAppDomain = value;
+                SendPropertyChanged("SelectedRecentAppDomain");
+
+                SpecifyDomainManually = value.NotNullOrEmpty() == "-";
+
+                var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainName.NotNullOrEmpty(), value.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
+                if (matchingRecentAppDomain != null)
+                {
+                    _manualDomainName = SelectedRecentAppDomain;
+                    if (_manualDomainName.NotNullOrEmpty() == "-")
+                        _manualDomainName = "";
+                    _manualDomainPath = matchingRecentAppDomain.DomainPath;
+
+                    SendPropertyChanged("ManualDomainName");
+                    SendPropertyChanged("ManualDomainPath");
+                }
+            }
+        }
+
+        public List<AppDomain> RecentAppDomains
+        {
+            get { return AppSettings.RecentAppDomains; }
+            set
+            {
+                AppSettings.RecentAppDomains = value;
+                SendPropertyChanged("RecentAppDomains");
+            }
+        }
+
+        string _manualDomainName;
+        public string ManualDomainName
+        {
+            get { return _manualDomainName; }
+            set
+            {
+                _manualDomainName = value;
+                SendPropertyChanged("ManualDomainName");
+
+                if (_manualDomainName.NotNullOrEmpty() == "")
+                    return;
+
+                var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainName.NotNullOrEmpty(), value.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
+                if (matchingRecentAppDomain != null)
+                {
+                    SelectedRecentAppDomain = matchingRecentAppDomain.DomainName;
+
+                    _manualDomainName = SelectedRecentAppDomain;
+                    _manualDomainPath = matchingRecentAppDomain.DomainPath;
+
+                    SendPropertyChanged("ManualDomainName");
+                    SendPropertyChanged("ManualDomainPath");
+                }
+            }
+        }
+
+        string _manualDomainPath;
+        public string ManualDomainPath
+        {
+            get { return _manualDomainPath; }
+            set
+            {
+                _manualDomainPath = value;
+                SendPropertyChanged("ManualDomainPath");
+
+                var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainPath.NotNullOrEmpty(), value.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
+                if (matchingRecentAppDomain != null)
+                {
+                    SelectedRecentAppDomain = matchingRecentAppDomain.DomainName;
+
+                    _manualDomainName = matchingRecentAppDomain.DomainName;
+                    _manualDomainPath = matchingRecentAppDomain.DomainPath;
+
+                    SendPropertyChanged("ManualDomainPath");
+                    SendPropertyChanged("ManualDomainName");
+                }
             }
         }
 

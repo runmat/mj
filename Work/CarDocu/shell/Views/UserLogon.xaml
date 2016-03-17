@@ -1,7 +1,8 @@
 ﻿<Window x:Class="CarDocu.UserLogon"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Common="clr-namespace:WpfTools4.Common;assembly=WpfTools4" WindowStartupLocation="CenterScreen"
+        xmlns:common="clr-namespace:WpfTools4.Common;assembly=WpfTools4"
+        WindowStartupLocation="CenterScreen"
         Title="{Binding Title}" SizeToContent="WidthAndHeight" >
     <StackPanel Margin="30">
         
@@ -19,29 +20,38 @@
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="130" />
                     <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
-                
-                <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,20">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="0,0,15,0">Domain nicht dabei?</TextBlock>
-                        <CheckBox IsChecked="{Binding SpecifyDomainManually}">Domain manuell eingeben</CheckBox>
-                    </StackPanel>
-                    <StackPanel Visibility="{Binding SpecifyDomainManually, Converter={StaticResource BooleanVisibilityConverter}}">
-                        <StackPanel Orientation="Horizontal" Height="30">
-                            <TextBlock Text="Domain Pfad:" Width="90" />
-                            <TextBox Text="{Binding DomainPath}" Width="300" />
+
+                <Border Visibility="{Binding DomainSelectionAvailable, Converter={StaticResource BooleanVisibilityConverter}}"
+                        Grid.Row="0" Grid.ColumnSpan="2" Margin="-5,0,-5,20" Background="#FDFAEC" CornerRadius="0" Padding="5,10,5,10">
+                    <StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Height="28">
+                            <TextBlock Text="Anmelden an Domain:" Width="130" />
+                            <ComboBox ItemsSource="{Binding RecentAppDomains}" 
+                                    SelectedValue="{Binding SelectedRecentAppDomain, UpdateSourceTrigger=PropertyChanged}" 
+                                    SelectedValuePath="DomainName" DisplayMemberPath="UiText"
+                                    Width="300" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Height="30">
-                            <TextBlock Text="Domain Name:" Width="90" />
-                            <TextBox Text="{Binding DomainName}" Width="300" />
+
+                        <StackPanel Visibility="{Binding SpecifyDomainManually, Converter={StaticResource BooleanVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal" Height="28">
+                                <TextBlock Text="Domain Name:" Width="130" />
+                                <TextBox Text="{Binding ManualDomainName, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="28">
+                                <TextBlock Text="Domain Pfad:" Width="130" />
+                                <TextBox Text="{Binding ManualDomainPath, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                            </StackPanel>
                         </StackPanel>
+
                     </StackPanel>
-                </StackPanel>
+                </Border>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="User:" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding UserLoginName, UpdateSourceTrigger=PropertyChanged}" Name="tbUserLogon" HorizontalAlignment="Stretch" Common:EnterKeyToTab.IsEnabled="False" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding UserLoginName, UpdateSourceTrigger=PropertyChanged}" Name="tbUserLogon" HorizontalAlignment="Stretch" common:EnterKeyToTab.IsEnabled="False" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Standort:" />
                 <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding DomainLocations}" 

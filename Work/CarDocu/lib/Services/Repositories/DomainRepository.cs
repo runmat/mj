@@ -120,6 +120,7 @@ namespace CarDocu.Services
         public void AppSettingsLoad()
         {
             AppSettings = XmlService.XmlDeserializeFromPath<AppSettings>(AppSettingsDirectoryName);
+            AppSettings.Init();
         }
 
         public void AppSettingsSave()
