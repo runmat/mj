@@ -3,7 +3,7 @@
 
     var _submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
 
-    var _editWarenkorbNichtBearbeiten = logonContext.GetCategorySettingsForWebUser("WARENKORB_NICHT_BEARBEITEN");
+    var _warenkorbNichtBearbeiten = logonContext.GetCategorySettingsForWebUser("WARENKORB_NICHT_BEARBEITEN");
 }
 
 
@@ -83,7 +83,7 @@
 
     var _submitRightAuftraegeNichtAbsenden = '@_submitRightAuftraegeNichtAbsenden';
 
-    var _editWarenkorbNichtBearbeiten = '@_editWarenkorbNichtBearbeiten';
+    var _warenkorbNichtBearbeiten = '@_warenkorbNichtBearbeiten';
 
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
@@ -225,7 +225,14 @@
 
         // prepare multi row selection
         App.initUniform();
-        Grid_PrepareMultiRowSelected("GridShoppingCart", true);       
+        Grid_PrepareMultiRowSelected("GridShoppingCart", true);
+
+        if (_warenkorbNichtBearbeiten.toLowerCase() === 'true') {
+            $('.conditionalHide').hide();
+        }
+        else {
+            $('.conditionalHide').show();
+        }
     }
 
     function OnColumnShowHide_GridShoppingCart() {
