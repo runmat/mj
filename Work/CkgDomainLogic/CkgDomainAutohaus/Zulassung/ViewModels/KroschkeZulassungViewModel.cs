@@ -918,7 +918,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Fahrzeugdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => ZulassungDataService.Fahrzeugarten); } }
+        public List<Domaenenfestwert> Fahrzeugarten
+        {
+            get { return PropertyCacheGet(() => (ZulassungDataService != null ? ZulassungDataService.Fahrzeugarten : new List<Domaenenfestwert>())); }
+        }
 
         public void SetFahrzeugdaten(Fahrzeugdaten model)
         {
@@ -1317,6 +1320,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataMarkForRefresh()
         {
+            PropertyCacheClear(this, m => m.Fahrzeugarten);
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
 
