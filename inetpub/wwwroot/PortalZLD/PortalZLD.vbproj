@@ -822,6 +822,32 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Admin.Identity)">
+        <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>	
+      <_Bin Include="bin\Admin.*" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>	  
+	<_AppZulassungsdienst Include="Applications\AppZulassungsdienst\**\*.aspx;Applications\AppZulassungsdienst\**\*.ascx;Applications\AppZulassungsdienst\**\*.master;Applications\AppZulassungsdienst\**\*.js;Applications\AppZulassungsdienst\**\*.css;Applications\AppZulassungsdienst\**\*.doc;Applications\AppZulassungsdienst\**\*.pdf;Applications\AppZulassungsdienst\**\*.xls;Applications\AppZulassungsdienst\**\*.htm;Applications\AppZulassungsdienst\**\*.asmx;Applications\AppZulassungsdienst\**\*.htc;Applications\AppZulassungsdienst\**\Templates\*.xml" />
+    <FilesForPackagingFromProject Include="%(_AppZulassungsdienst.Identity)">
+		<DestinationRelativePath>Applications\AppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+	</FilesForPackagingFromProject>	
+	</ItemGroup>	
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
