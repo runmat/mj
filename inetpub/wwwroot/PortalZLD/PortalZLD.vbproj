@@ -852,6 +852,55 @@
 	</FilesForPackagingFromProject>	
 	</ItemGroup>
   </Target>
+  <PropertyGroup>
+    <OnBeforePackageUsingManifest>AddCustomSkipRules</OnBeforePackageUsingManifest>
+  </PropertyGroup>
+  <Target Name="AddCustomSkipRules">
+    <ItemGroup>
+      <MsDeploySkipRules Include="SkipDeleteBilderFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Bilder\\.*$</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteBilderFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Bilder\\.*$</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteLogsFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Logs\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteLogsFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Logs\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteTempFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Temp\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteTempFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Temp\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+    </ItemGroup>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
