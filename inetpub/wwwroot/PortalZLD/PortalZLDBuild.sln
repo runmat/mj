@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PortalZLD", "PortalZLD.vbproj", "{49BD134E-5A86-442F-8AF4-81BD9F04251D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ZLDBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZLDBaseMvc", "..\..\..\Work\ZLDBaseMvc\ZLDBaseMvc.csproj", "{41662BCF-C75E-44B8-94ED-95BB62276155}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PortalZLD.vbproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\..\\..\\Work\\ZLDBase\\Base.vbproj
+		SccProjectName2 = ../../Work/ZLDBase
+		SccLocalPath2 = ..\\..\\..\\Work\\ZLDBase
+		SccProjectUniqueName3 = ..\\..\\..\\Work\\ZLDBaseMvc\\ZLDBaseMvc.csproj
+		SccProjectName3 = ../../Work/ZLDBaseMvc
+		SccLocalPath3 = ..\\..\\..\\Work\\ZLDBaseMvc
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49BD134E-5A86-442F-8AF4-81BD9F04251D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49BD134E-5A86-442F-8AF4-81BD9F04251D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49BD134E-5A86-442F-8AF4-81BD9F04251D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49BD134E-5A86-442F-8AF4-81BD9F04251D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10B1992-6D06-42B3-97C6-18CBB9D0725A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41662BCF-C75E-44B8-94ED-95BB62276155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41662BCF-C75E-44B8-94ED-95BB62276155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41662BCF-C75E-44B8-94ED-95BB62276155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41662BCF-C75E-44B8-94ED-95BB62276155}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
