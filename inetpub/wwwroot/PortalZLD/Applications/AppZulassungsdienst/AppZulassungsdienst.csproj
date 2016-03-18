@@ -628,6 +628,13 @@
     <Content Include="forms\Report99ZLD_2.aspx" />
     <Content Include="forms\AHVersandSelect.aspx" />
     <Content Include="forms\Touren.aspx" />
+    <Content Include="JavaScript\hoverIntent.js" />
+    <Content Include="JavaScript\jquery-ui.css" />
+    <Content Include="JavaScript\jquery-ui.min.js" />
+    <Content Include="JavaScript\jquery.bgiframe.min.js" />
+    <Content Include="JavaScript\jquery.min.js" />
+    <Content Include="JavaScript\superfish.js" />
+    <Content Include="JavaScript\supersubs.js" />
     <Content Include="MasterPage\App.Master" />
   </ItemGroup>
   <ItemGroup>
