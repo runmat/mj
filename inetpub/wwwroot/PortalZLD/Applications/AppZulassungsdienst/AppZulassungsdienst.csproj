@@ -634,17 +634,20 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documents\Bestellung.doc" />
-    <None Include="Documents\Einzugsermächtigung.pdf" />
-    <None Include="Documents\Einzugsermächtigung_SEPA.pdf" />
-    <None Include="Documents\Lieferschein.doc" />
-    <None Include="Documents\Mappe1.xlt" />
-    <None Include="Documents\Praegeliste.doc" />
-    <None Include="Documents\Tagesliste.doc" />
-    <None Include="Documents\Tagesliste_10104265.doc" />
-    <None Include="Documents\Vorlage_Auswertung.xls" />
-    <None Include="Documents\ZulassungAbwAdresse.doc" />
-    <None Include="Documents\ZulassungDez.doc" />
+    <Content Include="Documents\Bestellung.doc" />
+    <Content Include="Documents\Einzugsermächtigung.pdf" />
+    <Content Include="Documents\Einzugsermächtigung_SEPA.pdf" />
+    <Content Include="Documents\Lieferschein.doc" />
+    <Content Include="Documents\Mappe1.xlt" />
+    <Content Include="Documents\Praegeliste.doc" />
+    <Content Include="Documents\Tagesliste.doc" />
+    <Content Include="Documents\Tagesliste_10104265.doc" />
+    <Content Include="Documents\Vorlage_Auswertung.xls" />
+    <Content Include="Documents\ZulassungAbwAdresse.doc" />
+    <Content Include="Documents\ZulassungDez.doc" />
+    <Content Include="Documents\Dokumentation_neues_ZLDPortal.pdf" />
+    <Content Include="Documents\Dokumentation_neues_ZLDPortal_Adminbereich.pdf" />
+    <Content Include="Documents\InventurKonsi.doc" />
     <None Include="lib\ZLDTableClasses.dbml">
       <SubType>Designer</SubType>
       <Generator>MSLinqToSQLGenerator</Generator>
@@ -734,7 +737,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
