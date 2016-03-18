@@ -254,7 +254,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (HistoryAuftragCurrent == null)
                 return null;
 
-            var auftragGeber = LogonContext.KundenNr.ToSapKunnr(); 
+            var auftragGeber = HistoryAuftragSelector.KundenNr; 
             var path = Path.Combine(AppSettings.UploadFilePath, auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView);
             return path;
         }
