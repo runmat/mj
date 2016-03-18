@@ -837,16 +837,20 @@
       <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
       <FilesForPackagingFromProject Include="%(_Admin.Identity)">
         <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>	
+      </FilesForPackagingFromProject>
       <_Bin Include="bin\Admin.*" />
       <FilesForPackagingFromProject Include="%(_Bin.Identity)">
         <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>	  
-	<_AppZulassungsdienst Include="Applications\AppZulassungsdienst\**\*.aspx;Applications\AppZulassungsdienst\**\*.ascx;Applications\AppZulassungsdienst\**\*.master;Applications\AppZulassungsdienst\**\*.js;Applications\AppZulassungsdienst\**\*.css;Applications\AppZulassungsdienst\**\*.doc;Applications\AppZulassungsdienst\**\*.pdf;Applications\AppZulassungsdienst\**\*.xls;Applications\AppZulassungsdienst\**\*.htm;Applications\AppZulassungsdienst\**\*.asmx;Applications\AppZulassungsdienst\**\*.htc;Applications\AppZulassungsdienst\**\Templates\*.xml" />
+      </FilesForPackagingFromProject>
+	<_AppZulassungsdienst Include="Applications\AppZulassungsdienst\**\*.aspx;Applications\AppZulassungsdienst\**\*.ascx;Applications\AppZulassungsdienst\**\*.master;Applications\AppZulassungsdienst\**\*.js;Applications\AppZulassungsdienst\**\*.css;Applications\AppZulassungsdienst\**\*.doc;Applications\AppZulassungsdienst\**\*.pdf;Applications\AppZulassungsdienst\**\*.xls;Applications\AppZulassungsdienst\**\*.htm;Applications\AppZulassungsdienst\**\*.asmx;Applications\AppZulassungsdienst\**\*.htc;Applications\AppZulassungsdienst\**\Templates\*.xml;Applications\AppZulassungsdienst\**\*.png;Applications\AppZulassungsdienst\**\*.asax" />
     <FilesForPackagingFromProject Include="%(_AppZulassungsdienst.Identity)">
 		<DestinationRelativePath>Applications\AppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+	</FilesForPackagingFromProject>
+	<_MvcAppZulassungsdienst Include="Applications\MvcAppZulassungsdienst\**\*.aspx;Applications\MvcAppZulassungsdienst\**\*.ascx;Applications\MvcAppZulassungsdienst\**\*.master;Applications\MvcAppZulassungsdienst\**\*.js;Applications\MvcAppZulassungsdienst\**\*.css;Applications\MvcAppZulassungsdienst\**\*.doc;Applications\MvcAppZulassungsdienst\**\*.pdf;Applications\MvcAppZulassungsdienst\**\*.xls;Applications\MvcAppZulassungsdienst\**\*.htm;Applications\MvcAppZulassungsdienst\**\*.asmx;Applications\MvcAppZulassungsdienst\**\*.htc;Applications\MvcAppZulassungsdienst\**\*.png;Applications\MvcAppZulassungsdienst\**\*.asax;Applications\MvcAppZulassungsdienst\**\Templates\*.xml" />
+    <FilesForPackagingFromProject Include="%(_MvcAppZulassungsdienst.Identity)">
+		<DestinationRelativePath>Applications\MvcAppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
 	</FilesForPackagingFromProject>	
-	</ItemGroup>	
+	</ItemGroup>
   </Target>
   <ProjectExtensions>
     <VisualStudio>
