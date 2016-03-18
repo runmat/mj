@@ -726,7 +726,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             // Kontoinhaber aus Adresse übernehmen
             Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = String.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
-            Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Iban;
 
             // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
             if (Zulassung.BankAdressdaten.Cpdkunde
@@ -762,7 +761,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
-            Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Bankdaten.Iban;
         }
 
         public void DataMarkForRefreshZahlerKfzSteuerAdressen()
