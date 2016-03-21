@@ -52,7 +52,7 @@ namespace CarDocu.Services
             if (forceAdminLogon)
             {
                 Repository.LogonUser = Repository.AdminUser;
-                Repository.InitRemainingSettings();
+                Repository.LoadRemainingSettings();
                 return true;
             }
 
@@ -84,14 +84,14 @@ namespace CarDocu.Services
             Repository.GlobalSettingsSave();
 
             Repository.LogonUser = logonUser;
-            Repository.InitRemainingSettings();
+            Repository.LoadRemainingSettings();
 
             return true;
         }
 
         public static void LoadGlobalSettings()
         {
-            Repository.InitGlobalSettings();
+            Repository.LoadGlobalSettings();
         }
 
         /// <summary>

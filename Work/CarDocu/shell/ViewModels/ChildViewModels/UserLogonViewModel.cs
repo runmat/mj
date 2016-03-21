@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WpfTools4.Commands;
 using AppDomain = CarDocu.Models.AppDomain;
 
@@ -44,7 +45,7 @@ namespace CarDocu.ViewModels
 
         public string LoginData { get; set; }
 
-        public bool DomainSelectionAvailable
+        public bool DomainSelectionRequired
         {
             get { return AppSettings.AskForDomainSelectionAtLogin; }
         }
@@ -78,6 +79,7 @@ namespace CarDocu.ViewModels
                     if (_manualDomainName.NotNullOrEmpty() == "-")
                         _manualDomainName = "";
                     _manualDomainPath = matchingRecentAppDomain.DomainPath;
+                    GlobalSettingsTryLoad();
 
                     SendPropertyChanged("ManualDomainName");
                     SendPropertyChanged("ManualDomainPath");
@@ -114,6 +116,7 @@ namespace CarDocu.ViewModels
 
                     _manualDomainName = SelectedRecentAppDomain;
                     _manualDomainPath = matchingRecentAppDomain.DomainPath;
+                    GlobalSettingsTryLoad();
 
                     SendPropertyChanged("ManualDomainName");
                     SendPropertyChanged("ManualDomainPath");
@@ -128,6 +131,7 @@ namespace CarDocu.ViewModels
             set
             {
                 _manualDomainPath = value;
+                GlobalSettingsTryLoad();
                 SendPropertyChanged("ManualDomainPath");
 
                 var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainPath.NotNullOrEmpty(), value.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
@@ -137,6 +141,7 @@ namespace CarDocu.ViewModels
 
                     _manualDomainName = matchingRecentAppDomain.DomainName;
                     _manualDomainPath = matchingRecentAppDomain.DomainPath;
+                    GlobalSettingsTryLoad();
 
                     SendPropertyChanged("ManualDomainPath");
                     SendPropertyChanged("ManualDomainName");
@@ -150,7 +155,42 @@ namespace CarDocu.ViewModels
         public UserLogonViewModel()
         {
             OkCommand = new DelegateCommand(e => LoginData = $"{UserLoginName}~{DomainLocationCode}", 
-                                            e => !string.IsNullOrEmpty(UserLoginName) && !string.IsNullOrEmpty(DomainLocationCode));
+                                            e => UserLoginName.IsNotNullOrEmpty() && DomainLocationCode.IsNotNullOrEmpty() && 
+                                                        (DomainSelectionRequired && 
+                                                         ManualDomainName.IsNotNullOrEmpty() && 
+                                                         FileService.PathExistsAndWriteEnabled(ManualDomainPath)));
+
+            if (DomainSelectionRequired)
+                GlobalSettingsInit();
+        }
+
+        protected override void SetPath(object e)
+        {
+            var path = "";
+            if (GetPathFromDialog(AppSettings.DomainPath, "Domain Pfad setzen:", ref path))
+                ManualDomainPath = path;
+        }
+
+        void GlobalSettingsInit()
+        {
+            AppSettings.DomainName = "";
+            AppSettings.DomainPath = "";
+            DomainService.Repository.InitGlobalSettings();
+            SendPropertyChanged("DomainLocations");
+        }
+
+        void GlobalSettingsTryLoad()
+        {
+            if (!FileService.PathExistsAndWriteEnabled(ManualDomainPath))
+            {
+                GlobalSettingsInit();
+                return;
+            }
+
+            AppSettings.DomainName = ManualDomainName;
+            AppSettings.DomainPath = ManualDomainPath;
+            DomainService.Repository.LoadGlobalSettings();
+            SendPropertyChanged("DomainLocations");
         }
     }
 }

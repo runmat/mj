@@ -87,7 +87,7 @@ namespace CarDocu.ViewModels
             catch { Tools.AlertError("Fehler beim Öffnen der Scanner Einstellungen.\r\n\r\nStellen Sie bitte sicher, dass der Scanner angeschlossen und eingeschaltet ist."); }
         }
 
-        static void SetPath(object e)
+        protected virtual void SetPath(object e)
         {
             var path = "";
             if (e == null)
@@ -104,7 +104,7 @@ namespace CarDocu.ViewModels
             }
         }
 
-        static bool GetPathFromDialog(string originalPath, string caption, ref string newPath)
+        static protected bool GetPathFromDialog(string originalPath, string caption, ref string newPath)
         {
             var path = App.GetFolderFromDialog(originalPath, caption);
             if (string.IsNullOrEmpty(path))

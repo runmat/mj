@@ -103,11 +103,16 @@ namespace CarDocu.Services
 
         public void InitGlobalSettings()
         {
+            GlobalSettings = new DomainGlobalSettings();
+        }
+
+        public void LoadGlobalSettings()
+        {
             GlobalSettingsLoad();
             EnterpriseSettingsLoad();
         }
 
-        public void InitRemainingSettings()
+        public void LoadRemainingSettings()
         {
             ScanDocumentRepositoryLoad();
 

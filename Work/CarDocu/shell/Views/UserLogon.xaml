@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
 
-                <Border Visibility="{Binding DomainSelectionAvailable, Converter={StaticResource BooleanVisibilityConverter}}"
+                <Border Visibility="{Binding DomainSelectionRequired, Converter={StaticResource BooleanVisibilityConverter}}"
                         Grid.Row="0" Grid.ColumnSpan="2" Margin="-5,0,-5,20" Background="#FDFAEC" CornerRadius="0" Padding="5,10,5,10">
                     <StackPanel>
 
@@ -43,7 +43,9 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Height="28">
                                 <TextBlock Text="Domain Pfad:" Width="130" />
-                                <TextBox Text="{Binding ManualDomainPath, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                                <Button Command="{Binding SetPathCommand}"  
+                                    Content="..." ToolTip="Domain Pfad suchen" Width="25" Height="25" HorizontalAlignment="Right" Margin="0,0,10,0" />
+                                <TextBox Text="{Binding ManualDomainPath, UpdateSourceTrigger=PropertyChanged}" Width="265" />
                             </StackPanel>
                         </StackPanel>
 

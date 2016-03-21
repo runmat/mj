@@ -11,8 +11,8 @@ namespace CarDocu.Models
     {
         List<AppDomain> _recentAppDomains = new List<AppDomain>
         {
-            new AppDomain { DomainName = "CKG", DomainPath = @"c:\temp" },
-            new AppDomain { DomainName = "DAD", DomainPath = @"d:\backup" },
+            new AppDomain { DomainName = "DAD", DomainPath = @"C:\Backup\Cardocu" },
+            new AppDomain { DomainName = "Test", DomainPath = @"C:\Backup\Cardocu2" },
         };
         public List<AppDomain> RecentAppDomains
         {
