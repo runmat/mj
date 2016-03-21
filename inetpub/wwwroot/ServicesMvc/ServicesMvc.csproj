@@ -374,6 +374,7 @@
     <Content Include="Scripts\maps\worldmap.js" />
     <Content Include="Scripts\jsPlumb-2.0.5.js" />
     <Content Include="_Themes\AH2015\images\background.png" />
+    <Content Include="_Themes\AH2015\images\excel-32x32.png" />
     <Content Include="_Themes\AH2015\images\express-versand.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen-etikette.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -385,6 +386,7 @@
     <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
+    <Content Include="_Themes\AH2015\images\pdf-32x32.png" />
     <Content Include="_Themes\AH2015\images\uniform\prime-checkbox-sprite.png" />
     <Content Include="_Themes\AH2015\images\switch-2.png" />
     <Content Include="_Themes\AH2015\images\test.png" />
@@ -3184,6 +3186,8 @@
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\Grid.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\BemerkungErfassenAendernForm.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikGridExportMenu.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\TelerikGridExportMenu.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
