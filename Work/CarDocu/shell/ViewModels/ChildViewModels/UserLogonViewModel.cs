@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using WpfTools4.Commands;
 using AppDomain = CarDocu.Models.AppDomain;
 
@@ -154,14 +154,43 @@ namespace CarDocu.ViewModels
 
         public UserLogonViewModel()
         {
-            OkCommand = new DelegateCommand(e => LoginData = $"{UserLoginName}~{DomainLocationCode}", 
-                                            e => UserLoginName.IsNotNullOrEmpty() && DomainLocationCode.IsNotNullOrEmpty() && 
-                                                        (DomainSelectionRequired && 
-                                                         ManualDomainName.IsNotNullOrEmpty() && 
-                                                         FileService.PathExistsAndWriteEnabled(ManualDomainPath)));
+            OkCommand = new DelegateCommand(e => Login(), e => CanLogin());
 
-            if (DomainSelectionRequired)
+            if (!DomainSelectionRequired)
+                return;
+
+            var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainName.NotNullOrEmpty(), AppSettings.DomainName.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
+            if (matchingRecentAppDomain != null)
+                SelectedRecentAppDomain = matchingRecentAppDomain.DomainName;
+            else
                 GlobalSettingsInit();
+        }
+
+        private bool CanLogin()
+        {
+            return UserLoginName.IsNotNullOrEmpty() && DomainLocationCode.IsNotNullOrEmpty() &&
+                   (!DomainSelectionRequired || (ManualDomainName.IsNotNullOrEmpty() && Directory.Exists((ManualDomainPath))));
+        }
+
+        private void Login()
+        {
+            LoginData = $"{UserLoginName}~{DomainLocationCode}";
+
+            if (!DomainSelectionRequired)
+                return;
+
+            GlobalSettingsTryLoad();
+
+            var matchingRecentAppDomain = RecentAppDomains.FirstOrDefault(ra => string.Equals(ra.DomainName.NotNullOrEmpty(), AppSettings.DomainName.NotNullOrEmpty(), StringComparison.CurrentCultureIgnoreCase));
+            if (matchingRecentAppDomain != null)
+                matchingRecentAppDomain.DomainPath = ManualDomainPath;
+            else
+            {
+                DomainService.Repository.AppSettings.RecentAppDomains.Add(new AppDomain {DomainName = ManualDomainName, DomainPath = ManualDomainPath});
+                DomainService.Repository.AppSettings.RecentAppDomains.RemoveAll(ra => ra.DomainName.NotNullOrEmpty() == "-" || ra.DomainName.NotNullOrEmpty() == "");
+            }
+
+            DomainService.Repository.AppSettingsSave();
         }
 
         protected override void SetPath(object e)
@@ -181,7 +210,7 @@ namespace CarDocu.ViewModels
 
         void GlobalSettingsTryLoad()
         {
-            if (!FileService.PathExistsAndWriteEnabled(ManualDomainPath))
+            if (!Directory.Exists(ManualDomainPath))
             {
                 GlobalSettingsInit();
                 return;

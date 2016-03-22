@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using CarDocu.Services;
@@ -9,11 +10,7 @@ namespace CarDocu.Models
 {
     public class AppSettings : AppDomain
     {
-        List<AppDomain> _recentAppDomains = new List<AppDomain>
-        {
-            new AppDomain { DomainName = "DAD", DomainPath = @"C:\Backup\Cardocu" },
-            new AppDomain { DomainName = "Test", DomainPath = @"C:\Backup\Cardocu2" },
-        };
+        List<AppDomain> _recentAppDomains = new List<AppDomain>();
         public List<AppDomain> RecentAppDomains
         {
             get { return _recentAppDomains; }
@@ -87,7 +84,9 @@ namespace CarDocu.Models
 
         public void Init()
         {
-            if (RecentAppDomains.None(ra => ra.DomainName.NotNullOrEmpty() == ""))
+            RecentAppDomains = RecentAppDomains.OrderBy(ra => ra.DomainName).ToListOrEmptyList();
+
+            if (RecentAppDomains.None() && RecentAppDomains.None(ra => ra.DomainName.NotNullOrEmpty() == ""))
                 RecentAppDomains.Insert(0, new AppDomain());
 
             if (RecentAppDomains.None(ra => ra.DomainName.NotNullOrEmpty() == "-"))
