@@ -45,7 +45,8 @@
     .europe-map-hint .inner {
         display: table-cell;
         vertical-align: middle;
-        width: 370px;
+        width: 400px;
+        height: 250px;
 
         border: 3px solid #6E8CBF;
         border-radius: 12px !important;
@@ -80,22 +81,11 @@
         background-color: transparent;    
     }
     #country-others {
-        display: table;
-        position: relative; 
-        z-index: 9999;
+        position: relative;
+        margin-top: 20px;
+        margin-left: 250px
     }
-    @@media (max-width: 650px) {
-        #country-others {
-            left: 385px; 
-            top: -150px;
-        }
-    }
-    @@media (min-width: 651px) {
-        #country-others {
-        left: 440px; 
-        top: -165px;
-        }
-    }
+
 
     .country-hint {
         position: absolute;
@@ -157,6 +147,24 @@
         box-sizing: border-box;
         box-shadow: 0px 0px 4px 4px rgba(0,0,0,0.03)!important;
     }
+
+    /* Orange Button  */
+.btn.orange {
+  color: white;
+  text-shadow: none;	 
+  background-color: #f4a460;
+}
+.btn.orange:hover, 
+.btn.orange:focus, 
+.btn.orange:active, 
+.btn.orange.active,
+.btn.orange.disabled, 
+.btn.orange[disabled]{ 
+  background-color: #d2691e !important;
+  color: #fff !important;
+}
+
+
 
 </style>
 
@@ -262,7 +270,6 @@
 
     <svg id="europe-svg" height="542.6089315691006" version="1.1" width="750px" xmlns="http://www.w3.org/2000/svg" viewBox="341.90774666666664 46.4 131.73333333333332 141.33333333333334" preserveAspectRatio="xMinYMin"></svg>
 
-    <button id="country-others" onclick="return ShowDetailsForm('-');" class="btn blue">@Localize.MoreCountries</button>
 
 </div>
 
@@ -274,7 +281,9 @@
         </div>
         <div class="hint2">
             @Localize.Autohaus_EsdAnforderung_MapHint2
+
         </div>
+            <button id="country-others" onclick="return ShowDetailsForm('-');" class="btn orange">@Localize.MoreCountries</button>
     </div>
 </div>
 
