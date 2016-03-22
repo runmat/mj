@@ -270,6 +270,8 @@
     <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
+    <Content Include="Images\icons\24x24\search-24x24-2.png" />
+    <Content Include="Images\icons\24x24\search-24x24.png" />
     <Content Include="_Themes\AH2015\images\checkbox-hover-halfcheck.png" />
     <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
@@ -3184,6 +3186,8 @@
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\Grid.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\BemerkungErfassenAendernForm.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge.cshtml" />
+    <None Include="Views\Shared\Partial\IconView.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\IconView.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -1,0 +1,20 @@
+﻿@using CkgDomainLogic.General.Contracts
+@model IApplicationUserMenuItem
+
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+
+@{
+    Layout = null;
+}
+
+
+@if (logonContext.TranslateMenuAppName(Model).ToUpper() == "KROSCHKE CLEVER")
+{
+    <i class="customicon-search24x24-2"></i>
+}
+else
+{
+    <span>  </span>
+}
