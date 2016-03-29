@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PortalZLD", "PortalZLD.vbproj", "{49BD134E-5A86-442F-8AF4-81BD9F04251D}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ZLDBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
@@ -18,20 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalMvcTools", "..\ServicesMvc\PortalMvcTools\PortalMvcTools.csproj", "{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vms047:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = PortalZLD.vbproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\..\\Work\\ZLDBase\\Base.vbproj
-		SccProjectName2 = ../../Work/ZLDBase
-		SccLocalPath2 = ..\\..\\..\\Work\\ZLDBase
-		SccProjectUniqueName3 = ..\\..\\..\\Work\\ZLDBaseMvc\\ZLDBaseMvc.csproj
-		SccProjectName3 = ../../Work/ZLDBaseMvc
-		SccLocalPath3 = ..\\..\\..\\Work\\ZLDBaseMvc
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DebugQuick|Any CPU = DebugQuick|Any CPU
