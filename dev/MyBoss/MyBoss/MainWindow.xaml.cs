@@ -73,14 +73,14 @@ namespace MyBoss
                     }))
                 return true;
 
-            if (TryCheckCtrlAltKeyPressAction(e, Key.G, () =>
+            if (TryCheckCtrlAltKeyPressAction(e, Key.V, () =>
                     {
                         var pi = new ProcessStartInfo
                         {
-                            FileName = @"C:\Program Files (x86)\Git\bin\sh.exe",
-                            Arguments = "--login -i",
-                            WorkingDirectory = @"c:\dev"
+                            FileName = @"C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\VsSolutionPersister.exe",
+                            WorkingDirectory = @"C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug"
                         };
+                        //notifyIcon_Click(null, null);
                         Process.Start(pi);
                     }))
                 return false;

@@ -1,6 +1,12 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
+using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace VsSolutionPersister
 {
@@ -13,6 +19,18 @@ namespace VsSolutionPersister
             InitializeComponent();
 
             DataContext = new MainViewModel();
+
+            var timer = new System.Windows.Forms.Timer { Interval = 200 };
+            timer.Tick += (sender, args) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+
+                Topmost = false;
+                WindowState = WindowState.Minimized;
+                WindowState = WindowState.Normal;
+            };
+            timer.Start();
         }
 
         private void UIElement_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

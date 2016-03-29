@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.VisualBasic;
@@ -11,10 +12,11 @@ namespace WpfTools4.Services
 {
     public class Tools
     {
-        static public void StartRecordsetFlagger(Dictionary<string, string> argDict)
-        {
-            StartExeAsModalDialog("RecordsetFlagger.exe", string.Join(" ", argDict.Select(arg => string.Format("{0}={1}", arg.Key, arg.Value)).ToArray()));
-        }
+        [DllImport("User32.dll")]
+        private static extern int FindWindow(String ClassName, String WindowName);
+
+        [DllImportAttribute("User32.dll")]
+        private static extern int SetForegroundWindow(int hWnd);
 
         static public void StartExeAsModalDialog(string exeFileName, string arguments)
         {
@@ -88,6 +90,30 @@ namespace WpfTools4.Services
             var objShell = Activator.CreateInstance(typeShell);
             typeShell.InvokeMember("MinimizeAll", System.Reflection.BindingFlags.InvokeMethod, null, objShell, null);
 
+        }
+
+        static public bool IsWindowOpenForProcessNamePartAndTitlePart(string processNamePart, string captionPart, Action actionIfYes = null)
+        {
+            try
+            {
+                foreach (var process in Process.GetProcessesByName(processNamePart))
+                    if (process.MainWindowTitle.ToLower().Contains(captionPart.ToLower()))
+                    {
+                        if (actionIfYes != null)
+                            actionIfYes();
+
+                        var hWnd = FindWindow(null, process.MainWindowTitle);
+                        SetForegroundWindow(hWnd);
+
+                        return true;
+                    }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
         }
     }
 }

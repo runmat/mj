@@ -88,6 +88,7 @@
     <Compile Include="Resources\Styles.xaml.cs" />
     <Compile Include="Services\ProgressBarOperation.cs" />
     <Compile Include="Services\Tools.cs" />
+    <Compile Include="Services\WaitCursor.cs" />
     <Compile Include="UserControls\ucBusyCircle.xaml.cs">
       <DependentUpon>ucBusyCircle.xaml</DependentUpon>
     </Compile>
