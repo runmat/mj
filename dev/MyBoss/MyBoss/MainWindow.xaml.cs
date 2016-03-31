@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using WpfTools4.Services;
 
 namespace MyBoss
@@ -61,16 +62,54 @@ namespace MyBoss
             Process.Start(OutlookProcessFullName + ".exe");
         }
 
+        void SetIeProxyRegKey(int value)
+        {
+            var regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings", true);
+            if (regKey == null)
+                return;
+
+            regKey.SetValue("ProxyEnable", value);
+            regKey.Close();
+        }
+
+        void OpenIeUrlWithProxyEnabled(string ieUrl)
+        {
+            notifyIcon_Click(null, null);
+
+            SetIeProxyRegKey(1);
+
+            Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", ieUrl);
+            Thread.Sleep(2000);
+
+            SetIeProxyRegKey(0);
+        }
+
         bool _listener_OnKeyPressed(KeyPressedArgs e)
         {
             if (LowLevelKeyboardListener.Disabled)
                 return false;
 
+            if (TryCheckCtrlAltKeyPressAction(e, Key.U, () =>
+            {
+                OpenIeUrlWithProxyEnabled("http://vms037.kroschke.de/SelfServices/default.aspx");
+            }))
+                return true;
+            if (TryCheckCtrlAltKeyPressAction(e, Key.I, () =>
+            {
+                if (Clipboard.ContainsText())
+                {
+                    var clipboardUrl = Clipboard.GetText();
+                    if (clipboardUrl.ToLower().StartsWith("https://"))
+                        OpenIeUrlWithProxyEnabled(clipboardUrl);
+                }
+            }))
+                return true;
+
             if (TryCheckCtrlAltKeyPressAction(e, Key.T, () =>
-                    {
-                        notifyIcon_Click(null, null);
-                        Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "todo.txt"));
-                    }))
+            {
+                notifyIcon_Click(null, null);
+                Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "todo.txt"));
+            }))
                 return true;
 
             if (TryCheckCtrlAltKeyPressAction(e, Key.V, () =>
@@ -86,12 +125,17 @@ namespace MyBoss
                 return false;
 
             if (TryCheckCtrlAltKeyPressAction(e, Key.C, () =>
-                    {
-                        Clipboard.SetText("seE17igEl");
-                    }))
+            {
+                Clipboard.SetText("seE17igEl");
+            }))
+                return false;
+            if (TryCheckCtrlAltKeyPressAction(e, Key.X, () =>
+            {
+                Clipboard.SetText("Walter@!3697");
+            }))
                 return false;
 
-            
+
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks1, Key.LeftAlt, () =>
             {
