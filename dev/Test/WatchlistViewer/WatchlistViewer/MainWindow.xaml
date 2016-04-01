@@ -4,7 +4,7 @@
         xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
         SizeChanged="MainWindow_OnSizeChanged"
-        Top="40" Topmost="True" 
+        Top="40" Topmost="True"  Loaded="MainWindow_OnLoaded"
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
         Title="Watchlist Viewer" SizeToContent="WidthAndHeight">
     <Window.Background>
