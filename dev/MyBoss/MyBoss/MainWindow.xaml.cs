@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -59,7 +60,13 @@ namespace MyBoss
 
         public static void StartOutlook()
         {
-            Process.Start(OutlookProcessFullName + ".exe");
+            var pi = new ProcessStartInfo
+            {
+                FileName = OutlookProcessFullName + ".exe",
+                WindowStyle = ProcessWindowStyle.Maximized,
+                UseShellExecute = true,
+            };
+            Process.Start(pi);
         }
 
         void SetIeProxyRegKey(int value)
@@ -131,7 +138,7 @@ namespace MyBoss
                 return false;
             if (TryCheckCtrlAltKeyPressAction(e, Key.X, () =>
             {
-                Clipboard.SetText("Walter@!3697");
+                Clipboard.SetText(_pwd);
             }))
                 return false;
 
@@ -151,7 +158,7 @@ namespace MyBoss
                 KillOutlook();
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
-                new FakeWindow("fake_lockscreen.png").Show();
+                new FakeWindow("fake_lockscreen_win10.png").Show();
             });
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks3, Key.RightCtrl, () =>
@@ -229,6 +236,17 @@ namespace MyBoss
         private void Quit(object sender, RoutedEventArgs e)
         {
             Process.GetCurrentProcess().Kill();
+        }
+
+        private static string _pwd = "Walter@!3697";
+        static SecureString ConvertToSecureString(string strPassword)
+        {
+            var secureStr = new SecureString();
+            if (strPassword.Length > 0)
+            {
+                foreach (var c in strPassword.ToCharArray()) secureStr.AppendChar(c);
+            }
+            return secureStr;
         }
     }
 }

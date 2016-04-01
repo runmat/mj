@@ -121,7 +121,10 @@
     <Resource Include="fake_wallpaper.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="fake_lockscreen.png" />
+    <Resource Include="fake_lockscreen_win7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="fake_lockscreen_win10.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
