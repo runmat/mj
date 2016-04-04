@@ -106,7 +106,7 @@ namespace GeneralTools.Log.Services
             logEventInfo.Properties["Bapi"] = bapi;
             logEventInfo.Properties["ImportParameters"] = XmlService.CompressString(importParameter);
             logEventInfo.Properties["ImportTables"] = XmlService.CompressString(importTable);
-            logEventInfo.Properties["Status"] = status;
+            logEventInfo.Properties["Status"] = (status ? 1 : 0);
             logEventInfo.Properties["Dauer"] = Convert.ToDecimal(dauer);
             logEventInfo.Properties["ExportParameters"] = XmlService.CompressString(exportParamter);
             logEventInfo.Properties["ExportTables"] = XmlService.CompressString(exportTable);
