@@ -26,12 +26,13 @@ namespace MyBoss
         public MainWindow()
         {
             InitializeComponent();
+
+            HookKeyboard();
+            HookKeyboardTimered();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            HookKeyboard();
-
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.Click += notifyIcon_Click;
             var icon = Application.GetResourceStream(new Uri("pack://application:,,,/MyBoss;component/boss.ico"));
@@ -42,11 +43,28 @@ namespace MyBoss
             Hide();
         }
 
+
         private void HookKeyboard()
         {
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += _listener_OnKeyPressed;
             _listener.HookKeyboard();
+        }
+
+        private void HookKeyboardTimerTick(object sender, EventArgs e)
+        {
+            HookKeyboard();
+        }
+
+        private void HookKeyboardTimered()
+        {
+            var timer = new System.Windows.Forms.Timer
+            {
+                Enabled = true,
+                Interval = 60000
+            };
+            timer.Tick += HookKeyboardTimerTick;
+            timer.Start();
         }
 
         const string OutlookProcessFullName = "outlook";
