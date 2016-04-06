@@ -152,14 +152,90 @@ namespace Vermieter.forms
                 {
                     tmpDataView.Sort = strTempSort + " " + strDirection;
                 }
-                GridView1.PageIndex = intTempPageIndex;
+                               
+                string appId = (string)Session["AppID"];
+                var showFooter = GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue("ZeigeSummenFooter", appId, m_User.Customer.CustomerId);
+
+                if (showFooter == "true")
+                {
+                    GridView1.AllowPaging = false;
+                    GridView1.ShowFooter = true;
+                }
+                else
+                {
+                    GridView1.AllowPaging = true;
+                    GridView1.ShowFooter = false;
+                    GridView1.PageIndex = intTempPageIndex;
+                }
+                                                               
                 GridView1.DataSource = tmpDataView;
-                GridView1.DataBind();
-
+                GridView1.DataBind();               
             }
-
         }
 
+        decimal _einkaufswert = 0;
+        decimal _restwert = 0;
+        decimal _mittelwert = 0;
+       
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {          
+          
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {    
+                DataRow row = ((System.Data.DataRowView)e.Row.DataItem).Row;
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Einkaufswert"].ToString().Trim(); 
+                    decimal dec = 0;
+                    if(Decimal.TryParse(val, out dec))
+                        _einkaufswert += Convert.ToDecimal(val);               
+                }
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Restwert"].ToString().Trim();
+                    decimal dec = 0;
+                    if (Decimal.TryParse(val, out dec))
+                        _restwert += Convert.ToDecimal(val);
+                }
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Tranchenmittelwert"].ToString().Trim();
+                    decimal dec = 0;
+                    if (Decimal.TryParse(val, out dec))
+                        _mittelwert += Convert.ToDecimal(val);
+                }                               
+            }
+            else if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                try
+                {
+                    // custom formatting -> ca.-Anpassung an Spalte
+                    string spaceEkw = _einkaufswert.ToString();
+                    if (spaceEkw.Length <= 11)
+                        spaceEkw = new String('x', 11 - spaceEkw.Length).Replace("x", "&nbsp;");
+                    else
+                        spaceEkw = "";
+
+                    string spaceRw = _restwert.ToString();
+                    if (spaceEkw.Length <= 11)
+                        spaceRw = new String('x', 11 - spaceRw.Length).Replace("x", "&nbsp;");
+                    else
+                        spaceRw = "";
+                    // -> 30 sollten immer reichen
+                    string spaceMw = new String('x', 30 - _mittelwert.ToString().Length).Replace("x", "&nbsp;");
+                    // </>                                                              
+
+                    e.Row.Cells[8].Text = spaceEkw + _einkaufswert.ToString();
+                    e.Row.Cells[9].Text = spaceRw + _restwert.ToString();
+                    e.Row.Cells[10].Text = spaceMw + _mittelwert.ToString();
+                }
+                catch {
+                    e.Row.Cells[8].Text = "Fehler: Summen";
+                }
+            }
+        }
+
+              
 
         private void SetRadioButtonCustomer()
         {
@@ -316,7 +392,6 @@ namespace Vermieter.forms
             Result.Visible = false;
         }
 
-
-
+       
     }
 }

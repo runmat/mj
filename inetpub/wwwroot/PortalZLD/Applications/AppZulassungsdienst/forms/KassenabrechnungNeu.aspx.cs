@@ -975,8 +975,8 @@ namespace AppZulassungsdienst.forms
                                         break;
 
                                     case "JJJJKWKST":
-                                        if ((teileInput[0].Length > 6) && (Int32.TryParse(teileInput[0].Substring(0, 4), out jahr))
-                                            && (Int32.TryParse(teileInput[0].Substring(4, 2), out woche)) && Int32.TryParse(teileInput[0].Substring(6), out tempint))
+                                        if ((teileInput[0].Length == 10) && (Int32.TryParse(teileInput[0].Substring(0, 4), out jahr))
+                                            && (Int32.TryParse(teileInput[0].Substring(4, 2), out woche)) && Int32.TryParse(teileInput[0].Substring(6, 4), out tempint))
                                         {
                                             if ((jahr > 2000) && (jahr < 3000) && (woche > 0) && (woche < 54))
                                             {
