@@ -484,6 +484,7 @@ ZLDMobileJS.prototype.SendeNaechstenVorgang = function (sendebeginn) {
         }
         this.SendVorgangToServer(sendeVorgang);
     } else {
+        FillVorgangGrid();
         HideBusyIndicator();
         if (sendebeginn == true) {
             ShowMessage("Es wurden keine Vorg\u00e4nge bearbeitet", false);
@@ -526,7 +527,7 @@ ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
                     }
                     // Übertragenen Vorgang aus lokaler Liste entfernen
                     this.RemoveLocalVorgang(saveErg.Id);
-                    FillVorgangGrid();
+                    //FillVorgangGrid();
                     // Wenn jetzt alle alten Vorgänge weg sind -> Refresh-Funktion freigeben
                     if (this.AlteVorgaengeVorhanden() == false) {
                         this.alteVorgaengeOffen = false;
@@ -535,6 +536,7 @@ ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
                     // Nächsten Vorgang senden, falls vorhanden
                     this.SendeNaechstenVorgang(false);
                 } else if (saveErg.Ergebniscode == "APPERROR") {
+                    FillVorgangGrid();
                     HideBusyIndicator();
                     if (this.anzGesendetDuplikat != 0) {
                         ShowMessage("Serverfehler beim Speichern(vorher an Server gesendet: " + this.anzGesendetOk + " OK, " + this.anzGesendetDuplikat + " bereits erledigt): " + saveErg.Meldungstext);
