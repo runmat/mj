@@ -57,8 +57,8 @@ namespace GeneralTools.Log.Services
             }
 
             logEventInfo.Properties["connectionString"] = connectionString;
-            logEventInfo.Properties["commandText"] = "insert into SapBapi(AppID, UserID, CustomerID, KUNNR, PortalType, Anmeldename, Bapi,  ImportParameters,  ImportTables,  DataContext,  LogonContext,  Status,  dauer,  ExportParameters,  ExportTables, Browser ) " +
-                                                                 "values (@AppID, @UserID, @CustomerID, @KUNNR, @PortalType, @Anmeldename, @Bapi, @ImportParameters, @ImportTables, @DataContext, @LogonContext, @Status, @dauer, @ExportParameters, @ExportTables, @Browser );";
+            logEventInfo.Properties["commandText"] = "insert into SapBapi(AppID, UserID, CustomerID, KUNNR, PortalType, Anmeldename, Bapi, ImportParameters, ImportTables, DataContext, LogonContext, dauer, ExportParameters, ExportTables, Browser ) " +
+                                                                 "values (@AppID, @UserID, @CustomerID, @KUNNR, @PortalType, @Anmeldename, @Bapi, @ImportParameters, @ImportTables, @DataContext, @LogonContext, @dauer, @ExportParameters, @ExportTables, @Browser );";
 
 
             // 27.02.2014, MJE
@@ -106,7 +106,6 @@ namespace GeneralTools.Log.Services
             logEventInfo.Properties["Bapi"] = bapi;
             logEventInfo.Properties["ImportParameters"] = XmlService.CompressString(importParameter);
             logEventInfo.Properties["ImportTables"] = XmlService.CompressString(importTable);
-            logEventInfo.Properties["Status"] = status;
             logEventInfo.Properties["Dauer"] = Convert.ToDecimal(dauer);
             logEventInfo.Properties["ExportParameters"] = XmlService.CompressString(exportParamter);
             logEventInfo.Properties["ExportTables"] = XmlService.CompressString(exportTable);
@@ -132,7 +131,6 @@ namespace GeneralTools.Log.Services
                 new DatabaseParameterInfo("@ImportTables", Layout.FromString("${event-context:item=ImportTables}")),
                 new DatabaseParameterInfo("@DataContext", Layout.FromString("${event-context:item=DataContext}")),
                 new DatabaseParameterInfo("@LogonContext", Layout.FromString("${event-context:item=LogonContext}")),
-                new DatabaseParameterInfo("@Status", Layout.FromString("${event-context:item=Status}")),
                 new DatabaseParameterInfo("@Dauer", Layout.FromString("${event-context:item=Dauer}")),
                 new DatabaseParameterInfo("@ExportParameters", Layout.FromString("${event-context:item=ExportParameters}")),
                 new DatabaseParameterInfo("@ExportTables", Layout.FromString("${event-context:item=ExportTables}")),
