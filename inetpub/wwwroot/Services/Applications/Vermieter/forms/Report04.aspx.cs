@@ -207,12 +207,31 @@ namespace Vermieter.forms
             }
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
-                string space3 = new String('x', 3).Replace("x", "&nbsp;");
-                string space22 = new String('x', 22).Replace("x", "&nbsp;");
+                try
+                {
+                    // custom formatting -> ca.-Anpassung an Spalte
+                    string spaceEkw = _einkaufswert.ToString();
+                    if (spaceEkw.Length <= 11)
+                        spaceEkw = new String('x', 11 - spaceEkw.Length).Replace("x", "&nbsp;");
+                    else
+                        spaceEkw = "";
 
-                e.Row.Cells[8].Text = space3 + _einkaufswert.ToString();
-                e.Row.Cells[9].Text = space3 + _restwert.ToString();
-                e.Row.Cells[10].Text = space22 + _mittelwert.ToString();
+                    string spaceRw = _restwert.ToString();
+                    if (spaceEkw.Length <= 11)
+                        spaceRw = new String('x', 11 - spaceRw.Length).Replace("x", "&nbsp;");
+                    else
+                        spaceRw = "";
+                    // -> 30 sollten immer reichen
+                    string spaceMw = new String('x', 30 - _mittelwert.ToString().Length).Replace("x", "&nbsp;");
+                    // </>                                                              
+
+                    e.Row.Cells[8].Text = spaceEkw + _einkaufswert.ToString();
+                    e.Row.Cells[9].Text = spaceRw + _restwert.ToString();
+                    e.Row.Cells[10].Text = spaceMw + _mittelwert.ToString();
+                }
+                catch {
+                    e.Row.Cells[8].Text = "Fehler: Summen";
+                }
             }
         }
 
