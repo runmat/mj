@@ -152,14 +152,60 @@ namespace Vermieter.forms
                 {
                     tmpDataView.Sort = strTempSort + " " + strDirection;
                 }
+                GridView1.ShowFooter = true;
+                                               
                 GridView1.PageIndex = intTempPageIndex;
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
+               
 
             }
-
         }
 
+        decimal _einkaufswert = 0;
+        decimal _restwert = 0;
+        decimal _mittelwert = 0;
+
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {          
+          
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {    
+                DataRow row = ((System.Data.DataRowView)e.Row.DataItem).Row;
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Einkaufswert"].ToString().Trim(); 
+                    decimal dec = 0;
+                    if(Decimal.TryParse(val, out dec))
+                        _einkaufswert += Convert.ToDecimal(val);               
+                }
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Restwert"].ToString().Trim();
+                    decimal dec = 0;
+                    if (Decimal.TryParse(val, out dec))
+                        _restwert += Convert.ToDecimal(val);
+                }
+                if (row["Einkaufswert"] != null)
+                {
+                    string val = row["Tranchenmittelwert"].ToString().Trim();
+                    decimal dec = 0;
+                    if (Decimal.TryParse(val, out dec))
+                        _mittelwert += Convert.ToDecimal(val);
+                }                               
+            }
+            else if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                string space4 = new String('x', 4).Replace("x", "&nbsp;");
+                string space22 = new String('x', 22).Replace("x", "&nbsp;");
+
+                e.Row.Cells[8].Text = space4 + _einkaufswert.ToString();
+                e.Row.Cells[9].Text = space4 + _restwert.ToString();
+                e.Row.Cells[10].Text = space22 + _mittelwert.ToString();
+            }
+        }
+
+              
 
         private void SetRadioButtonCustomer()
         {
@@ -316,7 +362,6 @@ namespace Vermieter.forms
             Result.Visible = false;
         }
 
-
-
+       
     }
 }
