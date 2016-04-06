@@ -152,7 +152,20 @@ namespace Vermieter.forms
                 {
                     tmpDataView.Sort = strTempSort + " " + strDirection;
                 }
-                GridView1.ShowFooter = true;
+
+                
+                CKG.Base.Kernel.Security.User user;
+                CKG.Base.Kernel.Security.App app;
+                user = Common.GetUser(this);
+                app = new App(user);
+                string appId = (string)Session["AppID"];
+
+                var showFooter = GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue("ZeigeSummenFooter", appId, user.Customer.CustomerId);
+                
+                if(showFooter == "true")
+                    GridView1.ShowFooter = true;
+                else
+                    GridView1.ShowFooter = false;
                                                
                 GridView1.PageIndex = intTempPageIndex;
                 GridView1.DataSource = tmpDataView;
@@ -165,7 +178,7 @@ namespace Vermieter.forms
         decimal _einkaufswert = 0;
         decimal _restwert = 0;
         decimal _mittelwert = 0;
-
+       
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {          
           
