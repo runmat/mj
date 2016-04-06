@@ -4377,3 +4377,9 @@ div#header div
     margin: 20px!important;
     padding: 10px!important;
 }
+
+.FooterStyle
+{
+    background-color: White;    
+    text-align: left;
+}
