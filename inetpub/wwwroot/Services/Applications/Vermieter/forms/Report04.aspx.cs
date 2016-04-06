@@ -152,26 +152,24 @@ namespace Vermieter.forms
                 {
                     tmpDataView.Sort = strTempSort + " " + strDirection;
                 }
-
-                
-                CKG.Base.Kernel.Security.User user;
-                CKG.Base.Kernel.Security.App app;
-                user = Common.GetUser(this);
-                app = new App(user);
+                               
                 string appId = (string)Session["AppID"];
+                var showFooter = GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue("ZeigeSummenFooter", appId, m_User.Customer.CustomerId);
 
-                var showFooter = GeneralTools.Services.ApplicationConfiguration.GetApplicationConfigValue("ZeigeSummenFooter", appId, user.Customer.CustomerId);
-                
-                if(showFooter == "true")
+                if (showFooter == "true")
+                {
+                    GridView1.AllowPaging = false;
                     GridView1.ShowFooter = true;
+                }
                 else
+                {
+                    GridView1.AllowPaging = true;
                     GridView1.ShowFooter = false;
-                                               
-                GridView1.PageIndex = intTempPageIndex;
+                    GridView1.PageIndex = intTempPageIndex;
+                }
+                                                               
                 GridView1.DataSource = tmpDataView;
-                GridView1.DataBind();
-               
-
+                GridView1.DataBind();               
             }
         }
 
@@ -209,11 +207,11 @@ namespace Vermieter.forms
             }
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
-                string space4 = new String('x', 4).Replace("x", "&nbsp;");
+                string space3 = new String('x', 3).Replace("x", "&nbsp;");
                 string space22 = new String('x', 22).Replace("x", "&nbsp;");
 
-                e.Row.Cells[8].Text = space4 + _einkaufswert.ToString();
-                e.Row.Cells[9].Text = space4 + _restwert.ToString();
+                e.Row.Cells[8].Text = space3 + _einkaufswert.ToString();
+                e.Row.Cells[9].Text = space3 + _restwert.ToString();
                 e.Row.Cells[10].Text = space22 + _mittelwert.ToString();
             }
         }
