@@ -28,13 +28,13 @@ namespace CarDocu.ViewModels
             get { return DomainService.Repository.GlobalSettings; }
         }
 
-        public IEnumerable<Archive> Archives { get { return GlobalSettings == null ? null : GlobalSettings.Archives; } }
+        public IEnumerable<Archive> Archives { get { return GlobalSettings?.Archives; } }
 
-        public SmtpSettings SmtpSettings { get { return GlobalSettings == null ? null : GlobalSettings.SmtpSettings; } }
+        public SmtpSettings SmtpSettings { get { return GlobalSettings?.SmtpSettings; } }
 
-        public SapSettings SapSettings { get { return GlobalSettings == null ? null : GlobalSettings.SapSettings; } }
+        public SapSettings SapSettings { get { return GlobalSettings?.SapSettings; } }
 
-        public ScanSettings ScanSettings { get { return GlobalSettings == null ? null : GlobalSettings.ScanSettings; } }
+        public ScanSettings ScanSettings { get { return GlobalSettings?.ScanSettings; } }
 
         public string UserHintForArchives { get; set; }
 
@@ -87,7 +87,7 @@ namespace CarDocu.ViewModels
             catch { Tools.AlertError("Fehler beim Öffnen der Scanner Einstellungen.\r\n\r\nStellen Sie bitte sicher, dass der Scanner angeschlossen und eingeschaltet ist."); }
         }
 
-        static void SetPath(object e)
+        protected virtual void SetPath(object e)
         {
             var path = "";
             if (e == null)
@@ -104,7 +104,7 @@ namespace CarDocu.ViewModels
             }
         }
 
-        static bool GetPathFromDialog(string originalPath, string caption, ref string newPath)
+        static protected bool GetPathFromDialog(string originalPath, string caption, ref string newPath)
         {
             var path = App.GetFolderFromDialog(originalPath, caption);
             if (string.IsNullOrEmpty(path))
