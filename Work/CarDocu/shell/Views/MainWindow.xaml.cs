@@ -11,7 +11,7 @@ namespace CarDocu
         {
             InitializeComponent();
 
-            this.Title = string.Format("    {0}, Version {1},   User: {2}", DomainService.AppName, DomainService.AppVersion, DomainService.Repository.LogonUser.FullName);
+            this.Title = $"    {DomainService.AppName}, Version {DomainService.AppVersion}, Domain: {DomainService.DomainName},  User: {DomainService.Repository.LogonUser.FullName}";
 
             DataContext = new MainViewModel();
 

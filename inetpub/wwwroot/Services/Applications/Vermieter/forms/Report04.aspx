@@ -94,12 +94,15 @@
                         </div>
                         <div id="data">
                             <asp:GridView AutoGenerateColumns="False" BackColor="White" runat="server" ID="GridView1"
-                                CssClass="GridView" GridLines="None" PageSize="20" AllowPaging="True" 
-                                AllowSorting="True" onsorting="GridView1_Sorting" Width="970px" >
+                                CssClass="GridView"  GridLines="None" PageSize="20" AllowPaging="True" 
+                                AllowSorting="True" onsorting="GridView1_Sorting" Width="970px" 
+                                onrowdatabound="GridView1_RowDataBound" ShowFooter="True" >                                
                                 <PagerSettings Visible="False" />
+                                <FooterStyle BorderStyle="Solid" Height="30px" />
                                 <HeaderStyle CssClass="GridTableHead"></HeaderStyle>
                                 <AlternatingRowStyle CssClass="GridTableAlternate" />
                                 <RowStyle CssClass="ItemStyle" />
+                                <FooterStyle CssClass="FooterStyle" />
                                 <Columns>
                                     <asp:TemplateField SortExpression="Name" HeaderText="col_Name">
                                         <HeaderTemplate>
@@ -184,7 +187,7 @@
                                         <ItemTemplate>
                                             <asp:Label runat="server" ID="lblEinkaufswert" Text='<%# DataBinder.Eval(Container, "DataItem.Einkaufswert","{0:c}") %>'>
                                             </asp:Label>
-                                        </ItemTemplate>
+                                        </ItemTemplate>                                      
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Restwert" HeaderText="col_Restwert">
                                         <HeaderTemplate>
