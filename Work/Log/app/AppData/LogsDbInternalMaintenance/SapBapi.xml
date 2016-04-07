@@ -19,7 +19,6 @@
           CREATE TABLE IF NOT EXISTS `[DestTableName]` (
           `Id` bigint(20) NOT NULL AUTO_INCREMENT,
           `Bapi` varchar(40) NOT NULL,
-          `Status` bit(1) NULL,
           `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           `dauer` decimal(8,4) DEFAULT NULL,
           `AppId` int(11) DEFAULT NULL,
@@ -69,7 +68,6 @@
           `Id` ,
           `QueryString` ,
           `Bapi` ,
-          `Status` ,
           `time_stamp` ,
           `dauer` ,
           `AppId` ,
@@ -83,7 +81,6 @@
           [SourceTableName].`Id` ,
           SUBSTRING(LogonContext, 1, 40) ,
           `Bapi` ,
-          `Status` ,
           `time_stamp` ,
           `dauer` ,
           `AppId` ,
