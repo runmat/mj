@@ -572,7 +572,7 @@ Partial Public Class Login
         Dim userIsEmpty As Boolean = (Session("objUser") Is Nothing)
         Dim urlReferrerIsValid As Boolean = (urlReferrer <> "")
         Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx") And Not requestReturnUrl.ToLower().Contains("servicesmvc"))
-        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost") Or ConfigurationManager.AppSettings("ForceMvcLogin").NotNullOrEmpty().ToUpper() = "TRUE")
+        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("on2.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost") Or ConfigurationManager.AppSettings("ForceMvcLogin").NotNullOrEmpty().ToUpper() = "TRUE")
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
             Try

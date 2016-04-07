@@ -248,7 +248,7 @@
                                             runat="server" CssClass="Tablebutton"></asp:LinkButton>
                                         &nbsp; &nbsp;
                                         <asp:LinkButton ID="lbBestellungOk" Text="Weiter" Height="16px" Width="78px" runat="server"
-                                            CssClass="Tablebutton" OnClick="lbBestellungOk_Click"></asp:LinkButton>
+                                            CssClass="Tablebutton" OnClick="lbBestellungOk_Click" OnClientClick="this.disabled = true;"></asp:LinkButton>
                                     </td>
                                 </tr>
                                 <tr>

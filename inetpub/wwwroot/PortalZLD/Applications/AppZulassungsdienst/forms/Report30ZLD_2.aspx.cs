@@ -55,7 +55,8 @@ namespace AppZulassungsdienst.forms
                         Label17.Text = row["BEMERKUNG"].ToString();
                         var bln48h = row["Z48H"].ToString().XToBool();
                         Label18.Text = (bln48h ? "Ja" : "Nein");
-                        if (bln48h)
+                        var blnGenerellAbwAdresse = row["ABW_ADR_GENERELL"].ToString().XToBool();
+                        if (bln48h || blnGenerellAbwAdresse)
                         {
                             trAbwAdresse.Visible = true;
                             Label21.Text = row["Z48H_NAME1"].ToString();
