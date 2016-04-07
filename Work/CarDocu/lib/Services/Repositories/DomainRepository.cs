@@ -103,11 +103,16 @@ namespace CarDocu.Services
 
         public void InitGlobalSettings()
         {
+            GlobalSettings = new DomainGlobalSettings();
+        }
+
+        public void LoadGlobalSettings()
+        {
             GlobalSettingsLoad();
             EnterpriseSettingsLoad();
         }
 
-        public void InitRemainingSettings()
+        public void LoadRemainingSettings()
         {
             ScanDocumentRepositoryLoad();
 
@@ -120,6 +125,7 @@ namespace CarDocu.Services
         public void AppSettingsLoad()
         {
             AppSettings = XmlService.XmlDeserializeFromPath<AppSettings>(AppSettingsDirectoryName);
+            AppSettings.Init();
         }
 
         public void AppSettingsSave()

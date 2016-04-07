@@ -45,11 +45,14 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
 
         public void LoadHistoryAuftraege()
         {
+            var userSeparateCustomerNo = (LogonContext.User.Reference.NotNullOrEmpty().Length == 6) ? LogonContext.User.Reference.ToInt(0) : 0;
+            var userHasSeparateCustomerNo = (userSeparateCustomerNo != 0);
+
             HistoryAuftragSelector.KundenNr = LogonContext.KundenNr.ToSapKunnr();
             HistoryAuftragSelector.KundenNrUser = LogonContext.KundenNr.ToSapKunnr();
 
-            if (IstKroschke && !String.IsNullOrEmpty(HistoryAuftragSelector.AgKundenNr))
-                HistoryAuftragSelector.KundenNr = HistoryAuftragSelector.AgKundenNr;
+            if (userHasSeparateCustomerNo || (IstKroschke && !String.IsNullOrEmpty(HistoryAuftragSelector.AgKundenNr)))
+                HistoryAuftragSelector.KundenNr = userHasSeparateCustomerNo ? userSeparateCustomerNo.ToString().ToSapKunnr() : HistoryAuftragSelector.AgKundenNr;
 
             HistoryAuftraege = DataService.GetHistoryAuftraege(HistoryAuftragSelector)
                 .OrderByDescending(a => a.AuftragsNr)
@@ -254,7 +257,7 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
             if (HistoryAuftragCurrent == null)
                 return null;
 
-            var auftragGeber = LogonContext.KundenNr.ToSapKunnr(); 
+            var auftragGeber = HistoryAuftragSelector.KundenNr; 
             var path = Path.Combine(AppSettings.UploadFilePath, auftragGeber, HistoryAuftragCurrent.AuftragsNrWebView);
             return path;
         }
