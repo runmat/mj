@@ -819,12 +819,12 @@
     <Content Include="Styles\js\jquery.ui.theme.css" />
     <Content Include="Styles\js\superfish.css" />
     <Content Include="Styles\RadGridStyle.css" />
-    <Content Include="Web.config">
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="NLog.config">
+    </None>
+    <None Include="NLog.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Customize\Admin\admin.css" />
