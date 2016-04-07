@@ -1034,13 +1034,7 @@
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugAuswahl.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahlPresets.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummary.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Receipt.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummaryReceipt.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />

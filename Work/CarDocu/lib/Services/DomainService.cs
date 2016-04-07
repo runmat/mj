@@ -7,6 +7,7 @@ using CarDocu.Models;
 using GeneralTools.Services;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WebTools.Services;
 
@@ -51,15 +52,16 @@ namespace CarDocu.Services
             if (forceAdminLogon)
             {
                 Repository.LogonUser = Repository.AdminUser;
-                Repository.InitRemainingSettings();
+                Repository.LoadRemainingSettings();
                 return true;
             }
 
             string loginData;
             var defaultUser = Repository.GlobalSettings.DomainUsers.FirstOrDefault(u => u.IsDefaultUser);
             var forceLoginPanelKeyPressed = Keyboard.IsKeyDown(Key.F8);
+            var forceDomainSelection = Repository.AppSettings.AskForDomainSelectionAtLogin;
 
-            if (defaultUser != null && !forceLoginPanelKeyPressed)
+            if (defaultUser != null && !forceLoginPanelKeyPressed && !forceDomainSelection)
                 loginData = $"{defaultUser.LoginName}~{Repository.GlobalSettings.DomainLocations.First().SapCode}";
             else
                 loginData = getUserLoginDataFromDialog();
@@ -74,7 +76,7 @@ namespace CarDocu.Services
             if (logonUser == null)
             {
                 if (!string.IsNullOrEmpty(loginName))
-                    Tools.AlertError($"{AppName}:\r\n\r\nLogin fehlgeschlagen, Benutzer '{loginName}' ist unbekannt!");
+                    Tools.AlertError($"{AppName}:\r\n\r\nLogin fehlgeschlagen!\r\n\r\nBenutzer '{loginName}' ist in der Domain '{DomainName}' nicht bekannt!");
 
                 return false;
             }
@@ -82,14 +84,14 @@ namespace CarDocu.Services
             Repository.GlobalSettingsSave();
 
             Repository.LogonUser = logonUser;
-            Repository.InitRemainingSettings();
+            Repository.LoadRemainingSettings();
 
             return true;
         }
 
         public static void LoadGlobalSettings()
         {
-            Repository.InitGlobalSettings();
+            Repository.LoadGlobalSettings();
         }
 
         /// <summary>

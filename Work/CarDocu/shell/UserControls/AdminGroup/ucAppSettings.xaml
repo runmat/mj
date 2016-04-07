@@ -7,9 +7,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
 
-        <StackPanel Visibility="{Binding UserHintForArchives, Converter={StaticResource NotNullVisibilityInverseConverter}}" Margin="0,0,0,50">
-            <TextBlock Text="Ablage für die Domain-Konfiguration" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,15" />
-            <StackPanel DataContext="{Binding AppSettings}" Margin="30,0,0,0">
+        <StackPanel Visibility="{Binding UserHintForArchives, Converter={StaticResource NotNullVisibilityInverseConverter}}" Margin="0,0,0,0">
+
+            <TextBlock Text="Workstation Einstellungen" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,5" />
+            <StackPanel DataContext="{Binding AppSettings}" Margin="30,0,0,20">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -18,8 +19,32 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Übertragungskosten sparen:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
+                    <CheckBox IsChecked="{Binding OnlineStatusAutoCheckDisabled, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Online Status Check Polling deaktivieren  (sinnvoll bei kostenintensiven Datenleitungen)</CheckBox>
+
+                    <TextBlock Text="Backup Funktion:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
+                    <CheckBox IsChecked="{Binding GlobalDeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Grundsätzlich PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben (diese Einstellung überschreibt den Schalter in den Dokum.Arten)</CheckBox>
+
+                    <TextBlock Text="Login / Domainauswahl:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
+                    <CheckBox IsChecked="{Binding AskForDomainSelectionAtLogin, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Beim Login die Domainauswahl erzwingen</CheckBox>
+                </Grid>
+            </StackPanel>
+
+            <TextBlock Text="Workstation, aktuelle Domain" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,5" />
+            <StackPanel DataContext="{Binding AppSettings}" Margin="30,0,0,20">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="35" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
@@ -31,17 +56,11 @@
 
                     <TextBlock Text="Domain, Name / Bezeichnung:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
                     <TextBox Text="{Binding DomainName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Foreground="Blue" FontWeight="Bold" />
-
-                    <TextBlock Text="Übertragungskosten sparen:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
-                    <CheckBox IsChecked="{Binding OnlineStatusAutoCheckDisabled, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Online Status Check Polling deaktivieren  (sinnvoll bei kostenintensiven Datenleitungen)</CheckBox>
-
-                    <TextBlock Text="Backup Funktion:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
-                    <CheckBox IsChecked="{Binding GlobalDeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Grundsätzlich PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben (diese Einstellung überschreibt den Schalter in den Dokum.Arten)</CheckBox>
                 </Grid>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Visibility="{Binding Archives, Converter={StaticResource NotNullVisibilityConverter}}" Margin="0,0,0,15" >
+        <StackPanel Visibility="{Binding Archives, Converter={StaticResource NotNullVisibilityConverter}}" Margin="30,0,0,15" >
             <StackPanel Visibility="{Binding UserHintForArchives, Converter={StaticResource NotNullVisibilityConverter}}" Margin="0,0,0,10">
                 <TextBlock Text="{Binding UserHintForArchives}" Foreground="Red" FontWeight="Bold" FontSize="14"  />
             </StackPanel>

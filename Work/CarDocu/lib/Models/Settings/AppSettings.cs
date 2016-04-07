@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using CarDocu.Services;
@@ -6,25 +8,28 @@ using GeneralTools.Models;
 
 namespace CarDocu.Models
 {
-    public class AppSettings : ModelBase 
+    public class AppSettings : AppDomain
     {
-        private string _domainName; 
-        public string DomainName 
-        { 
-            get { return _domainName; }
-            set { _domainName = value; SendPropertyChanged("DomainName"); }
-        }
-
-        private string _domainPath; 
-        public string DomainPath 
-        { 
-            get { return _domainPath; }
+        List<AppDomain> _recentAppDomains = new List<AppDomain>();
+        public List<AppDomain> RecentAppDomains
+        {
+            get { return _recentAppDomains; }
             set
             {
-                DomainPathIsDirty = (DomainPath != null && value.NotNullOrEmpty() != DomainPath.NotNullOrEmpty());
+                _recentAppDomains = value;
+                SendPropertyChanged("RecentAppDomains");
+            }
+        }
 
-                _domainPath = value;
-                SendPropertyChanged("DomainPath");
+        private bool _askForDomainSelectionAtLogin;
+
+        public bool AskForDomainSelectionAtLogin
+        {
+            get { return _askForDomainSelectionAtLogin; }
+            set
+            {
+                _askForDomainSelectionAtLogin = value;
+                SendPropertyChanged("AskForDomainSelectionAtLogin");
             }
         }
 
@@ -62,24 +67,6 @@ namespace CarDocu.Models
             }
         }
 
-        private bool _domainPathIsDirty;
-
-        [XmlIgnore]
-        public bool DomainPathIsDirty
-        {
-            get { return _domainPathIsDirty; }
-            set
-            {
-                _domainPathIsDirty = value;
-                SendPropertyChanged("DomainPathIsDirty");
-            }
-        }
-
-        [XmlIgnore]
-        public bool DomainNameIsValid { get { return !string.IsNullOrEmpty(DomainName); } }
-
-        public bool DomainPathIsValid { get { return !string.IsNullOrEmpty(DomainPath); } }
-
         [XmlIgnore]
         public bool IsValidAtFirstGlance { get { return !string.IsNullOrEmpty(DomainName) && !string.IsNullOrEmpty(DomainPath); } }
 
@@ -93,6 +80,17 @@ namespace CarDocu.Models
         public static string AppName { get { return "CKG Scan Client"; } }
 
         [XmlIgnore]
-        public static string AppVersion { get { return string.Format("{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor); } }
+        public static string AppVersion { get { return $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor}"; } }
+
+        public void Init()
+        {
+            RecentAppDomains = RecentAppDomains.OrderBy(ra => ra.DomainName).ToListOrEmptyList();
+
+            if (RecentAppDomains.None() && RecentAppDomains.None(ra => ra.DomainName.NotNullOrEmpty() == ""))
+                RecentAppDomains.Insert(0, new AppDomain());
+
+            if (RecentAppDomains.None(ra => ra.DomainName.NotNullOrEmpty() == "-"))
+                RecentAppDomains.Add(new AppDomain { DomainName = "-" });
+        }
     }
 }

@@ -412,7 +412,12 @@ namespace CkgDomainLogic.General.Database.Services
             {
                 var doks = Documents.Where(x => x.CustomerID == 1).ToList();
 
-                doks.ForEach(x => x.DocTypeName = DocumentTypesForCustomer.Find(t => t.DocumentTypeID == x.DocTypeID).DocTypeName);
+                doks.ForEach(x =>
+                {
+                    var docType = DocumentTypesForCustomer.FirstOrDefault(t => t.DocumentTypeID == x.DocTypeID);
+                    if (docType != null)
+                        x.DocTypeName = docType.DocTypeName;
+                });
 
                 return doks;
             }
