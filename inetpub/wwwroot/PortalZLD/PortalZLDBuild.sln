@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PortalZLD", "PortalZLD.vbproj", "{49BD134E-5A86-442F-8AF4-81BD9F04251D}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Base", "..\..\..\Work\ZLDBase\Base.vbproj", "{B10B1992-6D06-42B3-97C6-18CBB9D0725A}"
@@ -18,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTools", "..\..\..\Work\Tools\MvcTools\MvcTools.csproj", "{EE073662-9DA7-4B2C-8877-893A044EB157}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalMvcTools", "..\ServicesMvc\PortalMvcTools\PortalMvcTools.csproj", "{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainLogic", "..\..\..\Work\CkgDomainLogic\Lib\CkgDomainLogic.csproj", "{D8B336B9-0D12-4AA8-B6D2-536425C228E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,18 @@ Global
 		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
 		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B336B9-0D12-4AA8-B6D2-536425C228E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

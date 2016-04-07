@@ -56,17 +56,28 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\GAC\AjaxControlToolkit.dll</HintPath>
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid">
-      <HintPath>..\..\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="SmartSoft.PdfLibrary">
-      <HintPath>..\..\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\SapORM.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Work\GAC\SmartSoft.PdfLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -700,14 +711,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
-      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
-      <Name>SapORM.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Work\SapORM\models\SapORM.Models.csproj">
-      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
-      <Name>SapORM.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
@@ -751,7 +754,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
+      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
