@@ -345,7 +345,6 @@
     <Content Include="Images\Benutzer.png" />
     <Content Include="Images\bg_main_startseite.jpg" />
     <Content Include="Images\BigKroschkeBridge.jpg" />
-    <Content Include="Images\BigKroschkeBridge1.jpg" />
     <Content Include="Images\bin_closed.png" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\Blatt_08.jpg" />
@@ -473,18 +472,11 @@
     <Content Include="Images\jpg-file.png" />
     <Content Include="Images\Kalender01_07.jpg" />
     <Content Include="Images\Kalender02_07.jpg" />
-    <Content Include="Images\Kopie von Pfeil_abwaerts_01.jpg" />
-    <Content Include="Images\Kopie von Pfeil_aufwaerts_01.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_03.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_04.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_05.jpg" />
     <Content Include="Images\Kreislauf_01.jpg" />
     <Content Include="Images\kroschke.gif" />
     <Content Include="Images\Kroschke.jpg" />
     <Content Include="Images\Kroschke2.jpg" />
-    <Content Include="Images\kroschkeBridge - Kopie.jpg" />
     <Content Include="Images\kroschkeBridge.jpg" />
-    <Content Include="Images\kroschkeBridge1.jpg" />
     <Content Include="Images\kroschkeTrans.jpg" />
     <Content Include="Images\kroschke_inside_logo.png" />
     <Content Include="Images\Kunden.png" />
@@ -910,10 +902,6 @@
       <_AppZulassungsdienst Include="Applications\AppZulassungsdienst\**\*.aspx;Applications\AppZulassungsdienst\**\*.ascx;Applications\AppZulassungsdienst\**\*.master;Applications\AppZulassungsdienst\**\*.js;Applications\AppZulassungsdienst\**\*.css;Applications\AppZulassungsdienst\**\*.doc;Applications\AppZulassungsdienst\**\*.pdf;Applications\AppZulassungsdienst\**\*.xls;Applications\AppZulassungsdienst\**\*.htm;Applications\AppZulassungsdienst\**\*.asmx;Applications\AppZulassungsdienst\**\*.htc;Applications\AppZulassungsdienst\**\Templates\*.xml;Applications\AppZulassungsdienst\**\*.png;Applications\AppZulassungsdienst\**\*.asax" />
       <FilesForPackagingFromProject Include="%(_AppZulassungsdienst.Identity)">
         <DestinationRelativePath>Applications\AppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>
-      <_MvcAppZulassungsdienst Include="Applications\MvcAppZulassungsdienst\**\*.aspx;Applications\MvcAppZulassungsdienst\**\*.ascx;Applications\MvcAppZulassungsdienst\**\*.master;Applications\MvcAppZulassungsdienst\**\*.js;Applications\MvcAppZulassungsdienst\**\*.css;Applications\MvcAppZulassungsdienst\**\*.doc;Applications\MvcAppZulassungsdienst\**\*.pdf;Applications\MvcAppZulassungsdienst\**\*.xls;Applications\MvcAppZulassungsdienst\**\*.htm;Applications\MvcAppZulassungsdienst\**\*.asmx;Applications\MvcAppZulassungsdienst\**\*.htc;Applications\MvcAppZulassungsdienst\**\*.png;Applications\MvcAppZulassungsdienst\**\*.asax;Applications\MvcAppZulassungsdienst\**\Templates\*.xml" />
-      <FilesForPackagingFromProject Include="%(_MvcAppZulassungsdienst.Identity)">
-        <DestinationRelativePath>Applications\MvcAppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
   </Target>
