@@ -1,4 +1,5 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
+﻿@using System.Configuration
+@model CkgDomainLogic.Autohaus.ViewModels.CleverViewModel
 
 @Html.Partial("Partial/Common")
 
@@ -25,6 +26,10 @@
                     <span class="margin-left-20">@option.Text</span>
                 </div>
             }
+            <div class="CleverSearchOption margin-left-25 margin-top-10">
+                <button class='btn gray' onclick="window.open('@Url.Action("RedirectPage", "Clever", new {targetUrl = ConfigurationManager.AppSettings["KfzSteuerUrl"]})','_blank')"><i class='icon-chevron-right white'></i></button>
+                <span class="margin-left-20">@Localize.KFZ_Steuerrechner</span>
+            </div>
 
         </div>
 
