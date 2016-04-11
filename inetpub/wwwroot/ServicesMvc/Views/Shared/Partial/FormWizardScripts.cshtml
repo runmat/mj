@@ -30,6 +30,10 @@
                     'previousSelector': '.button-prev',
                     onTabClick: function (tab, navigation, index, clickedIndex) {
                         //alert('on tab click disabled');
+
+                        // ToDo: Remove test code:
+                        return true;
+
                         var total = navigation.find('li').length;
                         if (index == (total - 1))
                             return false;
