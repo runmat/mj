@@ -332,6 +332,41 @@ namespace AppZulassungsdienst.forms
                         calculateGebuehr();
                         Session["objNacherf"] = objNacherf;
                         break;
+
+                    case "Versand":
+                        newLoeschkz = "V";
+
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
+
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
+
+                        lblLoeschKZ.Text = newLoeschkz;
+
+                        foreach (GridViewRow row in GridView1.Rows)
+                        {
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
+                            {
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                lblLoeschKZ.Text = newLoeschkz;
+
+                                SetGridRowEdited(row, true);
+                            }
+                        }
+
+                        calculateGebuehr();
+                        Session["objNacherf"] = objNacherf;
+                        break;
                 }
             }
             catch (Exception ex)
