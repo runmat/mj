@@ -85,9 +85,12 @@ namespace CkgDomainLogic.Autohaus.Services
             return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
         }
 
-        public List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung)
+        public List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung, string kundenNr)
         {
-            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", LogonContext.Organization.OrganizationReference2);
+            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKORG, I_VKBUR", LogonContext.Customer.AccountingArea.ToString(), LogonContext.Organization.OrganizationReference2);
+
+            if (!String.IsNullOrEmpty(kundenNr))
+                SAP.SetImportParameter("I_KUNNR", kundenNr.ToSapKunnr());
 
             if (!String.IsNullOrEmpty(kreis))
                 SAP.SetImportParameter("I_KREISKZ", kreis);

@@ -616,7 +616,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
 
-            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
+            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave), Zulassung.Rechnungsdaten.KundenNr);
             ZulassungsAbmeldearten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
 
             Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
