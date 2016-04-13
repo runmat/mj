@@ -15,5 +15,11 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         int FahrzeugeVerschieben(string zielPdi, ref List<Fahrzeuguebersicht> fahrzeuge);
 
         int FahrzeugeTexteErfassen(string bemerkungIntern, string bemerkungExtern, ref List<Fahrzeuguebersicht> fahrzeuge);
+
+
+
+        List<FahrzeugVersand> GetFahrzeugVersendungen(string landCode, bool? gesperrte);
+
+        string FahrzeugeVersendungenSperren(bool sperren, List<FahrzeugVersand> fahrzeuge);
     }
 }
