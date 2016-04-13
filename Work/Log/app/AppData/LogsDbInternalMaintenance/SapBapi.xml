@@ -7,7 +7,7 @@
     
     <DestTableName>SapBapiReadOnly</DestTableName>
 
-    <TableIndexColumnNames>Bapi, portalType, AppId, userID, customerID</TableIndexColumnNames>
+    <TableIndexColumnNames>Bapi, portalType, AppId, userID, customerID, time_stamp</TableIndexColumnNames>
 
     <Steps>
       <DbMaintenanceStep IgnoreSqlException="true">
