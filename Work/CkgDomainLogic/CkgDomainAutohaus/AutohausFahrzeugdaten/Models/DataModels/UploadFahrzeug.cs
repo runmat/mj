@@ -13,27 +13,22 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 
         [StringLength(17)]
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        [Required]
         public string FahrgestellNr { get; set; }
 
         [StringLength(4)]
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        [Required]
         public string HerstellerSchluessel { get; set; }
 
         [StringLength(3)]
         [LocalizedDisplay(LocalizeConstants.TypeKey)]
-        [Required]
         public string TypSchluessel { get; set; }
 
         [StringLength(30)]
         [LocalizedDisplay(LocalizeConstants.VvsKey)]
-        [Required]
         public string VvsSchluessel { get; set; }
 
         [StringLength(1)]
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
-        [Required]
         public string VvsPruefziffer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FactoryName)]
@@ -90,9 +85,6 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
                 if (!String.IsNullOrEmpty(ValidationErrorsJson) && ValidationErrorsJson != "[]")
                     return Localize.Error;
 
-	            if (!TypdatenGefunden)
-	                return Localize.TypeDataNotFound;
-
                 return Localize.OK;
 	        }
 	    }
@@ -108,11 +100,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
 
         [ModelMappingCompareIgnore]
         [GridHidden]
-        public bool TypdatenGefunden { get; set; }
-
-        [ModelMappingCompareIgnore]
-        [GridHidden]
-        public bool IsValid { get { return (ValidationOk && TypdatenGefunden); } }
+        public bool IsValid { get { return ValidationOk; } }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

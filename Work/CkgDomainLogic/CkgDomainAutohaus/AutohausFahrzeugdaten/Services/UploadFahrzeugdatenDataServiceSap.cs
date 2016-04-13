@@ -68,29 +68,24 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Services
         {
             Z_AHP_READ_TYPDAT_BESTAND.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            var fzgList = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_WEB_IMP_MASS_From_UploadFahrzeug.CopyBack(UploadItems).ToList();
+            var relevanteFzge = UploadItems.Where(u => !string.IsNullOrEmpty(u.HerstellerSchluessel));
+            var fzgList = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_WEB_IMP_MASS_From_UploadFahrzeug.CopyBack(relevanteFzge).ToList();
             SAP.ApplyImport(fzgList);
 
             var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportListWithExecute(SAP);
             var typList = Fahrzeugbestand.Models.AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
-            
-            foreach (var item in UploadItems)
+
+            foreach (var item in relevanteFzge)
             {
-                var typItem = typList.FirstOrDefault(t => t.FIN == item.FahrgestellNr);
+                var typItem = typList.FirstOrDefault(t => t.HerstellerSchluessel == item.HerstellerSchluessel && t.TypSchluessel == item.TypSchluessel && t.VvsSchluessel == item.VvsSchluessel && t.VvsPruefZiffer == item.VvsPruefziffer);
 
                 if (typItem != null)
                 {
-                    item.TypdatenGefunden = true;
-                    item.HerstellerSchluessel = typItem.HerstellerSchluessel;
-                    item.TypSchluessel = typItem.TypSchluessel;
-                    item.VvsSchluessel = typItem.VvsSchluessel;
-                    item.VvsPruefziffer = typItem.VvsPruefZiffer;
                     item.FabrikName = typItem.FabrikName;
                     item.HandelsName = typItem.HandelsName;
                 }
                 else
                 {
-                    item.TypdatenGefunden = false;
                     item.FabrikName = "";
                     item.HandelsName = "";
                 }  
