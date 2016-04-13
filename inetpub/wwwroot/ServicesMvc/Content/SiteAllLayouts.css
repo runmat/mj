@@ -777,6 +777,13 @@ div.t-window {
     background-color: #f6e6e6!important;
 }
 
+.t-grid-selected.t-grid-error {
+    background-color: #FFF9EE!important;
+}
+.t-grid-selected-alt.t-grid-error-alt {
+    background-color: #F6F2E6!important;
+}
+
 .t-grid-confirmed {
     background-color: #E2FBE2!important;
 }
