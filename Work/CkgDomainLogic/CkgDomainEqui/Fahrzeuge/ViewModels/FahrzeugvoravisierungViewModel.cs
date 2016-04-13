@@ -119,7 +119,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             try
             {
                 if (FahrzeugvoravisierungSelektor.Option == "volkswagen")
-                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceVWFromDatarow, ',', false, false).ToList();
+                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceVWFromDatarow, '*', false, false).ToList();
                 else
                     list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceSonstigeFromDatarow, ',', false, false).ToList();
             }
