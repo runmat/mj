@@ -637,6 +637,28 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_REM_READ_VERSSPERR_01.GT_OUT, FahrzeugVersand> Z_DPM_REM_READ_VERSSPERR_01_GT_OUT_To_FahrzeugVersand
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_READ_VERSSPERR_01.GT_OUT, FahrzeugVersand>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.HaendlerNummer = s.RDEALER;
+                        d.ZahlungsArt = s.DZLART;
+                        d.Name1 = s.NAME1_ZF;
+                        d.Name2 = s.NAME2_ZF;
+                        d.Strasse = s.STREET_ZF;
+                        d.PLZ = s.POST_CODE1_ZF;
+                        d.Ort = s.CITY1_ZF;
+                        d.Land = s.LAND_BEZ_ZF;
+                        d.Gesperrt = s.VERSANDSPERR.XToBool();
+                    }));
+            }
+        }
+
 
         static public ModelMapping<Z_DPM_RETAIL_FLOORCHECK_01.GT_HAENDLER, FloorcheckHaendler> Z_DPM_RETAIL_FLOORCHECK_01_GT_HAENDLER_To_FloorcheckHaendler
         {
