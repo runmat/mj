@@ -1,0 +1,71 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+<style type="text/css">
+    
+     a.btn {
+         color: #ffffff !Important;
+     }
+     
+     .rechercheprotokoll-versuche .control-group {
+        margin-bottom: 5px;
+    }
+    
+    .nav-tabs .tab-disabled a {
+        color: lightgray;
+        cursor: not-allowed;
+    }
+    
+</style>
+
+<h5>
+    <i class="icon-file"></i>
+    <span class="margin-left-10 margin-right-5 bold">@WfmAuftrag.GetViewModel().Selektor.Referenz1Name</span>@Model.AktuellerAuftrag.Referenz1
+    <span class="margin-left-10 margin-right-5 bold">@Localize.VIN</span>@Model.AktuellerAuftrag.FahrgestellNr
+    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span> @Model.AktuellerAuftrag.Kennzeichen
+</h5>
+
+<div class="tabbable tabbable-custom margin-top-15">
+    <ul class="nav nav-tabs">
+        @*Anzeigereihenfolge umgedreht*@
+        <li class="@(Model.RechercheprotokollKundeVorhanden ? "active" : "") @(Model.RechercheprotokollKundeVorhanden ? "" : "tab-disabled")">
+            <a @(Model.RechercheprotokollKundeVorhanden ? "data-toggle=tab href=#subtab_1_4" : "href=#")>@Localize.Customer</a>
+        </li>
+        <li class="@(!Model.RechercheprotokollKundeVorhanden && Model.RechercheprotokollHaendlerVorhanden ? "active" : "") @(Model.RechercheprotokollHaendlerVorhanden ? "" : "tab-disabled")">
+            <a @(Model.RechercheprotokollHaendlerVorhanden ? "data-toggle=tab href=#subtab_1_3" : "href=#")>@Localize.Dealer</a>
+        </li>
+        <li class="@(!Model.RechercheprotokollKundeVorhanden && !Model.RechercheprotokollHaendlerVorhanden && Model.RechercheprotokollSachverstaendigerVorhanden ? "active" : "") @(Model.RechercheprotokollSachverstaendigerVorhanden ? "" : "tab-disabled")">
+            <a @(Model.RechercheprotokollSachverstaendigerVorhanden ? "data-toggle=tab href=#subtab_1_2" : "href=#")>@Localize.Expert</a>
+        </li>
+        <li class="@(!Model.RechercheprotokollKundeVorhanden && !Model.RechercheprotokollHaendlerVorhanden && !Model.RechercheprotokollSachverstaendigerVorhanden && Model.RechercheprotokollSonstigeVorhanden ? "active" : "") @(Model.RechercheprotokollSonstigeVorhanden ? "" : "tab-disabled")">
+            <a @(Model.RechercheprotokollSonstigeVorhanden ? "data-toggle=tab href=#subtab_1_1" : "href=#")>@Localize.Others</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="subtab_1_1">
+            @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollPartial", @Model.RechercheprotokollSonstige)
+        </div> 
+        <div class="tab-pane" id="subtab_1_2">
+            @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollPartial", @Model.RechercheprotokollSachverstaendiger)
+        </div>               
+        <div class="tab-pane" id="subtab_1_3">
+            @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollPartial", @Model.RechercheprotokollHaendler)
+        </div>               
+        <div class="tab-pane active" id="subtab_1_4">
+            @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollPartial", @Model.RechercheprotokollKunde)  
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    function InitRechercheprotokoll() {
+        $(".rechercheprotokoll-versuche #KennzeichenVorne").uniformCheckerDisable();
+        $(".rechercheprotokoll-versuche #KennzeichenHinten").uniformCheckerDisable();
+        $(".rechercheprotokoll-versuche #KennzeichenEntwertet").uniformCheckerDisable();
+        $(".rechercheprotokoll-versuche #KennzeichenDiebstahl").uniformCheckerDisable();
+    }
+
+    InitRechercheprotokoll();
+
+</script>
