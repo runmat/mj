@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.WFM.Models
-@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
 <style type="text/css">
     
@@ -18,14 +17,7 @@
     
 </style>
 
-<h5>
-    <i class="icon-file"></i>
-    <span class="margin-left-10 margin-right-5 bold">@WfmAuftrag.GetViewModel().Selektor.Referenz1Name</span>@Model.AktuellerAuftrag.Referenz1
-    <span class="margin-left-10 margin-right-5 bold">@Localize.VIN</span>@Model.AktuellerAuftrag.FahrgestellNr
-    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span> @Model.AktuellerAuftrag.Kennzeichen
-</h5>
-
-<div class="tabbable tabbable-custom margin-top-15">
+<div class="tabbable tabbable-custom">
     <ul class="nav nav-tabs">
         @*Anzeigereihenfolge umgedreht*@
         <li class="@(Model.RechercheprotokollKundeVorhanden ? "active" : "") @(Model.RechercheprotokollKundeVorhanden ? "" : "tab-disabled")">
