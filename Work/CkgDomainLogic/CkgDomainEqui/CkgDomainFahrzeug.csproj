@@ -120,6 +120,7 @@
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
     <Compile Include="Controllers\HistorieVermieter\EquiController.cs" />
+    <Compile Include="Controllers\SperrenEntsperren\FahrzeugeController.cs" />
     <Compile Include="Controllers\SperrenVerschieben\FahrzeugeController.cs" />
     <Compile Include="Controllers\StatusEinsteuerungController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
@@ -231,6 +232,8 @@
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugSperrenVerschiebenDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugSperrenEntsperrenSelektor.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugVersand.cs" />
     <Compile Include="Fahrzeuge\Models\FloorcheckHaendler.cs" />
     <Compile Include="Fahrzeuge\Models\Floorcheck.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
@@ -275,6 +278,7 @@
     <Compile Include="Fahrzeuge\Services\CarporterfassungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenEntsperrenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FehlteilEtikettenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugzulaeufeViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />

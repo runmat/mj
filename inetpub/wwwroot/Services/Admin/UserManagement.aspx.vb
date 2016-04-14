@@ -1972,34 +1972,12 @@ Partial Public Class UserManagement
 
         btnCreatePassword.Enabled = False
         SearchMode(False)
+        refill_Groups()
         ClearEdit()
-
-        Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
-
-        If intCustomerID > 0 Then
-            Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
-            Dim autoPW As Boolean = False
-
-
-            ' AutoPasswort wenn Passwort per Mail OR Kein Kundenadmin OR kein Orga-Admin
-            If cbxNoCustomerAdmin.Checked And cbxOrganizationAdmin.Checked = False Then
-                If Not _customer.CustomerPasswordRules.DontSendEmail Then
-                    autoPW = True
-                End If
-            End If
-
-            PasswordEditMode(autoPW)
-
-            If Not _customer.CustomerPasswordRules.DontSendEmail Then
-                chkNewPasswort.Checked = True
-                chkNewPasswort.Enabled = False
-            End If
-        End If
 
         txtUserName.Focus()
         trMasterUser.Visible = False
 
-        refill_Groups()
         initialize_ReferenceFields()
 
     End Sub
