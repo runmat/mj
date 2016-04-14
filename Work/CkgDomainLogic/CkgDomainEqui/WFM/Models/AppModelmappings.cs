@@ -276,19 +276,19 @@ namespace CkgDomainLogic.WFM.Models
                         d.Versuch1.GaHatUnterlagen = s.GA_HAT_UNTERLAG_1.XToBool();
                         d.Versuch1.Vermerk = s.VERMERK;
 
-                        d.Versuch2.Datum = s.DATUM_1;
-                        d.Versuch2.User = s.USER_1;
-                        d.Versuch2.Zb1Vorhanden = s.ZB1_KNZ_1.XToBool();
-                        d.Versuch2.Zb2Vorhanden = s.ZB2_KNZ_1.XToBool();
-                        d.Versuch2.KennzeichenVorne = s.KENNZ_VORH_1.XToBool();
-                        d.Versuch2.KennzeichenHinten = s.KENNZ_VORH_H1.XToBool();
-                        d.Versuch2.KennzeichenEntwertet = s.KENNZ_ENTWERTET_1.XToBool();
-                        d.Versuch2.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_1.XToBool();
-                        d.Versuch2.VeVorhanden = s.VE_VORH_1.XToBool();
-                        d.Versuch2.NichtErreicht = s.NICHT_ERREICHT_1.XToBool();
-                        d.Versuch2.PrueftUndMeldetSich = s.PRUE_MELD_SICH_1.XToBool();
-                        d.Versuch2.GaHatUnterlagen = s.GA_HAT_UNTERLAG_1.XToBool();
-                        d.Versuch2.Vermerk = s.VERMERK;
+                        d.Versuch2.Datum = s.DATUM_2;
+                        d.Versuch2.User = s.USER_2;
+                        d.Versuch2.Zb1Vorhanden = s.ZB1_KNZ_2.XToBool();
+                        d.Versuch2.Zb2Vorhanden = s.ZB2_KNZ_2.XToBool();
+                        d.Versuch2.KennzeichenVorne = s.KENNZ_VORH_2.XToBool();
+                        d.Versuch2.KennzeichenHinten = s.KENNZ_VORH_H2.XToBool();
+                        d.Versuch2.KennzeichenEntwertet = s.KENNZ_ENTWERTET_2.XToBool();
+                        d.Versuch2.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_2.XToBool();
+                        d.Versuch2.VeVorhanden = s.VE_VORH_2.XToBool();
+                        d.Versuch2.NichtErreicht = s.NICHT_ERREICHT_2.XToBool();
+                        d.Versuch2.PrueftUndMeldetSich = s.PRUE_MELD_SICH_2.XToBool();
+                        d.Versuch2.GaHatUnterlagen = s.GA_HAT_UNTERLAG_2.XToBool();
+                        d.Versuch2.Vermerk = s.VERMERK_2;
                     }));
             }
         }
