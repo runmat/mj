@@ -70,6 +70,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusPartnerportal { get; set; }
 
+        public bool ZulassungFromShoppingCart { get; set; }
+
+        public Dictionary<string, Func<object>> StepModels = new Dictionary<string, Func<object>>();
+
+            
         [XmlIgnore]
         public string ApplicationTitle
         {
@@ -1121,16 +1126,21 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
-                if (zulDaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
-                    state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
-                else if (!String.IsNullOrEmpty(checkErg))
-                    state.AddModelError("", checkErg);
+                if (state != null)
+                    if (zulDaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                        state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
+                    else if (!String.IsNullOrEmpty(checkErg))
+                        state.AddModelError("", checkErg);
             }
 
             if (ModusVersandzulassung)
                 zulDaten.HaltereintragVorhanden = (zulDaten.Zulassungsart.Belegtyp == "AN" ? "N" : "J");
 
-            ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, state.AddModelError);
+            ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, (e, x) =>
+            {
+                if (state != null)
+                    state.AddModelError(e, x);
+            });
         }
 
         #endregion
@@ -1227,7 +1237,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataInit(string zulassungFromShoppingCart = "", string schnellAbmeldung = "")
         {
-            if (zulassungFromShoppingCart.IsNullOrEmpty())
+            ZulassungFromShoppingCart = !zulassungFromShoppingCart.IsNullOrEmpty();
+
+            if (!ZulassungFromShoppingCart)
             {
                 Zulassung = new Vorgang
                     {
@@ -1264,6 +1276,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
 
                 Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
+
+                InitZulassungFromShoppingCart();
             }
 
             if (schnellAbmeldung.IsNotNullOrEmpty())
@@ -1314,6 +1328,26 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
 
             DataMarkForRefresh();
+
+            InitStepModels();
+        }
+
+        void InitStepModels()
+        {
+            StepModels.Clear();
+
+            StepModels.Add("HalterAdresse", () => Zulassung.Halter.Adresse);
+            StepModels.Add("ZahlerKfzSteuer", () => Zulassung.ZahlerKfzSteuer);
+            StepModels.Add("BankAdressdaten", () => this);
+            StepModels.Add("Fahrzeugdaten", () => this);
+            StepModels.Add("Zulassungsdaten", () => this);
+            StepModels.Add("OptionenDienstleistungen", () => this);
+            StepModels.Add("Summary", () => this);
+        }
+
+        void InitZulassungFromShoppingCart()
+        {
+            SetZulassungsdaten(Zulassung.Zulassungsdaten, null);
         }
 
         public void DataMarkForRefresh()

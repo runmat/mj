@@ -13,7 +13,17 @@
     <div id="formWizardTab1" class="hide">
         @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
     </div>
-    <div id="formWizardTab2" class="hide">
-        <span>Test Test Test</span>
-    </div>
+
+    @if (Model.ZulassungFromShoppingCart)
+    {
+        for (var i = 1; i < Model.StepModels.Count; i++)
+        {
+            var step = Model.Steps.ToArray()[i];
+            <div id="formWizardTab@(i+1)" class="hide">
+                <div>@step.Key</div>
+                <div>@step.Value</div>
+                @Html.Partial("Partial/" + step.Key, Model.StepModels[step.Key]())
+            </div>
+        }
+    }
 </div>
