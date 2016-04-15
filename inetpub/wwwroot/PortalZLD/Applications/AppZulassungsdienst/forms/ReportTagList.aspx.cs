@@ -119,9 +119,6 @@ namespace AppZulassungsdienst.forms
             }
 
             objListe.Fill();
-            Session["ResultKopfTable"] = objListe.KopfListe;
-            Session["ResultPosTable"] = objListe.TagesListe;
-            Session["ResultBemTable"] = objListe.BemListe;
 
             if (objListe.ErrorOccured)
             {
