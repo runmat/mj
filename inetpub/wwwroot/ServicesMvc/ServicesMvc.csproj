@@ -229,6 +229,10 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\XmlData\StepsKroschkeSzErsatzkennzeichen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Areas\Common\Content\Weather\images\01d.png" />
     <Content Include="Areas\Common\Content\Weather\images\01n.png" />
     <Content Include="Areas\Common\Content\Weather\images\02d.png" />

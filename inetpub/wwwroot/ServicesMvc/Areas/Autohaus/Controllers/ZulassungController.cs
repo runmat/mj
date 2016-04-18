@@ -75,7 +75,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #region Massenzulassung
 
-        // ##MMA##
         [CkgApplication]
         public ActionResult IndexMultiReg()
         {

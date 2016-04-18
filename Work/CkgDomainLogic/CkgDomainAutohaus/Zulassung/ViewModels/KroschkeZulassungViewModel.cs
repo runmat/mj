@@ -68,6 +68,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusSonderzulassung { get; set; }
 
+        public string SubModusSonderzulassung { get; set; }
+
         public bool ModusPartnerportal { get; set; }
 
         [XmlIgnore]
@@ -107,6 +109,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
+                    else if (ModusSonderzulassung && SubModusSonderzulassung.IsNotNullOrEmpty())
+                        xmlFileName = string.Format("StepsKroschkeSz{0}.xml", SubModusSonderzulassung.ToLowerFirstUpper());
 
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
 
@@ -187,6 +191,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamSonderzulassung(string sonderzulassung, string sonderzulassungMode = "")
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
+            SubModusSonderzulassung = sonderzulassungMode;
         }
 
         public void SetParamPartnerportal(string partnerportal)
