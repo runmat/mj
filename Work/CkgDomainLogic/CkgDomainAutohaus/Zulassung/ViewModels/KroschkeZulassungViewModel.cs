@@ -918,6 +918,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
+        #region Ersatzkennzeichen
+
+        public Ersatzkennzeichen Ersatzkennzeichen
+        {
+            get { return PropertyCacheGet(() => new Ersatzkennzeichen { KennzeichenTyp = "vorn" }); }
+            set {  PropertyCacheSet(value); }
+        }
+
+        public void SetErsatzkennzeichen(Ersatzkennzeichen model)
+        {
+            Ersatzkennzeichen = model;
+        }
+
+        #endregion
+
+
         #region Fahrzeugdaten
 
         [XmlIgnore, ScriptIgnore]

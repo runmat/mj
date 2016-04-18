@@ -554,6 +554,29 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
+        #region Ersatzkennzeichen
+
+        [HttpPost]
+        public ActionResult Ersatzkennzeichen()
+        {
+            return PartialView("Partial/Ersatzkennzeichen", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ErsatzkennzeichenForm(Ersatzkennzeichen model)
+        {
+            //ViewModel.ValidateErsatzkennzeichenForm(ModelState.AddModelError, model);
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.SetErsatzkennzeichen(model);
+            }
+
+            return PartialView("Partial/ErsatzkennzeichenForm", model);
+        }
+
+        #endregion        
+        
         #region Fahrzeugdaten
 
         [HttpPost]
@@ -604,7 +627,7 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new { ok = true });
         }
 
-        #endregion
+#endregion
 
         #region Zulassungsdaten
 

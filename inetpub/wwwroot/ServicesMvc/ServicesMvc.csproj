@@ -478,6 +478,8 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Ersatzkennzeichen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ErsatzkennzeichenForm.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

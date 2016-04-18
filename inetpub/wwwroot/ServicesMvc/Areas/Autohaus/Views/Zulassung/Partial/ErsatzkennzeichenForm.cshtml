@@ -1,0 +1,14 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Ersatzkennzeichen
+
+<div id="DivErsatzkennzeichen" class="margin-top-20">
+    
+    @using (Ajax.BeginForm("ErsatzkennzeichenForm", "Zulassung", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivErsatzkennzeichen", OnComplete = "AjaxFormErsatzkennzeichenComplete();"}, new {@class = "form-horizontal", id = "AjaxFormErsatzkennzeichen"}))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormDropDownListFor(m => m.KennzeichenTyp, Model.KennzeichenTypen.ToSelectList(), new {@class = "m-wrap medium"})
+    }
+
+</div>
