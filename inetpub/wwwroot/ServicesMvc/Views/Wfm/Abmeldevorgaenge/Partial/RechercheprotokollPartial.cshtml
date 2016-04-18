@@ -1,0 +1,38 @@
+﻿@model CkgDomainLogic.WFM.Models.WfmRechercheprotokoll
+
+<form action="#" class="form-horizontal">
+
+    @Html.FormTextBoxFor(m => m.Name, new { @class = "m-wrap large", @readonly = "readonly" })
+
+    @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap medium margin-right-30", @readonly = "readonly" },
+            postControlHtml: @<text>
+                                 @Html.FormCheckBoxFor(m => m.TelefonNrNichtVergeben, new { @class = "m-wrap small", disabled = "disabled" }, useRawTemplate: true, labelPositionRight: true)
+                              </text>)
+
+    <div class="row-fluid rechercheprotokoll-versuche">
+
+        <div class="span6">
+
+            @using (Html.PortletBox(Localize.FirstTry, null, isCollapsible: false))
+            {
+                @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollVersuchPartial", Model.Versuch1)
+            }
+
+        </div>
+
+        <div class="span6">
+
+            @using (Html.PortletBox(Localize.SecondTry, null, isCollapsible: false))
+            {
+                @Html.Partial("Abmeldevorgaenge/Partial/RechercheprotokollVersuchPartial", Model.Versuch2)
+            }
+
+        </div>
+
+    </div>
+
+    @Html.FormTextBoxFor(m => m.EmailAdresse, new { @class = "m-wrap large", @readonly = "readonly" })
+
+    @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap large", @readonly = "readonly" })
+
+</form>

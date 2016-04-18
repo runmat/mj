@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -137,6 +136,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             Informationen = DataService.GetInfos(AktuellerAuftragVorgangsNr);
             Dokumente = DataService.GetDokumentInfos(AktuellerAuftragVorgangsNr);
             RefreshAufgaben();
+            LoadRechercheprotokoll();
         }
 
         public void FilterAuftraege(string filterValue, string filterProperties)
@@ -716,6 +716,63 @@ namespace CkgDomainLogic.WFM.ViewModels
         }
 
         #endregion
+
+        #endregion
+
+
+        #region Rechercheprotokoll
+
+        [XmlIgnore]
+        public List<WfmRechercheprotokoll> RechercheprotokollDatenList
+        {
+            get { return PropertyCacheGet(() => new List<WfmRechercheprotokoll>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public WfmRechercheprotokoll RechercheprotokollKunde
+        {
+            get { return RechercheprotokollDatenList.FirstOrDefault(r => r.KennungAnsprechpartner == "KUNDE", new WfmRechercheprotokoll()); }
+        }
+
+        public bool RechercheprotokollKundeVorhanden
+        {
+            get { return RechercheprotokollDatenList.Any(r => r.KennungAnsprechpartner == "KUNDE"); }
+        }
+
+        public WfmRechercheprotokoll RechercheprotokollHaendler
+        {
+            get { return RechercheprotokollDatenList.FirstOrDefault(r => r.KennungAnsprechpartner == "HAENDLER", new WfmRechercheprotokoll()); }
+        }
+
+        public bool RechercheprotokollHaendlerVorhanden
+        {
+            get { return RechercheprotokollDatenList.Any(r => r.KennungAnsprechpartner == "HAENDLER"); }
+        }
+
+        public WfmRechercheprotokoll RechercheprotokollSachverstaendiger
+        {
+            get { return RechercheprotokollDatenList.FirstOrDefault(r => r.KennungAnsprechpartner == "SACHV", new WfmRechercheprotokoll()); }
+        }
+
+        public bool RechercheprotokollSachverstaendigerVorhanden
+        {
+            get { return RechercheprotokollDatenList.Any(r => r.KennungAnsprechpartner == "SACHV"); }
+        }
+
+        public WfmRechercheprotokoll RechercheprotokollSonstige
+        {
+            get { return RechercheprotokollDatenList.FirstOrDefault(r => r.KennungAnsprechpartner == "SONST", new WfmRechercheprotokoll()); }
+        }
+
+        public bool RechercheprotokollSonstigeVorhanden
+        {
+            get { return RechercheprotokollDatenList.Any(r => r.KennungAnsprechpartner == "SONST"); }
+        }
+
+        private void LoadRechercheprotokoll()
+        {
+            RechercheprotokollDatenList = DataService.GetRechercheprotokollDaten(AktuellerAuftragVorgangsNr);
+        }
 
         #endregion
     }

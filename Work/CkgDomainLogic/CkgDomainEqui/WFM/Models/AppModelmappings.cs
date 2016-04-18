@@ -247,6 +247,52 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_RECHERCHE_PROT_01.GT_OUT, WfmRechercheprotokoll> Z_DPM_READ_RECHERCHE_PROT_01_GT_OUT_To_WfmRechercheprotokoll
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_RECHERCHE_PROT_01.GT_OUT, WfmRechercheprotokoll>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KennungAnsprechpartner = s.KENNUNG_AP;
+                        d.Name = s.NAME;
+                        d.Telefon = s.TELNR;
+                        d.TelefonNrNichtVergeben = s.TEL_NICHT_VERG.XToBool();
+                        d.EmailAdresse = s.EMAIL;
+                        d.Ansprechpartner = s.AP_PARTNER;
+
+                        d.Versuch1.Datum = s.DATUM_1;
+                        d.Versuch1.User = s.USER_1;
+                        d.Versuch1.Zb1Vorhanden = s.ZB1_KNZ_1.XToBool();
+                        d.Versuch1.Zb2Vorhanden = s.ZB2_KNZ_1.XToBool();
+                        d.Versuch1.KennzeichenVorne = s.KENNZ_VORH_1.XToBool();
+                        d.Versuch1.KennzeichenHinten = s.KENNZ_VORH_H1.XToBool();
+                        d.Versuch1.KennzeichenEntwertet = s.KENNZ_ENTWERTET_1.XToBool();
+                        d.Versuch1.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_1.XToBool();
+                        d.Versuch1.VeVorhanden = s.VE_VORH_1.XToBool();
+                        d.Versuch1.NichtErreicht = s.NICHT_ERREICHT_1.XToBool();
+                        d.Versuch1.PrueftUndMeldetSich = s.PRUE_MELD_SICH_1.XToBool();
+                        d.Versuch1.GaHatUnterlagen = s.GA_HAT_UNTERLAG_1.XToBool();
+                        d.Versuch1.Vermerk = s.VERMERK;
+
+                        d.Versuch2.Datum = s.DATUM_2;
+                        d.Versuch2.User = s.USER_2;
+                        d.Versuch2.Zb1Vorhanden = s.ZB1_KNZ_2.XToBool();
+                        d.Versuch2.Zb2Vorhanden = s.ZB2_KNZ_2.XToBool();
+                        d.Versuch2.KennzeichenVorne = s.KENNZ_VORH_2.XToBool();
+                        d.Versuch2.KennzeichenHinten = s.KENNZ_VORH_H2.XToBool();
+                        d.Versuch2.KennzeichenEntwertet = s.KENNZ_ENTWERTET_2.XToBool();
+                        d.Versuch2.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_2.XToBool();
+                        d.Versuch2.VeVorhanden = s.VE_VORH_2.XToBool();
+                        d.Versuch2.NichtErreicht = s.NICHT_ERREICHT_2.XToBool();
+                        d.Versuch2.PrueftUndMeldetSich = s.PRUE_MELD_SICH_2.XToBool();
+                        d.Versuch2.GaHatUnterlagen = s.GA_HAT_UNTERLAG_2.XToBool();
+                        d.Versuch2.Vermerk = s.VERMERK_2;
+                    }));
+            }
+        }
+
         #endregion
 
         #region ToSap
