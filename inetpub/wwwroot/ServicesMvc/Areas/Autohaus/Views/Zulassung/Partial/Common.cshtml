@@ -96,7 +96,7 @@
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(true);
-            FormWizard.tabClickDisabled = true;
+            FormWizard.tabClickDisabled = false;
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
@@ -404,9 +404,12 @@
     }
 
     function TrySkipBankAddressData() {
-        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
-            $("#AjaxFormBankAdressdaten").submit();
+        try {
+            if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
+                $("#AjaxFormBankAdressdaten").submit();
+            }
         }
+        catch(e){}
     }
 
     // AuslieferAdressen
@@ -849,6 +852,17 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
+        }
+    }
+
+    function FormWizardOnTabClickPrivate(stepKey) {
+        FormWizard.ButtonCustom1Show(false);
+
+        if (stepKey === "Zulassungsdaten") {
+            setTimeout(function () {
+                InitZulassungsdatenControls();
+                InitZulassungsdatenFormUI();
+            }, 500);
         }
     }
 

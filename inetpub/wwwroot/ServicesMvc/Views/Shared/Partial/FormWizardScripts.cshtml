@@ -31,20 +31,22 @@
                     onTabClick: function (tab, navigation, index, clickedIndex) {
                         //alert('on tab click disabled');
 
-                        // ToDo: Remove test code:
-                        return true;
-
                         var total = navigation.find('li').length;
                         if (index == (total - 1))
                             return false;
 
                         var tabClickValid = FormWizard.tabClickForwardEnforceValid || (!FormWizard.tabClickDisabled && (index > clickedIndex));
-                        //alert(FormWizard.tabClickDisabled + " - (" + tabClickValid + ")");
-                        if (tabClickValid)
+                        if (tabClickValid) {
+                            var stepKey = FormWizard.GetStepKey(clickedIndex + 1);
+                            try { FormWizardOnTabClickPrivate(stepKey); } catch (e) { }
+                            this.onTabPrepare(tab, navigation, clickedIndex, true);
+
                             FormWizard.formWizardNavButtonsShowHide(clickedIndex + 1, total);
+                        }
+
                         return tabClickValid;
                     },
-                    onNext: function (tab, navigation, index) {
+                    onTabPrepare: function (tab, navigation, index, directTabClick) {
                         ShoppingCartTryHide();
                         var current = index + 1;
                         var total = navigation.find('li').length;
@@ -53,7 +55,7 @@
 
                         var buttonType = 'next';
                         //alert(FormWizard.buttonOnClickPrivate[buttonType]);
-                        if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled)
+                        if (FormWizard.buttonOnClickPrivate[buttonType] != null && !FormWizard.buttonHandlersDisabled && !directTabClick)
                             if (!FormWizard.buttonOnClickPrivate[buttonType](current, total)) {
                                 FormWizard.formWizardNavButtonsShowHide(current - 1, total);
                                 return false;
@@ -61,16 +63,24 @@
 
                         // set wizard title
                         $('.step-title', $('#formWizard')).html('&nbsp;Schritt ' + (index + 1) + ' / ' + total);
-                        FormWizardOnStepChange();
+                        //if (!directTabClick)
+                            FormWizardOnStepChange();
 
                         // set done steps
                         jQuery('li', $('#formWizard')).removeClass("done");
+                        if (!FormWizard.tabClickDisabled)
+                            jQuery('li', $('#formWizard')).removeClass("cursor-pointer");
                         var liList = navigation.find('li');
                         for (var i = 0; i < index; i++) {
                             jQuery(liList[i]).addClass("done");
+                            if (!FormWizard.tabClickDisabled)
+                                jQuery(liList[i]).addClass("cursor-pointer");
                         }
 
                         return true;
+                    },
+                    onNext: function (tab, navigation, index) {
+                        return this.onTabPrepare(tab, navigation, index, false);
                     },
                     onPrevious: function (tab, navigation, index) {
                         ShoppingCartTryHide();
@@ -185,7 +195,8 @@
                 var tabNumber = ($('#formWizard').data('bootstrapWizard')).navigationLength();
                 //console.log("* " + tabNumber + " *");
                 
-                this.SetTabHtml(tabNumber, html);
+                if (typeof (html) !== 'undefined')
+                    this.SetTabHtml(tabNumber, html);
                 try { FormPreparePrivateAjax(tabNumber-1); } catch (e) {}
 
                 var that = this;

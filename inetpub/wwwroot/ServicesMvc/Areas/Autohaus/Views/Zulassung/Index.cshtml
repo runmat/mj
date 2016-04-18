@@ -14,16 +14,25 @@
         @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
     </div>
 
+
     @if (Model.ZulassungFromShoppingCart)
     {
-        for (var i = 1; i < Model.StepModels.Count; i++)
+        for (var i = 1; i < Model.Steps.Count - 1; i++)
         {
             var step = Model.Steps.ToArray()[i];
+
             <div id="formWizardTab@(i+1)" class="hide">
-                <div>@step.Key</div>
-                <div>@step.Value</div>
                 @Html.Partial("Partial/" + step.Key, Model.StepModels[step.Key]())
             </div>
         }
+
+        <script type="text/javascript">
+
+            $(function () {
+                FormWizard.SetSummaryTabHtmlAndMoveToSummary();
+                ResizeSummaryContainers();
+            });
+            
+        </script>
     }
 </div>

@@ -128,9 +128,9 @@
         var divObj = $('#KennzeichenLabelFields');
 
         if (isSelected) {
-            divObj.removeClass("hidden");
+            divObj.removeClass("hide");
         } else {
-            divObj.addClass("hidden");
+            divObj.addClass("hide");
         }
     }
 
@@ -141,8 +141,8 @@
             grid.showColumn("FzgModell");
             grid.showColumn("Farbe");
         } else {
-          grid.hideColumn("FzgModell");
-          grid.hideColumn("Farbe");
+            grid.hideColumn("FzgModell");
+            grid.hideColumn("Farbe");
         }
     }
 
@@ -150,14 +150,14 @@
         var items = @Html.Raw(Json.Encode(fahrzeugfarbenList.ToList().Select(a => a.Beschreibung.ToJavascriptString())));
 
         tb.autocomplete({
-            minLength: 0,
-            source: items,
-            create: function () {
+                minLength: 0,
+                source: items,
+                create: function () {
                     $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
                         return $('<li>')
                             .append('<a>' + FromJavascriptString(item.label) + '</a>')
                             .appendTo(ul);
-                        };
+                    };
                 }
             })
             .focus(function(){
@@ -238,14 +238,6 @@
         var field = $(this).data('fieldname');
         var value = $(this).val();
         SetFinValue(finId, field, value);
-    });
-
-    $(function() {
-        ShowHideKennzLabelDiv();
-        InitDefaultColorAutocomplete($(".colorautocomplete"));
-        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
-
-        $('#Farbe').show(); // Workaround
     });
 
 </script>
@@ -379,3 +371,18 @@
     }
     
 </div>
+
+<script>
+    
+    function FahrzeugdatenStepInit() {
+        //console.log("FahrzeugdatenStepInit()");
+        ShowHideKennzLabelDiv();
+        InitDefaultColorAutocomplete($(".colorautocomplete"));
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+
+        $('#Farbe').show(); // Workaround
+    }
+
+    FahrzeugdatenStepInit();
+
+</script>
