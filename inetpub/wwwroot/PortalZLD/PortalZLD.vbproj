@@ -895,7 +895,7 @@
       <FilesForPackagingFromProject Include="%(_Admin.Identity)">
         <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
-      <_Bin Include="bin\Admin.*" />
+      <_Bin Include="bin\Admin.*;Applications\AppZulassungsdienst\Bin\AppZulassungsdienst.*" />
       <FilesForPackagingFromProject Include="%(_Bin.Identity)">
         <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
