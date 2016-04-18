@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppZulassungsdienst", "Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.Models", "..\..\..\Work\SapORM\models\SapORM.Models.csproj", "{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,12 @@ Global
 		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
 		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
