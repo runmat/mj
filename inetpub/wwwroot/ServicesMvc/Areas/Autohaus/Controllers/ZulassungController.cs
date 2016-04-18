@@ -563,7 +563,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public ActionResult ErsatzkennzeichenForm(Ersatzkennzeichen model)
+        public ActionResult ErsatzkennzeichenForm(Fahrzeugdaten model)
         {
             //ViewModel.ValidateErsatzkennzeichenForm(ModelState.AddModelError, model);
 

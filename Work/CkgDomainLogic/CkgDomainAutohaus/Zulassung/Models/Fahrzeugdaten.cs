@@ -7,18 +7,20 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class Fahrzeugdaten
+    public class Fahrzeugdaten : IValidatableObject
     {
         private string _kostenstelle;
         private string _bestellNr;
         private string _auftragsNr;
         private string _fahrgestellNr;
+        private string _kennzeichen;
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
@@ -116,6 +118,21 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public int AnzahlHinzuzufuegendeFahrzeuge { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
+        [RequiredConditional]
+        public string Kennzeichen
+        {
+            get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.LicensePlateType)]
+        public string KennzeichenTyp { get; set; }
+
+        [XmlIgnore]
+        public List<SelectItem> KennzeichenTypen { get { return GetZulassungViewModel().Zulassung.KennzeichenTypen; } }
+
         public string GetSummaryString()
         {
             var s = String.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
@@ -127,6 +144,16 @@ namespace CkgDomainLogic.Autohaus.Models
             s += String.Format("<br/>{0}: {1}", Localize.OrderCode, BestellNr);
 
             return s;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var vm = GetZulassungViewModel();
+            if (vm.ModusSonderzulassung && vm.SubModusSonderzulassung.IsNotNullOrEmpty())
+            {
+                if (Kennzeichen.IsNullOrEmpty())
+                    yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Kennzeichen" });
+            }
         }
     }
 }

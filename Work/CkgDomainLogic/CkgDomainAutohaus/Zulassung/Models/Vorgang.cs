@@ -162,6 +162,21 @@ namespace CkgDomainLogic.Autohaus.Models
                         new SelectItem("Z9", Localize.DeliveryAddress + " 3")
                     };
             }
+
+        }
+
+        [XmlIgnore]
+        public List<SelectItem> KennzeichenTypen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem {Key = "8", Text = "Kennzeichen vorne"},
+                    new SelectItem {Key = "801", Text = "Kennzeichen hinten"},
+                    new SelectItem {Key = "800", Text = "Kennzeichen vorn und hinten"},
+                };
+            }
         }
 
         public Versanddaten Versanddaten { get; set; }
@@ -175,7 +190,10 @@ namespace CkgDomainLogic.Autohaus.Models
             AuslieferAdressen = new List<AuslieferAdresse>();
             AuslieferAdressenPartnerRollen.ForEach(p => AuslieferAdressen.Add(new AuslieferAdresse(p.Key)));
             AuslieferAdressen.ForEach(a => a.Materialien = AuslieferAdresse.AlleMaterialien);
-            Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
+            Fahrzeugdaten = new Fahrzeugdaten
+            {
+                FahrzeugartId = "1"
+            };
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
             ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
             VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };

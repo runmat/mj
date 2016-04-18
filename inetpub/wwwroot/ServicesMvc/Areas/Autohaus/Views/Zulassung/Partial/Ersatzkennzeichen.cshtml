@@ -7,8 +7,6 @@
 
 <script type="text/javascript">
 
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
     function AjaxFormErsatzkennzeichenComplete() {
         FormPrepareAjax();
         if (_modelIsValid) {
@@ -22,5 +20,5 @@
 
 <h4>@Localize.LicenseNo</h4>
 
-@Html.Partial("Partial/ErsatzkennzeichenForm", @Model.Ersatzkennzeichen)
+@Html.Partial("Partial/ErsatzkennzeichenForm", @Model.Zulassung.Fahrzeugdaten)
 
