@@ -107,6 +107,7 @@ namespace AppZulassungsdienst.lib
 
                         newRow["KREISKZ"] = dRow["KREISKZ"];
                         newRow["ZZZLDAT"] = dRow["ZZZLDAT"];
+                        newRow["LEERZEILE"] = dRow["LEERZEILE"];
                         newRow["DRUKZ"] = kopfRow["DRUKZ"];
                         newRow["BLTYP"] = dRow["BLTYP"];
                         newRow["KUNNR"] = dRow["KUNNR"];
@@ -134,6 +135,7 @@ namespace AppZulassungsdienst.lib
             TagesListe = new DataTable();
             TagesListe.Columns.Add("KREISKZ", typeof(string));
             TagesListe.Columns.Add("ZZZLDAT", typeof(DateTime));
+            TagesListe.Columns.Add("LEERZEILE", typeof(string));
             TagesListe.Columns.Add("DRUKZ", typeof(string));
             TagesListe.Columns.Add("BLTYP", typeof(string));
             TagesListe.Columns.Add("KUNNR", typeof(string));
@@ -154,8 +156,9 @@ namespace AppZulassungsdienst.lib
             DataView posDataview;
             using (posDataview = new DataView(PosListe))
             {
+                // nur aktiv sortieren, wenn webseitig sortiert wurde, sonst ursprüngliche Sortierung aus SAP beibehalten
                 if (!string.IsNullOrEmpty(sortFieldName))
-                    posDataview.Sort = string.Format("{0} {1}", sortFieldName, (sortOrderAscending ? "ASC" : "DESC"));
+                    posDataview.Sort = string.Format("KREISKZ ASC, ZZZLDAT ASC, LEERZEILE ASC, {0} {1}", sortFieldName, (sortOrderAscending ? "ASC" : "DESC"));
 
                 foreach (DataRowView item in posDataview)
                 {

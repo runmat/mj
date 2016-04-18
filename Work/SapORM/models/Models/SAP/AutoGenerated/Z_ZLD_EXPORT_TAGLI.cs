@@ -539,6 +539,8 @@ namespace SapORM.Models
 
 			public DateTime? ZZZLDAT { get; set; }
 
+			public string LEERZEILE { get; set; }
+
 			public string ZULBELN { get; set; }
 
 			public string ZULPOSNR { get; set; }
@@ -607,6 +609,7 @@ namespace SapORM.Models
 						KREISKZ = (string)row["KREISKZ"],
 						BLTYP = (string)row["BLTYP"],
 						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						LEERZEILE = (string)row["LEERZEILE"],
 						ZULBELN = (string)row["ZULBELN"],
 						ZULPOSNR = (string)row["ZULPOSNR"],
 						KUNNR = (string)row["KUNNR"],

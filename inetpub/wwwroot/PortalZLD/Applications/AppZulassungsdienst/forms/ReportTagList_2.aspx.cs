@@ -56,7 +56,10 @@ namespace AppZulassungsdienst.forms
 
         protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            rgGrid1.DataSource = objListe.TagesListe;
+            var dView = new DataView(objListe.TagesListe);
+            dView.RowFilter = "LEERZEILE <> 'X'";
+
+            rgGrid1.DataSource = dView;
         }
 
         protected void rgGrid1_ItemDataBound(object sender, GridItemEventArgs e)
@@ -118,18 +121,8 @@ namespace AppZulassungsdienst.forms
 
         private void Fillgrid()
         {
-            if (objListe.TagesListe.Rows.Count == 0)
-            {
-                Result.Visible = false;
-                lblError.Text = "Keine Daten zur Anzeige gefunden.";
-            }
-            else
-            {
-                Result.Visible = true;
-
-                rgGrid1.Rebind();
-                //Setzen der DataSource geschieht durch das NeedDataSource-Event
-            }
+            rgGrid1.Rebind();
+            //Setzen der DataSource geschieht durch das NeedDataSource-Event
         }
 
         #endregion

@@ -40,7 +40,7 @@
                         </h1>
                     </div>
                     <asp:Label ID="lblError" runat="server" CssClass="TextError" Height="35px"></asp:Label>
-                    <div id="Result" runat="Server" visible="false">
+                    <div id="Result" runat="Server">
                         <table cellspacing="0" cellpadding="0" width="100%" bgcolor="white" border="0">
                             <tr class="formquery">
                                 <td class="firstLeft active" style="height: 35px">
