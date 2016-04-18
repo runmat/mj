@@ -47,8 +47,8 @@ namespace AppZulassungsdienst.lib
     partial void DeleteRechnungsanhangTemplates(RechnungsanhangTemplates instance);
     #endregion
 		
-		public ZLDTableClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ZLDPortal_TestConnectionString"].ConnectionString, mappingSource)
+		public ZLDTableClassesDataContext() :
+                base(global::System.Configuration.ConfigurationManager.AppSettings["Connectionstring"].ToString(), mappingSource)
 		{
 			OnCreated();
 		}
