@@ -36,12 +36,12 @@
             columns.XBound(c => c.Zb2Nummer);
             columns.XBound(c => c.AuftragsNummer);
             columns.XBound(c => c.Farbe);
-            columns.XBound(c => c.Navi).Hidden();
-            columns.XBound(c => c.Reifen).Hidden();
-            columns.XBound(c => c.Ahk).Hidden();
             columns.XBound(c => c.BemerkungSperre);
             columns.XBound(c => c.BemerkungIntern);
             columns.XBound(c => c.BemerkungExtern);
+            columns.XBound(c => c.Navi);
+            columns.XBound(c => c.Reifen);
+            columns.XBound(c => c.Ahk);
         })
 
     .XAutoColumnConfiguration()

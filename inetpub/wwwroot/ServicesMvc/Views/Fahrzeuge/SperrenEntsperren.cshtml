@@ -1,0 +1,196 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model FahrzeugSperrenEntsperrenViewModel
+
+<style type="text/css">
+    h3.page-title { margin-bottom: 0; }
+    div.span-alert-placeholder { margin-left: 0; }
+    #divFzgSperrenEntsperrenFilter .control-group { margin-bottom: 0; }
+</style>
+
+<h3 class="page-title" id="headerTitle">Versandaufträge <small>sperren / entsperren</small></h3>
+
+<div class="span-alert-placeholder">
+    @Html.SpanAlert("Message")
+</div>
+
+<div id="divFzgSperrenEntsperrenGrid">
+    @Html.Partial("SperrenEntsperren/Grid", Model)
+</div>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridFzgSperrenEntsperren");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridFzgSperrenEntsperren").data("tGrid");
+    }
+
+    function OnDataBound_GridFzgSperrenEntsperren() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFzgSperrenEntsperren");
+    }
+
+    function OnRowDataBound_GridFzgSperrenEntsperren(e) {
+        var istGesperrt = (e.dataItem.Gesperrt.toString().toLowerCase() === "true");
+
+        var tr = $(e.row);
+        var classSuffix = tr.hasClass("t-alt") ? "-alt" : "";
+
+        if (istGesperrt)
+            tr.addClass("t-grid-error" + classSuffix);
+    }
+
+    function OnLoad_GridFzgSperrenEntsperren() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridFzgSperrenEntsperren() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFzgSperrenEntsperren() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FilterFzgSperrenEntsperrenData() {
+        var auswahl = $("input[name='FahrzeugSelektor.Auswahl']:checked").val();
+
+        $.ajax({
+            type: "POST",
+            url: "FilterFzgSperrenEntsperrenData",
+            data: { auswahl: auswahl },
+            success: function (result) {
+                $("#divFilterNurBemerkung").show();
+
+                FormPreparePrivateAjax();
+                GridFzgSperrenEntsperren_OnAllSelectionChange(false);
+                setTimeout(function () {
+                    FilterGrid("GridFzgSperrenEntsperren");
+                }, 100);
+            }
+        });
+    }
+
+    function ShowHideButtons(show) {
+        if (show) {
+            $("#btnFzgSperren").show();
+            $("#btnFzgEntsperren").show();
+        } else {
+            $("#btnFzgSperren").hide();
+            $("#btnFzgEntsperren").hide();
+        }
+    }
+
+    // Overwrite für globale Funktion, da dort Probleme mit mehreren Checkbox-Spalten im Grid bestehen
+    function Grid_PrepareMultiRowSelected(gridName, rowBackgroundSelectionDisabled) {
+
+        $("#" + gridName + " table tbody tr").each(function () {
+            var tr = $(this);
+            tr.addClass('t-grid-multi-row-select');
+            tr.find("td input[type='checkbox'][name='checkedRecords']").each(function () {
+                Grid_FormatMultiRowSelected(tr, this.checked);
+                $(this).change(function () { Grid_FormatMultiRowSelected(tr, this.checked); });
+            });
+        });
+
+        if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
+            $("#" + gridName + " table tbody tr").click(function (e) {
+                var clickedElement = e.target;
+                var tr = $(this);
+                tr.find("td input[type='checkbox'][name='checkedRecords']").each(function () {
+                    if (this === clickedElement)
+                        return false;
+
+                    this.checked = !($(this).is(':checked'));
+                    $.uniform.update($(this));
+                    $(this).trigger('change');
+                    return true;
+                });
+            });
+    }
+
+    function OnSelectionChange_GridFzgSperrenEntsperren(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FzgSperrenEntsperrenSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                GridFzgSperrenEntsperren_MultiSelectUpdate(result.allSelectionCount);
+            }
+        });
+    }
+
+    function GridFzgSperrenEntsperren_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FzgSperrenEntsperrenSelectionChanged",
+            data: { vin: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridFzgSperrenEntsperren_MultiSelectUpdate(result.allSelectionCount);
+                GetGrid().ajaxRequest();
+            }
+        });
+    }
+
+    function GridFzgSperrenEntsperren_MultiSelectUpdate(count) {
+        ShowHideButtons(count > 0);
+        if (count === 0) {
+            $("#FzgSperrenEntsperrenCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FzgSperrenEntsperrenCount").removeClass('hide');
+        $("#FzgSperrenEntsperrenCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count === 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function FzgSperrenEntsperren(sperren) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FzgSperrenEntsperren",
+            loadingShow: true,
+            data: { sperren: sperren },
+            success: function (result) {
+
+                $("#FzgSperrenEntsperrenCount").addClass('hide');
+
+                if (!result.success) {
+                    FilterGrid("GridFzgSperrenEntsperren");
+                    SpanAlertWarning("Message", result.message, 3000);
+                    return;
+                }
+
+                var successMessage = (sperren ? '@Localize.Lock' : '@Localize.Unlock') + ' ' + '@Localize.Successful.ToLower()';
+                SpanAlertSuccess("Message", successMessage, 2000);
+
+                FilterGrid("GridFzgSperrenEntsperren");
+            }
+        });
+
+        return false;
+    }
+
+</script>
+
+
