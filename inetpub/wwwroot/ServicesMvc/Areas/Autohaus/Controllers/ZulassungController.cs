@@ -53,12 +53,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "", string partnerportal = "")
+        public ActionResult Index(string finid, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "", string schnellabmeldung = "", string showShoppingcart = "", string partnerportal = "", string sonderzulassungMode = "")
         {
             ViewModel.SetParamShowShoppingCart(showShoppingcart);
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
-            ViewModel.SetParamSonderzulassung(sonderzulassung);
+            ViewModel.SetParamSonderzulassung(sonderzulassung, sonderzulassungMode);
             ViewModel.SetParamPartnerportal(partnerportal);
 
             ViewModel.DataInit(zulassungFromShoppingCart, schnellabmeldung);
@@ -210,6 +210,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Sonderzulassung(string finid, string halterNr)
         {
             return Index(finid, halterNr, sonderzulassung: "1");
+        }
+
+        [CkgApplication]
+        public ActionResult SzErsatzkennzeichen(string finid, string halterNr)
+        {
+            return Index(finid, halterNr, sonderzulassung: "1", sonderzulassungMode: "ersatzkennzeichen");
         }
 
         [CkgApplication]

@@ -184,7 +184,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ModusVersandzulassung = versandzulassung.IsNotNullOrEmpty();
         }
 
-        public void SetParamSonderzulassung(string sonderzulassung)
+        public void SetParamSonderzulassung(string sonderzulassung, string sonderzulassungMode = "")
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
         }
