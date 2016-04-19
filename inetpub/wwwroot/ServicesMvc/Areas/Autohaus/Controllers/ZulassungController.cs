@@ -559,14 +559,12 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Ersatzkennzeichen()
         {
-            return PartialView("Partial/Ersatzkennzeichen", ViewModel);
+            return PartialView("Partial/Ersatzkennzeichen", ViewModel.StepModels["Fahrzeugdaten"]());
         }
 
         [HttpPost]
         public ActionResult ErsatzkennzeichenForm(Fahrzeugdaten model)
         {
-            //ViewModel.ValidateErsatzkennzeichenForm(ModelState.AddModelError, model);
-
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
@@ -594,7 +592,6 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 ViewModel.SetFahrzeugdaten(model);
 
-                // 20150826 MMA Falls kein Kennzeichenlabel, etwaig gesetzte Werte auf null setzen...
                 if (!model.HasEtikett)
                 {
                     model.Farbe = null;
