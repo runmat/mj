@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using Localize = CkgDomainLogic.General.Services.Localize;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
@@ -326,8 +327,10 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
+        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink, string[] stepKeys)
         {
+            var keysToLower = stepKeys.Select(s => s.ToLower());
+
             var summaryModel = new GeneralSummary
             {
                 Header = SummaryHeaderText,
@@ -343,7 +346,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
-                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                            (!keysToLower.Contains("fahrzeugdaten")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -351,7 +354,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = Fahrzeugdaten.GetSummaryString()
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                            (!keysToLower.Contains("halter")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -359,7 +362,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = Halter.Adresse.GetPostLabelString()
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung || Zulassungsdaten.ModusPartnerportal
+                            (!keysToLower.Contains("zahlerkfzsteuer")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -367,13 +370,15 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = ZahlerKfzSteuer.GetSummaryString()
                                     }),
 
-                            new GeneralEntity
-                            {
-                                Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
-                                Body = Zulassungsdaten.GetSummaryString()
-                            },
+                            (!keysToLower.Contains("zulassungsdaten")
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
+                                        Body = Zulassungsdaten.GetSummaryString()
+                                    }),
 
-                            (Zulassungsdaten.ModusAbmeldung 
+                            (!keysToLower.Contains("optionendienstleistungen")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -381,7 +386,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = OptionenDienstleistungen.GetSummaryString()
                                     }),
 
-                            (!Zulassungsdaten.ModusVersandzulassung
+                            (!keysToLower.Contains("versanddaten")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -405,7 +410,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = AuslieferAdressenSummaryString + auslieferAdressenLink
                                     }),
 
-                            (!Zulassungsdaten.ModusVersandzulassung
+                            (!keysToLower.Contains("versanddaten")
                                     ? null :
                                     new GeneralEntity
                                     {

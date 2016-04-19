@@ -1260,7 +1260,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Misc + Summaries + Savings
 
-        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(AuslieferAdressenLink); } }
+        public GeneralSummary ZulassungSummary { get { return Zulassung.CreateSummaryModel(AuslieferAdressenLink, StepKeys); } }
 
         public bool SaveDataToErpSystem { get; set; }
 
@@ -1424,7 +1424,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
         {
-            return Zulassung.CreateSummaryModel(auslieferAdressenLink);
+            return Zulassung.CreateSummaryModel(auslieferAdressenLink, StepKeys);
         }
 
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
