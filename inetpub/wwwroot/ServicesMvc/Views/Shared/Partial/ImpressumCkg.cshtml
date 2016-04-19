@@ -1,4 +1,18 @@
-﻿<div class="container-fluid">
+﻿<script type="text/javascript" language="javascript">
+
+
+    setTimeout(function () { resizeDiv(); }, 200);
+
+    function resizeDiv() {
+        $("#DadImprint").height($("#kroschkeImprint").height());
+    }
+
+    window.onresize = resizeDiv;
+  
+   $(window).trigger('resize');
+
+</script>
+<div class="container-fluid">
     <div class="row-fluid">
         <div class="span5 responsive">
             <div class="portlet box light-grey">
@@ -7,7 +21,7 @@
                         Christoph Kroschke GmbH
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body" id="kroschkeImprint">
                     Ladestraße 1<br />
                     22926 Ahrensburg<br />
                     <br />
@@ -37,7 +51,7 @@
                         DAD Deutscher Auto Dienst GmbH
                     </div>
                 </div>
-                <div class="portlet-body margin">
+                <div class="portlet-body" id="DadImprint">
                     Ladestraße 1<br />
                     22926 Ahrensburg<br />
                     <br />
@@ -53,8 +67,8 @@
                     § 27 a Umsatzsteuergesetz: DE114822102<br />
                     <br />
                     Haftungshinweis: <br />
-                    Trotz sorgfältiger inhaltlicher Kontrolle über-
-                    nehmen wir keine Haftung für die Inhalte
+                    Trotz sorgfältiger inhaltlicher Kontrolle übernehmen
+                    wir keine Haftung für die Inhalte
                     externer Links. Für den Inhalt der verlinkten
                     Seiten sind ausschließlich deren Betreiber
                     verantwortlich.
