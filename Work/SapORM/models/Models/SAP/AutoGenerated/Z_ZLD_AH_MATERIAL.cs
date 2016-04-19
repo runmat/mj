@@ -83,6 +83,8 @@ namespace SapORM.Models
 
 			public string ZULASSUNG { get; set; }
 
+			public string SIMULIERE_VERSAND { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_MAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -104,6 +106,7 @@ namespace SapORM.Models
 						Z48H_VERSAND = (string)row["Z48H_VERSAND"],
 						NO_NEXT_DAY = (string)row["NO_NEXT_DAY"],
 						ZULASSUNG = (string)row["ZULASSUNG"],
+						SIMULIERE_VERSAND = (string)row["SIMULIERE_VERSAND"],
 					};
 				}
 				catch(Exception e)

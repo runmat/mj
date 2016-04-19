@@ -55,6 +55,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.IstVersand = s.VERSAND.XToBool();
                             d.Auf48hVersandPruefen = s.Z48H_VERSAND.XToBool();
                             d.ZulassungAmFolgetagNichtMoeglich = s.NO_NEXT_DAY.XToBool();
+                            d.SimuliereVersand = s.SIMULIERE_VERSAND.In("48,72");
                         }));
             }
         }
@@ -681,7 +682,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
                             d.STILL_DAT = null;
 
-                            d.BLTYP = s.Zulassungsdaten.Belegtyp;
+                            d.BLTYP = (s.Zulassungsdaten.SimuliereVersand ? (s.Zulassungsdaten.HaltereintragVorhanden == "J" ? "AG" : "AN") : s.Zulassungsdaten.Belegtyp);
                             d.KREISKZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.Zulassungskreis);
                             d.KREISBEZ = (s.Zulassungsdaten.ModusAbmeldung ? null : s.Zulassungsdaten.ZulassungskreisBezeichnung);
                             d.ZZEVB = s.Zulassungsdaten.EvbNr;

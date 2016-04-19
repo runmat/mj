@@ -35,7 +35,15 @@ else
                     <div>@Localize.Autohaus_Versandzulassung</div>
                 </div>
                 <div class="inner">
-                    @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                    @if (Model.SimuliereVersand)
+                    {
+                        @Html.HiddenFor(m => m.Expressversand)
+                        @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>, new { disabled = "disabled" })
+                    }
+                    else
+                    {
+                        @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                    }
                 </div>
             </div>
         }
@@ -45,7 +53,7 @@ else
         }
 
         <div class="kroschke-evb-control-group-border">
-            @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7}, postControlHtml:
+            @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml:
                 @<text><button class="btn green" onclick="return false;"><i class='icon-chevron-right'></i></button></text>)
             <div class="control-group">
                 <div class="alert hide" id="evb-info">
@@ -65,8 +73,8 @@ else
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new {@class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()"})
-            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new {@class = "m-wrap small uppercase", maxlength = 7})
+            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()" })
+            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", maxlength = 7 })
         }
 
         @if (Model.ZulassungsartAutomatischErmitteln)
@@ -78,7 +86,7 @@ else
             @Html.HiddenFor(m => m.HaltereintragVorhanden)
         }
 
-        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new {@class = "m-wrap xsmall", onchange = "CheckKennzeichenReserviert()"},
+        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenReserviert()" },
             postControlHtml:
                 @<text>
                     <span id="divWkzLink">

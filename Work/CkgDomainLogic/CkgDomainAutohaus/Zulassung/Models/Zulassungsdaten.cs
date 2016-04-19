@@ -70,6 +70,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
 
+        public bool SimuliereVersand { get { return Zulassungsart.SimuliereVersand; } }
+
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
