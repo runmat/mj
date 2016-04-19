@@ -1002,7 +1002,7 @@
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Shared\Partial\ZiPoolInfoListe.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Shared\Partial\ErforderlicheDokumente.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuer.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />

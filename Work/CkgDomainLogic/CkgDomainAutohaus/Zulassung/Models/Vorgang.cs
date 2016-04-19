@@ -346,7 +346,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
-                            (!keysToLower.Contains("fahrzeugdaten")
+                            (!keysToLower.Contains("fahrzeugdaten") && !keysToLower.Contains("ersatzkennzeichen")
                                     ? null :
                                     new GeneralEntity
                                     {

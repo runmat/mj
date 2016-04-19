@@ -19,6 +19,7 @@ using CkgDomainLogic.Zulassung.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using MvcTools.Models;
 using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
@@ -530,7 +531,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
 
                 if (Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber.IsNullOrEmpty())
-                    Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = String.Format("{0}{1}", Zulassung.Halter.Adresse.Name1, (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
+                    Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = string.Format("{0}{1}", Zulassung.Halter.Adresse.Name1, (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
             }
 
             string zulassungsKreis;
@@ -635,7 +636,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
                 Zulassung.Zulassungsdaten.Expressversand = false;
 
-            if (String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr) && Zulassung.Zulassungsdaten.ModusAbmeldung)
+            if (string.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr) && Zulassung.Zulassungsdaten.ModusAbmeldung)
             {
                 var abmArt = Abmeldearten.FirstOrDefault(z => z.Belegtyp == "AA");
                 if (abmArt != null)
@@ -735,7 +736,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = model;
 
             // Kontoinhaber aus Adresse übernehmen
-            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = String.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = string.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
 
             // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
             if (Zulassung.BankAdressdaten.Cpdkunde
@@ -956,6 +957,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
+
+            TryGetSeparateNecessaryDocuments();
+        }
+
+        private void TryGetSeparateNecessaryDocuments()
+        {
+            SeparateNecessaryDocuments = new List<SimpleUiListItem>();
+
+            if (ModusSonderzulassungErsatzkennzeichen)
+            {
+                SeparateNecessaryDocuments.Add(new SimpleUiListItem { Text = Localize.TranslateResourceKey("ReceiptOfAuthorization"), StyleCssClass = "separate-necessary-document-item" });
+                SeparateNecessaryDocuments.Add(new SimpleUiListItem { Text = Localize.TranslateResourceKey("ReportCertificate"), StyleCssClass = "separate-necessary-document-item" });
+            }
         }
 
         public void AddVehicles(int anzFahrzeuge, string fahrzeugartId)
@@ -1022,6 +1036,36 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public ZiPoolDetaildaten ZiPoolDetails
+        {
+            get
+            {
+                if (ZiPoolDaten == null || ZiPoolDaten.Details.None())
+                    return new ZiPoolDetaildaten();
+
+                return ZiPoolDaten.Details.FirstOrDefault(d => d.Gewerblich == Zulassung.HalterGewerblich && d.Dienstleistung == DienstleistungsartZiPool);
+            }
+        }
+
+        [XmlIgnore]
+        public List<SimpleUiListItem> SeparateNecessaryDocuments { get; private set; }
+
+        [XmlIgnore]
+        public bool SummaryHasSeparateNecessaryDocuments
+        {
+            get { return SeparateNecessaryDocuments != null && SeparateNecessaryDocuments.Any(); }
+        }
+        [XmlIgnore]
+        public bool SummaryHasZiPoolDocuments
+        {
+            get { return ZiPoolDetails.ErforderlicheDokumente.Any(); }  
+        }
+        [XmlIgnore]
+        public bool SummaryHasDocuments
+        {
+            get { return SummaryHasSeparateNecessaryDocuments || SummaryHasZiPoolDocuments; }
+        }
+
         public string DienstleistungsartZiPool
         {
             get
@@ -1045,17 +1089,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     default:
                         return "XXX";
                 }
-            }
-        }
-
-        public ZiPoolDetaildaten ZiPoolDetails
-        {
-            get
-            {
-                if (ZiPoolDaten == null)
-                    return new ZiPoolDetaildaten();
-
-                return ZiPoolDaten.Details.FirstOrDefault(d => d.Gewerblich == Zulassung.HalterGewerblich && d.Dienstleistung == DienstleistungsartZiPool);
             }
         }
 
@@ -1134,20 +1167,21 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
                 if (state != null)
-                    if (zulDaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
-                        state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
-                    else if (!String.IsNullOrEmpty(checkErg))
+                    if (zulDaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !string.IsNullOrEmpty(checkErg)))
+                        state.AddModelError("", (string.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
+                    else if (!string.IsNullOrEmpty(checkErg))
                         state.AddModelError("", checkErg);
             }
 
             if (ModusVersandzulassung)
                 zulDaten.HaltereintragVorhanden = (zulDaten.Zulassungsart.Belegtyp == "AN" ? "N" : "J");
 
-            ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, (e, x) =>
-            {
-                if (state != null)
-                    state.AddModelError(e, x);
-            });
+            if (!ModusAbmeldung && !ModusSonderzulassung)
+                ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, (e, x) =>
+                {
+                    if (state != null)
+                        state.AddModelError(e, x);
+                });
         }
 
         public void FilterFinList(string filterValue, string filterProperties)
@@ -1564,7 +1598,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             var kundenNummern = new List<string>();
 
-            if (!String.IsNullOrEmpty(WarenkorbSelectedKunnr))
+            if (!string.IsNullOrEmpty(WarenkorbSelectedKunnr))
             {
                 if (WarenkorbSelectedKunnr == "*")
                     KundenauswahlWarenkorb.ForEach(k => kundenNummern.Add(k.KundenNr));
