@@ -42,6 +42,12 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "VERSANDZULASSUNGPARTNER")
                     return "?versandzulassung=1&partnerportal=1";
 
+                if (BeauftragungsArt.StartsWith("SONDERZULASSUNG"))
+                {
+                    var sonderzulassungMode = !BeauftragungsArt.Contains("_") ? "" : BeauftragungsArt.Split('_')[1].ToLower();   // z. B. SONDERZULASSUNG_ERSATZKENNZEICHEN
+                    return "?sonderzulassung=1&sonderzulassungMode=" + sonderzulassungMode;
+                }
+
                 return "";
             }
         }

@@ -135,13 +135,13 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string GetSummaryString()
         {
-            var s = String.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
-            s += String.Format("<br/>{0}: {1}", Localize.VehicleType, Fahrzeugart.Beschreibung);
-            s += String.Format("<br/>{0}: {1}", Localize.VIN, FahrgestellNr);
-            s += String.Format("<br/>{0}: {1}", Localize.SellerAbbreviation, VerkaeuferKuerzel);
-            s += String.Format("<br/>{0}: {1}", Localize.ZB2, Zb2Nr);
-            s += String.Format("<br/>{0}: {1}", Localize.CostCenter, Kostenstelle);
-            s += String.Format("<br/>{0}: {1}", Localize.OrderCode, BestellNr);
+            var s = string.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
+            s += string.Format("<br/>{0}: {1}", Localize.VehicleType, Fahrzeugart.Beschreibung);
+            s += string.Format("<br/>{0}: {1}", Localize.VIN, FahrgestellNr);
+            s += string.Format("<br/>{0}: {1}", Localize.SellerAbbreviation, VerkaeuferKuerzel);
+            s += string.Format("<br/>{0}: {1}", Localize.ZB2, Zb2Nr);
+            s += string.Format("<br/>{0}: {1}", Localize.CostCenter, Kostenstelle);
+            s += string.Format("<br/>{0}: {1}", Localize.OrderCode, BestellNr);
 
             return s;
         }
@@ -149,7 +149,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var vm = GetZulassungViewModel();
-            if (vm.ModusSonderzulassung && vm.SubModusSonderzulassung.IsNotNullOrEmpty())
+            if (vm.ModusSonderzulassungErsatzkennzeichen)
             {
                 if (Kennzeichen.IsNullOrEmpty())
                     yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Kennzeichen" });

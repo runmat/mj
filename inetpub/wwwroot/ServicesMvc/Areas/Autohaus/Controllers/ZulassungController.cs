@@ -569,7 +569,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewModel.SetErsatzkennzeichen(model);
+                ViewModel.SetFahrzeugdaten(model);
             }
 
             return PartialView("Partial/ErsatzkennzeichenForm", model);
@@ -627,7 +627,7 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new { ok = true });
         }
 
-#endregion
+        #endregion
 
         #region Zulassungsdaten
 

@@ -67,8 +67,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public bool ModusVersandzulassung { get; set; }
 
         public bool ModusSonderzulassung { get; set; }
-
-        public string SubModusSonderzulassung { get; set; }
+        public bool ModusSonderzulassungErsatzkennzeichen { get; set; }
 
         public bool ModusPartnerportal { get; set; }
 
@@ -109,8 +108,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
-                    else if (ModusSonderzulassung && SubModusSonderzulassung.IsNotNullOrEmpty())
-                        xmlFileName = string.Format("StepsKroschkeSz{0}.xml", SubModusSonderzulassung.ToLowerFirstUpper());
+                    else if (ModusSonderzulassungErsatzkennzeichen)
+                        xmlFileName = "StepsKroschkeSzErsatzkennzeichen.xml";
 
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
 
@@ -191,7 +190,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamSonderzulassung(string sonderzulassung, string sonderzulassungMode = "")
         {
             ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
-            SubModusSonderzulassung = sonderzulassungMode;
+            if (sonderzulassungMode.NotNullOrEmpty().ToUpper() == "ERSATZKENNZEICHEN")
+                ModusSonderzulassungErsatzkennzeichen = true;
         }
 
         public void SetParamPartnerportal(string partnerportal)
@@ -918,16 +918,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
-        #region Ersatzkennzeichen
-
-        public void SetErsatzkennzeichen(Fahrzeugdaten model)
-        {
-            SetFahrzeugdaten(model);
-        }
-
-        #endregion
-
-
         #region Fahrzeugdaten
 
         [XmlIgnore, ScriptIgnore]
@@ -946,6 +936,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
             Zulassung.Fahrzeugdaten.TuevAu = model.TuevAu;
+            Zulassung.Fahrzeugdaten.KennzeichenTyp = model.KennzeichenTyp;
+            Zulassung.Fahrzeugdaten.Kennzeichen = model.Kennzeichen;
 
             // 20150826 MMA
             Zulassung.Fahrzeugdaten.HasEtikett = model.HasEtikett;
@@ -1148,6 +1140,35 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, state.AddModelError);
         }
 
+        public void FilterFinList(string filterValue, string filterProperties)
+        {
+            FinListFiltered = FinList.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void UpdateAnzahlAbmeldungen(string anzAbmeldungen)
+        {
+            var anzahlInt = anzAbmeldungen.ToInt(0);
+
+            Zulassung.Zulassungsdaten.AnzahlAbmeldungen = anzahlInt;
+
+            if (FinList.Count != anzahlInt)
+            {
+                while (FinList.Count < anzahlInt)
+                {
+                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
+                    FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3") });
+                }
+
+                while (FinList.Count > anzahlInt)
+                {
+                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
+                    FinList.RemoveAll(f => f.FinID == maxId.ToString("D3"));
+                }
+
+                PropertyCacheClear(this, m => m.FinListFiltered);
+            }
+        }
+
         #endregion
 
 
@@ -1211,11 +1232,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = "";
 
-            // 20150826 MMA Kennzeichenlabel
-            //if (Zulassung.Fahrzeugdaten.HasEtikett)
-            //    Zulassung.OptionenDienstleistungen.Kennzeichenlabel = true;
-            //else
-            //    Zulassung.OptionenDienstleistungen.Kennzeichenlabel = false;
             Zulassung.OptionenDienstleistungen.Kennzeichenlabel = Zulassung.Fahrzeugdaten.HasEtikett;
         }
 
@@ -1401,14 +1417,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
+
+                                              : ModusSonderzulassungErsatzkennzeichen ? "SONDERZULASSUNG_ERSATZKENNZEICHEN"
                                               : ModusSonderzulassung ? "SONDERZULASSUNG"
+
                                               : "ZULASSUNG");
                     }
                 });
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung || Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            if (!Zulassung.Zulassungsdaten.IsMassenzulassung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+                zulassungenToSave = zulassungen;
+            else
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
                 foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => !string.IsNullOrEmpty(x.FIN) || (Zulassung.Zulassungsdaten.IsSchnellabmeldung && x.IsSchnellabmeldungSpeicherrelevant)))
@@ -1423,14 +1444,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
                     singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
 
-                    // singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
-
                     singleZulassung.AuslieferAdressen = Zulassung.AuslieferAdressen;
 
                     singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
                     singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
 
-                    // singleZulassung.Zusatzformulare = ModelMapping.Copy(Zulassung.Zusatzformulare);  // Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
                     singleZulassung.Zusatzformulare = new List<PdfFormular>();
 
                     singleZulassung.Fahrzeugdaten.FahrgestellNr = fahrzeugAkteBestand.FIN;
@@ -1460,7 +1478,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             singleZulassung.Zulassungsdaten.KennzeichenReserviert = true;
                         }
 
-                        // 20150826 MMA                    
                         singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
                         singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
                         singleZulassung.Fahrzeugdaten.FahrzeugartId = fahrzeugAkteBestand.ZulassungFahrzeugartId;
@@ -1468,10 +1485,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     zulassungenToSave.Add(singleZulassung);
                 }
-            }
-            else
-            {
-                zulassungenToSave = zulassungen;
             }
             
             if (saveDataToSap)
@@ -1539,14 +1552,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #endregion
 
-        public void FilterFinList(string filterValue, string filterProperties)
-        {
-            FinListFiltered = FinList.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
+
+        #region Validation
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-            if ((Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung) && FinList.None(x => !string.IsNullOrEmpty(x.FIN)))
+            if ((Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung) &&
+                FinList.None(x => !string.IsNullOrEmpty(x.FIN)))
                 addModelError(string.Empty, Localize.NoVehicleSelected);
 
             if (fahrzeugdatenModel.HasEtikett)
@@ -1554,10 +1566,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                 {
                     if (FinList.Any(x => !string.IsNullOrEmpty(x.FIN) && x.Farbe.IsNullOrEmpty()))
-                        addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+                        addModelError(string.Empty,
+                            string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
 
                     if (FinList.Any(x => !string.IsNullOrEmpty(x.FIN) && x.FzgModell.IsNullOrEmpty()))
-                        addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower())); 
+                        addModelError(string.Empty,
+                            string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
                 }
                 else
                 {
@@ -1565,18 +1579,24 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
 
                     if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
-                        addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+                        addModelError("FzgModell",
+                            string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
                 }
             }
 
-            if (ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            if (ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenabmeldung &&
+                !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
                 var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
 
                 if (fahrzeugdatenModel.TuevAu.IsNullOrEmpty())
-                    addModelError("TuevAu", string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Required.ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+                    addModelError("TuevAu",
+                        string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Required.ToLower(),
+                            Localize.Format, Localize.DateFormat_MMJJ));
                 else if (!regexTuevAu.IsMatch(fahrzeugdatenModel.TuevAu))
-                    addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+                    addModelError(string.Empty,
+                        string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(),
+                            Localize.Format, Localize.DateFormat_MMJJ));
             }
         }
 
@@ -1584,12 +1604,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
-                var zulkreis = string.Format("{0}{1}",fahrzeugdatenModel.Zulassungskreis, "-");
+                var zulkreis = string.Format("{0}{1}", fahrzeugdatenModel.Zulassungskreis, "-");
 
                 var tmpFinList = FinList.Where(x => !string.IsNullOrEmpty(x.FIN)
-                                                    && ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) || (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) || (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis))
-                                                    && (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() || !x.ReservationName.IsNullOrEmpty()));
-     
+                                                    &&
+                                                    ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) ||
+                                                     (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) ||
+                                                     (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis))
+                                                    &&
+                                                    (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() ||
+                                                     !x.ReservationName.IsNullOrEmpty()));
+
                 if (tmpFinList.Any())
                 {
                     addModelError(string.Empty, Localize.PleaseEnterOnlyPersonalisedLicenseOrReservationInformation);
@@ -1598,7 +1623,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     foreach (var item in tmpFinList)
                     {
-                        if (!item.ResKennz.IsNullOrEmpty() || !item.ReservationNr.IsNullOrEmpty() || !item.ReservationName.IsNullOrEmpty())
+                        if (!item.ResKennz.IsNullOrEmpty() || !item.ReservationNr.IsNullOrEmpty() ||
+                            !item.ReservationName.IsNullOrEmpty())
                         {
                             item.WunschKennz1 = null;
                             item.WunschKennz2 = null;
@@ -1613,57 +1639,41 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+                    addModelError(string.Empty,
+                        string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarOwner, Localize.Required.NotNullOrEmpty().ToLower()));
+                    addModelError(string.Empty,
+                        string.Format("{0} {1}", Localize.CarOwner, Localize.Required.NotNullOrEmpty().ToLower()));
 
                 var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
-                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
-                    addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
+                if (
+                    FinList.Any(
+                        x =>
+                            x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() &&
+                            !regexTuevAu.IsMatch(x.TuevAu)))
+                    addModelError(string.Empty,
+                        string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(),
+                            Localize.Format, Localize.DateFormat_MMJJ));
             }
         }
 
         public bool ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
         {
+            string errorMessage;
+
+
             // AuslieferAdresseZ7
-            if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
-                model.ErrorMsgAdresseZ7 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-
-            if (model.AuslieferAdresseZ7.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ7.Adressdaten.Bemerkung.IsNullOrEmpty())
-                model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.CommentRequired);
-
-            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ7.Adressdaten.Adresse.Land != "DE")
-                model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
-
-            if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty())
-                model.ErrorMsgAdresseZ7 = model.ErrorMsgAdresseZ7.Substring(0, model.ErrorMsgAdresseZ7.Length -2);
+            ValidateSingleAuslieferAdresse(model.AuslieferAdresseZ7, out errorMessage);
+            model.ErrorMsgAdresseZ7 = errorMessage;
 
             // AuslieferAdresseZ8
-            if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
-                model.ErrorMsgAdresseZ8 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-
-            if (model.AuslieferAdresseZ8.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ8.Adressdaten.Bemerkung.IsNullOrEmpty())
-                model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.CommentRequired);
-
-            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ8.Adressdaten.Adresse.Land != "DE")
-                model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
-
-            if (model.ErrorMsgAdresseZ8.IsNotNullOrEmpty())
-                model.ErrorMsgAdresseZ8 = model.ErrorMsgAdresseZ8.Substring(0, model.ErrorMsgAdresseZ8.Length - 2);
+            ValidateSingleAuslieferAdresse(model.AuslieferAdresseZ8, out errorMessage);
+            model.ErrorMsgAdresseZ8 = errorMessage;
 
             // AuslieferAdresseZ9
-            if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
-                model.ErrorMsgAdresseZ9 = string.Format("{0} & ", Localize.CompleteAddressRequired);
-
-            if (model.AuslieferAdresseZ9.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ9.Adressdaten.Bemerkung.IsNullOrEmpty())
-                model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.CommentRequired);
-
-            if (ModusVersandzulassung && model.AuslieferAdresseZ7.HasData && model.AuslieferAdresseZ9.Adressdaten.Adresse.Land != "DE")
-                model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
-
-            if (model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
-                model.ErrorMsgAdresseZ9 = model.ErrorMsgAdresseZ9.Substring(0, model.ErrorMsgAdresseZ9.Length - 2);
+            ValidateSingleAuslieferAdresse(model.AuslieferAdresseZ9, out errorMessage);
+            model.ErrorMsgAdresseZ9 = errorMessage;
 
 
             if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty() || model.ErrorMsgAdresseZ8.IsNotNullOrEmpty() ||
@@ -1673,35 +1683,32 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             return true;
         }
 
+        private void ValidateSingleAuslieferAdresse(AuslieferAdresse auslieferAdresse, out string errorMessage)
+        {
+            errorMessage = "";
+
+            if (auslieferAdresse.HasData && !auslieferAdresse.Adressdaten.AdresseVollstaendig)
+                errorMessage = string.Format("{0} & ", Localize.CompleteAddressRequired);
+
+            if (auslieferAdresse.ZugeordneteMaterialien.Contains("Sonstiges") &&
+                auslieferAdresse.Adressdaten.Bemerkung.IsNullOrEmpty())
+                errorMessage += string.Format("{0} & ", Localize.CommentRequired);
+
+            if (ModusVersandzulassung && auslieferAdresse.HasData && auslieferAdresse.Adressdaten.Adresse.Land != "DE")
+                errorMessage += string.Format("{0} & ", Localize.ShippingOnlyPossibleWithinGermany);
+
+            if (errorMessage.IsNotNullOrEmpty())
+                errorMessage = errorMessage.Substring(0, errorMessage.Length - 2);
+        }
+
         public void ValidateVersanddatenForm(Action<string, string> addModelError, Versanddaten versanddatenModel)
         {
             if (ModusVersandzulassung && string.IsNullOrEmpty(versanddatenModel.VersandDienstleisterId))
                 addModelError(string.Empty, Localize.PleaseSelectAShippingServiceProvider);
         }
 
-        public void UpdateAnzahlAbmeldungen(string anzAbmeldungen)
-        {
-            var anzahlInt = anzAbmeldungen.ToInt(0);
+        #endregion
 
-            Zulassung.Zulassungsdaten.AnzahlAbmeldungen = anzahlInt;
-
-            if (FinList.Count != anzahlInt)
-            {
-                while (FinList.Count < anzahlInt)
-                {
-                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
-                    FinList.Add(new FahrzeugAkteBestand { FinID = (maxId + 1).ToString("D3") });
-                }
-
-                while (FinList.Count > anzahlInt)
-                {
-                    var maxId = FinList.Max(f => f.FinID).ToInt(0);
-                    FinList.RemoveAll(f => f.FinID == maxId.ToString("D3"));
-                }
-
-                PropertyCacheClear(this, m => m.FinListFiltered);
-            }
-        }
 
 
         #region Dashboard functionality
