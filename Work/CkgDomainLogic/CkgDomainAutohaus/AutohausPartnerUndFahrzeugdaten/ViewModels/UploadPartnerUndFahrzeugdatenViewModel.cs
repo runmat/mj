@@ -196,15 +196,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
 
         public void ValidateUploadItems()
         {
-            if (UploadItems.Any())
-            {
-                UploadItems.ForEach(ValidateSingleUploadItem);
-
-                if (UploadItems.First() is UploadFahrzeugdaten)
-                    UploadDataService.LoadTypdaten(UploadItems.Select(u => (UploadFahrzeugdaten)u));
-                else if (UploadItems.First() is UploadPartnerUndFahrzeugdaten)
-                    UploadDataService.LoadTypdaten(UploadItems.Select(u => ((UploadPartnerUndFahrzeugdaten)u).Fahrzeug).Where(f => !string.IsNullOrEmpty(f.FahrgestellNr)));
-            }
+            UploadItems.ForEach(ValidateSingleUploadItem);
 
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;

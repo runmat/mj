@@ -95,12 +95,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.CompanyRef2)]
         public string Firmenreferenz2 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        public string FabrikName { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.TradeName)]
-        public string HandelsName { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }
 

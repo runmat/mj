@@ -7,8 +7,6 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Contracts
     {
         List<UploadFahrzeug> UploadItems { get; set; }
 
-        void ValidateFahrzeugdatenCsvUpload();
-
         string SaveFahrzeugdatenCsvUpload();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -175,9 +176,20 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void ValidateUploadItems()
         {
-            UploadDataService.ValidateFahrzeugdatenCsvUpload();
+            UploadItems.ForEach(ValidateSingleUploadItem);
+
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;
+        }
+
+        private void ValidateSingleUploadItem(UploadFahrzeug item)
+        {
+            var liste = new List<ValidationResult>();
+
+            item.ValidationOk = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
+
+            var ser = new JavaScriptSerializer();
+            item.ValidationErrorsJson = ser.Serialize(liste);
         }
 
         public void ResetSubmitMode()

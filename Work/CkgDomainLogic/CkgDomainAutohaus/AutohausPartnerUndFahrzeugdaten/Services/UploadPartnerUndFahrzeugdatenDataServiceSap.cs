@@ -18,34 +18,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Services
 
         public List<IUploadItem> UploadItems { get; set; }
 
-        public void LoadTypdaten(IEnumerable<Fahrzeugdaten> fahrzeuge)
-        {
-            Z_AHP_READ_TYPDAT_BESTAND.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-
-            var relevanteFzge = fahrzeuge.Where(f => !string.IsNullOrEmpty(f.HerstellerSchluessel));
-            var fzgList = AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_WEB_IMP_MASS_From_Fahrzeugdaten.CopyBack(relevanteFzge).ToList();
-            SAP.ApplyImport(fzgList);
-
-            var sapList = Z_AHP_READ_TYPDAT_BESTAND.GT_WEB_TYPDATEN.GetExportListWithExecute(SAP);
-            var typList = Fahrzeugbestand.Models.AppModelMappings.Z_AHP_READ_TYPDAT_BESTAND_GT_TYPDATEN_To_FahrzeugAkteBestand.Copy(sapList);
-
-            foreach (var item in relevanteFzge)
-            {
-                var typItem = typList.FirstOrDefault(t => t.HerstellerSchluessel == item.HerstellerSchluessel && t.TypSchluessel == item.TypSchluessel && t.VvsSchluessel == item.VvsSchluessel && t.VvsPruefZiffer == item.VvsPruefziffer);
-
-                if (typItem != null)
-                {
-                    item.FabrikName = typItem.FabrikName;
-                    item.HandelsName = typItem.HandelsName;
-                }
-                else
-                {
-                    item.FabrikName = "";
-                    item.HandelsName = "";
-                }
-            }
-        }
-
         public string SaveUploadItems()
         {
             if (UploadItems.Any())

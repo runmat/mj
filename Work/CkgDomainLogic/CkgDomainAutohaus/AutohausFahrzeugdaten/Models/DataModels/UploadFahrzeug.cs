@@ -31,12 +31,6 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.VvsCheckDigit)]
         public string VvsPruefziffer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        public string FabrikName { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.TradeName)]
-        public string HandelsName { get; set; }
-
         [StringLength(15)]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
