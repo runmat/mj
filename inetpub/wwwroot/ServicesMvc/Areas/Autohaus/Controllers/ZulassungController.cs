@@ -259,7 +259,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult HalterAdresse()
         {
-            return PartialView("Partial/HalterAdresse", ViewModel.Zulassung.Halter.Adresse);
+            return PartialView("Partial/HalterAdresse", ViewModel.StepModels["HalterAdresse"]());
         }
 
         [HttpPost]
@@ -335,7 +335,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ZahlerKfzSteuer()
         {
-            return PartialView("Partial/ZahlerKfzSteuer", ViewModel.Zulassung.ZahlerKfzSteuer);
+            return PartialView("Partial/ZahlerKfzSteuer", ViewModel.StepModels["ZahlerKfzSteuer"]());
         }
 
         [HttpPost]
@@ -415,7 +415,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult BankAdressdaten()
         {
-            return PartialView("Partial/BankAdressdaten", ViewModel);
+            return PartialView("Partial/BankAdressdaten", ViewModel.StepModels["BankAdressdaten"]());
         }
 
         [HttpPost]
@@ -582,7 +582,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Fahrzeugdaten()
         {
-            return PartialView("Partial/Fahrzeugdaten", ViewModel);
+            return PartialView("Partial/Fahrzeugdaten", ViewModel.StepModels["Fahrzeugdaten"]());
         }
 
         [HttpPost]
@@ -634,7 +634,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Zulassungsdaten()
         {
-            return PartialView("Partial/Zulassungsdaten", ViewModel);
+            return PartialView("Partial/Zulassungsdaten", ViewModel.StepModels["Zulassungsdaten"]());
         }
 
         [HttpPost]
@@ -734,7 +734,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Zulassung.OptionenDienstleistungen.InitDienstleistungen();
 
-            return PartialView("Partial/OptionenDienstleistungen", ViewModel);
+            return PartialView("Partial/OptionenDienstleistungen", ViewModel.StepModels["OptionenDienstleistungen"]());
         }
 
         [HttpPost]
@@ -801,7 +801,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.AuslieferAdressenLink = GetAuslieferAdressenLink();
 
-            return PartialView("Partial/Summary", ViewModel);
+            return PartialView("Partial/Summary", ViewModel.StepModels["Summary"]());
         }
 
         #region PDF-Formulare
