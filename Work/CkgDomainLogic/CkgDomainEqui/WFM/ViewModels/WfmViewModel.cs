@@ -593,6 +593,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 {
                     DurchlaufDetails = details.ToListOrEmptyList();
                     DurchlaufStatistiken = statistiken.ToListOrEmptyList();
+                    DurchlaufDetailsForChart = DurchlaufDetails;
                 }
             });
 
@@ -611,18 +612,19 @@ namespace CkgDomainLogic.WFM.ViewModels
                 .OrderBy(it => it.ErledigtDatum).GroupBy(g => g.ErledigtDatum.ToFirstDayOfMonth()).Select(it => it.Key).ToArray();
 
             var xAxisGroups = items
-                .OrderBy(it => it.XaxisLabelSort).GroupBy(g => g.XaxisLabel).Select(it => it.Key).ToArray();
+                .GroupBy(g => g.XaxisLabel).Select(it => it.Key)
+                .OrderBy(WfmDurchlaufSingle.GetSortByXaxisLabel).ToArray();
 
-            var xAxisStart = 3.5;
+            const double xAxisStart = 3.5;
             var data = new object[xAxisMonthDates.Length];
-            for (int month = 0; month < xAxisMonthDates.Length; month++)
+            for (var month = 0; month < xAxisMonthDates.Length; month++)
             {
                 var groupArray = new object[xAxisGroups.Length];
 
                 var monthItems = items.Where(monthItem => monthItem.ErledigtDatum.ToFirstDayOfMonth() == xAxisMonthDates[month]);
                 var tageDiesesMonatsGesamt = monthItems.Sum(g => g.DurchlaufzeitTage.ToInt());
 
-                for (int group = 0; group < xAxisGroups.Length; group++)
+                for (var group = 0; group < xAxisGroups.Length; group++)
                 {
                     var groupMonthItems = monthItems.Where(monthItem => monthItem.XaxisLabel == xAxisGroups[group]);
                     var tageDiesesMonatsUndGruppeGesamt = groupMonthItems.Sum(g => g.DurchlaufzeitTage.ToInt());
