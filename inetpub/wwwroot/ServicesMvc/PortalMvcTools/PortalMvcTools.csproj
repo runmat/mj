@@ -59,11 +59,15 @@
     </Reference>
     <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\work\SapORM\shell\bin\Debug\SapORM.Contracts.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Work\GAC\SapORM.Models.dll</HintPath>
     </Reference>
     <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\work\SapORM\shell\bin\Debug\SapORM.Services.dll</HintPath>
+      <HintPath>..\..\..\..\Work\GAC\SapORM.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -98,6 +102,10 @@
     <Reference Include="Telerik.Web.Mvc, Version=2012.2.607.340, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\work\packages\TelerikMvcExtensions\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="WebTools, Version=1.0.5940.19369, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Work\GAC\WebTools.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -138,21 +146,13 @@
       <Project>{D8B336B9-0D12-4AA8-B6D2-536425C228E9}</Project>
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Work\SapORM\models\SapORM.Models.csproj">
-      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
-      <Name>SapORM.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\work\Tools\GeneralTools\GeneralTools.csproj">
+    <ProjectReference Include="..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\work\Tools\MvcTools\MvcTools.csproj">
       <Project>{EE073662-9DA7-4B2C-8877-893A044EB157}</Project>
       <Name>MvcTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\work\Tools\WebTools\WebTools.csproj">
-      <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
-      <Name>WebTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

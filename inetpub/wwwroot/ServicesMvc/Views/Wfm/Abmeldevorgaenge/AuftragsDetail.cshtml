@@ -1,37 +1,38 @@
 ﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
-<style type="text/css">
-    
-</style>
-
 <h5>
     <button type="button" id="btnBackToResult" class="btn red mini margin-left-10 hide" onclick="CloseAuftragsDetail();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
     <i class="icon-tag margin-left-10"></i>
     <span class="margin-left-10 margin-right-5 bold"> @Model.Selektor.Referenz1Name</span> @Model.AktuellerAuftrag.KundenAuftragsNr
     <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.AktuellerAuftrag.FahrgestellNr
     <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.AktuellerAuftrag.Kennzeichen
+    <span class="margin-left-10 margin-right-5 bold">@Localize.ReferenceNo</span>@Model.AktuellerAuftrag.Referenz1
 </h5>
 
 <div class="tabbable tabbable-custom margin-top-15">
     <ul class="nav nav-tabs">
         @*Anzeigereihenfolge umgedreht*@
-        <li class="active"><a href="#tab_1_4" data-toggle="tab">@Localize.Overview</a></li>
-        <li><a href="#tab_1_3" data-toggle="tab">@Localize.Informations</a></li>
-        <li><a href="#tab_1_2" data-toggle="tab">@Localize.Documents</a></li>
-        <li><a href="#tab_1_1" data-toggle="tab">@Localize.Tasks</a></li>
+        <li class="active"><a href="#tab_1_5" data-toggle="tab">@Localize.Overview</a></li>
+        <li><a href="#tab_1_4" data-toggle="tab">@Localize.Informations</a></li>
+        <li><a href="#tab_1_3" data-toggle="tab">@Localize.Documents</a></li>
+        <li><a href="#tab_1_2" data-toggle="tab">@Localize.Tasks</a></li>
+        <li><a href="#tab_1_1" data-toggle="tab">@Localize.InvestigationProtocol</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane overflow-x-auto" id="tab_1_1">
-            @Html.Partial("Abmeldevorgaenge/Partial/Aufgaben", @Model)
+        <div class="tab-pane" id="tab_1_1">
+            @Html.Partial("Abmeldevorgaenge/Partial/Rechercheprotokoll", @Model)
         </div> 
         <div class="tab-pane overflow-x-auto" id="tab_1_2">
+            @Html.Partial("Abmeldevorgaenge/Partial/Aufgaben", @Model)
+        </div>
+        <div class="tab-pane overflow-x-auto" id="tab_1_3">
             @Html.Partial("Abmeldevorgaenge/Partial/Dokumente", @Model)
-        </div>               
-        <div class="tab-pane" id="tab_1_3">
+        </div>
+        <div class="tab-pane" id="tab_1_4">
             @Html.Partial("Abmeldevorgaenge/Partial/Informationen", @Model)
-        </div>               
-        <div class="tab-pane active" id="tab_1_4">
-            @Html.Partial("Abmeldevorgaenge/Partial/Uebersicht", @Model.AktuellerAuftrag)  
+        </div>
+        <div class="tab-pane active" id="tab_1_5">
+            @Html.Partial("Abmeldevorgaenge/Partial/Uebersicht", @Model.AktuellerAuftrag)
         </div>
     </div>
 </div>

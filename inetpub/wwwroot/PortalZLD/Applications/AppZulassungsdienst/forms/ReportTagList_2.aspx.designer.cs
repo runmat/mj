@@ -22,6 +22,15 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton lb_zurueck;
         
         /// <summary>
+        /// RadAjaxManager1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
+        
+        /// <summary>
         /// lblHead-Steuerelement
         /// </summary>
         /// <remarks>
@@ -29,24 +38,6 @@ namespace AppZulassungsdienst.forms {
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHead;
-        
-        /// <summary>
-        /// UpdatePanel1-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
-        /// <summary>
-        /// tab1-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tab1;
         
         /// <summary>
         /// lblError-Steuerelement
@@ -58,33 +49,6 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblError;
         
         /// <summary>
-        /// lblMessage-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessage;
-        
-        /// <summary>
-        /// Label1-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-        
-        /// <summary>
-        /// Label2-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-        
-        /// <summary>
         /// Result-Steuerelement
         /// </summary>
         /// <remarks>
@@ -93,23 +57,22 @@ namespace AppZulassungsdienst.forms {
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Result;
         
-       
         /// <summary>
-        /// GridView1-Steuerelement
+        /// rgGrid1-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::Telerik.Web.UI.RadGrid rgGrid1;
         
         /// <summary>
-        /// cmdCreate-Steuerelement
+        /// cmdCreatePdf-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCreate;
+        protected global::System.Web.UI.WebControls.LinkButton cmdCreatePdf;
     }
 }
