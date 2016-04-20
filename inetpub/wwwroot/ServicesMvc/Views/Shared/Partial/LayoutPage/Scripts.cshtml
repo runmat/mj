@@ -715,6 +715,16 @@
                 $(this).closest("div.radio").removeClass("disabled");
             },
 
+            uniformCheckerDisable: function () {
+                $(this).attr("disabled", "");
+                $(this).closest("div.checker").addClass("disabled");
+            },
+
+            uniformCheckerEnable: function () {
+                $(this).removeAttr("disabled");
+                $(this).closest("div.checker").removeClass("disabled");
+            },
+
             setTooltip: function(tooltipText, placement) {
                 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
                     return this;

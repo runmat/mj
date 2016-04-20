@@ -2991,7 +2991,6 @@
     <Content Include="Views\Finance\Versendungen\GridSumme.cshtml" />
     <Content Include="Views\Wfm\Durchlauf.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <Content Include="Views\Haendler\Partial\Common.cshtml" />
     <Content Include="Views\Haendler\Partial\DetailsForm.cshtml" />
@@ -3095,8 +3094,6 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
@@ -3174,6 +3171,9 @@
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\Grid.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\BemerkungErfassenAendernForm.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
