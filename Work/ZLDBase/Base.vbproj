@@ -113,6 +113,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\GAC\ERPConnect35.dll</HintPath>
     </Reference>
+    <Reference Include="SapORM.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -334,14 +342,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SapORM\contracts\SapORM.Contracts.csproj">
-      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
-      <Name>SapORM.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SapORM\services\SapORM.Services.csproj">
-      <Project>{94855E9C-AF22-46A7-A55B-9CFF8E96F961}</Project>
-      <Name>SapORM.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>

@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using CKGDatabaseAdminLib.Models;
+using CKGDatabaseAdminLib.Services;
 using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib
@@ -18,7 +19,7 @@ namespace CKGDatabaseAdminLib
 
         public int? CurrentBapiId { get; set; }
 
-        public DatabaseContext(string connectionString) : base(connectionString) { }
+        public DatabaseContext(string connectionString) : base(Config.EnsurePwd(connectionString)) { }
 
         public DbSet<LoginUserMessage> LoginUserMessages { get; set; }
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.WFM.Models.AppModelMappings;
@@ -417,6 +415,18 @@ namespace CkgDomainLogic.WFM.Services
             //XmlService.XmlSerializeToFile(webItemsStatistiken.ToList(), Path.Combine(AppSettings.DataPath, @"WfmStatistiken.xml"));
 
             getDataAction(webItemsDetails, webItemsStatistiken);
+        }
+
+        #endregion
+
+
+        #region Rechercheprotokoll
+
+        public List<WfmRechercheprotokoll> GetRechercheprotokollDaten(string vorgangsNr)
+        {
+            Z_DPM_READ_RECHERCHE_PROT_01.Init(SAP, "I_KUNNR_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_DPM_READ_RECHERCHE_PROT_01_GT_OUT_To_WfmRechercheprotokoll.Copy(Z_DPM_READ_RECHERCHE_PROT_01.GT_OUT.GetExportListWithExecute(SAP)).ToList();
         }
 
         #endregion
