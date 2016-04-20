@@ -454,6 +454,7 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_M_UNZUGELASSENE_FZGE_ARVAL");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_EQUI_CHANGE_LTEXT_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_RECHERCHE_PROT_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_EXPORT_PDF_TAGLI");
 
             #endregion
 

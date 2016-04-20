@@ -9,16 +9,16 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class Z_ZLD_EXPORT_TAGLI
+	public partial class Z_ZLD_EXPORT_PDF_TAGLI
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof(Z_ZLD_EXPORT_TAGLI).Name);
+			sap.Init(typeof(Z_ZLD_EXPORT_PDF_TAGLI).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof(Z_ZLD_EXPORT_TAGLI).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_ZLD_EXPORT_PDF_TAGLI).Name, inputParameterKeys, inputParameterValues);
 		}
 
 
@@ -27,24 +27,9 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_AUSGABE", value);
 		}
 
-		public static void SetImportParameter_I_KREISKZ_BIS(ISapDataService sap, string value)
+		public static void SetImportParameter_I_KTEXT(ISapDataService sap, string value)
 		{
-			sap.SetImportParameter("I_KREISKZ_BIS", value);
-		}
-
-		public static void SetImportParameter_I_KREISKZ_VON(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_KREISKZ_VON", value);
-		}
-
-		public static void SetImportParameter_I_KUNNR_BIS(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_KUNNR_BIS", value);
-		}
-
-		public static void SetImportParameter_I_KUNNR_VON(ISapDataService sap, string value)
-		{
-			sap.SetImportParameter("I_KUNNR_VON", value);
+			sap.SetImportParameter("I_KTEXT", value);
 		}
 
 		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
@@ -52,27 +37,17 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_VKBUR", value);
 		}
 
-		public static void SetImportParameter_I_ZDELTA(ISapDataService sap, string value)
+		public static string GetExportParameter_E_FILENAME(ISapDataService sap)
 		{
-			sap.SetImportParameter("I_ZDELTA", value);
+			return sap.GetExportParameter<string>("E_FILENAME").NotNullOrEmpty().Trim();
 		}
 
-		public static void SetImportParameter_I_ZGESAMT(ISapDataService sap, string value)
+		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
 		{
-			sap.SetImportParameter("I_ZGESAMT", value);
+			return sap.GetExportParameter<byte[]>("E_PDF");
 		}
 
-		public static void SetImportParameter_I_ZZZLDAT(ISapDataService sap, DateTime? value)
-		{
-			sap.SetImportParameter("I_ZZZLDAT", value);
-		}
-
-		public static string GetExportParameter_E_KTEXT(ISapDataService sap)
-		{
-			return sap.GetExportParameter<string>("E_KTEXT").NotNullOrEmpty().Trim();
-		}
-
-		public partial class ES_FIL_ADRS : IModelMappingApplied
+		public partial class IS_FIL_ADRS : IModelMappingApplied
 		{
 			[SapIgnore]
 			[ScriptIgnore]
@@ -108,13 +83,13 @@ namespace SapORM.Models
 
 			private bool MappingErrorProcessed { get; set; }
 
-			public static ES_FIL_ADRS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			public static IS_FIL_ADRS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				ES_FIL_ADRS o;
+				IS_FIL_ADRS o;
 
 				try
 				{
-					o = new ES_FIL_ADRS
+					o = new IS_FIL_ADRS
 					{
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
@@ -135,12 +110,12 @@ namespace SapORM.Models
 				}
 				catch(Exception e)
 				{
-					o = new ES_FIL_ADRS
+					o = new IS_FIL_ADRS
 					{
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
 					};
-					o.OnMappingError(e, row, true);
+					o.OnMappingError(e, row, false);
 					if (!o.MappingErrorProcessed)
 						throw;
 				}
@@ -160,61 +135,36 @@ namespace SapORM.Models
 				OnInitFromExtern();
 			}
 
-			public static IEnumerable<ES_FIL_ADRS> Select(DataTable dt, ISapConnection sapConnection = null)
+			public static IEnumerable<IS_FIL_ADRS> Select(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<ES_FIL_ADRS> ToList(DataTable dt, ISapConnection sapConnection = null)
+			public static IEnumerable<IS_FIL_ADRS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToListOrEmptyList();
-			}
-
-			public static IEnumerable<ES_FIL_ADRS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(ES_FIL_ADRS).Name.ToLower());
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(IS_FIL_ADRS).Name.ToLower());
 				if (tbl == null)
 					return null;
 
 				return Select(tbl, sapConnection);
 			}
 
-			public static List<ES_FIL_ADRS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
-			{
-				return Select(dts, sapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_FIL_ADRS> ToList(ISapDataService sapDataService)
-			{
-				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
-			}
-
-			public static List<ES_FIL_ADRS> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<IS_FIL_ADRS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<ES_FIL_ADRS>();
+					return new List<IS_FIL_ADRS>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<ES_FIL_ADRS> GetExportListWithExecute(ISapDataService sapDataService)
+			public static List<IS_FIL_ADRS> GetImportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<ES_FIL_ADRS>();
+					return new List<IS_FIL_ADRS>();
 				 
-				var dts = sapDataService.GetExportTablesWithExecute();
-				 
-				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
-			}
-
-			public static List<ES_FIL_ADRS> GetExportList(ISapDataService sapDataService)
-			{
-				if (sapDataService == null) 
-					return new List<ES_FIL_ADRS>();
-				 
-				var dts = sapDataService.GetExportTables();
+				var dts = sapDataService.GetImportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -324,7 +274,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_BEM>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -354,7 +304,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_BEM>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -477,7 +427,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_K>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -507,7 +457,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_K>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -699,7 +649,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_P>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -729,7 +679,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_P>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -849,7 +799,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_SDL>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -879,7 +829,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAGLI_SDL>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_PDF_TAGLI", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -899,31 +849,31 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.ES_FIL_ADRS> list)
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PDF_TAGLI.IS_FIL_ADRS> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
-		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_BEM> list)
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PDF_TAGLI.GT_TAGLI_BEM> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
-		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_K> list)
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PDF_TAGLI.GT_TAGLI_K> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
-		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_P> list)
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PDF_TAGLI.GT_TAGLI_P> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
 
-		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_SDL> list)
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_PDF_TAGLI.GT_TAGLI_SDL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}

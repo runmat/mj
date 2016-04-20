@@ -15,7 +15,9 @@ namespace AppZulassungsdienst.lib
 
         public DataTable TagesListe { get; private set; }
         public DataTable KopfListe { get; private set; }
+        public DataTable PosListe { get; private set; }
         public DataTable BemListe { get; private set; }
+        public DataTable SdlListe { get; private set; }
         public DataTable PraegListeKopf { get; private set; }
         public DataTable Lieferscheine { get; private set; }
         public DataTable Auswertung { get; private set; }
@@ -88,15 +90,131 @@ namespace AppZulassungsdienst.lib
 
                     CallBapi();
 
-                    Filename = SAP.GetExportParameter("E_FILENAME");
-
                     Filialname = SAP.GetExportParameter("E_KTEXT");
                     KopfListe = SAP.GetExportTable("GT_TAGLI_K");
-                    TagesListe = SAP.GetExportTable("GT_TAGLI_P");
+                    PosListe = SAP.GetExportTable("GT_TAGLI_P");
                     BemListe = SAP.GetExportTable("GT_TAGLI_BEM");
+                    SdlListe = SAP.GetExportTable("GT_TAGLI_SDL");
                     ZLDAdresseTagli = SAP.GetExportTable("ES_FIL_ADRS");
-                    pdfTagesliste = SAP.GetExportParameterByte("E_PDF");
+
+                    InitTableTagesliste();
+
+                    foreach (DataRow dRow in PosListe.Rows)
+                    {
+                        var newRow = TagesListe.NewRow();
+
+                        var kopfRow = KopfListe.Select("KREISKZ = '" + dRow["KREISKZ"] + "'")[0];
+
+                        newRow["KREISKZ"] = dRow["KREISKZ"];
+                        newRow["ZZZLDAT"] = dRow["ZZZLDAT"];
+                        newRow["LEERZEILE"] = dRow["LEERZEILE"];
+                        newRow["DRUKZ"] = kopfRow["DRUKZ"];
+                        newRow["BLTYP"] = dRow["BLTYP"];
+                        newRow["KUNNR"] = dRow["KUNNR"];
+                        newRow["ZULBELN"] = dRow["ZULBELN"];
+                        newRow["ZULPOSNR"] = dRow["ZULPOSNR"];
+                        newRow["NAME1"] = dRow["NAME1"];
+                        newRow["ZZREFNR1"] = dRow["ZZREFNR1"];
+                        newRow["ZZKENN"] = dRow["ZZKENN"];
+                        newRow["MAKTX"] = dRow["MAKTX"];
+                        newRow["FLAG"] = dRow["FLAG"];
+
+                        TagesListe.Rows.Add(newRow);
+                    }
                 });
+        }
+
+        private void InitTableTagesliste()
+        {
+            if (TagesListe != null)
+            {
+                TagesListe.Clear();
+                return;
+            }
+
+            TagesListe = new DataTable();
+            TagesListe.Columns.Add("KREISKZ", typeof(string));
+            TagesListe.Columns.Add("ZZZLDAT", typeof(DateTime));
+            TagesListe.Columns.Add("LEERZEILE", typeof(string));
+            TagesListe.Columns.Add("DRUKZ", typeof(string));
+            TagesListe.Columns.Add("BLTYP", typeof(string));
+            TagesListe.Columns.Add("KUNNR", typeof(string));
+            TagesListe.Columns.Add("ZULBELN", typeof(string));
+            TagesListe.Columns.Add("ZULPOSNR", typeof(string));
+            TagesListe.Columns.Add("NAME1", typeof(string));
+            TagesListe.Columns.Add("ZZREFNR1", typeof(string));
+            TagesListe.Columns.Add("ZZKENN", typeof(string));
+            TagesListe.Columns.Add("MAKTX", typeof(string));
+            TagesListe.Columns.Add("FLAG", typeof(string));
+            TagesListe.AcceptChanges();
+        }
+
+        public void LoadTagListPdf(string sortFieldName, bool sortOrderAscending)
+        {
+            var posListeSorted = PosListe.Clone();
+
+            DataView posDataview;
+            using (posDataview = new DataView(PosListe))
+            {
+                // nur aktiv sortieren, wenn webseitig sortiert wurde, sonst ursprüngliche Sortierung aus SAP beibehalten
+                if (!string.IsNullOrEmpty(sortFieldName))
+                    posDataview.Sort = string.Format("KREISKZ ASC, ZZZLDAT ASC, LEERZEILE ASC, {0} {1}", sortFieldName, (sortOrderAscending ? "ASC" : "DESC"));
+
+                foreach (DataRowView item in posDataview)
+                {
+                    posListeSorted.Rows.Add(item.Row.ItemArray);
+                }
+            }
+
+            posListeSorted.AcceptChanges();
+
+            ExecuteSapZugriff(() =>
+            {
+                Z_ZLD_EXPORT_PDF_TAGLI.Init(SAP);
+
+                SAP.SetImportParameter("I_VKBUR", VKBUR);
+
+                SAP.SetImportParameter("I_AUSGABE", "S"); //XSTRING-PDF-Ausgabe
+
+                var importKopf = SAP.GetImportTable("GT_TAGLI_K");
+
+                foreach (DataRow row in KopfListe.Rows)
+                {
+                    importKopf.Rows.Add(row.ItemArray);
+                }
+
+                var importPos = SAP.GetImportTable("GT_TAGLI_P");
+
+                foreach (DataRow row in posListeSorted.Rows)
+                {
+                    importPos.Rows.Add(row.ItemArray);
+                }
+
+                var importBem = SAP.GetImportTable("GT_TAGLI_BEM");
+
+                foreach (DataRow row in BemListe.Rows)
+                {
+                    importBem.Rows.Add(row.ItemArray);
+                }
+
+                var importSdl = SAP.GetImportTable("GT_TAGLI_SDL");
+
+                foreach (DataRow row in SdlListe.Rows)
+                {
+                    importSdl.Rows.Add(row.ItemArray);
+                }
+
+                var importAdressen = SAP.GetImportTable("IS_FIL_ADRS");
+
+                foreach (DataRow row in ZLDAdresseTagli.Rows)
+                {
+                    importAdressen.Rows.Add(row.ItemArray);
+                }
+
+                CallBapi();
+
+                pdfTagesliste = SAP.GetExportParameterByte("E_PDF");
+            });
         }
 
         public void FillPraegeliste()
