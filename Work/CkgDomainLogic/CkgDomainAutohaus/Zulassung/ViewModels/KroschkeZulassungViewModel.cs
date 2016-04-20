@@ -1601,8 +1601,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
-                if (FinList.Any(x => (x.FIN.IsNotNullOrEmpty() || x.Kennzeichen.IsNotNullOrEmpty() || x.HandelsName.IsNotNullOrEmpty() || x.VorhandenesKennzReservieren || x.ZulassungFahrzeugart.IsNotNullOrEmpty())
-                        && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
+                if (FinList.Any(x => x.Kennzeichen.IsNotNullOrEmpty() && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
                     addModelError(string.Empty, Localize.LicenseNoInvalid);
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
