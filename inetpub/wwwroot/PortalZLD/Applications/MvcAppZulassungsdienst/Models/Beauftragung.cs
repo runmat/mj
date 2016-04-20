@@ -1319,8 +1319,8 @@ namespace MvcAppZulassungsdienst.ViewModels
 					myProxy.setImportParameter("I_VKORG", "1010");
 					myProxy.setImportParameter("I_VKBUR", "4837");
 					
-					myProxy.setImportParameter("I_VON", HelpProcedures.MakeDateSAP(datu_ab.ToShortDateString()));
-					myProxy.setImportParameter("I_BIS", HelpProcedures.MakeDateSAP(datu_bis.ToShortDateString()));
+					myProxy.setImportParameter("I_VON", datu_ab.ToString("yyyyMMdd"));
+					myProxy.setImportParameter("I_BIS", datu_bis.ToString("yyyyMMdd"));
 					
 					myProxy.callBapi();
 					
