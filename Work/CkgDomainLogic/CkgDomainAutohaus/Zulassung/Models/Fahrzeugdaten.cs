@@ -149,7 +149,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var vm = GetZulassungViewModel();
-            if (vm.ModusSonderzulassungErsatzkennzeichen)
+            if (vm.SonderzulassungsMode == SonderzulassungsMode.Ersatzkennzeichen)
             {
                 if (Kennzeichen.IsNullOrEmpty())
                     yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Kennzeichen" });

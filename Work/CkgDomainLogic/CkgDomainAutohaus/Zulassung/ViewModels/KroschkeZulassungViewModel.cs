@@ -16,6 +16,7 @@ using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Zulassung.Models;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -24,6 +25,8 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
+    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen }
+
     [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
@@ -67,8 +70,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusVersandzulassung { get; set; }
 
-        public bool ModusSonderzulassung { get; set; }
-        public bool ModusSonderzulassungErsatzkennzeichen { get; set; }
+        public SonderzulassungsMode SonderzulassungsMode { get; set; }
+        [XmlIgnore]
+        public bool ModusSonderzulassung { get { return SonderzulassungsMode != SonderzulassungsMode.None; } }
+
 
         public bool ModusPartnerportal { get; set; }
 
@@ -114,8 +119,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
-                    else if (ModusSonderzulassungErsatzkennzeichen)
-                        xmlFileName = "StepsKroschkeSzErsatzkennzeichen.xml";
+                    else if (ModusSonderzulassung && SonderzulassungsMode != SonderzulassungsMode.Default)
+                        xmlFileName = string.Format("StepsKroschkeSz{0}.xml", SonderzulassungsMode.ToString("F").ToLowerFirstUpper());
 
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
 
@@ -195,9 +200,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetParamSonderzulassung(string sonderzulassung, string sonderzulassungMode = "")
         {
-            ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
-            if (sonderzulassungMode.NotNullOrEmpty().ToUpper() == "ERSATZKENNZEICHEN")
-                ModusSonderzulassungErsatzkennzeichen = true;
+            SonderzulassungsMode = (sonderzulassung.IsNullOrEmpty() ? SonderzulassungsMode.None : SonderzulassungsMode.Default);
+
+            SonderzulassungsMode mode;
+            if (sonderzulassungMode.IsNotNullOrEmpty() && Enum.TryParse(sonderzulassungMode.ToLowerFirstUpper(), out mode))
+                    SonderzulassungsMode = mode;
         }
 
         public void SetParamPartnerportal(string partnerportal)
@@ -958,18 +965,30 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
 
-            TryGetSeparateNecessaryDocuments();
+            TryGetSeparateNecessaryDocumentsForSonderzulassung();
         }
 
-        private void TryGetSeparateNecessaryDocuments()
+        private void TryGetSeparateNecessaryDocumentsForSonderzulassung()
         {
-            SeparateNecessaryDocuments = new List<SimpleUiListItem>();
+            var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+            if (generalConf == null)
+                return;
 
-            if (ModusSonderzulassungErsatzkennzeichen)
-            {
-                SeparateNecessaryDocuments.Add(new SimpleUiListItem { Text = Localize.TranslateResourceKey("ReceiptOfAuthorization"), StyleCssClass = "separate-necessary-document-item" });
-                SeparateNecessaryDocuments.Add(new SimpleUiListItem { Text = Localize.TranslateResourceKey("ReportCertificate"), StyleCssClass = "separate-necessary-document-item" });
-            }
+            if (!ModusSonderzulassung || SonderzulassungsMode == SonderzulassungsMode.Default)
+                return;
+
+            var szModeAsText = SonderzulassungsMode.ToString("F").ToLowerFirstUpper();
+            var localizeKeys = generalConf.GetConfigAllServerVal("Autohaus", string.Format("Autohaus_Sonderzul_Docs_{0}", szModeAsText));
+            if (localizeKeys.IsNullOrEmpty())
+                return;
+
+            SeparateNecessaryDocuments = localizeKeys.Split(',').Select(d =>
+                        new SimpleUiListItem
+                        {
+                            Text = Localize.TranslateResourceKey(d.Trim()),
+                            StyleCssClass = "separate-necessary-document-item"
+                        })
+                        .ToListOrEmptyList();
         }
 
         public void AddVehicles(int anzFahrzeuge, string fahrzeugartId)
@@ -1318,8 +1337,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             {
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
-                                ModusSonderzulassung = ModusSonderzulassung,
                                 ModusPartnerportal = ModusPartnerportal,
+                                SonderzulassungsMode = SonderzulassungsMode,
                                 ZulassungsartMatNr = null,
                                 Zulassungskreis = null,
                             },
@@ -1334,7 +1353,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
-                ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
+                SonderzulassungsMode = Zulassung.Zulassungsdaten.SonderzulassungsMode;
                 ModusPartnerportal = Zulassung.Zulassungsdaten.ModusPartnerportal;
 
                 var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
@@ -1486,7 +1505,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                               : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
 
-                                              : ModusSonderzulassungErsatzkennzeichen ? "SONDERZULASSUNG_ERSATZKENNZEICHEN"
+                                              : ModusSonderzulassung ? "SONDERZULASSUNG_" + SonderzulassungsMode.ToString("F").ToUpper()
                                               : ModusSonderzulassung ? "SONDERZULASSUNG"
 
                                               : "ZULASSUNG");

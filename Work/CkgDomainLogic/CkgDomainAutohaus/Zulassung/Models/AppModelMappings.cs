@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using CkgDomainLogic.Autohaus.ViewModels;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -311,14 +312,18 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.TuevAu = (s.TUEV_AU == "0000" ? null : s.TUEV_AU);
 
                         // Zulassung
-                        d.Zulassungsdaten.ModusAbmeldung = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper().Contains("ABMELDUNG");
-                        d.Zulassungsdaten.IsSchnellabmeldung = (s.BEAUFTRAGUNGSART == "SCHNELLABMELDUNG");
+                        var beauftragungArt = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper();
+                        d.Zulassungsdaten.ModusAbmeldung = beauftragungArt.Contains("ABMELDUNG");
+                        d.Zulassungsdaten.IsSchnellabmeldung = (beauftragungArt == "SCHNELLABMELDUNG");
 
-                        d.Zulassungsdaten.ModusVersandzulassung = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper().Contains("VERSANDZULASSUNG");
-                        d.Zulassungsdaten.ModusPartnerportal = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNGPARTNER");
+                        d.Zulassungsdaten.ModusVersandzulassung = beauftragungArt.Contains("VERSANDZULASSUNG");
+                        d.Zulassungsdaten.ModusPartnerportal = (beauftragungArt == "VERSANDZULASSUNGPARTNER");
 
-                        d.Zulassungsdaten.ModusSonderzulassung = s.BEAUFTRAGUNGSART.NotNullOrEmpty().ToUpper().Contains("SONDERZULASSUNG");
-                        d.Zulassungsdaten.ModusSonderzulassungErsatzkennzeichen = (s.BEAUFTRAGUNGSART == "SONDERZULASSUNG_ERSATZKENNZEICHEN");
+                        d.Zulassungsdaten.SonderzulassungsMode = (beauftragungArt.Contains("SONDERZULASSUNG") ? SonderzulassungsMode.Default : SonderzulassungsMode.None);
+                        SonderzulassungsMode mode;
+                        var sz = beauftragungArt.Replace("SONDERZULASSUNG_", "");
+                            if (sz.IsNotNullOrEmpty() && Enum.TryParse(beauftragungArt.ToLowerFirstUpper(), out mode))
+                                d.Zulassungsdaten.SonderzulassungsMode = mode;
 
                         if (d.Zulassungsdaten.IsSchnellabmeldung)
                             d.Zulassungsdaten.HalterNameSchnellabmeldung = s.ZZREFNR1;
