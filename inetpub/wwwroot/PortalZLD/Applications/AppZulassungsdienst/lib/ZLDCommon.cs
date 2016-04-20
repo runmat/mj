@@ -16,7 +16,7 @@ namespace AppZulassungsdienst.lib
     {
         Default,
         ShowOnlyOandL,
-        ShowOnlyAandL
+        ShowOnlyAandLandV
     }
 
     public enum GridCheckMode

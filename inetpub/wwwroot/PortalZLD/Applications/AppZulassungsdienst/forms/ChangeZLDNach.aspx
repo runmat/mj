@@ -196,13 +196,13 @@
                                     <table id="tab1" cellpadding="0" cellspacing="0">
                                         <tbody>
                                             <tr>
-                                                <td colspan="3" style="background-color: #dfdfdf; height: 22px; padding-left: 15px">
+                                                <td colspan="4" style="background-color: #dfdfdf; height: 22px; padding-left: 15px">
                                                     <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
                                                     <asp:Label ID="lblMessage" runat="server" Font-Bold="True" Visible="False"></asp:Label>
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
-                                                <td class="firstLeft active" colspan="3">
+                                                <td class="firstLeft active" colspan="4">
                                                     <asp:Label ID="lblPflichtfelder" runat="server" Height="16px">* Pflichtfelder</asp:Label>
                                                     <asp:HiddenField ID="hfKunnr" runat="server" /><asp:HiddenField ID="hfMatnr" runat="server" />
                                                 </td>
@@ -211,14 +211,11 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblKunde0" runat="server" Height="16px">DAD-Auftrag: Barcode</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:TextBox ID="txtBarcode" runat="server" CssClass="TextBoxNormal" Width="75px"
                                                         Enabled="False"></asp:TextBox>
                                                     <ajaxToolkit:FilteredTextBoxExtender runat="server" ID="fteBarcode"
                                                         TargetControlID="txtBarcode" InvalidChars="|}" FilterMode="InvalidChars" />
-                                                </td>
-                                                <td class="active" style="width: 100%;">
-                                                    &nbsp;
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
@@ -229,7 +226,7 @@
                                                     <asp:TextBox ID="txtKunnr" runat="server" CssClass="TextBoxNormal" MaxLength="8"
                                                         Width="75px"></asp:TextBox>
                                                 </td>
-                                                <td class="firstLeft active" style="width: 100%; vertical-align: top; margin-top: 3px">
+                                                <td class="firstLeft active" style="width: 100%; vertical-align: top; margin-top: 3px" colspan="2">
                                                     <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: auto; position: absolute;" EnableViewState="False">
                                                     </asp:DropDownList>
                                                     <label style="float: right; padding-right: 35px" runat="server" id="Pauschal" title="">
@@ -240,7 +237,7 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblPLZ" runat="server">Referenzen:</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2" style="width: 100%;">
+                                                <td class="firstLeft active" colspan="3" style="width: 100%;">
                                                     <asp:TextBox ID="txtReferenz1" runat="server" CssClass="TextBoxNormal" MaxLength="20"
                                                         Width="230px"  style="text-transform:uppercase;"></asp:TextBox>
                                                     &nbsp;<asp:TextBox ID="txtReferenz2" runat="server" CssClass="TextBoxNormal" MaxLength="20"
@@ -257,7 +254,7 @@
                                                         <asp:Label ID="Label2" runat="server">Weitere Artikel:</asp:Label>
                                                     </div>
                                                 </td>
-                                                <td colspan="2" style="vertical-align: top; width: 100%;">
+                                                <td colspan="3" style="vertical-align: top; width: 100%;">
                                                     <asp:GridView ID="GridView1" Style="border: none;" runat="server" AutoGenerateColumns="False"
                                                         ShowHeader="true" AllowSorting="false" OnRowCommand="GridView1_RowCommand" OnDataBound="GridView1_DataBound">
                                                         <HeaderStyle />
@@ -339,7 +336,7 @@
                                                 <td class="firstLeft active">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <div style="float: left">
                                                         <asp:LinkButton ID="cmdCreate1" runat="server" CssClass="TablebuttonSmall" OnClick="cmdCreate1_Click"
                                                             Style="font-size: 12px;" Width="50px">+</asp:LinkButton>
@@ -355,7 +352,7 @@
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
                                                 </td>
-                                                <td class="active" colspan="2">
+                                                <td class="active" colspan="3">
                                                     <div style="padding-left: 372px">
                                                         Steuern:&nbsp;
                                                         <asp:TextBox ID="txtSteuer" runat="server" CssClass="TextBoxNormal" onKeyPress="return numbersonly(event, true)"
@@ -376,12 +373,16 @@
                                                         AutoPostBack="True" OnSelectedIndexChanged="ddlStVa_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </td>
+                                                <td class="firstLeft active" style="width: 100%;">
+                                                    <asp:LinkButton ID="lbtnReservierung" runat="server" CssClass="TablebuttonMiddle"
+                                                        Width="100px" Height="16px" OnClick="lbtnReservierung_Click">» Reservierung</asp:LinkButton>
+                                                </td>
                                             </tr>
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:CheckBox ID="chkWunschKZ" runat="server" Text="Wunsch-Kennzeichen" />
                                                     <span style="padding-right: 3px"></span>
                                                     <asp:CheckBox ID="chkReserviert" runat="server" Text="Reserviert, Nr" />
@@ -394,7 +395,7 @@
                                                 <td class="firstLeft active">
                                                     &nbsp;
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:LinkButton runat="server" ID="lbtnFeinstaub" CssClass="TablebuttonXSmall" Width="20px" Height="16px" Text="+" OnClick="lbtnFeinstaub_Click"></asp:LinkButton>
                                                     &nbsp;&nbsp;Feinstaubplakette vom Amt
                                                 </td>
@@ -403,7 +404,7 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblDatum" runat="server">Datum der Zulassung:</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:TextBox ID="txtZulDate" runat="server" CssClass="TextBoxNormal" Width="65px"
                                                         EnableTheming="True" MaxLength="6"></asp:TextBox>
                                                     <asp:Label ID="txtZulDateFormate" Style="padding-left: 2px; font-weight: normal"
@@ -422,7 +423,7 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblKennz" runat="server">Kennzeichen:</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:TextBox ID="txtKennz1" MaxLength="3" CssClass="TextBoxNormal" Width="30px" runat="server"  style="text-transform:uppercase;"></asp:TextBox>
                                                     <span style="padding-right: 2px; padding-left: 2px">-</span>
                                                     <asp:TextBox ID="txtKennz2" MaxLength="6" CssClass="TextBoxNormal" Width="100px"
@@ -433,7 +434,7 @@
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:CheckBox ID="chkEinKennz" runat="server" Text="Nur ein Kennzeichen"></asp:CheckBox><span
                                                         style="padding-right: 3px"></span>
                                                     <asp:CheckBox ID="chkKennzSonder" runat="server" Text="Kennzeichen-Sondergöße" OnCheckedChanged="chkKennzSonder_CheckedChanged"
@@ -447,7 +448,7 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblBemerk" runat="server">Bemerkung:</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:TextBox ID="txtBemerk" runat="server" CssClass="TextBoxNormal" MaxLength="120"
                                                         Width="465px"></asp:TextBox>
                                                 </td>
@@ -456,13 +457,13 @@
                                                 <td class="firstLeft active">
                                                     <asp:Label ID="lblInfotext" runat="server">Infotext:</asp:Label>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                     <asp:TextBox ID="txtInfotext" runat="server" CssClass="TextBoxNormal" 
                                                         Width="465px" ReadOnly="true"></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
-                                                <td colspan="3">
+                                                <td colspan="4">
                                                     &nbsp;
                                                 </td>
                                             </tr>
@@ -470,14 +471,14 @@
                                                 <td class="firstLeft active" >
                                                    <div style="margin-bottom:105px"> <asp:Label ID="lblFreitext"  runat="server">Freitext Autohaus:</asp:Label></div>
                                                 </td>
-                                                <td class="firstLeft active" colspan="2">
+                                                <td class="firstLeft active" colspan="3">
                                                 <asp:TextBox ID="txtService" TextMode="MultiLine" 
                                                 style="width: 600px; height: 120px;" 
                                                  runat="server" ReadOnly="true"  ></asp:TextBox>
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
-                                                <td colspan="3">
+                                                <td colspan="4">
                                                     &nbsp;
                                                 </td>
                                             </tr>

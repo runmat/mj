@@ -107,13 +107,6 @@
     <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.designer.cs">
       <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
     </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.designer.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
-    </Compile>
     <Compile Include="forms\AHVersandChange_2.aspx.cs">
       <DependentUpon>AHVersandChange_2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -596,7 +589,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Controls\DialogErfassungDLBezeichnung.ascx" />
-    <Content Include="forms\AHVersandChange.aspx" />
     <Content Include="forms\AHVersandChange_2.aspx" />
     <Content Include="forms\AHVersandListe.aspx" />
     <Content Include="forms\Change01ZLD.aspx" />
@@ -734,7 +726,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

@@ -86,7 +86,7 @@ namespace AppZulassungsdienst.forms
             switch (e.CommandName)
             {
                 case "Edt":
-                    Response.Redirect("AHVersandChange.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + e.CommandArgument);
+                    Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + e.CommandArgument);
                     break;
 
                 case "Del":

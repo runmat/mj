@@ -396,8 +396,8 @@
 													<asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="OK" 
                                                         ToolTip='<%# objNacherf.SelAnnahmeAH ? "Annehmen" : "OK" %>' Visible='<%# !objNacherf.SelAenderungAngenommene %>' />
 												</ItemTemplate>
-												<HeaderStyle CssClass="TablePadding" Width="60px" />
-												<ItemStyle CssClass="TablePadding"  Width="60px" />
+												<HeaderStyle CssClass="TablePadding" />
+												<ItemStyle CssClass="TablePadding" Wrap="False" />
 											</asp:TemplateField>
 											<asp:TemplateField SortExpression="Zahlart_EC" HeaderText="col_EC">
 												<HeaderTemplate>

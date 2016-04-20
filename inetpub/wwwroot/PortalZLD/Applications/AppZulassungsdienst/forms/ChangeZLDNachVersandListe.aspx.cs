@@ -389,11 +389,11 @@ namespace AppZulassungsdienst.forms
                     if (objNacherf.DataFilterActive)
                     {
                         srcList = objNacherf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     else
                     {
-                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     break;
 

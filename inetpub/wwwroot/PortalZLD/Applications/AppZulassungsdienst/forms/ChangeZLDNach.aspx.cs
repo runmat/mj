@@ -59,15 +59,29 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                if (!BackfromList)
+                if (!BackfromList && !objNacherf.SelVersandAH)
                 {
                     Response.Redirect("ChangeZLDNachListe.aspx?AppID=" + Session["AppID"].ToString());
                 }
                 else
                 {
-                    if (Request.QueryString["id"] != null && Request.QueryString["id"].IsNumeric())
+                    var sapId = Request.QueryString["id"];
+
+                    if (sapId != null && sapId.IsNumeric())
                     {
-                        objNacherf.LoadVorgang(Request.QueryString["id"], objCommon.MaterialStamm, objCommon.StvaStamm);
+                        if (objNacherf.SelVersandAH)
+                        {
+                            if (!BackfromList)
+                            {
+                                objNacherf.LoadAHVersandVorgangDetailFromSap(sapId);
+                                objNacherf.tblPrintDataForPdf.Clear();
+                            }
+                            cmdCreate.Text = "» Speichern ";
+                        }
+                        else
+                        {
+                            objNacherf.LoadVorgang(sapId, objCommon.MaterialStamm, objCommon.StvaStamm);
+                        }
                         fillForm();
                         SelectValues();
                     }
@@ -179,8 +193,8 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                // Bei Annahme "Neue AH-Vorgänge" automatische Preisfindung
-                if (objNacherf.SelAnnahmeAH)
+                // In bestimmen Fällen automatische Preisfindung
+                if (objNacherf.SelAnnahmeAH || objNacherf.SelVersandAH)
                 {
                     cmdFindPrize_Click(this, new EventArgs());
                 }
@@ -306,7 +320,7 @@ namespace AppZulassungsdienst.forms
         protected void GridView1_DataBound(object sender, EventArgs e)
         {
             // Wenn Seite in besonderem Modus aufgerufen, dann best. Grid-Felder sperren
-            if (objNacherf.SelAnnahmeAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
+            if (objNacherf.SelAnnahmeAH || objNacherf.SelVersandAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
             {
                 disableGridfelder();
             }
@@ -378,6 +392,10 @@ namespace AppZulassungsdienst.forms
             if (objNacherf.SelEditDurchzufVersZul)
             {
                 Response.Redirect("ChangeZLDNachVersandListe.aspx?AppID=" + Session["AppID"].ToString());
+            }
+            else if (objNacherf.SelVersandAH)
+            {
+                Response.Redirect("AHVersandListe.aspx?AppID=" + Session["AppID"].ToString());
             }
             else
             {
@@ -607,6 +625,43 @@ namespace AppZulassungsdienst.forms
             // "Neue AH-Vorgänge" Speichern ermöglichen, sonst immer Preisfindung erforderlich
             cmdNewDLPrice.Enabled = !objNacherf.SelEditDurchzufVersZul;
             cmdCreate.Enabled = objNacherf.SelEditDurchzufVersZul;
+        }
+
+        /// <summary>
+        /// Weiterleitung auf das zuständige Verkehrsamt, um Kennzeichen zu reservieren.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lbtnReservierung_Click(object sender, EventArgs e)
+        {
+            lblError.Text = "";
+            String sUrl = "";
+
+            if (!String.IsNullOrEmpty(ddlStVa.SelectedValue))
+            {
+                var amt = objCommon.StvaStamm.FirstOrDefault(s => s.Landkreis == ddlStVa.SelectedValue);
+                if (amt != null)
+                    sUrl = amt.Url;
+            }
+
+            if (!String.IsNullOrEmpty(sUrl))
+            {
+                if ((!sUrl.Contains("http://")) && (!sUrl.Contains("https://")))
+                {
+                    sUrl = "http://" + sUrl;
+                }
+
+                if (!ClientScript.IsClientScriptBlockRegistered("clientScript"))
+                {
+                    String popupBuilder = "<script languange=\"Javascript\">";
+                    popupBuilder += "window.open('" + sUrl + "', 'POPUP', 'dependent=yes,location=yes,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no');";
+                    popupBuilder += "</script>";
+                    ClientScript.RegisterClientScriptBlock(GetType(), "POPUP", popupBuilder, false);
+                }
+
+            }
+            else { lblError.Text = "Das Straßenverkehrsamt für das Kennzeichen " + ddlStVa.SelectedValue + " bietet keine Weblink hierfür an."; }
+
         }
 
         #endregion
@@ -1040,7 +1095,23 @@ namespace AppZulassungsdienst.forms
             if (!checkDlGrid(tblData))
                 return false;
 
-            return checkDate();
+            if (!checkDate())
+                return false;
+
+            return CheckZulstOffen();
+        }
+
+        private bool CheckZulstOffen()
+        {
+            var errMsg = objCommon.CheckZulstGeoeffnet(txtStVa.Text, ZLDCommon.toShortDateStr(txtZulDate.Text));
+
+            if (!String.IsNullOrEmpty(errMsg))
+            {
+                lblError.Text = String.Format("Bitte wählen Sie ein gültiges Zulassungsdatum! ({0})", errMsg);
+                return false;
+            }
+
+            return true;
         }
 
         private Boolean checkDlGrid(DataTable tblData)
@@ -1178,12 +1249,13 @@ namespace AppZulassungsdienst.forms
 
                 kopfdaten.Wunschkennzeichen = chkWunschKZ.Checked;
                 kopfdaten.KennzeichenReservieren = chkReserviert.Checked;
+                kopfdaten.ReserviertesKennzeichen = txtNrReserviert.Text;
                 kopfdaten.BarzahlungKunde = chkBar.Checked;
                 kopfdaten.Flieger = chkFlieger.Checked;
                 kopfdaten.Referenz1 = txtReferenz1.Text.ToUpper();
                 kopfdaten.Referenz2 = txtReferenz2.Text.ToUpper();
 
-                if (String.IsNullOrEmpty(txtKennz2.Text) && !objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung)
+                if (String.IsNullOrEmpty(txtKennz2.Text) && !objNacherf.SelAnnahmeAH && !objNacherf.SelVersandAH && !objNacherf.SelSofortabrechnung)
                 {
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein.";
                     return;
@@ -1256,7 +1328,7 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelAenderungAngenommene
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelVersandAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelAenderungAngenommene
                     && !kopfdaten.Flieger.IsTrue() && kopfdaten.Bearbeitungsstatus == "F")
                 {
                     // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist, außer es wurde Dl. 656 gewählt
@@ -1277,34 +1349,33 @@ namespace AppZulassungsdienst.forms
                 else
                 {
                     if (objNacherf.SelAnnahmeAH)
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "A"));
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (p.WebBearbeitungsStatus == "V" ? "V" : "A")));
                     else if (!blnZulDatChanged)
                         objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
                 }
 
-                objNacherf.SaveVorgangToSap(objCommon.KundenStamm, m_User.UserName);
+                if (!objNacherf.SelVersandAH)
+                    objNacherf.SaveVorgangToSap(objCommon.KundenStamm, m_User.UserName);
 
                 if (!objNacherf.SelUploadRechnungsanhaenge)
                 {
-                // Bei Änderung von StVa, Zulassungsdatum oder Flieger-Flag Vorgang aus Selektion ausschliessen
-                if ((!String.IsNullOrEmpty(objNacherf.SelKreis) && kopfdaten.Landkreis != objNacherf.SelKreis)
-                    || blnZulDatChanged
-                    || (objNacherf.SelFlieger && !kopfdaten.Flieger.IsTrue()))
-                {
-                    objNacherf.Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
-                }
+                    // Bei Änderung von StVa, Zulassungsdatum oder Flieger-Flag Vorgang aus Selektion ausschliessen
+                    if ((!String.IsNullOrEmpty(objNacherf.SelKreis) && kopfdaten.Landkreis != objNacherf.SelKreis)
+                        || blnZulDatChanged
+                        || (objNacherf.SelFlieger && !kopfdaten.Flieger.IsTrue()))
+                    {
+                        objNacherf.Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
+                    }
                 }
 
                 Session["objNacherf"] = objNacherf;
 
                 if (objNacherf.SelEditDurchzufVersZul)
-                {
                     Response.Redirect("ChangeZLDNachVersandListe.aspx?AppID=" + Session["AppID"].ToString());
-                }
+                else if (objNacherf.SelVersandAH)
+                    Response.Redirect("AHVersandChange_2.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + kopfdaten.SapId);
                 else
-                {
                     Response.Redirect("ChangeZLDNachListe.aspx?AppID=" + Session["AppID"].ToString());
-                }
             }
         }
 
@@ -1830,9 +1901,9 @@ namespace AppZulassungsdienst.forms
                 TextBox txtGebPreis = (TextBox)gvRow.FindControl("txtGebPreis");
                 TextBox txtGebAmt = (TextBox)gvRow.FindControl("txtGebAmt");
 
-                txtPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
-                txtGebPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
-                txtGebAmt.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelEditDurchzufVersZul);
+                txtPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelVersandAH && !objNacherf.SelEditDurchzufVersZul);
+                txtGebPreis.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelVersandAH && !objNacherf.SelEditDurchzufVersZul);
+                txtGebAmt.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelVersandAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelEditDurchzufVersZul);
             }
         }
 
