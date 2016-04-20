@@ -67,19 +67,9 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_ZZZLDAT", value);
 		}
 
-		public static string GetExportParameter_E_FILENAME(ISapDataService sap)
-		{
-			return sap.GetExportParameter<string>("E_FILENAME").NotNullOrEmpty().Trim();
-		}
-
 		public static string GetExportParameter_E_KTEXT(ISapDataService sap)
 		{
 			return sap.GetExportParameter<string>("E_KTEXT").NotNullOrEmpty().Trim();
-		}
-
-		public static byte[] GetExportParameter_E_PDF(ISapDataService sap)
-		{
-			return sap.GetExportParameter<byte[]>("E_PDF");
 		}
 
 		public partial class ES_FIL_ADRS : IModelMappingApplied
@@ -116,31 +106,52 @@ namespace SapORM.Models
 
 			public string FAX_EXTENS { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static ES_FIL_ADRS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new ES_FIL_ADRS
-				{
-					VKORG = (string)row["VKORG"],
-					VKBUR = (string)row["VKBUR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					POST_CODE1 = (string)row["POST_CODE1"],
-					CITY1 = (string)row["CITY1"],
-					STREET = (string)row["STREET"],
-					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
-					TEL_NUMBER = (string)row["TEL_NUMBER"],
-					TEL_EXTENS = (string)row["TEL_EXTENS"],
-					FAX_NUMBER = (string)row["FAX_NUMBER"],
-					FAX_EXTENS = (string)row["FAX_EXTENS"],
+				ES_FIL_ADRS o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new ES_FIL_ADRS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						VKORG = (string)row["VKORG"],
+						VKBUR = (string)row["VKBUR"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						POST_CODE1 = (string)row["POST_CODE1"],
+						CITY1 = (string)row["CITY1"],
+						STREET = (string)row["STREET"],
+						HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
+						TEL_NUMBER = (string)row["TEL_NUMBER"],
+						TEL_EXTENS = (string)row["TEL_EXTENS"],
+						FAX_NUMBER = (string)row["FAX_NUMBER"],
+						FAX_EXTENS = (string)row["FAX_EXTENS"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new ES_FIL_ADRS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -231,25 +242,46 @@ namespace SapORM.Models
 
 			public string EINGABEFELD { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_TAGLI_BEM Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_TAGLI_BEM
-				{
-					KREISKZ = (string)row["KREISKZ"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					ZULBELN = (string)row["ZULBELN"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					TEXT = (string)row["TEXT"],
-					EINGABEFELD = (string)row["EINGABEFELD"],
+				GT_TAGLI_BEM o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_TAGLI_BEM
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KREISKZ = (string)row["KREISKZ"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						ZULBELN = (string)row["ZULBELN"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						TEXT = (string)row["TEXT"],
+						EINGABEFELD = (string)row["EINGABEFELD"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_TAGLI_BEM
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -362,26 +394,47 @@ namespace SapORM.Models
 
 			public int? POS_COUNT { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_TAGLI_K Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_TAGLI_K
-				{
-					KREISKZ = (string)row["KREISKZ"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					KREISBEZ = (string)row["KREISBEZ"],
-					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
-					DRUKZ = (string)row["DRUKZ"],
-					KENNZANZ = string.IsNullOrEmpty(row["KENNZANZ"].ToString()) ? null : (decimal?)row["KENNZANZ"],
-					POS_COUNT = string.IsNullOrEmpty(row["POS_COUNT"].ToString()) ? null : (int?)row["POS_COUNT"],
+				GT_TAGLI_K o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_TAGLI_K
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KREISKZ = (string)row["KREISKZ"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						KREISBEZ = (string)row["KREISBEZ"],
+						PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
+						DRUKZ = (string)row["DRUKZ"],
+						KENNZANZ = string.IsNullOrEmpty(row["KENNZANZ"].ToString()) ? null : (decimal?)row["KENNZANZ"],
+						POS_COUNT = string.IsNullOrEmpty(row["POS_COUNT"].ToString()) ? null : (int?)row["POS_COUNT"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_TAGLI_K
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -486,6 +539,8 @@ namespace SapORM.Models
 
 			public DateTime? ZZZLDAT { get; set; }
 
+			public string LEERZEILE { get; set; }
+
 			public string ZULBELN { get; set; }
 
 			public string ZULPOSNR { get; set; }
@@ -538,48 +593,70 @@ namespace SapORM.Models
 
 			public string VKBUR { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_TAGLI_P Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_TAGLI_P
-				{
-					KREISKZ = (string)row["KREISKZ"],
-					BLTYP = (string)row["BLTYP"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					ZULBELN = (string)row["ZULBELN"],
-					ZULPOSNR = (string)row["ZULPOSNR"],
-					KUNNR = (string)row["KUNNR"],
-					NAME1 = (string)row["NAME1"],
-					ZZREFNR1 = (string)row["ZZREFNR1"],
-					ZZREFNR2 = (string)row["ZZREFNR2"],
-					KENNZANZ = string.IsNullOrEmpty(row["KENNZANZ"].ToString()) ? null : (decimal?)row["KENNZANZ"],
-					KENNZFORM = (string)row["KENNZFORM"],
-					ZZKENN = (string)row["ZZKENN"],
-					MATNR = (string)row["MATNR"],
-					MAKTX = (string)row["MAKTX"],
-					RESWUNSCH = (string)row["RESWUNSCH"],
-					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
-					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
-					RESERVKENN = (string)row["RESERVKENN"],
-					FEINSTAUBAMT = (string)row["FEINSTAUBAMT"],
-					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
-					EC_JN = (string)row["EC_JN"],
-					BAR_JN = (string)row["BAR_JN"],
-					FLAG = (string)row["FLAG"],
-					WAERS = (string)row["WAERS"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					VGTYP = (string)row["VGTYP"],
-					SAISON = (string)row["SAISON"],
-					SAISON_ZEITRAUM = (string)row["SAISON_ZEITRAUM"],
-					VKBUR = (string)row["VKBUR"],
+				GT_TAGLI_P o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_TAGLI_P
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KREISKZ = (string)row["KREISKZ"],
+						BLTYP = (string)row["BLTYP"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						LEERZEILE = (string)row["LEERZEILE"],
+						ZULBELN = (string)row["ZULBELN"],
+						ZULPOSNR = (string)row["ZULPOSNR"],
+						KUNNR = (string)row["KUNNR"],
+						NAME1 = (string)row["NAME1"],
+						ZZREFNR1 = (string)row["ZZREFNR1"],
+						ZZREFNR2 = (string)row["ZZREFNR2"],
+						KENNZANZ = string.IsNullOrEmpty(row["KENNZANZ"].ToString()) ? null : (decimal?)row["KENNZANZ"],
+						KENNZFORM = (string)row["KENNZFORM"],
+						ZZKENN = (string)row["ZZKENN"],
+						MATNR = (string)row["MATNR"],
+						MAKTX = (string)row["MAKTX"],
+						RESWUNSCH = (string)row["RESWUNSCH"],
+						WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
+						RESERVKENN_JN = (string)row["RESERVKENN_JN"],
+						RESERVKENN = (string)row["RESERVKENN"],
+						FEINSTAUBAMT = (string)row["FEINSTAUBAMT"],
+						PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
+						EC_JN = (string)row["EC_JN"],
+						BAR_JN = (string)row["BAR_JN"],
+						FLAG = (string)row["FLAG"],
+						WAERS = (string)row["WAERS"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						VGTYP = (string)row["VGTYP"],
+						SAISON = (string)row["SAISON"],
+						SAISON_ZEITRAUM = (string)row["SAISON_ZEITRAUM"],
+						VKBUR = (string)row["VKBUR"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_TAGLI_P
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -667,6 +744,156 @@ namespace SapORM.Models
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
+
+		public partial class GT_TAGLI_SDL : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KREISKZ { get; set; }
+
+			public DateTime? ZZZLDAT { get; set; }
+
+			public string ZULBELN { get; set; }
+
+			public string STRING1 { get; set; }
+
+			public string STRING2 { get; set; }
+
+			public string STRING3 { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
+			public static GT_TAGLI_SDL Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				GT_TAGLI_SDL o;
+
+				try
+				{
+					o = new GT_TAGLI_SDL
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						KREISKZ = (string)row["KREISKZ"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						ZULBELN = (string)row["ZULBELN"],
+						STRING1 = (string)row["STRING1"],
+						STRING2 = (string)row["STRING2"],
+						STRING3 = (string)row["STRING3"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_TAGLI_SDL
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_TAGLI_SDL> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_TAGLI_SDL> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_TAGLI_SDL> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_TAGLI_SDL).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_TAGLI_SDL> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TAGLI_SDL> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_TAGLI_SDL> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TAGLI_SDL>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TAGLI_SDL> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TAGLI_SDL>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TAGLI_SDL> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TAGLI_SDL>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TAGLI_SDL> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TAGLI_SDL>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_EXPORT_TAGLI", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_TAGLI_SDL> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_TAGLI_SDL>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
@@ -691,6 +918,12 @@ namespace SapORM.Models
 
 
 		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_P> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_EXPORT_TAGLI.GT_TAGLI_SDL> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
