@@ -44,44 +44,42 @@ namespace CkgDomainLogic.WFM.Models
                 if (tage < 0)
                     return "";
 
+                if (tage < 4)
+                    return "< 4";
                 if (tage < 10)
-                    return "< 10";
-                else if (tage < 20)
-                    return "10 - 20";
-                else if (tage < 30)
-                    return "20 - 30";
-                else if (tage < 40)
-                    return "30 - 40";
-                else if (tage >= 40)
+                    return "4-10";
+                if (tage < 20)
+                    return "11-20";
+                if (tage < 30)
+                    return "21-30";
+                if (tage < 40)
+                    return "31-40";
+                if (tage >= 40)
                     return "> 40";
 
                 return "";
             }
         }
 
-        public int XaxisLabelSort
+        public static int GetSortByXaxisLabel(string xaxisLabel)
         {
-            get
+            switch (xaxisLabel)
             {
-                var tage = DurchlaufzeitTage.ToInt();
-                if (tage < 0)
-                    return 0;
-
-                var ofset = 0;
-
-                if (tage < 10)
-                    ofset = 1;
-                else if (tage < 20)
-                    ofset = 2;
-                else if (tage < 30)
-                    ofset = 3;
-                else if (tage < 40)
-                    ofset = 4;
-                else if (tage >= 40)
-                    ofset = 5;
-
-                return ofset;
+                case "< 4":
+                    return 1;
+                case "4-10":
+                    return 2;
+                case "11-20":
+                    return 3;
+                case "21-30":
+                    return 4;
+                case "31-40":
+                    return 5;
+                case "> 40":
+                    return 6;
             }
+
+            return 0;
         }
     }
 }

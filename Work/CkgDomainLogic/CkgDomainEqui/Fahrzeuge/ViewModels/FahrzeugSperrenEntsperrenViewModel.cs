@@ -81,7 +81,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadFahrzeuge()
         {
-            FahrzeugeGesamt = DataService.GetFahrzeugVersendungen("DE", null);
+            FahrzeugeGesamt = DataService.GetFahrzeugVersendungen(null, null);
 
             DataMarkForRefresh();
         }
