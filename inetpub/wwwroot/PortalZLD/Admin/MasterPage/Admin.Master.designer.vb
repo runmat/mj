@@ -50,6 +50,15 @@ Partial Public Class Admin
     Protected WithEvents UpdateProgress1 As Global.System.Web.UI.UpdateProgress
 
     '''<summary>
+    '''lblHeaderHint-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblHeaderHint As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''imgLogo-Steuerelement
     '''</summary>
     '''<remarks>

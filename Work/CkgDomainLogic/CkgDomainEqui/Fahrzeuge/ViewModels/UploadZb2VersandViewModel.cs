@@ -154,6 +154,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     validationResults.Add(new ValidationResult(storedFahrzeug.Info, new[] {"BestandsNr"}));
                 else
                 {
+                    ValidatePostcode(item, validationResults);
+
                     item.KundenNr = DataService.ToDataStoreKundenNr(LogonContext.KundenNr);
                     item.VIN = storedFahrzeug.FIN;
                     item.ErfassungsUserName = LogonContext.UserName;
@@ -175,23 +177,26 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             item.ValidationFirstError = (validationResults.None() ? "" : validationResults.First().ErrorMessage);
         }
 
-        void ValidateSingleUploadItemByViewModel(VersandAuftragsAnlage item, ICollection<ValidationResult> validationResults)
+        private void ValidateSingleUploadItemByViewModel(VersandAuftragsAnlage item, ICollection<ValidationResult> validationResults)
         {
             if (item.BestandsNr.IsNullOrEmpty())
-                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "BestandsNr" }));
+                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] {"BestandsNr"}));
 
             if (!IsValidCountryCode(item.Land))
-                validationResults.Add(new ValidationResult(Localize.CountryCode + " " + Localize.Invalid.ToLower(), new [] { "Land"}));
+                validationResults.Add(new ValidationResult(Localize.CountryCode + " " + Localize.Invalid.ToLower(), new[] {"Land"}));
 
             if (item.Name1.IsNullOrEmpty())
-                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "Name1" }));
+                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] {"Name1"}));
             if (item.Strasse.IsNullOrEmpty())
-                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "Strasse" }));
+                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] {"Strasse"}));
             if (item.PLZ.IsNullOrEmpty())
-                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "PLZ" }));
+                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] {"PLZ"}));
             if (item.Ort.IsNullOrEmpty())
-                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "Ort" }));
+                validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] {"Ort"}));
+        }
 
+        private void ValidatePostcode(VersandAuftragsAnlage item, ICollection<ValidationResult> validationResults)
+        {
             var countryPlzValidationError = DataService.CountryPlzValidate(item.Land, item.PLZ);
             if (countryPlzValidationError.IsNotNullOrEmpty())
                 validationResults.Add(new ValidationResult(countryPlzValidationError, new[] { "PLZ", "Land" }));

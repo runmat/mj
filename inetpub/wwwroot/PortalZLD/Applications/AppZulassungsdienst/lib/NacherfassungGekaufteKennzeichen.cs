@@ -16,6 +16,8 @@ namespace AppZulassungsdienst.lib
         public DataTable tblKennzeichen { get; private set; }
         public DataTable tblArtikel { get; private set; }
         public DataTable tblLieferanten { get; private set; }
+        public DataTable tblErfassteKennzeichenKopf { get; private set; }
+        public DataTable tblErfassteKennzeichenPositionen { get; private set; }
 
         #endregion
 
@@ -293,7 +295,45 @@ namespace AppZulassungsdienst.lib
             }            
             
             return strAufträge;
-        }           
+        }
+
+        internal void GetKaeufe(string LieferantenID)
+        {
+            ExecuteSapZugriff(() =>
+            {
+                Z_FIL_EFA_GEPRAEGTE_KENNZ_LIST.Init(SAP);
+
+                SAP.SetImportParameter("I_KOSTL", VKBUR.PadLeft0(10));
+                SAP.SetImportParameter("I_LIFNR", LieferantenID);
+
+                CallBapi();
+
+                switch (SAP.ResultCode)
+                {
+                    case 104:
+                        RaiseError(SAP.ResultCode, "KST nicht zulässig! Bitte richtige KST eingeben.");
+                        break;
+                }
+
+                tblErfassteKennzeichenKopf = SAP.GetExportTable("GT_PO_K");
+                tblErfassteKennzeichenPositionen = SAP.GetExportTable("GT_PO_P");
+
+                tblErfassteKennzeichenPositionen.Columns.Add("BEDAT", typeof(DateTime));
+                tblErfassteKennzeichenPositionen.Columns.Add("LTEXT", typeof(string));
+
+                var LSTS = new LongStringToSap();
+
+                foreach (DataRow kopfzeile in tblErfassteKennzeichenKopf.Rows)
+                {
+                    var poszeilen = tblErfassteKennzeichenPositionen.Select("BSTNR = '" + kopfzeile["BSTNR"].ToString() + "'");
+                    foreach (var poszeile in poszeilen)
+                    {
+                        poszeile["BEDAT"] = kopfzeile["BEDAT"];
+                        poszeile["LTEXT"] = LSTS.ReadString(poszeile["LTEXT_NR"].ToString());
+                    }
+                }
+            });
+        }
     }
 
     internal struct LieferscheinnummernObj : IComparable<LieferscheinnummernObj>

@@ -49,6 +49,15 @@ namespace AppZulassungsdienst.MasterPage {
         protected global::System.Web.UI.UpdateProgress UpdateProgress1;
         
         /// <summary>
+        /// lblHeaderHint-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHeaderHint;
+        
+        /// <summary>
         /// imgLogo-Steuerelement
         /// </summary>
         /// <remarks>

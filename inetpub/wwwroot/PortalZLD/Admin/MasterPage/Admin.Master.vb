@@ -21,6 +21,7 @@ Partial Public Class Admin
         bc = Request.Browser
 
         lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString())
+        lblHeaderHint.Text = ConfigurationManager.AppSettings("PortalHeaderHint")
         m_User = Session("objUser")
         If m_User Is Nothing Then
 
