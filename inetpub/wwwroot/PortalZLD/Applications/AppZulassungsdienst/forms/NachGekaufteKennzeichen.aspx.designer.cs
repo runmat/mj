@@ -238,13 +238,40 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblNoData;
         
         /// <summary>
-        /// ifrBuchungen-Steuerelement
+        /// divKaeufe-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ifrBuchungen;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divKaeufe;
+        
+        /// <summary>
+        /// lblGewaehlterLieferant-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGewaehlterLieferant;
+        
+        /// <summary>
+        /// lblAnzahlKaeufe-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnzahlKaeufe;
+        
+        /// <summary>
+        /// rgGrid1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadGrid rgGrid1;
         
         /// <summary>
         /// gvArtikel-Steuerelement

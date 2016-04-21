@@ -328,6 +328,8 @@
     </Compile>
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
+    <Compile Include="WFM\Models\WfmRechercheprotokollVersuch.cs" />
+    <Compile Include="WFM\Models\WfmRechercheprotokoll.cs" />
     <Compile Include="WFM\Models\WfmDokument.cs" />
     <Compile Include="WFM\Models\WfmDurchlaufSingle.cs" />
     <Compile Include="WFM\Models\WfmDurchlaufStatistik.cs" />

@@ -41,6 +41,15 @@ Partial Public Class Design
     Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
+    '''lblHeaderHint-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblHeaderHint As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''PlaceHeader-Steuerelement
     '''</summary>
     '''<remarks>

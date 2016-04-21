@@ -10,6 +10,7 @@ Partial Public Class Services
         Dim bc As HttpBrowserCapabilities
         bc = Request.Browser
         lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString())
+        lblHeaderHint.Text = ConfigurationManager.AppSettings("PortalHeaderHint")
         m_User = Session("objUser")
         lnkLogout.NavigateUrl = "/PortalZLD/(S(" & Session.SessionID & "))/Start/Logout.aspx"
         If m_User Is Nothing Then
