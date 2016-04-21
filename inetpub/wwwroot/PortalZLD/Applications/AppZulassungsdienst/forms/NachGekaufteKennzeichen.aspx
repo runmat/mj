@@ -2,6 +2,7 @@
     Inherits="AppZulassungsdienst.forms.NachGekaufteKennzeichen" MasterPageFile="../MasterPage/App.Master" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI, Version=2011.3.1305.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
     <div id="site">
@@ -113,9 +114,60 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            
-                                            <iframe runat="server" ID="ifrBuchungen" Visible="False" width="100%" height="600px" style="border:0;margin:0;padding: 0" />
-
+                                            <div id="divKaeufe" runat="server" Visible="False">
+                                                <strong>Übersicht erfasste Käufe </strong> für <asp:Label id="lblGewaehlterLieferant" style="font-weight: bold" runat="server" /> <span class="smallHintLightHighlight" style="margin-left: 10px;">(Lieferantenwechsel über Auswahl-Box oben)</span>
+                                                <br/><br/>
+                                                Bisher erfasst: <asp:Label id="lblAnzahlKaeufe" style="font-weight: bold" Text="-" runat="server"/> Lieferscheine
+                                                <br/><br/>
+                                                
+                                                <telerik:RadGrid ID="rgGrid1" runat="server" Width="99%"
+                                                    AutoGenerateColumns="False" GridLines="None" Culture="de-DE" Skin="Default" AllowPaging="True" AllowSorting="True"  
+                                                    OnNeedDataSource="rgGrid1_NeedDataSource" OnDetailTableDataBind="rgGrid1_DetailTableDataBind">
+                                                    <ClientSettings AllowKeyboardNavigation="true" >
+                                                        <Scrolling ScrollHeight="480px" AllowScroll="True" />
+                                                    </ClientSettings>
+                                                    <ItemStyle CssClass="ItemStyle" />
+                                                    <AlternatingItemStyle CssClass="ItemStyle" />
+                                                    <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" DataKeyNames="BSTNR">
+                                                        <SortExpressions>
+                                                            <telerik:GridSortExpression FieldName="BEDAT" SortOrder="Descending" />
+                                                        </SortExpressions>
+                                                        <HeaderStyle ForeColor="#595959" />
+                                                        <DetailTables>
+                                                            <telerik:GridTableView DataKeyNames="BSTNR" Width="100%" runat="server">
+                                                                <SortExpressions>
+                                                                    <telerik:GridSortExpression FieldName="EBELP" SortOrder="Ascending" />
+                                                                </SortExpressions>
+                                                                <ParentTableRelation>
+                                                                    <telerik:GridRelationFields DetailKeyField="BSTNR" MasterKeyField="BSTNR">
+                                                                    </telerik:GridRelationFields>
+                                                                </ParentTableRelation>
+                                                                <Columns>
+                                                                    <telerik:GridBoundColumn DataField="MAKTX" SortExpression="MAKTX" HeaderText="Artikel"/>
+                                                                    <telerik:GridBoundColumn DataField="BEDAT" SortExpression="BEDAT" HeaderText="Bestelldatum" DataFormatString="{0:dd.MM.yyyy}"/>
+                                                                    <telerik:GridBoundColumn DataField="MENGE" SortExpression="MENGE" HeaderText="Menge" DataFormatString="{0:f0}"/>
+                                                                    <telerik:GridBoundColumn DataField="PREIS" SortExpression="PREIS" HeaderText="Preis" DataFormatString="{0:c}"/>
+                                                                    <telerik:GridBoundColumn DataField="LTEXT" SortExpression="LTEXT" HeaderText="Info-Text"/>
+                                                                </Columns>
+                                                            </telerik:GridTableView>
+                                                        </DetailTables>
+                                                        <Columns>
+                                                            <telerik:GridBoundColumn DataField="LIEFERSNR" SortExpression="LIEFERSNR" HeaderText="Lieferscheinnummer"/>
+                                                            <telerik:GridBoundColumn DataField="EEIND" SortExpression="EEIND" HeaderText="Lieferdatum" DataFormatString="{0:dd.MM.yyyy}"/>
+                                                            <telerik:GridBoundColumn DataField="BSTNR" SortExpression="BSTNR" HeaderText="Belegnummer (SAP intern)"/>
+                                                        </Columns>
+                                                    </MasterTableView>
+                                                </telerik:RadGrid>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <asp:GridView ID="gvArtikel" runat="server" CssClass="GridView" Width="100%" AutoGenerateColumns="False"
                                                 AllowPaging="False" AllowSorting="True" ShowFooter="False" GridLines="None" OnRowCommand="gvArtikel_RowCommand"
                                                 OnSelectedIndexChanged="gvArtikel_SelectedIndexChanged" OnRowDataBound="gvArtikel_OnRowDataBound">

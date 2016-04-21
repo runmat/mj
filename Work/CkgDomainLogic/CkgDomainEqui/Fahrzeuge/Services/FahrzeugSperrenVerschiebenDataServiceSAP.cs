@@ -150,7 +150,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             Z_DPM_REM_READ_VERSSPERR_01.Init(SAP);
 
-            Z_DPM_REM_READ_VERSSPERR_01.SetImportParameter_I_LAND_CODE_ZF(SAP, landCode);
+            if (landCode.IsNotNullOrEmpty())
+                Z_DPM_REM_READ_VERSSPERR_01.SetImportParameter_I_LAND_CODE_ZF(SAP, landCode);
 
             if (gesperrte != null)
                 if (gesperrte.GetValueOrDefault())
