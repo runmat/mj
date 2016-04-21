@@ -85,14 +85,13 @@ namespace CkgDomainLogic.Leasing.ViewModels
             allSelectionCount = EndgueltigerVersandInfos.Count(c => c.IsSelected);
         }
 
-        public void VersendeSelektierteEndgueltig()
+        public string VersendeSelektierteEndgueltig()
         {
 
-            var test = EndgueltigerVersandInfos.Where(x => x.IsSelected).ToList();
-            DataMarkForRefresh();
-            
-            DataService.Save(test);
+            string errortext =  DataService.Save(EndgueltigerVersandInfos.Where(x => x.IsSelected).ToList());
             EndgueltigerVersandInfos = DataService.GetTempVersandInfos(EndgueltigerVersandSelektor);
+            DataMarkForRefresh();
+            return errortext;
         }
     }
 

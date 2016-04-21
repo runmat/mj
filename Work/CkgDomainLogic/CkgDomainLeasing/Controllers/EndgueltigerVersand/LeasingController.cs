@@ -56,8 +56,10 @@ namespace ServicesMvc.Controllers
         public ActionResult SendFinally()
         {
 
-            EndgueltigerVersandViewModel.VersendeSelektierteEndgueltig();
+            string error = EndgueltigerVersandViewModel.VersendeSelektierteEndgueltig();
 
+            if (error.IsNotNullOrEmpty())
+                ModelState.AddModelError("Error", error);
             return PartialView("EndgueltigerVersand/EndgueltigerVersandGrid", EndgueltigerVersandViewModel);
         }
 

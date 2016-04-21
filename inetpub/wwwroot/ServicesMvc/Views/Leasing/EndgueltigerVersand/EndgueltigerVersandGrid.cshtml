@@ -52,16 +52,27 @@
 </div>
 
 <script>
+    _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+</script>
+
+<script>
     function SendEndgueltig() {
         $.ajax({
             type: "POST",
             url: "SendFinally",
             loadingShow: false,
             success: function (result) {
-                $("#result").removeClass('hide');
 
-                $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
-                $("#divGrid").html(result);
+
+                if (_modelStateValid == "true") {
+                    $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
+                    $("#divGrid").html(result);
+                } else {
+                    $("#result > span").html(@ViewContext.ViewData.ModelState["Error"]);
+                }
+                $("#result").removeClass('hide');
+                setTimeout(3000);
+                $("#result").addClass('hide');
             }
         });
     }
@@ -87,7 +98,7 @@
                     return;
                 }
                 $("#VersandAuswahlCount").removeClass('hide');
-                $("#VersandAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Brief(e) ' + ' ausgewählt!');
+                $("#VersandAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Brief' + (_selectedItemsCount != 1 ? 'e' : '')  + ' ausgewählt!');
             }
         });
     }
@@ -117,7 +128,7 @@
         }
 
         $("#VersandAuswahlCount").removeClass('hide');
-        $("#VersandAuswahlCount > span").html('Sie haben ' + count + ' Brief(e) ' + ' ausgewählt!');
+        $("#VersandAuswahlCount > span").html('Sie haben ' + count + ' Brief' + (count != 1 ? 'e' : '') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         setTimeout(3000);
         $("#VersandAuswahlCount").addClass('hide');

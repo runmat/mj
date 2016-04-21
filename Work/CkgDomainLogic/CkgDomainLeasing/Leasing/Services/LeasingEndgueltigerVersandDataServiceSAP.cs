@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Models;
@@ -52,20 +53,30 @@ namespace CkgDomainLogic.Leasing.Services
 
         }
 
-        public void Save(IEnumerable<EndgueltigerVersandModel> endgueltigeVersandInfos)
+        public string Save(IEnumerable<EndgueltigerVersandModel> endgueltigeVersandInfos)
         {
-
+            var erg = "";
             Z_DPM_TEMP_END_SPERR_01.Init(SAP);
 
-            Z_DPM_TEMP_VERSENDUNGEN_01.SetImportParameter_I_AG(SAP, LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_TEMP_END_SPERR_01.SetImportParameter_I_AG(SAP, LogonContext.KundenNr.ToSapKunnr());
 
             var infos =
                 AppModelMappings.Z_DPM_TEMP_END_SPERR_01_GT_FZG_To_EndgueltigerVersandModel.CopyBack(endgueltigeVersandInfos);
 
-
             SAP.ApplyImport(infos);
 
             SAP.Execute();
+
+            var result = Z_DPM_TEMP_END_SPERR_01.GT_FZG.GetExportList(SAP);
+
+
+            var ergList = Z_DPM_TEMP_END_SPERR_01.GT_FZG.GetExportList(SAP);
+            if ((ergList.Count > 0) && (!String.IsNullOrEmpty(ergList[0].BEM)))
+            {
+                erg = ergList[0].BEM;
+            }
+
+            return erg;
         }
     }
 }

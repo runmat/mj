@@ -9,6 +9,6 @@ namespace CkgDomainLogic.Leasing.Contracts
     public interface ILeasingEndgueltigerVersandDataService : ICkgGeneralDataService
     {
         List<EndgueltigerVersandModel> GetTempVersandInfos(EndgueltigerVersandSuchParameter endgueltigerVersandSelektor);
-        void Save(IEnumerable<EndgueltigerVersandModel> endgueltigeVersandInfos);
+        string Save(IEnumerable<EndgueltigerVersandModel> endgueltigeVersandInfos);
     }
 }
