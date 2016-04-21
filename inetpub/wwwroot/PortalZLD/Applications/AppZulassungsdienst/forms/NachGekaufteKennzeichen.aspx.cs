@@ -4,6 +4,7 @@ using AppZulassungsdienst.lib;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using System.Web.UI.WebControls;
+using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.forms
 {
@@ -335,6 +336,29 @@ namespace AppZulassungsdienst.forms
             ShowBuchungen(!ibHideBuchungen.Visible);
         }
 
+        protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        {
+            if (!e.IsFromDetailTable)
+            {
+                if (NGK.tblErfassteKennzeichenKopf != null)
+                    rgGrid1.DataSource = NGK.tblErfassteKennzeichenKopf.DefaultView;
+                else
+                    rgGrid1.DataSource = null;
+            }
+        }
+
+        protected void rgGrid1_DetailTableDataBind(object sender, GridDetailTableDataBindEventArgs e)
+        {
+            var bestellNr = e.DetailTableView.ParentItem.GetDataKeyValue("BSTNR").ToString();
+
+            if (!string.IsNullOrEmpty(bestellNr) && NGK.tblErfassteKennzeichenPositionen != null)
+            {
+                var dv = new DataView(NGK.tblErfassteKennzeichenPositionen);
+                dv.RowFilter = "BSTNR = '" + bestellNr + "'";
+                e.DetailTableView.DataSource = dv;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -502,23 +526,43 @@ namespace AppZulassungsdienst.forms
             lbShowBuchungen.Text = (!show ? "erfasste Käufe..." : "erfasste Käufe schließen!");
 
             ibHideBuchungen.Visible = show;
-            ifrBuchungen.Visible = show;
+            divKaeufe.Visible = show;
 
-            ShowIframeBuchungen(show);
+            if (show)
+            {
+                FillKaeufe();
+                FillGridKaeufe();
+            }
         }
 
-        private void ShowIframeBuchungen(bool show)
+        private void FillGridKaeufe()
         {
-            if (!show)
+            if (NGK.tblErfassteKennzeichenKopf != null && NGK.tblErfassteKennzeichenKopf.Rows.Count > 0)
             {
-                ifrBuchungen.Attributes["src"] = "about:blank";
-                return;
+                rgGrid1.Visible = true;
+                rgGrid1.Rebind();
+                // Setzen der DataSource geschieht durch das NeedDataSource-Event
+                lblNoData.Visible = false;
             }
+            else
+            {
+                rgGrid1.Visible = false;
+                lblNoData.Text = "Keine Daten gefunden";
+                lblNoData.Visible = true;
+            }
+        }
 
+        private void FillKaeufe()
+        {
             if (ddlLiefer.SelectedIndex >= 0 && ddlLiefer.SelectedValue != null)
             {
-                ifrBuchungen.Attributes["src"] = string.Format("/PortalZLD_AppZulassungsdienst/NachGekaufteKennzeichen/Index/{0}_{1}", m_User.UserID, ddlLiefer.SelectedValue);
+                NGK.GetKaeufe(ddlLiefer.SelectedValue);
+                Session["NGK"] = NGK;
+
+                lblGewaehlterLieferant.Text = ddlLiefer.SelectedItem.Text;
+                lblAnzahlKaeufe.Text = NGK.tblErfassteKennzeichenKopf.Rows.Count.ToString();
             }
+            else { lblError.Text = "Wählen Sie einen gültigen Lieferanten aus!"; }
         }
 
         #endregion

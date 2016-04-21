@@ -1,0 +1,2971 @@
+﻿* html body {
+	background-color: #bababa;
+	background-image: url(/PortalZLD/Images/backgroundImage.gif);
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	margin-top: 2px;
+}
+
+* html a { text-decoration: none }
+ 
+* html img {
+    border-style: none;
+    border-color: inherit;
+    border-width: 0;
+   } 
+ 
+* html div#header ul { margin-top: 49px }
+* html div#header table { margin-top: 51px }
+* html div#content div#innerContent div div.innerContentHeading { margin-right: 15px; width: 90% }
+* html div#content div#innerContent div#login { margin-right: 0px }
+* html div#content div#innerContentLeft { width: 18%; }
+
+* html .bold { font-weight: bold }
+
+* html div#website {
+	margin: 0px auto;
+	top: 0px;
+	width: 1280px;
+	
+
+}
+* html div#websitefoot {
+	margin: 0px auto;
+	top: 0px;
+	width: 1280px;
+}
+* html div#sidebar {
+	float: left;
+	margin-top: 39px;
+	position: absolute;
+    text-align: center;
+	z-index: 2;
+
+}
+
+* html div#sidebar div#info {
+    border-style: solid solid solid none;
+    border-width: 1px; 
+    border-color: #CCCCCC; 
+    width: 450px;font-size: 12px; 
+    background-color: #ffffff;  
+    padding: 5px; 
+    margin-left: 26px; 
+    display: none; 
+    height: 535px;
+}
+
+* html div#sidebar div#btnCloseParent
+{
+    float: right; 
+    -ms-filter: alpha(opacity=0); 
+    font-family: Verdana; 
+    font-size: 10px; 
+    color: #666666;
+    padding-top:5px;
+    padding-bottom: 5px 
+     }
+
+* html div#sidebar div#flyout {
+    border-style: solid solid solid none; 
+    border-width: 1px; 
+    border-color: #D0D0D0; 
+    display:none; 
+    overflow: hidden; 
+    z-index: 2; 
+    background-color: #FFFFFF; 
+    width: 1px;
+}
+
+
+
+* html div#testsidebar {
+	float: left;
+	margin-top: 200px;
+	position: absolute;
+	text-align: center;
+	width: 30px;
+	z-index: 2;
+    top: 2px;
+    left: 10px;
+    margin-left: 45px;
+}
+* html div#sidebar img#navDisplayArrow {
+	cursor: pointer;
+}
+
+* html div#site {
+	border-left: 1px solid #bbbbbb;
+	float: left;
+	margin-left: 25px;
+	z-index: 1;
+	border-right: 1px solid #bbbbbb;
+
+}
+
+* html div#header {
+    background-image: url(/PortalZLD/Images/BigKroschkeBridge.jpg);
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	height: 125px;
+	width: 1227px;
+	margin-left: 25px;
+	border-bottom: 1px solid #bbbbbb;
+
+	}
+
+* html div#header img.dadLogo {
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 19px;
+	padding-left: 736px;
+}
+
+
+* html div#header ul {
+	float: left;
+	list-style-type: none;
+	margin-top: 35px;
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding-left: 19px;
+}
+
+* html div#header ul li {
+	float: left;
+	height: 18px;
+	padding-top: 4px;
+	padding-right: 14px;
+	padding-left: 14px;
+}
+
+* html div#header ul#navigation {
+	background-image: url(/PortalZLD/Images/overflowNavigationShadow.png);
+	background-position: right;
+	background-repeat: no-repeat;
+	padding-right: 18px;
+
+}
+
+* html div#header ul#navigation li {
+	background-image: url(/PortalZLD/Images/overflowNavigation.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+	
+}
+
+
+* html div#header ul#navigation li.active {
+	background-color: #ffffff;
+	background-image: none;
+	border-top: 1px solid #bbbbbb;
+	border-left: 1px solid #bbbbbb;
+}
+
+* html div#header ul#navigation li a {
+	color: #ffffff;
+	font-weight: bold;
+} 
+
+* html div#header ul#userinfo {
+	float: right;
+	padding-right: 19px;
+}
+
+* html div#header ul#userinfo li {
+	color: #ffffff;
+	padding-right: 0px;
+}
+
+* html div#header ul#userinfo li.logout { padding-top: 0px }
+
+* html div#content {
+	background-color: #ffffff;
+	float: left;
+	width: 1225px;
+}
+
+* html div#content div#navigationSubmenu {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding-left: 19px;
+}
+
+* html div#content div#navigationSubmenu a { color: #595959; }
+
+
+* html div#content div#innerContentRight div#TableQuery div#statistics {
+	color: #595959;
+	background-color: #dfdfdf;
+	margin-top: 40px;
+	margin-bottom: 5px;
+}
+
+* html div#content div#innerContentRight div#TableQuery div#statistics table {
+	padding-left: 15px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+* html div#content div#innerContentRight div#TableQuery div#statistics table tr.heading { font-weight: bold }
+
+* html div#content div#innerContentRight div#TableQuery div#statistics table tr td {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 2px;
+	padding-right: 35px;
+	padding-bottom:4px;
+}
+
+* html div#content div#innerContentRight div#TableQuery div#statistics table tr td h3 {
+	font-size: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+* html div#content div#innerContent {
+	margin-top: 0px;
+	padding-right: 19px;
+	margin-left: 19px;
+}
+
+* html div#content div#innerContentLeft {
+	float: left;
+	margin-right: 2%;
+	width: 15%;
+}
+
+* html div#content div#innerContent div div.innerContentHeading {
+	background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	line-height: 22px;
+	padding-left: 15px;
+}
+
+* html erContentHeading h2 {
+	font-size: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+* html div#content div#paginationQuery div#queryImage {
+	float: right;
+}
+* html div#content div#paginationQuery div#queryImage input {
+	margin-top: 0px;
+}
+* html div#content div#innerContentLeft ul {
+	list-style-type: none;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-bottom: 10px;
+	padding-left: 0px;
+}
+
+* html div#content div#innerContentLeft ul li {
+	background-color: #dfdfdf;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #595959;
+	height: 22px;
+	line-height: 22px;
+	padding-left: 15px;
+	
+}
+
+* html div#content div#innerContentLeft ul li {
+	background-color: #dfdfdf;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #595959;
+	height: 22px;
+	line-height: 22px;
+	padding-left: 15px;
+	
+}
+
+* html div#content div#innerContentLeft ul li.active { font-weight: bold }
+
+* html div#content div#innerContentLeft ul li:hover { background-color: #2265BE; }
+
+* html div#content div#innerContentLeft ul li.top {
+	background-color: #bebebe;
+	color: #000000;
+}
+
+* html div#content div#innerContentRight { float: left }
+
+
+
+* html div#content div#innerContentRight div#innerContentRightHeading {
+	background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	font-weight: bold;
+	float: left;
+	height: 22px;
+	line-height: 22px;
+	width: 100%;
+	white-space:nowrap;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading h1 {
+	float: left; 
+	font-size: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading div {
+	float: right;
+	}
+
+* html div#content div#innerContentRight div#innerContentRightHeading div a {
+	color: #ffffff;
+	
+	display: block;
+	float: left;
+	font-weight: normal;
+	padding-top: 0px;
+	padding-left: 3px;
+	padding-right: 17px;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading div a img {
+	float: left;
+	padding-top:3px;
+}
+
+* html div#content div#innerContentRight div#innerContentRightHeading div a span {
+	/*
+	display: block;
+	float: left;
+	font-weight: normal;
+	padding-top: 0px;
+	padding-left: 3px;
+	padding-right: 17px;*/
+}
+
+
+* html div#content div#innerContentLeft2 {
+    float: right;
+    width:36%;
+    border-style: none solid solid solid;
+    border-width: 1px; 
+    border-color: #DFDFDF; 
+    height: 285px;
+    margin-top:25px;
+    margin-right:15px;
+    margin-bottom:25px;
+     }
+
+
+
+* html div#content div#innerContentLeft2 div#innerContentLeftHeading {
+	background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	font-weight: bold;
+	float: right;
+	height: 22px;
+	line-height: 22px;
+	width: 100%;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeftHeading h1 {
+	float: left; 
+	font-size: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeftHeading div {
+	float: right;
+}
+
+div#content div#innerContentLeft2 div#innerContentLeftHeading div a {
+	color: #ffffff;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeftHeading div a img {
+	float: left;
+	padding-top:3px;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeftHeading div a span {
+	display: block;
+	float: left;
+	font-weight: normal;
+	padding-top: 0px;
+	padding-left: 3px;
+	padding-right: 17px;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeft2Callback{
+float: left;
+
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeft2Callback table tr td {
+	padding-left: 15px;
+	padding-top: 25px;
+	vertical-align: baseline;
+	height:22px;
+    font-size: 10px;
+}
+
+* html div#content div#innerContentLeft2 div#innerContentLeft2Callback td.innerCallback {
+	padding-left: 0px;
+	padding-top: 5px;
+	vertical-align:top;
+}
+
+* html div#content div#query {
+	background-image:url(/PortalZLD/Images/overflow.png);
+    color:#FFFFFF;
+    font-weight:bold;
+    height:22px;
+    line-height:22px;
+    padding-left:15px;
+}
+
+* html div#content  div#query h2 {
+	font-size: 10px;
+	float: left;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+
+* html div#content div#innerContentRight div#pagination {
+	background-color: #dfdfdf;
+	float: left;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination table {
+	color: #4c4c4c;
+	padding-left: 15px;
+	padding-right: 17px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination tr td.login {
+	padding-top: 5px;
+	height: auto;
+}
+
+* html div#content div#innerContentRight div#pagination td {
+	height: 22px;
+	vertical-align: middle;
+	padding-bottom:0px;
+}
+
+* html div#content div#innerContentRight div#pagination td.active { font-weight: bold }
+
+
+* html div#content div#innerContentRight div#pagination td.pagination {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 33%;
+	padding-bottom:0px;
+}
+
+* html div#content div#innerContentRight div#pagination td.Title {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-left:0px;
+	width: 35%;
+	font-weight: bold;
+	padding-bottom:0px;
+	color:#576b96;
+	font-size: 12px
+}
+
+* html div#content div#innerContentRight div#pagination td.paginationText {
+	padding-right: 14px;
+	text-align: right;
+	padding-top: 0px;
+}
+
+* html div#content div#innerContentRight div#pagination td.paginationForm {
+	margin: 0px;
+	padding:0px;
+	width: 45px;
+}
+
+
+* html div#content div#innerContentRight div#pagination td.paginationForm form select { width: 40px }
+
+* html div#content div#innerContentRight div#pagination a  
+{
+    margin-right:2px;
+    color: #4c4c4c
+     }
+
+* html div#content div#innerContentRight div#pagination a.active {
+	font-weight: bold;
+	text-decoration: underline;
+	padding-left:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+
+
+* html div#content div#innerContentRight div#paginationQuery {
+	background-color: #dfdfdf;
+	float: left;
+	width: 100%;
+}
+* html div#content div#innerContentRight div#paginationQuery table {
+	color: #4c4c4c;
+	padding-left: 15px;
+	padding-right: 17px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#paginationQuery td {
+	height: 22px;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#paginationQuery td.active { font-weight: bold }
+
+* html div#content div#innerContentRight div#paginationQuery td.pagination {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 75%;
+}
+
+* html div#content div#innerContentRight form#showAddress { display: inline }
+
+/*ie Hack*/
+*+html div#content div#innerContentRight div#data {
+
+    height: expression( this.scrollHeight < 301 ? "300px" : "auto" ); 
+    height: expression( this.scrollHeight > 701 ? "700px" : "auto" );
+}
+
+* html div#AdjResultsDiv {
+width: 1080px;
+height: 500px;
+overflow: scroll;
+position: relative;
+}
+
+* html div#AdjResultsDiv th
+{  
+top: expression(document.getElementById("AdjResultsDiv").scrollTop-2);
+left: expression(parentNode.parentNode.parentNode.parentNode.scrollLeft);
+position: relative;
+z-index: 20;
+}
+
+
+
+* html div#content div#innerContentRight div#data {
+	float: left;
+	width: 100%;
+    min-height: 300px;
+    max-height: 750px;
+	overflow-x:auto;
+	overflow-y:auto;
+    scrollbar-face-color:#dfdfdf;
+    scrollbar-shadow-color:#9B9B9B;
+    scrollbar-highlight-color:#9B9B9B;
+    scrollbar-3dlight-color:#dfdfdf;
+    scrollbar-darkshadow-color:#dfdfdf;
+    scrollbar-track-color:#9B9B9B;
+    scrollbar-arrow-color:#9B9B9B	;
+}
+
+* html div#content div#innerContentRight div#data table {
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse:separate ! important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position:center top;
+    margin-bottom:10px;
+}
+
+*+html div#content div#innerContentRight div#data table { /* IE7 only */
+    margin-bottom:20px;
+
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td div#AdjResultsDiv {
+    min-height: 300px;
+    max-height: 700px;
+    width: 1187px;
+    overflow: scroll;
+    position: relative;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td div#AdjResultsDiv th
+{  
+    top: expression(document.getElementById("AdjResultsDiv").scrollTop-2);
+    left: expression(parentNode.parentNode.parentNode.parentNode.scrollLeft);
+    position: relative;
+    z-index: 20;
+    border-collapse: collapse;
+
+}
+* html div#content div#innerContentRight div#data table tbody tr td div#AdjResultsDiv th.lockedcol,td.lockedcol
+{
+    position:relative;
+    left: 0;
+    z-index: 30;
+    border:1px solid white;
+    border-collapse: collapse;
+}
+* html div#content div#innerContentRight div#data table tbody tr td div#AdjResultsDiv th.lockedcol{z-index: 40;}
+
+* html div#content div#innerContentRight div#pagination div.GridInfoName{
+    color: #7f7f7f;
+    font-size: 12px;
+    font-weight: bold;
+    padding-left:5px;
+    padding-bottom:5px;
+    padding-top:5px;
+}
+* html div#content div#innerContentRight div#datainfo {
+
+}
+
+* html div#content div#innerContentRight div#datainfo table {
+    background-position: 50% top;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 12px;
+    color: #333333;
+ }
+
+* html div#content div#innerContentRight div#datainfo table tr td {
+	padding-left: 15px;
+	padding-top: 10px;
+	vertical-align: baseline;
+	height:22px;
+    font-size: 10px;
+}
+
+
+
+* html div#content div#innerContentRight div#dataVerwaltung {
+	float:  left;
+
+	width: 100%;
+
+}
+
+* html div#content div#innerContentRight div#dataVerwaltung table {
+    background-position: top;
+    width: 100%;
+	border-left: solid 1px #dfdfdf;
+	border-right: solid 1px #dfdfdf;
+    font-size: 12px;
+    color: #333333;
+}
+
+* html div#content div#innerContentRight div#dataVerwaltung table td {
+    padding-top: 15px;
+    padding-left:15px;
+}
+* html div#content div#innerContentRight div#dataVerwaltung table tfoot {
+background-color:#dfdfdf;
+}
+
+
+* html div#content div#innerContentRight div#TableQuery {
+	float: left;
+	width: 100%;
+}
+
+
+* html div#content div#innerContentRight div#TableQuery table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+    color:#595959;
+	width: 100%; 
+	display: block; 
+	border-left:1px solid #DFDFDF;
+    border-right:1px solid #DFDFDF;	
+}
+div#content div#innerContentRight div#TableQuery table td td{
+	 width: 200px;
+}
+* html div#content div#innerContentRight div#TableQuery table table {
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;	
+}
+
+* html div#content div#innerContentRight div#TableQuery .TableQuery {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	color: #333333;
+	
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td {
+	padding-top: 10px;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery  table.rbList td {
+	padding-top: 0px;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .active {
+    font-weight:bold;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .firstLeft {
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}
+
+* html div#content div#innerContentRight div#TableQuery table .secondLeft {
+padding-left:65px;
+padding-right:5px;
+white-space:nowrap;
+}
+
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr td input.radio {
+	border: none;
+	margin: 0px;
+	width: auto;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr td span input.radio {
+	border: none;
+	margin: 0px;
+	width: auto;
+}
+
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td.rightPadding { padding-right: 15px }
+
+
+* html ut, select {
+	border: 1px solid #bfbfbf;
+	color: #595959;
+
+}
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td label{
+	margin: 5px;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td label{
+	margin: 5px;
+}
+
+* html div#content div#innerContentRight div#TableQuery table tbody tr.formquery td span input {
+	border: none;
+	margin: 0px;
+	width: auto;
+}
+
+* html div#content div#innerContentRight div#TableQuery .ajax__calendar_container TABLE {font-size:10px}
+* html div#content div#innerContentRight div#TableQuery .ajax__calendar_container table tbody tr td {padding: 0px 0px 0px 0px}
+
+* html div#content div#innerContentRight div#data table .firstLeft {
+	padding-right: 5px;
+	padding-left: 15px;
+	white-space: nowrap;
+}
+
+* html div#content div#innerContentRight div#data table .secondLeft {
+	padding-right: 1px;
+	white-space: nowrap;
+	width: 116px; 
+	vertical-align: middle;
+	 border-bottom-color:#dfdfdf;
+    border-bottom-width:1px;
+ 	border-bottom-style:solid;
+ 	
+}
+
+* html div#content div#innerContentRight div#data table .active { font-weight: bold;
+    width: 10%;
+      
+}
+
+* html div#content div#innerContentRight div#data table thead {
+	background-image: url(/PortalZLD/imgages/overflowThead.png);
+	background-color: #9b9b9b;
+}
+
+* html div#content div#innerContentRight div#data table thead tr th {
+	color: #ffffff;
+	line-height: 14px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#data table thead tr th.showAddress {
+	padding-top: 3px;
+	padding-right: 17px;
+
+}
+
+* html div#content div#innerContentRight div#data table tfoot {
+	background-color: #dfdfdf;
+	height: 25px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.one { background-color: #ffffff }
+
+* html div#content div#innerContentRight div#data table tbody tr.two { background-color: #dee1e0 }
+
+* html div#content div#innerContentRight div#data table tbody tr.form td {
+	padding-top: 10px;
+	vertical-align: baseline;
+}
+
+div#content div#innerContentRight div#data table tbody tr.form td input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.form td span input, select {
+	width: 20px;
+	border:none;
+    margin: 0px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.form td ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.form td ul li.radio {
+	display: inline;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.form td ul li.radioText {
+	display: inline;
+	margin-right: 10px;
+	vertical-align: text-top;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr.form td.paddingBottom { padding-bottom: 25px }
+
+* html div#content div#innerContentRight div#data table tbody tr.form td.versandart { padding-top: 20px }
+
+* html div#content div#innerContentRight div#data table tbody tr.form td.rightPadding { padding-right: 15px }
+
+* html div#content div#innerContentRight div#data table tbody tr td { color: #595959 }
+
+* html div#content div#innerContentRight div#data table tbody tr td input.radio {
+	border: none;
+	margin: 0px;
+	width: auto;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td span input.radio {
+	border: none;
+	margin: 0px;
+	width: auto;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td input.floatLeft { float: left }
+
+* html div#content div#innerContentRight div#data table tbody tr td.input {
+	padding-right: 0px;
+	width: 128px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td.input input {
+	margin-right: 0px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td ul.shipping {
+	list-style-type: none;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 20px;
+
+}
+
+* html div#content div#innerContentRight div#data table tbody tr td a {
+    color: #2265BE;
+    text-decoration:underline;
+
+}
+* html div#content div#innerContentRight div#data table tbody tr td a:hover {
+    color: #000000;
+    text-decoration:underline;
+
+}
+* html div#content div#innerContentRight div#data table tbody tr td a.Tablebutton {
+    color: #2265BE;
+    text-decoration:none;
+
+}
+div#content div#innerContentRight div#data table tbody tr td a.Tablebutton:hover {
+    color: #000000;
+    text-decoration:none;
+
+}
+
+* html div#content div#innerContentRight div#dataFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+
+
+* html div#content div#innerContent div#dataFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+* html div#footer {
+	background-color: #efefef;
+	clear: both;
+	color: #595959;
+	float: left;
+	height: 24px;
+	padding-top: 12px;
+	padding-left: 19px;
+	width: 1206px;
+}
+
+* html div#footer div a { color: #595959 }
+
+* html div#footer div.leftAlign { float: left }
+
+* html div#footer div.rightAlign {
+	float: right;
+	margin-right: 36px;
+}
+
+* html div#footfoot
+{
+    border-left: 1px solid #bbbbbb; 
+    float: left; 
+    margin-left: 25px; 
+    z-index: 1;
+    border-right: 1px solid #bbbbbb;
+        }
+
+* html div#content div#innerContent div#login {
+	color: #4c4c4c;
+	float:left;
+	margin-right:19px;
+	width:100%;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table {
+	border-left: 1px solid #dfdfdf;
+	border-right: 1px solid #dfdfdf;
+	width: 100%;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table tfoot {
+	background-color: #dfdfdf;
+	height: 25px;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td {
+	padding-top: 3px;
+	padding-left: 28px;
+	padding-right: 28px;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.paddingTop { padding-top: 15px }
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.input { padding-right: 0px }
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.input input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+	z-index: 0;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.lock {
+	padding-left: 5px;
+	width: 700px;
+}
+
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.login {
+	text-align: right;
+	padding-top: 10px;
+	padding-right: 0px;
+	padding-bottom: 30px;
+}
+* html div#content div#innerContent div#innerContentRight div#login table tbody tr td.help {
+	padding-top: 5px;
+}
+
+    
+* html .showAddress {
+	padding-top: 3px;
+	padding-right: 17px;
+	text-align: right;
+}    
+
+* html .Tablehead {
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	background-color: #9b9b9b;
+	height:30px;
+	color:#FFFFFF;
+	margin-left:15px;
+	
+}
+
+
+* html .GridTableHead
+{
+    background-image: url(/PortalZLD/Images/overflowThead.png);
+	background-color: #9b9b9b;
+	height:23px;
+	color:#FFFFFF;
+	
+}
+
+* html .GridTableHead td 
+{
+    padding-right:5px;
+	padding-left:15px;
+    }
+
+* html .GridTableHead th
+{
+    padding-right:5px;
+	padding-left:15px;
+	color:#ffffff;
+	text-align:left;
+    }
+        
+* html .GridTableHead A:link
+{
+    color: #ffffff;
+    float:left;
+    white-space:nowrap
+}
+
+* html .GridTableAlternate
+{
+       background-color: #DEE1E0;
+}
+
+* html .GridTableAlternate td
+{
+    padding-right: 5px;
+	padding-left: 15px;
+	height:28px;
+}
+
+* html .GridTableAlternate td.HierarGridButton
+{
+    padding-left: 2px;
+}
+
+* html .PagerStyle
+{
+	padding-left: 10px;
+	Margin-left: 10px;
+	background-color: #dfdfdf
+}
+
+* html .PagerStyle A
+{
+   }
+
+* html .TextError
+{
+	font-weight: bold;
+	font-size: 10px;
+	color: #BC2B2B;
+
+}
+
+* html .dvHead
+{
+    height: 62px;
+    
+    }
+
+* html .Tablebutton 
+{
+    padding-top: 4px;
+    margin-left: 4px;
+	background-image: url(/PortalZLD/Images/button.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+	width:78px;
+	height:16px;
+		
+	
+}
+* html A.Tablebutton
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/button.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+	
+}
+* html A.Tablebutton:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/button.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #F84814;
+
+}
+* html A.Tablebutton:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/button.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/button.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+
+* html A.TablebuttonLarge
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonLarge:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #F84814;
+
+}
+* html A.TablebuttonLarge:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonLarge:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html .TablebuttonLarge 
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+ * html  .TablebuttonMiddle
+{
+    padding-top: 4px;
+    margin-left: 4px;
+	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: left;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+    	height:16px;
+}
+
+* html   A.TablebuttonMiddle
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html A.TablebuttonMiddle:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+
+}
+* html A.TablebuttonMiddle:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonMiddle:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonMiddle.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html A.TablebuttonXLarge
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html A.TablebuttonXLarge:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+
+}
+* html A.TablebuttonXLarge:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonXLarge:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html .TablebuttonXLarge 
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+
+* html .TablebuttonSmall 
+{
+    padding-top: 4px;
+    margin-left: 4px;
+	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+	width:78px;
+	height:16px;
+		
+	
+}
+* html A.TablebuttonSmall
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+	
+}
+* html A.TablebuttonSmall:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #2265BE;
+
+}
+* html A.TablebuttonSmall:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.Tablebutton:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonSmall.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonXLarge
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html A.TablebuttonXLarge:hover
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+
+}
+* html A.TablebuttonXXLarge:visited
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+* html A.TablebuttonXXLarge:active
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+* html .TablebuttonXXLarge 
+{
+    padding-top: 4px;
+	background-image: url(/PortalZLD/Images/buttonXXLarge.jpg);
+    background-repeat: no-repeat;
+	vertical-align:middle;
+	text-align: center;
+	font-size:10px;
+	font-weight:bold;
+	color: #333333;
+}
+
+* html .Textlarge
+{
+    padding-top: 4px;
+	font-size:10px;
+	font-weight:bold; 
+	color: #333333;
+}
+
+
+* html .LoginTextbox
+{   
+    height:16px;
+    font-family: Verdana, sans-serif;
+	font-size: 11px;	
+    }
+    
+* html .Menutitle{	background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	line-height: 22px;
+	padding-left: 15px;
+}
+* html .MainmenuItemComment {
+	background-color: #dfdfdf;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #ffffff;
+	height: 10px;
+	line-height: 22px;
+	padding-left: 15px;
+}
+
+
+* html .MainmenuItemAlternate {
+	background-color: #dfdfdf;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #ffffff;
+	height: 20px;
+	line-height: 22px;
+	padding-left: 15px;
+
+}
+
+* html .MainmenuItemAlternate:hover {
+	background-color: #BC4B4B;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #ffffff;
+	height: 20px;
+	line-height: 22px;
+	padding-left: 15px;
+
+}
+
+* html td.MainmenuItemAlternate {
+	background-color: #dfdfdf;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #ffffff;
+	height: 10px;
+	line-height: 22px;
+	padding-left: 15px;
+}
+
+* html td.MainmenuItemAlternate:hover {
+	background-color: #BC4B4B;
+	background-image: url(/PortalZLD/Images/overflowUpsideDown.png);
+	color: #ffffff;
+	height: 10px;
+	line-height: 22px;
+	padding-left: 15px;
+}
+
+* html .MainmenuLink {
+	color: #333333;
+	width:100%;
+	padding-right:15px;
+}
+* html A.MainmenuLink {
+	color: #333333;
+	width:100%
+}
+
+* html .dadLogo2 {
+	background-position: 19px;
+	background-repeat: no-repeat;
+	padding-right: 19px;
+	padding-left: 736px;
+	height:68px;
+}
+* html .ContactPanel
+
+{
+    height: 55px;
+    width: 210px;
+    
+    background-repeat:no-repeat
+}
+
+* html .tableInfo 
+{
+  background-position: right top;
+   background-repeat: no-repeat; 
+   border-style: solid; 
+   border-color: #dfdfdf; 
+   border-width: 1px;   
+}
+
+* html .TextBoxNormal
+{
+    border: 1px solid #bfbfbf;
+    width: 200px;
+    color:#595959;
+    font-family: Verdana, sans-serif;
+}
+
+* html .TextBoxLarge
+{
+    width: 250px;
+    border: 1px solid #bfbfbf;
+    color:#595959;
+    font-family: Verdana, sans-serif;
+   
+}
+
+* html .TextBoxShort
+{
+    width: 60px;
+    border: 1px solid #bfbfbf;
+    color:#595959;
+    font-family: Verdana, sans-serif;
+   }
+
+* html .TextBoxXLarge
+{
+    width: 300px;
+    border: 1px solid #bfbfbf;
+    color:#595959;
+    font-family: Verdana, sans-serif;
+}
+
+* html .DropDownNormal
+{
+ width: 200px;
+ font-size:12px;
+  border: 1px solid #bfbfbf;
+}
+
+
+* html .DropDownXLarge
+{
+    width: 300px;
+     font-size:12px;
+  border: 1px solid #bfbfbf;  
+}
+
+
+* html .DropDownLarge
+{
+ width: 250px;
+  font-size:12px;
+  border: 1px solid #bfbfbf;
+  
+  }
+  
+* html .ExcelSpan
+{
+    padding-right:17px; 
+    font-weight:normal;
+    padding-top:0;
+    padding-left:3px;
+}
+
+* html .ExcelDiv
+{
+    background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	font-weight: bold;
+	float: left;
+	height: 22px;
+	line-height: 22px;
+	width: 100%;
+	background-color: #F84814;
+	float:right;
+    }
+    
+* html .ExcelDiv img {vertical-align:middle}    
+    
+* html .BoundField
+{
+	padding-right: 5px;
+	padding-left: 15px;
+
+    }    
+* html .BoundFieldnoPadLeft
+{
+	padding-right: 10px;
+	
+    }        
+
+* html .ItemStyle td
+{
+    padding-right: 5px;
+    padding-left: 15px;
+    height: 28px;
+}
+
+
+* html .ItemStyle td.HierarGridButton
+{
+    padding-left: 2px;
+    padding-right: 2px;
+}
+    
+* html .GridView
+{
+    border:solid 1px #dfdfdf;
+    table-layout:fixed
+}
+      
+
+    
+ * html .lblKontaktFirma
+ { 
+     font-size:11px;
+     font-weight:bold;
+     color:#2265BE;
+     padding-top:10px;
+     padding-bottom:10px;
+     }
+     
+ * html div.ImpressumHead {
+	background-image: url(/PortalZLD/Images/overflow.png);
+	color: #ffffff;
+	float: left;
+	height: 22px;
+	width: 100%;
+	line-height:22px;
+	
+}
+
+ * html div.ImpressumHead h1{
+	padding-left: 15px;
+	font-size: 10px;	
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+* html .NaviImg 
+{
+    background-image:url(/PortalZLD/Images/navi.gif);
+    }
+    
+
+* html div#content div#innerContentRight div#kopfdaten {
+    margin-top:22px;
+  	font-family: Verdana, sans-serif;
+	font-size: 10px;
+	color: #595959;
+	background-color: #dfdfdf;
+}
+* html div#content div#innerContentRight div#kopfdaten table {
+	padding-left: 15px;
+	padding-top: 8px;
+	padding-bottom: 5px;
+}
+
+* html div#content div#innerContentRight div#kopfdaten  table td#tdKontingent {
+	padding-left: 0px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	vertical-align:top;
+	padding-right: 15px;
+}
+* html div#content div#innerContentRight div#kopfdaten table tr.heading { font-weight: bold }
+
+* html div#content div#innerContentRight div#kopfdaten table.Kontingente {
+	padding-left: 15px;
+	margin-top: 0px;
+	padding-bottom: 5px;
+	padding-top: 0px;
+	}
+	
+* html div#content div#innerContentRight div#kopfdaten table tr td {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-bottom:4px;
+	vertical-align:top;
+	}
+
+* html div#content div#innerContentRight div#kopfdaten table tr td h3 {
+	font-size: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	
+}
+
+
+* html .divProgress
+{
+    width: 100%;
+    height: 100%;
+    background-color:#ffffff;
+    position: absolute;
+    z-index:3;
+    filter:alpha(opacity:70);
+    -ms-opacity:0.7;
+    -moz-opacity:0.7;  
+   	vertical-align:middle;
+	text-align: center;
+	font-size:12px;
+	font-weight:bold; 
+	color: #333333;
+    
+    }
+    
+  * html  .divWait
+{
+    border: thin solid #dfdfdf;
+    margin-top: 25%;
+    margin-left: 35%;
+    z-index: 3;
+    background-color: #FFFFFF;
+    position: absolute;
+    width:300px;
+    height: 85px;
+    text-align:center;
+    }
+     
+* html .radioAsp
+{
+border:medium none;
+margin:0;
+width:auto;
+float:left;
+
+    }
+    
+   * html  .InputTextbox
+{   
+    font-family: Verdana, sans-serif;
+    font-size:12px;
+    width: 265px;
+    }
+ 
+* html  .GridBorderBottom
+{
+border-bottom: solid 1px #DFDFDF
+    
+    }
+    
+* html .LinksVerwaltung {
+    padding-top: 4px;
+	color: #595959;
+	vertical-align:middle;
+	font-size:12px;
+	font-weight:bold;
+	
+}
+
+* html .NeutralCalendar table * {
+ 
+ padding: 0px;
+    text-align:center !important;
+ 
+ }
+ 
+ * html .NeutralCalendar table {
+ 
+  border-left-style:none !important;
+  border-right-style:none !important;
+  border-bottom-style:none !important;
+  border-top-style:none !important;
+
+ }
+
+* html div#content div#innerContentRight div#dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+* html div#content div#innerContentRight div.dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+* html .responsiblePicture 
+{
+    padding-top: 10px;
+    padding-left: 15px;
+    float:left;
+    font-family: Verdana, sans-serif;
+	font-size: 12px;  
+	color:    #595959 
+}
+
+* html .responsibleTextName
+{
+    padding: 10px 75px 10px 20px;
+    float:left;
+    font-family: Verdana, sans-serif;
+	color:    #595959 ;
+	font-weight:bold;
+     
+    }
+* html .responsibleTextName .responsibleDepartment
+{
+    font-weight:normal;
+    padding-bottom:10px;
+    color:    #595959;
+    }    
+    
+* html .responsibleTextName .responsibleText
+{
+  font-weight:normal;
+      padding-bottom:3px;
+      color:    #595959;
+    }
+ 
+* html .responsibleTextName .responsibleText a
+{
+      color:    #595959;
+    }
+    
+    
+* html .DivKontakt
+{
+    float: left; 
+    width:560px;
+    border: solid 1px #DFDFDF;
+    border-top-style: none;
+    height:285px;
+      margin-bottom:25px;
+    }    
+* html .pnl1ndAddress 
+{
+    float:left
+    
+    }
+    
+* html .pnl1ndAddress  table
+{   
+    float:left;
+    font-size:10px;
+    height:22px;
+    padding-left:15px;
+    margin-top:25px;
+    vertical-align:baseline;
+    } 
+* html .pnl1ndAddress  table tr td
+{   
+    padding-top:5px;
+
+    }
+* html .pnl1ndAddress  table tr td a
+{   
+    color:#000000;
+
+    }    
+* html .pnl2ndAddress 
+{
+    
+    }
+* html .pnl2ndAddress  table
+{   
+    float:right;
+    font-size:10px;
+    height:22px;
+    padding-left:15px;
+    margin-top:25px;
+    vertical-align:baseline;
+    width: 45%
+}        
+
+* html .pnl2ndAddress  table tr td
+{   
+    padding-top:5px;
+
+    }
+
+* html .pnl2ndAddress  table tr td a
+{   
+    color:#000000;
+
+    }    
+
+* html .divGreet 
+{
+    padding-bottom:5px;
+    padding-top:5px;
+    padding-right:19px;
+    float:right;
+}
+* html .divGreet span
+{
+  color:#595959;
+}    
+
+* html .divBapiOverView 
+{
+    padding-bottom:5px;
+    padding-right:19px;
+    padding-top:19px;
+    float:left;
+    width: 100%;
+    color:#595959;
+}
+
+* html .divBapiOverView table tr td 
+{
+    padding-left:15px;
+}
+
+* html .divBapiOverView table tr td a
+{
+    color:#595959; 
+}
+
+* html div#content div#innerContentRight div#pagination2 {
+	background-color: #dfdfdf;
+	float: left;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination2 table {
+	color: #4c4c4c;
+	padding-left: 15px;
+	padding-right: 17px;
+	width: 100%;
+}
+* html div#content div#innerContentRight div#pagination2 table.TableGrid {
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination2 table.TableGrid  table{
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination2 td {
+	height: 22px;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#pagination2 td.active { font-weight: bold }
+
+
+* html div#content div#innerContentRight div#pagination2 td.pagination {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 75%;
+}
+
+* html div#content div#innerContentRight div#pagination2 td.paginationText {
+	padding-right: 14px;
+	text-align: right;
+}
+
+* html div#content div#innerContentRight div#pagination2 td.paginationForm {
+	margin: 0px;
+	padding:0px;
+	width: 45px;
+}
+
+
+* html div#content div#innerContentRight div#pagination2 td.paginationForm form select { width: 40px }
+
+* html div#content div#innerContentRight div#pagination2 a  
+{
+    margin-right:2px;
+    color: #4c4c4c
+     }
+
+* html div#content div#innerContentRight div#pagination2 a.active {
+	font-weight: bold;
+	text-decoration: underline;
+	margin-right:2px;
+}
+
+
+* html div#content div#innerContentRight div#pagination3 {
+	background-color: #dfdfdf;
+	float: left;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination3 table {
+	color: #4c4c4c;
+	padding-left: 15px;
+	padding-right: 17px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination3 table.TableGrid {
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination3 table.TableGrid table{
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div#pagination3 td {
+	height: 22px;
+	vertical-align: middle;
+}
+
+* html div#content div#innerContentRight div#pagination3 td.active { font-weight: bold }
+
+
+* html div#content div#innerContentRight div#pagination3 td.pagination {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 75%;
+}
+
+* html div#content div#innerContentRight div#pagination3 td.paginationText {
+	padding-right: 14px;
+	text-align: right;
+}
+
+* html div#content div#innerContentRight div#pagination3 td.paginationForm {
+	margin: 0px;
+	padding:0px;
+	width: 45px;
+}
+
+
+* html div#content div#innerContentRight div#pagination3 td.paginationForm form select { width: 40px }
+
+* html div#content div#innerContentRight div#pagination3 a  
+{
+    margin-right:2px;
+    color: #4c4c4c
+     }
+
+* html div#content div#innerContentRight div#pagination3 a.active {
+	font-weight: bold;
+	text-decoration: underline;
+	margin-right:2px;
+}
+
+
+* html div#sidebar div#NavBar 
+{
+    
+    width: 21px; 
+    position: static; 
+    margin-top: 15px;
+    }
+
+* html .tip
+ {
+    cursor: auto;
+}
+
+* html a.tip, * html a.tip:link, * html a.tip:visited, * html a.tip:active
+  {
+   color: #616161;
+   text-decoration: none;
+   position: relative;
+   }
+* html a.tip:hover
+ {
+   background: transparent;
+   z-index: 100;
+ }
+
+* html a.tip span
+ {
+   display: none;
+   text-decoration: none;
+
+ }
+
+* html a.tip:hover span
+ {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 265px;
+  z-index: 100;
+  color: #2f2f2f;
+  font-family: Helvetica, Geneva, Arial, SunSans-Regular, sans-serif;
+  padding:  2px 10px;
+  background-color: WhiteSmoke;
+  text-align: left;
+  border-color: #595959;
+  border-style: solid;
+  word-wrap:normal;
+  border-width: 1px 1px;
+  }
+  
+ * html  a.tip div
+ {
+  border: solid 1px #595959;
+  border-bottom: 0.5px;
+  width: 100px;
+  padding-left:15px;
+   }
+  * html  a.tip div#Last
+ {
+  border-bottom: solid 1px WhiteSmoke; 
+  border-right: solid 1px WhiteSmoke; 
+  border-left: solid 1px WhiteSmoke; 
+  border-top: solid 1px #595959;
+   }
+* html  a.tip div#LastSecond
+ {
+  border-bottom: solid 1px WhiteSmoke; 
+  border-right: solid 1px WhiteSmoke; 
+  border-left: solid 1px WhiteSmoke; 
+  border-top: solid 1px #595959;
+   }
+ * html div#content div#innerContentRight div#adminInput {
+	float: left;
+	width: 100%;
+}
+
+
+* html div#content div#innerContentRight div#adminInput table {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+    color:#595959;
+	width: 100%; 
+	border-left:1px solid #DFDFDF;
+    border-right:1px solid #DFDFDF;
+	padding-bottom:15px;
+}
+
+
+* html div#content div#innerContentRight div#adminInput .TableQuery {
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	color: #333333;
+		
+}
+
+* html div#content div#innerContentRight div#adminInput table tbody tr.formquery td {
+	padding-top: 10px;
+	padding-bottom:0px;
+}
+
+* html div#content div#innerContentRight div#adminInput table .active {
+    font-weight:bold;
+}
+
+* html div#content div#innerContentRight div#adminInput table .active  a 
+{
+    color:#595959;
+    text-decoration:underline;
+    font-weight:lighter;
+    }
+
+* html div#content div#innerContentRight div#adminInput table .active span {
+    font-weight:normal;
+}
+
+* html div#content div#innerContentRight div#adminInput table .firstLeft {
+padding-left:15px;
+padding-right:5px;
+white-space:nowrap;
+}
+
+
+* html div#content div#innerContentRight div#adminInput table tbody tr.formquery td span input {
+	border: none;
+	width: auto;
+}
+
+* html div#content div#innerContentRight div#adminInput table tbody tr.formquery td.rightPadding { padding-right: 15px }
+
+
+* html div#content div#innerContentRight div#adminInput table tbody tr.formquery td input, select {
+	border: 1px solid #bfbfbf;
+	width: 200px;
+}
+
+* html div#content div#innerContentRight div#ListInfo 
+{    width:22%;
+    }
+* html div#content div#innerContentRight div#ListInfo input, select {
+	border: 1px solid #bfbfbf;
+	color: #595959;
+    font-family: Verdana, Sans-Serif;
+}
+* html div#VorschauHead{
+	
+	background-repeat:repeat-x;
+	height:22px;
+	width:100%;
+	color:#FFFFFF;
+	float:left;
+	margin: 4px 0px 4px 0px;
+	vertical-align: middle;
+	}
+* html div#VorschauHead h1
+	{
+	background-color: #576B96;
+	background-image: url(/PortalZLD/Images/overflow.png);
+	padding-left: 10px;
+	white-space:nowrap;	
+	font-size: 10px;
+	line-height:22px;
+	text-align: left;
+	vertical-align:middle;	
+	}
+	
+* html .DivHistTabContainer
+	{
+    margin-top: 35px;
+    background-color:#dfdfdf; 
+    height:33px;
+    width:100%;
+    border:solid 1px #dfdfdf
+	    }	
+	    
+	
+	
+* html .HistTabContainer
+	{
+	    list-style-type:none;
+	    float:left;
+	    margin-left: 0px;
+	    padding-left: 0px;
+	    padding-bottom: 0px;
+	    margin-bottom: 0px;
+	    margin-top: 10px;
+	    }
+	    
+	    
+	
+* html  .HistbuttonFirst
+    {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     height: 20px;
+     width:122px;
+     color:#4C4C4C;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButton.png)
+     }
+     
+* html  .HistbuttonFirst:hover 
+     {
+        color:#576B96; 
+     }
+     
+* html  .Histbutton
+    {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     
+     height: 20px;
+     width:122px;
+     color:#FFFFFF;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButton2.png)
+     
+     
+     }  
+     
+* html  .Histbutton:hover 
+     {
+        color:#576B96; 
+       
+     }
+     
+* html   .HistButtonBeforActive  
+         {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     height: 20px;
+     width:122px;
+      color:#FFFFFF;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButtonBeforActive.png)
+     }  
+    * html   .HistButtonBeforActive:hover 
+     {
+        color:#576B96; 
+     }        
+    
+     
+ * html  .HistButtonLast
+    {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     height: 20px;
+     width:122px;
+      color:#FFFFFF;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButtonLast.png)
+     } 
+   * html    .HistButtonLast:hover 
+     {
+        color:#576B96; 
+     }
+     
+     
+  * html       .HistButtonLastActive  
+    {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     height: 20px;
+     width:122px;
+     color:#4C4C4C;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButtonLastActive.png)
+     } 
+  * html     .HistButtonLastActive:hover 
+     {
+        color:#576B96; 
+     }
+     
+  * html  .HistButtonMiddleActive  
+    {
+     float:left;
+     padding-top:5px;
+     background-repeat:no-repeat;
+     text-align:center;
+     height: 20px;
+     width:122px;
+     color:#4C4C4C;
+     cursor:pointer;
+     font-weight:bold;
+     background-image: url(/PortalZLD/Images/HistButtonMiddleActive.png)
+     } 
+     
+   * html    .HistButtonMiddleActive:hover 
+     {
+        color:#576B96; 
+     }
+   * html        		.HistTabPanel 
+	{
+                border-left: solid 1px #dfdfdf;
+                border-right: solid 1px #dfdfdf;
+                float:left;
+                width:100%
+    
+	    }
+   * html   		.HistTabPanel table tr td
+	{
+       
+            border-bottom: solid 1px #dfdfdf;
+            padding-left: 5px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            height:20px;
+            color:#4c4c4c;
+            
+            
+	    }
+   * html   		.HistTabPanel table tr td.First
+	{
+       
+        font-weight:bold;
+            
+	    }
+	    
+* html 	.DivVersandTabContainer
+	{
+    background-color:#ffffff; 
+    width:100%;
+    
+	    }
+  * html   .DivVersandTabContainer a
+    {
+         padding-right:1px;
+         float:left;
+         background-repeat:no-repeat; 
+         height:32px;
+        }
+
+  * html  .VersandButtonStamm  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardBlueStift.png);
+         width:150px;
+    }   
+  * html  .VersandButtonAdresse  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardBlueAdresse.png);
+         width:120px;
+        }  
+  * html  .VersandButtonOptionen  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardBlueOptionen.png);
+         width:160px;
+
+         
+        }       
+* html .VersandButtonOverview  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardBlueOverview.png);
+         float:left;
+         width:140px;
+        }
+
+* html .VersandButtonStammEnabled  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardGreyStift.png);
+         width:150px;
+         
+        }   
+* html   .VersandButtonAdresseEnabled  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardGreyAdresse.png);
+         width:120px;
+       
+        }  
+  * html .VersandButtonOptionenEnabled  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardGreyOptionen.png);
+         width:160px;
+
+         
+        }       
+  * html  .VersandButtonOverviewEnabled  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardGreyOverview.png);
+         width:140px;
+       
+        }
+
+ * html   .VersandButtonStammReady  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardReadyStift.png);
+        width:150px;
+        
+        }   
+  * html  .VersandButtonAdresseReady  
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardReadyAdresse.png);
+        width:120px;
+     
+        }  
+  * html  .VersandButtonOptionenReady 
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardReadyOptionen.png);
+         width:160px;
+
+         
+        }       
+ * html   .VersandButtonOverviewReady 
+    {	
+         background-image: url(/PortalZLD/Images/Versand/StandardReadyOverview.png);
+         width:140px;
+}      
+
+
+* html .VersandTabPanel 
+{
+    border: solid 1px #576B96;
+    float:left;
+    width:100%;
+    background-color:#ECEBEC;
+                
+ }   
+* html .VersandTabPanel table tr td
+	{
+            padding-left: 15px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            height:20px;
+            color:#7F7F7F;
+            
+            
+	    }	         
+* html .VersandTabPanel table 
+	{}
+* html .VersandTabPanel table tr td.First	{font-weight:bold;}	                                		    
+	    
+* html .VersandTabPanel table tr td.PanelHead
+    {
+     padding-top:15px;
+     font-weight:bold;
+     font-size:14px;
+     color:#576B96;
+    }
+  * html  .VersandTabPanel div.PanelHeadSuche
+    {
+     padding-left:8px;
+
+     font-weight:bold;
+     font-size:12px;
+     background-repeat:no-repeat;
+     width:100%;
+     background-image: url(/PortalZLD/Images/Versand/Suche2.png);
+     vertical-align:bottom
+    }
+  * html .VersandTabPanel div.PanelHeadSuche input
+  {
+
+       padding-right:20px;
+       vertical-align:top
+  } 
+  
+ * html  .VersandTabPanel table tr td.PanelHeadSteps
+  {
+        padding-left: 5px; 
+        width: 10px;
+
+      }
+   * html .VersandTabPanel table tr td.PanelHeadSteps div.StepActive
+  {
+        background-color:#576B96;
+        width:9px; 
+        height:12px;
+      
+      }
+  * html  .VersandTabPanel table tr td.PanelHeadSteps div.Steps
+  {
+        background-color:#CCDCFF;
+        width:9px; 
+        height:12px;
+      
+      }
+  * html  .VersandTabPanel table tr td.ListService 
+  {
+        padding-left:0px;
+        font-weight:bold;
+      }
+
+  * html  .VersandTabPanel table tr td.ListService table tr td
+  {
+        padding-left:0px;
+        background-color:#576B96;
+        color: White;
+        width: 250px;  
+   margin-top:5px;
+    margin-bottom:5px;
+  }
+                
+  * html    .LogistikButtonTour  
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardBlueTour.png);
+         width:120px;
+        }  
+ * html   .LogistikButtonDL  
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardBlueDL.png);
+         width:180px;
+    }
+* html .LogistikButtonTourDisabled  
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardGreyTour.png);
+         width:120px;
+       
+        }  
+* html .LogistikButtonDL_Disabled  
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardGreyDL.png);
+         width:180px;
+    }
+    
+* html .LogistikButtonTourReady  
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardReadyTour.png);
+        width:120px;
+     
+        }  
+* html .LogistikButtonDL_Ready 
+    {	
+         background-image: url(/PortalZLD/Images/Logistik/StandardReadyDL.png);
+         width:180px;
+
+         
+        }   
+* html div#content .divPopupBack
+{
+    width: 945px;
+    height: 75%;
+    background-color:#ffffff;
+    position: absolute;
+    z-index:3;
+    filter:alpha(opacity:70);
+    -ms-opacity:0.7;
+    -moz-opacity:0.7;  
+   	vertical-align:middle;
+	text-align: center;
+	font-size:12px;
+	font-weight:bold; 
+	color: #333333;
+    
+    }
+    
+* html  div#content .divPopupDetail
+{
+    border: thin solid #dfdfdf;
+    margin-top: 10%;
+    margin-left: 235px;
+    z-index: 3;
+    background-color: #FFFFFF;
+    position: absolute;
+    width:400px;
+    height: auto;
+    text-align:center;
+    color:#576B96;
+    }
+
+* html div#content .divPopupDetail table.PopupDetailTable
+{
+    border: 1px solid #808080;
+    background-color: #e5e5e5;
+    width:100%
+    }     
+
+* html div#content .divPopupDetail table.PopupDetailTable tr td 
+{
+    padding-left:5px;
+    padding-right: 5px
+    }   
+    
+        
+* html div#content .divPopupDetail table.PopupDetailTable tr td h3
+{
+    padding-left:5px;
+    padding-right: 5px
+    }   
+    
+ * html div#content  .divPopupDetail table.ListGruendeTable
+    {
+        
+    }
+    
+  * html div#content .divPopupDetail table.ListGruendeTable tr td
+            {
+
+                background-color:#576B96;
+                color: White;
+        
+    }
+* html div#content div#innerContentRight div#VersandOverviewData {
+	float: left;
+	width: 100%;
+	overflow-x:auto;
+	overflow-y:hidden;
+    scrollbar-face-color:#dfdfdf;
+    scrollbar-shadow-color:#9B9B9B;
+    scrollbar-highlight-color:#9B9B9B;
+    scrollbar-3dlight-color:#dfdfdf;
+    scrollbar-darkshadow-color:#dfdfdf;
+    scrollbar-track-color:#9B9B9B;
+    scrollbar-arrow-color:#9B9B9B	;
+}
+
+* html div#content div#innerContentRight div#VersandOverviewData table {
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse:separate ! important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position:center top;
+    margin-bottom:10px;
+}
+
+*+html div#content div#innerContentRight div#VersandOverviewData table { /* IE7 only */
+    margin-bottom:20px;
+
+}
+
+* html .StandardHeadDetail
+{
+    background-image: url(/PortalZLD/Images/Versand/Stepheadoverflow.png);
+    background-repeat:no-repeat;
+    background-color: #576B96;
+    height: 28px; 
+    width: 100%
+    
+    }
+* html .StandardHeadDetailFlag
+{
+        margin-left: 15px;
+        background-image: url(/PortalZLD/Images/Versand/headopenoverflow.png);
+        background-repeat: no-repeat;
+        background-color: #576B96; 
+        height: 8px; 
+        width: 16px
+    
+}
+
+* html .VersandAdressLabels
+
+{    color: #576B96; 
+    font-size:12px
+ }        
+  
+* html  .DivPanelSteps 
+  {
+        float:right;    
+        color:#7F7F7F;
+        font-weight:bold;
+        padding-top:10px;
+      }
+ * html .DivPanelSteps table tr td.PanelHeadSteps
+  {
+        padding-left: 5px; 
+        width: 10px;
+
+      }
+* html .DivPanelSteps table tr td.PanelHeadSteps div.StepActive
+  {
+        background-color:#576B96;
+        width:9px; 
+        height:12px;
+      
+      }
+* html .DivPanelSteps table tr td.PanelHeadSteps div.Steps
+  {
+        background-color:#CCDCFF;
+        width:9px; 
+        height:12px;
+      
+ }    
+ 
+ * html div#content div#innerContentRight div.dataGrid {
+	float: left;
+	width: 100%;
+	overflow-x:auto;
+	overflow-y:hidden;
+    scrollbar-face-color:#dfdfdf;
+    scrollbar-shadow-color:#9B9B9B;
+    scrollbar-highlight-color:#9B9B9B;
+    scrollbar-3dlight-color:#dfdfdf;
+    scrollbar-darkshadow-color:#dfdfdf;
+    scrollbar-track-color:#9B9B9B;
+    scrollbar-arrow-color:#9B9B9B	;
+}
+
+* html div#content div#innerContentRight div.dataGrid table {
+    background-position: 50% top;
+    background-repeat: repeat-x;
+    border-collapse:separate ! important;
+    width: 100%;
+    font-family: Verdana,sans-serif;
+    font-size: 10px;
+    color: #dfdfdf;
+    margin-right: 0px;
+    background-position:center top;
+    margin-bottom:10px;
+}
+
+* html div#content div#innerContentRight div.paginationGrid{
+	background-color: #dfdfdf;
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+
+* html div#content div#innerContentRight div.paginationGrid table {
+	color: #4c4c4c;
+	padding-left: 15px;
+	padding-right: 17px;
+	width: 100%;
+}
+
+* html div#content div#innerContentRight div.paginationGrid td {
+	height: 22px;
+	vertical-align: middle;
+	padding-bottom:0px;
+}
+
+* html div#content div#innerContentRight div.paginationGrid td.active { font-weight: bold }
+
+
+* html div#content div#innerContentRight div.paginationGrid td.pagination {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	width: 33%;
+	padding-bottom:0px;
+}
+
+* html div#content div#innerContentRight div.paginationGrid td.Title {
+	
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-left:0px;
+	width: 35%;
+	font-weight: bold;
+	padding-bottom:0px;
+	color:#576b96;
+	font-size: 12px
+}
+
+* html div#content div#innerContentRight div.paginationGrid td.paginationText {
+	padding-right: 14px;
+	text-align: right;
+	padding-top: 0px;
+}
+
+* html div#content div#innerContentRight div.paginationGrid td.paginationForm {
+	margin: 0px;
+	padding:0px;
+	width: 45px;
+}
+
+
+* html div#content div#innerContentRight div.paginationGrid td.paginationForm form select { width: 40px }
+
+* html div#content div#innerContentRight div.paginationGrid a  
+{
+    margin-right:2px;
+    color: #4c4c4c
+     }
+
+* html div#content div#innerContentRight div.paginationGrid a.active {
+	font-weight: bold;
+	text-decoration: underline;
+	padding-left:5px;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+* html div#content div#innerContentRight div.dataQueryFooter {
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 31px;
+}
+
+ * html .rbList td
+ {
+   padding: 0px 0px 0px 0px;
+ }
+ 
+ * html .Watermarked
+    {
+        color:Silver;   
+    }
+ 
+ 
+
+* html .ItemStyle td.TablePadding
+    {
+         padding-left: 3px;
+         padding-right:8px; 
+    }
+    
+* html .GridTableAlternate td.TablePadding
+    {
+         padding-left: 3px;
+         padding-right:8px; 
+    }
+* html .GridTableHead th.TablePadding
+    {
+         padding-left: 3px;
+         padding-right:8px; 
+    }  
+    
+* html .WebDataGridHeadStyle
+    {
+
+    text-align:left;
+    padding-left:10px;
+    font-size: 10px;
+    overflow:hidden;
+    color: #ffffff;
+    }
+
+* html .GridTableAlternate2
+{
+       background-color: #C2D9F9;
+}
+
+* html .GridTableAlternate2 td
+{
+    padding-right: 5px;
+	padding-left: 15px;
+	height:28px;
+}
+* html .GridTableAlternate2 td.TablePadding
+    {
+         padding-left: 3px;
+         padding-right:8px; 
+    }
+
+
+* html  div#content div#innerContentRight div#TableQuery div.KassenGrid {
+	float: left;
+	width: 100%;
+    min-height: 300px;
+    max-height: 500px;
+	overflow-x:auto;
+	overflow-y:auto;
+    scrollbar-face-color:#dfdfdf;
+    scrollbar-shadow-color:#9B9B9B;
+    scrollbar-highlight-color:#9B9B9B;
+    scrollbar-3dlight-color:#dfdfdf;
+    scrollbar-darkshadow-color:#dfdfdf;
+    scrollbar-track-color:#9B9B9B;
+    scrollbar-arrow-color:#9B9B9B	;
+}
+
+* html  div#content div#innerContentRight div#TableQuery Table .TablePaddingKasse
+    {
+         padding-left: 8px;
+         padding-right:8px; 
+    }
