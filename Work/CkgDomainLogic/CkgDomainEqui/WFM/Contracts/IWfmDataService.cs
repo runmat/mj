@@ -58,5 +58,12 @@ namespace CkgDomainLogic.WFM.Contracts
         void GetDurchlauf(WfmAuftragSelektor selector, Action<IEnumerable<WfmDurchlaufSingle>, IEnumerable<WfmDurchlaufStatistik>> getDataAction);
 
         #endregion
+
+
+        #region Rechercheprotokoll
+
+        List<WfmRechercheprotokoll> GetRechercheprotokollDaten(string vorgangsNr);
+
+        #endregion
     }
 }

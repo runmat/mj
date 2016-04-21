@@ -18,5 +18,10 @@ namespace CKGDatabaseAdminLib.Services
 
             return coll;
         }
+
+        public static string EnsurePwd(string connString)
+        {
+            return connString.Replace("Password=", "Password=seE?Anemone");
+        }
     }
 }

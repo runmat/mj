@@ -1,0 +1,22 @@
+﻿@model CkgDomainLogic.WFM.Models.WfmRechercheprotokollVersuch
+
+@Html.FormTextBoxFor(m => m.DatumText, new { @class = "m-wrap small margin-right-30", @readonly = "readonly" },
+            postControlHtml: @<text>
+                                @Html.FormTextBoxFor(m => m.User, new { @class = "m-wrap small margin-left-10", @readonly = "readonly" }, useRawTemplate: true)
+                              </text>)
+
+@Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormCheckBoxFor(m => m.Zb2Vorhanden, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormCheckBoxListFor(Localize.LicenseNo, new { @class = "m-wrap" }, m => m.KennzeichenVorne, m => m.KennzeichenHinten, m => m.KennzeichenEntwertet, m => m.KennzeichenDiebstahl)
+
+@Html.FormCheckBoxFor(m => m.VeVorhanden, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormCheckBoxFor(m => m.NichtErreicht, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormCheckBoxFor(m => m.PrueftUndMeldetSich, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormCheckBoxFor(m => m.GaHatUnterlagen, new { @class = "m-wrap small", disabled = "disabled" })
+
+@Html.FormTextBoxFor(m => m.Vermerk, new { @class = "m-wrap large", @readonly = "readonly" })

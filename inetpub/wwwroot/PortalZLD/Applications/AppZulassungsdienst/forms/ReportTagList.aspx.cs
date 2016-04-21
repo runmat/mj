@@ -119,9 +119,6 @@ namespace AppZulassungsdienst.forms
             }
 
             objListe.Fill();
-            Session["ResultKopfTable"] = objListe.KopfListe;
-            Session["ResultPosTable"] = objListe.TagesListe;
-            Session["ResultBemTable"] = objListe.BemListe;
 
             if (objListe.ErrorOccured)
             {
@@ -130,7 +127,11 @@ namespace AppZulassungsdienst.forms
             else
             {
                 Session["objListe"] = objListe;
-                Response.Redirect("ReportTagList_2.aspx?AppID=" + Session["AppID"].ToString());
+
+                if (objListe.TagesListe.Rows.Count == 0)
+                    lblError.Text = "Keine Daten zur Anzeige gefunden.";
+                else
+                    Response.Redirect("ReportTagList_2.aspx?AppID=" + Session["AppID"].ToString());
             }
         }
 
