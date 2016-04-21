@@ -22,6 +22,7 @@ namespace AppZulassungsdienst.lib.Models
             d.Plz = s.LI_PLZ;
             d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
             d.Strasse = s.LI_STREET;
+            d.Land = s.LAND1;
         }
 
         static private void Map_ZZLD_BAK_To_ZLDKopfdaten(IZZLD_BAK s, ZLDKopfdaten d)
@@ -197,6 +198,7 @@ namespace AppZulassungsdienst.lib.Models
                         d.Inaktiv = s.INAKTIV.XToBool();
                         d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
                         d.KundenNrLbv = s.KUNNR_LF.NotNullOrEmpty().TrimStart('0');
+                        d.Land = s.COUNTRY;
                         d.Landkreis = s.KREISKZ_DIREKT;
                         d.Name1 = s.NAME1;
                         d.Namenserweiterung = s.EXTENSION1;
@@ -749,6 +751,7 @@ namespace AppZulassungsdienst.lib.Models
             d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.PARVW = s.Partnerrolle;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
+            d.LAND1 = s.Land;
         }
 
         static private void Map_ZLDKopfdaten_To_ZZLD_BAK(ZLDKopfdaten s, IZZLD_BAK d)

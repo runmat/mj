@@ -43,22 +43,43 @@ namespace SapORM.Models
 
 			public string ERROR_TEXT { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_EX_ERRORS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_EX_ERRORS
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					ZULPOSNR = (string)row["ZULPOSNR"],
-					ERROR_TEXT = (string)row["ERROR_TEXT"],
+				GT_EX_ERRORS o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_EX_ERRORS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						ZULPOSNR = (string)row["ZULPOSNR"],
+						ERROR_TEXT = (string)row["ERROR_TEXT"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_EX_ERRORS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -177,29 +198,53 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string LAND1 { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IMP_ADRS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IMP_ADRS
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					PARVW = (string)row["PARVW"],
-					KUNNR = (string)row["KUNNR"],
-					LI_NAME1 = (string)row["LI_NAME1"],
-					LI_NAME2 = (string)row["LI_NAME2"],
-					LI_PLZ = (string)row["LI_PLZ"],
-					LI_CITY1 = (string)row["LI_CITY1"],
-					LI_STREET = (string)row["LI_STREET"],
-					LOEKZ = (string)row["LOEKZ"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
+				GT_IMP_ADRS o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IMP_ADRS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						PARVW = (string)row["PARVW"],
+						KUNNR = (string)row["KUNNR"],
+						LI_NAME1 = (string)row["LI_NAME1"],
+						LI_NAME2 = (string)row["LI_NAME2"],
+						LI_PLZ = (string)row["LI_PLZ"],
+						LI_CITY1 = (string)row["LI_CITY1"],
+						LI_STREET = (string)row["LI_STREET"],
+						LOEKZ = (string)row["LOEKZ"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						LAND1 = (string)row["LAND1"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IMP_ADRS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -394,67 +439,88 @@ namespace SapORM.Models
 
 			public string ZAHLART { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IMP_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IMP_BAK
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					VBELN = (string)row["VBELN"],
-					VKORG = (string)row["VKORG"],
-					VKBUR = (string)row["VKBUR"],
-					VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
-					VE_ERNAM = (string)row["VE_ERNAM"],
-					VE_ERZEIT = (string)row["VE_ERZEIT"],
-					ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
-					ERNAM = (string)row["ERNAM"],
-					STATUS = (string)row["STATUS"],
-					BLTYP = (string)row["BLTYP"],
-					VZB_STATUS = (string)row["VZB_STATUS"],
-					VZD_VKBUR = (string)row["VZD_VKBUR"],
-					VZERDAT = string.IsNullOrEmpty(row["VZERDAT"].ToString()) ? null : (DateTime?)row["VZERDAT"],
-					BARCODE = (string)row["BARCODE"],
-					KUNNR = (string)row["KUNNR"],
-					ZZREFNR1 = (string)row["ZZREFNR1"],
-					ZZREFNR2 = (string)row["ZZREFNR2"],
-					KREISKZ = (string)row["KREISKZ"],
-					KREISBEZ = (string)row["KREISBEZ"],
-					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
-					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
-					RESERVKENN = (string)row["RESERVKENN"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					ZZKENN = (string)row["ZZKENN"],
-					KENNZFORM = (string)row["KENNZFORM"],
-					KENNZANZ = (string)row["KENNZANZ"],
-					EINKENN_JN = (string)row["EINKENN_JN"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					EC_JN = (string)row["EC_JN"],
-					BAR_JN = (string)row["BAR_JN"],
-					RE_JN = (string)row["RE_JN"],
-					ZL_LIFNR = (string)row["ZL_LIFNR"],
-					KUNDEBAR_JN = (string)row["KUNDEBAR_JN"],
-					LOEKZ = (string)row["LOEKZ"],
-					KSTATUS = (string)row["KSTATUS"],
-					ERROR_TEXT = (string)row["ERROR_TEXT"],
-					PRALI_PRINT = (string)row["PRALI_PRINT"],
-					FLIEGER = (string)row["FLIEGER"],
-					BEB_STATUS = (string)row["BEB_STATUS"],
-					INFO_TEXT = (string)row["INFO_TEXT"],
-					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
-					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
-					NACHBEARBEITEN = (string)row["NACHBEARBEITEN"],
-					LTEXT_NR = (string)row["LTEXT_NR"],
-					MOBUSER = (string)row["MOBUSER"],
-					ZZEVB = (string)row["ZZEVB"],
-					ZAHLART = (string)row["ZAHLART"],
+				GT_IMP_BAK o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IMP_BAK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						VBELN = (string)row["VBELN"],
+						VKORG = (string)row["VKORG"],
+						VKBUR = (string)row["VKBUR"],
+						VE_ERDAT = string.IsNullOrEmpty(row["VE_ERDAT"].ToString()) ? null : (DateTime?)row["VE_ERDAT"],
+						VE_ERNAM = (string)row["VE_ERNAM"],
+						VE_ERZEIT = (string)row["VE_ERZEIT"],
+						ERDAT = string.IsNullOrEmpty(row["ERDAT"].ToString()) ? null : (DateTime?)row["ERDAT"],
+						ERNAM = (string)row["ERNAM"],
+						STATUS = (string)row["STATUS"],
+						BLTYP = (string)row["BLTYP"],
+						VZB_STATUS = (string)row["VZB_STATUS"],
+						VZD_VKBUR = (string)row["VZD_VKBUR"],
+						VZERDAT = string.IsNullOrEmpty(row["VZERDAT"].ToString()) ? null : (DateTime?)row["VZERDAT"],
+						BARCODE = (string)row["BARCODE"],
+						KUNNR = (string)row["KUNNR"],
+						ZZREFNR1 = (string)row["ZZREFNR1"],
+						ZZREFNR2 = (string)row["ZZREFNR2"],
+						KREISKZ = (string)row["KREISKZ"],
+						KREISBEZ = (string)row["KREISBEZ"],
+						WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
+						RESERVKENN_JN = (string)row["RESERVKENN_JN"],
+						RESERVKENN = (string)row["RESERVKENN"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						ZZKENN = (string)row["ZZKENN"],
+						KENNZFORM = (string)row["KENNZFORM"],
+						KENNZANZ = (string)row["KENNZANZ"],
+						EINKENN_JN = (string)row["EINKENN_JN"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						EC_JN = (string)row["EC_JN"],
+						BAR_JN = (string)row["BAR_JN"],
+						RE_JN = (string)row["RE_JN"],
+						ZL_LIFNR = (string)row["ZL_LIFNR"],
+						KUNDEBAR_JN = (string)row["KUNDEBAR_JN"],
+						LOEKZ = (string)row["LOEKZ"],
+						KSTATUS = (string)row["KSTATUS"],
+						ERROR_TEXT = (string)row["ERROR_TEXT"],
+						PRALI_PRINT = (string)row["PRALI_PRINT"],
+						FLIEGER = (string)row["FLIEGER"],
+						BEB_STATUS = (string)row["BEB_STATUS"],
+						INFO_TEXT = (string)row["INFO_TEXT"],
+						ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
+						ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
+						NACHBEARBEITEN = (string)row["NACHBEARBEITEN"],
+						LTEXT_NR = (string)row["LTEXT_NR"],
+						MOBUSER = (string)row["MOBUSER"],
+						ZZEVB = (string)row["ZZEVB"],
+						ZAHLART = (string)row["ZAHLART"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IMP_BAK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -575,30 +641,51 @@ namespace SapORM.Models
 
 			public string LOEKZ { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IMP_BANK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IMP_BANK
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					PARVW = (string)row["PARVW"],
-					BANKL = (string)row["BANKL"],
-					BANKN = (string)row["BANKN"],
-					EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
-					KOINH = (string)row["KOINH"],
-					EINZ_JN = (string)row["EINZ_JN"],
-					RECH_JN = (string)row["RECH_JN"],
-					SWIFT = (string)row["SWIFT"],
-					IBAN = (string)row["IBAN"],
-					LOEKZ = (string)row["LOEKZ"],
+				GT_IMP_BANK o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IMP_BANK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						PARVW = (string)row["PARVW"],
+						BANKL = (string)row["BANKL"],
+						BANKN = (string)row["BANKN"],
+						EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
+						KOINH = (string)row["KOINH"],
+						EINZ_JN = (string)row["EINZ_JN"],
+						RECH_JN = (string)row["RECH_JN"],
+						SWIFT = (string)row["SWIFT"],
+						IBAN = (string)row["IBAN"],
+						LOEKZ = (string)row["LOEKZ"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IMP_BANK
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -737,39 +824,60 @@ namespace SapORM.Models
 
 			public string WEB_STATUS { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IMP_POS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IMP_POS
-				{
-					ZULBELN = (string)row["ZULBELN"],
-					ZULPOSNR = (string)row["ZULPOSNR"],
-					UEPOS = (string)row["UEPOS"],
-					LOEKZ = (string)row["LOEKZ"],
-					MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
-					MATNR = (string)row["MATNR"],
-					MAKTX = (string)row["MAKTX"],
-					PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
-					GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
-					GEB_AMT_ADD = string.IsNullOrEmpty(row["GEB_AMT_ADD"].ToString()) ? null : (decimal?)row["GEB_AMT_ADD"],
-					WEBMTART = (string)row["WEBMTART"],
-					SD_REL = (string)row["SD_REL"],
-					NULLPREIS_OK = (string)row["NULLPREIS_OK"],
-					GBPAK = (string)row["GBPAK"],
-					UPREIS = string.IsNullOrEmpty(row["UPREIS"].ToString()) ? null : (decimal?)row["UPREIS"],
-					DIFF = string.IsNullOrEmpty(row["DIFF"].ToString()) ? null : (decimal?)row["DIFF"],
-					KONDTAB = (string)row["KONDTAB"],
-					KSCHL = (string)row["KSCHL"],
-					CALCDAT = string.IsNullOrEmpty(row["CALCDAT"].ToString()) ? null : (DateTime?)row["CALCDAT"],
-					WEB_STATUS = (string)row["WEB_STATUS"],
+				GT_IMP_POS o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IMP_POS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ZULBELN = (string)row["ZULBELN"],
+						ZULPOSNR = (string)row["ZULPOSNR"],
+						UEPOS = (string)row["UEPOS"],
+						LOEKZ = (string)row["LOEKZ"],
+						MENGE = string.IsNullOrEmpty(row["MENGE"].ToString()) ? null : (decimal?)row["MENGE"],
+						MATNR = (string)row["MATNR"],
+						MAKTX = (string)row["MAKTX"],
+						PREIS = string.IsNullOrEmpty(row["PREIS"].ToString()) ? null : (decimal?)row["PREIS"],
+						GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
+						GEB_AMT_ADD = string.IsNullOrEmpty(row["GEB_AMT_ADD"].ToString()) ? null : (decimal?)row["GEB_AMT_ADD"],
+						WEBMTART = (string)row["WEBMTART"],
+						SD_REL = (string)row["SD_REL"],
+						NULLPREIS_OK = (string)row["NULLPREIS_OK"],
+						GBPAK = (string)row["GBPAK"],
+						UPREIS = string.IsNullOrEmpty(row["UPREIS"].ToString()) ? null : (decimal?)row["UPREIS"],
+						DIFF = string.IsNullOrEmpty(row["DIFF"].ToString()) ? null : (decimal?)row["DIFF"],
+						KONDTAB = (string)row["KONDTAB"],
+						KSCHL = (string)row["KSCHL"],
+						CALCDAT = string.IsNullOrEmpty(row["CALCDAT"].ToString()) ? null : (DateTime?)row["CALCDAT"],
+						WEB_STATUS = (string)row["WEB_STATUS"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IMP_POS
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -874,22 +982,43 @@ namespace SapORM.Models
 
 			public string NNAME { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_IMP_WEBUSER_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_IMP_WEBUSER_DATEN
-				{
-					ERNAM = (string)row["ERNAM"],
-					VNAME = (string)row["VNAME"],
-					NNAME = (string)row["NNAME"],
+				GT_IMP_WEBUSER_DATEN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_IMP_WEBUSER_DATEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						ERNAM = (string)row["ERNAM"],
+						VNAME = (string)row["VNAME"],
+						NNAME = (string)row["NNAME"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_IMP_WEBUSER_DATEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

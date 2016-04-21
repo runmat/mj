@@ -22,5 +22,12 @@ namespace AppZulassungsdienst.lib.Models
         public string Loeschkennzeichen { get; set; }
 
         public string Bemerkung { get; set; }
+
+        public string Land { get; set; }
+
+        public ZLDAdressdaten()
+        {
+            Land = "DE";
+        }
     }
 }

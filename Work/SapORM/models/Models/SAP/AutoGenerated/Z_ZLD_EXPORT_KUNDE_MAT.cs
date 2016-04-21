@@ -60,6 +60,8 @@ namespace SapORM.Models
 
 			public string HOUSE_NUM1 { get; set; }
 
+			public string COUNTRY { get; set; }
+
 			public string ZZPAUSCHAL { get; set; }
 
 			public string OHNEUST { get; set; }
@@ -80,38 +82,60 @@ namespace SapORM.Models
 
 			public string SOFORT_ABR { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_EX_KUNDE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_EX_KUNDE
-				{
-					VKORG = (string)row["VKORG"],
-					VKBUR = (string)row["VKBUR"],
-					KUNNR = (string)row["KUNNR"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					CITY1 = (string)row["CITY1"],
-					POST_CODE1 = (string)row["POST_CODE1"],
-					STREET = (string)row["STREET"],
-					HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
-					ZZPAUSCHAL = (string)row["ZZPAUSCHAL"],
-					OHNEUST = (string)row["OHNEUST"],
-					XCPDK = (string)row["XCPDK"],
-					XCPDEIN = (string)row["XCPDEIN"],
-					KUNNR_LF = (string)row["KUNNR_LF"],
-					KREISKZ_DIREKT = (string)row["KREISKZ_DIREKT"],
-					EXTENSION1 = (string)row["EXTENSION1"],
-					BARKUNDE = (string)row["BARKUNDE"],
-					INAKTIV = (string)row["INAKTIV"],
-					SOFORT_ABR = (string)row["SOFORT_ABR"],
+				GT_EX_KUNDE o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_EX_KUNDE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						VKORG = (string)row["VKORG"],
+						VKBUR = (string)row["VKBUR"],
+						KUNNR = (string)row["KUNNR"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						CITY1 = (string)row["CITY1"],
+						POST_CODE1 = (string)row["POST_CODE1"],
+						STREET = (string)row["STREET"],
+						HOUSE_NUM1 = (string)row["HOUSE_NUM1"],
+						COUNTRY = (string)row["COUNTRY"],
+						ZZPAUSCHAL = (string)row["ZZPAUSCHAL"],
+						OHNEUST = (string)row["OHNEUST"],
+						XCPDK = (string)row["XCPDK"],
+						XCPDEIN = (string)row["XCPDEIN"],
+						KUNNR_LF = (string)row["KUNNR_LF"],
+						KREISKZ_DIREKT = (string)row["KREISKZ_DIREKT"],
+						EXTENSION1 = (string)row["EXTENSION1"],
+						BARKUNDE = (string)row["BARKUNDE"],
+						INAKTIV = (string)row["INAKTIV"],
+						SOFORT_ABR = (string)row["SOFORT_ABR"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_EX_KUNDE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -238,33 +262,54 @@ namespace SapORM.Models
 
 			public string MENGE_ERL { get; set; }
 
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_EX_MATERIAL Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_EX_MATERIAL
-				{
-					VKORG = (string)row["VKORG"],
-					VKBUR = (string)row["VKBUR"],
-					MATNR = (string)row["MATNR"],
-					MAKTX = (string)row["MAKTX"],
-					KENNZREL = (string)row["KENNZREL"],
-					ZZGEBPFLICHT = (string)row["ZZGEBPFLICHT"],
-					GEBMAT = (string)row["GEBMAT"],
-					GMAKTX = (string)row["GMAKTX"],
-					GBAUST = (string)row["GBAUST"],
-					GUMAKTX = (string)row["GUMAKTX"],
-					KENNZMAT = (string)row["KENNZMAT"],
-					NULLPREIS_OK = (string)row["NULLPREIS_OK"],
-					INAKTIV = (string)row["INAKTIV"],
-					MENGE_ERL = (string)row["MENGE_ERL"],
+				GT_EX_MATERIAL o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_EX_MATERIAL
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						VKORG = (string)row["VKORG"],
+						VKBUR = (string)row["VKBUR"],
+						MATNR = (string)row["MATNR"],
+						MAKTX = (string)row["MAKTX"],
+						KENNZREL = (string)row["KENNZREL"],
+						ZZGEBPFLICHT = (string)row["ZZGEBPFLICHT"],
+						GEBMAT = (string)row["GEBMAT"],
+						GMAKTX = (string)row["GMAKTX"],
+						GBAUST = (string)row["GBAUST"],
+						GUMAKTX = (string)row["GUMAKTX"],
+						KENNZMAT = (string)row["KENNZMAT"],
+						NULLPREIS_OK = (string)row["NULLPREIS_OK"],
+						INAKTIV = (string)row["INAKTIV"],
+						MENGE_ERL = (string)row["MENGE_ERL"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_EX_MATERIAL
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

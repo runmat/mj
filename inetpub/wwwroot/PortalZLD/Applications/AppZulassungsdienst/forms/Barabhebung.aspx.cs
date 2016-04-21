@@ -157,12 +157,12 @@ namespace AppZulassungsdienst.forms
             txtOrt.Text = "";
             txtBetrag.Text = "";
             txtName.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf ");
-            txtKst.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtNummerEC.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtDatum.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtUhrzeit.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtBetrag.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtKst.BorderColor = ZLDCommon.BorderColorDefault;
+            txtNummerEC.BorderColor = ZLDCommon.BorderColorDefault;
+            txtDatum.BorderColor = ZLDCommon.BorderColorDefault;
+            txtUhrzeit.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrt.BorderColor = ZLDCommon.BorderColorDefault;
+            txtBetrag.BorderColor = ZLDCommon.BorderColorDefault;
         }
 
         /// <summary>

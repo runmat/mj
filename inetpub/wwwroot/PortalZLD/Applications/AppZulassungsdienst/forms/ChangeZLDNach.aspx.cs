@@ -402,20 +402,18 @@ namespace AppZulassungsdienst.forms
                 IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
             }
 
-            ClearErrorBackcolor();
-            lblErrorBank.Text = "";
+            ucBankdatenAdresse.ClearError();
 
-            Boolean bnoError = ProofBank(IsCPDmitEinzug);
+            Boolean bnoError = ucBankdatenAdresse.proofBank(ref objCommon, IsCPDmitEinzug);
 
             if (bnoError)
             {
-                bnoError = (IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD());
+                bnoError = ucBankdatenAdresse.proofBankAndAddressData(objCommon, IsCpd, IsCPDmitEinzug);
                 if (bnoError)
                 {
                     SaveBankAdressdaten();
 
                     Session["objNacherf"] = objNacherf;
-                    lblErrorBank.Text = "";
                     pnlBankdaten.Attributes.Remove("style");
                     pnlBankdaten.Attributes.Add("style", "display:none");
                     Panel1.Attributes.Remove("style");
@@ -432,7 +430,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCancelBank_Click(object sender, EventArgs e)
         {
-            ResetBankAdressdaten();
+            LoadBankAdressdaten();
 
             pnlBankdaten.Attributes.Remove("style");
             pnlBankdaten.Attributes.Add("style", "display:none");
@@ -462,6 +460,9 @@ namespace AppZulassungsdienst.forms
                 if (kunde != null)
                 {
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+
+                    if (kunde.Cpd)
+                        ucBankdatenAdresse.Land = kunde.Land;
                 }
 
                 pnlBankdaten.Attributes.Remove("style");
@@ -469,26 +470,26 @@ namespace AppZulassungsdienst.forms
                 Panel1.Attributes.Remove("style");
                 Panel1.Attributes.Add("style", "display:none");
                 dataQueryFooter.Visible = false;
-                txtZulDateBank.Text = txtZulDate.Text;
-                txtKundebank.Text = (kunde != null ? kunde.Name1 : ddlKunnr.SelectedItem.Text);
-                txtKundeBankSuche.Text = txtKunnr.Text;
-                txtRef1Bank.Text = txtReferenz1.Text.ToUpper();
-                txtRef2Bank.Text = txtReferenz2.Text.ToUpper();
+                ucBankdatenAdresse.SetZulDat(txtZulDate.Text);
+                ucBankdatenAdresse.SetKunde(kunde != null ? kunde.Name1 : ddlKunnr.SelectedItem.Text);
+                ucBankdatenAdresse.SetKundeSuche(txtKunnr.Text);
+                ucBankdatenAdresse.SetRef1(txtReferenz1.Text.ToUpper());
+                ucBankdatenAdresse.SetRef2(txtReferenz2.Text.ToUpper());
 
                 var kopfdaten = objNacherf.AktuellerVorgang.Kopfdaten;
 
                 if (!kopfdaten.IsNewVorgang && objNacherf.Vorgangsliste.None(v => v.SapId == kopfdaten.SapId && v.KundenNr != txtKunnr.Text))
                 {
-                    chkEinzug.Checked = objNacherf.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
-                    chkRechnung.Checked = objNacherf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();
+                    ucBankdatenAdresse.SetEinzug(objNacherf.AktuellerVorgang.Bankdaten.Einzug.IsTrue());
+                    ucBankdatenAdresse.SetRechnung(objNacherf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue());
                 }
                 else
                 {
-                    chkEinzug.Checked = IsCPDmitEinzug;
-                    chkRechnung.Checked = false;
+                    ucBankdatenAdresse.SetEinzug(IsCPDmitEinzug);
+                    ucBankdatenAdresse.SetRechnung(false);
                 }
 
-                txtName1.Focus();
+                ucBankdatenAdresse.FocusName1();
             }
         }
 
@@ -859,27 +860,8 @@ namespace AppZulassungsdienst.forms
                 ddlKennzForm.Items.Add(new ListItem("", "0"));
             }
 
-            var adressdaten = objNacherf.AktuellerVorgang.Adressdaten;
+            LoadBankAdressdaten();
 
-            txtName1.Text = adressdaten.Name1;
-            txtName2.Text = adressdaten.Name2;
-            txtPlz.Text = adressdaten.Plz;
-            txtOrt.Text = adressdaten.Ort;
-            txtStrasse.Text = adressdaten.Strasse;
-
-            var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
-
-            txtSWIFT.Text = bankdaten.SWIFT;
-            txtIBAN.Text = bankdaten.IBAN;
-            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
-            hfKontonummer.Value = bankdaten.KontoNr;
-            if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
-            {
-                txtGeldinstitut.Text = bankdaten.Geldinstitut;
-            }
-            txtKontoinhaber.Text = bankdaten.Kontoinhaber;
-            chkEinzug.Checked = bankdaten.Einzug.IsTrue();
-            chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
             SetBar_Pauschalkunde();
             Session["tblDienst"] = tblData;
         }
@@ -962,7 +944,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void TableToJSArrayMengeErlaubt()
         {
-            this.ClientScript.RegisterClientScriptBlock(this.GetType(), "ArrayScript3", objCommon.MaterialStammToJsArray(), true);
+            ClientScript.RegisterClientScriptBlock(GetType(), "ArrayScript3", objCommon.MaterialStammToJsArray(), true);
         }
 
         /// <summary>
@@ -975,7 +957,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void TableToJSArrayBarkunde()
         {
-            this.ClientScript.RegisterClientScriptBlock(this.GetType(), "ArrayScript2", objCommon.KundenStammToJsArray(), true);
+            ClientScript.RegisterClientScriptBlock(GetType(), "ArrayScript2", objCommon.KundenStammToJsArray(), true);
         }
 
         /// <summary>
@@ -1045,8 +1027,8 @@ namespace AppZulassungsdienst.forms
 
         private Boolean checkDlGrid(DataTable tblData)
         {
-            var normalColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            var errorColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+            var normalColor = ZLDCommon.BorderColorDefault;
+            var errorColor = ZLDCommon.BorderColorError;
 
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
@@ -1152,7 +1134,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void TableToJSArray()
         {
-            this.ClientScript.RegisterClientScriptBlock(this.GetType(), "ArrayScript", objCommon.SonderStvaStammToJsArray(), true);
+            ClientScript.RegisterClientScriptBlock(GetType(), "ArrayScript", objCommon.SonderStvaStammToJsArray(), true);
         }
 
         /// <summary>
@@ -1244,7 +1226,7 @@ namespace AppZulassungsdienst.forms
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
                 }
 
-                Boolean bnoError = IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD();
+                Boolean bnoError = ucBankdatenAdresse.proofBankAndAddressData(objCommon, IsCpd, IsCPDmitEinzug);
 
                 if (bnoError)
                 {
@@ -1362,430 +1344,6 @@ namespace AppZulassungsdienst.forms
 
                 i++;
             }
-        }
-
-        /// <summary>
-        /// bei Auswahl CPD-Kunde Bankdaten prüfen
-        /// </summary>
-        /// /// <param name="cpdMitEinzug"></param>
-        /// <returns>false bei Fehler</returns>
-        private Boolean proofBankDataCPD(bool cpdMitEinzug)
-        {
-            Boolean bEdited = true;
-            if (txtName1.Text.Length == 0)
-            {
-                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bEdited = false;
-            }
-
-            if (txtStrasse.Text.Length == 0)
-            {
-                txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bEdited = false;
-            }
-            if (txtPlz.Text.Length < 5)
-            {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bEdited = false;
-            }
-            if (txtOrt.Text.Length == 0)
-            {
-                txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bEdited = false;
-            }
-
-            if (cpdMitEinzug)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtKontoinhaber.Text.Length > 0)
-            {
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtIBAN.Text.Length > 0)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtSWIFT.Text.Length > 0)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtGeldinstitut.Text.Length > 0 && txtGeldinstitut.Text != "Wird automatisch gefüllt!")
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (!bEdited)
-            {
-                lblErrorBank.Text = "Es müssen alle Pflichtfelder ausgefüllt sein!";
-            }
-            return bEdited;
-        }
-
-        /// <summary>
-        /// bei Bankdaten prüfen wenn kein CPD ausgewählt
-        /// trotzdem sind können Eingaben vorgenommen werden
-        /// </summary>
-        /// <returns>false bei Fehler</returns>
-        private Boolean proofBankDatawithoutCPD()
-        {
-            Boolean bEdited = true;
-            if (txtName1.Text.Length > 0)
-            {
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtPlz.Text.Length < 5)
-                {
-                    txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtOrt.Text.Length == 0)
-                {
-                    txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtStrasse.Text.Length > 0)
-            {
-                if (txtName1.Text.Length == 0)
-                {
-                    txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-
-                    bEdited = false;
-                }
-                if (txtPlz.Text.Length < 5)
-                {
-                    txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtOrt.Text.Length == 0)
-                {
-                    txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtPlz.Text.Length > 0)
-            {
-                if (txtName1.Text.Length == 0)
-                {
-                    txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtOrt.Text.Length == 0)
-                {
-                    txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtOrt.Text.Length > 0)
-            {
-                if (txtName1.Text.Length == 0)
-                {
-                    txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtStrasse.Text.Length == 0)
-                {
-                    txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-                if (txtPlz.Text.Length < 5)
-                {
-                    txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (chkEinzug.Checked)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtKontoinhaber.Text.Length > 0)
-            {
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtIBAN.Text.Length > 0)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtSWIFT.Text.Length > 0)
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtGeldinstitut.Text == "Wird automatisch gefüllt!")
-                {
-                    txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (txtGeldinstitut.Text.Length > 0 && txtGeldinstitut.Text != "Wird automatisch gefüllt!")
-            {
-                if (txtKontoinhaber.Text.Length == 0)
-                {
-                    txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtIBAN.Text.Length == 0)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-
-                if (txtSWIFT.Text.Length == 0)
-                {
-                    txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bEdited = false;
-                }
-            }
-
-            if (!bEdited)
-            {
-                lblErrorBank.Text = "Prüfen Sie Ihre Eingaben auf Vollständigkeit!";
-            }
-            return bEdited;
-        }
-
-        /// <summary>
-        /// Prüfung ob anhand der eingebenen IBAN die Daten im System exisitieren
-        /// Aufruf objCommon.ProofIBAN
-        /// </summary>
-        /// <returns>Bei Fehler true</returns>
-        private Boolean ProofBank(bool cpdMitEinzug)
-        {
-            if (!String.IsNullOrEmpty(txtIBAN.Text))
-            {
-                objCommon.IBAN = txtIBAN.Text.NotNullOrEmpty().Trim().ToUpper();
-                objCommon.ProofIBAN();
-
-                if (objCommon.ErrorOccured)
-                {
-                    txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    lblErrorBank.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    lblErrorBank.Text = objCommon.Message;
-                    return false;
-                }
-
-                txtSWIFT.Text = objCommon.SWIFT;
-                txtGeldinstitut.Text = objCommon.Bankname;
-                hfBankleitzahl.Value = objCommon.Bankschluessel;
-                hfKontonummer.Value = objCommon.Kontonr;
-            }
-            else if (cpdMitEinzug)
-            {
-                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                lblErrorBank.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                lblErrorBank.Text = "Keine IBAN angegeben!";
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Entfernt das Errorstyle der Controls.
-        /// </summary>
-        private void ClearErrorBackcolor()
-        {
-            txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtName2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtKontoinhaber.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtGeldinstitut.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
         }
 
         /// <summary>
@@ -2086,8 +1644,7 @@ namespace AppZulassungsdienst.forms
         /// Dienstleistungsdaten für die Speicherung sammeln.
         /// </summary>
         /// <param name="tblData">Gridtabelle</param>
-        /// <param name="exitIfDlChanged"></param>
-        private Boolean GetDiensleitungData(ref DataTable tblData, bool exitIfDlChanged = true)
+        private Boolean GetDiensleitungData(ref DataTable tblData)
         {
             var positionen = objNacherf.AktuellerVorgang.Positionen;
 
@@ -2196,47 +1753,32 @@ namespace AppZulassungsdienst.forms
             var adressdaten = objNacherf.AktuellerVorgang.Adressdaten;
 
             adressdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
-            adressdaten.Name1 = txtName1.Text;
-            adressdaten.Name2 = txtName2.Text;
+            adressdaten.Name1 = ucBankdatenAdresse.Name1;
+            adressdaten.Name2 = ucBankdatenAdresse.Name2;
             adressdaten.Partnerrolle = "AG";
-            adressdaten.Strasse = txtStrasse.Text;
-            adressdaten.Plz = txtPlz.Text;
-            adressdaten.Ort = txtOrt.Text;
+            adressdaten.Strasse = ucBankdatenAdresse.Strasse;
+            adressdaten.Plz = ucBankdatenAdresse.Plz;
+            adressdaten.Ort = ucBankdatenAdresse.Ort;
 
             var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.Partnerrolle = "AG";
-            bankdaten.SWIFT = txtSWIFT.Text;
-            bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
-            bankdaten.KontoNr = hfKontonummer.Value;
-            bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
-            bankdaten.Kontoinhaber = txtKontoinhaber.Text;
-            bankdaten.Einzug = chkEinzug.Checked;
-            bankdaten.Rechnung = chkRechnung.Checked;
+            bankdaten.SWIFT = ucBankdatenAdresse.SWIFT;
+            bankdaten.IBAN = ucBankdatenAdresse.IBAN;
+            bankdaten.Bankleitzahl = ucBankdatenAdresse.Bankkey;
+            bankdaten.KontoNr = ucBankdatenAdresse.Kontonr;
+            bankdaten.Geldinstitut = ucBankdatenAdresse.Geldinstitut;
+            bankdaten.Kontoinhaber = ucBankdatenAdresse.Kontoinhaber;
+            bankdaten.Einzug = ucBankdatenAdresse.Einzug;
+            bankdaten.Rechnung = ucBankdatenAdresse.Rechnung;
+
+            ucBankdatenAdresse.ClearError();
         }
 
-        private void ResetBankAdressdaten()
+        private void LoadBankAdressdaten()
         {
-            var adressdaten = objNacherf.AktuellerVorgang.Adressdaten;
-
-            txtName1.Text = adressdaten.Name1;
-            txtName2.Text = adressdaten.Name2;
-            txtStrasse.Text = adressdaten.Strasse;
-            txtPlz.Text = adressdaten.Plz;
-            txtOrt.Text = adressdaten.Ort;
-
-            var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
-
-            txtSWIFT.Text = bankdaten.SWIFT;
-            txtIBAN.Text = bankdaten.IBAN;
-            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
-            hfKontonummer.Value = bankdaten.KontoNr;
-            txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
-            txtKontoinhaber.Text = bankdaten.Kontoinhaber;
-            chkEinzug.Checked = bankdaten.Einzug.IsTrue();
-            chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
+            ucBankdatenAdresse.SelectValues(objNacherf.AktuellerVorgang.Bankdaten, objNacherf.AktuellerVorgang.Adressdaten);
         }
 
         private void UpdateDlTableWithPrizes(ref DataTable tblData)

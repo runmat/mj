@@ -29,6 +29,8 @@ namespace AppZulassungsdienst.lib.Models
 
         public string Ort { get; set; }
 
+        public string Land { get; set; }
+
         public bool Pauschal { get; set; }
 
         public bool OhneUst { get; set; }

@@ -340,6 +340,7 @@ namespace AppZulassungsdienst.lib
                     Strasse = adresse.Strasse,
                     Plz = adresse.Plz,
                     Ort = adresse.Ort,
+                    Land = adresse.Land,
                     Kontoinhaber = bankdaten.Kontoinhaber,
                     SWIFT = bankdaten.SWIFT,
                     IBAN = bankdaten.IBAN,

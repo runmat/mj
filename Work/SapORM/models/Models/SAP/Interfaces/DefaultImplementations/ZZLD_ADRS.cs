@@ -13,5 +13,6 @@ namespace SapORM.Models
         public string LI_STREET { get; set; }
         public string LOEKZ { get; set; }
         public string BEMERKUNG { get; set; }
+        public string LAND1 { get; set; }
     }
 }
