@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Web;
 using System.Web.UI;
 using System.Text.RegularExpressions;
@@ -23,6 +24,7 @@ namespace AppZulassungsdienst.MasterPage
 
                 //Aktuelles Jahr ins Copyright setzen.
                 lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString());
+                lblHeaderHint.Text = ConfigurationManager.AppSettings["PortalHeaderHint"];
                 lnkLogout.NavigateUrl = "/PortalZLD/(S(" + Session.SessionID + "))/Start/Logout.aspx";
                 m_User = (CKG.Base.Kernel.Security.User)Session["objUser"];
                 if (m_User == null)

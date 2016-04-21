@@ -6,7 +6,9 @@
 
         public string AnzGes { get; set; }
 
-        public string AnzStdLe10 { get; set; }
+        public string AnzStdLe03 { get; set; }
+
+        public string AnzStd0410 { get; set; }
 
         public string AnzStd1120 { get; set; }
 
@@ -16,7 +18,10 @@
 
         public string AnzStdGt40 { get; set; }
 
-        public string AnzKlaerLe10 { get; set; }
+
+        public string AnzKlaerLe03 { get; set; }
+
+        public string AnzKlaer0410 { get; set; }
 
         public string AnzKlaer1120 { get; set; }
 
@@ -26,7 +31,10 @@
 
         public string AnzKlaerGt40 { get; set; }
 
-        public string AnzAlleLe10 { get; set; }
+
+        public string AnzAlleLe03 { get; set; }
+
+        public string AnzAlle0410 { get; set; }
 
         public string AnzAlle1120 { get; set; }
 
