@@ -1,0 +1,144 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Leasing.Models
+@{
+    var gridName = "GridEndgueltigerVersand";
+}
+
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="VersandAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4>
+
+<style>
+
+</style>
+
+@(Html.Telerik()
+        .Grid<EndgueltigerVersandModel>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("EndgueltigerVersandAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+    columns.XBound(c => c.Aktion)
+        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.EQUNR #>' onchange='OnSelectionChange_GridVorgaengeAuswahl($(this))' />")
+            .HeaderTemplate(
+                "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridVorgaengeAuswahl(true)' /></span>" +
+                "  <i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridVorgaengeAuswahl(false)'></i>"
+            ).Filterable(false);
+
+        columns.XBoundAllExcept(m => m.Aktion);
+    })
+    .XAutoColumnConfiguration()
+    .Pageable()
+    .Filterable()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XToolBar("Leasing")
+        .ToolBar(commands =>
+        {
+        commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredPDF", "Leasing");
+    })
+)
+
+
+<div class="form-actions clearfix">
+    <div class="pull-left">
+        <button type="button" onclick="SendEndgueltig()" class="btn blue"> <i class="icon-ok margin-right-10"></i>Endgültig</button>
+
+    </div>
+</div>
+
+<script>
+    function SendEndgueltig() {
+        $.ajax({
+            type: "POST",
+            url: "SendFinally",
+            loadingShow: false,
+            success: function (result) {
+                $("#result").removeClass('hide');
+
+                $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
+                $("#divGrid").html(result);
+            }
+        });
+    }
+
+    function OnRowDataBound_GridVorgaenge(e) {
+        // alert("OnRowDataBound_GridVorgaenge");
+        $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+    }
+
+    function OnSelectionChange_GridVorgaengeAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+        $.ajax({
+            type: "POST",
+            url: "VorgangAuswahlSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function(result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridVorgangAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideButtons();
+                if (_selectedItemsCount == 0) {
+                    $("#VersandAuswahlCount").addClass('hide');
+                    return;
+                }
+                $("#VersandAuswahlCount").removeClass('hide');
+                $("#VersandAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Brief(e) ' + ' ausgewählt!');
+            }
+        });
+    }
+
+    function OnAllSelectionChange_GridVorgaengeAuswahl(check) {
+        $.ajax({
+            type: "POST",
+            url: "AuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function(result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridVorgangAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideButtons();
+
+                FilterGrid("@gridName");
+            }
+        });
+    }
+
+    function GridVorgangAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#VersandAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#VersandAuswahlCount").removeClass('hide');
+        $("#VersandAuswahlCount > span").html('Sie haben ' + count + ' Brief(e) ' + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        setTimeout(3000);
+        $("#VersandAuswahlCount").addClass('hide');
+
+
+    }
+
+    function ShowHideButtons() {
+        if (_selectedItemsCount > 0) {
+            $('#btnDelete').removeClass('hide');
+        } else {
+            $('#btnDelete').addClass('hide');
+        }
+
+        if (_selectedItemsCount > 1) {
+            $('#btnMultiReg').removeClass('hide');
+            $('#btnMultiCancellation').removeClass('hide');
+        } else {
+            $('#btnMultiReg').addClass('hide');
+            $('#btnMultiCancellation').addClass('hide');
+        }
+    }
+
+</script>

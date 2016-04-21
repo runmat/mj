@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Abmeldung\LeasingController.cs" />
     <Compile Include="Controllers\Cargate\LeasingController.cs" />
+    <Compile Include="Controllers\EndgueltigerVersand\LeasingController.cs" />
     <Compile Include="Controllers\Klaerfaelle\LeasingController.cs" />
     <Compile Include="Controllers\LeasingController.cs" />
     <Compile Include="Controllers\NichtDurchfuehrbareZulassungen\LeasingController.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Controllers\UnzugelasseneFahrzeuge\LeasingController.cs" />
     <Compile Include="Controllers\UnzugelFzge\LeasingController.cs" />
     <Compile Include="Controllers\ZB1Kopien\LeasingController.cs" />
+    <Compile Include="Leasing\Contracts\ILeasingEndgueltigerVersandDataService.cs" />
     <Compile Include="Leasing\Contracts\ILeasingCargateCsvUploadDataService.cs" />
     <Compile Include="Leasing\Contracts\ILeasingZB1KopienDataService.cs" />
     <Compile Include="Leasing\Contracts\ILeasingUnzugelFzgDataService.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Leasing\Contracts\IUeberfaelligeRuecksendungenDataService.cs" />
     <Compile Include="Leasing\Contracts\IUnzugelasseneFahrzeugeDataService.cs" />
     <Compile Include="Leasing\Models\DataModels\Abmeldedaten.cs" />
+    <Compile Include="Leasing\Models\DataModels\EndgueltigerVersandModel.cs" />
     <Compile Include="Leasing\Models\DataModels\Klaerfall.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,12 +101,14 @@
     <Compile Include="Leasing\Models\DataModels\UnzugelFzg.cs" />
     <Compile Include="Leasing\Models\DataModels\ZB1Kopie.cs" />
     <Compile Include="Leasing\Models\AppModelMappings.cs" />
+    <Compile Include="Leasing\Models\UIModels\EndgueltigerVersandSuchParameter.cs" />
     <Compile Include="Leasing\Models\UIModels\EquiBemerkungErfassenModel.cs" />
     <Compile Include="Leasing\Models\UIModels\KlaerfallSuchparameter.cs" />
     <Compile Include="Leasing\Models\UIModels\KlaerfallSucheArtFehlendeDaten.cs" />
     <Compile Include="Leasing\Models\UIModels\UeberfaelligeRuecksendungenSuchparameter.cs" />
     <Compile Include="Leasing\Models\UIModels\ZB1KopieSucheKunde.cs" />
     <Compile Include="Leasing\Models\UIModels\ZB1KopieSuchparameter.cs" />
+    <Compile Include="Leasing\Services\LeasingEndgueltigerVersandDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\UnzugelasseneFahrzeugeDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\UeberfaelligeRuecksendungenDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\NichtDurchfuehrbZulDataServiceSAP.cs" />
@@ -113,6 +118,7 @@
     <Compile Include="Leasing\Services\LeasingAbmeldungDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingUnzugelFzgDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingZB1KopienDataServiceSAP.cs" />
+    <Compile Include="Leasing\ViewModels\LeasingEndgueltigerVersandViewModel.cs" />
     <Compile Include="Leasing\ViewModels\UnzugelasseneFahrzeugeViewModel.cs" />
     <Compile Include="Leasing\ViewModels\UeberfaelligeRuecksendungenViewModel.cs" />
     <Compile Include="Leasing\ViewModels\NichtDurchfuehrbZulViewModel.cs" />
