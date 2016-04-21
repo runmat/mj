@@ -51,7 +51,10 @@
     
     <div id="website">
         <div id="header">
-        <asp:Image ID="imgLogo" ImageUrl="/PortalZLD/Images/kroschke_inside_logo.png" alt="Kroschke Logo" class="dadLogo2"
+            <div style="position: absolute; margin-left: 15px; margin-top: 15px">
+                <asp:Label ID="lblHeaderHint" runat="server" Font-Bold="True" Font-Size="14pt" ForeColor="White"></asp:Label>
+            </div>
+            <asp:Image ID="imgLogo" ImageUrl="/PortalZLD/Images/kroschke_inside_logo.png" alt="Kroschke Logo" class="dadLogo2"
                 runat="server" />
             <div id="PlaceHeader" runat="Server" class="dvHead">
             </div>

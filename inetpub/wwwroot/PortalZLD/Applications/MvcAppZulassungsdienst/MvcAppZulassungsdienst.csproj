@@ -132,9 +132,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.Mvc, Version=2012.3.1018.340, Culture=neutral, PublicKeyToken=29ac1a93ec063d92, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Web.Mvc, Version=2012.2.607.340, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\..\Work\packages\TelerikMvcExtensions\Telerik.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\..\..\..\..\Work\GAC\Telerik.Web.UI.dll</HintPath>
