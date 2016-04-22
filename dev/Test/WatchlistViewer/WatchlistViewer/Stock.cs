@@ -27,6 +27,7 @@ namespace WatchlistViewer
             { "Goldpreis", "Gold~1326189~XAUUSD=X~0.0~2" },
             { "Euro / US", "€/US~1390634~EURUSD=X~0.0000~2" },
             { "DAX", "DAX~20735~%5EGDAXI~0~2" },
+            { "Brent", "Öl~31117610~%5EGDAXI~0.00~2" },
         };
 
         public string Name

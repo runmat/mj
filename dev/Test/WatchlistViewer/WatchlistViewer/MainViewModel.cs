@@ -51,6 +51,7 @@ namespace WatchlistViewer
                 new Stock { Name = "DAX", Parent = this },
                 new Stock { Name = "Goldpreis", Parent = this },
                 new Stock { Name = "Euro / US", Parent = this },
+                new Stock { Name = "Brent", Parent = this },
             };
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 100 };
             _initialDelayTimer.Tick += InitialDelayTimerTick;

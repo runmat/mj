@@ -54,8 +54,8 @@ namespace VsSolutionPersister
 
         private void WindowDeactivated(object sender, System.EventArgs e)
         {
-            if (ViewModel.IsClosable)
-                Application.Current.Shutdown();
+            //if (ViewModel.IsClosable)
+            //    Application.Current.Shutdown();
         }
 
         private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
