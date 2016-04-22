@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
@@ -6,7 +7,9 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using GeneralTools.Models;
+
 using System.Linq;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -18,10 +21,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public List<DokumentOhneDaten> DokumenteOhneDaten { get { return DataService.DokumenteOhneDaten; } }
 
+        public bool IstEditierberechtigt { get; private set; }
+
         private DokumentOhneDaten _selectedItem;
 
         public void LoadDokumenteOhneDaten(ModelStateDictionary state)
         {
+            var istBerechtigt = ApplicationConfiguration.GetApplicationConfigValue("DokumenteOhneDaten_IstEditierberechtigt", "0", Convert.ToInt32(LogonContext.Customer.KUNNR));
+            IstEditierberechtigt = istBerechtigt.ToUpper() == "TRUE" ? true : false;
+
             DataService.MarkForRefreshDokumenteOhneDaten();
             PropertyCacheClear(this, m => m.DokumenteOhneDatenFiltered);
 

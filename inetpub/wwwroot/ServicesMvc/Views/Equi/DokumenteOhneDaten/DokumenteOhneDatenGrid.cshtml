@@ -13,7 +13,7 @@
     .Columns(columns =>
     {
 
-        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false)
+        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false).Visible(Model.IstEditierberechtigt)
                    .ClientTemplate(
                        "<button onclick='ItemEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                        + "&nbsp;"                     
