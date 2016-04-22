@@ -16,7 +16,7 @@ namespace CkgDomainLogic.Leasing.Models.UIModels
 
         public string Vertragsnummer{ get; set; } 
 
-        public DateRange Zeitraum { get { return PropertyCacheGet(() => new DateRange(DateRangeType.None)); } set { PropertyCacheSet(value); } }
+        public DateRange Zeitraum { get { return PropertyCacheGet(() => new DateRange(DateRangeType.CurrentYear)); } set { PropertyCacheSet(value); } }
 
     }
 }

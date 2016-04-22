@@ -30,11 +30,9 @@
     .Columns(columns =>
     {
     columns.XBound(c => c.Aktion)
-        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.EQUNR #>' onchange='OnSelectionChange_GridVorgaengeAuswahl($(this))' />")
-            .HeaderTemplate(
-                "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridVorgaengeAuswahl(true)' /></span>" +
-                "  <i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridVorgaengeAuswahl(false)'></i>"
-            ).Filterable(false);
+        .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.EQUNR #>' onchange='OnSelectionChange_GridVorgaengeAuswahl($(this))' /> <# } #>")
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='OnAllSelectionChange_GridVorgaengeAuswahl($(this).is(\":checked\"))' />")
+            .Filterable(false);
 
         columns.XBoundAllExcept(m => m.Aktion);
     })
@@ -47,7 +45,7 @@
         {
         commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredExcel", "Leasing");
         commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredPDF", "Leasing");
-    })
+    }).ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
 )
 
 
@@ -86,10 +84,21 @@
         });
     }
 
-    function OnRowDataBound_GridVorgaenge(e) {
+    function OnRowDataBound_GridEndgueltigerVersand(e) {
         // alert("OnRowDataBound_GridVorgaenge");
         $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
     }
+
+    function OnDataBound_GridEndgueltigerVersand() {
+        // alert("OnDataBound_GridFahrzeugAkteBestand");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridEndgueltigerVersand");
+    }
+
 
     function OnSelectionChange_GridVorgaengeAuswahl(cb) {
         Grid_FormatMultiRowSelected(cb);
@@ -115,7 +124,7 @@
     function OnAllSelectionChange_GridVorgaengeAuswahl(check) {
         $.ajax({
             type: "POST",
-            url: "AuswahlSelectionChanged",
+            url: "VorgangAuswahlSelectionChanged",
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function(result) {
@@ -139,8 +148,6 @@
         $("#VersandAuswahlCount").removeClass('hide');
         $("#VersandAuswahlCount > span").html('Sie haben ' + count + ' Brief' + (count != 1 ? 'e' : '') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
-        setTimeout(3000);
-        $("#VersandAuswahlCount").addClass('hide');
 
 
     }

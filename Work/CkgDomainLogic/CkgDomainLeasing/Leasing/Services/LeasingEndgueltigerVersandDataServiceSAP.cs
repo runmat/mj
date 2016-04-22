@@ -38,11 +38,14 @@ namespace CkgDomainLogic.Leasing.Services
             if (selector.Vertragsnummer.IsNotNullOrEmpty())
                 Z_DPM_TEMP_VERSENDUNGEN_01.SetImportParameter_I_LIZNR(SAP, selector.Vertragsnummer);
 
+            if (selector.Zeitraum.IsSelected) { 
+
             if (selector.Zeitraum.StartDate != null)
                 Z_DPM_TEMP_VERSENDUNGEN_01.SetImportParameter_I_ZZTMPDT_VON(SAP, selector.Zeitraum.StartDate);
 
             if (selector.Zeitraum.EndDate != null)
                 Z_DPM_TEMP_VERSENDUNGEN_01.SetImportParameter_I_ZZTMPDT_VON(SAP, selector.Zeitraum.EndDate);
+            }
 
             SAP.Execute();
 

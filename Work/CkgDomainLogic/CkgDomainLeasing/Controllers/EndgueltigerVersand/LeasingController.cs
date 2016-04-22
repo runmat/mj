@@ -19,6 +19,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult EndgueltigerVersand()
         {
+            EndgueltigerVersandViewModel.DataMarkForRefresh();
             return View(EndgueltigerVersandViewModel);
         }
 

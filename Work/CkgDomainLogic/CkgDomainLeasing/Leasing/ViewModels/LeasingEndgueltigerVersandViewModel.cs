@@ -64,6 +64,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
 
         public void DataMarkForRefresh()
         {
+            PropertyCacheClear(this, m => m.EndgueltigerVersandSelektor);
             PropertyCacheClear(this, m => m.EndgueltigerVersandInfosFiltered);
         }
 
