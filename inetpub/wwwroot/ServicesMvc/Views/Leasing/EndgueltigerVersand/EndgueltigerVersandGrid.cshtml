@@ -4,6 +4,13 @@
     var gridName = "GridEndgueltigerVersand";
 }
 
+<div style="margin-bottom: 15px">
+    <span id="result" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+
+    </span>
+</div>
+
 <h4>
     <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
     <span id="VersandAuswahlCount" class="alert alert-success margin-left-15 hide">
@@ -51,9 +58,10 @@
     </div>
 </div>
 
-<script>
-    _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+<script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 </script>
+
 
 <script>
     function SendEndgueltig() {
@@ -63,17 +71,18 @@
             loadingShow: false,
             success: function (result) {
 
-
-                if (_modelStateValid == "true") {
-                    $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
+                if (_modelStateValid) {
                     $("#divGrid").html(result);
+                    $("#result").removeClass('hide');
+                    $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
                 } else {
+                    $("#divGrid").html(result);
+                    $("#result").removeClass('hide');
                     $("#result > span").html(@ViewContext.ViewData.ModelState["Error"]);
                 }
-                $("#result").removeClass('hide');
-                setTimeout(3000);
-                $("#result").addClass('hide');
             }
+
+                
         });
     }
 

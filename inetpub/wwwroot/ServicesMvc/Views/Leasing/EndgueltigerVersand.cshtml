@@ -12,17 +12,13 @@
     @Html.Partial("EndgueltigerVersand/EndgueltigerVersandSuche", Model.EndgueltigerVersandSelektor)
 }
 
-<div style="margin-bottom: 15px">
-    <span id="result" class="alert alert-success margin-left-15 hide">
-        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid">
 
-    </span>
-</div>
-@using (Html.FormSearchResultsGrid())
-{
-    <div id="divGrid"></div>
-
-}
+          
+        </div>
+    }
 
 <script type="text/javascript">
 
