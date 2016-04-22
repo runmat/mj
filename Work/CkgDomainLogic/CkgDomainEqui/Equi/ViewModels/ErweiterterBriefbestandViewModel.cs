@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using  System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Linq;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -16,10 +18,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public List<FahrzeugbriefErweitert> Fahrzeugbriefe { get { return DataService.Fahrzeugbriefe; } }
 
+        public bool IstEditierberechtigt { get; private set; }
+
         private FahrzeugbriefErweitert _selectedItem;
 
         public void LoadFahrzeugbriefe(FahrzeugbriefSuchparameter suchparameter)
         {
+            var istBerechtigt = ApplicationConfiguration.GetApplicationConfigValue("ErweiterterBriefbestand_IstEditierberechtigt", "0", Convert.ToInt32(LogonContext.Customer.KUNNR));
+            IstEditierberechtigt = istBerechtigt.ToUpper() == "TRUE" ? true : false;
+
             DataService.Suchparameter = suchparameter;
             DataService.MarkForRefreshFahrzeugbriefe();
             PropertyCacheClear(this, m => m.FahrzeugbriefeFiltered);

@@ -1,17 +1,20 @@
 ﻿@using CkgDomainLogic.Equi.Models
+@using CkgDomainLogic.Equi.ViewModels
+@model ErweiterterBriefbestandViewModel
+
 @{ var gridName = "GridFahrzeugbriefeErweitert"; }
 
 <div class="form-actions PageTopMenu">
     <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseFahrzeugbriefeErweitertSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
 </div>
 
-@(Html.XTelerik()
-    .XGrid<FahrzeugbriefErweitert>()
+@(Html.Telerik()
+    .Grid<FahrzeugbriefErweitert>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugbriefeErweitertAjaxBinding", "Equi")
     .Columns(columns =>
     {
-        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false)
+        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false).Visible(Model.IstEditierberechtigt)
                   .ClientTemplate(
                       "<button onclick='ItemEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                       + "&nbsp;"
