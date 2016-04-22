@@ -52,7 +52,7 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ItemEdit(string fin)
+        public ActionResult ReferenceItemEdit(string fin)
         {
             ModelState.Clear();
             return PartialView("ErweiterterBriefbestand/DetailsForm", ErweiterterBriefbestandViewModel.GetItem(fin));
