@@ -173,7 +173,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             agDict.ToListOrEmptyList().ForEach(ag =>
             {
                 var agReturnMessage = FahrzeugeVersendungenSperrenForAg(sperren, ag.Key, ag.Value);
-                if (agReturnMessage.IsNotNullOrEmpty())
+                var success = agReturnMessage.NotNullOrEmpty().ToLower().StartsWith("versandsperre geändert");
+                if (!success)
                     returnMessage += string.Format("SAP Meldung für AG '{0}': {1}; ", ag.Key, agReturnMessage);
             });
 
