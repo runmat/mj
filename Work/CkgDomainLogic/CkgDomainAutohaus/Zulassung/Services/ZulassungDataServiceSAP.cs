@@ -591,7 +591,28 @@ namespace CkgDomainLogic.Autohaus.Services
                 addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
 
             return AppModelMappings.Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten.Copy(Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB.GetExportList(SAP)).FirstOrDefault();
-        } 
+        }
+
+        public bool Check48hExpressForZulst(string kreis, Action<string, string> addModelError)
+        {
+            try
+            {
+                Z_AHP_GET_ZLD_48H_VERSAND.Init(SAP, "I_KREISKZ", kreis);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                addModelError("", e.FormatSapSaveException());
+            }
+
+            if (SAP.ResultCode != 0)
+                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+
+            var sapItem = Z_AHP_GET_ZLD_48H_VERSAND.ET_ZLD_48H.GetExportList(SAP).FirstOrDefault();
+
+            return (sapItem != null && sapItem.Z48H.XToBool());
+        }
 
         #endregion
 
