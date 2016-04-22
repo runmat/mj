@@ -17,7 +17,7 @@ namespace AppZulassungsdienst.Controls
         public string Strasse { get { return txtStrasse.Text; } }
         public string Plz { get { return txtPlz.Text; } }
         public string Ort { get { return txtOrt.Text; } }
-        public string Land { get; set; }
+        public string Land { get { return (String.IsNullOrEmpty(ihLand.Value) ? "DE" : ihLand.Value); } }
         public bool Einzug { get { return chkEinzug.Checked; } }
         public bool Rechnung { get { return chkRechnung.Checked; } }
         public string Kontoinhaber { get { return txtKontoinhaber.Text; } }
@@ -26,17 +26,8 @@ namespace AppZulassungsdienst.Controls
         public bool IsSWIFTInitial { get { return (String.Compare(SWIFT, _initialText, true) == 0); } }
         public string Geldinstitut { get { return txtGeldinstitut.Text; } }
         public bool IsGeldinstitutInitial { get { return (String.Compare(Geldinstitut, _initialText, true) == 0); } }
-        public string Bankkey { get; set; }
-        public string Kontonr { get; set; }
-
-        #endregion
-
-        #region Konstruktor
-
-        public BankdatenAdresse()
-        {
-            Land = "DE";
-        }
+        public string Bankkey { get { return ihBankleitzahl.Value; } }
+        public string Kontonr { get { return ihKontonummer.Value; } }
 
         #endregion
 
@@ -67,19 +58,19 @@ namespace AppZulassungsdienst.Controls
             txtSWIFT.Text = _initialText;
             txtGeldinstitut.Text = _initialText;
 
-            Bankkey = "";
-            Kontonr = "";
-            Land = "";
+            ihBankleitzahl.Value = "";
+            ihKontonummer.Value = "";
+            ihLand.Value = "";
         }
 
-        public void SelectValues(ZLDBankdaten bankdaten, ZLDAdressdaten adressdaten)
+        public void SelectValues(string land, ZLDBankdaten bankdaten, ZLDAdressdaten adressdaten)
         {
             txtName1.Text = adressdaten.Name1;
             txtName2.Text = adressdaten.Name2;
             txtStrasse.Text = adressdaten.Strasse;
             txtPlz.Text = adressdaten.Plz;
             txtOrt.Text = adressdaten.Ort;
-            Land = adressdaten.Land;
+            ihLand.Value = adressdaten.Land;
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
@@ -87,8 +78,8 @@ namespace AppZulassungsdienst.Controls
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();
             chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
-            Bankkey = bankdaten.Bankleitzahl;
-            Kontonr = bankdaten.KontoNr;
+            ihBankleitzahl.Value = bankdaten.Bankleitzahl;
+            ihKontonummer.Value = bankdaten.KontoNr;
         }
 
         public bool proofBank(ref ZLDCommon objCommon, bool cpdMitEinzug)
@@ -107,8 +98,8 @@ namespace AppZulassungsdienst.Controls
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
-                Bankkey = objCommon.Bankschluessel;
-                Kontonr = objCommon.Kontonr;
+                ihBankleitzahl.Value = objCommon.Bankschluessel;
+                ihKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -394,6 +385,11 @@ namespace AppZulassungsdienst.Controls
         public void SetRechnung(bool blnRechnung)
         {
             chkRechnung.Checked = blnRechnung;
+        }
+
+        public void SetLand(string land)
+        {
+            ihLand.Value = land;
         }
 
         public void FocusName1()

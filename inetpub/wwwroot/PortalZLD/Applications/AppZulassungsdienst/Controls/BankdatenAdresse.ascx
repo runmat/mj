@@ -80,7 +80,7 @@
             <asp:Label ID="lblPLZBank" runat="server">PLZ/Ort*:</asp:Label>
         </td>
         <td class="firstLeft active">
-            <asp:TextBox ID="txtPlz" runat="server"  onKeyPress="return numbersonly(event, false)" CssClass="TextBoxNormal" MaxLength="5" Width="65px"></asp:TextBox>
+            <asp:TextBox ID="txtPlz" runat="server"  onKeyPress="return numbersonly(event, false)" CssClass="TextBoxNormal" MaxLength="10" Width="65px"></asp:TextBox>
         </td>
         <td class="firstLeft active" style="width: 100%;">
             <asp:TextBox ID="txtOrt" Width="400px" CssClass="TextBoxNormal" runat="server" MaxLength="40"></asp:TextBox>
@@ -139,6 +139,13 @@
         <td class="firstLeft active" colspan="2" style="width: 100%;">
             <asp:TextBox ID="txtGeldinstitut" Width="400px" CssClass="TextBoxNormal" runat="server"
                 MaxLength="40" Text="Wird automatisch gefüllt!" Enabled="False"></asp:TextBox>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <asp:HiddenField runat="server" ID="ihBankleitzahl"/>
+            <asp:HiddenField runat="server" ID="ihKontonummer"/>
+            <asp:HiddenField runat="server" ID="ihLand"/>
         </td>
     </tr>
 </table>

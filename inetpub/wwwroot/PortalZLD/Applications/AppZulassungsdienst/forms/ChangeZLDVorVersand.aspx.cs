@@ -266,8 +266,7 @@ namespace AppZulassungsdienst.forms
                 {
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
 
-                    if (kunde.Cpd)
-                        ucBankdatenAdresse.Land = kunde.Land;
+                    ucBankdatenAdresse.SetLand(kunde.Land);
                 }
 
                 pnlBankdaten.Attributes.Remove("style");
@@ -1081,7 +1080,9 @@ namespace AppZulassungsdienst.forms
 
         private void LoadBankAdressdaten()
         {
-            ucBankdatenAdresse.SelectValues(objVorVersand.AktuellerVorgang.Bankdaten, objVorVersand.AktuellerVorgang.Adressdaten);
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+
+            ucBankdatenAdresse.SelectValues((kunde != null ? kunde.Land : "DE"), objVorVersand.AktuellerVorgang.Bankdaten, objVorVersand.AktuellerVorgang.Adressdaten);
         }
 
         #endregion

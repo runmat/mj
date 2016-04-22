@@ -342,17 +342,17 @@ function SetTextValueProofCPDMask(ddlClientID, Textbox) {
 }
 function ClearAdresseAndBank()
 {
-	document.getElementById('ctl00_ContentPlaceHolder1_txtName1').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtName2').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtStrasse').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtPlz').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtOrt').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtKontoinhaber').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtIBAN').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtSWIFT').value = "";
-	document.getElementById('ctl00_ContentPlaceHolder1_txtGeldinstitut').value = "Wird automatisch gefüllt!";
-	document.getElementById('ctl00_ContentPlaceHolder1_chkEinzug').checked = false;
-	document.getElementById('ctl00_ContentPlaceHolder1_chkRechnung').checked = false;
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtName1').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtName2').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtStrasse').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtPlz').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtOrt').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtKontoinhaber').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtIBAN').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtSWIFT').value = "";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_txtGeldinstitut').value = "Wird automatisch gefüllt!";
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_chkEinzug').checked = false;
+    document.getElementById('ctl00_ContentPlaceHolder1_ucBankdatenAdresse_chkRechnung').checked = false;
 }
 
 
