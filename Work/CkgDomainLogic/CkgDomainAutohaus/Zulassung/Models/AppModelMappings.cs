@@ -319,11 +319,14 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Zulassungsdaten.ModusVersandzulassung = beauftragungArt.Contains("VERSANDZULASSUNG");
                         d.Zulassungsdaten.ModusPartnerportal = (beauftragungArt == "VERSANDZULASSUNGPARTNER");
 
-                        d.Zulassungsdaten.SonderzulassungsMode = (beauftragungArt.Contains("SONDERZULASSUNG") ? SonderzulassungsMode.Default : SonderzulassungsMode.None);
-                        SonderzulassungsMode mode;
-                        var sz = beauftragungArt.Replace("SONDERZULASSUNG_", "");
-                        if (sz.IsNotNullOrEmpty() && Enum.TryParse(beauftragungArt.ToLowerFirstUpper(), out mode))
-                            d.Zulassungsdaten.SonderzulassungsMode = mode;
+                        d.Zulassungsdaten.SonderzulassungsMode = (beauftragungArt.StartsWith("SONDERZUL") ? SonderzulassungsMode.Default : SonderzulassungsMode.None);
+                        if (beauftragungArt.StartsWith("SONDERZUL_"))
+                        {
+                            SonderzulassungsMode mode;
+                            var sz = beauftragungArt.Replace("SONDERZUL_", "");
+                            if (sz.IsNotNullOrEmpty() && Enum.TryParse(sz.ToLowerFirstUpper(), out mode))
+                                d.Zulassungsdaten.SonderzulassungsMode = mode;
+                        }
 
                         if (d.Zulassungsdaten.IsSchnellabmeldung)
                             d.Zulassungsdaten.HalterNameSchnellabmeldung = s.ZZREFNR1;

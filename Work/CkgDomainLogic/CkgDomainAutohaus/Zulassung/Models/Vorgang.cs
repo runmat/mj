@@ -43,9 +43,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "VERSANDZULASSUNGPARTNER")
                     return "?versandzulassung=1&partnerportal=1";
 
-                if (BeauftragungsArt.StartsWith("SONDERZULASSUNG"))
+                if (BeauftragungsArt.StartsWith("SONDERZUL"))
                 {
-                    var sonderzulassungMode = !BeauftragungsArt.Contains("_") ? "" : BeauftragungsArt.Split('_')[1].ToLower();   // z. B. SONDERZULASSUNG_ERSATZKENNZEICHEN
+                    var sonderzulassungMode = !BeauftragungsArt.Contains("_") ? "" : BeauftragungsArt.Split('_')[1].ToLower();   // z. B. SONDERZUL_ERSATZKENNZEICHEN
                     return "?sonderzulassung=1&sonderzulassungMode=" + sonderzulassungMode;
                 }
 
@@ -179,9 +179,9 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 return new List<SelectItem>
                 {
-                    new SelectItem {Key = "8", Text = "Kennzeichen vorne"},
-                    new SelectItem {Key = "801", Text = "Kennzeichen hinten"},
-                    new SelectItem {Key = "800", Text = "Kennzeichen vorn und hinten"},
+                    new SelectItem {Key = "8".PadLeft(18, '0'), Text = "Kennzeichen vorne"},
+                    new SelectItem {Key = "801".PadLeft(18, '0'), Text = "Kennzeichen hinten"},
+                    new SelectItem {Key = "800".PadLeft(18, '0'), Text = "Kennzeichen vorn und hinten"},
                 };
             }
         }
