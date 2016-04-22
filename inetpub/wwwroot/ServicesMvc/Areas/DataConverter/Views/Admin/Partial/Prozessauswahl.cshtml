@@ -14,7 +14,7 @@
 
 
             @Html.HiddenFor(m => m.SourceFile.FilenameOrig)
-            @Html.HiddenFor(m => m.SourceFile.FilenameCsv)
+            @Html.HiddenFor(m => m.SourceFile.FilenameInternal)
 
             @Html.FormTextBoxFor(m => m.MappingName, new { @class = "m-wrap" })
 
@@ -96,7 +96,7 @@
         }
 
         $('#SourceFile_FilenameOrig').val(e.response.uploadFileName);
-        $('#SourceFile_FilenameCsv').val(e.response.uploadFileNameCsv);
+        $('#SourceFile_FilenameInternal').val(e.response.uploadFileNameInternal);
 
         $("#AjaxFormProzessauswahl").submit();
     }
