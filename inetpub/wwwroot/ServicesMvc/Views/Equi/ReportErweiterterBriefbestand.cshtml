@@ -9,6 +9,8 @@
 
 <div id="divFahrzeugbriefeErweitertGrid"></div>
 
+<div id="divGridItemDetails"></div>
+
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingHintLargeDataAmount';
@@ -68,6 +70,63 @@
         if (typeof (GetGrid()) !== "undefined") {
             GetGrid().ajaxRequest();
         }
+    }
+
+    function ItemEdit(fin) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ItemEdit",
+            data: { fin: fin },
+            loadingShow: true,
+            success: function (result) {
+                ShowItemDetails(result);
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowItemDetails(result) {
+        $("#divGridItemDetails").html(result);
+        GridItemDetailsFormPreparePrivateAjax();
+        $("#divFahrzeugbriefeErweitertGrid").slideUp(function () {
+            $("#divGridItemDetails").show();
+        });
+        scrollToTop();
+    }
+
+    function CloseItemDetails() {
+        CloseItemDetailsInner();
+        FilterGrid("GridFahrzeugbriefeErweitert");
+    }
+
+    function CloseItemDetailsInner() {
+        $("#divGridItemDetails").slideUp(function () {
+            $("#divFahrzeugbriefeErweitertGrid").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function GridItemDetailsFormPreparePrivateAjax() {
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        $("button[type='submit']").click(function () {
+            LoadingShow();
+        });
+
+        if (_modelIsValid)
+            CloseItemDetails();
+    }
+
+    function DetailsFormComplete() {
+        FormPrepareAjax();
+        if (_modelIsValid)
+            CloseItemDetails();
     }
 
 </script>

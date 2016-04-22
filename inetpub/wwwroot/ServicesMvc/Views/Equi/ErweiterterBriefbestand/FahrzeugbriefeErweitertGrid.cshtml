@@ -5,12 +5,18 @@
     <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseFahrzeugbriefeErweitertSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
 </div>
 
-@(Html.Telerik()
-    .Grid<FahrzeugbriefErweitert>()
+@(Html.XTelerik()
+    .XGrid<FahrzeugbriefErweitert>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugbriefeErweitertAjaxBinding", "Equi")
     .Columns(columns =>
     {
+        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false)
+                  .ClientTemplate(
+                      "<button onclick='ItemEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                      + "&nbsp;"
+              );
+
         columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Fahrgestellnummer);
         columns.XBound(c => c.Kennzeichen);
