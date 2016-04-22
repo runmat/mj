@@ -567,7 +567,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewModel.SetFahrzeugdaten(model);
+                ViewModel.SetSonderzulassungErsatzkennzeichen(model);
             }
 
             return PartialView("Partial/ErsatzkennzeichenForm", model);

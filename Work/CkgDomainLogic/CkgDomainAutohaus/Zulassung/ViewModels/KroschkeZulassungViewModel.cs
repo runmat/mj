@@ -939,6 +939,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return PropertyCacheGet(() => (ZulassungDataService != null ? ZulassungDataService.Fahrzeugarten : new List<Domaenenfestwert>())); }
         }
 
+        public void SetSonderzulassungErsatzkennzeichen(Fahrzeugdaten model)
+        {
+            SetFahrzeugdaten(model);
+
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.KennzeichenTyp.PadLeft(18, '0');
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+        }
+
         public void SetFahrzeugdaten(Fahrzeugdaten model)
         {
             Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
@@ -1499,16 +1507,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     z.Aenderer = LogonContext.UserName;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
                     {
-                        z.BeauftragungsArt = (ModusVersandzulassung ? (ModusPartnerportal ? "VERSANDZULASSUNGPARTNER" : "VERSANDZULASSUNG")
+                        z.BeauftragungsArt =  ModusVersandzulassung ? (ModusPartnerportal ? "VERSANDZULASSUNGPARTNER" : "VERSANDZULASSUNG")
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : z.Zulassungsdaten.IsSchnellabmeldung ? "SCHNELLABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
-
-                                              : ModusSonderzulassung ? "SONDERZULASSUNG_" + SonderzulassungsMode.ToString("F").ToUpper()
-                                              : ModusSonderzulassung ? "SONDERZULASSUNG"
-
-                                              : "ZULASSUNG");
+                                              : ModusSonderzulassung ? (SonderzulassungsMode == SonderzulassungsMode.Default 
+                                                                                    ? "SONDERZULASSUNG" 
+                                                                                    : "SONDERZULASSUNG_" + SonderzulassungsMode.ToString("F").ToUpper())
+                                              : "ZULASSUNG";
                     }
                 });
 
