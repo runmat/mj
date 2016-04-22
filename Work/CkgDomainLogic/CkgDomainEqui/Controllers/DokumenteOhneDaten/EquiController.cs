@@ -40,7 +40,7 @@ namespace ServicesMvc.Controllers
         public ActionResult DokumenteOhneDatenFormSave(DokumentOhneDaten model)
         {                   
             if (ModelState.IsValid)
-                DokumenteOhneDatenViewModel.SaveItem(model);
+                model.SAPError = DokumenteOhneDatenViewModel.SaveItem(model);
                             
             return PartialView("DokumenteOhneDaten/DetailsForm", model);
         }

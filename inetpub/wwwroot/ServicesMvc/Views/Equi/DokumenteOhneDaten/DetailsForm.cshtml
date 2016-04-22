@@ -8,11 +8,8 @@
     {
 
         @Html.FormValidationSummary()
-
-        
-        @Html.HiddenFor(m => m.Fahrgestellnummer)
-        
-        @Html.FormTextBoxFor(m => m.Eingangsdatum, new { @class = "m-wrap large", col = "left", @readonly = "readonly" })
+                      
+        @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap large", col = "left", @readonly = "readonly" })
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap large", col = "right", @readonly = "readonly" })
 
 

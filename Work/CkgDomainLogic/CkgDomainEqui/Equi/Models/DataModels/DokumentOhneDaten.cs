@@ -52,6 +52,7 @@ namespace CkgDomainLogic.Equi.Models
         public List<string> SperrvermerkListe {
             get {                     
                 var list = new List<string>();
+                list.Add("");
                 list.Add("Sicherungsübereignung");
                 list.Add("Verbundhaftung");
                 list.Add("C+R");
@@ -59,5 +60,7 @@ namespace CkgDomainLogic.Equi.Models
                 return list;
             } 
         }
+
+        public string SAPError { get; set; }
     }
 }

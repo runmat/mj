@@ -18,6 +18,8 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public List<DokumentOhneDaten> DokumenteOhneDaten { get { return DataService.DokumenteOhneDaten; } }
 
+        private DokumentOhneDaten _selectedItem;
+
         public void LoadDokumenteOhneDaten(ModelStateDictionary state)
         {
             DataService.MarkForRefreshDokumenteOhneDaten();
@@ -31,15 +33,24 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public DokumentOhneDaten GetItem(string fin)
         {
-            var model = DokumenteOhneDaten.FirstOrDefault(m => m.Fahrgestellnummer == fin) ?? new DokumentOhneDaten();
-           
-            return model;
+            _selectedItem = DokumenteOhneDaten.FirstOrDefault(m => m.Fahrgestellnummer == fin);            
+            return _selectedItem;
         }
 
         public string SaveItem(DokumentOhneDaten model)
-        {
+        { 
+            var error = DataService.SaveSperrvermerk(model);
 
-            return "";
+            if (error.IsNullOrEmptyOrNullString() && _selectedItem != null && model.Fahrgestellnummer == _selectedItem.Fahrgestellnummer)
+            {
+                _selectedItem.Sperrvermerk = model.Sperrvermerk;
+                if (model.Sperrvermerk.IsNotNullOrEmpty())
+                    _selectedItem.Referenz = model.Referenz;                
+                else
+                    _selectedItem.Referenz = "";
+            }
+
+            return error;
         }
 
         #region Filter
