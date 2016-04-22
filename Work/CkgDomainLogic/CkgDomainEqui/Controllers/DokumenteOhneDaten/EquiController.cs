@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Equi.ViewModels;
+using CkgDomainLogic.Equi.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
 
@@ -27,6 +28,25 @@ namespace ServicesMvc.Controllers
             return View(new GridModel(DokumenteOhneDatenViewModel.DokumenteOhneDatenFiltered));
         }
 
+
+        [HttpPost]
+        public ActionResult ItemEdit(string fin)
+        {           
+            ModelState.Clear();
+            return PartialView("DokumenteOhneDaten/DetailsForm", DokumenteOhneDatenViewModel.GetItem(fin));
+        }
+
+        [HttpPost]
+        public ActionResult DokumenteOhneDatenFormSave(DokumentOhneDaten model)
+        {                   
+            if (ModelState.IsValid)
+                DokumenteOhneDatenViewModel.SaveItem(model);
+                            
+            return PartialView("DokumenteOhneDaten/DetailsForm", model);
+        }
+
+        #region Filter & Export
+
         [HttpPost]
         public ActionResult FilterGridDokumenteOhneDaten(string filterValue, string filterColumns)
         {
@@ -51,5 +71,6 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
+        #endregion
     }
 }

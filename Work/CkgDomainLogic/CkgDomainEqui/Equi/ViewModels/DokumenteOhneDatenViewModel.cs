@@ -6,6 +6,7 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using GeneralTools.Models;
+using System.Linq;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -26,6 +27,19 @@ namespace CkgDomainLogic.Equi.ViewModels
             {
                 state.AddModelError("", Localize.NoDataFound);
             }
+        }
+
+        public DokumentOhneDaten GetItem(string fin)
+        {
+            var model = DokumenteOhneDaten.FirstOrDefault(m => m.Fahrgestellnummer == fin) ?? new DokumentOhneDaten();
+           
+            return model;
+        }
+
+        public string SaveItem(DokumentOhneDaten model)
+        {
+
+            return "";
         }
 
         #region Filter

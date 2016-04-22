@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -21,6 +23,12 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string ZB2 { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.BlockingNotice)]
+        public string Sperrvermerk { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference)]
+        public string Referenz { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CarOwner)]
         public string Name1 { get; set; }
 
@@ -38,5 +46,18 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.City)]
         public string Ort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BlockingNotice)]
+        [Required]
+        public List<string> SperrvermerkListe {
+            get {                     
+                var list = new List<string>();
+                list.Add("Sicherungsübereignung");
+                list.Add("Verbundhaftung");
+                list.Add("C+R");
+                list.Add("Other");
+                return list;
+            } 
+        }
     }
 }

@@ -1,49 +1,24 @@
-﻿@using CkgDomainLogic.FzgModelle.Models
-@model ModellId
+﻿@using CkgDomainLogic.Equi.Models
+@model DokumentOhneDaten
 
-<div id="DivModellId">
+<div id="DivDokumenteOhneDaten">
     @using (Ajax.BeginForm("DokumenteOhneDatenFormSave", "Equi", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivModellId", OnComplete = "DokumenteOhneDatenAjaxFormComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "ModellIdAjaxForm" }))
+                new MvcAjaxOptions { UpdateTargetId = "DivDokumenteOhneDaten", OnComplete = "DokumenteOhneDatenAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "DokumenteOhneDatenAjaxForm" }))
     {
 
         @Html.FormValidationSummary()
 
         
-        @Html.HiddenFor(m => m.ObjectKey)
-        @Html.HiddenFor(m => m.InsertModeTmp)
-        @Html.HiddenFor(m => m.HerstellerName)
-
-        if (Model.InsertModeTmp)
-        {
-            @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
-        }
-        else
-        {
-            @Html.HiddenFor(m => m.ID)
-            @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
-        }
+        @Html.HiddenFor(m => m.Fahrgestellnummer)
         
-        @Html.FormDropDownListFor(m => m.HerstellerCode, Model.HerstellerList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Eingangsdatum, new { @class = "m-wrap large", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap large", col = "right", @readonly = "readonly" })
 
-        @Html.FormTextBoxFor(m => m.Bezeichnung, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.LaufzeitTage, new { @class = "m-wrap large", col = "left" })
-        @Html.FormCheckBoxFor(m => m.LaufzeitBindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
-
-        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "left" })
-        @Html.FormCheckBoxFor(m => m.Lkw, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
-
-        @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
-
-        @Html.FormCheckBoxFor(m => m.NaviVorhanden, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
-
-        @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.Bluetooth, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
-
+        @Html.FormDropDownListFor(m => m.Sperrvermerk, Model.SperrvermerkListe.ToSelectList(), new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Referenz, new { @class = "m-wrap large", col = "right" })
+        
                 
         @Html.FormRequiredFieldsSummary()
 

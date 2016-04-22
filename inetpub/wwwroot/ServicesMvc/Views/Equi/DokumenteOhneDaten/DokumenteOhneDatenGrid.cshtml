@@ -6,16 +6,25 @@
 
 @{ var gridName = "GridDokumenteOhneDaten"; }
 
-@(Html.Telerik()
-    .Grid<DokumentOhneDaten>()
+@(Html.XTelerik()
+    .XGrid<DokumentOhneDaten>()
     .Name(gridName)
     .XAjaxDataBinding("DokumenteOhneDatenAjaxBinding", "Equi")
     .Columns(columns =>
     {
+
+        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false)
+                   .ClientTemplate(
+                       "<button onclick='ItemEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                       + "&nbsp;"                     
+               );
+
         columns.Bound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
         columns.Bound(c => c.Fahrgestellnummer);
         columns.Bound(c => c.Kennzeichen);
         columns.Bound(c => c.ZB2);
+        columns.Bound(c => c.Sperrvermerk);
+        columns.Bound(c => c.Referenz);
         columns.Bound(c => c.Name1);
         columns.Bound(c => c.Name2);
         columns.Bound(c => c.Strasse);
