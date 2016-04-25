@@ -145,9 +145,12 @@ namespace ServicesMvc.Controllers
             if (vin.IsNullOrEmpty())
                 BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount);
             else
-                BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount);
 
-            return Json(new { allSelectionCount, allCount, allFoundCount });
+            var allSelected = BriefversandViewModel.FahrzeugeFiltered.Count ==
+                              BriefversandViewModel.Fahrzeuge.ToListOrEmptyList().Count(x => x.IsSelected);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount, allSelected });
         }
 
         #endregion

@@ -445,14 +445,14 @@
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
                     return;
                 }
-
+                setSpanColor(count);
                 $("#FahrzeugAuswahlCount").removeClass('hide');
                 $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
             }
@@ -467,7 +467,7 @@
             loadingShow: true,
             success: function (result) {
                 var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
 
@@ -478,20 +478,32 @@
         });
     }
 
-    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count, allSelected) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
-            $("#uncheckAllRecords").attr("checked", false);
+            $("#uncheckAllRecords").attr("checked", allSelected);
             $.uniform.update($("#uncheckAllRecords"));
             return;
         }
 
+        setSpanColor(count);
+
         $("#FahrzeugAuswahlCount").removeClass('hide');
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-        $("#uncheckAllRecords").attr("checked", true);
+        $("#uncheckAllRecords").attr("checked", allSelected);
         $.uniform.update($("#uncheckAllRecords"));
     }
+    
+    function setSpanColor(count) {
+        if (count >= 500) {
+            $("#FahrzeugAuswahlCount").removeClass('alert-success');
+            $("#FahrzeugAuswahlCount").addClass('alert-danger');
+        } else {
+            $("#FahrzeugAuswahlCount").removeClass('alert-danger');
+            $("#FahrzeugAuswahlCount").addClass('alert-success');
+        }
 
+    }
 
     function OnDataBound_GridStuecklistenAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
