@@ -142,12 +142,14 @@ namespace ServicesMvc.Controllers
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
             int allSelectionCount, allCount = 0, allFoundCount = 0;
+            string sperrvermerk = "";
+            bool mustBeConfirmed;
             if (vin.IsNullOrEmpty())
-                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount);
+                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount, out mustBeConfirmed);
             else
-                BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                sperrvermerk = BriefversandViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount, out mustBeConfirmed);
 
-            return Json(new { allSelectionCount, allCount, allFoundCount });
+            return Json(new { allSelectionCount, allCount, allFoundCount, mustBeConfirmed, sperrvermerk });
         }
 
         #endregion

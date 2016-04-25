@@ -497,24 +497,39 @@ namespace CkgDomainLogic.Equi.ViewModels
             fzg.IsSelected = true;
         }
 
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        public string SelectFahrzeug(string vin, bool select, out int allSelectionCount, out bool mustBeConfirmed)
         {
+            string sperrvermerk = "";
+            
             allSelectionCount = 0;
+            mustBeConfirmed = false;
             var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
             if (fzg == null)
-                return;
+                return sperrvermerk;
 
             fzg.IsSelected = select;
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+
+            if (fzg.Referenz1.IsNotNullOrEmpty())
+            {
+                var fzb = new FahrzeugbriefErweitert();
+                mustBeConfirmed = fzb.SperrvermerkListe.Contains(fzg.Referenz1);
+                sperrvermerk = fzb.SperrvermerkListe.FirstOrDefault(c => c == fzg.Referenz1);
+            }
+            return sperrvermerk;
         }
 
-        public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
+        public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount, out bool mustBeConfirmed)
         {
+            mustBeConfirmed = false;
             Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count;
             allFoundCount = Fahrzeuge.Count(c => filter(c));
+
+            var fzb = new FahrzeugbriefErweitert();
+            mustBeConfirmed = Fahrzeuge.Any(c => c.IsSelected && c.Referenz1.IsNotNullOrEmpty() && fzb.SperrvermerkListe.Contains(c.Referenz1));
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)

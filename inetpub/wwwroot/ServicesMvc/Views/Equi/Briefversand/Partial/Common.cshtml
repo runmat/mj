@@ -437,24 +437,22 @@
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
 
         Grid_FormatMultiRowSelected(cb);
-
+        
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
             data: { vin: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
-            success: function (result) {
-                var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(true);
-                FormWizard.ButtonNextShow(count > 0);
-                if (count == 0) {
-                    $("#FahrzeugAuswahlCount").addClass('hide');
-                    return;
+            success: function (result) {               
+                if (cb.is(':checked')  && result.mustBeConfirmed === true) {
+                    var tbc = confirm('Achtung, Sie beauftragen ein Fahrzeug bei dem "' + result.sperrvermerk + '" eingetragen ist. Versandauftrag trotzdem einstellen?');
+                    if (tbc === false) {
+                        cb.attr('checked', false);
+                        OnSelectionChange_GridFahrzeugAuswahl(cb);
+                        return;
+                    }                    
                 }
-
-                $("#FahrzeugAuswahlCount").removeClass('hide');
-                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+                ProcessFahrzeugSelection(result);
             }
         });
     }
@@ -465,18 +463,35 @@
             url: "FahrzeugAuswahlSelectionChanged",
             data: { id: "", isChecked: check },
             loadingShow: true,
-            success: function (result) {
-                var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(true);
-                FormWizard.ButtonNextShow(count > 0);
+            success: function (result) {                
+                if (check && result.mustBeConfirmed === true) {
 
-                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
-                $("#csv-upload-reset > span.all-count").text(result.allCount);
-                FilterGrid("GridFahrzeugAuswahl");
+                    var tbc = confirm("Achtung, Sie beauftragen Fahrzeuge mit Sperrvermerk. Wollen Sie den Versandauftrag trotzdem einstellen?");
+                    if (tbc === false) {                        
+                        GridFahrzeugAuswahl_OnAllSelectionChange(false);
+                        return;
+                    }
+                }
+                ProcessFahrzeugSelection(result);
             }
         });
     }
+
+    function ProcessFahrzeugSelection(result) {
+        var count = result.allSelectionCount;
+        GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
+        FormWizard.ActionsShow(true);
+        FormWizard.ButtonNextShow(count > 0);
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');            
+        } else {
+            $("#FahrzeugAuswahlCount").removeClass('hide');
+        }
+
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        FilterGrid("GridFahrzeugAuswahl");
+    }
+
 
     function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
         if (count == 0) {
