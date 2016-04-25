@@ -277,6 +277,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public bool SperrvermerkBestaetigen { get;  private set; }
 
         #region Step "Versandadresse"
 
@@ -435,6 +436,12 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public void Init()
+        {
+            SperrvermerkBestaetigen = ApplicationConfiguration.GetApplicationConfigValue("SperrvermerkBestaetigen", CurrentAppID.ToString(),
+                                                                Convert.ToInt32(LogonContext.Customer.KUNNR)).ToUpper() == "TRUE";
+        }
+
         public void DataMarkForRefresh(string vins)
         {
             GetCurrentAppID();
@@ -510,7 +517,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             fzg.IsSelected = select;
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
 
-            if (fzg.Referenz1.IsNotNullOrEmpty())
+            if (SperrvermerkBestaetigen && fzg.Referenz1.IsNotNullOrEmpty())
             {
                 var fzb = new FahrzeugbriefErweitert();
                 mustBeConfirmed = fzb.SperrvermerkListe.Contains(fzg.Referenz1);
@@ -528,8 +535,15 @@ namespace CkgDomainLogic.Equi.ViewModels
             allCount = Fahrzeuge.Count;
             allFoundCount = Fahrzeuge.Count(c => filter(c));
 
-            var fzb = new FahrzeugbriefErweitert();
-            mustBeConfirmed = Fahrzeuge.Any(c => c.IsSelected && c.Referenz1.IsNotNullOrEmpty() && fzb.SperrvermerkListe.Contains(c.Referenz1));
+            if (SperrvermerkBestaetigen)
+            {
+                var fzb = new FahrzeugbriefErweitert();
+                mustBeConfirmed =
+                    Fahrzeuge.Any(
+                        c =>
+                            c.IsSelected && c.Referenz1.IsNotNullOrEmpty() &&
+                            fzb.SperrvermerkListe.Contains(c.Referenz1));
+            }
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)

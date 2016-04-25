@@ -49,6 +49,7 @@ namespace ServicesMvc.Controllers
         {
             BriefversandViewModel.VersandModus = modus;
             BriefversandViewModel.DataMarkForRefresh(vins);
+            BriefversandViewModel.Init();
 
             return View("Briefversand", BriefversandViewModel);
         }
