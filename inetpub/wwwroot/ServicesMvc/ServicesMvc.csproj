@@ -891,10 +891,14 @@
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
     <Compile Include="Areas\Admin\Contracts\IAppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\Contracts\IAppBatchZuordnungDataService.cs" />
     <Compile Include="Areas\Admin\Controllers\AppUserOverviewController.cs" />
     <Compile Include="Areas\Admin\Models\AppUserOverviewResults.cs" />
     <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
+    <Compile Include="Areas\Admin\Models\AppZuordnung.cs" />
+    <Compile Include="Areas\Admin\Models\AppBatchZuordnungSelektor.cs" />
     <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\Services\AppBatchZuordnungDataService.cs" />
     <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
     <Compile Include="Areas\Autohaus\Controllers\CleverController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\EsdController.cs" />

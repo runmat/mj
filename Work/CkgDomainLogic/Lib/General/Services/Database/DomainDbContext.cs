@@ -1116,5 +1116,63 @@ namespace CkgDomainLogic.General.Database.Services
         }
 
         #endregion
+
+        #region Batch-Zuordnung
+
+        public DbSet<Application> Applications { get; set; }
+
+        public DbSet<ApplicationCustomerRight> ApplicationCustomerRights { get; set; }
+
+        public DbSet<ApplicationGroupRight> ApplicationGroupRights { get; set; }
+
+        public void AddKundenZuordnung(int appId, int customerId, bool writeHistory = false)
+        {
+            var newItem = ApplicationCustomerRights.Create();
+            newItem.AppID = appId;
+            newItem.CustomerID = customerId;
+            ApplicationCustomerRights.Add(newItem);
+
+            if (writeHistory)
+            {
+                
+            }
+        }
+
+        public void RemoveKundenZuordnung(int appId, int customerId, bool writeHistory = false)
+        {
+            var item = ApplicationCustomerRights.FirstOrDefault(acr => acr.AppID == appId && acr.CustomerID == customerId);
+            ApplicationCustomerRights.Remove(item);
+
+            if (writeHistory)
+            {
+
+            }
+        }
+
+        public void AddGruppenZuordnung(int appId, int groupId, bool writeHistory = false)
+        {
+            var newItem = ApplicationGroupRights.Create();
+            newItem.AppID = appId;
+            newItem.GroupID = groupId;
+            ApplicationGroupRights.Add(newItem);
+
+            if (writeHistory)
+            {
+
+            }
+        }
+
+        public void RemoveGruppenZuordnung(int appId, int groupId, bool writeHistory = false)
+        {
+            var item = ApplicationGroupRights.FirstOrDefault(acr => acr.AppID == appId && acr.GroupID == groupId);
+            ApplicationGroupRights.Remove(item);
+
+            if (writeHistory)
+            {
+
+            }
+        }
+
+        #endregion
     }
 }
