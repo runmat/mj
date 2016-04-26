@@ -84,6 +84,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                 ID = id,
                 Name = dokument.FileName,
                 DocTypeID = dokument.DocTypeID,
+                Tags = dokument.Tags,
                 SelectedWebGroups = dokumentGruppen.ToList()
             };
         }
