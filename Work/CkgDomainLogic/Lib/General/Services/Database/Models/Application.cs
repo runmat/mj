@@ -34,11 +34,11 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool LogDuration { get; set; }
 
-        public int AppSchwellwert { get; set; }
+        public int? AppSchwellwert { get; set; }
 
-        public int MaxLevel { get; set; }
+        public int? MaxLevel { get; set; }
 
-        public int MaxLevelsPerGroup { get; set; }
+        public int? MaxLevelsPerGroup { get; set; }
 
         public string AppTechType { get; set; }
 

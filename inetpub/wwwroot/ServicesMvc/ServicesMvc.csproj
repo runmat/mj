@@ -474,6 +474,9 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
+    <Content Include="Areas\Admin\Views\AppBatchZuordnung\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AppBatchZuordnung\Partial\Suche.cshtml" />
+    <Content Include="Areas\Admin\Views\AppBatchZuordnung\Partial\Grid.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -893,6 +896,7 @@
     <Compile Include="Areas\Admin\Contracts\IAppUserOverviewDataService.cs" />
     <Compile Include="Areas\Admin\Contracts\IAppBatchZuordnungDataService.cs" />
     <Compile Include="Areas\Admin\Controllers\AppUserOverviewController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AppBatchZuordnungController.cs" />
     <Compile Include="Areas\Admin\Models\AppUserOverviewResults.cs" />
     <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
     <Compile Include="Areas\Admin\Models\AppZuordnung.cs" />
@@ -900,6 +904,7 @@
     <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
     <Compile Include="Areas\Admin\Services\AppBatchZuordnungDataService.cs" />
     <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AppBatchZuordnungViewModel.cs" />
     <Compile Include="Areas\Autohaus\Controllers\CleverController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\EsdController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />

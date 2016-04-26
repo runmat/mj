@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.AppUserOverview.Models;
+using CkgDomainLogic.Admin.Models;
 using CkgDomainLogic.General.Contracts;
-using ServicesMvc.AppUserOverview.Models;
+using CkgDomainLogic.General.Database.Models;
 
-namespace CkgDomainLogic.AppUserOverview.Contracts
+namespace CkgDomainLogic.Admin.Contracts
 {
     public interface IAppBatchZuordnungDataService  : ICkgGeneralDataService
     {
+        List<Application> GetApplications();
+
         List<AppZuordnung> GetAppZuordnungen(AppBatchZuordnungSelektor selektor);
 
-        bool SaveChangedAppZuordnungen(List<AppZuordnung> zuordnungen);
+        string SaveAppZuordnungen(List<AppZuordnung> zuordnungen);
     }
 }

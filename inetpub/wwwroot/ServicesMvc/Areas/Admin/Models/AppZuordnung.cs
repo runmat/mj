@@ -2,7 +2,7 @@
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
-namespace ServicesMvc.AppUserOverview.Models
+namespace CkgDomainLogic.Admin.Models
 {
     public class AppZuordnung
     {
@@ -28,28 +28,21 @@ namespace ServicesMvc.AppUserOverview.Models
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string Customername { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Assigned)]
-        public bool IsAssignedToCustomer { get; set; }
-
         public int GroupID { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Group)]
         public string GroupName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Assigned)]
-        public bool IsAssignedToGroup { get; set; }
+        public bool IsAssigned { get; set; }
 
-        public AppZuordnung(Application anwendung)
+        public string ZuordnungID { get { return string.Format("{0}_{1}_{2}", AppID, CustomerID, GroupID); } }
+
+        public AppZuordnung()
         {
-            AppID = anwendung.AppID;
-            AppName = anwendung.AppName;
-            AppFriendlyName = anwendung.AppFriendlyName;
-            AppUrl = anwendung.AppURL;
-            AppTechType = anwendung.AppTechType;
-            AppDescription = anwendung.AppDescription;
         }
 
-        public AppZuordnung(Application anwendung, Customer kunde, bool kundeZugeordnet)
+        public AppZuordnung(Application anwendung, Customer kunde, UserGroup gruppe, bool zugeordnet)
         {
             AppID = anwendung.AppID;
             AppName = anwendung.AppName;
@@ -59,23 +52,9 @@ namespace ServicesMvc.AppUserOverview.Models
             AppDescription = anwendung.AppDescription;
             CustomerID = kunde.CustomerID;
             Customername = kunde.Customername;
-            IsAssignedToCustomer = kundeZugeordnet;
-        }
-
-        public AppZuordnung(Application anwendung, Customer kunde, bool kundeZugeordnet, UserGroup gruppe, bool gruppeZugeordnet)
-        {
-            AppID = anwendung.AppID;
-            AppName = anwendung.AppName;
-            AppFriendlyName = anwendung.AppFriendlyName;
-            AppUrl = anwendung.AppURL;
-            AppTechType = anwendung.AppTechType;
-            AppDescription = anwendung.AppDescription;
-            CustomerID = kunde.CustomerID;
-            Customername = kunde.Customername;
-            IsAssignedToCustomer = kundeZugeordnet;
             GroupID = gruppe.GroupID;
             GroupName = gruppe.GroupName;
-            IsAssignedToGroup = gruppeZugeordnet;
+            IsAssigned = zugeordnet;
         }
     }
 }

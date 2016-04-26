@@ -1119,58 +1119,56 @@ namespace CkgDomainLogic.General.Database.Services
 
         #region Batch-Zuordnung
 
+        public enum ApplicationBatchZuordnungHistoryChangeType
+        {
+            Insert,
+            Delete
+        }
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<ApplicationCustomerRight> ApplicationCustomerRights { get; set; }
 
         public DbSet<ApplicationGroupRight> ApplicationGroupRights { get; set; }
 
-        public void AddKundenZuordnung(int appId, int customerId, bool writeHistory = false)
+        public void AddApplicationCustomerRight(int appId, int customerId)
         {
             var newItem = ApplicationCustomerRights.Create();
             newItem.AppID = appId;
             newItem.CustomerID = customerId;
             ApplicationCustomerRights.Add(newItem);
-
-            if (writeHistory)
-            {
-                
-            }
         }
 
-        public void RemoveKundenZuordnung(int appId, int customerId, bool writeHistory = false)
+        public void RemoveApplicationCustomerRight(int appId, int customerId)
         {
             var item = ApplicationCustomerRights.FirstOrDefault(acr => acr.AppID == appId && acr.CustomerID == customerId);
             ApplicationCustomerRights.Remove(item);
-
-            if (writeHistory)
-            {
-
-            }
         }
 
-        public void AddGruppenZuordnung(int appId, int groupId, bool writeHistory = false)
+        public void AddApplicationGroupRight(int appId, int groupId)
         {
             var newItem = ApplicationGroupRights.Create();
             newItem.AppID = appId;
             newItem.GroupID = groupId;
             ApplicationGroupRights.Add(newItem);
-
-            if (writeHistory)
-            {
-
-            }
         }
 
-        public void RemoveGruppenZuordnung(int appId, int groupId, bool writeHistory = false)
+        public void RemoveApplicationGroupRight(int appId, int groupId)
         {
             var item = ApplicationGroupRights.FirstOrDefault(acr => acr.AppID == appId && acr.GroupID == groupId);
             ApplicationGroupRights.Remove(item);
+        }
 
-            if (writeHistory)
-            {
+        public void WriteApplicationCustomerRightBatchHistory(int appId, int customerId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
+        {
+            Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchCustomerAssignmentHistory (AppID,CustomerID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
+                    appId, customerId, aenderung, UserName, zeitstempel);
+        }
 
-            }
+        public void WriteApplicationGroupRightBatchHistory(int appId, int groupId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
+        {
+            Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchGroupAssignmentHistory (AppID,GroupID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
+                    appId, groupId, aenderung, UserName, zeitstempel);
         }
 
         #endregion
