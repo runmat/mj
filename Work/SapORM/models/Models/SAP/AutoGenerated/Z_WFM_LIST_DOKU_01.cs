@@ -62,24 +62,51 @@ namespace SapORM.Models
 
 			public string OBJECT_ID { get; set; }
 
+			public DateTime? ERFDT { get; set; }
+
+			public string UZEIT { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_DOKUMENTE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_DOKUMENTE
-				{
-					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
-					AR_OBJECT = (string)row["AR_OBJECT"],
-					ARCHIV_ID = (string)row["ARCHIV_ID"],
-					DATEINAME = (string)row["DATEINAME"],
-					OBJECT_ID = (string)row["OBJECT_ID"],
+				GT_DOKUMENTE o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_DOKUMENTE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
+						AR_OBJECT = (string)row["AR_OBJECT"],
+						ARCHIV_ID = (string)row["ARCHIV_ID"],
+						DATEINAME = (string)row["DATEINAME"],
+						OBJECT_ID = (string)row["OBJECT_ID"],
+						ERFDT = string.IsNullOrEmpty(row["ERFDT"].ToString()) ? null : (DateTime?)row["ERFDT"],
+						UZEIT = (string)row["UZEIT"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_DOKUMENTE
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
