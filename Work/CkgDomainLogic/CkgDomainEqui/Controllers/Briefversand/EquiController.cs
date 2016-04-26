@@ -135,7 +135,10 @@ namespace ServicesMvc.Controllers
         {
             BriefversandViewModel.FilterFahrzeuge(filterValue, filterColumns);
 
-            return new EmptyResult();
+            var allSelected = BriefversandViewModel.FahrzeugeFiltered.Count ==
+                  BriefversandViewModel.FahrzeugeFiltered.ToListOrEmptyList().Count(x => x.IsSelected);
+
+            return Json(new {allSelected});
         }
 
         [HttpPost]
@@ -148,7 +151,7 @@ namespace ServicesMvc.Controllers
                 BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount);
 
             var allSelected = BriefversandViewModel.FahrzeugeFiltered.Count ==
-                              BriefversandViewModel.Fahrzeuge.ToListOrEmptyList().Count(x => x.IsSelected);
+                  BriefversandViewModel.FahrzeugeFiltered.ToListOrEmptyList().Count(x => x.IsSelected);
 
             return Json(new { allSelectionCount, allCount, allFoundCount, allSelected });
         }

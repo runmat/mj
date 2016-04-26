@@ -111,16 +111,37 @@
         });    
     }
 
-    function FahrzeugAuswahl() {
+    function FinalSubmit() {
+        $.magnificPopup.close();
         AjaxRequestNextStep();
-        return false;
+        return false;   
+    }
+
+    function FahrzeugAuswahl() {
+        if ($("#count").text() >= 500) {
+            $.magnificPopup.open({
+                items: {
+                    src: $("#Confirm"),
+                    test: $("#count").text()
+        },
+                type: 'inline',
+                alignTop: false,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+                
+            });
+        } else {
+            AjaxRequestNextStep();
+            return false;
+        }
+
+
     }
 
     function StuecklistenAuswahl() {
         AjaxRequestNextStep();
         return false;
     }
-
     function InitCsvUploadButton() {
         $(".t-upload").addClass("file-upload-wrapper-div");
         $(".t-dropzone").addClass("file-upload-wrapper-div");
@@ -419,7 +440,7 @@
         $('.t-no-data td').text(ladeHinweis);
     }
 
-    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {   
         var isMissing = e.dataItem["IsMissing"];
 
         if (isMissing)
@@ -434,6 +455,11 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function OnPostFilterPrivate_GridFahrzeugAuswahl(checked) {
+        $("#uncheckAllRecords").attr("checked", checked);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
 
         Grid_FormatMultiRowSelected(cb);
@@ -445,6 +471,7 @@
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
+                $("#count").text(count);
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
@@ -467,6 +494,7 @@
             loadingShow: true,
             success: function (result) {
                 var count = result.allSelectionCount;
+                $("#count").text(count);
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
@@ -640,6 +668,24 @@
 
 </script>
 
+
+@(Html.Telerik().Window()
+    .Name("Confirmi")
+    .Visible(false)
+    .Title("Sind Sie sicher?")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+      .Content(@<text>
+                   <div class="white-popup mfp-hide align-center" id="Confirm">
+                       Sie haben sehr viele Einträge ausgewählt? Sind Sie sicher?<br/>
+                       <div id="controls" class="margin-top-20  margin-left-50">
+                           <input type="button" onclick="$.magnificPopup.close();"class="btn red" value="Abbrechen" />
+                           <input type="button" onclick="FinalSubmit();" class="btn green" value="Wirklich absenden!" />
+                       </div>
+                   </div></text>))
 
 @(Html.Telerik().Window()
     .Name("Adressen")
