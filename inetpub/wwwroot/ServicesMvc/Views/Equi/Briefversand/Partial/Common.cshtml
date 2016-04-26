@@ -6,12 +6,18 @@
 
     function FormPreparePrivate() {
 
-        try { FormWizardInitPrivate(); } catch (e) { }
+        try {
+            FormWizardInitPrivate();
+        } catch (e) {
+        }
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
 
-        try { MultiSelectPreparePrivate(); } catch (e) { }
+        try {
+            MultiSelectPreparePrivate();
+        } catch (e) {
+        }
 
         InitCsvUploadButton();
     };
@@ -20,13 +26,13 @@
         FormPrepareAjax();
         $('.tooltips').tooltip();
     }
-    
+
     function FormWizardInitPrivate() {
-        FormWizard.Init(function () {
+        FormWizard.Init(function() {
             FormWizard.ActionsShow((!FormWizard.HasStepKey('FahrzeugAuswahl') || FormWizard.HasStepKey('EquiSuche')) && typeof (_formErrorHint) == 'undefined');
         });
 
-        FormWizard.OnNext(function (step, maxSteps) {
+        FormWizard.OnNext(function(step, maxSteps) {
             if ('EquiSuche' == FormWizard.GetStepKey(step - 1)) {
                 $("#EquiPartlistSearchForm").submit();
                 return false;
@@ -53,20 +59,20 @@
             return true;
         });
 
-        FormWizard.OnPrev(function (step, maxSteps) {
-            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step)) 
+        FormWizard.OnPrev(function(step, maxSteps) {
+            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step))
                 FormWizard.ActionsShow(true);
             return true;
         });
 
-        FormWizard.OnSubmit(function () {
-            
+        FormWizard.OnSubmit(function() {
+
             AjaxRequestNextStep();
 
             return true;
         });
 
-        FormWizard.OnRestart(function () {
+        FormWizard.OnRestart(function() {
             //alert('Ok, let´s restart! :)');
             LocationReloadWithoutQueryString();
         });
@@ -89,7 +95,7 @@
             url: nextTabKey,
             data: {},
             loadingShow: true,
-            success: function (result) {
+            success: function(result) {
                 if (typeof (result.message) !== "undefined") {
                     alert(result.message);
                     return;
@@ -108,13 +114,13 @@
                     GridAllColumnFilterApplyToGrid("GridStuecklistenAuswahl");
                 }
             }
-        });    
+        });
     }
 
     function FinalSubmit() {
         $.magnificPopup.close();
         AjaxRequestNextStep();
-        return false;   
+        return false;
     }
 
     function FahrzeugAuswahl() {
@@ -123,12 +129,12 @@
                 items: {
                     src: $("#Confirm"),
                     test: $("#count").text()
-        },
+                },
                 type: 'inline',
                 alignTop: false,
                 removalDelay: 300,
                 mainClass: 'my-mfp-zoom-in'
-                
+
             });
         } else {
             AjaxRequestNextStep();
@@ -142,6 +148,7 @@
         AjaxRequestNextStep();
         return false;
     }
+
     function InitCsvUploadButton() {
         $(".t-upload").addClass("file-upload-wrapper-div");
         $(".t-dropzone").addClass("file-upload-wrapper-div");
@@ -150,7 +157,7 @@
         var wrapperButton = $(".t-upload-button");
         wrapperButton.css("width", 120);
         wrapperButton.attr("title", "Filtern Sie alternativ die Fahrzeugliste auf Basis Ihrer eigenen CSV Daten!");
-        
+
         var span = $(".t-upload-button span");
         span.addClass("file-upload tooltips");
         span.html("CSV Upload <i class='icon-upload-alt margin-left-5'></i>");
@@ -158,17 +165,17 @@
 
     function AjaxCsvTemplateShow() {
         $.ajax(
-            {
-                type: "POST",
-                url: "CsvTemplate",
-                data: {},
-                loadingShow: true,
-                success: function (result) {
-                    var detailWindow = $("#CsvTemplateHint").data("tWindow");
-                    $("#CsvTemplateHintDetail").html(result);
-                    detailWindow.center().open();
-                }
-            });
+        {
+            type: "POST",
+            url: "CsvTemplate",
+            data: {},
+            loadingShow: true,
+            success: function(result) {
+                var detailWindow = $("#CsvTemplateHint").data("tWindow");
+                $("#CsvTemplateHintDetail").html(result);
+                detailWindow.center().open();
+            }
+        });
 
         return false;
     }
@@ -194,7 +201,7 @@
             AjaxRequestNextStep();
     }
 
-    
+
     //    
     // <Adressen, Versandadressen, Halteradressen, etc>
     //
@@ -206,10 +213,10 @@
                 $(this).bind('keyup', function() { $("#Name1").autocomplete("disable"); });
         });
     }
-    
+
     function AjaxFormAdressePrepareAutoComplete(tb, url) {
 
-        var form = tb.closest("form"); 
+        var form = tb.closest("form");
         var textboxValues = '';
         form.find("input:text").each(function() {
             if ($(this).attr('id') != 'Name1')
@@ -221,19 +228,19 @@
         $.ajax({
             type: "POST",
             url: url,
-            data: { },
+            data: {},
             loadingShow: false,
-            success: function (result) {
+            success: function(result) {
                 AjaxFormAdresseInitAutoComplete(tb, result.items);
             }
-        });      
+        });
     }
-    
+
     function AjaxFormAdresseInitAutoComplete(tb, items) {
         tb.autocomplete({
             minLength: 0,
             source: items,
-            select: function (event, ui) {
+            select: function(event, ui) {
                 $("#TmpSelectionKey").val(ui.item.value);
                 var form = tb.closest("form");
                 form.submit();
@@ -245,20 +252,20 @@
     function AjaxFormAdresseEmpty(formID, url) {
         var form = $("#" + formID);
         form.find(":input").each(function() {
-            switch(this.type) {
-                case 'password':
-                case 'select-multiple':
-                case 'text':
-                case 'textarea':
-                    $(this).val('');
-                    break;
-                case 'select-one':
-                    $(this).val('DE');
-                    break;
-                case 'checkbox':
-                case 'radio':
-                    this.checked = false;
-            }        
+            switch (this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'select-one':
+                $(this).val('DE');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+            }
         });
 
         AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
@@ -271,18 +278,18 @@
         //return false;
 
         $.ajax(
-            {
-                type: "POST",
-                url: addressType + "AdressenShowGrid",
-                data: {},
-                loadingShow: true,
-                success: function (result) {
-                    var detailWindow = $("#Adressen").data("tWindow");
-                    $("#InnerAdressen").html(result);
-                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
-                    detailWindow.center().open();
-                }
-            });
+        {
+            type: "POST",
+            url: addressType + "AdressenShowGrid",
+            data: {},
+            loadingShow: true,
+            success: function(result) {
+                var detailWindow = $("#Adressen").data("tWindow");
+                $("#InnerAdressen").html(result);
+                GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+                detailWindow.center().open();
+            }
+        });
 
         return false;
     }
@@ -290,21 +297,21 @@
     function AjaxFormAdresseEdit(addressType) {
 
         $.ajax(
-            {
-                type: "POST",
-                url: "Adresse",
-                data: { addressType: addressType },
-                loadingShow: true,
-                success: function (result) {
-                    var detailWindow = $("#AdresseBearbeiten").data("tWindow");
-                    $("#InnerAdresseBearbeiten").html(result);
-                    detailWindow.center().open();
-                }
-            });
+        {
+            type: "POST",
+            url: "Adresse",
+            data: { addressType: addressType },
+            loadingShow: true,
+            success: function(result) {
+                var detailWindow = $("#AdresseBearbeiten").data("tWindow");
+                $("#InnerAdresseBearbeiten").html(result);
+                detailWindow.center().open();
+            }
+        });
 
         return false;
     }
-    
+
     function AjaxFormAdresseClose() {
         $("#AdresseBearbeiten").data("tWindow").close();
     }
@@ -328,18 +335,18 @@
             url: "UpdateAddressAndGetSummary",
             data: { updateAddressid: id, addressType: addressType },
             loadingShow: false,
-            success: function (result) {
+            success: function(result) {
                 FormWizard.SetTabHtml("Summary", result);
                 AjaxFormAdresseClose();
                 $("#Adressen").data("tWindow").close();
                 SpanAlertSuccess(addressType, "Adresse aktualisiert.", 1800);
             },
-            error: function (jqXhr, exception) {
+            error: function(jqXhr, exception) {
                 alert(jqXhr.responseText);
             }
         });
     }
-    
+
     //    
     // </Adressen, Versandadressen, Halteradressen, etc>
     //
@@ -373,7 +380,7 @@
     function OnColumnReorder_VersandAdressenAuswahlGrid() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
-    
+
     function OnDataBound_ZulassungAdressenAuswahlGrid() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
@@ -397,6 +404,7 @@
     //
 
     _adresseAjaxFormAddressType = '';
+
     function AdresseAjaxFormComplete() {
         FormPrepareAjax();
 
@@ -408,24 +416,24 @@
 
     function OnComplete_AdressenAuswahlGridX() {
         var grid = $(this);
-        grid.resize(function () {
+        grid.resize(function() {
             alert($(this));
         });
     }
 
     function OnComplete_AdressenAuswahlGrid() {
         var grid = $(this);
-        setTimeout(function () {
+        setTimeout(function() {
             var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
             var newHeight = (gridHeight + 80) + 'px';
-            grid.closest('.t-window-content').animate({height: newHeight}, 200); // .css('height', newHeight);
+            grid.closest('.t-window-content').animate({ height: newHeight }, 200); // .css('height', newHeight);
         }, 300);
     }
 
     //
     // </Adressen generell>
     //
-    
+
 
     function OnDataBound_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
@@ -440,7 +448,7 @@
         $('.t-no-data td').text(ladeHinweis);
     }
 
-    function OnRowDataBound_GridFahrzeugAuswahl(e) {   
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
         var isMissing = e.dataItem["IsMissing"];
 
         if (isMissing)
@@ -469,9 +477,9 @@
             url: "FahrzeugAuswahlSelectionChanged",
             data: { vin: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
-            success: function (result) {
+            success: function(result) {
                 var count = result.allSelectionCount;
-                $("#count").text(count);
+                $("#count").text(count); // Popup Count
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
@@ -492,9 +500,9 @@
             url: "FahrzeugAuswahlSelectionChanged",
             data: { id: "", isChecked: check },
             loadingShow: true,
-            success: function (result) {
+            success: function(result) {
                 var count = result.allSelectionCount;
-                $("#count").text(count);
+                $("#count").text(count); // Popup Count
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
                 FormWizard.ActionsShow(true);
                 FormWizard.ButtonNextShow(count > 0);
@@ -521,7 +529,7 @@
         $("#uncheckAllRecords").attr("checked", allSelected);
         $.uniform.update($("#uncheckAllRecords"));
     }
-    
+
     function setSpanColor(count) {
         if (count >= 500) {
             $("#FahrzeugAuswahlCount").removeClass('alert-success');
@@ -566,7 +574,7 @@
             url: "StuecklistenAuswahlSelectionChanged",
             data: { id: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
-            success: function (result) {
+            success: function(result) {
                 var count = result.allSelectionCount;
                 GridStuecklistenAuswahl_MultiSelectUpdate(result.allSelectionCount);
                 FormWizard.ButtonNextShow(count > 0);
@@ -587,7 +595,7 @@
             url: "StuecklistenAuswahlSelectionChanged",
             data: { id: "", isChecked: check },
             loadingShow: true,
-            success: function (result) {
+            success: function(result) {
                 var count = result.allSelectionCount;
                 GridStuecklistenAuswahl_MultiSelectUpdate(result.allSelectionCount);
                 FormWizard.ButtonNextShow(count > 0);
@@ -657,9 +665,9 @@
         $.ajax({
             type: "POST",
             url: "CsvUploadReset",
-            data: {  },
+            data: {},
             loadingShow: true,
-            success: function (result) {
+            success: function(result) {
                 $("#csv-upload-reset").hide();
                 GridFahrzeugAuswahl_OnAllSelectionChange(false);
             }
@@ -667,6 +675,15 @@
     }
 
 </script>
+
+<style>
+    .warntext {
+        font-weight: bold;
+        color: crimson;
+
+    }
+
+</style>
 
 
 @(Html.Telerik().Window()
@@ -680,7 +697,7 @@
     .Height(700)
       .Content(@<text>
                    <div class="white-popup mfp-hide align-center" id="Confirm">
-                       Sie haben sehr viele Einträge ausgewählt? Sind Sie sicher?<br/>
+                       Sie haben <span class="warntext"id="count"></span> Einträge ausgewählt? Sind Sie sicher?<br/>
                        <div id="controls" class="margin-top-20  margin-left-50">
                            <input type="button" onclick="$.magnificPopup.close();"class="btn red" value="Abbrechen" />
                            <input type="button" onclick="FinalSubmit();" class="btn green" value="Wirklich absenden!" />
