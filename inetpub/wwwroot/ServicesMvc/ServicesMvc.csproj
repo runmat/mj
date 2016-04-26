@@ -229,6 +229,10 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\XmlData\StepsKroschkeSzHaendlerkennzeichen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\XmlData\StepsKroschkeSzErsatzkennzeichen.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -480,6 +484,8 @@
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Ersatzkennzeichen.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ErsatzkennzeichenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Haendlerkennzeichen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\HaendlerkennzeichenForm.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -25,7 +25,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
-    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen }
+    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen }
 
     [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
@@ -953,6 +953,20 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
         }
 
+        public void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
+        {
+            model.KennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
+        }
+
+        public void SetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
+        {
+            SetFahrzeugdaten(model);
+
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.KennzeichenTyp;
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+        }
+
         public void SetFahrzeugdaten(Fahrzeugdaten model)
         {
             Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
@@ -1439,6 +1453,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             StepModels.Add("BankAdressdaten", () => this);
             StepModels.Add("Fahrzeugdaten", () => this);
             StepModels.Add("Ersatzkennzeichen", () => this);
+            StepModels.Add("Haendlerkennzeichen", () => this);
             StepModels.Add("Zulassungsdaten", () => this);
             StepModels.Add("OptionenDienstleistungen", () => this);
             StepModels.Add("Summary", () => this);

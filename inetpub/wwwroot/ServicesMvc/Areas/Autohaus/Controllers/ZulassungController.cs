@@ -218,6 +218,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SzHaendlerkennzeichen(string finid, string halterNr)
+        {
+            return Index(finid, halterNr, sonderzulassung: "1", sonderzulassungMode: "haendlerkennzeichen");
+        }
+
+        [CkgApplication]
         public ActionResult Schnellabmeldung()
         {
             return Index("", "", abmeldung: "1", schnellabmeldung: "1");
@@ -573,8 +579,29 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/ErsatzkennzeichenForm", model);
         }
 
-        #endregion        
-        
+        #endregion
+
+        #region Haendlerkennzeichen
+
+        [HttpPost]
+        public ActionResult Haendlerkennzeichen()
+        {
+            return PartialView("Partial/Haendlerkennzeichen", ViewModel.StepModels["Fahrzeugdaten"]());
+        }
+
+        [HttpPost]
+        public ActionResult HaendlerkennzeichenForm(Fahrzeugdaten model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewModel.SetSonderzulassungHaendlerkennzeichen(model);
+            }
+
+            return PartialView("Partial/HaendlerkennzeichenForm", model);
+        }
+
+        #endregion  
+
         #region Fahrzeugdaten
 
         [HttpPost]
