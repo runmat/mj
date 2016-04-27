@@ -414,7 +414,7 @@ namespace CkgDomainLogic.General.Database.Services
 
                 doks.ForEach(x =>
                 {
-                    var docType = DocumentTypesForCustomer.FirstOrDefault(t => t.DocumentTypeID == x.DocTypeID);
+                    var docType = DocumentTypesForAll.FirstOrDefault(t => t.DocumentTypeID == x.DocTypeID);
                     if (docType != null)
                         x.DocTypeName = docType.DocTypeName;
                 });
