@@ -53,8 +53,10 @@
         commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Zulassung");
         commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Zulassung");
     })
-)
+      )
 
+<label id="count" style="display: none"></label>
+<div id="Confirm" class="white-popup mfp-hide">Hallo</div>
 <script>
 
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
@@ -67,6 +69,7 @@
             loadingShow: false,
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
+                $("#count").text(_selectedItemsCount);
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
@@ -89,6 +92,8 @@
             loadingShow: true,
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
+                $("#count").text(_selectedItemsCount);
+                alert($("#count").text());
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -497,9 +498,10 @@ namespace CkgDomainLogic.Equi.ViewModels
             fzg.IsSelected = true;
         }
 
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        public void SelectFahrzeug(string vin, bool select,  out int allSelectionCount)
         {
             allSelectionCount = 0;
+
             var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
             if (fzg == null)
                 return;
@@ -510,7 +512,12 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f =>
+            {
+                if (FahrzeugeFiltered.Contains(f)) 
+                    f.IsSelected = select;
+            });
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count;
