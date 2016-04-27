@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -26,8 +27,9 @@
     </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -51,7 +53,22 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL" />
+    <Reference Include="AjaxControlToolkit, Version=3.0.30930.28736, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DBauer.Web.UI.WebControls.HierarGrid, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0cf700d027f89147">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\DBauer.Web.UI.WebControls.HierarGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Work\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -301,6 +318,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Customize\DAD\BannerBack.jpg" />
+    <Content Include="Customize\DAD\dadlogo.jpg" />
+    <Content Include="Customize\DAD\TableAlternate.jpg" />
+    <Content Include="Customize\DAD\TableBack.jpg" />
+    <Content Include="Customize\DAD\TaskTitleBack.jpg" />
+    <Content Include="Customize\DAD\volvo.css" />
+    <Content Include="Customize\DAD\volvoE6.css" />
+    <Content Include="Customize\DAD\volvoIE6.css" />
     <Content Include="Images\%40_10.jpg" />
     <Content Include="Images\addfromleft.png" />
     <Content Include="Images\Admin.png" />
@@ -332,7 +357,6 @@
     <Content Include="Images\Benutzer.png" />
     <Content Include="Images\bg_main_startseite.jpg" />
     <Content Include="Images\BigKroschkeBridge.jpg" />
-    <Content Include="Images\BigKroschkeBridge1.jpg" />
     <Content Include="Images\bin_closed.png" />
     <Content Include="Images\blank.gif" />
     <Content Include="Images\Blatt_08.jpg" />
@@ -460,18 +484,11 @@
     <Content Include="Images\jpg-file.png" />
     <Content Include="Images\Kalender01_07.jpg" />
     <Content Include="Images\Kalender02_07.jpg" />
-    <Content Include="Images\Kopie von Pfeil_abwaerts_01.jpg" />
-    <Content Include="Images\Kopie von Pfeil_aufwaerts_01.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_03.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_04.jpg" />
-    <Content Include="Images\Kopie von Pfeil_hoch_05.jpg" />
     <Content Include="Images\Kreislauf_01.jpg" />
     <Content Include="Images\kroschke.gif" />
     <Content Include="Images\Kroschke.jpg" />
     <Content Include="Images\Kroschke2.jpg" />
-    <Content Include="Images\kroschkeBridge - Kopie.jpg" />
     <Content Include="Images\kroschkeBridge.jpg" />
-    <Content Include="Images\kroschkeBridge1.jpg" />
     <Content Include="Images\kroschkeTrans.jpg" />
     <Content Include="Images\kroschke_inside_logo.png" />
     <Content Include="Images\Kunden.png" />
@@ -488,6 +505,23 @@
     <Content Include="Images\login.jpg" />
     <Content Include="Images\loginHeader.jpg" />
     <Content Include="Images\loginHeader_blue.jpg" />
+    <Content Include="Images\Logistik\arrowdown.png" />
+    <Content Include="Images\Logistik\arrowup.png" />
+    <Content Include="Images\Logistik\BackDetails - Kopie.png" />
+    <Content Include="Images\Logistik\BackDetails.png" />
+    <Content Include="Images\Logistik\delete.jpg" />
+    <Content Include="Images\Logistik\delete.png" />
+    <Content Include="Images\Logistik\edit.png" />
+    <Content Include="Images\Logistik\loesch.gif" />
+    <Content Include="Images\Logistik\plusgreen.png" />
+    <Content Include="Images\Logistik\save.png" />
+    <Content Include="Images\Logistik\savegreen.png" />
+    <Content Include="Images\Logistik\StandardBlueDL.png" />
+    <Content Include="Images\Logistik\StandardBlueTour.png" />
+    <Content Include="Images\Logistik\StandardGreyDL.png" />
+    <Content Include="Images\Logistik\StandardGreyTour.png" />
+    <Content Include="Images\Logistik\StandardReadyDL.png" />
+    <Content Include="Images\Logistik\StandardReadyTour.png" />
     <Content Include="Images\logoDAD.jpg" />
     <Content Include="Images\logoDADTrans.jpg" />
     <Content Include="Images\logoGenerali.jpg" />
@@ -679,6 +713,38 @@
     <Content Include="Images\User01_06.jpg" />
     <Content Include="Images\User02_06.jpg" />
     <Content Include="Images\user_Hover.png" />
+    <Content Include="Images\Versand\headopen.png" />
+    <Content Include="Images\Versand\headopenoverflow.png" />
+    <Content Include="Images\Versand\headSucheopen.png" />
+    <Content Include="Images\Versand\minusred.png" />
+    <Content Include="Images\Versand\overflowbackwhite.png" />
+    <Content Include="Images\Versand\plusgreen.png" />
+    <Content Include="Images\Versand\search.png" />
+    <Content Include="Images\Versand\StandardBlueAdresse.png" />
+    <Content Include="Images\Versand\StandardBlueOptionen.png" />
+    <Content Include="Images\Versand\StandardBlueOverview.png" />
+    <Content Include="Images\Versand\StandardBlueStift.png" />
+    <Content Include="Images\Versand\StandardGreyAdresse.png" />
+    <Content Include="Images\Versand\StandardGreyOptionen.png" />
+    <Content Include="Images\Versand\StandardGreyOverview.png" />
+    <Content Include="Images\Versand\StandardGreyStift.png" />
+    <Content Include="Images\Versand\StandardGreyTool.png" />
+    <Content Include="Images\Versand\StandardReadyAdresse.png" />
+    <Content Include="Images\Versand\StandardReadyOptionen.png" />
+    <Content Include="Images\Versand\StandardReadyOverview.png" />
+    <Content Include="Images\Versand\StandardReadyStift.png" />
+    <Content Include="Images\Versand\StandardReadyTool.png" />
+    <Content Include="Images\Versand\StandardRedAdresse.png" />
+    <Content Include="Images\Versand\StandardRedOtionen.png" />
+    <Content Include="Images\Versand\StandardRedOverview.png" />
+    <Content Include="Images\Versand\StandardRedStift.png" />
+    <Content Include="Images\Versand\StandardRedTool.png" />
+    <Content Include="Images\Versand\stephead.png" />
+    <Content Include="Images\Versand\Stepheadopen.png" />
+    <Content Include="Images\Versand\Stepheadoverflow.png" />
+    <Content Include="Images\Versand\suche.png" />
+    <Content Include="Images\Versand\suche2.png" />
+    <Content Include="Images\Versand\Uploadoverflow.png" />
     <Content Include="Images\Verwaltung.png" />
     <Content Include="Images\vkb_logo.jpg" />
     <Content Include="Images\Wappen01_10.jpg" />
@@ -705,6 +771,22 @@
     <Content Include="Start\Log.aspx" />
     <Content Include="MasterPage\Services.Master" />
     <Content Include="MasterPage\Design.Master" />
+    <Content Include="Docs\Lastschrift\Baden-Wuerttemberg.pdf" />
+    <Content Include="Docs\Lastschrift\Bayern.pdf" />
+    <Content Include="Docs\Lastschrift\Berlin.pdf" />
+    <Content Include="Docs\Lastschrift\Brandenburg.pdf" />
+    <Content Include="Docs\Lastschrift\Bremen.pdf" />
+    <Content Include="Docs\Lastschrift\Hamburg.pdf" />
+    <Content Include="Docs\Lastschrift\Hessen.pdf" />
+    <Content Include="Docs\Lastschrift\Mecklenburg-Vorpommern1.pdf" />
+    <Content Include="Docs\Lastschrift\Mecklenburg-Vorpommern2.pdf" />
+    <Content Include="Docs\Lastschrift\Niedersachsen.pdf" />
+    <Content Include="Docs\Lastschrift\Nordrhein-Westfalen.pdf" />
+    <Content Include="Docs\Lastschrift\Rheinland-Pfalz.pdf" />
+    <Content Include="Docs\Lastschrift\Saarland.pdf" />
+    <Content Include="Docs\Lastschrift\Sachsen.pdf" />
+    <Content Include="Docs\Lastschrift\Schleswig-Holstein.pdf" />
+    <Content Include="Docs\Lastschrift\Thueringen.pdf" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -717,6 +799,9 @@
     <Content Include="Menue\Menu.ascx" />
     <Content Include="Start\Mvc.aspx" />
     <Content Include="Styles\defaultAH.css" />
+    <Content Include="Styles\default_BigIE6.css" />
+    <Content Include="Styles\js\images\arrows-ffffff.png" />
+    <Content Include="Styles\js\images\shadow.png" />
     <Content Include="Styles\js\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Styles\js\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Styles\js\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -736,13 +821,14 @@
     <Content Include="Styles\js\jquery.ui.base.css" />
     <Content Include="Styles\js\jquery.ui.core.css" />
     <Content Include="Styles\js\jquery.ui.theme.css" />
+    <Content Include="Styles\js\superfish.css" />
     <Content Include="Styles\RadGridStyle.css" />
-    <Content Include="Web.config">
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="NLog.config">
+    </None>
+    <None Include="NLog.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Customize\Admin\admin.css" />
@@ -750,26 +836,6 @@
     <Content Include="Customize\AppKroschke\Kroschke.css" />
     <Content Include="Customize\AppKroschke\KroschkeIE6.css" />
     <Content Include="Default.aspx" />
-    <Content Include="GAC\AjaxControlToolkit.dll" />
-    <Content Include="GAC\Aspose.Cells.dll" />
-    <Content Include="GAC\Aspose.Pdf.dll" />
-    <Content Include="GAC\Aspose.Words.dll" />
-    <Content Include="GAC\BusyBoxDotNet.dll" />
-    <Content Include="GAC\DBauer.Web.UI.WebControls.HierarGrid.dll" />
-    <Content Include="GAC\de\AjaxControlToolkit.resources.dll" />
-    <Content Include="GAC\dk.nita.saml20.dll" />
-    <Content Include="GAC\dsofile.dll" />
-    <Content Include="GAC\eWorld.UI.Compatibility.dll" />
-    <Content Include="GAC\eWorld.UI.dll" />
-    <Content Include="GAC\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="GAC\itextsharp.dll" />
-    <Content Include="GAC\NitobiControls.dll" />
-    <Content Include="GAC\SAP.Connector.dll" />
-    <Content Include="GAC\SmartSoft.PdfLibrary.dll" />
-    <Content Include="GAC\temp\AjaxControlToolkit.dll" />
-    <Content Include="GAC\WebControls.dll" />
-    <Content Include="GAC\WMDQryCln.dll" />
-    <Content Include="GAC\WMDWebLink32Client.dll" />
     <Content Include="Global.asax" />
     <Content Include="Info\ContactPage.aspx" />
     <Content Include="Info\Error.aspx" />
@@ -796,10 +862,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\Logistik\" />
-    <Folder Include="Images\Versand\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
@@ -813,8 +881,13 @@
       <Name>Base</Name>
     </ProjectReference>
   </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -822,6 +895,86 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_Admin Include="Admin\**\*.aspx;Admin\**\*.ascx;Admin\**\*.master;Admin\**\*.js;Admin\**\*.css;Admin\**\*.doc;Admin\**\*.pdf;Admin\**\*.xls;Admin\**\*.htm;Admin\**\*.asmx;Admin\**\*.htc;Admin\**\Templates\*.xml" />
+      <FilesForPackagingFromProject Include="%(_Admin.Identity)">
+        <DestinationRelativePath>Admin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+      <_Bin Include="bin\Admin.*;Applications\AppZulassungsdienst\Bin\AppZulassungsdienst.*" />
+      <FilesForPackagingFromProject Include="%(_Bin.Identity)">
+        <DestinationRelativePath>bin\%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+      <_AppZulassungsdienst Include="Applications\AppZulassungsdienst\**\*.aspx;Applications\AppZulassungsdienst\**\*.ascx;Applications\AppZulassungsdienst\**\*.master;Applications\AppZulassungsdienst\**\*.js;Applications\AppZulassungsdienst\**\*.css;Applications\AppZulassungsdienst\**\*.doc;Applications\AppZulassungsdienst\**\*.pdf;Applications\AppZulassungsdienst\**\*.xls;Applications\AppZulassungsdienst\**\*.htm;Applications\AppZulassungsdienst\**\*.asmx;Applications\AppZulassungsdienst\**\*.htc;Applications\AppZulassungsdienst\**\Templates\*.xml;Applications\AppZulassungsdienst\**\*.png;Applications\AppZulassungsdienst\**\*.asax" />
+      <FilesForPackagingFromProject Include="%(_AppZulassungsdienst.Identity)">
+        <DestinationRelativePath>Applications\AppZulassungsdienst\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <OnBeforePackageUsingManifest>AddCustomSkipRules</OnBeforePackageUsingManifest>
+  </PropertyGroup>
+  <Target Name="AddCustomSkipRules">
+    <ItemGroup>
+      <MsDeploySkipRules Include="SkipDeleteAppData">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>$(_Escaped_PackageTempDir)\\*.config</AbsolutePath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteBilderFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Bilder\\.*$</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteBilderFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Bilder\\.*$</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteLogsFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Logs\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteLogsFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Logs\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteTempFolder">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>dirPath</ObjectName>
+        <AbsolutePath>.*\\Temp\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+      <MsDeploySkipRules Include="SkipDeleteTempFiles">
+        <SkipAction>Delete</SkipAction>
+        <ObjectName>filePath</ObjectName>
+        <AbsolutePath>.*\\Temp\\.*</AbsolutePath>
+        <XPath>
+        </XPath>
+      </MsDeploySkipRules>
+    </ItemGroup>
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

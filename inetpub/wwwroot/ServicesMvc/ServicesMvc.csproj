@@ -2953,7 +2953,6 @@
     <Content Include="Views\Batcherfassung\Partial\GridUnitnumbers.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\DetailsFormReadOnly.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\Grid.cshtml" />
-    <Content Include="Views\Fahrzeuge\SperrenVerschieben.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\SperrenForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\VerschiebenForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\TextErfassenForm.cshtml" />
@@ -2990,7 +2989,6 @@
     <Content Include="Views\Finance\Versendungen\GridSumme.cshtml" />
     <Content Include="Views\Wfm\Durchlauf.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <Content Include="Views\Haendler\Partial\Common.cshtml" />
     <Content Include="Views\Haendler\Partial\DetailsForm.cshtml" />
@@ -3036,20 +3034,17 @@
     <Content Include="Views\ModellId\Partial\Common.cshtml" />
     <Content Include="Views\ModellId\Partial\Grid.cshtml" />
     <Content Include="Views\ModellId\Partial\DetailsForm.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportFahrzeugzulaeufe.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Suche.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Grid.cshtml" />
     <Content Include="Views\Finance\CarporteingaengeOhneEH\CarporteingaengeOhneEHGrid.cshtml" />
     <Content Include="Views\Finance\CarporteingaengeOhneEH\CarporteingaengeOhneEHSuche.cshtml" />
     <Content Include="Views\Finance\ReportCarporteingaengeOhneEH.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportTreuhandverwaltung.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\ValidationGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungKundenAuswahl.cshtml" />
-    <Content Include="Views\Fahrzeuge\FahrzeugvoravisierungExcelUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungReportsSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeKommentar.cshtml" />
@@ -3059,13 +3054,10 @@
     <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\FahrzeugvoravisierungSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportDispositionsliste.cshtml" />
     <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportZulaufEinsteuerung.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
-    <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\Common.cshtml" />
     <Content Include="Views\Batcherfassung\Verwaltung.cshtml" />
@@ -3085,7 +3077,6 @@
     <Content Include="Views\StatusEinsteuerung\Partial\Common.cshtml" />
     <Content Include="Views\StatusEinsteuerung\Partial\Suche.cshtml" />
     <Content Include="Views\StatusEinsteuerung\ReportStatusbericht.cshtml" />
-    <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateSearch.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateEdit.cshtml" />
@@ -3101,8 +3092,6 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf.cshtml" />
-    <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
@@ -3170,6 +3159,8 @@
     <Content Include="Views\Equi\Historie\Partial\StuecklistenGrid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Fin\Grid.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenEntsperren.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenEntsperren\Grid.cshtml" />
     <Content Include="Views\ZldPartner\DurchzufuehrendeZulassungen\AddPositionDialogForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Floorcheck\FloorcheckSuche.cshtml" />
@@ -3178,6 +3169,9 @@
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\Grid.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge\BemerkungErfassenAendernForm.cshtml" />
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

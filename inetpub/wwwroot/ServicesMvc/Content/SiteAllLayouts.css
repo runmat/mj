@@ -4,7 +4,7 @@
     background-color: #3d3d3d !important;
     min-height: 1560px;
 }
-@media (max-width: 1079px) {
+@media (max-width: 1279px) {
     .page-sidebar
     {
         min-height: 0px;
@@ -775,6 +775,13 @@ div.t-window {
 }
 .t-grid-error-alt {
     background-color: #f6e6e6!important;
+}
+
+.t-grid-selected.t-grid-error {
+    background-color: #FFF9EE!important;
+}
+.t-grid-selected-alt.t-grid-error-alt {
+    background-color: #F6F2E6!important;
 }
 
 .t-grid-confirmed {
