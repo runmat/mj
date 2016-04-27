@@ -53,14 +53,20 @@ namespace DocumentTools.Services
                 if (maintainLeadingZeros)
                     workbook.ConvertNumericData = false;
 
-                if (extension.ToLower() == ".csv")
+                switch (extension.ToLower())
                 {
-                    workbook.Open(excelFileName, separator);
-                }
-                else
-                {
-                    var csvStream = SpireXlsFactory.ConvertExcelToCsvStream(excelFileName, separator);
-                    workbook.Open(csvStream, separator);
+                    case ".csv":
+                        workbook.Open(excelFileName, separator);
+                        break;
+
+                    case ".xlsx":
+                        var csvStream = SpireXlsFactory.ConvertExcelToCsvStream(excelFileName, separator);
+                        workbook.Open(csvStream, separator);
+                        break;
+
+                    default:
+                        workbook.Open(excelFileName, FileFormatType.Default);
+                        break;
                 }
 
                 //Get the first worksheet in the workbook
@@ -100,6 +106,16 @@ namespace DocumentTools.Services
             return dataTable;
         }
 
+        public static DataTable ReadToDataTableRaw(string excelFileName, bool headerRowAvailable, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
+        {
+            var dataTable = ReadToDataTable(excelFileName, skipDataReformatting, separator, maintainLeadingZeros);
+
+            if (headerRowAvailable && dataTable.Rows.Count > 0)
+                dataTable.Rows.RemoveAt(0);
+
+            return dataTable;
+        }
+
         public IEnumerable<T> ReadToDataTable<T>(string excelFileName, string commaSeparatedAutoPropertyNamesToIgnore = "", Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
             where T : class, new()
         {
@@ -110,12 +126,6 @@ namespace DocumentTools.Services
             where T : class, new()
         {
             return ReadToDataTableInternal(excelFileName, headerRowAvailable, commaSeparatedAutoPropertyNamesToIgnore, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
-        }
-
-        public IEnumerable<T> ReadToDataTableWithFirstRowAsPropertyMapping<T>(string excelFileName, char separator = ';')
-            where T : class, new()
-        {
-            return ReadToDataTable(excelFileName, "", CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
         }
 
         public IEnumerable<object> ReadToDataTableForMappedUpload(string excelFileName, bool headerRowAvailable, Func<DataRow, object> createFromDataRow, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
@@ -132,10 +142,10 @@ namespace DocumentTools.Services
                 if (dataTable.Columns.Count == 0)
                     return new List<T>();
 
-                var rowToStart = headerRowAvailable ? 0 : -1;
+                var rowToStart = headerRowAvailable ? 1 : 0;
 
                 return dataTable.AsEnumerable()
-                            .Where(row => dataTable.Rows.IndexOf(row) > rowToStart)
+                            .Where(row => dataTable.Rows.IndexOf(row) >= rowToStart)
                             .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row, commaSeparatedAutoPropertyNamesToIgnore));
             }
             catch { return new List<T>(); }
