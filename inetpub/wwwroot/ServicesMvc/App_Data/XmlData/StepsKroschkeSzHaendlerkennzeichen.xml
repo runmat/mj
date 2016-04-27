@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dictionary>
-    <item>
+  <item>
+    <key>
+      <string>Haendlerkennzeichen</string>
+    </key>
+    <value>
+      <string>Händlerkennzeichen</string>
+    </value>
+  </item>
+  <item>
         <key>
             <string>Rechnungsdaten</string>
         </key>
@@ -15,14 +23,6 @@
       <value>
         <string>Halter</string>
       </value>
-    </item>
-    <item>
-        <key>
-            <string>Haendlerkennzeichen</string>
-        </key>
-        <value>
-            <string>Händlerkennzeichen</string>
-        </value>
     </item>
     <item>
         <key>

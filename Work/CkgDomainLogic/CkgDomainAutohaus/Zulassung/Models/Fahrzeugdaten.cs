@@ -21,6 +21,7 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _auftragsNr;
         private string _fahrgestellNr;
         private string _kennzeichen;
+        private int _kennzeichenMenge = 1;
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<KroschkeZulassungViewModel> GetZulassungViewModel { get; set; }
@@ -127,11 +128,26 @@ namespace CkgDomainLogic.Autohaus.Models
             set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
         }
 
+        [LocalizedDisplay(LocalizeConstants.Amount)]
+        [Required]
+        [Range(1.0, 1999.0)]
+        public int KennzeichenMenge
+        {
+            get { return _kennzeichenMenge; }
+            set { _kennzeichenMenge = value; }
+        }
+
         [LocalizedDisplay(LocalizeConstants.LicensePlateType)]
-        public string KennzeichenTyp { get; set; }
+        public string ErsatzKennzeichenTyp { get; set; }
 
         [XmlIgnore]
-        public List<SelectItem> KennzeichenTypen { get { return GetZulassungViewModel().Zulassung.KennzeichenTypen; } }
+        public List<SelectItem> ErsatzKennzeichenTypen { get { return GetZulassungViewModel().Zulassung.ErsatzKennzeichenTypen; } }
+
+        [LocalizedDisplay(LocalizeConstants.Service)]
+        public string HaendlerKennzeichenTyp { get; set; }
+
+        [XmlIgnore]
+        public List<SelectItem> HaendlerKennzeichenTypen { get { return GetZulassungViewModel().Zulassung.HaendlerKennzeichenTypen; } }
 
         public string GetSummaryString()
         {

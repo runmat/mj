@@ -169,11 +169,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         new SelectItem("Z9", Localize.DeliveryAddress + " 3")
                     };
             }
-
         }
 
         [XmlIgnore]
-        public List<SelectItem> KennzeichenTypen
+        public List<SelectItem> ErsatzKennzeichenTypen
         {
             get
             {
@@ -182,6 +181,21 @@ namespace CkgDomainLogic.Autohaus.Models
                     new SelectItem {Key = "8".PadLeft(18, '0'), Text = "Kennzeichen vorne"},
                     new SelectItem {Key = "801".PadLeft(18, '0'), Text = "Kennzeichen hinten"},
                     new SelectItem {Key = "800".PadLeft(18, '0'), Text = "Kennzeichen vorn und hinten"},
+                };
+            }
+        }
+
+        [XmlIgnore]
+        public List<SelectItem> HaendlerKennzeichenTypen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem {Key = "679".PadLeft(18, '0'), Text = "Händlerkennzeichen verlängern"},
+                    new SelectItem {Key = "574".PadLeft(18, '0'), Text = "Erneuerung der Kennzeichen"},
+                    new SelectItem {Key = "94".PadLeft(18, '0'), Text = "Fahrtenbuch (blau)"},
+                    new SelectItem {Key = "95".PadLeft(18, '0'), Text = "Nachweisheft - rote Kennzeichen (rosa)"},
                 };
             }
         }

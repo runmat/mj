@@ -8,18 +8,19 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormDropDownListFor(m => m.KennzeichenTyp, Model.KennzeichenTypen.ToSelectList(), new {@class = "m-wrap medium", col = "left" })
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "right" })
+        @Html.FormDropDownListFor(m => m.HaendlerKennzeichenTyp, Model.HaendlerKennzeichenTypen.ToSelectList(), new {@class = "m-wrap large" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap medium uppercase"},
+            postControlHtml:@<text>
+                                @Html.FormTextBoxFor(m => m.KennzeichenMenge, new { @class = "m-wrap xsmall" }, useRawTemplate:true)
+                             </text>)
+        
 
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase" })
 
-
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap large uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap large uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
-
     }
 
     <script type="text/javascript">

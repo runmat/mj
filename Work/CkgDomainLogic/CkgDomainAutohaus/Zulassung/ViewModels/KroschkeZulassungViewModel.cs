@@ -941,7 +941,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void GetSonderzulassungErsatzkennzeichen(Fahrzeugdaten model)
         {
-            model.KennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            model.ErsatzKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
         }
 
@@ -949,13 +949,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             SetFahrzeugdaten(model);
 
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.KennzeichenTyp;
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ErsatzKennzeichenTyp;
             Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
         }
 
         public void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
         {
-            model.KennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            model.ErsatzKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
         }
 
@@ -963,7 +963,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             SetFahrzeugdaten(model);
 
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.KennzeichenTyp;
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ErsatzKennzeichenTyp;
             Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
         }
 
@@ -977,7 +977,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
             Zulassung.Fahrzeugdaten.TuevAu = model.TuevAu;
-            Zulassung.Fahrzeugdaten.KennzeichenTyp = model.KennzeichenTyp;
+            Zulassung.Fahrzeugdaten.ErsatzKennzeichenTyp = model.ErsatzKennzeichenTyp;
             Zulassung.Fahrzeugdaten.Kennzeichen = model.Kennzeichen;
 
             // 20150826 MMA

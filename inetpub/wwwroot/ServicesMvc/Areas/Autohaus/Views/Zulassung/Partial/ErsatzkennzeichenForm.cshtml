@@ -8,7 +8,7 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormDropDownListFor(m => m.KennzeichenTyp, Model.KennzeichenTypen.ToSelectList(), new {@class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.ErsatzKennzeichenTyp, Model.ErsatzKennzeichenTypen.ToSelectList(), new {@class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "right" })
 
         @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase" })
@@ -19,7 +19,6 @@
 
         @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
-
     }
 
     <script type="text/javascript">
