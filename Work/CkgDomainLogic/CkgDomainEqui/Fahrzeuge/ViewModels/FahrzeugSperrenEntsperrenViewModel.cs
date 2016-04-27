@@ -120,7 +120,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             LoadFahrzeuge();
 
-            success = message.NotNullOrEmpty().ToLower().StartsWith("versandsperre geändert");
+            success = message.IsNullOrEmpty();
             var newFzgMitStatus = Fahrzeuge.Where(f => oldSelected.Contains(f.Fahrgestellnummer) && f.Gesperrt == sperren);
 
             if (success && FahrzeugSelektor.Auswahl.NotNullOrEmpty() == "ALLE" && newFzgMitStatus.Count() != oldSelected.Count())
