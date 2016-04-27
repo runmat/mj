@@ -11,11 +11,14 @@
         columns.XBound(c => c.ArchivId).Visible(false);
         columns.XBound(c => c.ObjectId).Visible(false);
         columns.XBound(c => c.Dokumentart);
+
         columns.XBound(c => c.Dateiname);
 
         columns.XBound(c => c.ObjectId).Filterable(false).Sortable(false).Title("").ClientTemplate(
                 "<a class='btn mini gray pdf tooltips a_btn_mini' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.ObjectId #>' ></a>"
             );
+        columns.XBound(c => c.CreateDate).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.TimeFormatted);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
