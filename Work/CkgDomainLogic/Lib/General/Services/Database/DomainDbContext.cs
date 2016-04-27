@@ -1125,50 +1125,25 @@ namespace CkgDomainLogic.General.Database.Services
             Delete
         }
 
-        public DbSet<Application> Applications { get; set; }
+        public List<Application> GetAllApplications()
+        {
+            return Database.SqlQuery<Application>("SELECT * FROM Application").ToListOrEmptyList();
+        }
 
         public DbSet<ApplicationCustomerRight> ApplicationCustomerRights { get; set; }
 
         public DbSet<ApplicationGroupRight> ApplicationGroupRights { get; set; }
 
-        public void AddApplicationCustomerRight(int appId, int customerId)
-        {
-            var newItem = ApplicationCustomerRights.Create();
-            newItem.AppID = appId;
-            newItem.CustomerID = customerId;
-            ApplicationCustomerRights.Add(newItem);
-        }
-
-        public void RemoveApplicationCustomerRight(int appId, int customerId)
-        {
-            var item = ApplicationCustomerRights.FirstOrDefault(acr => acr.AppID == appId && acr.CustomerID == customerId);
-            ApplicationCustomerRights.Remove(item);
-        }
-
-        public void AddApplicationGroupRight(int appId, int groupId)
-        {
-            var newItem = ApplicationGroupRights.Create();
-            newItem.AppID = appId;
-            newItem.GroupID = groupId;
-            ApplicationGroupRights.Add(newItem);
-        }
-
-        public void RemoveApplicationGroupRight(int appId, int groupId)
-        {
-            var item = ApplicationGroupRights.FirstOrDefault(acr => acr.AppID == appId && acr.GroupID == groupId);
-            ApplicationGroupRights.Remove(item);
-        }
-
         public void WriteApplicationCustomerRightBatchHistory(int appId, int customerId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
         {
             Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchCustomerAssignmentHistory (AppID,CustomerID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
-                    appId, customerId, aenderung, UserName, zeitstempel);
+                    appId, customerId, aenderung.ToString(), UserName, zeitstempel);
         }
 
         public void WriteApplicationGroupRightBatchHistory(int appId, int groupId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
         {
             Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchGroupAssignmentHistory (AppID,GroupID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
-                    appId, groupId, aenderung, UserName, zeitstempel);
+                    appId, groupId, aenderung.ToString(), UserName, zeitstempel);
         }
 
         #endregion

@@ -17,14 +17,18 @@ namespace CkgDomainLogic.Admin.ViewModels
         [XmlIgnore]
         public List<Application> Applications
         {
-            get { return PropertyCacheGet(() => DataService.GetApplications()); }
+            get { return PropertyCacheGet(() => new List<Application>()); }
+            private set { PropertyCacheSet(value); }
         }
 
-        public AppBatchZuordnungSelektor AppBatchZuordnungSelektor
+        [XmlIgnore]
+        public List<Application> ApplicationsFiltered
         {
-            get { return PropertyCacheGet(() => new AppBatchZuordnungSelektor()); }
-            set { PropertyCacheSet(value); }
+            get { return PropertyCacheGet(() => Applications); }
+            private set { PropertyCacheSet(value); }
         }
+
+        public int SelectedAppId { get; set; }
 
         [XmlIgnore]
         public List<AppZuordnung> AppZuordnungen
@@ -40,9 +44,13 @@ namespace CkgDomainLogic.Admin.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public int AppZuordnungenAssignedCount { get { return AppZuordnungen.Count(z => z.IsAssigned); } }
+
         public void DataInit()
         {
-            PropertyCacheClear(this, m => m.Applications);
+            DataService.InitSqlData();
+
+            Applications = DataService.Applications.Where(a => a.AppInMenu).OrderBy(a => a.AppFriendlyName).ToListOrEmptyList();
 
             DataMarkForRefresh();
         }
@@ -52,11 +60,18 @@ namespace CkgDomainLogic.Admin.ViewModels
             PropertyCacheClear(this, m => m.AppZuordnungenFiltered);
         }
 
-        public void LoadAppZuordnungen()
+        public void LoadAppZuordnungen(int appId)
         {
-            AppZuordnungen = DataService.GetAppZuordnungen(AppBatchZuordnungSelektor);
+            SelectedAppId = appId;
+
+            AppZuordnungen = DataService.GetAppZuordnungen(SelectedAppId);
 
             DataMarkForRefresh();
+        }
+
+        public void FilterApplications(string filterValue, string filterProperties)
+        {
+            ApplicationsFiltered = Applications.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         public void FilterAppZuordnungen(string filterValue, string filterProperties)
@@ -82,12 +97,9 @@ namespace CkgDomainLogic.Admin.ViewModels
         {
             message = DataService.SaveAppZuordnungen(AppZuordnungen);
 
-            var success = message.IsNullOrEmpty();
+            LoadAppZuordnungen(SelectedAppId);
 
-            if (success)
-                LoadAppZuordnungen();
-
-            return success;
+            return message.IsNullOrEmpty();
         }
     }
 }

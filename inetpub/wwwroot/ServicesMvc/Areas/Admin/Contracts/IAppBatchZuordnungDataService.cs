@@ -7,9 +7,11 @@ namespace CkgDomainLogic.Admin.Contracts
 {
     public interface IAppBatchZuordnungDataService  : ICkgGeneralDataService
     {
-        List<Application> GetApplications();
+        List<Application> Applications { get; }
 
-        List<AppZuordnung> GetAppZuordnungen(AppBatchZuordnungSelektor selektor);
+        void InitSqlData();
+
+        List<AppZuordnung> GetAppZuordnungen(int appId);
 
         string SaveAppZuordnungen(List<AppZuordnung> zuordnungen);
     }

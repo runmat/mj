@@ -2,18 +2,18 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Admin_ApplicationAssignment <small></small></h3>
 
-<div class="span-alert-placeholder">
-    @Html.SpanAlert("Message")
-</div>
+@Html.SpanAlert("Message")
 
 @using (Html.FormSearchBox())
 {
-     @Html.Partial("Partial/Suche", Model.AppBatchZuordnungSelektor)
+    <div id="divGrid1">
+        @Html.Partial("Partial/GridApplications", Model)
+    </div>
 }
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>
+    <div id="divGrid2"></div>
 }
 
 <script type="text/javascript">
@@ -21,19 +21,18 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridApplications");
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
     }
 
-    function ShowAppZuordnungen() {
-
-        FormPreparePrivateAjax();
-
+    function SelectApplication(appId) {
         $.ajax({
             type: "POST",
             url: "ShowAppZuordnungen",
+            data: { appId: appId },
             loadingShow: true,
             success: function (result) {
 
@@ -50,15 +49,33 @@
 
     function ShowAppZuordnungenSearchResult(result) {
         SearchFormHide();
-        $("#divGrid").html(result);
+        $("#divGrid2").html(result);
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridAppZuordnungen");
 
-        $("#divGrid").slideDown();
+        $("#divGrid2").slideDown();
     }
 
-    function GetGrid() {
+    function GetGrid1() {
+        return $("#GridApplications").data("tGrid");
+    }
+
+    function OnDataBound_GridApplications() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridApplications() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridApplications() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetGrid2() {
         return $("#GridAppZuordnungen").data("tGrid");
     }
 
@@ -102,7 +119,7 @@
             loadingShow: true,
             success: function (result) {
                 GridAppZuordnungen_MultiSelectUpdate(result.allSelectionCount);
-                GetGrid().ajaxRequest();
+                GetGrid2().ajaxRequest();
             }
         });
     }

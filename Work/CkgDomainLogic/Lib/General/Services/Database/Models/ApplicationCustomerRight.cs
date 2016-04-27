@@ -12,6 +12,6 @@ namespace CkgDomainLogic.General.Database.Models
         [Key, Column(Order = 1)]
         public int AppID { get; set; }
 
-        public bool AppIsMvcDefaultFavorite { get; set; }
+        public bool? AppIsMvcDefaultFavorite { get; set; }
     }
 }

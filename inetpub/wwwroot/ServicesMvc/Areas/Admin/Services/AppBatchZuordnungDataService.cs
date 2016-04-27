@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using CkgDomainLogic.Admin.Contracts;
 using CkgDomainLogic.Admin.Models;
@@ -11,44 +13,62 @@ using GeneralTools.Models;
 
 namespace CkgDomainLogic.Admin.Services
 {
-    public class AppBatchZuordnungDataService : CkgGeneralDataService, IAppBatchZuordnungDataService 
+    public class AppBatchZuordnungDataService : CkgGeneralDataService, IAppBatchZuordnungDataService
     {
+        private DomainDbContext _dbContext;
+
+        private DomainDbContext DbContext
+        {
+            get { return _dbContext ?? (_dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName)); }
+        }
+
+        private List<Application> _applications;
+        public List<Application> Applications { get { return (_applications ?? (_applications = DbContext.GetAllApplications())); } }
+
+        private List<Customer> _customers;
+        private List<Customer> Customers { get { return (_customers ?? (_customers = DbContext.GetAllCustomer())); } }
+
+        private ObservableCollection<UserGroup> UserGroups { get { return DbContext.UserGroups.Local; } }
+
+        private ObservableCollection<ApplicationCustomerRight> ApplicationCustomerRights { get { return DbContext.ApplicationCustomerRights.Local; } }
+
+        private ObservableCollection<ApplicationGroupRight> ApplicationGroupRights { get { return DbContext.ApplicationGroupRights.Local; } }
+
+        public void InitSqlData()
+        {
+            DbContext.UserGroups.Load();
+            DbContext.ApplicationCustomerRights.Load();
+            DbContext.ApplicationGroupRights.Load();
+        }
+
         public List<Application> GetApplications()
         {
-            using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
-            {
-                return dbContext.Applications.OrderBy(a => a.AppFriendlyName).ToListOrEmptyList();
-            }
-        } 
+            return DbContext.GetAllApplications();
+        }
 
-        public List<AppZuordnung> GetAppZuordnungen(AppBatchZuordnungSelektor selektor)
+        public List<AppZuordnung> GetAppZuordnungen(int appId)
         {
             var liste = new List<AppZuordnung>();
 
-            using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
+            var anwendung = Applications.FirstOrDefault(a => a.AppID == appId);
+
+            if (anwendung != null)
             {
-                var anwendung = dbContext.Applications.FirstOrDefault(a => a.AppID == selektor.SelectedAppId);
-
-                if (anwendung != null)
+                foreach (var kundenItem in Customers)
                 {
-                    var kunden = dbContext.GetAllCustomer();
+                    var kunde = kundenItem;
 
-                    foreach (var kundenItem in kunden)
+                    var gruppen = UserGroups.Where(ug => ug.CustomerID == kunde.CustomerID).ToListOrEmptyList();
+
+                    var gruppenZuordnungen = ApplicationGroupRights.Where(agr => agr.AppID == anwendung.AppID).ToListOrEmptyList();
+
+                    foreach (var gruppenItem in gruppen)
                     {
-                        var kunde = kundenItem;
+                        var gruppe = gruppenItem;
 
-                        var gruppen = dbContext.UserGroups.Where(ug => ug.CustomerID == kunde.CustomerID);
+                        var gruppenZuordnungExists = gruppenZuordnungen.Any(z => z.GroupID == gruppe.GroupID);
 
-                        var gruppenZuordnungen = dbContext.ApplicationGroupRights.Where(agr => agr.AppID == anwendung.AppID);
-
-                        foreach (var gruppenItem in gruppen)
-                        {
-                            var gruppe = gruppenItem;
-
-                            var gruppenZuordnungExists = gruppenZuordnungen.Any(z => z.GroupID == gruppe.GroupID);
-
-                            liste.Add(new AppZuordnung(anwendung, kunde, gruppe, gruppenZuordnungExists));
-                        }
+                        liste.Add(new AppZuordnung(anwendung, kunde, gruppe, gruppenZuordnungExists));
                     }
                 }
             }
@@ -64,46 +84,30 @@ namespace CkgDomainLogic.Admin.Services
             {
                 var zeitstempel = DateTime.Now;
 
-                using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
+                foreach (var item in zuordnungen)
                 {
-                    foreach (var item in zuordnungen)
+                    var zuordnung = item;
+
+                    var kundenZuordnungen = ApplicationCustomerRights.Where(acr => acr.AppID == zuordnung.AppID).ToListOrEmptyList();
+                    var kundenZuordnungExists = kundenZuordnungen.Any(z => z.CustomerID == zuordnung.CustomerID);
+                    var gruppenZuordnungen = ApplicationGroupRights.Where(agr => agr.AppID == zuordnung.AppID).ToListOrEmptyList();
+                    var gruppenZuordnungExists = gruppenZuordnungen.Any(z => z.GroupID == zuordnung.GroupID);
+
+                    if (zuordnung.IsAssigned)
                     {
-                        var zuordnung = item;
+                        if (!kundenZuordnungExists)
+                            AddApplicationCustomerRightWithHistory(zuordnung.AppID, zuordnung.CustomerID, zeitstempel);
 
-                        var kundenZuordnungen = dbContext.ApplicationCustomerRights.Where(acr => acr.AppID == zuordnung.AppID);
-                        var kundenZuordnungExists = kundenZuordnungen.Any(z => z.CustomerID == zuordnung.CustomerID);
-                        var gruppenZuordnungen = dbContext.ApplicationGroupRights.Where(agr => agr.AppID == zuordnung.AppID);
-                        var gruppenZuordnungExists = gruppenZuordnungen.Any(z => z.GroupID == zuordnung.GroupID);
-
-                        if (zuordnung.IsAssigned)
-                        {
-                            if (!kundenZuordnungExists)
-                            {
-                                dbContext.AddApplicationCustomerRight(zuordnung.AppID, zuordnung.CustomerID);
-                                dbContext.WriteApplicationCustomerRightBatchHistory(zuordnung.AppID, zuordnung.CustomerID,
-                                    zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
-                            }
-
-                            if (!gruppenZuordnungExists)
-                            {
-                                dbContext.AddApplicationGroupRight(zuordnung.AppID, zuordnung.GroupID);
-                                dbContext.WriteApplicationGroupRightBatchHistory(zuordnung.AppID, zuordnung.GroupID,
-                                    zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
-                            }
-                        }
-                        else
-                        {
-                            if (gruppenZuordnungExists)
-                            {
-                                dbContext.RemoveApplicationGroupRight(zuordnung.AppID, zuordnung.GroupID);
-                                dbContext.WriteApplicationGroupRightBatchHistory(zuordnung.AppID, zuordnung.GroupID,
-                                    zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Delete);
-                            }
-                        }
+                        if (!gruppenZuordnungExists)
+                            AddApplicationGroupRightWithHistory(zuordnung.AppID, zuordnung.GroupID, zeitstempel);
                     }
-
-                    dbContext.SaveChanges();
+                    else if (gruppenZuordnungExists)
+                    {
+                        RemoveApplicationGroupRightWithHistory(zuordnung.AppID, zuordnung.GroupID, zeitstempel);
+                    }
                 }
+
+                DbContext.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -111,6 +115,53 @@ namespace CkgDomainLogic.Admin.Services
             }
 
             return erg;
+        }
+
+        private void AddApplicationCustomerRightWithHistory(int appId, int customerId, DateTime zeitstempel)
+        {
+            ApplicationCustomerRights.Add(new ApplicationCustomerRight { AppID = appId, CustomerID = customerId });
+
+            DbContext.WriteApplicationCustomerRightBatchHistory(appId, customerId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
+
+            var childApps = Applications.Where(a => a.AppParent == appId).ToListOrEmptyList();
+            foreach (var appChild in childApps)
+            {
+                ApplicationCustomerRights.Add(new ApplicationCustomerRight { AppID = appChild.AppID, CustomerID = customerId });
+
+                DbContext.WriteApplicationCustomerRightBatchHistory(appChild.AppID, customerId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
+            }
+        }
+
+        private void AddApplicationGroupRightWithHistory(int appId, int groupId, DateTime zeitstempel)
+        {
+            ApplicationGroupRights.Add(new ApplicationGroupRight { AppID = appId, GroupID = groupId });
+
+            DbContext.WriteApplicationGroupRightBatchHistory(appId, groupId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
+
+            var childApps = Applications.Where(a => a.AppParent == appId).ToListOrEmptyList();
+            foreach (var appChild in childApps)
+            {
+                ApplicationGroupRights.Add(new ApplicationGroupRight { AppID = appChild.AppID, GroupID = groupId });
+
+                DbContext.WriteApplicationCustomerRightBatchHistory(appChild.AppID, groupId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Insert);
+            }
+        }
+
+        private void RemoveApplicationGroupRightWithHistory(int appId, int groupId, DateTime zeitstempel)
+        {
+            var item = ApplicationGroupRights.FirstOrDefault(acr => acr.AppID == appId && acr.GroupID == groupId);
+            ApplicationGroupRights.Remove(item);
+
+            DbContext.WriteApplicationGroupRightBatchHistory(appId, groupId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Delete);
+
+            var childApps = Applications.Where(a => a.AppParent == appId).ToListOrEmptyList();
+            foreach (var appChild in childApps)
+            {
+                var childItem = ApplicationGroupRights.FirstOrDefault(acr => acr.AppID == appChild.AppID && acr.GroupID == groupId);
+                ApplicationGroupRights.Remove(childItem);
+
+                DbContext.WriteApplicationGroupRightBatchHistory(appChild.AppID, groupId, zeitstempel, DomainDbContext.ApplicationBatchZuordnungHistoryChangeType.Delete);
+            }
         }
     }
 }

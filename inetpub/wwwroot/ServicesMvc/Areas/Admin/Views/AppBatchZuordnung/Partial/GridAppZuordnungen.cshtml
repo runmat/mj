@@ -1,5 +1,18 @@
 ﻿@using CkgDomainLogic.Admin.Models
 
+<style>
+    
+    .t-grouping-row td, .t-grouping-row p {
+        font-weight: bold;
+        background-color: #f3f3f3;
+    }
+    
+    .t-grid-selected-alt {
+        background-color: #dff0d8!important;
+    }
+    
+</style>
+
 @{ var gridName = "GridAppZuordnungen"; }
 
 @(Html.XTelerik()
@@ -8,30 +21,28 @@
     .XAjaxDataBinding("AppZuordnungenAjaxBinding", "AppBatchZuordnung")
     .Columns(columns =>
     {
-        columns.XBound(c => c.AppID);
-        columns.XBound(c => c.AppName);
         columns.XBound(c => c.AppFriendlyName);
         columns.XBound(c => c.AppUrl);
         columns.XBound(c => c.AppTechType);
         columns.XBound(c => c.AppDescription);
-        columns.XBound(c => c.Customername);
+        columns.XBound(c => c.Customername).Visible(false);
         columns.XBound(c => c.GroupName);
 
         columns.XBound(c => c.IsAssigned)
             .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsAssigned) { #> checked <# } #> value='<#= data.ZuordnungID #>' onchange='OnSelectionChange_GridAppZuordnungen($(this))' />")
-            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridAppZuordnungen_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridAppZuordnungen_OnAllSelectionChange($(this).is(\":checked\"))' />" + Localize.Assigned)
             .Sortable(false).Filterable(false);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
-    .XPageSize(10)
-    .Groupable(g => g.Enabled(true).Groups(gr => gr.Add(grp => grp.CustomerID)))
-    .XSort(sortOrder =>
+    .XPageSize(5)
+    .Groupable(g => g.Enabled(true).Visible(false).Groups(gr => gr.Add(grp => grp.Customername)))
+    .XSort(sortOrder => sortOrder.Add(c => c.GroupName).Ascending())
+    .ToolBar(commands =>
     {
-        sortOrder.Add(c => c.Customername).Ascending();
-        sortOrder.Add(c => c.GroupName).Ascending();
+        commands.FilteredDataCommand("ExportAppZuordnungenFilteredExcel", "AppBatchZuordnung");
+        commands.FilteredDataCommand("ExportAppZuordnungenFilteredPDF", "AppBatchZuordnung");
     })
-    .XToolBar("AppBatchZuordnung")
 )
 
 <div class="form-actions">

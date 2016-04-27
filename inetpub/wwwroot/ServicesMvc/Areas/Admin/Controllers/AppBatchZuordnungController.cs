@@ -3,9 +3,12 @@ using System.Web.Mvc;
 using CkgDomainLogic.Admin.Contracts;
 using CkgDomainLogic.Admin.Models;
 using CkgDomainLogic.Admin.ViewModels;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Database.Models;
+using CkgDomainLogic.General.Services;
+using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
@@ -22,13 +25,6 @@ namespace ServicesMvc.Admin.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, appBatchZuordnungDataService);
-
-            InitModelStatics();
-        }
-
-        void InitModelStatics()
-        {
-            AppBatchZuordnungSelektor.GetViewModel = GetViewModel<AppBatchZuordnungViewModel>;
         }
 
         [CkgApplication(AdminLevel.Master)]
@@ -39,21 +35,26 @@ namespace ServicesMvc.Admin.Controllers
             return View(ViewModel);
         }
 
-        [HttpPost]
-        public ActionResult LoadAppZuordnungen(AppBatchZuordnungSelektor model)
+        [GridAction]
+        public ActionResult ApplicationsAjaxBinding()
         {
-            ViewModel.AppBatchZuordnungSelektor = model;
-
-            if (ModelState.IsValid)
-                ViewModel.LoadAppZuordnungen();
-
-            return PersistablePartialView("Partial/Suche", ViewModel.AppBatchZuordnungSelektor);
+            return View(new GridModel(ViewModel.ApplicationsFiltered));
         }
 
         [HttpPost]
-        public ActionResult ShowAppZuordnungen()
+        public ActionResult FilterGridApplications(string filterValue, string filterColumns)
         {
-            return PartialView("Partial/Grid", ViewModel);
+            ViewModel.FilterApplications(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult ShowAppZuordnungen(int appId)
+        {
+            ViewModel.LoadAppZuordnungen(appId);
+
+            return PartialView("Partial/GridAppZuordnungen", ViewModel);
         }
 
         [GridAction]
@@ -78,7 +79,7 @@ namespace ServicesMvc.Admin.Controllers
             else
                 ViewModel.ChangeZuordnung(id, isChecked);
 
-            return new EmptyResult();
+            return Json(new { allSelectionCount = ViewModel.AppZuordnungenAssignedCount });
         }
 
         [HttpPost]
@@ -94,9 +95,36 @@ namespace ServicesMvc.Admin.Controllers
 
         #region Export
 
-        protected override IEnumerable GetGridExportData()
+        public ActionResult ExportApplicationsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            return ViewModel.AppZuordnungenFiltered;
+            var dt = ViewModel.ApplicationsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Applications, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportApplicationsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ApplicationsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Applications, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportAppZuordnungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AppZuordnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.ApplicationAssignments, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportAppZuordnungenFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AppZuordnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.ApplicationAssignments, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         #endregion

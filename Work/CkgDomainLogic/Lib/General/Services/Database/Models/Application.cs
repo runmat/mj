@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.General.Database.Models
 {
@@ -11,17 +12,22 @@ namespace CkgDomainLogic.General.Database.Models
         [Key]
         public int AppID { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Application)]
         public string AppName { get; set; }
 
         [SelectListText]
+        [LocalizedDisplay(LocalizeConstants.Name)]
         public string AppFriendlyName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Type)]
         public string AppType { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Url)]
         public string AppURL { get; set; }
 
         public bool AppInMenu { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Comment)]
         public string AppComment { get; set; }
 
         public int AppParent { get; set; }
@@ -40,8 +46,10 @@ namespace CkgDomainLogic.General.Database.Models
 
         public int? MaxLevelsPerGroup { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Technology)]
         public string AppTechType { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Description)]
         public string AppDescription { get; set; }
     }
 }

@@ -8,10 +8,10 @@ namespace CkgDomainLogic.Admin.Models
     {
         public int AppID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Applicationname1)]      
+        [LocalizedDisplay(LocalizeConstants.Application)]      
         public string AppName { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Applicationname2)]
+        [LocalizedDisplay(LocalizeConstants.Name)]
         public string AppFriendlyName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Url)]
