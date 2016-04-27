@@ -691,6 +691,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Versandgrund = s.VERS_GRUND;
                         d.Kilometerstand = s.KM_STAND;
                         d.Kreditnummer = s.PAID.TrimStart('0');
+                        d.HaendlerNummer = s.KUNNR_BEIM_AG;
                     }));
             }
         }
