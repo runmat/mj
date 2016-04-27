@@ -137,7 +137,7 @@ namespace ServicesMvc.DataConverter.Controllers
                 success = true,
                 message = "ok",
                 uploadFileName = file.FileName,
-                uploadFileNameCsv = ViewModel.MappingModel.SourceFile.FilenameCsv
+                uploadFileNameInternal = ViewModel.MappingModel.SourceFile.FilenameInternal
             }, "text/plain");
         }
 
