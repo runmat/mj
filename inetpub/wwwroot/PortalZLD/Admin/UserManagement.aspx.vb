@@ -1402,34 +1402,34 @@ Partial Public Class UserManagement
                     If _customer.CustomerPasswordRules.DontSendEmail Or Not _User.HighestAdminLevel = AdminLevel.None Or cbxOrganizationAdmin.Checked Then   ' Wenn Passwort nicht per Mail txtFelder abfragen
                         If txtPassword.Text = String.Empty Then
                             lblErrorSave.Text = "Bitte geben Sie für den neuen Benutzer ein Passwort an!"
-                            Exit Sub
                         ElseIf txtPassword.Text <> txtConfirmPassword.Text Then
                             lblErrorSave.Text = "Die eingegebenen Passwörter stimmen nicht überein!"
-                            Exit Sub
+                        Else
+                            blnSuccess = True
                         End If
 
                         strPwd = txtPassword.Text
                     Else    ' Sonst nach Kundeneinstellungen ein neues Passwort generieren
-                        strPwd = _customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
+                        blnSuccess = True
 
+                        strPwd = _customer.CustomerPasswordRules.CreateNewPasswort(lblErrorSave.Text)
 
                         bInitialPswd = True
                     End If
+                Else
+                    blnSuccess = True
                 End If
 
                 ' Wenn Passwortänderung
-                If Not (strPwd = String.Empty) Then
+                If blnSuccess AndAlso Not (strPwd = String.Empty) Then
                     Dim pword As String = strPwd
                     Dim pwordconfirm As String = strPwd
 
                     If Not _User.ChangePasswordNew("", pword, pwordconfirm, m_User.UserName, True, bInitialPswd) Then
                         txtUserID.Text = _User.UserID.ToString
                         lblErrorSave.Text = _User.ErrorMessage
-                    Else
-                        blnSuccess = True
+                        blnSuccess = False
                     End If
-                Else
-                    blnSuccess = True
                 End If
 
                 If txtDomainUser.Text.Trim().Length > 0 Then
