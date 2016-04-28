@@ -283,6 +283,10 @@
             loadingShow: true,
             success: function (result) {
                 GridShoppingCart_MultiSelectUpdate(result.allSelectionCount);
+
+                _gridShoppingCart_MultiSelectItemCount = result.allSelectionCount;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+
                 FilterGrid("GridShoppingCart");
             }
         });
@@ -297,9 +301,9 @@
         }
 
         if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
-            $(".shopping-cart-item-selection-count").hide();
+            $(".shopping-cart-item-selection-count").addClass("hide");
         } else {
-            $(".shopping-cart-item-selection-count").show();
+            $(".shopping-cart-item-selection-count").removeClass("hide");
         }
         
         $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
