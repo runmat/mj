@@ -54,7 +54,9 @@ namespace CkgDomainLogic.Admin.Services
 
             if (anwendung != null)
             {
-                foreach (var kundenItem in Customers)
+                var kunden = Customers.Where(c => !c.Master);
+
+                foreach (var kundenItem in kunden)
                 {
                     var kunde = kundenItem;
 
