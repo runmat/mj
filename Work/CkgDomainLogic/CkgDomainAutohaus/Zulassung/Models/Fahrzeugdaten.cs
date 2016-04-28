@@ -34,7 +34,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        [Required]
+        [RequiredConditional]
         public string FahrgestellNr
         {
             get { return _fahrgestellNr.NotNullOrEmpty().ToUpper(); }
@@ -129,7 +129,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.Amount)]
-        [Required]
+        [RequiredConditional]
         [Range(1.0, 1999.0)]
         public int KennzeichenMenge
         {
@@ -169,6 +169,8 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 if (Kennzeichen.IsNullOrEmpty())
                     yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Kennzeichen" });
+                if (FahrgestellNr.IsNullOrEmpty())
+                    yield return new ValidationResult(Localize.FieldIsRequired, new[] { "FahrgestellNr" });
             }
         }
     }
