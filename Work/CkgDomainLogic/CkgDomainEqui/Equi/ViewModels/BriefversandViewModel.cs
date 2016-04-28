@@ -529,7 +529,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void SelectFahrzeuge(bool select, Predicate<Fahrzeugbrief> filter, out int allSelectionCount, out int allCount, out int allFoundCount, out bool mustBeConfirmed)
         {
             mustBeConfirmed = false;
-            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f =>
+            {
+                if (FahrzeugeFiltered.Contains(f))
+                    f.IsSelected = select;
+            });
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count;
