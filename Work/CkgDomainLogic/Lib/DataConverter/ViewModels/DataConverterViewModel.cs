@@ -222,13 +222,8 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var tmpFilenameOrig = GetUploadPathTemp() + @"\" + nameSaved + extension;
-            var tmpFilenameCsv = GetUploadPathTemp() + @"\" + nameSaved + ".csv";
-
-            ConvertToCsvIfNeeded(tmpFilenameOrig, tmpFilenameCsv);
-
             MappingModel.SourceFile.FilenameOrig = fileName;
-            MappingModel.SourceFile.FilenameCsv = tmpFilenameCsv;
+            MappingModel.SourceFile.FilenameInternal = GetUploadPathTemp() + @"\" + nameSaved + extension;
 
             _fileContainsHeadings = MappingModel.SourceFile.FirstRowIsCaption;
 
@@ -407,33 +402,30 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
         private void ReadSourceFile()
         {
-            if (string.IsNullOrEmpty(MappingModel.SourceFile.FilenameCsv))
+            if (string.IsNullOrEmpty(MappingModel.SourceFile.FilenameInternal))
             {
                 MappingModel.SourceFile.Fields = new List<Field>();
                 return;
             }
 
-            var csvObj = CsvReaderFactory.GetCsvObj(MappingModel.SourceFile.FilenameCsv, MappingModel.SourceFile.FirstRowIsCaption, MappingModel.SourceFile.Delimiter);
+            var tblData = ExcelDocumentFactory.ReadToDataTableRaw(MappingModel.SourceFile.FilenameInternal, false, MappingModel.SourceFile.Delimiter, true, true);
 
-            var fieldCount = csvObj.FieldCount;
-            var headers = csvObj.GetFieldHeaders();
             var fields = new List<Field>();
 
-            for (var i = 0; i < headers.Length; i++)
+            for (var i = 0; i < tblData.Columns.Count; i++)
             {
-                if (!MappingModel.SourceFile.FirstRowIsCaption)  // Falls keine Überschriften, Spaltennamen selbst erstellen..
-                    headers[i] = "Spalte" + i;
-
-                fields.Add(new Field(headers[i]));
+                if (MappingModel.SourceFile.FirstRowIsCaption)
+                    fields.Add(new Field(tblData.Rows[0][i].ToString()));
+                else
+                    fields.Add(new Field("Spalte" + i));  // Falls keine Überschriften, Spaltennamen selbst erstellen..
             }
 
             // Daten jeder Column zuordnen...
-            while (csvObj.ReadNextRecord())
+            for (var i = (MappingModel.SourceFile.FirstRowIsCaption ? 1 : 0); i < tblData.Rows.Count; i++)
             {
-                for (var j = 0; j < fieldCount; j++)
+                for (var j = 0; j < tblData.Columns.Count; j++)
                 {
-                    var value = csvObj[j];
-                    fields[j].Records.Add(value);
+                    fields[j].Records.Add(tblData.Rows[i][j].ToString());
                 }
             }
 
@@ -602,21 +594,6 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             }
 
             return liste;
-        }
-
-        public string ConvertToCsvIfNeeded(string filenameOrigFull, string filenameCsvFull, char delimeter = ';')
-        {
-            MappingModel.SourceFile.FilenameOrig = filenameOrigFull;
-            MappingModel.SourceFile.FilenameCsv = filenameCsvFull;
-
-            var extension = Path.GetExtension(filenameOrigFull).ToLowerAndNotEmpty();
-            if (extension == ".xls" || extension == ".xlsx")
-            {
-                SpireXlsFactory.ConvertExcelToCsv(filenameOrigFull, filenameCsvFull, delimeter);
-                File.Delete(filenameOrigFull);
-            }
-
-            return filenameCsvFull;
         }
 
         /// <summary>
