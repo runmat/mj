@@ -16,6 +16,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Action { get; set; }
 
 
+        [LocalizedDisplay(LocalizeConstants.Client)]
+        public string AuftragGeber { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string Fahrgestellnummer { get; set; }
 
