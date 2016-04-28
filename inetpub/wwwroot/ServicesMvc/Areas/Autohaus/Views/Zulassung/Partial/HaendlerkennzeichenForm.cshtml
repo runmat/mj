@@ -14,13 +14,15 @@
                                 @Html.FormTextBoxFor(m => m.KennzeichenMenge, new { @class = "m-wrap xsmall" }, useRawTemplate:true)
                              </text>)
         
-
-
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap large uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap large uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
         @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
+
+        <div class="hide">
+            @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+        </div>
     }
 
     <script type="text/javascript">

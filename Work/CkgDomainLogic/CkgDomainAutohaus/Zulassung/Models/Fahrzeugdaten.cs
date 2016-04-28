@@ -172,6 +172,12 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (FahrgestellNr.IsNullOrEmpty())
                     yield return new ValidationResult(Localize.FieldIsRequired, new[] { "FahrgestellNr" });
             }
+
+            if (vm.SonderzulassungsMode == SonderzulassungsMode.Haendlerkennzeichen)
+            {
+                if (Kennzeichen.IsNullOrEmpty())
+                    yield return new ValidationResult(Localize.FieldIsRequired, new[] { "Kennzeichen" });
+            }
         }
     }
 }

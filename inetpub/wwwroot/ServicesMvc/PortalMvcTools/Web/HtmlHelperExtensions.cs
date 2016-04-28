@@ -350,6 +350,7 @@ namespace PortalMvcTools.Web
             }
 
             controlHtmlAttributesDict["onkeypress"] = "return KennzeichenEnforceCleanUp();";
+            controlHtmlAttributesDict["autocomplete "] = "off";
 
             return controlHtmlAttributesDict;
         }
