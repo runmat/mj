@@ -162,6 +162,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetParamFahrzeugAkte(string finid)
         {
+            return;
+
             ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeuge(new FahrzeugAkteBestandSelektor { FinId = finid.NotNullOrEmpty("-") }).FirstOrDefault();
             if (ParamFahrzeugAkte == null)
                 return;
@@ -1472,15 +1474,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
 
-            InitZulassung(Zulassung);
+            //InitZulassung(Zulassung);
 
-            InitKundenauswahlWarenkorb();
+            //InitKundenauswahlWarenkorb();
             
-            Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
-            Adresse.Laender = LaenderList;
+            //Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
+            //Adresse.Laender = LaenderList;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
 
-            PartnerDataService.MarkForRefreshAdressen();
+            //PartnerDataService.MarkForRefreshAdressen();
 
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
