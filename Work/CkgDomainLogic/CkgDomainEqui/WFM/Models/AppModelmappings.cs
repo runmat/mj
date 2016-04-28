@@ -88,6 +88,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.ZustimmungEmpfaenger = s.ZUSTIMM_EMPF;
                         d.ZustimmungUser = s.ZUSTIMM_USER;
                         d.ZustimmungZlsDatum = s.ZUSTIMMUNG_ZLS;
+                        
                     }));
             }
         }
@@ -125,6 +126,9 @@ namespace CkgDomainLogic.WFM.Models
                         d.Dateiname = s.DATEINAME;
                         d.Dokumentart = s.AR_OBJECT;
                         d.ObjectId = s.OBJECT_ID;
+                        d.Time = s.UZEIT;
+                        d.CreateDate = s.ERFDT;
+
                     }));
             }
         }
