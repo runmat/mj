@@ -22,6 +22,7 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen2;
         private string _wunschkennzeichen3;
         private string _kennzeichen;
+        private int _zulassungsartMenge = 1;
 
         public bool ModusAbmeldung { get; set; }
 
@@ -41,6 +42,13 @@ namespace CkgDomainLogic.Autohaus.Models
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Amount)]
+        public int ZulassungsartMenge
+        {
+            get { return _zulassungsartMenge; }
+            set { _zulassungsartMenge = value; }
+        }
 
         public Material Zulassungsart
         {

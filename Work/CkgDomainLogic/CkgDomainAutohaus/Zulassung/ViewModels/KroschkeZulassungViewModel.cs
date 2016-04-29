@@ -627,7 +627,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void LoadZulassungsAbmeldeArten(string kreis = "", bool forShoppingCartSave = false)
         {
-            PropertyCacheClear(this, m => m.ZulassungsAbmeldearten);
+            PropertyCacheClear(this, m => m.ZulassungsVorgangsarten);
 
             if (Zulassung.Halter == null)
                 return;
@@ -635,7 +635,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
 
             var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
-            ZulassungsAbmeldearten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
+            ZulassungsVorgangsarten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
 
             Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
             Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich));
@@ -955,7 +955,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
         {
-            model.ErsatzKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            model.HaendlerKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            model.KennzeichenMenge = Zulassung.Zulassungsdaten.ZulassungsartMenge;
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
         }
 
@@ -963,7 +964,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             SetFahrzeugdaten(model);
 
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ErsatzKennzeichenTyp;
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.HaendlerKennzeichenTyp;
+            Zulassung.Zulassungsdaten.ZulassungsartMenge = model.KennzeichenMenge;
             Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
         }
 
@@ -1055,7 +1057,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> ZulassungsAbmeldearten
+        public List<Material> ZulassungsVorgangsarten
         {
             get { return PropertyCacheGet(() => new List<Material>()); }
             private set { PropertyCacheSet(value); }
@@ -1064,13 +1066,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Material> Zulassungsarten
         {
-            get { return ZulassungsAbmeldearten.Where(z => !z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose }); }
+            get { return ZulassungsVorgangsarten.Where(z => !z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose }); }
         }
 
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten
         {
-            get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose, IstAbmeldung = true }); }
+            get { return ZulassungsVorgangsarten.Where(z => z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose, IstAbmeldung = true }); }
         }
 
         [XmlIgnore, ScriptIgnore]
@@ -1463,6 +1465,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             SetZulassungsdaten(Zulassung.Zulassungsdaten, null);
             GetSonderzulassungErsatzkennzeichen(Zulassung.Fahrzeugdaten);
+            GetSonderzulassungHaendlerkennzeichen(Zulassung.Fahrzeugdaten);
             TryGetSeparateNecessaryDocumentsForSonderzulassung();
         }
 

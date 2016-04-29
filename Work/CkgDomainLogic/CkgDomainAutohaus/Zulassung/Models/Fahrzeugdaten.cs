@@ -151,13 +151,56 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string GetSummaryString()
         {
-            var s = string.Format("{0}: {1}", Localize.OrderNumber, AuftragsNr);
-            s += string.Format("<br/>{0}: {1}", Localize.VehicleType, Fahrzeugart.Beschreibung);
-            s += string.Format("<br/>{0}: {1}", Localize.VIN, FahrgestellNr);
-            s += string.Format("<br/>{0}: {1}", Localize.SellerAbbreviation, VerkaeuferKuerzel);
-            s += string.Format("<br/>{0}: {1}", Localize.ZB2, Zb2Nr);
-            s += string.Format("<br/>{0}: {1}", Localize.CostCenter, Kostenstelle);
-            s += string.Format("<br/>{0}: {1}", Localize.OrderCode, BestellNr);
+            var s = AuftragsNr.PrependIfNotNull(string.Format("{0}: ", Localize.AhZulassungReferenceNo));
+
+            const string mask = "<br/>{0}: ";
+            s += Fahrzeugart.Beschreibung.PrependIfNotNull(string.Format(mask, Localize.VehicleType));
+            s += FahrgestellNr.PrependIfNotNull(string.Format(mask, Localize.VIN));
+            s += VerkaeuferKuerzel.PrependIfNotNull(string.Format(mask, Localize.AhZulassungSalesman));
+            s += Zb2Nr.PrependIfNotNull(string.Format(mask, Localize.ZB2));
+            s += BestellNr.PrependIfNotNull(string.Format(mask, Localize.AhZulassungOrderNo));
+            s += Kostenstelle.PrependIfNotNull(string.Format(mask, Localize.AhZulassungCostcenter));
+
+            return s;
+        }
+
+        public string GetSummaryStringErsatzkennzeichen()
+        {
+            const string mask = "<br/>{0}: ";
+            var vm = GetZulassungViewModel();
+
+            var s = AuftragsNr.PrependIfNotNull(string.Format("{0}: ", Localize.AhZulassungReferenceNo));
+
+            var kk = vm.Zulassung.ErsatzKennzeichenTypen.FirstOrDefault(k => k.Key == vm.Zulassung.Zulassungsdaten.ZulassungsartMatNr);
+            if (kk != null)
+                s += kk.Text.PrependIfNotNull("<br/>");
+
+            s += vm.Zulassung.Zulassungsdaten.Kennzeichen.PrependIfNotNull(string.Format(mask, Localize.LicenseNo));
+
+            s += VerkaeuferKuerzel.PrependIfNotNull(string.Format(mask, Localize.AhZulassungSalesman));
+            s += BestellNr.PrependIfNotNull(string.Format(mask, Localize.AhZulassungOrderNo));
+            s += Kostenstelle.PrependIfNotNull(string.Format(mask, Localize.AhZulassungCostcenter));
+
+            return s;
+        }
+
+        public string GetSummaryStringHaendlerkennzeichen()
+        {
+            const string mask = "<br/>{0}: ";
+            var vm = GetZulassungViewModel();
+
+            var s = AuftragsNr.PrependIfNotNull(string.Format("{0}: ", Localize.AhZulassungReferenceNo));
+
+            var kk = vm.Zulassung.HaendlerKennzeichenTypen.FirstOrDefault(k => k.Key == vm.Zulassung.Zulassungsdaten.ZulassungsartMatNr);
+            if (kk != null)
+                s += kk.Text.PrependIfNotNull("<br/>");
+
+            s += vm.Zulassung.Zulassungsdaten.ZulassungsartMenge.ToString().PrependIfNotNull(string.Format(mask, Localize.Amount));
+            s += vm.Zulassung.Zulassungsdaten.Kennzeichen.PrependIfNotNull(string.Format(mask, Localize.LicenseNo));
+
+            s += VerkaeuferKuerzel.PrependIfNotNull(string.Format(mask, Localize.AhZulassungSalesman));
+            s += BestellNr.PrependIfNotNull(string.Format(mask, Localize.AhZulassungOrderNo));
+            s += Kostenstelle.PrependIfNotNull(string.Format(mask, Localize.AhZulassungCostcenter));
 
             return s;
         }
