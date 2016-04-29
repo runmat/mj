@@ -101,7 +101,9 @@ namespace SapORM.Models
 
 			public int? ANZ_GES { get; set; }
 
-			public int? ANZ_STD_LE_10 { get; set; }
+			public int? ANZ_STD_LE_03 { get; set; }
+
+			public int? ANZ_STD_04_10 { get; set; }
 
 			public int? ANZ_STD_11_20 { get; set; }
 
@@ -111,7 +113,9 @@ namespace SapORM.Models
 
 			public int? ANZ_STD_GT_40 { get; set; }
 
-			public int? ANZ_KLAER_LE_10 { get; set; }
+			public int? ANZ_KLAER_LE_03 { get; set; }
+
+			public int? ANZ_KLAER_04_10 { get; set; }
 
 			public int? ANZ_KLAER_11_20 { get; set; }
 
@@ -121,7 +125,9 @@ namespace SapORM.Models
 
 			public int? ANZ_KLAER_GT_40 { get; set; }
 
-			public int? ANZ_ALLE_LE_10 { get; set; }
+			public int? ANZ_ALLE_LE_03 { get; set; }
+
+			public int? ANZ_ALLE_04_10 { get; set; }
 
 			public int? ANZ_ALLE_11_20 { get; set; }
 
@@ -146,17 +152,20 @@ namespace SapORM.Models
 
 						DURCHSCHNITT_DAUER = string.IsNullOrEmpty(row["DURCHSCHNITT_DAUER"].ToString()) ? null : (decimal?)row["DURCHSCHNITT_DAUER"],
 						ANZ_GES = string.IsNullOrEmpty(row["ANZ_GES"].ToString()) ? null : (int?)row["ANZ_GES"],
-						ANZ_STD_LE_10 = string.IsNullOrEmpty(row["ANZ_STD_LE_10"].ToString()) ? null : (int?)row["ANZ_STD_LE_10"],
+						ANZ_STD_LE_03 = string.IsNullOrEmpty(row["ANZ_STD_LE_03"].ToString()) ? null : (int?)row["ANZ_STD_LE_03"],
+						ANZ_STD_04_10 = string.IsNullOrEmpty(row["ANZ_STD_04_10"].ToString()) ? null : (int?)row["ANZ_STD_04_10"],
 						ANZ_STD_11_20 = string.IsNullOrEmpty(row["ANZ_STD_11_20"].ToString()) ? null : (int?)row["ANZ_STD_11_20"],
 						ANZ_STD_21_30 = string.IsNullOrEmpty(row["ANZ_STD_21_30"].ToString()) ? null : (int?)row["ANZ_STD_21_30"],
 						ANZ_STD_31_40 = string.IsNullOrEmpty(row["ANZ_STD_31_40"].ToString()) ? null : (int?)row["ANZ_STD_31_40"],
 						ANZ_STD_GT_40 = string.IsNullOrEmpty(row["ANZ_STD_GT_40"].ToString()) ? null : (int?)row["ANZ_STD_GT_40"],
-						ANZ_KLAER_LE_10 = string.IsNullOrEmpty(row["ANZ_KLAER_LE_10"].ToString()) ? null : (int?)row["ANZ_KLAER_LE_10"],
+						ANZ_KLAER_LE_03 = string.IsNullOrEmpty(row["ANZ_KLAER_LE_03"].ToString()) ? null : (int?)row["ANZ_KLAER_LE_03"],
+						ANZ_KLAER_04_10 = string.IsNullOrEmpty(row["ANZ_KLAER_04_10"].ToString()) ? null : (int?)row["ANZ_KLAER_04_10"],
 						ANZ_KLAER_11_20 = string.IsNullOrEmpty(row["ANZ_KLAER_11_20"].ToString()) ? null : (int?)row["ANZ_KLAER_11_20"],
 						ANZ_KLAER_21_30 = string.IsNullOrEmpty(row["ANZ_KLAER_21_30"].ToString()) ? null : (int?)row["ANZ_KLAER_21_30"],
 						ANZ_KLAER_31_40 = string.IsNullOrEmpty(row["ANZ_KLAER_31_40"].ToString()) ? null : (int?)row["ANZ_KLAER_31_40"],
 						ANZ_KLAER_GT_40 = string.IsNullOrEmpty(row["ANZ_KLAER_GT_40"].ToString()) ? null : (int?)row["ANZ_KLAER_GT_40"],
-						ANZ_ALLE_LE_10 = string.IsNullOrEmpty(row["ANZ_ALLE_LE_10"].ToString()) ? null : (int?)row["ANZ_ALLE_LE_10"],
+						ANZ_ALLE_LE_03 = string.IsNullOrEmpty(row["ANZ_ALLE_LE_03"].ToString()) ? null : (int?)row["ANZ_ALLE_LE_03"],
+						ANZ_ALLE_04_10 = string.IsNullOrEmpty(row["ANZ_ALLE_04_10"].ToString()) ? null : (int?)row["ANZ_ALLE_04_10"],
 						ANZ_ALLE_11_20 = string.IsNullOrEmpty(row["ANZ_ALLE_11_20"].ToString()) ? null : (int?)row["ANZ_ALLE_11_20"],
 						ANZ_ALLE_21_30 = string.IsNullOrEmpty(row["ANZ_ALLE_21_30"].ToString()) ? null : (int?)row["ANZ_ALLE_21_30"],
 						ANZ_ALLE_31_40 = string.IsNullOrEmpty(row["ANZ_ALLE_31_40"].ToString()) ? null : (int?)row["ANZ_ALLE_31_40"],

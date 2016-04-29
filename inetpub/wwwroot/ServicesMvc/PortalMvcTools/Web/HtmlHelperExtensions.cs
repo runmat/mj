@@ -355,7 +355,7 @@ namespace PortalMvcTools.Web
             return controlHtmlAttributesDict;
         }
 
-        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
+        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -372,6 +372,8 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
             };

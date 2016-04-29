@@ -465,6 +465,9 @@
                 setTimeout(function() {
                     grid.pageTo(page);
                     $("#" + gridName).trigger('filter_all_columns');
+
+                    if (typeof(result.allSelected) !== "undefined")
+                        eval("OnPostFilterPrivate_" + gridName + "(" + result.allSelected + ")");
                 }, 500);
             }
         });
@@ -713,6 +716,16 @@
             uniformRadioEnable: function () {
                 $(this).removeAttr("disabled");
                 $(this).closest("div.radio").removeClass("disabled");
+            },
+
+            uniformCheckerDisable: function () {
+                $(this).attr("disabled", "");
+                $(this).closest("div.checker").addClass("disabled");
+            },
+
+            uniformCheckerEnable: function () {
+                $(this).removeAttr("disabled");
+                $(this).closest("div.checker").removeClass("disabled");
             },
 
             setTooltip: function(tooltipText, placement) {

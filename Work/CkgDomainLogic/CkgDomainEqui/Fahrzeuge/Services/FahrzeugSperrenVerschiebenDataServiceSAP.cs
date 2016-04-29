@@ -150,7 +150,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             Z_DPM_REM_READ_VERSSPERR_01.Init(SAP);
 
-            Z_DPM_REM_READ_VERSSPERR_01.SetImportParameter_I_LAND_CODE_ZF(SAP, landCode);
+            if (landCode.IsNotNullOrEmpty())
+                Z_DPM_REM_READ_VERSSPERR_01.SetImportParameter_I_LAND_CODE_ZF(SAP, landCode);
 
             if (gesperrte != null)
                 if (gesperrte.GetValueOrDefault())
@@ -165,11 +166,26 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public string FahrzeugeVersendungenSperren(bool sperren, List<FahrzeugVersand> fahrzeuge)
         {
+            var agDict = fahrzeuge.GroupBy(f => f.AuftragGeber).ToDictionary(k => k.Key, k => fahrzeuge.Where(f => f.AuftragGeber == k.Key).ToListOrEmptyList());
+
+            var returnMessage = "";
+
+            agDict.ToListOrEmptyList().ForEach(ag =>
+            {
+                var agReturnMessage = FahrzeugeVersendungenSperrenForAg(sperren, ag.Key, ag.Value);
+                var success = agReturnMessage.NotNullOrEmpty().ToLower().StartsWith("versandsperre geändert");
+                if (!success)
+                    returnMessage += string.Format("SAP Meldung für AG '{0}': {1}; ", ag.Key, agReturnMessage);
+            });
+
+            return returnMessage;
+        }
+
+        string FahrzeugeVersendungenSperrenForAg(bool sperren, string ag, List<FahrzeugVersand> agFahrzeuge)
+        {
             Z_DPM_REM_CHANGE_VERSSPERR_01.Init(SAP);
 
-            Z_DPM_REM_CHANGE_VERSSPERR_01.SetImportParameter_I_KUNNR_AG(SAP, LogonContext.KundenNr.ToSapKunnr());
-
-            //Z_DPM_REM_CHANGE_VERSSPERR_01.SetImportParameter_I_RDEALER(SAP, fahrzeuge.First().HaendlerNummer);
+            Z_DPM_REM_CHANGE_VERSSPERR_01.SetImportParameter_I_KUNNR_AG(SAP, ag.ToSapKunnr());
 
             if (sperren)
                 Z_DPM_REM_CHANGE_VERSSPERR_01.SetImportParameter_I_VSPERR_SET(SAP, "X");
@@ -178,7 +194,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             var impList = Z_DPM_REM_CHANGE_VERSSPERR_01.GT_FIN.GetImportList(SAP);
 
-            fahrzeuge.ForEach(f => impList.Add(new Z_DPM_REM_CHANGE_VERSSPERR_01.GT_FIN { CHASSIS_NUM = f.Fahrgestellnummer }));
+            agFahrzeuge.ForEach(f => impList.Add(new Z_DPM_REM_CHANGE_VERSSPERR_01.GT_FIN { CHASSIS_NUM = f.Fahrgestellnummer }));
 
             SAP.ApplyImport(impList);
 

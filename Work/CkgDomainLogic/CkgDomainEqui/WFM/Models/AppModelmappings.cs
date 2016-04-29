@@ -88,6 +88,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.ZustimmungEmpfaenger = s.ZUSTIMM_EMPF;
                         d.ZustimmungUser = s.ZUSTIMM_USER;
                         d.ZustimmungZlsDatum = s.ZUSTIMMUNG_ZLS;
+                        
                     }));
             }
         }
@@ -125,6 +126,9 @@ namespace CkgDomainLogic.WFM.Models
                         d.Dateiname = s.DATEINAME;
                         d.Dokumentart = s.AR_OBJECT;
                         d.ObjectId = s.OBJECT_ID;
+                        d.Time = s.UZEIT;
+                        d.CreateDate = s.ERFDT;
+
                     }));
             }
         }
@@ -199,19 +203,22 @@ namespace CkgDomainLogic.WFM.Models
 
                         d.AnzGes = s.ANZ_GES.ToString();
 
-                        d.AnzStdLe10 = s.ANZ_STD_LE_10.ToString();
+                        d.AnzStdLe03 = s.ANZ_STD_LE_03.ToString();
+                        d.AnzStd0410 = s.ANZ_STD_04_10.ToString();
                         d.AnzStd1120 = s.ANZ_STD_11_20.ToString();
                         d.AnzStd2130 = s.ANZ_STD_21_30.ToString();
                         d.AnzStd3140 = s.ANZ_STD_31_40.ToString();
                         d.AnzStdGt40 = s.ANZ_STD_GT_40.ToString();
 
-                        d.AnzKlaerLe10 = s.ANZ_KLAER_LE_10.ToString();
+                        d.AnzKlaerLe03 = s.ANZ_KLAER_LE_03.ToString();
+                        d.AnzKlaer0410 = s.ANZ_KLAER_04_10.ToString();
                         d.AnzKlaer1120 = s.ANZ_KLAER_11_20.ToString();
                         d.AnzKlaer2130 = s.ANZ_KLAER_21_30.ToString();
                         d.AnzKlaer3140 = s.ANZ_KLAER_31_40.ToString();
                         d.AnzKlaerGt40 = s.ANZ_KLAER_GT_40.ToString();
 
-                        d.AnzAlleLe10 = s.ANZ_ALLE_LE_10.ToString();
+                        d.AnzAlleLe03 = s.ANZ_ALLE_LE_03.ToString();
+                        d.AnzAlle0410 = s.ANZ_ALLE_04_10.ToString();
                         d.AnzAlle1120 = s.ANZ_ALLE_11_20.ToString();
                         d.AnzAlle2130 = s.ANZ_ALLE_21_30.ToString();
                         d.AnzAlle3140 = s.ANZ_ALLE_31_40.ToString();
@@ -243,6 +250,52 @@ namespace CkgDomainLogic.WFM.Models
                         d.DurchlaufzeitStunden = s.DURCHLAUFZEIT_STUNDEN;
                         d.DurchlaufzeitTage = s.DURCHLAUFZEIT_TAGE;
                         d.AnlageDatum = s.ANLAGEDATUM;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_RECHERCHE_PROT_01.GT_OUT, WfmRechercheprotokoll> Z_DPM_READ_RECHERCHE_PROT_01_GT_OUT_To_WfmRechercheprotokoll
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_RECHERCHE_PROT_01.GT_OUT, WfmRechercheprotokoll>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KennungAnsprechpartner = s.KENNUNG_AP;
+                        d.Name = s.NAME;
+                        d.Telefon = s.TELNR;
+                        d.TelefonNrNichtVergeben = s.TEL_NICHT_VERG.XToBool();
+                        d.EmailAdresse = s.EMAIL;
+                        d.Ansprechpartner = s.AP_PARTNER;
+
+                        d.Versuch1.Datum = s.DATUM_1;
+                        d.Versuch1.User = s.USER_1;
+                        d.Versuch1.Zb1Vorhanden = s.ZB1_KNZ_1.XToBool();
+                        d.Versuch1.Zb2Vorhanden = s.ZB2_KNZ_1.XToBool();
+                        d.Versuch1.KennzeichenVorne = s.KENNZ_VORH_1.XToBool();
+                        d.Versuch1.KennzeichenHinten = s.KENNZ_VORH_H1.XToBool();
+                        d.Versuch1.KennzeichenEntwertet = s.KENNZ_ENTWERTET_1.XToBool();
+                        d.Versuch1.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_1.XToBool();
+                        d.Versuch1.VeVorhanden = s.VE_VORH_1.XToBool();
+                        d.Versuch1.NichtErreicht = s.NICHT_ERREICHT_1.XToBool();
+                        d.Versuch1.PrueftUndMeldetSich = s.PRUE_MELD_SICH_1.XToBool();
+                        d.Versuch1.GaHatUnterlagen = s.GA_HAT_UNTERLAG_1.XToBool();
+                        d.Versuch1.Vermerk = s.VERMERK;
+
+                        d.Versuch2.Datum = s.DATUM_2;
+                        d.Versuch2.User = s.USER_2;
+                        d.Versuch2.Zb1Vorhanden = s.ZB1_KNZ_2.XToBool();
+                        d.Versuch2.Zb2Vorhanden = s.ZB2_KNZ_2.XToBool();
+                        d.Versuch2.KennzeichenVorne = s.KENNZ_VORH_2.XToBool();
+                        d.Versuch2.KennzeichenHinten = s.KENNZ_VORH_H2.XToBool();
+                        d.Versuch2.KennzeichenEntwertet = s.KENNZ_ENTWERTET_2.XToBool();
+                        d.Versuch2.KennzeichenDiebstahl = s.KENNZ_DIEBSTAHL_2.XToBool();
+                        d.Versuch2.VeVorhanden = s.VE_VORH_2.XToBool();
+                        d.Versuch2.NichtErreicht = s.NICHT_ERREICHT_2.XToBool();
+                        d.Versuch2.PrueftUndMeldetSich = s.PRUE_MELD_SICH_2.XToBool();
+                        d.Versuch2.GaHatUnterlagen = s.GA_HAT_UNTERLAG_2.XToBool();
+                        d.Versuch2.Vermerk = s.VERMERK_2;
                     }));
             }
         }
