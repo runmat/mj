@@ -31,13 +31,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
     public class KroschkeZulassungViewModel : CkgBaseViewModel
     {
         [XmlIgnore, ScriptIgnore]
-        public IZulassungDataService ZulassungDataService { get { return CacheGet<IZulassungDataService>(); } }
+        public IZulassungDataService ZulassungDataService => CacheGet<IZulassungDataService>();
 
         [XmlIgnore, ScriptIgnore]
-        public IFahrzeugAkteBestandDataService FahrzeugAkteBestandDataService { get { return CacheGet<IFahrzeugAkteBestandDataService>(); } }
+        public IFahrzeugAkteBestandDataService FahrzeugAkteBestandDataService => CacheGet<IFahrzeugAkteBestandDataService>();
 
         [XmlIgnore, ScriptIgnore]
-        public IPartnerDataService PartnerDataService { get { return CacheGet<IPartnerDataService>(); } }
+        public IPartnerDataService PartnerDataService => CacheGet<IPartnerDataService>();
 
         [ScriptIgnore]
         public Vorgang Zulassung { get; set; }
@@ -47,7 +47,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.VIN)]
-        public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
+        public string FIN => Zulassung.Fahrzeugdaten.FahrgestellNr;
 
         #region Für Massenzulassung
 
@@ -72,7 +72,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public SonderzulassungsMode SonderzulassungsMode { get; set; }
         [XmlIgnore]
-        public bool ModusSonderzulassung { get { return SonderzulassungsMode != SonderzulassungsMode.None; } }
+        public bool ModusSonderzulassung => SonderzulassungsMode != SonderzulassungsMode.None;
 
 
         public bool ModusPartnerportal { get; set; }
@@ -120,7 +120,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
                     else if (ModusSonderzulassung && SonderzulassungsMode != SonderzulassungsMode.Default)
-                        xmlFileName = string.Format("StepsKroschkeSz{0}.xml", SonderzulassungsMode.ToString("F").ToLowerFirstUpper());
+                        xmlFileName = $"StepsKroschkeSz{SonderzulassungsMode.ToString("F").ToLowerFirstUpper()}.xml";
 
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
 
@@ -150,10 +150,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
 
         [XmlIgnore, ScriptIgnore]
-        public string FirstStepPartialViewName
-        {
-            get { return string.Format("{0}", StepKeys[0]); }
-        }
+        public string FirstStepPartialViewName => $"{StepKeys[0]}";
 
         [XmlIgnore, ScriptIgnore]
         public string SaveErrorMessage { get; set; }
@@ -275,7 +272,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     var fahrzeugAkteBestand = item;
 
                     var fzgArt = Fahrzeugarten.FirstOrDefault(a => a.Beschreibung.NotNullOrEmpty().ToUpper() == fahrzeugAkteBestand.FahrzeugArt.NotNullOrEmpty().ToUpper());
-                    if (fzgArt != null && !string.IsNullOrEmpty(fzgArt.Wert))
+                    if (!string.IsNullOrEmpty(fzgArt?.Wert))
                         fahrzeugAkteBestand.ZulassungFahrzeugartId = fzgArt.Wert;
                     else
                         fahrzeugAkteBestand.ZulassungFahrzeugartId = Zulassung.Fahrzeugdaten.FahrzeugartId;
@@ -471,7 +468,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Halter
 
         [XmlIgnore, ScriptIgnore]
-        public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
+        public List<Land> LaenderList => ZulassungDataService.Laender;
 
         [XmlIgnore, ScriptIgnore]
         public List<Adresse> HalterAdressen
@@ -512,7 +509,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Adresse adr;
 
             int id;
-            if (Int32.TryParse(key, out id))
+            if (int.TryParse(key, out id))
                 adr = HalterAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
             else
                 adr = HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
@@ -538,7 +535,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
 
                 if (Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber.IsNullOrEmpty())
-                    Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = string.Format("{0}{1}", Zulassung.Halter.Adresse.Name1, (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
+                    Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = $"{Zulassung.Halter.Adresse.Name1}{(Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2)}";
             }
 
             string zulassungsKreis;
@@ -743,7 +740,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = model;
 
             // Kontoinhaber aus Adresse übernehmen
-            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = string.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = $"{model.Name1}{(model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : "")}";
 
             // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
             if (Zulassung.BankAdressdaten.Cpdkunde
@@ -1008,7 +1005,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return;
 
             var szModeAsText = SonderzulassungsMode.ToString("F").ToLowerFirstUpper();
-            var localizeKeys = generalConf.GetConfigAllServerVal("Autohaus", string.Format("Autohaus_Sonderzul_Docs_{0}", szModeAsText));
+            var localizeKeys = generalConf.GetConfigAllServerVal("Autohaus", $"Autohaus_Sonderzul_Docs_{szModeAsText}");
             if (localizeKeys.IsNullOrEmpty())
                 return;
 
@@ -1028,7 +1025,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             for (var i = 0; i < anzFahrzeuge; i++)
             {
                 var maxId = FinList.Max(f => f.FinID).ToInt(0);
-                var kreisKz = (string.IsNullOrEmpty(Zulassung.Zulassungsdaten.Zulassungskreis) ? "" : string.Format("{0}-", Zulassung.Zulassungsdaten.Zulassungskreis));
+                var kreisKz = (string.IsNullOrEmpty(Zulassung.Zulassungsdaten.Zulassungskreis) ? "" : $"{Zulassung.Zulassungsdaten.Zulassungskreis}-");
                 FinList.Add(new FahrzeugAkteBestand
                 {
                     FinID = (maxId + 1).ToString("D3"),
