@@ -23,14 +23,15 @@ namespace CkgDomainLogic.Leasing.Services
 
         public List<AbweichungWiedereingang> LoadWiedereingaengeFromSap(AbweichWiedereingangSelektor selektor)
         {
-                Z_DAD_CHANGES_WIEDEING_01.Init(SAP);
-                Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_AG(SAP,LogonContext.KundenNr.ToSapKunnr());
-                Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_QMART(SAP, "Z2");
+            Z_DAD_CHANGES_WIEDEING_01.Init(SAP);
+            Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_AG(SAP,LogonContext.KundenNr.ToSapKunnr());
+            Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_QMART(SAP, "Z2");
 
-            var importList =
-                AppModelMappings.Z_DAD_CHANGES_WIEDEING_01_IT_RG_ERDAT_From_AbweichungWiedereingangSelektor.CopyBack(
-                    new List<AbweichWiedereingangSelektor> {selektor});
-            SAP.ApplyImport(importList);
+            if (selektor.SelectionRange.StartDate != null)
+                Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_ERDAT_VON(SAP, selektor.SelectionRange.StartDate);
+
+            if (selektor.SelectionRange.EndDate != null)
+                Z_DAD_CHANGES_WIEDEING_01.SetImportParameter_I_ERDAT_BIS(SAP, selektor.SelectionRange.EndDate);
 
             SAP.Execute();
 

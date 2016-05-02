@@ -27,6 +27,16 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_AG", value);
 		}
 
+		public static void SetImportParameter_I_ERDAT_BIS(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_BIS", value);
+		}
+
+		public static void SetImportParameter_I_ERDAT_VON(ISapDataService sap, DateTime? value)
+		{
+			sap.SetImportParameter("I_ERDAT_VON", value);
+		}
+
 		public static void SetImportParameter_I_QMART(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_QMART", value);
