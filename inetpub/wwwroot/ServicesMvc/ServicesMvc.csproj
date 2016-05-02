@@ -3172,6 +3172,9 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
