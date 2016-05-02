@@ -149,9 +149,9 @@ namespace ServicesMvc.Controllers
             string sperrvermerk = "";
             bool mustBeConfirmed;
             if (vin.IsNullOrEmpty())
-                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount);
+                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount, out mustBeConfirmed);
             else
-                sperrvermerk = BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount);
+                sperrvermerk = BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount, out mustBeConfirmed);
 
             var allSelected = BriefversandViewModel.FahrzeugeFiltered.Count ==
                   BriefversandViewModel.FahrzeugeFiltered.ToListOrEmptyList().Count(x => x.IsSelected);
