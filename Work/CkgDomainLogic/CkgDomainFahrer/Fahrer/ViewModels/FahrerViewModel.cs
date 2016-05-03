@@ -126,7 +126,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
 
         [LocalizedDisplay(LocalizeConstants.Order)]
-        public string SelectedFahrerAuftragsKey { get; set; }
+        public string SelectedFahrerAuftragsKey { get; set; }   
 
 
         public string AuftragsFahrtTypen { get { return string.Format("H,{0};R,{1}", Localize._FahrtHin, Localize._FahrtRueck); } }

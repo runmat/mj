@@ -79,7 +79,7 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Auftragsauswahl()
+        public ActionResult FreieAuftraege()
         {
             ViewModel.LoadFreieAuftraege();
 
@@ -343,6 +343,12 @@ namespace ServicesMvc.Controllers
         public ActionResult FahrerProtokolleAjaxBinding()
         {
             return View(new GridModel(ViewModel.FahrerProtokolleFiltered));
+        }
+
+        [GridAction]
+        public ActionResult FreieAuftraegeAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.FreieAuftraegeFiltered));
         }
 
         [HttpPost]

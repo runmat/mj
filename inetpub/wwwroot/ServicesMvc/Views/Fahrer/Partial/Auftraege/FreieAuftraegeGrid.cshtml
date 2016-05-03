@@ -6,8 +6,18 @@
 @(Html.Telerik()
     .Grid<FahrerAuftrag>()
     .Name(gridName)
+
     .XAjaxDataBinding("FahrerAuftraegeAjaxBinding", "Fahrer")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.WunschLieferDatum);
+        columns.Bound(c => c.PlzOrtStart);
+        columns.Bound(c => c.PlzOrtZiel);
+        columns.Bound(c => c.PlzOrtRueck);
+
+    }
+
+    )
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
