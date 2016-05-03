@@ -597,11 +597,11 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieInfoVermieter> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieInfoVermieter
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieVermieterInfo> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieVermieterInfo
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieInfoVermieter>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieVermieterInfo>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {

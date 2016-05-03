@@ -1,19 +1,44 @@
 ﻿using System.Collections.Generic;
 using CkgDomainLogic.Archive.Models;
 using CkgDomainLogic.Equi.Models;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
     public interface IEquiHistorieDataService
     {
-        EquiHistorieSuchparameter Suchparameter { get; set; }
+        #region Standard
 
-        List<EquiHistorieInfo> HistorieInfos { get; }
+        List<EquiHistorieInfo> GetHistorieInfos(EquiHistorieSuchparameter suchparameter);
 
-        void MarkForRefreshHistorieInfos();
+        EquiHistorie GetHistorieDetail(string fin, int appId);
 
-        EquiHistorie GetEquiHistorie(string fahrgestellnummer, int appId);
+        #endregion
+
+        #region Vermieter
+
+        List<EquiHistorieVermieterInfo> GetHistorieVermieterInfos(EquiHistorieSuchparameter suchparameter);
+
+        EquiHistorieVermieter GetHistorieVermieterDetail(string fin);
+
+        byte[] GetHistorieVermieterAsPdf(string fin);
+
+        #region Fahrzeug Anforderungen
+
+        List<FahrzeugAnforderung> GetFahrzeugAnforderungen(string fin);
+
+        void SaveFahrzeugAnforderung(FahrzeugAnforderung item);
+
+        List<SelectItem> GetFahrzeugAnforderungenDocTypes();
+
+        #endregion
+
+        #endregion
+
+        #region Common
 
         List<EasyAccessArchiveDefinition> GetArchiveDefinitions();
+
+        #endregion
     }
 }

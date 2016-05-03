@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -28,7 +27,7 @@ namespace CkgDomainLogic.Equi.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if ((String.IsNullOrEmpty(Kennzeichen)) && (String.IsNullOrEmpty(FahrgestellNr)) && (String.IsNullOrEmpty(BriefNr)) && (String.IsNullOrEmpty(VertragsNr)) && (String.IsNullOrEmpty(Referenz1)))
+            if (string.IsNullOrEmpty(Kennzeichen) && string.IsNullOrEmpty(FahrgestellNr) && string.IsNullOrEmpty(BriefNr) && string.IsNullOrEmpty(VertragsNr) && string.IsNullOrEmpty(Referenz1))
                 yield return new ValidationResult(Localize.AtLeastOneSearchCriterionRequired, new[] { "FahrgestellNr" });
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
@@ -31,10 +30,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistorieVermieterEquis(EquiHistorieSuchparameter model)
         {
+            EquipmentHistorieVermieterViewModel.Suchparameter = model;
+
             if (ModelState.IsValid)
-            {
-                EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
-            }
+                model.AnzahlTreffer = EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ModelState);
 
             return PartialView("Historie/HistorieVermieterSuche", model);
         }

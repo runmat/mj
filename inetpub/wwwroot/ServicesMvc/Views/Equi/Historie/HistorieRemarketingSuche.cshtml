@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorieSuchparameter
+
+<div id="divHistorieRemarketingSuche">
+    @using (Ajax.BeginForm("LoadHistorieRemarketingEquis", "Equi", null,
+        new MvcAjaxOptions("divHistorieRemarketingSuche") { OnComplete = "ShowHistorieRemarketingEquis();" }, new { id = "HistorieRemarketingEquisForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.Search</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            var _anzahlTreffer = @Model.AnzahlTreffer;
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowHistorieRemarketingEquis() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowHistorieRemarketingEquis",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowEquiHistorieRemarketingSearchResult(result);
+                    if (_anzahlTreffer == 1) {
+                        ShowEquiHistorieRemarketingAjax("");
+                    }
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

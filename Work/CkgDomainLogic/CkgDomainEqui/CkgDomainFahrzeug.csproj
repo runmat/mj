@@ -150,7 +150,6 @@
     <Compile Include="Equi\Contracts\IMahnsperreDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandVhcDataService.cs" />
     <Compile Include="Equi\Contracts\IKlaerfaelleVhcDataService.cs" />
-    <Compile Include="Equi\Contracts\IEquiHistorieVermieterDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMahnsperre.cs" />
@@ -165,12 +164,17 @@
     <Compile Include="Equi\Models\DataModels\EquiAktionsdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHaendlerdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorieInfo.cs" />
-    <Compile Include="Equi\Models\DataModels\EquiHistorieInfoVermieter.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieVermieterInfo.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorieVermieter.cs" />
     <Compile Include="Equi\Models\DataModels\EquiEinsteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiAussteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiTueteninhalt.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugAnforderung.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieRemarketingInfo.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieRemarketing.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiVersanddaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiZusatzdatenRemarketing.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiGutachtendaten.cs" />
     <Compile Include="Equi\Models\DataModels\Stuecklisten.cs" />
     <Compile Include="Equi\Models\DataModels\StuecklistenKomponente.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
@@ -198,7 +202,6 @@
     <Compile Include="Equi\Services\DokumenteOhneDatenDataServiceSAP.cs" />
     <Compile Include="Equi\Services\BriefbestandVhcDataServiceSAP.cs" />
     <Compile Include="Equi\Services\KlaerfaelleVhcDataServiceSAP.cs" />
-    <Compile Include="Equi\Services\EquiHistorieVermieterDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnsperreDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />

@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridEquiHistorieRemarketingInfos"; }
+
+@(Html.XTelerik()
+    .XGrid<EquiHistorieRemarketingInfo>()
+    .Name(gridName)
+    .XAjaxDataBinding("EquiHistorieRemarketingInfosAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.FahrgestellNr).ClientTemplate(
+                "<a href='#' class='link tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right' onclick='ShowEquiHistorieRemarketingAjax(\"<#= data.FahrgestellNr #>\");'><#= data.FahrgestellNr #></a>"
+            );
+        columns.XBound(c => c.UpePreis);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieRemarketingInfos"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportEquiHistorieRemarketingInfosFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportEquiHistorieRemarketingInfosFilteredPDF", "Equi");
+    })
+)
+
