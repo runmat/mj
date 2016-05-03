@@ -79,6 +79,10 @@ namespace SapORM.Models
 
 			public string KUNDE { get; set; }
 
+			public string EBELN_SORT { get; set; }
+
+			public string EBELP_SORT { get; set; }
+
 			public string EBELN { get; set; }
 
 			public string EBELP { get; set; }
@@ -115,6 +119,12 @@ namespace SapORM.Models
 
 			public string EXPRESS { get; set; }
 
+			public string VBELN { get; set; }
+
+			public string VBELP { get; set; }
+
+			public string BUKRS { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_BESTELL_LISTE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -129,6 +139,8 @@ namespace SapORM.Models
 						DynSapProxyFactory = dynSapProxyFactory,
 
 						KUNDE = (string)row["KUNDE"],
+						EBELN_SORT = (string)row["EBELN_SORT"],
+						EBELP_SORT = (string)row["EBELP_SORT"],
 						EBELN = (string)row["EBELN"],
 						EBELP = (string)row["EBELP"],
 						MATNR = (string)row["MATNR"],
@@ -147,6 +159,9 @@ namespace SapORM.Models
 						HERK = (string)row["HERK"],
 						ABRECHNUNG_ERSTELLT = (string)row["ABRECHNUNG_ERSTELLT"],
 						EXPRESS = (string)row["EXPRESS"],
+						VBELN = (string)row["VBELN"],
+						VBELP = (string)row["VBELP"],
+						BUKRS = (string)row["BUKRS"],
 					};
 				}
 				catch(Exception e)
