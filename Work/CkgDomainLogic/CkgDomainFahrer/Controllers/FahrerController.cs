@@ -78,6 +78,12 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult Auftragsauswahl()
+        {
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult QmReport()
         {
             return View(ViewModel);

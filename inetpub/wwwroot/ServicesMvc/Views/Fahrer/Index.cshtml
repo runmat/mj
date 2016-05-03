@@ -52,3 +52,15 @@
         @Localize.TranslateResourceKey(LocalizeConstants.DocumentsForCurrentCustomer)
     </a>
 </div>
+
+@if (Model.UserIsInOdinGroup())
+{
+    <div class="fahrer-main-menuitem">
+        <a href="~/Fahrer/Auftragsauswahl" class="btn red tooltips">
+            <i class="icon-check margin-right-10"></i>
+            @Localize.TranslateResourceKey(LocalizeConstants.FreieAuftraege)
+        </a>
+    </div>
+
+}
+

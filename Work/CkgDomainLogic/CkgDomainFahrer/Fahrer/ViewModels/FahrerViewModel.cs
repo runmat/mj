@@ -26,6 +26,17 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [XmlIgnore]
         public IFahrerDataService DataService { get { return CacheGet<IFahrerDataService>(); } }
 
+        #region Auftragsauswahl 
+
+
+        public bool UserIsInOdinGroup()
+        {
+            return ApplicationConfiguration.GetApplicationConfigValue("isOdinUser", "0", LogonContext.CustomerID,
+                LogonContext.Group.GroupID).NotNullOrEmpty().ToLower() == "true";
+        }
+
+        #endregion
+
         #region Verfügbarkeitsmeldung
 
         public IEnumerable ExcelDownloadFahrerMeldungenData
