@@ -76,11 +76,11 @@ namespace ServicesMvc.Autohaus.Controllers
         #region Massenzulassung
 
         [CkgApplication]
-        public ActionResult IndexMultiReg()
+        public ActionResult IndexMultiReg(string sonderzulassung = "", string sonderzulassungMode = "")
         {
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
-            ViewModel.SetParamSonderzulassung("");
+            ViewModel.SetParamSonderzulassung(sonderzulassung, sonderzulassungMode);
             ViewModel.SetParamPartnerportal("");
 
             ViewModel.DataInit();
@@ -221,6 +221,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult SzHaendlerkennzeichen(string finid, string halterNr)
         {
             return Index(finid, halterNr, sonderzulassung: "1", sonderzulassungMode: "haendlerkennzeichen");
+        }
+
+        [CkgApplication]
+        public ActionResult SzFirmeneigen()
+        {
+            return IndexMultiReg(sonderzulassung: "1", sonderzulassungMode: "firmeneigen");
         }
 
         [CkgApplication]
