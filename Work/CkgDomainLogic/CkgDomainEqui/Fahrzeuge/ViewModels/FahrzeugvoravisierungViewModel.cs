@@ -6,15 +6,11 @@ using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using GeneralTools.Resources;
-using CkgDomainLogic.General.Services;
 using System;
 using System.Linq;
 using System.IO;
 using DocumentTools.Services;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Globalization;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -55,15 +51,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public List<FahrzeugvoravisierungUploadModel> UploadItemsFilteredErrorList
         {
-            get { return !UploadItemsShowErrorsOnly ? UploadItems : UploadItems.Where(item => item.ValidationErrors.IsNotNullOrEmpty()).ToList(); }          
+            get { return !UploadItemsShowErrorsOnly ? UploadItems : UploadItems.Where(item => item.ValidationErrors.IsNotNullOrEmpty()).ToList(); }
         }
 
         List<FahrzeugvoravisierungUploadModel> _uploadItemsFiltered;
-        public List<FahrzeugvoravisierungUploadModel> UploadItemsFiltered { get {
-            if (_uploadItemsFiltered == null)
-                _uploadItemsFiltered = UploadItemsFilteredErrorList;
-            return _uploadItemsFiltered; 
-        }
+        public List<FahrzeugvoravisierungUploadModel> UploadItemsFiltered
+        {
+            get { return _uploadItemsFiltered ?? (_uploadItemsFiltered = UploadItemsFilteredErrorList); }
             set { _uploadItemsFiltered = value; } 
         }
 
@@ -81,47 +75,46 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
-            bool itemsWithoutErrorOnly = false;
             allSelectionCount = 0;
             var fzg = UploadItems.FirstOrDefault(f => f.Fahrgestellnummer == fin);
             if (fzg == null)
-                return itemsWithoutErrorOnly;
+                return false;
 
             fzg.IsSelected = select;
             allSelectionCount = UploadItems.Count(c => c.IsSelected);
 
-            return itemsWithoutErrorOnly = (allSelectionCount > 0) && (UploadItems.Where(c => c.ValidationErrors.Length > 0 && c.IsSelected).Count() == 0);
+            return ((allSelectionCount > 0) && (UploadItems.None(c => c.ValidationErrors.Length > 0 && c.IsSelected)));
         }
 
         public bool SelectFahrzeuge(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            bool itemsWithoutErrorOnly = false;
             UploadItems.ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = UploadItems.Count(c => c.IsSelected);
-            allCount = UploadItems.Count();
-            allFoundCount = UploadItems.Count();
+            allCount = UploadItems.Count;
+            allFoundCount = UploadItems.Count;
 
-            return itemsWithoutErrorOnly = (allSelectionCount > 0) && (UploadItems.Where(c => c.ValidationErrors.Length > 0 && c.IsSelected).Count() == 0);
+            return ((allSelectionCount > 0) && (UploadItems.None(c => c.ValidationErrors.Length > 0 && c.IsSelected)));
         }
 
         public List<FahrzeugvoravisierungUploadModel> CSVUploadList { get; set; }
 
         public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
         {
+            var fileExtension = Path.GetExtension(fileName);
             CsvUploadFileName = fileName;
-            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".xls");
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + fileExtension);
 
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            IEnumerable<FahrzeugvoravisierungUploadModel> list = null;
+            List<FahrzeugvoravisierungUploadModel> list;
             try
             {
                 if (FahrzeugvoravisierungSelektor.Option == "volkswagen")
-                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceVWFromDatarow, '*', false, false).ToList();
+                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceVWFromDatarow).ToList();
                 else
-                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceSonstigeFromDatarow, ',', false, false).ToList();
+                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceSonstigeFromDatarow, ',').ToList();
             }
             catch { return false; } // falsches Dateiformat
 
@@ -129,7 +122,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (list.None())
                 return false;
 
-            UploadItems = list.ToList();
+            UploadItems = list;
             UploadItemsFiltered = UploadItems; // Remove if filter not needed
             ValidateUploadItems();
             
@@ -137,15 +130,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         void ValidateUploadItems()
-        {            
+        {
             // vorab validierung
             foreach (var item in UploadItems)
             {
-                item.IsSelected = true;                              
-            }                        
+                item.IsSelected = true;
+            }
         }
 
-      
         public void SaveUploadItems()
         {
             string sapError = DataService.SaveUploadItems(UploadItems);
@@ -159,11 +151,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         static FahrzeugvoravisierungUploadModel CreateInstanceSonstigeFromDatarow(DataRow row)
         {
             var item = new FahrzeugvoravisierungUploadModel
-            {                                             
+            {
                 Fahrgestellnummer = row[0].ToString(),
                 ModelID = row[1].ToString(),
                 Auftragsnummer = row[2].ToString(),
-                Kennzeichen = row[3].ToString(),                            
+                Kennzeichen = row[3].ToString()
             };
             return item;
         }
@@ -174,25 +166,20 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 Fahrgestellnummer = row[13].ToString(),
                 ModelID = row[8].ToString(),
-                Auftragsnummer = row[11].ToString(),
-                //Kennzeichen = row[11].ToString(), -> TODO: VW Kennzeichen
+                Auftragsnummer = row[11].ToString()
             };
             return item;
         }
 
-
         #endregion
 
-
         #region Filter
-             
+
         public void FilterFahrzeugvoravisierungUploadModels(string filterValue, string filterProperties)
         {
             UploadItemsFiltered = UploadItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         #endregion
-
-
     }
 }
