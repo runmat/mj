@@ -3175,6 +3175,9 @@
     <Content Include="Views\Equi\Historie\HistorieRemarketingSuche.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieRemarketingGrid.cshtml" />
     <Content Include="Views\Equi\FahrzeugHistorieRemarketing.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

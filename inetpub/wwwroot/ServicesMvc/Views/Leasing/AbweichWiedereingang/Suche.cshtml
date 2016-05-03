@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@model CkgDomainLogic.Leasing.Models.UIModels.AbweichWiedereingangSelektor
+
+<div id="divSuche">
+    @using (Ajax.BeginForm("LoadAbweichendeWiedereingaenge", "Leasing", null,
+        new MvcAjaxOptions("divSuche") { OnComplete = "ShowAbweichendeWiedereingaenge();" }))
+    {    
+        <div class="form-horizontal">
+        
+            @Html.FormValidationSummary()
+
+            @Html.FormDateRangePickerFor(m => m.SelectionRange)
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'>@Localize.Search</button>
+            </div>
+        </div> 
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+  
+    function ShowAbweichendeWiedereingaenge() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowAbweichendeWiedereingaenge",
+            loadingShow: false,
+            success: function (result) {
+                if (_modelStateValid) {
+                    ShowAbweichendeWiedereingaengeSearchResult(result);
+                }
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
