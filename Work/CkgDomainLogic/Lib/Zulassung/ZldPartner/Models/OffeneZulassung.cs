@@ -21,8 +21,10 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.VoucherPosition)]
         public string BelegPosition { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.VoucherNo)]
         public string BelegNrSort { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.VoucherPosition)]
         public string BelegPositionSort { get; set; }
 
         public bool Hauptposition { get; set; }
