@@ -207,6 +207,17 @@ namespace CkgDomainLogic.Fahrer.Services
             return AppModelMappings.Z_DPM_QM_READ_QPCD_GT_OUTQPCD_To_SelectItem.Copy(sapList);
         }
 
+        public List<FahrerAuftrag> LoadFreieAuftraege()
+        {
+           Z_DPM_READ_AUFTR_FAHR_EDISPO_1.Init(SAP);
+           Z_DPM_READ_AUFTR_FAHR_EDISPO_1.SetImportParameter_I_FAHRER(SAP, FahrerID);
+
+            var sapList = Z_DPM_READ_AUFTR_FAHR_EDISPO_1.GT_ORDER.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_FAHR_EDISPO_1_GT_ORDER_To_FahrerAuftrag.Copy(sapList).ToList();
+
+        }
+
         public List<string> GetProtokollArchivierungMailAdressenAndReferenz(FahrerAuftragsProtokoll protokoll)
         {
             Z_V_UEBERF_AUFTR_REFERENZ.Init(SAP, "AUFNR", protokoll.AuftragsNr);

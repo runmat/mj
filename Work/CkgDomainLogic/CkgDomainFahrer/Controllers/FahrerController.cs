@@ -52,6 +52,7 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+
         [CkgApplication]
         public ActionResult Auftraege()
         {
@@ -80,6 +81,8 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Auftragsauswahl()
         {
+            ViewModel.LoadFreieAuftraege();
+
             return View(ViewModel);
         }
 

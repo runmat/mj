@@ -26,6 +26,8 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridResponsiveVisible(GridResponsive.TabletOrWider)]
         public DateTime? WunschLieferDatum { get; set; }
 
+        public DateTime? AbholDatum { get; set; }
+
         [GridHidden]
         public string FahrerStatus { get; set; }
 
@@ -37,6 +39,12 @@ namespace CkgDomainLogic.Fahrer.Models
 
         [GridHidden]
         public bool AuftragIstAngenommen { get { return FahrerStatus.NotNullOrEmpty() == "OK"; } }
+
+        public string UebernahmeZeitVon { get; set; }
+        public string UebernahmeZeitBis { get; set; }
+        
+        public string UebergabeZeitVon { get; set; }
+        public string UebergabeZeitBis { get; set; }
 
 
         [LocalizedDisplay(LocalizeConstants.PostcodeStart)]
@@ -50,6 +58,7 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.Start)]
         [GridResponsiveVisible(GridResponsive.Tablet)]
         public string PlzOrtStart { get { return OrtStart.FormatIfNotNull("{0} {this}", PlzStart); } }
+
 
 
         [LocalizedDisplay(LocalizeConstants.PostcodeDestination)]

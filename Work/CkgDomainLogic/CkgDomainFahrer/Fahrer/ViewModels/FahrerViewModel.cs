@@ -102,12 +102,28 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+
         [XmlIgnore]
         public List<FahrerAuftrag> FahrerAuftraegeFiltered
         {
             get { return PropertyCacheGet(() => FahrerAuftraege); }
             private set { PropertyCacheSet(value); }
         }
+        
+        
+        public List<FahrerAuftrag> FreieAuftraege
+        {
+            get { return PropertyCacheGet(() => new List<FahrerAuftrag>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<FahrerAuftrag> FreieAuftraegeFiltered
+        {
+            get { return PropertyCacheGet(() => FahrerAuftraege); }
+            private set { PropertyCacheSet(value); }
+        }
+
 
         [LocalizedDisplay(LocalizeConstants.Order)]
         public string SelectedFahrerAuftragsKey { get; set; }
@@ -121,6 +137,12 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             get { return _selectedFahrerAuftrag ?? FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); }
             private set { _selectedFahrerAuftrag = value; }
+        }
+
+        public void LoadFreieAuftraege()
+        {
+            FreieAuftraege = DataService.LoadFreieAuftraege();
+            PropertyCacheClear(this, m => m.FreieAuftraegeFiltered);
         }
 
 
@@ -686,5 +708,6 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         #endregion
 
         #endregion
+
     }
 }

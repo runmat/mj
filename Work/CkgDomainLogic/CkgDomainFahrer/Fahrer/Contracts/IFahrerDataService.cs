@@ -39,5 +39,6 @@ namespace CkgDomainLogic.Fahrer.Contracts
         string SaveProtokollAndQmDaten(ProtokollEditModel item);
 
         List<string> GetProtokollArchivierungMailAdressenAndReferenz(FahrerAuftragsProtokoll protokoll);
+        List<FahrerAuftrag> LoadFreieAuftraege();
     }
 }

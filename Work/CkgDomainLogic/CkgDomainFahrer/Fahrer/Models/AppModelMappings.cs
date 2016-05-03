@@ -90,6 +90,41 @@ namespace CkgDomainLogic.Fahrer.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_AUFTR_FAHR_EDISPO_1.GT_ORDER, FahrerAuftrag> Z_DPM_READ_AUFTR_FAHR_EDISPO_1_GT_ORDER_To_FahrerAuftrag
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_FAHR_EDISPO_1.GT_ORDER, FahrerAuftrag>(
+                    new Dictionary<string, string>(),
+                    (s, d) =>
+                    {
+                        
+                        d.AuftragsNr = s.VBELN;
+                        d.WunschLieferDatum = s.AUN_DAT;
+
+                        d.PlzStart = s.POST_CODE1_ZB;
+                        d.OrtStart = s.CITY1_ZB;
+
+                        d.PlzZiel = s.POST_CODE1_WE;
+                        d.OrtZiel = s.CITY1_WE;
+
+                        d.PlzRueck = s.POST_CODE1_ZR;
+                        d.OrtRueck = s.CITY1_ZR;
+
+                        d.UebergabeZeitVon = s.AUN_TIM_VON_H;
+                        d.UebergabeZeitBis = s.AUN_TIM_BIS_H;
+
+                        d.UebernahmeZeitVon = s.AUN_TIM_VON_R;
+                        d.UebernahmeZeitBis = s.AUN_TIM_BIS_R;
+                        
+                    }
+                    ));
+            }
+        }
+
+
+
         // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE, FahrerAuftragsFahrt> Z_V_UEBERF_AUFTR_FAHRER_T_AUFTRAEGE_to_FahrerAuftragsFahrt
         // ReSharper restore InconsistentNaming
