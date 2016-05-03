@@ -33,6 +33,9 @@ namespace CkgDomainLogic.WFM.Models
         {
             get
             {
+                if (Time.IsNullOrEmpty())
+                    return String.Empty;
+
                 return String.Format("{0}:{1}:{2}", Time.Substring(0, 2), Time.Substring(2, 2), Time.Substring(4, 2));
             }
         }
