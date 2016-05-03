@@ -1,0 +1,24 @@
+﻿@model CustomerModel
+
+@{
+    ViewBag.Title = "Login";
+    ViewBag.BodyCssClass = "login";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+
+@Html.Partial("Partial/Common")
+
+@Html.Partial("Partial/Logo")
+
+<div class="content">
+
+    @Html.FormPlaceholderTextBoxFor(m => m.Anrede, new { @class = "m-wrap" })
+
+    @Html.Partial("Partial/CustomerForm")
+    <div class="space15"></div>
+
+    @Html.Partial("Partial/Footer")
+</div>
+
+
+@Html.Partial("Partial/Scripts")

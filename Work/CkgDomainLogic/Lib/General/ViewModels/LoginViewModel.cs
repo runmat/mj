@@ -12,6 +12,7 @@ using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using WebTools.Services;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.General.ViewModels
 {
@@ -49,7 +50,8 @@ namespace CkgDomainLogic.General.ViewModels
 
         public Customer TmpCustomer { get; set; }
 
-
+        public CustomerModel CustomerModel { get { return PropertyCacheGet(() => new CustomerModel()); } set { PropertyCacheSet(value); } }
+        
         public void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError, out ILogonContextDataService logonContext)
         {
             LogonContext.TryLogonUser(loginModel, addModelError);
@@ -168,6 +170,36 @@ namespace CkgDomainLogic.General.ViewModels
             catch
             {
                 addModelError(m => m.EmailForPasswordReset, Localize.EmailSentError);
+            }
+        }
+
+
+        public void TrySendCustomerEmail(CustomerModel model, Action<Expression<Func<CustomerModel, object>>, string> addModelError)
+        {
+            try
+            {
+                var userEmail = "Web-Administrator@DataConverterMappingData.de";
+                var subject = "Webuseranfrage";
+                var body = "";
+
+                userEmail = "peter.hase@kroschke.de";
+
+                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += LocalizeConstants.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
+                body += LocalizeConstants.Name + ": " + model.Name + "<br/>";
+                body += LocalizeConstants.FirstName + ": " + model.Vorname + "<br/>";
+                body += LocalizeConstants.Company + ": " + model.Firma + "<br/>";
+                body += LocalizeConstants.Phone + ": " + model.Telefon + "<br/>";
+                body += LocalizeConstants.EmailAddress + ": " + model.EMailAdresse + "<br/>";
+                body += LocalizeConstants.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";
+                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
+               
+                AppSettings.MailService.SendMail(userEmail, subject, body);
+            }
+            catch
+            {
+                //addModelError(m => m.EmailForPasswordReset, Localize.EmailSentError);
             }
         }
 

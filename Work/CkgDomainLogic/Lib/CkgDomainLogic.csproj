@@ -147,6 +147,7 @@
     <Compile Include="General\Models\DataModels\VersandOption.cs" />
     <Compile Include="General\Models\DynamicXml.cs" />
     <Compile Include="General\Models\Login\ChangePasswordModel.cs" />
+    <Compile Include="General\Models\Login\CustomerModel.cs" />
     <Compile Include="General\Models\Login\LoginModel.cs" />
     <Compile Include="General\Services\Dashboard\ChartService.cs" />
     <Compile Include="General\Services\Database\Models\CustomerDocument.cs" />

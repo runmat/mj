@@ -52,6 +52,9 @@
                      <div class="forget-password">
                          <h4><a href="javascript:RequestSwitchMode(true);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.PasswordForgottenQuestion</a></h4>
                      </div>
+                     <div class="forget-password">
+                        <h4><a href="javascript:NoAccessNeedHelp();" id="noaccess-needhelp"><i class="icon-chevron-right"></i> NoAccessNeedHelp </a></h4>                        
+                    </div>
                  }
             </div>
         }
@@ -157,6 +160,11 @@
                 $("#ModeCaptchaReset").val(true);
                 $("#AjaxFormLogin").submit();
                 return false;
+            }
+            
+            function NoAccessNeedHelp() {
+                var redirectUrl = "/ServicesMvc/Login/Customer";               
+                location.replace(redirectUrl);                                
             }
         </script>    
     }

@@ -223,6 +223,42 @@ namespace CkgDomainLogic.General.Controllers
 
             return PartialView(model);
         }
+
+        [CkgApplication]
+        public ActionResult Customer()
+        {
+            var tst = LogonContext;
+            //ViewBag
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CustomerForm(CustomerModel model)
+        {
+            if (model.ModeCaptchaReset)
+            {
+                CaptchaGenerate();
+                ModelState.Clear();
+                ViewModel.CustomerModel.ModeCaptchaReset = model.ModeCaptchaReset;
+                model.ModeCaptchaReset = false;
+            }
+            else if (ModelState.IsValid)
+            {
+
+                if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
+                {
+                    ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
+                    model.IsValid = ModelState.IsValid;
+                    return PartialView("Partial/CustomerForm", model);
+                }
+
+                ViewModel.TrySendCustomerEmail(model, ModelState.AddModelError);
+
+                SetViewModel<LoginViewModel>(null);
+            }
+
+            return PartialView("Partial/CustomerForm", model);
+        }
     }
 }
 
