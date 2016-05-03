@@ -37,6 +37,10 @@ namespace SapORM.Models
 			[ScriptIgnore]
 			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
 
+			public string EBELN_SORT { get; set; }
+
+			public string EBELP_SORT { get; set; }
+
 			public string EBELN { get; set; }
 
 			public string EBELP { get; set; }
@@ -118,6 +122,8 @@ namespace SapORM.Models
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
 
+						EBELN_SORT = (string)row["EBELN_SORT"],
+						EBELP_SORT = (string)row["EBELP_SORT"],
 						EBELN = (string)row["EBELN"],
 						EBELP = (string)row["EBELP"],
 						HAUPT_POSITION = (string)row["HAUPT_POSITION"],

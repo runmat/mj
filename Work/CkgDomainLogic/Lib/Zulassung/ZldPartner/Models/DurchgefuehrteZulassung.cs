@@ -14,7 +14,13 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.VoucherPosition)]
         public string BelegPosition { get; set; }
 
+        public string BelegNrSort { get; set; }
+
+        public string BelegPositionSort { get; set; }
+
         public string DatensatzId { get { return BelegNr.NotNullOrEmpty().PadLeft(10, '0') + BelegPosition.NotNullOrEmpty().PadLeft(5, '0'); } }
+
+        public string DatensatzIdSort { get { return BelegNrSort.NotNullOrEmpty().PadLeft(10, '0') + BelegPositionSort.NotNullOrEmpty().PadLeft(5, '0'); } }
 
         [LocalizedDisplay(LocalizeConstants.MaterialNo)]
         public string MaterialNr { get; set; }

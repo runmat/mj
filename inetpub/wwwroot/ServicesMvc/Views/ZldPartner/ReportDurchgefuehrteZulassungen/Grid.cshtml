@@ -31,7 +31,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzId).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzIdSort).Ascending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportDurchgefuehrteZulassungenFilteredExcel", "ZldPartner");
