@@ -100,12 +100,12 @@ Public Class Change03
             Adresse = lbl.Text & "<br>"
 
 
-            Adresse &= GridView1.Rows(index).Cells(3).Text & " "
+            Adresse &= GridView1.Rows(index).Cells(4).Text & " "
 
-
-            Adresse &= GridView1.Rows(index).Cells(4).Text & "<br />"
 
             Adresse &= GridView1.Rows(index).Cells(5).Text & "<br />"
+
+            Adresse &= GridView1.Rows(index).Cells(6).Text & "<br />"
 
             lbl = CType(GridView1.Rows(index).FindControl("lblSTREET"), Label)
 
