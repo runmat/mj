@@ -23,7 +23,9 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.BeauftragtVon = s.BEZ_WERK_LGORT;
                         d.BelegGebuehrenPosition = s.GEB_EBELP;
                         d.BelegNr = s.EBELN;
+                        d.BelegNrSort = s.EBELN_SORT;
                         d.BelegPosition = s.EBELP;
+                        d.BelegPositionSort = s.EBELP_SORT;
                         d.BuchungsKreis = s.BUKRS;
                         d.EinkaufsOrganisation = s.EKORG;
                         d.Email = s.SMTP_ADDR;
@@ -66,7 +68,9 @@ namespace CkgDomainLogic.ZldPartner.Models
                     {
                         d.AbrechnungErstellt = s.ABRECHNUNG_ERSTELLT.XToBool();
                         d.BelegNr = s.EBELN;
+                        d.BelegNrSort = s.EBELN_SORT;
                         d.BelegPosition = s.EBELP;
+                        d.BelegPositionSort = s.EBELP_SORT;
                         d.FahrgestellNr = s.ZZFAHRG;
                         d.Gebuehr = s.GEBUEHR.ToString();
                         d.Gebuehrenrelevant = s.GEB_RELEVANT.XToBool();
@@ -138,7 +142,9 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.BUKRS = s.BuchungsKreis;
                         d.DL_PREIS = s.Preis.ToNullableDecimal();
                         d.EBELN = s.BelegNr;
+                        d.EBELN_SORT = s.BelegNrSort;
                         d.EBELP = s.BelegPosition;
+                        d.EBELP_SORT = s.BelegPositionSort;
                         d.EINDT = s.LieferDatum.ToNullableDateTime("dd.MM.yyyy");
                         d.EKORG = s.EinkaufsOrganisation;
                         d.ERNAM = s.Erfasser;

@@ -25,7 +25,7 @@ namespace BtBaseMvc
                 if (requestUserName == null)
                     return null;
 
-                var decryptedUserName = CryptoMd5.Decrypt(requestUserName);
+                var decryptedUserName = CryptoMd5Web.Decrypt(requestUserName);
 
                 user = new User();
                 user.Login(decryptedUserName, context.Session.SessionID, context.Request.Url.AbsoluteUri);
@@ -124,7 +124,7 @@ namespace BtBaseMvc
             var fileName = Path.Combine(appRootFolder, "App_Data");
             fileName = Path.Combine(fileName, "AppSettings.config");
             var xmlDict = new XmlDictionary<string, string>();
-            ConfigurationManager.AppSettings.AllKeys.ToList().ForEach(key => xmlDict.Add(CryptoMd5.Encrypt(key), CryptoMd5.Encrypt(ConfigurationManager.AppSettings[key])));
+            ConfigurationManager.AppSettings.AllKeys.ToList().ForEach(key => xmlDict.Add(CryptoMd5Web.Encrypt(key), CryptoMd5Web.Encrypt(ConfigurationManager.AppSettings[key])));
             XmlService.XmlSerializeToFile(xmlDict, fileName);
         }
     }
