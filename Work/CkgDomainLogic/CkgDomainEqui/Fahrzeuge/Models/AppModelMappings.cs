@@ -645,6 +645,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.AuftragGeber = s.KUNNR_AG;
                         d.Fahrgestellnummer = s.CHASSIS_NUM;
                         d.HaendlerNummer = s.RDEALER;
                         d.ZahlungsArt = s.DZLART;
@@ -691,6 +692,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.Versandgrund = s.VERS_GRUND;
                         d.Kilometerstand = s.KM_STAND;
                         d.Kreditnummer = s.PAID.TrimStart('0');
+                        d.HaendlerNummer = s.KUNNR_BEIM_AG;
                     }));
             }
         }

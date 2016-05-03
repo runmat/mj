@@ -6,7 +6,7 @@ namespace CkgDomainLogic.DataConverter.Models
     public class SourceFile
     {
         public string FilenameOrig { get; set; }    // Original file name
-        public string FilenameCsv { get; set; }     // Internal file name -> {guid}.csv
+        public string FilenameInternal { get; set; }     // Internal file name -> {guid}.csv
         public List<Field> Fields { get; set; }     // All Fields in source file
 
         public bool FirstRowIsCaption { get; set; }

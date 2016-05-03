@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -20,6 +21,25 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.ObjectId)]
         public string ObjectId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CreationDate)]
+        public DateTime? CreateDate  { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Time)]
+        public string Time { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Time)]
+        public string TimeFormatted
+        {
+            get
+            {
+                if (Time.IsNullOrEmpty())
+                    return String.Empty;
+
+                return String.Format("{0}:{1}:{2}", Time.Substring(0, 2), Time.Substring(2, 2), Time.Substring(4, 2));
+            }
+        }
+
 
         [GridHidden, NotMapped]
         public string ErrorMessage { get; set; }

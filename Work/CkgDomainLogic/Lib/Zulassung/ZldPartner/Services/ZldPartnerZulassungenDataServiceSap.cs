@@ -53,6 +53,8 @@ namespace CkgDomainLogic.ZldPartner.Services
         {
             zulassungen.ForEach(z =>
             {
+                z.Erfasser = LogonContext.UserName;
+
                 if (string.IsNullOrEmpty(z.StornoBemerkung))
                 {
                     if (!string.IsNullOrEmpty(z.StornoBemerkungLangtextNr))
