@@ -26,7 +26,8 @@ namespace ServicesMvc.Controllers
             ILeasingSicherungsscheineDataService sicherungsscheineDataService,
             INichtDurchfuehrbZulDataService nichtDurchfuehrbZulDataService, 
             IUeberfaelligeRuecksendungenDataService ueberfaelligeRuecksendungenDataService,
-            IUnzugelasseneFahrzeugeDataService unzugelasseneFahrzeugeDataService
+            IUnzugelasseneFahrzeugeDataService unzugelasseneFahrzeugeDataService,
+            ILeasingAbweichWiedereingangDataService abweichWiedereingangDataService
             )
             : base(appSettings, logonContext)
         {
@@ -39,6 +40,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(NichtDurchfuehrbZulViewModel, appSettings, logonContext, nichtDurchfuehrbZulDataService);
             InitViewModel(UeberfaelligeRuecksendungenViewModel, appSettings, logonContext, ueberfaelligeRuecksendungenDataService);
             InitViewModel(UnzugelasseneFahrzeugeViewModel, appSettings, logonContext, unzugelasseneFahrzeugeDataService);
+            InitViewModel(AbweichWiedereingangViewModel, appSettings, logonContext, abweichWiedereingangDataService );
         }
 
         public ActionResult Index(string un, string appID)

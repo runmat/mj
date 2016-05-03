@@ -365,8 +365,8 @@ Imports CKG.Components.ComCommon.LogUeberf
                                 auftrag = getAuftragFromFilename(fname)
                                 fahrt = getTourFromFilename(fname)
                             Else
-                                auftrag = getAuftragFromFilename2(fname)
-                                fahrt = getTourFromFilename2(fname)
+                                auftrag = getAuftragFromFilename2(fname, fileNameDelimiterNew)
+                                fahrt = getTourFromFilename2(fname, fileNameDelimiterNew)
                             End If
                             If (auftrag = auftragNr) And (fahrt = fahrtNr) Then
                                 If (type = "Protokoll") And (fname.IndexOf("P.") >= 0) Then
