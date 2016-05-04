@@ -35,6 +35,14 @@ namespace CkgDomainLogic.Equi.Contracts
 
         #endregion
 
+        #region Remarketing
+
+        List<EquiHistorieRemarketingInfo> GetHistorieRemarketingInfos(EquiHistorieSuchparameter suchparameter);
+
+        EquiHistorieRemarketing GetHistorieRemarketingDetail(string fin);
+
+        #endregion
+
         #region Common
 
         List<EasyAccessArchiveDefinition> GetArchiveDefinitions();

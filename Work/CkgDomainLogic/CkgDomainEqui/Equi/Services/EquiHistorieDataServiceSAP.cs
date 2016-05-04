@@ -184,72 +184,71 @@ namespace CkgDomainLogic.Equi.Services
 
         #endregion
 
+        #region Remarketing
+
+        public List<EquiHistorieRemarketingInfo> GetHistorieRemarketingInfos(EquiHistorieSuchparameter suchparameter)
+        {
+            Z_DPM_REM_FAHRZEUGHIST_02.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (!string.IsNullOrEmpty(suchparameter.Kennzeichen))
+                SAP.SetImportParameter("I_KENNZ", suchparameter.Kennzeichen.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.FahrgestellNr))
+                SAP.SetImportParameter("I_FAHRGNR", suchparameter.FahrgestellNr.ToUpper());
+
+            return AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketingInfo.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public EquiHistorieRemarketing GetHistorieRemarketingDetail(string fin)
+        {
+            Z_DPM_REM_FAHRZEUGHIST_02.Init(SAP, "I_KUNNR_AG, I_FAHRGNR", LogonContext.KundenNr.ToSapKunnr(), fin);
+
+            var sapItems = Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportListWithInitExecute(SAP);
+            if (sapItems.None())
+                return new EquiHistorieRemarketing();
+
+            var hist = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketing.Copy(sapItems).ToList().First();
+
+            hist.HistorieInfo = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketingInfo.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiHistorieRemarketingInfo());
+
+            hist.Gutachten = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_GUTA_To_EquiGutachten.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_GUTA.GetExportList(SAP)).ToList();
+
+            hist.Versanddaten = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_VERS_To_EquiVersanddaten.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_VERS.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiVersanddaten());
+
+            hist.LebenslaufBrief = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_LEB_B_To_EquiLebenslaufBrief.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_LEB_B.GetExportList(SAP)).ToList();
+
+            hist.LebenslaufSchluessel = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_LEB_T_To_EquiLebenslaufSchluessel.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_LEB_T.GetExportList(SAP)).ToList();
+
+            hist.Adressen = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_ADDR_B_To_SelectItem.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_ADDR_B.GetExportList(SAP)).ToList();
+
+            hist.Belastungsanzeigen = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_BELAS_To_EquiBelastungsanzeige.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_BELAS.GetExportList(SAP)).ToList();
+
+
+
+
+            hist.Typdaten = (AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TYPEN_To_EquiTypdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TYPEN.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiTypdaten());
+
+            hist.Typdaten.Farbe = hist.Farbe;
+            hist.Typdaten.Farbcode = hist.Farbcode;
+
+            hist.LebenslaufZb2 = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLZB2_To_EquiMeldungsdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLZB2.GetExportList(SAP)).ToList();
+
+            hist.LebenslaufFsm = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLSCH_To_EquiMeldungsdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLSCH.GetExportList(SAP)).ToList();
+
+            hist.InhalteFsm = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TUETE_To_EquiTueteninhalt.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TUETE.GetExportList(SAP)).ToList();
+
+            return hist;
+        }
+
+        #endregion
+
         #region Common
 
         private EquiTypdaten GetTypdaten(string equiNr)
         {
-            Z_M_ABEZUFZG.Init(SAP, "ZZKUNNR, ZZEQUNR", LogonContext.KundenNr.ToSapKunnr(), equiNr.PadLeft0(18));
+            Z_M_ABEZUFZG_NEU.Init(SAP, "ZZKUNNR, ZZEQUNR", LogonContext.KundenNr.ToSapKunnr(), equiNr.PadLeft0(18));
 
-            SAP.Execute();
-
-            return new EquiTypdaten
-            {
-                Abgasrichtlinie = SAP.GetExportParameter("ZZABGASRICHTL_TG"),
-                AnzahlAchsen = SAP.GetExportParameter("ZZANZACHS").TrimStart('0'),
-                AnzahlAntriebsachsen = SAP.GetExportParameter("ZZANTRIEBSACHS").TrimStart('0'),
-                AnzahlSitze = SAP.GetExportParameter("ZZANZSITZE").TrimStart('0'),
-                Aufbauart = SAP.GetExportParameter("ZZTEXT_AUFBAU"),
-                Bemerkungen = string.Join(Environment.NewLine,
-                    SAP.GetExportParameter("ZZBEMER1"),
-                    SAP.GetExportParameter("ZZBEMER2"),
-                    SAP.GetExportParameter("ZZBEMER3"),
-                    SAP.GetExportParameter("ZZBEMER4"),
-                    SAP.GetExportParameter("ZZBEMER5"),
-                    SAP.GetExportParameter("ZZBEMER6"),
-                    SAP.GetExportParameter("ZZBEMER7"),
-                    SAP.GetExportParameter("ZZBEMER8"),
-                    SAP.GetExportParameter("ZZBEMER9"),
-                    SAP.GetExportParameter("ZZBEMER10"),
-                    SAP.GetExportParameter("ZZBEMER11"),
-                    SAP.GetExportParameter("ZZBEMER12"),
-                    SAP.GetExportParameter("ZZBEMER13"),
-                    SAP.GetExportParameter("ZZBEMER14")).TrimEnd('\r', '\n'),
-                BereifungAchse1 = SAP.GetExportParameter("ZZBEREIFACHSE1"),
-                BereifungAchse2 = SAP.GetExportParameter("ZZBEREIFACHSE2"),
-                BereifungAchse3 = SAP.GetExportParameter("ZZBEREIFACHSE3"),
-                Breite = SAP.GetExportParameter("ZZBREITEMIN").TrimStart('0'),
-                Co2Emission = SAP.GetExportParameter("ZZCO2KOMBI"),
-                Fabrikname = SAP.GetExportParameter("ZZFABRIKNAME"),
-                Fahrgeraeusch = SAP.GetExportParameter("ZZFAHRGERAEUSCH").TrimStart('0'),
-                Fahrzeugklasse = SAP.GetExportParameter("ZZFHRZKLASSE_TXT"),
-                Farbcode = SAP.GetExportParameter("ZZFARBE"),
-                Farbe = SAP.GetExportParameter("ZFARBE_KLAR"),
-                FassungsvermoegenTank = SAP.GetExportParameter("ZZFASSVERMOEGEN"),
-                GenehmigungsNr = SAP.GetExportParameter("ZZGENEHMIGNR"),
-                Genehmigungsdatum = SAP.GetExportParameter("ZZGENEHMIGDAT").ToNullableDateTime(),
-                Handelsname = SAP.GetExportParameter("ZZHANDELSNAME"),
-                HerstSchluessel = SAP.GetExportParameter("ZZHERSTELLER_SCH"),
-                Hersteller = SAP.GetExportParameter("ZZHERST_TEXT"),
-                Hoechstgeschwindigkeit = SAP.GetExportParameter("ZZHOECHSTGESCHW"),
-                Hoehe = SAP.GetExportParameter("ZZHOEHEMIN").TrimStart('0'),
-                Hubraum = SAP.GetExportParameter("ZZHUBRAUM").TrimStart('0'),
-                Kraftstoffart = SAP.GetExportParameter("ZZKRAFTSTOFF_TXT"),
-                Kraftstoffcode = SAP.GetExportParameter("ZZCODE_KRAFTSTOF"),
-                Laenge = SAP.GetExportParameter("ZZLAENGEMIN").TrimStart('0'),
-                Leistung = SAP.GetExportParameter("ZZNENNLEISTUNG").TrimStart('0'),
-                MaxAchslastAchse1 = SAP.GetExportParameter("ZZACHSL_A1_STA").TrimStart('0'),
-                MaxAchslastAchse2 = SAP.GetExportParameter("ZZACHSL_A2_STA").TrimStart('0'),
-                MaxAchslastAchse3 = SAP.GetExportParameter("ZZACHSL_A3_STA").TrimStart('0'),
-                NationaleEmissionsklasseCode = SAP.GetExportParameter("ZZSLD"),
-                NationaleEmissionsklasse = SAP.GetExportParameter("ZZNATIONALE_EMIK"),
-                Standgeraeusch = SAP.GetExportParameter("ZZSTANDGERAEUSCH").TrimStart('0'),
-                Typ = SAP.GetExportParameter("ZZKLARTEXT_TYP"),
-                TypSchluessel = SAP.GetExportParameter("ZZTYP_SCHL"),
-                UmdrehungenProMin = SAP.GetExportParameter("ZZBEIUMDREH").TrimStart('0'),
-                Variante = SAP.GetExportParameter("ZZVARIANTE"),
-                Version = SAP.GetExportParameter("ZZVERSION"),
-                ZulGesamtgewicht = SAP.GetExportParameter("ZZZULGESGEW").TrimStart('0')
-            };
+            return AppModelMappings.Z_M_ABEZUFZG_NEU_E_ABE_DATEN_To_EquiTypdaten.Copy(Z_M_ABEZUFZG_NEU.E_ABE_DATEN.GetExportListWithExecute(SAP)).FirstOrDefault();
         }
 
         public List<EasyAccessArchiveDefinition> GetArchiveDefinitions()

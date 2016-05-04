@@ -174,7 +174,15 @@
     <Compile Include="Equi\Models\DataModels\EquiHistorieRemarketing.cs" />
     <Compile Include="Equi\Models\DataModels\EquiVersanddaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiZusatzdatenRemarketing.cs" />
-    <Compile Include="Equi\Models\DataModels\EquiGutachtendaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiGutachten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiLebenslaufBrief.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiLebenslaufSchluessel.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiBelastungsanzeige.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiRechnungsdaten.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiVorschaden.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiAusstattung.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiSchadenrechnung.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiLebenslauf.cs" />
     <Compile Include="Equi\Models\DataModels\Stuecklisten.cs" />
     <Compile Include="Equi\Models\DataModels\StuecklistenKomponente.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />

@@ -4,7 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Equi.Models
 {
-    public class EquiGutachtendaten
+    public class EquiGutachten
     {
         [LocalizedDisplay(LocalizeConstants.SequenceNo)]
         public string LaufendeNr { get; set; }

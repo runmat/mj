@@ -11,7 +11,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.RrpPrice)]
-        public string UpePreis { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ZB2No)]
+        public string BriefNr { get; set; }
     }
 }

@@ -7,12 +7,9 @@ namespace CkgDomainLogic.Equi.Models
 {
     public class EquiHistorieRemarketing
     {
-        [LocalizedDisplay(LocalizeConstants.ZB2No)]
-        public string BriefNr { get; set; }
-
         public string EreignisText { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
+        [LocalizedDisplay(LocalizeConstants.Zb2Receipt)]
         public DateTime? EingangZb2 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.KeyReceipt)]
@@ -59,28 +56,30 @@ namespace CkgDomainLogic.Equi.Models
 
         public EquiHistorieRemarketingInfo HistorieInfo { get; set; }
 
-        public EquiGutachtendaten Gutachtendaten { get; set; }
+        public List<EquiGutachten> Gutachten { get; set; }
 
         public EquiVersanddaten Versanddaten { get; set; }
 
+        public List<EquiLebenslaufBrief> LebenslaufBrief { get; set; }
 
+        public List<EquiLebenslaufSchluessel> LebenslaufSchluessel { get; set; }
 
-        
+        public List<SelectItem> Adressen { get; set; }
 
-        public EquiEinsteuerung Einsteuerungsdaten { get; set; }
+        public List<EquiBelastungsanzeige> Belastungsanzeigen { get; set; }
 
-        public EquiAussteuerung Aussteuerungsdaten { get; set; }
+        public List<EquiRechnungsdaten> Rechnungsdaten { get; set; }
+
+        public List<EquiVorschaden> Vorschäden { get; set; }
+
+        public EquiZusatzdatenRemarketing Zusatzdaten { get; set; }
+
+        public List<EquiAusstattung> Ausstattungen { get; set; }
+
+        public EquiSchadenrechnung Schadenrechnung { get; set; }
 
         public EquiTypdaten Typdaten { get; set; }
 
-        public List<EquiMeldungsdaten> LebenslaufZb2 { get; set; }
-
-        public List<EquiMeldungsdaten> LebenslaufFsm { get; set; }
-
-        public List<EquiTueteninhalt> InhalteFsm { get; set; }
-
-        public List<FahrzeugAnforderung> FahrzeugAnforderungen { get; set; }
-
-        public bool FahrzeugAnforderungenAnzeigen { get; set; }
+        public List<EquiLebenslauf> Lebenslauf { get; set; }
     }
 }
