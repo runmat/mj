@@ -471,14 +471,12 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             var iKunnr = selector.KundenNr;
             var iVkOrg = LogonContext.Customer.AccountingArea.ToString();
-            var iVkBur = LogonContext.Organization.OrganizationReference2;
 
             try
             {
                 Z_ZLD_AH_2015_ZULLISTE.Init(SAP);
 
                 SAP.SetImportParameter("I_VKORG", iVkOrg);
-                SAP.SetImportParameter("I_VKBUR", iVkBur);
 
                 SAP.SetImportParameter("I_ZZREFNR1", selector.Referenz1);
                 SAP.SetImportParameter("I_ZZREFNR2", selector.Referenz2);
