@@ -11,9 +11,7 @@ namespace CkgDomainLogic.Fahrer.Models
 
         [GridHidden]
         public string KundenName { get; set; }
-
-
-
+        
         [SelectListKey]
         [LocalizedDisplay(LocalizeConstants.OrderID)]
         [GridResponsiveVisible(GridResponsive.TabletOrWider)]
@@ -25,7 +23,7 @@ namespace CkgDomainLogic.Fahrer.Models
 
         [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
         [GridResponsiveVisible(GridResponsive.TabletOrWider)]
-        public DateTime? WunschLieferDatum { get; set; }
+        public DateTime? WunschLieferDatum { get; set; }    
 
         public DateTime? AbholDatum { get; set; }
 
@@ -41,12 +39,34 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public bool AuftragIstAngenommen { get { return FahrerStatus.NotNullOrEmpty() == "OK"; } }
 
+        [GridHidden]
         public string UebernahmeZeitVon { get; set; }
+        [GridHidden]
+        public string UebernahmeZeitVonFormatted
+        {
+            get { return UebernahmeZeitVon.ToTimeFormatted(); }
+        }
+        [GridHidden]
         public string UebernahmeZeitBis { get; set; }
-        
+        [GridHidden]
+        public string UebernahmeZeitBisFormatted
+        {
+            get { return UebernahmeZeitBis.ToTimeFormatted(); }
+        }
+        [GridHidden]
         public string UebergabeZeitVon { get; set; }
+        [GridHidden]
+        public string UebergabeZeitVonFormatted
+        {
+            get { return UebergabeZeitVon.ToTimeFormatted(); }
+        }
+        [GridHidden]
         public string UebergabeZeitBis { get; set; }
-
+        [GridHidden]
+        public string UebergabeZeitBisFormatted
+        {
+            get { return UebergabeZeitBis.ToTimeFormatted(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.PostcodeStart)]
         [GridResponsiveVisible(GridResponsive.Workstation)]
@@ -59,9 +79,7 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.Start)]
         [GridResponsiveVisible(GridResponsive.Tablet)]
         public string PlzOrtStart { get { return OrtStart.FormatIfNotNull("{0} {this}", PlzStart); } }
-
-
-
+       
         [LocalizedDisplay(LocalizeConstants.PostcodeDestination)]
         [GridResponsiveVisible(GridResponsive.Workstation)]
         public string PlzZiel { get; set; }
@@ -73,7 +91,6 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.Destination)]
         [GridResponsiveVisible(GridResponsive.Tablet)]
         public string PlzOrtZiel { get { return OrtZiel.FormatIfNotNull("{0} {this}", PlzZiel); } }
-
 
         [LocalizedDisplay(LocalizeConstants.PostcodeReturn)]
         [GridResponsiveVisible(GridResponsive.Workstation)]
@@ -104,17 +121,26 @@ namespace CkgDomainLogic.Fahrer.Models
         * Selektion + Detailansicht
         */
 
+        [GridHidden]
+        public bool IsSelected { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Details)]
+        [GridResponsiveVisible(GridResponsive.Smartphone)]
         [GridRawHtml]
         public string FreierAuftragDetails { get { return FreierAuftragDetailsTemplate == null ? "-" : FreierAuftragDetailsTemplate(this); } }
 
-        [LocalizedDisplay(LocalizeConstants.Action)]
+        [LocalizedDisplay(LocalizeConstants.Accept)]
         [GridRawHtml]
-        public string FreierAuftragSelect { get { return FreierAuftragSelectTemplate == null ? "-" : FreierAuftragSelectTemplate(this); } }
+        public string FreierAuftragCommand { get { return FreierAuftragsCommandTemplate == null ? "-" : FreierAuftragsCommandTemplate(this); } }
 
-        
+        [LocalizedDisplay(LocalizeConstants.Details)]
+        [GridRawHtml]
+        public string FreierAuftragDetailsCommand { get { return FreierAuftragDetailsCommandTemplate == null ? "-" : FreierAuftragDetailsCommandTemplate(this); } }
+
+        public static Func<FahrerAuftrag, string> FreierAuftragDetailsCommandTemplate { get; set; }
+
         public static Func<FahrerAuftrag, string> FreierAuftragDetailsTemplate { get; set; }
-        public static Func<FahrerAuftrag, string> FreierAuftragSelectTemplate { get; set; }
+        public static Func<FahrerAuftrag, string> FreierAuftragsCommandTemplate { get; set; }
 
 
 

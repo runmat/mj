@@ -9,14 +9,18 @@
 
     .XAjaxDataBinding("FreieAuftraegeAjaxBinding", "Fahrer")
     .Columns(columns =>
-    {
-        columns.Bound(c => c.WunschLieferDatum);
-        columns.Bound(c => c.PlzOrtStart);
-        columns.Bound(c => c.PlzOrtZiel);
-        columns.Bound(c => c.PlzOrtRueck);
-    }
-
-    )
+    
+        columns.XBoundAllExcept(
+            c => c.UebernahmeZeitBisFormatted, 
+            c => c.UebernahmeZeitVonFormatted,
+            c => c.UebergabeZeitVonFormatted,
+            c => c.UebergabeZeitBisFormatted,
+            c => c.AuftragsNr,
+            c => c.AbholDatum,
+            c => c.AuftragsCommand,
+            c => c.AuftragsDetails
+           
+    ))
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)

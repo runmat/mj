@@ -38,6 +38,8 @@ namespace ServicesMvc.Controllers
         }
 
 
+        #region APPLICATIONS
+
         [CkgApplication]
         public ActionResult Index()
         {
@@ -84,7 +86,9 @@ namespace ServicesMvc.Controllers
             ViewModel.LoadFreieAuftraege();
 
             FahrerAuftrag.FreierAuftragDetailsTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", auftrag);
-            FahrerAuftrag.FreierAuftragSelectTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/AuftraegeGridAuftragsCommandBar", auftrag);
+            FahrerAuftrag.FreierAuftragsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsCommandBar", auftrag);
+            FahrerAuftrag.FreierAuftragDetailsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreierAuftragDetailsCommand", auftrag);
+
 
             return View(ViewModel);
         }
@@ -104,7 +108,7 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
-
+        #endregion
 
         [HttpPost]
         public JsonResult LoadFahrerAuftragsFahrten()
@@ -173,6 +177,31 @@ namespace ServicesMvc.Controllers
 
 
         #region Fahrer Aufträge
+
+        [HttpPost]
+        public ActionResult ShowFreieAuftraege(string auftragsId)
+        {
+            var model = ViewModel.FreieAuftraege.FirstOrDefault(f => f.AuftragsNrFriendly == auftragsId);
+
+            return PartialView("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", model);
+        }
+
+
+        [HttpPost]
+        public ActionResult SetSelectedFreierFahrerAuftragsKey(string auftragsKey)
+        {
+            bool changed = false;
+            string oldkey = String.Empty;
+
+            var newKey = ViewModel.SetSelectedFreierFahrerAuftragsKey(auftragsKey, out oldkey, out changed);
+                
+            return Json(new
+                        { KeyChanged = changed,
+                          OldKey = oldkey,
+                          newKey = newKey
+            });
+        }
+
 
         [GridAction]
         public ActionResult FahrerAuftraegeAjaxBinding()

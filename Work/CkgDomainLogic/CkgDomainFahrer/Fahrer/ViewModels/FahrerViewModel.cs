@@ -139,6 +139,18 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             private set { _selectedFahrerAuftrag = value; }
         }
 
+        public string SelectedFreierFahrerAuftragKey { get; set; }
+
+
+        private FahrerAuftrag _selectedFreierFahrerAuftrag;
+        public FahrerAuftrag SelectedFreierFahrerAuftrag
+        {
+            get { return _selectedFreierFahrerAuftrag ?? FreieAuftraege.FirstOrDefault(a => a.AuftragsNr == SelectedFreierFahrerAuftragKey); }
+            private set { _selectedFreierFahrerAuftrag = value; }
+        }
+
+
+
         public void LoadFreieAuftraege()
         {
             FreieAuftraege = DataService.LoadFreieAuftraege();
@@ -273,6 +285,21 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
 
             return "";
+        }
+
+        public string SetSelectedFreierFahrerAuftragsKey(string auftragsNr, out string oldkey , out bool changed )
+        {
+            changed = SelectedFreierFahrerAuftragKey != auftragsNr;
+            oldkey = String.Empty;
+            
+            if (changed)
+            {
+                oldkey = SelectedFreierFahrerAuftragKey;
+                SelectedFreierFahrerAuftragKey = auftragsNr;
+            } else
+                SelectedFreierFahrerAuftragKey = String.Empty;
+
+            return SelectedFreierFahrerAuftragKey;
         }
 
         public void SetSelectedFahrerAuftragsKey(string auftragsNr)

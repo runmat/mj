@@ -1,29 +1,38 @@
 ﻿@model CkgDomainLogic.Fahrer.Models.FahrerAuftrag
 
 <div class="grid-auftrags-command-bar">
-    
-    @if (Model.AuftragIstNeu || Model.AuftragIstAbgelehnt)
-    {
-        <a href="#" onclick="return SetFahrerAuftragsStatus('@Model.AuftragsNr', 'OK');" class="btn green mini tooltips tablet-or-wider-inline" data-original-title="@Localize.Order @Localize.Accept.ToLower()" data-placement="top"><i class="icon-ok"></i></a>
-        <a href="#" onclick="return SetFahrerAuftragsStatus('@Model.AuftragsNr', 'OK');" class="btn green mini smartphone-block">
-            <i class="icon-ok"></i> 
-            <span class="margin-left-5"> @Localize.Accept </span>
-        </a>
-    }
 
-    <a href="GetAuftragsPdfBytes?auftragsNr=@Model.AuftragsNr" class="btn blue mini tooltips tablet-or-wider-inline margin-left-15" data-original-title="@Localize.Order @Localize.PDF" data-placement="top"><i class="icon-download-alt"></i></a>
-    <a href="GetAuftragsPdfBytes?auftragsNr=@Model.AuftragsNr" class="btn blue mini smartphone-block margin-top-10">
-        <i class="icon-download-alt"></i> 
-        <span class="margin-left-5"> @Localize.PDF </span>
-    </a>
 
-    @if (Model.AuftragIstNeu)
-    {
-        <a href="#" onclick="return SetFahrerAuftragsStatus('@Model.AuftragsNr', 'NO');" class="btn red mini tooltips tablet-or-wider-inline margin-left-15" data-original-title="@Localize.Order @Localize.Refuse.ToLower()" data-placement="top"><i class="icon-remove"></i></a>
-        <a href="#" onclick="return SetFahrerAuftragsStatus('@Model.AuftragsNr', 'NO');" class="btn red mini smartphone-block margin-top-10">
-            <i class="icon-remove"></i> 
-            <span class="margin-left-5"> @Localize.Refuse </span>
-        </a>
-    }
-    
+    <div class="checker" id="uniform-undefined">
+        <span class="">
+            <input type="checkbox" value="@Model.AuftragsNr"  name="selectedItem" checked="checked" onclick="SelectItem($(this))" style="opacity: 0;">
+        </span>
+    </div>
 </div>
+
+
+<script>
+    function SelectItem(cb) {
+        $.ajax({
+            type: "POST",
+            url: "SetSelectedFreierFahrerAuftragsKey",
+            data: { auftragsKey: cb.val() },
+            loadingShow: false,
+            success: function (result) {
+                if (result.KeyChanged) {
+                    $("input[type=checkbox][value=" + result.OldKey + "]").parent().removeClass("checked");
+                    $("input[type=checkbox][value=" + cb.val() + "]").parent().addClass("checked");
+                }
+                else {
+                    $("input[type=checkbox][value=" + cb.val() + "]").parent().removeClass("checked");
+                }
+
+                if (result.newKey !== "")
+                    $("#btnRegisterForOrder").css("display", "inline");
+                else
+                    $("#btnRegisterForOrder").css("display", "none");
+
+            }
+        });
+    }
+</script>   

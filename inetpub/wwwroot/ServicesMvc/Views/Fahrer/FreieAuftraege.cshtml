@@ -9,8 +9,17 @@
 <h2>Freie Aufträge</h2>
 
 <div id="divFreieFahrtenGrid">
-    
+
     @Html.Partial("Partial/Auftraege/FreieAuftraegeGrid", Model)
+
+</div>
+
+<div id="formActions">
+
+    <button class="btn green" type="submit" id="btnRegisterForOrder" onclick="alert('test')" style="display: none">
+        Fahrt annehmen
+        <i class="icon-arrow-circle-o-right"></i>
+    </button>
 
 </div>
 

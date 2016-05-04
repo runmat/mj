@@ -1,0 +1,55 @@
+﻿@using GeneralTools.Resources
+@model CkgDomainLogic.Fahrer.Models.FahrerAuftrag
+
+<div class="grid-auftrags-command-bar">
+
+    <button type="button" class="btn blue" onclick="ShowDetails(@Model.AuftragsNr)">
+        <i class="icon-info"></i>   
+            @LocalizeConstants.Details
+    </button>
+
+    
+</div>
+
+
+
+<script>
+    
+    function ShowDetails(auftragsnr) {
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFreieAuftraege",
+            data: { auftragsId: auftragsnr },
+            loadingShow: false,
+            success: function (result) {
+                $("#PopupDiv").html(result);
+
+                $.magnificPopup.open({
+                    items: { src: $("#PopupDiv") },
+                    type: 'inline',
+                    alignTop: false,
+                    removalDelay: 300,
+                    mainClass: 'my-mfp-zoom-in'
+                });
+            }
+        });
+
+       
+    }
+
+</script>
+
+<style>
+    
+    #PopupDiv > .grid-auftrags-details {
+        width: auto !important;
+    }
+
+</style>
+
+<div id="PopupDiv"class="white-popup mfp-hide">
+
+
+
+</div>
