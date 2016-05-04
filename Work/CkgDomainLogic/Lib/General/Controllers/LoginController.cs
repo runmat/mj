@@ -238,8 +238,7 @@ namespace CkgDomainLogic.General.Controllers
             {
                 CaptchaGenerate();
                 ModelState.Clear();
-                ViewModel.CustomerModel.ModeCaptchaReset = model.ModeCaptchaReset;
-                model.ModeCaptchaReset = false;
+                ViewModel.CustomerModel.ModeCaptchaReset = model.ModeCaptchaReset;                
             }
             else if (ModelState.IsValid)
             {

@@ -183,6 +183,7 @@ namespace CkgDomainLogic.General.ViewModels
                 var body = "";
 
                 userEmail = "peter.hase@kroschke.de";
+                userEmail = "Hinrich.Braasch@kroschke.de";
 
                 body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
                 body += Localize.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";

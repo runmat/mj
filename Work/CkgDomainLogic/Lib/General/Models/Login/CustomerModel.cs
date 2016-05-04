@@ -3,12 +3,17 @@ using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.General.Models
 {
     public class CustomerModel : IValidatableObject
     {
        
+        public static string[] Anreden {
+            get { return new string[] { "", "Herr", "Frau"}; }
+        }
+
         public bool ModeCaptchaReset { get; set; }
 
         public bool IsValid { get; set; }
