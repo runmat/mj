@@ -12,9 +12,9 @@
     .XAjaxDataBinding("OffeneZulassungenAjaxBinding", "ZldPartner")
     .Columns(columns =>
     {
-        columns.XBound(c => c.BelegNr)
+        columns.XBound(c => c.BelegNrSort)
             .ClientTemplate(
-                "<a href='#' onclick='AddPosition(\"<#= data.BelegNr #>\");' class='tooltips <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.AddPosition + "' data-placement='right'><#= data.BelegNr #></a>" +
+                "<a href='#' onclick='AddPosition(\"<#= data.BelegNr #>\");' class='tooltips <# if (!data.Hauptposition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.AddPosition + "' data-placement='right'><#= data.BelegNrSort #></a>" +
                 "<button href='#' onclick='DeletePosition(\"<#= data.DatensatzId #>\");' class='btn mini gray tooltips <# if (!data.NeuePosition) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.DeletePosition + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
             );
         columns.XBound(c => c.Halter);
@@ -54,7 +54,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzId).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzIdSort).Ascending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportOffeneZulassungenFilteredExcel", "ZldPartner");
