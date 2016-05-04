@@ -107,6 +107,7 @@
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField DataField="AGENTUR" HeaderText="Agenturnummer" SortExpression="AGENTUR" />
+                                            <asp:BoundField DataField="VERS_JAHR" HeaderText="Verkehrsjahr" SortExpression="VERS_JAHR" />
                                             <asp:TemplateField HeaderText="ANRED" SortExpression="ANRED" Visible="False">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblANRED" runat="server" Text='<%# Bind("ANRED_MEDI") %>'></asp:Label>

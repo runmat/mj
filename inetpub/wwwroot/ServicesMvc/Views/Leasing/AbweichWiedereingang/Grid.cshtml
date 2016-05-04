@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@using CkgDomainLogic.Leasing.Models.DataModels
+
+@{ var gridName = "GridAbweichendeWiedereingaenge"; }
+
+@(Html.Telerik()
+    .Grid<AbweichungWiedereingang>()
+    .Name(gridName)
+    .XAjaxDataBinding("AbweichendeWiedereingaengejaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.XBoundAll();
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LV))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAbweichendeWiedereingaengeFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportAbweichendeWiedereingaengeFilteredPDF", "Leasing");
+    })
+)

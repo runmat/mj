@@ -87,22 +87,16 @@ namespace ServicesMvc.Controllers
         public ActionResult ExcelUploadAvisierungStart(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
             // Step 1:  Upload the CSV file
-
             if (uploadFiles == null || uploadFiles.None())
                 return Json(new { success = false, message = Localize.Error + ": " + Localize.FileUploadNoFileAssignedWarning }, "text/plain");
 
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
-            var file = uploadFiles.ToArray()[0];
+            var file = uploadFiles.First();
 
             if (!FahrzeugvoravisierungViewModel.CsvUploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.Error + ": " + Localize.FileUploadCouldNotSaveWarning }, "text/plain");
 
-            return Json(new
-            {
-                success = true,
-                message = "ok",
-                uploadFileName = file.FileName,
-            }, "text/plain");
+            return Json(new { success = true, message = "ok", uploadFileName = file.FileName, }, "text/plain");
         }
 
         [HttpPost]
