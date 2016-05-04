@@ -24,3 +24,47 @@
         <li class="logout"><a href="javascript:UserLogout()">Log Out</a></li>
     </ul>
 }
+
+
+<script type="text/javascript">
+    $(".userbild").each(function (i, obj) {
+
+        //alert("");
+        
+        var clone;
+        var position;
+        clone = $(obj).clone();
+        $(clone).addClass("clonedItem");
+        position = $(obj).position();
+
+        $(obj).bind("mouseover", function (e) {
+
+            $(".clonedItem").animate({
+                height: "50px",
+                width: "50px"
+            }, 200, function () { $(this).remove(); });
+
+            $("#divUserbild").css("z-index", 1);
+            $(clone).css("top", position.top).css("left", position.left).css("z-index", 1000);
+
+            $(clone).appendTo("#divUserbild").css("position", "absolute").animate({
+                height: "200px",
+                width: "200px"
+            }, 200, function () {
+
+                $(clone).bind("mouseout", function (e) {
+                    $(clone).animate({
+                        height: "50px",
+                        width: "50px"
+                    }, 200, function () { $(clone).remove(); });
+
+                }); // end mouseout
+
+            }); // end animate callback
+
+        }); // end mouseover
+    }); // end each
+
+
+
+</script>
