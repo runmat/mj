@@ -3174,6 +3174,8 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
     <Content Include="Views\Fahrer\FreieAuftraege.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGrid.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsCommandBar.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsDetails.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

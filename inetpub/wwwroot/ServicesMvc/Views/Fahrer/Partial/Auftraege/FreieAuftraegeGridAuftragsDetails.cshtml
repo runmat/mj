@@ -1,0 +1,45 @@
+﻿@model CkgDomainLogic.Fahrer.Models.FahrerAuftrag
+
+<div class="grid-auftrags-details">
+    
+    @Html.DisplayNameFor(m => m.AuftragsNr) <strong>#@Model.AuftragsNr</strong> <br />
+
+    @Html.DisplayNameFor(m => m.KundenName) <strong>@Model.KundenName</strong> <br />
+
+
+
+    @if (Model.WunschLieferDatum != null)
+    {
+        <div>
+            @Html.DisplayNameFor(m => m.WunschLieferDatum): <strong> @Model.WunschLieferDatum.GetValueOrDefault().ToString("d") </strong> 
+        </div>
+    }
+
+    <div>
+        @Html.DisplayNameFor(m => m.PlzOrtStart): <strong>@Model.PlzOrtStart</strong>
+    </div>
+    <div>
+        @Html.DisplayNameFor(m => m.UebernahmeZeitVon): <strong>@Model.UebernahmeZeitVon</strong>
+    </div>
+    <div>
+        @Html.DisplayNameFor(m => m.UebernahmeZeitBis): <strong>@Model.UebernahmeZeitBis</strong>
+    </div>
+
+    <div>
+        @Html.DisplayNameFor(m => m.PlzOrtZiel): <strong>@Model.PlzOrtZiel</strong>
+    </div>
+    <div>
+        @Html.DisplayNameFor(m => m.UebergabeZeitVon): <strong>@Model.UebergabeZeitVon</strong>
+    </div>
+    <div>
+        @Html.DisplayNameFor(m => m.UebergabeZeitBis): <strong>@Model.UebergabeZeitBis</strong>
+    </div>
+
+        @if (Model.OrtRueck.IsNotNullOrEmpty())
+    {
+        <div>
+            @Html.DisplayNameFor(m => m.PlzOrtRueck): <strong>@Model.PlzOrtRueck</strong> <br />
+        </div>
+    }
+
+</div>

@@ -120,7 +120,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [XmlIgnore]
         public List<FahrerAuftrag> FreieAuftraegeFiltered
         {
-            get { return PropertyCacheGet(() => FahrerAuftraege); }
+            get { return PropertyCacheGet(() => FreieAuftraege); }
             private set { PropertyCacheSet(value); }
         }
 

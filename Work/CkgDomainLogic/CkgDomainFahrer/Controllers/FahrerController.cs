@@ -83,6 +83,9 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.LoadFreieAuftraege();
 
+            FahrerAuftrag.FreierAuftragDetailsTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", auftrag);
+            FahrerAuftrag.FreierAuftragSelectTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/AuftraegeGridAuftragsCommandBar", auftrag);
+
             return View(ViewModel);
         }
 

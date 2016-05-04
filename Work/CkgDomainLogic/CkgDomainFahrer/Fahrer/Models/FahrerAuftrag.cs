@@ -9,9 +9,10 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string KundenNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Action)]
-        [GridRawHtml]
-        public string AuftragsCommand { get { return AuftragsCommandTemplate == null ? "-" : AuftragsCommandTemplate(this); } }
+        [GridHidden]
+        public string KundenName { get; set; }
+
+
 
         [SelectListKey]
         [LocalizedDisplay(LocalizeConstants.OrderID)]
@@ -91,8 +92,31 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridRawHtml]
         public string AuftragsDetails { get { return AuftragsDetailsTemplate == null ? "-" : AuftragsDetailsTemplate(this); } }
 
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        [GridRawHtml]
+        public string AuftragsCommand { get { return AuftragsCommandTemplate == null ? "-" : AuftragsCommandTemplate(this); } }
 
         public static Func<FahrerAuftrag, string> AuftragsCommandTemplate { get; set; }
         public static Func<FahrerAuftrag, string> AuftragsDetailsTemplate { get; set; }
+
+        
+       /* Inline Aktionen für die freien Aufträge (ITA 8871 / are)
+        * Selektion + Detailansicht
+        */
+
+        [LocalizedDisplay(LocalizeConstants.Details)]
+        [GridRawHtml]
+        public string FreierAuftragDetails { get { return FreierAuftragDetailsTemplate == null ? "-" : FreierAuftragDetailsTemplate(this); } }
+
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        [GridRawHtml]
+        public string FreierAuftragSelect { get { return FreierAuftragSelectTemplate == null ? "-" : FreierAuftragSelectTemplate(this); } }
+
+        
+        public static Func<FahrerAuftrag, string> FreierAuftragDetailsTemplate { get; set; }
+        public static Func<FahrerAuftrag, string> FreierAuftragSelectTemplate { get; set; }
+
+
+
     }
 }

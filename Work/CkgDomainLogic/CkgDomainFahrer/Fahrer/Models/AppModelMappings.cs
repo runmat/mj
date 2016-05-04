@@ -101,6 +101,7 @@ namespace CkgDomainLogic.Fahrer.Models
                     {
                         
                         d.AuftragsNr = s.VBELN;
+                        d.KundenName = s.NAME1_AG;
                         d.WunschLieferDatum = s.AUN_DAT;
 
                         d.PlzStart = s.POST_CODE1_ZB;

@@ -1,20 +1,19 @@
 ﻿@using CkgDomainLogic.Fahrer.Models
 @{
-    var gridName = "GridAuftraege";
+    var gridName = "GridFreieAuftraege";
 }
 
 @(Html.Telerik()
     .Grid<FahrerAuftrag>()
     .Name(gridName)
 
-    .XAjaxDataBinding("FahrerAuftraegeAjaxBinding", "Fahrer")
+    .XAjaxDataBinding("FreieAuftraegeAjaxBinding", "Fahrer")
     .Columns(columns =>
     {
         columns.Bound(c => c.WunschLieferDatum);
         columns.Bound(c => c.PlzOrtStart);
         columns.Bound(c => c.PlzOrtZiel);
         columns.Bound(c => c.PlzOrtRueck);
-
     }
 
     )
