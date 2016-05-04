@@ -192,9 +192,7 @@ namespace CkgDomainLogic.General.ViewModels
                 body += Localize.Company + ": " + model.Firma + "<br/>";
                 body += Localize.Phone + ": " + model.Telefon + "<br/>";
                 body += Localize.EmailAddress + ": " + model.EMailAdresse + "<br/>";
-                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";
-                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
-                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";             
                
                 AppSettings.MailService.SendMail(userEmail, subject, body);
             }
