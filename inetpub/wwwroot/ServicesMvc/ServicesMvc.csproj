@@ -3176,6 +3176,9 @@
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGrid.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsCommandBar.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsDetails.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
+    <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

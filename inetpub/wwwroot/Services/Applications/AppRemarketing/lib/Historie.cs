@@ -56,33 +56,6 @@ namespace AppRemarketing.lib
         {
         }
 
-        void PatchRechnungsDatum(HistorieEintrag historieEintrag, System.Web.UI.Page page)
-        {
-            // ITA 8411, 23.10.2015, MJE
-
-            if (historieEintrag == null)
-                return;
-
-            var myProxy = DynSapProxy.getProxy("Z_DPM_REM_FAHRZEUGHIST_02", ref m_objApp, ref m_objUser, ref page);
-
-            myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
-            myProxy.setImportParameter("I_FAHRGNR", Fahrgestellnummer);
-            myProxy.setImportParameter("I_KENNZ", Kennzeichen);
-
-            myProxy.callBapi();
-
-            var table = myProxy.getExportTable("GT_BELAS");
-            var entry = table.Rows.Cast<DataRow>().FirstOrDefault();
-            if (entry == null)
-                return;
-
-            var date = Helper.GetDate(entry["REDAT"]);
-            if (date == null)
-                return;
-
-            historieEintrag.Date = date.Value;
-        }
-
         public void GetHistData(String strAppID, String strSessionID, System.Web.UI.Page page)
         {
             m_strClassAndMethod = "GetHistData.FILL";
@@ -115,7 +88,6 @@ namespace AppRemarketing.lib
                 var ausstattung = myProxy.getExportTable("GT_AUSST");
 
                 Lebenslauf = HistorieEintrag.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng).OrderBy(e => e.Date).Distinct().ToList();
-                PatchRechnungsDatum(Lebenslauf.FirstOrDefault(h => h.Description != null && h.Description.ToLower() == "rechnung gedruckt"), page);
 
                 Belastungsanzeige = HistorieBelastungsanzeige.Parse(belas);
                 Uebersicht = HistorieUebersicht.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng);

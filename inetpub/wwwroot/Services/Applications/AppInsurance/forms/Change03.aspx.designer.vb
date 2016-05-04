@@ -112,7 +112,6 @@ Partial Public Class Change03
     '''</remarks>
     Protected WithEvents lnkCreateExcel As Global.System.Web.UI.WebControls.LinkButton
 
-
     '''<summary>
     '''GridView1-Steuerelement
     '''</summary>
