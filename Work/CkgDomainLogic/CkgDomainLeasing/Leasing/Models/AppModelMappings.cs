@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CkgDomainLogic.Leasing.Models.DataModels;
+using CkgDomainLogic.Leasing.Models.UIModels;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -172,6 +174,30 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
+        static public ModelMapping<Z_DAD_CHANGES_WIEDEING_01.ET_CHG, AbweichungWiedereingang> Z_DAD_CHANGES_WIEDEING_01_ET_CHG_To_AbweichungWiedereingang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DAD_CHANGES_WIEDEING_01.ET_CHG, AbweichungWiedereingang>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FIN = s.FIN;
+                        d.LV = s.LVNUMMER;
+                        d.AltesKennzeichen = s.KZ_OLD;
+                        d.NeuesKennzeichen = s.KZ_NEW;
+                        d.AltHalterName = s.NAME1_O;
+                        d.AlterHalterOrt = s.ORT_O;
+                        d.NeuerHalterName = s.NAME1_N;
+                        d.NeuerHalterOrt = s.ORT_N;
+                        d.AktuellesZulDat = s.ZZZLDAT;
+
+                    }
+                ));
+            }
+        }
+
+
         static public ModelMapping<Z_M_FAELLIGE_EQUI_LP.GT_WEB, UeberfaelligeRuecksendung> Z_M_FAELLIGE_EQUI_LP_GT_WEB_To_UeberfaelligeRuecksendung
         {
             get
@@ -283,6 +309,31 @@ namespace CkgDomainLogic.Leasing.Models
                     }));
             }
         }
+
+
+
+        static public ModelMapping<Z_DAD_CHANGES_WIEDEING_01.IT_RG_ERDAT, AbweichWiedereingangSelektor> Z_DAD_CHANGES_WIEDEING_01_IT_RG_ERDAT_From_AbweichungWiedereingangSelektor
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DAD_CHANGES_WIEDEING_01.IT_RG_ERDAT, AbweichWiedereingangSelektor>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.SIGN = "I";
+                        d.OPTION = "BT";
+
+                        if (s.SelectionRange.StartDate != null)
+                            d.LOW = s.SelectionRange.StartDate;
+
+                        if (s.SelectionRange.EndDate != null)
+                            d.HIGH = s.SelectionRange.EndDate;
+                       
+                    }));
+            }
+        }
+
 
         static public void MapCarGateLeasingCsvUploadEntityToSAP(LeasingCargateCsvUploadModel source, Z_DPM_SAVE_DAT_IN_RUECKL_01.GT_IN destination)
         {
