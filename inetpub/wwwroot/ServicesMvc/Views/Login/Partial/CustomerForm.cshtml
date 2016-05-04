@@ -36,24 +36,32 @@
 
     @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new {@class = "m-wrap placeholder-no-fix", autocomplete = "off"}, "icon-picture")
 
-    <div class="form-actions">
+    @*<div class="form-actions">
         <button type="submit" class="btn blue pull-right pwbtn">
             <i class="icon-chevron-right m-icon-white"></i>
         </button>
-    </div>
+    </div>*@
 
     <div class="forget-password margin-top-10">
         <button type="submit" class="btn green"> Absenden</button>
         @*<h4><a href="javascript:SubmitForm();" id="forget-password"><i class="icon-chevron-right"></i> Absenden</a></h4>*@
     </div>
 
+    
     <script type="text/javascript">
 
-        @*_modelIsValid = @Model.IsValid.ToString().ToLower();
+        _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        _modeCaptchaReset = @Model.ModeCaptchaReset.ToString().ToLower();
+        _modelIsValid = @Model.IsValid.ToString().ToLower();
 
-        if (_modelIsValid) {
-            location.replace("/"); 
-        }*@
+        //alert(_modelIsValid);
+        //alert(_modeCaptchaReset);
+
+        if (_modelIsValid && !_modeCaptchaReset) {
+            location.replace("/ServicesMvc/Login");
+        }
+
+        $("#ModeCaptchaReset").val(false);
 
         function ResetCaptcha() {
             $("#ModeCaptchaReset").val(true);
@@ -69,7 +77,7 @@
         function AjaxFormCustomerComplete() {
             FormPrepareAjax();
         }
-        
+
     </script>
 }
 </div>

@@ -8,17 +8,23 @@
 
 @Html.Partial("Partial/Common")
 
-@Html.Partial("Partial/Logo")
+
+@if (ViewBag.CurrentLayoutTheme == "AH2015")
+{
+    <div class="loginhead">@Html.Partial("Partial/Logo")</div>
+}
 
 <div class="content">
-
-    @Html.FormPlaceholderTextBoxFor(m => m.Anrede, new { @class = "m-wrap" })
-
+    @if (ViewBag.CurrentLayoutTheme == "")
+    {
+        @Html.Partial("Partial/Logo")
+    }
+  
     @Html.Partial("Partial/CustomerForm")
     <div class="space15"></div>
-
+            
     @Html.Partial("Partial/Footer")
+      
 </div>
-
 
 @Html.Partial("Partial/Scripts")

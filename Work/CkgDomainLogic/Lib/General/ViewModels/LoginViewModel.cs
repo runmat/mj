@@ -184,16 +184,16 @@ namespace CkgDomainLogic.General.ViewModels
 
                 userEmail = "peter.hase@kroschke.de";
 
-                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
-                body += LocalizeConstants.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
-                body += LocalizeConstants.Name + ": " + model.Name + "<br/>";
-                body += LocalizeConstants.FirstName + ": " + model.Vorname + "<br/>";
-                body += LocalizeConstants.Company + ": " + model.Firma + "<br/>";
-                body += LocalizeConstants.Phone + ": " + model.Telefon + "<br/>";
-                body += LocalizeConstants.EmailAddress + ": " + model.EMailAdresse + "<br/>";
-                body += LocalizeConstants.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";
-                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
-                body += LocalizeConstants.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += Localize.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
+                body += Localize.Name + ": " + model.Name + "<br/>";
+                body += Localize.FirstName + ": " + model.Vorname + "<br/>";
+                body += Localize.Company + ": " + model.Firma + "<br/>";
+                body += Localize.Phone + ": " + model.Telefon + "<br/>";
+                body += Localize.EmailAddress + ": " + model.EMailAdresse + "<br/>";
+                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";
+                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
+                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
                
                 AppSettings.MailService.SendMail(userEmail, subject, body);
             }

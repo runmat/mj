@@ -226,10 +226,9 @@ namespace CkgDomainLogic.General.Controllers
 
         [CkgApplication]
         public ActionResult Customer()
-        {
-            var tst = LogonContext;
-            //ViewBag
-            return View();
+        {           
+            ViewBag.CurrentLayoutTheme = LogonContext.CurrentLayoutTheme;            
+            return View(ViewModel.CustomerModel);
         }
 
         [HttpPost]
@@ -254,8 +253,10 @@ namespace CkgDomainLogic.General.Controllers
 
                 ViewModel.TrySendCustomerEmail(model, ModelState.AddModelError);
 
-                SetViewModel<LoginViewModel>(null);
+                SetViewModel<CustomerModel>(null);
             }
+
+            model.IsValid = ModelState.IsValid;
 
             return PartialView("Partial/CustomerForm", model);
         }
