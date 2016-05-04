@@ -27,6 +27,7 @@ namespace ServicesMvc.Controllers
             INichtDurchfuehrbZulDataService nichtDurchfuehrbZulDataService, 
             IUeberfaelligeRuecksendungenDataService ueberfaelligeRuecksendungenDataService,
             IUnzugelasseneFahrzeugeDataService unzugelasseneFahrzeugeDataService,
+            ILeasingAbweichWiedereingangDataService abweichWiedereingangDataService,
             ILeasingEndgueltigerVersandDataService endgueltigerVersandDataService
             )
             : base(appSettings, logonContext)
@@ -40,9 +41,10 @@ namespace ServicesMvc.Controllers
             InitViewModel(NichtDurchfuehrbZulViewModel, appSettings, logonContext, nichtDurchfuehrbZulDataService);
             InitViewModel(UeberfaelligeRuecksendungenViewModel, appSettings, logonContext, ueberfaelligeRuecksendungenDataService);
             InitViewModel(UnzugelasseneFahrzeugeViewModel, appSettings, logonContext, unzugelasseneFahrzeugeDataService);
+        
             InitViewModel(EndgueltigerVersandViewModel, appSettings, logonContext, endgueltigerVersandDataService);
-            }
-
+            InitViewModel(AbweichWiedereingangViewModel, appSettings, logonContext, abweichWiedereingangDataService );
+}
         public ActionResult Index(string un, string appID)
         {
             return RedirectToAction("ReportZB1Kopien", new { un, appID });
