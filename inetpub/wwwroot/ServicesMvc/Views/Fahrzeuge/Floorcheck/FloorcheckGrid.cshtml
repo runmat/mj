@@ -10,7 +10,8 @@
         .XAjaxDataBinding("FloorcheckAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        //columns.XBoundAll();        
+        //columns.XBoundAll();   
+        columns.XBound(c => c.HaendlerNummer);
         columns.XBound(c => c.Fahrgestellnummer);
         columns.XBound(c => c.Marke);
         columns.XBound(c => c.Handelsname);
@@ -18,7 +19,7 @@
         columns.XBound(c => c.Farbe);
         columns.XBound(c => c.Versandgrund);
         columns.XBound(c => c.Kilometerstand);
-        columns.XBound(c => c.Kreditnummer);               
+        columns.XBound(c => c.Kreditnummer);
     })
     .XAutoColumnConfiguration()
                     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFloorcheck"))
