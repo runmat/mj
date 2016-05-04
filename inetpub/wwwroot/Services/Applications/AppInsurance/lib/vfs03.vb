@@ -771,6 +771,7 @@ Public Class VFS03
 
                 With ResultExcel.Columns
                     .Add("Agenturnummer", GetType(String))
+                    .Add("Verkehrsjahr", GetType(String))
                     .Add("Auftragsnr", GetType(String))
                     .Add("Anrede", GetType(String))
                     .Add("Name1", GetType(String))
@@ -796,6 +797,7 @@ Public Class VFS03
                 For Each orderRow As DataRow In _lastOrderAdress.Rows
                     Dim newRow = ResultExcel.NewRow
                     newRow("Agenturnummer") = orderRow("AGENTUR")
+                    newRow("Verkehrsjahr") = orderRow("VERS_JAHR")
                     newRow("Auftragsnr") = orderRow("SPERRE_WEB_ID")
                     newRow("Anrede") = orderRow("ANRED_MEDI")
                     newRow("Name1") = orderRow("NAME1")
