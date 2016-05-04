@@ -10,7 +10,10 @@ using GeneralTools.Resources;
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class Floorcheck
-    {       
+    {
+        [LocalizedDisplay(LocalizeConstants.DealerNo)]
+        public string HaendlerNummer { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string Fahrgestellnummer { get; set; }
 
