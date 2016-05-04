@@ -12,9 +12,7 @@
     .XAjaxDataBinding("DurchgefuehrteZulassungenAjaxBinding", "ZldPartner")
     .Columns(columns =>
     {
-        columns.XBound(c => c.DatensatzId).Visible(false);
-        columns.XBound(c => c.BelegNr);
-        columns.XBound(c => c.BelegPosition).Visible(false);
+        columns.XBound(c => c.BelegNrSort);
         columns.XBound(c => c.Kunde);
         columns.XBound(c => c.Halter);
         columns.XBound(c => c.FahrgestellNr);
@@ -31,7 +29,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzId).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzIdSort).Ascending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportDurchgefuehrteZulassungenFilteredExcel", "ZldPartner");
