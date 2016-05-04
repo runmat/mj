@@ -93,15 +93,6 @@ namespace AppRemarketing.lib
                 if (eintrag != null) yield return eintrag;
             }
 
-            //foreach (DataRow row in gt_vers.Rows)
-            //{
-            //    eintrag = ParseEvent(row, "B_VERSAUFTR_DAT", "ZB II ausgegangen");
-            //    if (eintrag != null) yield return eintrag;
-
-            //    eintrag = ParseEvent(row, "T_VERSAUFTR_DAT", "Schlüssel ausgegangen");
-            //    if (eintrag != null) yield return eintrag;
-            //}
-
             foreach (DataRow row in gt_schaden.Rows)
             {
                 eintrag = ParseEvent(row, "ERDAT", "Vorschaden gemeldet, {0:c}", "PREIS");
@@ -110,7 +101,7 @@ namespace AppRemarketing.lib
 
             foreach (DataRow row in gt_belas.Rows)
             {
-                eintrag = ParseEvent(row, "ERDAT", "Rechnung gedruckt");
+                eintrag = ParseEvent(row, "REDAT", "Rechnung gedruckt");
                 if (eintrag != null) yield return eintrag;
             }
 

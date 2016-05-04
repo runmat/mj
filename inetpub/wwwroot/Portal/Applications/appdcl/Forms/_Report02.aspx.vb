@@ -229,9 +229,10 @@ Imports DocumentTools.Services
         Dim auftrag = GetSelectedAuftrag()
         If auftrag Is Nothing Then Return
 
-        Dim targetArchiv = Path.Combine(ConfigurationManager.AppSettings("UploadPathSambaArchive"), Path.Combine(auftrag.Kundennummer.Value.ToString("0000000000"), auftrag.AuftragsNummer.ToString("0000000000")))
+        Dim targetArchiv = ""
         If Not Directory.Exists(targetArchiv) Then
             Try
+                targetArchiv = Path.Combine(ConfigurationManager.AppSettings("UploadPathSambaArchive"), Path.Combine(auftrag.Kundennummer.Value.ToString("0000000000"), auftrag.AuftragsNummer.ToString("0000000000")))
                 Directory.CreateDirectory(targetArchiv)
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen des Verzeichnisses<br/>" & ex.ToString
