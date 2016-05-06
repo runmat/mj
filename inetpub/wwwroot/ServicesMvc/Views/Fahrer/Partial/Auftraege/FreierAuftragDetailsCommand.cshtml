@@ -16,10 +16,9 @@
 <script>
     
     function ShowDetails(auftragsnr) {
-
         $.ajax({
             type: "POST",
-            url: "ShowFreieAuftraege",
+            url: "ShowFreieAuftraegeDetails",
             data: { auftragsId: auftragsnr },
             loadingShow: false,
             success: function (result) {
@@ -35,7 +34,6 @@
             }
         });
 
-       
     }
 
 </script>

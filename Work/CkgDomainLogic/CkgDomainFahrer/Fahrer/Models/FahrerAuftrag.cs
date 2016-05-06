@@ -42,13 +42,16 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string UebernahmeZeitVon { get; set; }
         [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.UebernahmezeitVon)]
         public string UebernahmeZeitVonFormatted
         {
             get { return UebernahmeZeitVon.ToTimeFormatted(); }
         }
         [GridHidden]
         public string UebernahmeZeitBis { get; set; }
+
         [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.UebernahmezeitBis)]
         public string UebernahmeZeitBisFormatted
         {
             get { return UebernahmeZeitBis.ToTimeFormatted(); }
@@ -56,6 +59,7 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string UebergabeZeitVon { get; set; }
         [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.UebergabezeitVon)]
         public string UebergabeZeitVonFormatted
         {
             get { return UebergabeZeitVon.ToTimeFormatted(); }
@@ -63,6 +67,7 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string UebergabeZeitBis { get; set; }
         [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.UebergabezeitBis)]
         public string UebergabeZeitBisFormatted
         {
             get { return UebergabeZeitBis.ToTimeFormatted(); }

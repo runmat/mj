@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrer.Models;
@@ -85,10 +86,7 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.LoadFreieAuftraege();
 
-            FahrerAuftrag.FreierAuftragDetailsTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", auftrag);
-            FahrerAuftrag.FreierAuftragsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsCommandBar", auftrag);
-            FahrerAuftrag.FreierAuftragDetailsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreierAuftragDetailsCommand", auftrag);
-
+            PreparePartialViews();
 
             return View(ViewModel);
         }
@@ -179,7 +177,7 @@ namespace ServicesMvc.Controllers
         #region Fahrer Aufträge
 
         [HttpPost]
-        public ActionResult ShowFreieAuftraege(string auftragsId)
+        public ActionResult ShowFreieAuftraegeDetails(string auftragsId)
         {
             var model = ViewModel.FreieAuftraege.FirstOrDefault(f => f.AuftragsNrFriendly == auftragsId);
 
@@ -202,6 +200,28 @@ namespace ServicesMvc.Controllers
             });
         }
 
+        [HttpPost]
+        public ActionResult AcceptFreieFahrt()
+        {
+            var result = ViewModel.SaveSelectedFreieFahrt();
+            SetSelectedFreierFahrerAuftragsKey("");
+
+            ViewModel.LoadFreieAuftraege();
+            PreparePartialViews();
+                
+            return Json(new
+            {
+                message = result,
+                view = this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGrid", ViewModel)
+            });
+        }
+
+        private void PreparePartialViews()
+        {
+            FahrerAuftrag.FreierAuftragDetailsTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", auftrag);
+            FahrerAuftrag.FreierAuftragsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsCommandBar", auftrag);
+            FahrerAuftrag.FreierAuftragDetailsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreierAuftragDetailsCommand", auftrag);
+        }
 
         [GridAction]
         public ActionResult FahrerAuftraegeAjaxBinding()

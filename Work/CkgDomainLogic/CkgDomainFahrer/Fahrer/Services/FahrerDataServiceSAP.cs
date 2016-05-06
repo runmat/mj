@@ -117,6 +117,16 @@ namespace CkgDomainLogic.Fahrer.Services
 
         }
 
+        public string SaveSelectedFreieFahrt(string auftragsnr)
+        {
+            Z_DPM_AUFTR_FAHR_EDISPO_BEST_1.Init(SAP);
+            Z_DPM_AUFTR_FAHR_EDISPO_BEST_1.SetImportParameter_I_FAHRER(SAP, FahrerID);
+            Z_DPM_AUFTR_FAHR_EDISPO_BEST_1.SetImportParameter_I_VBELN(SAP, auftragsnr);
+            
+            return SAP.GetExportParameterWithExecute("E_MESSAGE");
+
+        }
+
         public IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsProtokolle()
         {
             EnforceValidUserReference();

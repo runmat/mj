@@ -736,5 +736,12 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         #endregion
 
+        public string SaveSelectedFreieFahrt()
+        {
+            var result = DataService.SaveSelectedFreieFahrt(SelectedFreierFahrerAuftragKey);
+            DataService.LoadFreieAuftraege();
+
+            return result;
+        }
     }
 }

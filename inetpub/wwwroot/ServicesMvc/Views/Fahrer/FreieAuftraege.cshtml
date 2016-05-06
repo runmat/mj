@@ -14,9 +14,13 @@
 
 </div>
 
-<div id="formActions">
+<span id="Ergebnis" class="alert alert-info  hide">
+    <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+</span>
 
-    <button class="btn green" type="submit" id="btnRegisterForOrder" onclick="alert('test')" style="display: none">
+<div id="formActions" class="margin-top-20">
+
+    <button class="btn green" type="submit" id="btnRegisterForOrder" onclick="AcceptFreieFahrt()" style="display: none">
         Fahrt annehmen
         <i class="icon-arrow-circle-o-right"></i>
     </button>
@@ -27,6 +31,23 @@
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
+
+    function AcceptFreieFahrt() {
+        $.ajax({
+            type: "POST",
+            url: "AcceptFreieFahrt",
+            loadingShow: false,
+            success: function (result) {
+                $("#Ergebnis").removeClass("hide");
+                $("#Ergebnis > span").html(result.message);
+                $("#divFreieFahrtenGrid").html(result.view);
+            }
+        });
+
+
+    }
+
+
 
     function FormPreparePrivate() {
         GridAllColumnFilterApplyToGrid("GridGridFreieAuftraege");
