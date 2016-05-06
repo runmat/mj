@@ -231,7 +231,7 @@ namespace ServicesMvc
             builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
-
+            builder.RegisterType<LeasingAbweichWiedereingangDataServiceSAP>().As<ILeasingAbweichWiedereingangDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceTempZb2VersandDataServiceSAP>().As<IFinanceTempZb2VersandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceTempVersandZweitschluesselDataServiceSAP>().As<IFinanceTempZb2VersandZweitschluesselDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceFehlendeSchluesseltueteDataServiceSAP>().As<IFinanceFehlendeSchluesseltueteDataService>().InstancePerHttpRequest();
