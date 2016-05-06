@@ -304,6 +304,11 @@
                     SetFinValue(finId, field, value);
                 });
 
+                $(document).off('change', '.editmisc');
+                $(document).on('change', '.editmisc', function () {            // Auswirkung auf ein Fahrzeug
+                    SonderzulMiscGridTextboxOnChange($(this));
+                }); 
+
                 // Kennzeichenänderung bei Massenabmeldung
                 $(document).off('focus', '.blockwk');
                 $(document).on('focus', '.blockwk', function () {     
@@ -350,6 +355,7 @@
             $('#ReservationName_' + fin).removeClass('blockdisabled');
         }
     }           
+        
         
         </text>
     }

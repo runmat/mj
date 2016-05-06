@@ -45,6 +45,13 @@
     .portlet.box.vdl-option-disabled {
         background-color: #eeeeee !important;
     }
+
+    input.blockrk {
+        width: 80px !important;
+    }
+    input.blockrk.haltedauer {
+        width: 30px !important;
+    }
     
 </style>
 
@@ -647,6 +654,55 @@
             tagHaltedauer.val("");
             controlGroup.hide();
         }
+    }
+
+    var _halterDauerMasterTextboxOnChangeDisabled = false;
+
+    function SonderzulHaltedauerOnKeyPress() {
+        FormWizard.ButtonNextShow(false);
+    }
+
+    function WizardButtonNextShowDelayed() {
+        setTimeout(function() {
+            FormWizard.ButtonNextShow(true);
+        }, 1000);
+    }
+
+    function SonderzulHaltedauerOnChange() {
+        WizardButtonNextShowDelayed();
+
+        if (_halterDauerMasterTextboxOnChangeDisabled)
+            return;
+
+        var halterDauerMasterTextbox = $("#MindesthaltedauerDays");
+        var halterDauerGridFahrzeugTextboxes = $("input.blockrk.haltedauer");
+        $.each(halterDauerGridFahrzeugTextboxes, function(i, elem) {
+            $(elem).val(halterDauerMasterTextbox.val());
+            SonderzulMiscGridTextboxOnChange($(elem));
+        });
+    }
+
+    function SonderzulMiscGridTextboxOnChange(tb) {
+        WizardButtonNextShowDelayed();
+
+        var tr = tb.closest('tr');
+        var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+        var dataItem = grid.dataItem(tr);
+        var finId = dataItem["FinID"];
+        var field = tb.data('fieldname');
+        var value = tb.val();
+        //console.log(finId + "-" + field + "-" + value);
+
+        if (field === "MindesthaltedauerDays") {
+            var halterDauerMasterTextbox = $("#MindesthaltedauerDays");
+            if (halterDauerMasterTextbox.val() === '' || halterDauerMasterTextbox.val() === '0') {
+                _halterDauerMasterTextboxOnChangeDisabled = true;
+                halterDauerMasterTextbox.val(tb.val());
+                _halterDauerMasterTextboxOnChangeDisabled = false;
+            }
+        }
+
+        SetFinValue(finId, field, value);
     }
 
     // OptionenDienstleistungen

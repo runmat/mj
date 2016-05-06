@@ -25,7 +25,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
-    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen }
+    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen, Firmeneigen }
 
     [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
@@ -453,6 +453,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     case "zulassungfahrzeugartid":
                         FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.ZulassungFahrzeugartId = value);
                         break;
+
+                    case "mindesthaltedauerdays":
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.MindesthaltedauerDays = value.ToInt(0));
+                        break;
                 }
                 return null;
             }
@@ -645,6 +649,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 var abmArt = Abmeldearten.FirstOrDefault(z => z.Belegtyp == "AA");
                 if (abmArt != null)
                     Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
+            }
+
+            if (ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
+            {
+                Zulassung.Zulassungsdaten.ZulassungsartMatNr = "619".PadLeft0(18);
             }
         }
 
@@ -1585,6 +1594,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
+                        singleZulassung.Zulassungsdaten.MindesthaltedauerDays = fahrzeugAkteBestand.MindesthaltedauerDays;
 
                         if (!fahrzeugAkteBestand.ResKennz.IsNullOrEmpty() ||
                             !fahrzeugAkteBestand.ReservationNr.IsNullOrEmpty() ||
