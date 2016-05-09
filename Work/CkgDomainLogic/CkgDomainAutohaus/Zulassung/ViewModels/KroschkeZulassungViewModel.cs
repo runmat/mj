@@ -74,6 +74,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore]
         public bool ModusSonderzulassung => SonderzulassungsMode != SonderzulassungsMode.None;
 
+        public List<ZulassungHomepageItem> SonderzulassungsHomepageItems
+        {
+            get
+            {
+                var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
+                if (generalConf == null)
+                    return new List<ZulassungHomepageItem>();
+
+                var sData = generalConf.GetConfigVal("AutohausCommon", "Homepage Sonderzulassungen");
+                if (sData.IsNullOrEmpty())
+                    return new List<ZulassungHomepageItem>();
+
+                var items = new JavaScriptSerializer().Deserialize<ZulassungHomepageItem[]>(sData);
+                return items.ToListOrEmptyList();
+            }
+        }
+
 
         public bool ModusPartnerportal { get; set; }
 

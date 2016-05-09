@@ -1,16 +1,36 @@
 ﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <style type="text/css">
-
+    .sz-home.wrapper {
+        display: table;
+        margin: 30px;
+    }
+    .sz-home .tile {
+        margin: 10px 30px 12px 0;
+        background-color: #3BAFDA !important;
+    }
+    .sz-home .tile-object {
+        text-transform: uppercase;
+        text-align: center;
+    }
 </style>
 
-<h3>
-    @Localize.SpecialRegistration <small>Home</small>
+<h3 class="page-title">
+    @Localize.SpecialRegistrations <small></small>
 </h3>
 
-<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
-    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
-    <div id="formWizardTab1" class="hide">
-        @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
-    </div>
+<div class="sz-home wrapper">
+
+    @foreach (var homepageButton in Model.SonderzulassungsHomepageItems)
+    {
+        <a class="tile bg-tile-pdf" href="@homepageButton.AppUrl">
+            <div class="tile-body">
+                <i class="@homepageButton.IconCssClass"></i>
+            </div>
+            <div class="tile-object">
+                @Localize.TranslateResourceKey(homepageButton.LocalizeKey)
+            </div>
+        </a>
+    }
+
 </div>

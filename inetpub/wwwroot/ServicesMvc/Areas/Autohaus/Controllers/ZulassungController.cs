@@ -230,6 +230,14 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SzHome()
+        {
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult Schnellabmeldung()
         {
             return Index("", "", abmeldung: "1", schnellabmeldung: "1");
