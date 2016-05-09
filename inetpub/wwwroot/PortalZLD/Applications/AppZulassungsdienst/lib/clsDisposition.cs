@@ -6,6 +6,7 @@ using AppZulassungsdienst.lib.Models;
 using CKG.Base.Business;
 using System.Configuration;
 using System.Data.SqlClient;
+using GeneralTools.Models;
 using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
@@ -14,6 +15,7 @@ namespace AppZulassungsdienst.lib
     {
         public string UserName { get; set; }
         public string ZulDat { get; set; }
+        public bool AlleAemter { get; set; }
         public List<MobileUser> Fahrerliste { get; set; }
         public List<AmtDispos> Dispositionen { get; set; }
 
@@ -57,26 +59,21 @@ namespace AppZulassungsdienst.lib
             // Zulassungskreise/Dispositionen aus SAP laden
             LoadDisposFromSap();
             // Ggf. vorhandene Zuordnungen aus SQL laden und verarbeiten
-            Dictionary<string, string> vorhandeneZuordnungen = LoadZuordnungenFromSql();
-            foreach (var dispo in Dispositionen)
+            var vorhandeneZuordnungen = LoadZuordnungenFromSql();
+            foreach (var dispo in Dispositionen.Where(d => vorhandeneZuordnungen.ContainsKey(d.Amt)))
             {
-                if (vorhandeneZuordnungen.ContainsKey(dispo.Amt))
-                {
-                    dispo.MobileUserId = vorhandeneZuordnungen[dispo.Amt];
+                var dispoSql = vorhandeneZuordnungen[dispo.Amt];
 
-                    foreach (var fahrer in Fahrerliste)
-                    {
-                        if (fahrer.UserId == vorhandeneZuordnungen[dispo.Amt])
-                        {
-                            dispo.MobileUserName = fahrer.UserName;
-                            break;
-                        }
-                    }
-                    if (String.IsNullOrEmpty(dispo.MobileUserName))
-                    {
-                        dispo.MobileUserName = dispo.MobileUserId;
-                    }
-                }
+                dispo.MobileUserId = dispoSql.MobileUserId;
+
+                var fahrer = Fahrerliste.FirstOrDefault(f => f.UserId == dispo.MobileUserId);
+                if (fahrer != null && !string.IsNullOrEmpty(fahrer.UserName))
+                    dispo.MobileUserName = fahrer.UserName;
+                else
+                    dispo.MobileUserName = dispo.MobileUserId;
+
+                dispo.Vorschuss = dispoSql.Vorschuss;
+                dispo.VorschussBetrag = dispoSql.VorschussBetrag;
             }
         }
 
@@ -86,10 +83,11 @@ namespace AppZulassungsdienst.lib
                 {
                     Z_ZLD_MOB_DISPO_GET_VG.Init(SAP);
 
-                    SAP.SetImportParameter("I_VKORG", VKORG);
-                    SAP.SetImportParameter("I_VKBUR", VKBUR);
-                    SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
-                    SAP.SetImportParameter("I_FUNCTION", Modus);
+                    Z_ZLD_MOB_DISPO_GET_VG.SetImportParameter_I_VKORG(SAP, VKORG);
+                    Z_ZLD_MOB_DISPO_GET_VG.SetImportParameter_I_VKBUR(SAP, VKBUR);
+                    Z_ZLD_MOB_DISPO_GET_VG.SetImportParameter_I_ZZZLDAT(SAP, ZulDat.ToNullableDateTime("dd.MM.yyyy"));
+                    Z_ZLD_MOB_DISPO_GET_VG.SetImportParameter_I_FUNCTION(SAP, Modus);
+                    Z_ZLD_MOB_DISPO_GET_VG.SetImportParameter_I_ALLE_AEMTER(SAP, AlleAemter.BoolToX());
 
                     CallBapi();
 
@@ -97,38 +95,39 @@ namespace AppZulassungsdienst.lib
                 });
         }
 
-        private Dictionary<string, string> LoadZuordnungenFromSql()
+        private Dictionary<string, AmtDisposSql> LoadZuordnungenFromSql()
         {
             ClearError();
 
-            Dictionary<string, string> erg = new Dictionary<string, string>();
+            var erg = new Dictionary<string, AmtDisposSql>();
 
-            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+            var connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
-                DataTable tmpTable = new DataTable();
+                var tmpTable = new DataTable();
 
-                SqlCommand command = new SqlCommand();
-                SqlDataAdapter adapter = new SqlDataAdapter();
+                connection.Open();
 
+                var command = connection.CreateCommand();
+                var adapter = new SqlDataAdapter();
 
-                command.CommandText = "SELECT Amt, Fahrer FROM dbo.ZLDDisposition " +
-                                      "WHERE VkOrg = @VkOrg AND VkBur = @VkBur " +
-                                      " ORDER BY Amt";
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT Amt, Fahrer, ISNULL(Vorschuss, 0) AS Vorschuss, ISNULL(VorschussBetrag, 0) AS VorschussBetrag FROM dbo.ZLDDisposition " +
+                                      "WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Modus = @Modus AND Datum = @Datum " +
+                                      "ORDER BY Amt";
 
                 command.Parameters.AddWithValue("@VkOrg", VKORG);
                 command.Parameters.AddWithValue("@VkBur", VKBUR);
+                command.Parameters.AddWithValue("@Modus", Modus);
+                command.Parameters.AddWithValue("@Datum", ZulDat);
 
-                connection.Open();
-                command.Connection = connection;
-                command.CommandType = CommandType.Text;
                 adapter.SelectCommand = command;
                 adapter.Fill(tmpTable);
 
                 foreach (DataRow dRow in tmpTable.Rows)
                 {
-                    erg.Add(dRow["Amt"].ToString(), dRow["Fahrer"].ToString());
+                    erg.Add(dRow["Amt"].ToString(), new AmtDisposSql(dRow["Amt"].ToString(), dRow["Fahrer"].ToString(), (bool)dRow["Vorschuss"], (decimal?)dRow["VorschussBetrag"]));
                 }
             }
             catch (Exception ex)
@@ -152,8 +151,8 @@ namespace AppZulassungsdienst.lib
                 SaveDisposToSap();
                 if (!ErrorOccured)
                 {
-                    // Wenn Übernahme nach SAP erfolgreich -> Zuordnungen aus Sql löschen
-                    RemoveChangesFromSql(true);
+                    CleanUpDisposInSql();
+                    Dispositionen.RemoveAll(d => !string.IsNullOrEmpty(d.MobileUserId) && string.IsNullOrEmpty(d.SaveError));
                 }
             }
         }
@@ -162,42 +161,48 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+            var connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
-                SqlCommand command = new SqlCommand();
-
                 connection.Open();
-                command.Connection = connection;
+
+                var command = connection.CreateCommand();
+
                 command.CommandType = CommandType.Text;
 
                 foreach (var dispo in Dispositionen)
                 {
                     // Insert bzw. Update in Sql-Tabelle
                     command.CommandText = "SELECT Amt FROM dbo.ZLDDisposition " +
-                                      "WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt ";
+                                      "WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt AND Modus = @Modus AND Datum = @Datum ";
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@VkOrg", VKORG);
                     command.Parameters.AddWithValue("@VkBur", VKBUR);
                     command.Parameters.AddWithValue("@Amt", dispo.Amt);
-                    object tmpErg = command.ExecuteScalar();
+                    command.Parameters.AddWithValue("@Modus", Modus);
+                    command.Parameters.AddWithValue("@Datum", ZulDat);
+                    var tmpErg = command.ExecuteScalar();
 
                     if (tmpErg == null)
                     {
                         command.CommandText = "INSERT INTO dbo.ZLDDisposition " +
-                                      "(Fahrer, VkOrg, VkBur, Amt) VALUES (@Fahrer, @VkOrg, @VkBur, @Amt) ";
+                                      "(Fahrer, Vorschuss, VorschussBetrag, VkOrg, VkBur, Amt, Modus, Datum) VALUES (@Fahrer, @Vorschuss, @VorschussBetrag, @VkOrg, @VkBur, @Amt, @Modus, @Datum) ";
                     }
                     else
                     {
                         command.CommandText = "UPDATE dbo.ZLDDisposition " +
-                                      "SET Fahrer = @Fahrer WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt ";
+                                      "SET Fahrer = @Fahrer, Vorschuss = @Vorschuss, VorschussBetrag = @VorschussBetrag WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt AND Modus = @Modus AND Datum = @Datum ";
                     }
                     command.Parameters.Clear();
                     command.Parameters.AddWithValue("@Fahrer", dispo.MobileUserId);
+                    command.Parameters.AddWithValue("@Vorschuss", dispo.Vorschuss);
+                    command.Parameters.AddWithValue("@VorschussBetrag", dispo.VorschussBetrag);
                     command.Parameters.AddWithValue("@VkOrg", VKORG);
                     command.Parameters.AddWithValue("@VkBur", VKBUR);
                     command.Parameters.AddWithValue("@Amt", dispo.Amt);
+                    command.Parameters.AddWithValue("@Modus", Modus);
+                    command.Parameters.AddWithValue("@Datum", ZulDat);
                     command.ExecuteNonQuery();
                 }
             }
@@ -217,43 +222,51 @@ namespace AppZulassungsdienst.lib
                 {
                     Z_ZLD_MOB_DISPO_SET_USER.Init(SAP);
 
-                    SAP.SetImportParameter("I_VKORG", VKORG);
-                    SAP.SetImportParameter("I_VKBUR", VKBUR);
-                    SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
-                    SAP.SetImportParameter("I_FUNCTION", Modus);
-                    SAP.SetImportParameter("I_DISPO_USER", UserName);
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_VKORG(SAP, VKORG);
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_VKBUR(SAP, VKBUR);
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_ZZZLDAT(SAP, ZulDat.ToNullableDateTime("dd.MM.yyyy"));
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_FUNCTION(SAP, Modus);
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_DISPO_USER(SAP, UserName);
+                    Z_ZLD_MOB_DISPO_SET_USER.SetImportParameter_I_ALLE_AEMTER(SAP, AlleAemter.BoolToX());
 
                     // Nur die disponierten Ämter an SAP übergeben
-                    var disposToSave = Dispositionen.Where(d => !String.IsNullOrEmpty(d.MobileUserId));
+                    var disposToSave = Dispositionen.Where(d => !string.IsNullOrEmpty(d.MobileUserId)).ToList();
                     SAP.ApplyImport(AppModelMappings.Z_ZLD_MOB_DISPO_SET_USER_GT_VGANZ_From_AmtDispos.CopyBack(disposToSave));
 
                     CallBapi();
+
+                    var sapItems = Z_ZLD_MOB_DISPO_SET_USER.GT_VGANZ.GetExportList(SAP);
+
+                    foreach (var dispo in disposToSave)
+                    {
+                        var savedDispo = sapItems.FirstOrDefault(s => s.AMT == dispo.Amt);
+
+                        dispo.SaveError = (savedDispo != null && savedDispo.SUBRC != 0 ? savedDispo.MESSAGE : "");
+                    }
                 });
         }
 
-        private void RemoveChangesFromSql(bool nurDisponierte)
+        private void CleanUpDisposInSql()
         {
             ClearError();
 
-            SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
+            var connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
             {
-                SqlCommand command = new SqlCommand();
-
                 connection.Open();
-                command.Connection = connection;
-                command.CommandType = CommandType.Text;
 
+                var command = connection.CreateCommand();
+
+                command.CommandType = CommandType.Text;
                 command.CommandText = "DELETE FROM dbo.ZLDDisposition " +
-                                    "WHERE VkOrg = @VkOrg AND VkBur = @VkBur ";
-                if (nurDisponierte)
-                {
-                    command.CommandText += "AND ISNULL(Fahrer,'') <> '' ";
-                }
+                                    "WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND ISNULL(Fahrer,'') <> '' AND Modus = @Modus AND Datum = @Datum";
+
                 command.Parameters.Clear();
                 command.Parameters.AddWithValue("@VkOrg", VKORG);
                 command.Parameters.AddWithValue("@VkBur", VKBUR);
+                command.Parameters.AddWithValue("@Modus", Modus);
+                command.Parameters.AddWithValue("@Datum", ZulDat);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)

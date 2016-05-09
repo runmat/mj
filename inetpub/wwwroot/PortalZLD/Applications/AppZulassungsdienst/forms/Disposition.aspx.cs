@@ -15,6 +15,8 @@ namespace AppZulassungsdienst.forms
         private User m_User;
         private clsDisposition objDispo;
 
+        protected string DispoModus { get { return (objDispo == null ? "" : objDispo.Modus); } }
+
         #region Events
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,7 +32,7 @@ namespace AppZulassungsdienst.forms
 
             if (Session["objDispo"] == null)
             {
-                objDispo = new clsDisposition(m_User.Reference, m_User.UserName);
+                objDispo = new clsDisposition(m_User.Reference, m_User.UserName) { Modus = "1" };
                 Session["objDispo"] = objDispo;
             }
             else
@@ -46,9 +48,7 @@ namespace AppZulassungsdienst.forms
             else
             {
                 if (Request.Params["__EVENTTARGET"] == "txtZulDate")
-                {
                     SelectionChanged();
-                }
             }
         }
 
@@ -69,27 +69,31 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void gvDispositionen_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.DataItem != null)
+            switch (e.Row.RowType)
             {
-                Label lbl = (Label)e.Row.FindControl("lblAmt");
-                DropDownList ddl = (DropDownList)e.Row.FindControl("ddlFahrer");
-                ddl.DataSource = objDispo.Fahrerliste;
-                ddl.DataValueField = "UserId";
-                ddl.DataTextField = "UserName";
-                ddl.DataBind();
-                var dispos = objDispo.Dispositionen.Where(d => d.Amt == lbl.Text);
-                if (dispos.Any())
-                {
-                    string mobUser = dispos.First().MobileUserId;
-                    if (String.IsNullOrEmpty(mobUser))
+                case DataControlRowType.DataRow:
+                    if (e.Row.DataItem != null)
                     {
-                        ddl.SelectedValue = "0";
+                        var lbl = (Label)e.Row.FindControl("lblAmt");
+                        var ddl = (DropDownList)e.Row.FindControl("ddlFahrer");
+                        ddl.DataSource = objDispo.Fahrerliste;
+                        ddl.DataValueField = "UserId";
+                        ddl.DataTextField = "UserName";
+                        ddl.DataBind();
+                        var dispo = objDispo.Dispositionen.FirstOrDefault(d => d.Amt == lbl.Text);
+                        if (dispo != null)
+                        {
+                            var mobUser = dispo.MobileUserId;
+                            ddl.SelectedValue = (string.IsNullOrEmpty(mobUser) ? "0" : mobUser);
+                        }
                     }
-                    else
-                    {
-                        ddl.SelectedValue = mobUser;
-                    }
-                }
+                    break;
+
+                case DataControlRowType.Footer:
+                    e.Row.Cells[0].Text = "Gesamt:";
+                    e.Row.Cells[3].Text = objDispo.Dispositionen.Sum(d => d.AnzahlVorgaenge).ToString();
+                    e.Row.Cells[5].Text = objDispo.Dispositionen.Sum(d => d.GebuehrAmt).ToString("f");
+                    break;
             }
         }
 
@@ -113,7 +117,7 @@ namespace AppZulassungsdienst.forms
             DatenSpeichern(true);
         }
 
-        protected void rbModusChanged(object sender, EventArgs e)
+        protected void OnSelectionChanged(object sender, EventArgs e)
         {
             SelectionChanged();
         }
@@ -125,7 +129,7 @@ namespace AppZulassungsdienst.forms
         private void FillForm()
         {
             // Morgiges Datum als Default-Wert setzen, dabei ggf. Wochenenden/Feiertage überspringen
-            DateTime morgen = SkipWeekendsAndHolidays(DateTime.Today.AddDays(1));
+            var morgen = SkipWeekendsAndHolidays(DateTime.Today.AddDays(1));
             txtZulDate.Text = morgen.ToString("ddMMyy");
 
             // Bei Änderung des gewählten Zulassungsdatums Daten neu einlesen
@@ -161,9 +165,8 @@ namespace AppZulassungsdienst.forms
         {
             DateTime tmpDatum;
             if (!DateTime.TryParseExact(txtZulDate.Text, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDatum))
-            {
                 return false;
-            }
+
             objDispo.ZulDat = tmpDatum.ToString("dd.MM.yyyy");
 
             return true;
@@ -171,41 +174,34 @@ namespace AppZulassungsdienst.forms
 
         private DateTime SkipWeekendsAndHolidays(DateTime datum)
         {
-            DateTime tmpdat = datum;
+            var tmpdat = datum;
 
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 if ((tmpdat.DayOfWeek == DayOfWeek.Saturday) || (tmpdat.DayOfWeek == DayOfWeek.Sunday) || (IstFeiertag(tmpdat)))
-                {
                     tmpdat = tmpdat.AddDays(1);
-                }
                 else
-                {
                     break;
-                }
             }
+
             return tmpdat;
         }
 
-        private bool IstFeiertag(DateTime datum)
+        private static bool IstFeiertag(DateTime datum)
         {
-            bool erg = false;
+            var dfej = new DeutscheFeiertageEinesJahres(datum.Year);
 
-            DeutscheFeiertageEinesJahres dfej = new DeutscheFeiertageEinesJahres(datum.Year);
-
-            foreach (Feiertag ft in dfej.Feiertage)
-            {
-                if (ft.Datum.Date == datum.Date)
-                {
-                    erg = true;
-                }
-            }
-
-            return erg;
+            return dfej.Feiertage.Any(ft => ft.Datum.Date == datum.Date);
         }
 
         private void SelectionChanged()
         {
+            if (!rbNichtDisponiert.Checked)
+            {
+                chkAlleAemter.Checked = false;
+                chkAlleAemter.Visible = false;
+            }
+
             if (ApplyZulDate())
             {
                 if (rbBereitsDisponiert.Checked)
@@ -215,6 +211,8 @@ namespace AppZulassungsdienst.forms
                 else
                     objDispo.Modus = "1";
 
+                objDispo.AlleAemter = chkAlleAemter.Checked;
+
                 objDispo.LoadDispos();
                 Session["objDispo"] = objDispo;
                 Fillgrid();
@@ -223,43 +221,53 @@ namespace AppZulassungsdienst.forms
 
         private void DatenSpeichern(bool senden)
         {
-            int disponierte = 0;
-            string nichtDisponierte = "";
+            var disponierte = 0;
+            var nichtDisponierte = "";
 
             // Eingaben aus Grid übernehmen
             foreach (GridViewRow gRow in gvDispositionen.Rows)
             {
-                Label lbl = (Label)gRow.FindControl("lblAmt");
-                DropDownList ddl = (DropDownList)gRow.FindControl("ddlFahrer");
-                var dispos = objDispo.Dispositionen.Where(d => d.Amt == lbl.Text);
-                if (dispos.Any() && ddl.SelectedItem != null)
-                {
-                    var dispo = dispos.First();
+                var lblAmt = (Label)gRow.FindControl("lblAmt");
+                var ddlFahrer = (DropDownList)gRow.FindControl("ddlFahrer");
+                var chkVorschuss = (CheckBox)gRow.FindControl("chkVorschuss");
+                var txtVorschussBetrag = (TextBox)gRow.FindControl("txtVorschussBetrag");
 
-                    if (ddl.SelectedItem.Value == "0")
+                var dispo = objDispo.Dispositionen.FirstOrDefault(d => d.Amt == lblAmt.Text);
+                if (dispo != null)
+                {
+                    if (ddlFahrer.SelectedItem != null)
                     {
-                        dispo.MobileUserId = "";
-                        dispo.MobileUserName = "";
-                        if (String.IsNullOrEmpty(nichtDisponierte))
+                        if (ddlFahrer.SelectedItem.Value == "0")
                         {
-                            nichtDisponierte = lbl.Text;
+                            dispo.MobileUserId = "";
+                            dispo.MobileUserName = "";
+                            if (string.IsNullOrEmpty(nichtDisponierte))
+                                nichtDisponierte = lblAmt.Text;
+                            else
+                                nichtDisponierte += ", " + lblAmt.Text;
                         }
                         else
                         {
-                            nichtDisponierte += ", " + lbl.Text;
+                            dispo.MobileUserId = ddlFahrer.SelectedItem.Value;
+                            dispo.MobileUserName = ddlFahrer.SelectedItem.Text;
+                            disponierte++;
                         }
                     }
-                    else
-                    {
-                        dispo.MobileUserId = ddl.SelectedItem.Value;
-                        dispo.MobileUserName = ddl.SelectedItem.Text;
-                        disponierte++;
-                    }
+
+                    dispo.Vorschuss = chkVorschuss.Checked;
+                    dispo.VorschussBetrag = txtVorschussBetrag.Text.ToNullableDecimal();
                 }
             }
 
+            if (objDispo.Dispositionen.Any(d => d.Vorschuss && (!d.VorschussBetrag.HasValue || d.VorschussBetrag.Value <= 0)))
+            {
+                Session["objDispo"] = objDispo;
+                lblError.Text = "Bitte geben Sie für alle Ämter, bei denen Sie 'Vorschuss' gewählt haben, die Höhe des Vorschusses an";
+                return;
+            }
+
             // Daten speichern (nur dann wirklich an SAP senden, wenn disponiert)
-            bool datenAnSapSenden = ((senden) && (disponierte > 0));
+            var datenAnSapSenden = (senden && disponierte > 0);
 
             objDispo.SaveDispos(datenAnSapSenden);
 
@@ -273,11 +281,18 @@ namespace AppZulassungsdienst.forms
 
                 if (datenAnSapSenden)
                 {
-                    if (!String.IsNullOrEmpty(nichtDisponierte))
+                    if (objDispo.Dispositionen.Any(d => !string.IsNullOrEmpty(d.SaveError)))
                     {
-                        lblError.Text = "Achtung! Für die Ämter " + nichtDisponierte + " wurde noch kein Fahrer ausgewählt";
+                        lblError.Text = "Achtung! Einige Dispositionen konnten nicht gespeichert werden";
                     }
-                    objDispo.LoadDispos();
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(nichtDisponierte))
+                            lblError.Text = "Achtung! Für die Ämter " + nichtDisponierte + " wurde noch kein Fahrer ausgewählt";
+
+                        objDispo.LoadDispos();
+                    }
+
                     Fillgrid();
                 }
                 else if (senden)

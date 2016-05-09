@@ -538,6 +538,13 @@ namespace AppZulassungsdienst.lib.Models
                         d.Amt = s.AMT;
                         d.MobileUserId = s.MOBUSER;
                         d.MobileUserName = s.NAME;
+                        d.MobilAktiv = s.MOB_AKTIV.XToBool();
+                        d.NoMobilAktiv = s.NO_MOB_AKTIV.XToBool();
+                        d.GebuehrAmt = s.GEB_AMT;
+                        d.Hinweis = s.HINWEIS;
+                        d.Vorschuss = s.VORSCHUSS.XToBool();
+                        d.VorschussBetrag = s.VORSCHUSS_BETRAG;
+                        d.WaehrungsSchluessel = s.WAERS;
                     }));
             }
         }
@@ -1159,6 +1166,13 @@ namespace AppZulassungsdienst.lib.Models
                         d.MOBUSER = s.MobileUserId;
                         d.NAME = s.MobileUserName;
                         d.VG_ANZ = s.AnzahlVorgaenge;
+                        d.MOB_AKTIV = s.MobilAktiv.BoolToX();
+                        d.NO_MOB_AKTIV = s.NoMobilAktiv.BoolToX();
+                        d.GEB_AMT = s.GebuehrAmt;
+                        d.HINWEIS = s.Hinweis;
+                        d.VORSCHUSS = s.Vorschuss.BoolToX();
+                        d.VORSCHUSS_BETRAG = s.VorschussBetrag;
+                        d.WAERS = s.WaehrungsSchluessel;
                     }));
             }
         }
