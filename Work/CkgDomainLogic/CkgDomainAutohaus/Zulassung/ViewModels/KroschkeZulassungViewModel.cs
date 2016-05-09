@@ -97,7 +97,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     return Localize.MailOrderRegistration;
 
                 if (ModusSonderzulassung)
-                    return Localize.SpecialRegistration;
+                {
+                    if (SonderzulassungsMode == SonderzulassungsMode.Default)
+                        return Localize.SpecialRegistration;
+
+                    return Localize.TranslateResourceKey($"Autohaus_Sz_{SonderzulassungsMode.ToString("F")}");
+                }
+
 
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
