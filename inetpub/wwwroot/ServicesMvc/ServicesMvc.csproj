@@ -75,6 +75,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -229,6 +230,18 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\XmlData\StepsKroschkeSzFirmeneigen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeSzHaendlerkennzeichen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeSzErsatzkennzeichen.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Areas\Common\Content\Weather\images\01d.png" />
     <Content Include="Areas\Common\Content\Weather\images\01n.png" />
     <Content Include="Areas\Common\Content\Weather\images\02d.png" />
@@ -475,6 +488,10 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
     <Content Include="Areas\Autohaus\Views\Zulassung\SzHome.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Ersatzkennzeichen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ErsatzkennzeichenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Haendlerkennzeichen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\HaendlerkennzeichenForm.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -997,7 +1014,7 @@
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\ZulassungsReport\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Shared\Partial\ZiPoolInfoListe.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Shared\Partial\ErforderlicheDokumente.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuer.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />

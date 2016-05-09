@@ -112,25 +112,29 @@ else
         var isSchnellabmeldung = '@Model.Zulassung.Zulassungsdaten.IsSchnellabmeldung';
         var isVersandzulassung = '@Model.ModusVersandzulassung';
         var isSonderzulassung = '@Model.ModusSonderzulassung';
+        var sonderzulassungMode = '@Model.SonderzulassungsMode.ToString("F")';
         var isAbmeldung = '@Model.ModusAbmeldung';
         var isPartnerportal = '@Model.ModusPartnerportal';
 
-        if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
+        if (isMassenzulassung === "True" || isMassenabmeldung === "True") {
             window.location = "../Fahrzeugbestand/index";
         } else if (window.location.pathname.indexOf("ZulassungFromShoppingCart") > -1) {
             var replaceAction = "Index";
 
-            if (isSchnellabmeldung == "True") {
+            if (isSchnellabmeldung === "True") {
                 replaceAction = "Schnellabmeldung";
-            } else if (isVersandzulassung == "True") {
-                if (isPartnerportal == "True") {
+            } else if (isVersandzulassung === "True") {
+                if (isPartnerportal === "True") {
                     replaceAction = "VersandzulassungPartner";
                 } else {
                     replaceAction = "Versandzulassung";
                 }
-            } else if (isSonderzulassung == "True") {
-                replaceAction = "Sonderzulassung";
-            } else if (isAbmeldung == "True") {
+            } else if (isSonderzulassung === "True") {
+                if (sonderzulassungMode === "Default")
+                    replaceAction = "Sonderzulassung";
+                else
+                    replaceAction = "Sz" + sonderzulassungMode;
+            } else if (isAbmeldung === "True") {
                 replaceAction = "Abmeldung";
             }
 
@@ -140,5 +144,5 @@ else
             window.location = window.location.pathname;
         }
     }
-    
+
 </script>

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using Localize = CkgDomainLogic.General.Services.Localize;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
@@ -41,6 +42,12 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (BeauftragungsArt == "VERSANDZULASSUNGPARTNER")
                     return "?versandzulassung=1&partnerportal=1";
+
+                if (BeauftragungsArt.StartsWith("SONDERZUL"))
+                {
+                    var sonderzulassungMode = !BeauftragungsArt.Contains("_") ? "" : BeauftragungsArt.Split('_')[1].ToLower();   // z. B. SONDERZUL_ERSATZKENNZEICHEN
+                    return "?sonderzulassung=1&sonderzulassungMode=" + sonderzulassungMode;
+                }
 
                 return "";
             }
@@ -164,6 +171,36 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        [XmlIgnore]
+        public List<SelectItem> ErsatzKennzeichenTypen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem {Key = "8".PadLeft(18, '0'), Text = "Kennzeichen vorne"},
+                    new SelectItem {Key = "801".PadLeft(18, '0'), Text = "Kennzeichen hinten"},
+                    new SelectItem {Key = "800".PadLeft(18, '0'), Text = "Kennzeichen vorn und hinten"},
+                };
+            }
+        }
+
+        [XmlIgnore]
+        public List<SelectItem> HaendlerKennzeichenTypen
+        {
+            get
+            {
+                return new List<SelectItem>
+                {
+                    new SelectItem {Key = "679".PadLeft(18, '0'), Text = "Händlerkennzeichen verlängern"},
+                    // ToDo: Key "600" => Key = "???"
+                    new SelectItem {Key = "600".PadLeft(18, '0'), Text = "Erneuerung der Kennzeichen"},
+                    new SelectItem {Key = "94".PadLeft(18, '0'), Text = "Fahrtenbuch (blau)"},
+                    new SelectItem {Key = "95".PadLeft(18, '0'), Text = "Nachweisheft - rote Kennzeichen (rosa)"},
+                };
+            }
+        }
+
         public Versanddaten Versanddaten { get; set; }
 
         public bool IsSelected { get; set; }
@@ -175,7 +212,10 @@ namespace CkgDomainLogic.Autohaus.Models
             AuslieferAdressen = new List<AuslieferAdresse>();
             AuslieferAdressenPartnerRollen.ForEach(p => AuslieferAdressen.Add(new AuslieferAdresse(p.Key)));
             AuslieferAdressen.ForEach(a => a.Materialien = AuslieferAdresse.AlleMaterialien);
-            Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
+            Fahrzeugdaten = new Fahrzeugdaten
+            {
+                FahrzeugartId = "1"
+            };
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
             ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
             VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };
@@ -302,8 +342,10 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
-        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink)
+        public GeneralSummary CreateSummaryModel(string auslieferAdressenLink, string[] stepKeys)
         {
+            var keysToLower = stepKeys.Select(s => s.ToLower());
+
             var summaryModel = new GeneralSummary
             {
                 Header = SummaryHeaderText,
@@ -319,15 +361,29 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Rechnungsdaten.GetSummaryString(Kunden),
                             },
 
-                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                            (!keysToLower.Contains("fahrzeugdaten")
                                     ? null :
                                     new GeneralEntity
                                     {
                                         Title = Localize.VehicleData,
                                         Body = Fahrzeugdaten.GetSummaryString()
                                     }),
+                            (!keysToLower.Contains("ersatzkennzeichen")
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = "Ersatzkennzeichen",
+                                        Body = Fahrzeugdaten.GetSummaryStringErsatzkennzeichen()
+                                    }),
+                            (!keysToLower.Contains("haendlerkennzeichen")
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = "Händlerkennzeichen",
+                                        Body = Fahrzeugdaten.GetSummaryStringHaendlerkennzeichen()
+                                    }),
 
-                            (Zulassungsdaten.ModusAbmeldung && Zulassungsdaten.IsSchnellabmeldung
+                            (!keysToLower.Contains("halteradresse")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -335,7 +391,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = Halter.Adresse.GetPostLabelString()
                                     }),
 
-                            (Zulassungsdaten.ModusAbmeldung || Zulassungsdaten.ModusPartnerportal
+                            (!keysToLower.Contains("zahlerkfzsteuer")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -343,13 +399,15 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = ZahlerKfzSteuer.GetSummaryString()
                                     }),
 
-                            new GeneralEntity
-                            {
-                                Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
-                                Body = Zulassungsdaten.GetSummaryString()
-                            },
+                            (!keysToLower.Contains("zulassungsdaten")
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = (Zulassungsdaten.ModusAbmeldung ? Localize.Cancellation : Localize.Registration),
+                                        Body = Zulassungsdaten.GetSummaryString()
+                                    }),
 
-                            (Zulassungsdaten.ModusAbmeldung 
+                            (!keysToLower.Contains("optionendienstleistungen")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -357,7 +415,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = OptionenDienstleistungen.GetSummaryString()
                                     }),
 
-                            (!Zulassungsdaten.ModusVersandzulassung
+                            (!keysToLower.Contains("versanddaten")
                                     ? null :
                                     new GeneralEntity
                                     {
@@ -381,7 +439,7 @@ namespace CkgDomainLogic.Autohaus.Models
                                         Body = AuslieferAdressenSummaryString + auslieferAdressenLink
                                     }),
 
-                            (!Zulassungsdaten.ModusVersandzulassung
+                            (!keysToLower.Contains("versanddaten")
                                     ? null :
                                     new GeneralEntity
                                     {
