@@ -1,0 +1,18 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridEquiLebenslauf"; }
+
+@(Html.XTelerik()
+    .XGrid<EquiLebenslauf>()
+    .Name(gridName)
+    .XAjaxDataBinding("EquiHistorieRemarketingLebenslaufAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Datum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Ereignis);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Datum).Ascending())
+    .Groupable(g => g.Enabled(false))
+)

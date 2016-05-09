@@ -16,5 +16,10 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.Description)]
         public string Bezeichnung { get; set; }
+
+        public string CodeBezeichnung
+        {
+            get { return string.Format("{0} {1}", PaketId, Bezeichnung); }
+        }
     }
 }

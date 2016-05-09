@@ -46,6 +46,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
             InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
+            InitViewModel(EquipmentHistorieRemarketingViewModel, appSettings, logonContext, equiHistorieDataService, easyAccessDataService);
 
             InitModelStatics();
         }

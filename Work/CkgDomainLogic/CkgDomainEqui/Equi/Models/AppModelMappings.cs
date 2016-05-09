@@ -963,8 +963,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Zulassungsdatum = s.ZULDAT;
                         d.HcEingang = s.HCEINGDAT;
                         d.HcOrt = s.HCORT;
-                        d.KmStand = s.KMSTAND;
-                        d.Vermarktung = (s.EREIGNIS.ToInt(0) != 0);
+                        d.KmStand = s.KMSTAND.ToNullableDecimal();
+                        d.Selbstvermarktung = (s.EREIGNIS.ToInt(0) != 0);
                         d.DatumVertragswidrigkeit = s.DAT_VERT_WID;
                         d.ArtVertragswidrigkeit = s.ART_VERT_WID;
                         d.TuevRueckmeldung = s.DAT_TUEV_BEAUF_RUECK;
@@ -1079,7 +1079,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.Summe = s.SUMME;
                         d.Gutachter = s.GUTA;
                         d.GutachtenId = s.GUTAID;
-                        d.KmStand = s.KMSTAND;
+                        d.KmStand = s.KMSTAND.ToNullableDecimal();
                         d.Status = s.STATUS_TEXT;
                         d.SchadenrechnungsNr = s.RENNR;
                         d.DatumSchadenrechnung = s.REDAT;
@@ -1088,6 +1088,88 @@ namespace CkgDomainLogic.Equi.Models
                         d.BlockadeText = s.BLOCKTEXT;
                         d.BlockadeDatum = s.BLOCKDAT;
                         d.BlockadeUser = s.BLOCKUSER;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_RECHNG, EquiRechnungsdaten> Z_DPM_REM_FAHRZEUGHIST_02_GT_RECHNG_To_EquiRechnungsdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_RECHNG, EquiRechnungsdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BelegArt = s.BELART;
+                        d.Rechnungsdatum = s.REDAT;
+                        d.Empfaenger = s.EMPFAENGER;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_SCHADEN, EquiVorschaden> Z_DPM_REM_FAHRZEUGHIST_02_GT_SCHADEN_To_EquiVorschaden
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_SCHADEN, EquiVorschaden>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FahrgestellNr = s.FAHRGNR;
+                        d.Kennzeichen = s.KENNZ;
+                        d.Erstellungsdatum = s.ERDAT;
+                        d.Preis = s.PREIS;
+                        d.Schadensdatum = s.SCHAD_DAT;
+                        d.Beschreibung = s.BESCHREIBUNG;
+                        d.DatumUpdate = s.DAT_UPD_VORSCH;
+                        d.Repariert = s.REPARIERT.XToBool();
+                        d.Wertminderungsbetrag = s.WRTMBETR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN2, EquiZusatzdatenRemarketing> Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN2_To_EquiZusatzdatenRemarketing
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN2, EquiZusatzdatenRemarketing>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HcAusgang = s.DAT_HC_AUSG;
+                        d.GutachtenAuftragsdatum = s.GUTAUFTRAGDAT;
+                        d.Vertragsjahr = s.VERTRAGSJAHR;
+                        d.UpePreis = s.UPEPREIS;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_AUSST, EquiAusstattung> Z_DPM_REM_FAHRZEUGHIST_02_GT_AUSST_To_EquiAusstattung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_FAHRZEUGHIST_02.GT_AUSST, EquiAusstattung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FahrgestellNr = s.FAHRGNR;
+                        d.PaketTyp = s.PRNR_TYP;
+                        d.PaketId = s.PACKIDENT;
+                        d.Bezeichnung = s.BEZ_PRNR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_SCHADENRG_01.GT_OUT, EquiSchadenrechnung> Z_DPM_REM_SCHADENRG_01_GT_OUT_To_EquiSchadenrechnung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_SCHADENRG_01.GT_OUT, EquiSchadenrechnung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Status = s.STATUS;
+                        d.RechnungsNr = s.RENNR;
                     }));
             }
         }

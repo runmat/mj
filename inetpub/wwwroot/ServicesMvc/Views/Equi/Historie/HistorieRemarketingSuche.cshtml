@@ -9,10 +9,10 @@
             
             @Html.FormValidationSummary()
 
-            
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
-            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
 
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.Search</button>

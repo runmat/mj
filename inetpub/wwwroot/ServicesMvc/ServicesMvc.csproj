@@ -270,6 +270,8 @@
     <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
+    <Content Include="Images\Tool.png" />
+    <Content Include="Images\TUEV.png" />
     <Content Include="_Themes\AH2015\images\checkbox-hover-halfcheck.png" />
     <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
@@ -3178,6 +3180,12 @@
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieRemarketingDetail.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\UebersichtRemarketing.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\BriefSchluesseldaten.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\LebenslaufGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\VorschaedenGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\ModellAusstattung.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

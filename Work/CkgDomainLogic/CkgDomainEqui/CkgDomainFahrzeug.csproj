@@ -114,6 +114,7 @@
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
     <Compile Include="Controllers\Floorcheck\FahrzeugeController.cs" />
     <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />
+    <Compile Include="Controllers\HistorieRemarketing\EquiController.cs" />
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Equi\ViewModels\BriefbestandVhcViewModel.cs" />
     <Compile Include="Equi\ViewModels\KlaerfaelleVhcViewModel.cs" />
     <Compile Include="Equi\ViewModels\EquiHistorieVermieterViewModel.cs" />
+    <Compile Include="Equi\ViewModels\EquiHistorieRemarketingViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnsperreViewModel.cs" />
     <Compile Include="Equi\ViewModels\EinAusgaengeViewModel.cs" />
     <Compile Include="Equi\ViewModels\StuecklistenViewModel.cs" />

@@ -11,7 +11,7 @@
         columns.XBound(c => c.FahrgestellNr).ClientTemplate(
                 "<a href='#' class='link tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right' onclick='ShowEquiHistorieRemarketingAjax(\"<#= data.FahrgestellNr #>\");'><#= data.FahrgestellNr #></a>"
             );
-        columns.XBound(c => c.UpePreis);
+        columns.XBound(c => c.BriefNr);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieRemarketingInfos"))

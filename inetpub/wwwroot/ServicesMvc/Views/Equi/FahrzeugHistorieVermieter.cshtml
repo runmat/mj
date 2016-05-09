@@ -26,33 +26,33 @@
     }
 
     function GetGrid() {
-        return $("#GridEquiHistorieInfosVermieter").data("tGrid");
+        return $("#GridEquiHistorieVermieterInfos").data("tGrid");
     }
 
     function GridLoadingHide() {
         // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
-        setTimeout('$("#GridEquiHistorieInfosVermieterItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+        setTimeout('$("#GridEquiHistorieVermieterInfosItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
     }
 
     function GridRefresh() {
         GetGrid().ajaxRequest();
     }
 
-    function OnDataBound_GridEquiHistorieInfosVermieter() {
+    function OnDataBound_GridEquiHistorieVermieterInfos() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
     }
 
-    function OnLoad_GridEquiHistorieInfosVermieter() {
+    function OnLoad_GridEquiHistorieVermieterInfos() {
         $('.t-no-data td').text(ladeHinweis);
     }
 
-    function OnColumnShowHide_GridEquiHistorieInfosVermieter() {
+    function OnColumnShowHide_GridEquiHistorieVermieterInfos() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnReorder_GridEquiHistorieInfosVermieter() {
+    function OnColumnReorder_GridEquiHistorieVermieterInfos() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
@@ -60,7 +60,7 @@
         SearchFormHide();
         $("#divHistorieVermieterGrid").html(result);
 
-        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfosVermieter");
+        GridAllColumnFilterApplyToGrid("GridEquiHistorieVermieterInfos");
 
         $("#divHistorieVermieterGrid").slideDown();
         $("#divHistorieVermieterDetail").html('');

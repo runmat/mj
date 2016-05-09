@@ -9,9 +9,6 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.HcDispatch)]
         public DateTime? HcAusgang { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Hc)]
-        public string Hc { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.SurveyOrderDate)]
         public DateTime? GutachtenAuftragsdatum { get; set; }
 
@@ -20,5 +17,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.RrpPrice)]
         public string UpePreis { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RrpPrice)]
+        public string UpePreisFormatted { get { return (string.IsNullOrEmpty(UpePreis) ? "" : string.Format("{0} €", UpePreis)); } }
     }
 }

@@ -1,0 +1,48 @@
+﻿@model CkgDomainLogic.Equi.Models.EquiHistorieRemarketing
+
+<style type="text/css">
+    a.btn {
+        color: #ffffff !Important;
+    }
+</style>
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right margin-left-10 hide" onclick="CloseEquiHistorieRemarketingDetail();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+
+<h5>
+    <i class="icon-road"></i>
+    <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.HistorieInfo.FahrgestellNr
+    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.HistorieInfo.Kennzeichen
+    <span class="margin-left-10 margin-right-5 bold">@Localize.ZB2No</span>@Model.HistorieInfo.BriefNr
+</h5>
+
+<div class="tabbable tabbable-custom margin-top-15">
+    <ul class="nav nav-tabs">
+        @*Anzeigereihenfolge umgedreht*@
+        <li class="active"><a href="#tab_1_6" data-toggle="tab">@Localize.Overview</a></li>
+        <li><a href="#tab_1_5" data-toggle="tab">@Localize.VehicleTitleKey</a></li>
+        <li><a href="#tab_1_4" data-toggle="tab">@Localize.TypeData</a></li>
+        <li><a href="#tab_1_3" data-toggle="tab">@Localize.Vita</a></li>
+        <li><a href="#tab_1_2" data-toggle="tab">@Localize.PreviousDamages</a></li>
+        <li><a href="#tab_1_1" data-toggle="tab">@Localize.ModelEquipment</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="tab_1_1">
+            @Html.Partial("Historie/Partial/ModellAusstattung", Model)
+        </div>
+        <div class="tab-pane overflow-x-auto" id="tab_1_2">
+            @Html.Partial("Historie/Partial/VorschaedenGrid")
+        </div>
+        <div class="tab-pane overflow-x-auto" id="tab_1_3">
+            @Html.Partial("Historie/Partial/LebenslaufGrid")
+        </div>
+        <div class="tab-pane" id="tab_1_4">
+            @Html.Partial("Historie/Partial/Typdaten", Model.Typdaten)
+        </div>
+        <div class="tab-pane" id="tab_1_5">
+            @Html.Partial("Historie/Partial/BriefSchluesseldaten", Model)
+        </div>
+        <div class="tab-pane active" id="tab_1_6">
+            @Html.Partial("Historie/Partial/UebersichtRemarketing", Model)
+        </div>
+    </div>
+</div>

@@ -5,13 +5,13 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Historie/HistorieVermieterSuche", Model.Suchparameter)
+    @Html.Partial("Historie/HistorieRemarketingSuche", Model.Suchparameter)
 }
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divHistorieVermieterGrid"></div>
-    <div id="divHistorieVermieterDetail"></div>
+    <div id="divHistorieRemarketingGrid"></div>
+    <div id="divHistorieRemarketingDetail"></div>
 }
 
 <script type="text/javascript">
@@ -26,114 +26,100 @@
     }
 
     function GetGrid() {
-        return $("#GridEquiHistorieInfosVermieter").data("tGrid");
+        return $("#GridEquiHistorieRemarketingInfos").data("tGrid");
     }
 
     function GridLoadingHide() {
         // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
-        setTimeout('$("#GridEquiHistorieInfosVermieterItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+        setTimeout('$("#GridEquiHistorieRemarketingInfosItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
     }
 
     function GridRefresh() {
         GetGrid().ajaxRequest();
     }
 
-    function OnDataBound_GridEquiHistorieInfosVermieter() {
+    function OnDataBound_GridEquiHistorieRemarketingInfos() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
     }
 
-    function OnLoad_GridEquiHistorieInfosVermieter() {
+    function OnLoad_GridEquiHistorieRemarketingInfos() {
         $('.t-no-data td').text(ladeHinweis);
     }
 
-    function OnColumnShowHide_GridEquiHistorieInfosVermieter() {
+    function OnColumnShowHide_GridEquiHistorieRemarketingInfos() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnReorder_GridEquiHistorieInfosVermieter() {
+    function OnColumnReorder_GridEquiHistorieRemarketingInfos() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowEquiHistorieVermieterSearchResult(result) {
+    function ShowEquiHistorieRemarketingSearchResult(result) {
         SearchFormHide();
-        $("#divHistorieVermieterGrid").html(result);
+        $("#divHistorieRemarketingGrid").html(result);
 
-        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfosVermieter");
+        GridAllColumnFilterApplyToGrid("GridEquiHistorieRemarketingInfos");
 
-        $("#divHistorieVermieterGrid").slideDown();
-        $("#divHistorieVermieterDetail").html('');
+        $("#divHistorieRemarketingGrid").slideDown();
+        $("#divHistorieRemarketingDetail").html('');
     }
 
-    function ShowEquiHistorieVermieterAjax(fin) {
+    function ShowEquiHistorieRemarketingAjax(fin) {
         LoadingShow();
         $.ajax(
         {
             type: "POST",
-            url: "GetFahrzeugHistorieVermieterPartial",
+            url: "GetFahrzeugHistorieRemarketingPartial",
             loadingShow: true,
             data: { fahrgestellnummer: fin },
             success: function (result) {
-                ShowEquiHistorieVermieterDetail(result);
+                ShowEquiHistorieRemarketingDetail(result);
             }
         });
     }
 
-    function ShowEquiHistorieVermieterDetail(result) {
-        $("#divHistorieVermieterDetail").html(result);
-        $("#divHistorieVermieterGrid").slideUp();
-        $("#divHistorieVermieterDetail").slideDown();
+    function ShowEquiHistorieRemarketingDetail(result) {
+        $("#divHistorieRemarketingDetail").html(result);
+        $("#divHistorieRemarketingGrid").slideUp();
+        $("#divHistorieRemarketingDetail").slideDown();
         $("#btnBackToResult").show();
         setTimeout('LoadingHide()', 1000);
         FormPreparePrivateAjax();
     }
 
-    function CloseEquiHistorieVermieterDetail() {
+    function CloseEquiHistorieRemarketingDetail() {
         $("#btnBackToResult").hide();
-        $("#divHistorieVermieterDetail").slideUp(function () { $("#divHistorieVermieterGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
-        $("#divHistorieVermieterGrid").slideDown();
+        $("#divHistorieRemarketingDetail").slideUp(function () { $("#divHistorieRemarketingGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divHistorieRemarketingGrid").slideDown();
     }
 
-    function OnDataBound_GridEquiLebenslaufZb2() {
+    function OnDataBound_GridEquiLebenslauf() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
     }
 
-    function OnColumnShowHide_GridEquiLebenslaufZb2() {
+    function OnColumnShowHide_GridEquiLebenslauf() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnReorder_GridEquiLebenslaufZb2() {
+    function OnColumnReorder_GridEquiLebenslauf() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function OnDataBound_GridEquiLebenslaufFsm() {
+    function OnDataBound_GridEquiVorschaeden() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
     }
 
-    function OnColumnShowHide_GridEquiLebenslaufFsm() {
+    function OnColumnShowHide_GridEquiVorschaeden() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnReorder_GridEquiLebenslaufFsm() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-    function OnDataBound_GridEquiTueteninhaltFsm() {
-        FilteredData_Grid_OnDataBound($(this));
-        jQuery('.tooltips').tooltip();
-        LoadingHide();
-    }
-
-    function OnColumnShowHide_GridEquiTueteninhaltFsm() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
-    function OnColumnReorder_GridEquiTueteninhaltFsm() {
+    function OnColumnReorder_GridEquiVorschaeden() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 

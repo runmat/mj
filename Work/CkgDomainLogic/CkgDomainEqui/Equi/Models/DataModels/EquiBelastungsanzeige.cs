@@ -15,6 +15,9 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Sum)]
         public decimal? Summe { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Sum)]
+        public string SummeFormatted { get { return (Summe.HasValue ? string.Format("{0} €", Summe) : ""); } }
+
         [LocalizedDisplay(LocalizeConstants.Surveyor)]
         public string Gutachter { get; set; }
 
@@ -22,7 +25,7 @@ namespace CkgDomainLogic.Equi.Models
         public string GutachtenId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Mileage)]
-        public string KmStand { get; set; }
+        public decimal? KmStand { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }

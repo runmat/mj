@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridEquiVorschaeden"; }
+
+@(Html.XTelerik()
+    .XGrid<EquiVorschaden>()
+    .Name(gridName)
+    .XAjaxDataBinding("EquiHistorieRemarketingVorschaedenAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Erstellungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Preis);
+        columns.XBound(c => c.Schadensdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Beschreibung);
+        columns.XBound(c => c.DatumUpdate).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Repariert);
+        columns.XBound(c => c.Wertminderungsbetrag);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Erstellungsdatum).Ascending())
+    .Groupable(g => g.Enabled(false))
+)

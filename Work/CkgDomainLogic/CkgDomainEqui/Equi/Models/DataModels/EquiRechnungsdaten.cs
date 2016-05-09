@@ -14,11 +14,5 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.Recipient)]
         public string Empfaenger { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Status)]
-        public string Status { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.BillNo)]
-        public string RechnungsNr { get; set; }
     }
 }

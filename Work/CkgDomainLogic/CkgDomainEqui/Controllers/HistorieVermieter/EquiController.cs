@@ -45,7 +45,7 @@ namespace ServicesMvc.Controllers
         }
 
         [GridAction]
-        public ActionResult EquiHistorieInfosVermieterAjaxBinding()
+        public ActionResult EquiHistorieVermieterInfosAjaxBinding()
         {
             return View(new GridModel(EquipmentHistorieVermieterViewModel.HistorieInfosFiltered));
         }
@@ -101,14 +101,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterGridEquiHistorieInfosVermieter(string filterValue, string filterColumns)
+        public ActionResult FilterGridEquiHistorieVermieterInfos(string filterValue, string filterColumns)
         {
             EquipmentHistorieVermieterViewModel.FilterHistorieInfos(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
-        public ActionResult ExportEquiHistorieInfosVermieterFilteredExcel(int page, string orderBy, string filterBy)
+        public ActionResult ExportEquiHistorieVermieterInfosFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.VehicleHistory, dt);
@@ -116,7 +116,7 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult ExportEquiHistorieInfosVermieterFilteredPDF(int page, string orderBy, string filterBy)
+        public ActionResult ExportEquiHistorieVermieterInfosFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.VehicleHistory, dt, landscapeOrientation: true);
