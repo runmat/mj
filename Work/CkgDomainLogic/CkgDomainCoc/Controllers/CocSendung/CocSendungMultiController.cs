@@ -127,6 +127,40 @@ namespace ServicesMvc.Controllers
         #endregion
 
 
+        #region Sendungen, Suche nach Fahrzeugstandorten
+
+        [GridAction]
+        public ActionResult SendungenPlacesAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.SendungenIdFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridCocSendungenPlace(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterSendungenId(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult LoadSendungenPlace(SendungsAuftragIdSelektor model)
+        {
+            ViewModel.SendungsAuftragIdSelektor = model;
+
+            if (ModelState.IsValid)
+                ViewModel.LoadSendungenId(model, ModelState.AddModelError);
+
+            return PartialView("VerfolgungMulti/Place/Suche", ViewModel.SendungsAuftragIdSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowSendungenPlace()
+        {
+            return PartialView("VerfolgungMulti/Place/Grid", ViewModel);
+        }
+
+        #endregion
 
     }
 }

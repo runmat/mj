@@ -1,0 +1,27 @@
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragDocsSelektor
+
+<div id="divSendungenPlacesSuche">
+    @using (Ajax.BeginForm("LoadSendungenPlaces", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenDocsSuche") { OnComplete = "ShowCocSendungenPlaces();" }, new { id = "SendungenFormPlaces" }))
+    {   
+        <div class="form-horizontal" id="searchFormPlace">
+            
+            @Html.FormValidationSummary()
+            
+            @Html.FormDateRangePickerFor(m => m.DatumRangeDocs, new { col = "left" }, new[] { "!far-past", "!future" })
+
+            @Html.FormCheckBoxFor(m => m.NurMitSendungsID, new { @class = "m-wrap", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

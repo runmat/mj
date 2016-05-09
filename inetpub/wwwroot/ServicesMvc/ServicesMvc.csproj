@@ -3175,6 +3175,8 @@
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Place\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Place\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
