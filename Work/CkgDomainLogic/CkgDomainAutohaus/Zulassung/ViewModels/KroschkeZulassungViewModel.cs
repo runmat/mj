@@ -25,7 +25,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
-    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen, Firmeneigen }
+    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen, Firmeneigen, Umkennzeichnung }
 
     [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
@@ -639,7 +639,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (Zulassung.Halter == null)
                 return;
 
-            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!forShoppingCartSave && !ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
+            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = 
+                !forShoppingCartSave && 
+                (!ModusSonderzulassung || SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung) && 
+                !ModusVersandzulassung && 
+                !ModusAbmeldung && 
+                !Zulassung.Zulassungsdaten.IsMassenzulassung;
 
             var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
             ZulassungsVorgangsarten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
@@ -1206,7 +1211,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse = (Zulassung.OptionenDienstleistungen.KennzeichenGroesseId != defaultKg.Id);
             }
-            
+
+            if (ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr;
+                Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
+                Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
+                Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
+                Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
+            }
+
             // 20150602 MMA
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
             if (zulDaten.MindesthaltedauerDays != null && zulDaten.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
@@ -1402,6 +1416,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
 
                 Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
+
+                Zulassung.Zulassungsdaten.FahrgestellNr = Zulassung.Fahrzeugdaten.FahrgestellNr;
+                Zulassung.Zulassungsdaten.AuftragsNr = Zulassung.Fahrzeugdaten.AuftragsNr;
+                Zulassung.Zulassungsdaten.VerkaeuferKuerzel = Zulassung.Fahrzeugdaten.VerkaeuferKuerzel;
+                Zulassung.Zulassungsdaten.BestellNr = Zulassung.Fahrzeugdaten.BestellNr;
+                Zulassung.Zulassungsdaten.Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle;
 
                 InitZulassungFromShoppingCart();
             }

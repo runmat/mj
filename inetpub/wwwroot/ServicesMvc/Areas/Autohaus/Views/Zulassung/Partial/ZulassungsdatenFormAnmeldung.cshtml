@@ -39,7 +39,7 @@ else
         @Html.FormDatePickerFor(m => m.Zulassungsdatum, new {@class = "m-wrap small"}) 
         @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
 
-        @if (Model.ZulassungsartAutomatischErmitteln)
+        @if (Model.ZulassungsartAutomatischErmitteln && !(Model.ModusSonderzulassung && Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung))
         {
             <div class="kroschke-evb-control-group-border">
                 <div id="hint-versandzulassung" class="alert alert-success">
@@ -56,22 +56,38 @@ else
             @Html.HiddenFor(m => m.Expressversand)
         }
 
-        <div class="kroschke-evb-control-group-border">
-            @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7}, postControlHtml:
-                @<text><button class="btn green" onclick="return false;"><i class='icon-chevron-right'></i></button></text>)
-            <div class="control-group">
-                <div class="alert hide" id="evb-info">
-                    <i></i>
-                    <div></div>
+        @if (Model.ModusSonderzulassung && Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+        {
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
+            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap medium" })
+
+            @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
+            @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+        }
+        else
+        {
+            <div class="kroschke-evb-control-group-border">
+                @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml:
+                                    @<text><button class="btn green" onclick="return false;"><i class='icon-chevron-right'></i></button></text>)
+                <div class="control-group">
+                    <div class="alert hide" id="evb-info">
+                        <i></i>
+                        <div></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 
     <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-right">
         
         @if (Model.ZulassungsartAutomatischErmitteln)
         {
+            if (Model.ModusSonderzulassung && Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
+            }
+
             @Html.HiddenFor(m => m.ZulassungsartMatNr)
             @Html.HiddenFor(m => m.MindesthaltedauerDays)
         }

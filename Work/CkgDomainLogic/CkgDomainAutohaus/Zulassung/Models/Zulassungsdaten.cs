@@ -23,6 +23,10 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen3;
         private string _kennzeichen;
         private int _zulassungsartMenge = 1;
+        private string _fahrgestellNr;
+        private string _kostenstelle;
+        private string _bestellNr;
+        private string _auftragsNr;
 
         public bool ModusAbmeldung { get; set; }
 
@@ -180,6 +184,40 @@ namespace CkgDomainLogic.Autohaus.Models
         public string HalterNameSchnellabmeldung { get; set; }
 
         public bool IsValid { get; set; }
+
+
+        [LocalizedDisplay(LocalizeConstants.VIN)]
+        [RequiredConditional]
+        public string FahrgestellNr
+        {
+            get { return _fahrgestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _fahrgestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
+        public string AuftragsNr
+        {
+            get { return _auftragsNr.NotNullOrEmpty().ToUpper(); }
+            set { _auftragsNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungSalesman)]
+        public string VerkaeuferKuerzel { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
+        public string Kostenstelle
+        {
+            get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
+            set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
+        public string BestellNr
+        {
+            get { return _bestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _bestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
 
         public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 

@@ -224,11 +224,17 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SzUmkennzeichnung(string finid, string halterNr)
+        {
+            return Index(finid, halterNr, sonderzulassung: "1", sonderzulassungMode: "umkennzeichnung");
+        }
+
+        [CkgApplication]
         public ActionResult SzFirmeneigen()
         {
             return IndexMultiReg(sonderzulassung: "1", sonderzulassungMode: "firmeneigen");
         }
-
+        
         [CkgApplication]
         public ActionResult Schnellabmeldung()
         {
@@ -607,6 +613,16 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         #endregion  
+
+        #region Umkennzeichnung
+
+        [HttpPost]
+        public ActionResult Umkennzeichnung()
+        {
+            return Zulassungsdaten();
+        }
+
+        #endregion
 
         #region Fahrzeugdaten
 
