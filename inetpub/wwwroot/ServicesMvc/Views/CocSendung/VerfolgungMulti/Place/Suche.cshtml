@@ -1,19 +1,25 @@
-﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragDocsSelektor
+﻿@model CkgDomainLogic.CoC.Models.SendungsAuftragPlaceSelektor
 
 <div id="divSendungenPlacesSuche">
-    @using (Ajax.BeginForm("LoadSendungenPlaces", "CocSendung", null,
-        new MvcAjaxOptions("divSendungenDocsSuche") { OnComplete = "ShowCocSendungenPlaces();" }, new { id = "SendungenFormPlaces" }))
+    @using (Ajax.BeginForm("LoadSendungenPlace", "CocSendung", null,
+        new MvcAjaxOptions("divSendungenPlacesSuche") { OnComplete = "ShowCocSendungenPlaces();" }, new { id = "SendungenFormPlaces" }))
     {   
         <div class="form-horizontal" id="searchFormPlace">
             
             @Html.FormValidationSummary()
+
+
+            @Html.FormDropDownListFor(m => m.Fahrzeugstandort, Model.Standorte, new { @class = "m-wrap medium", col = "left" })
+
+            @Html.FormDateRangePickerFor(m => m.DatumRangeZul, new { col = "right" }, new[] { "!far-past", "!future" })
+
+
+            @Html.FormTextBoxFor(m => m.FIN, new { col = "left" })
+
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { col = "right" })
             
-            @Html.FormDateRangePickerFor(m => m.DatumRangeDocs, new { col = "left" }, new[] { "!far-past", "!future" })
-
-            @Html.FormCheckBoxFor(m => m.NurMitSendungsID, new { @class = "m-wrap", col = "right" }, labelHidden: true, postControlHtml: @<text><label class="checker">@Localize.OnlyShippingOrdersWithPacketNo</label></text>)
-
-
-            @*@Html.FormRequiredFieldsSummary()*@
+            
+            @Html.FormRequiredFieldsSummary()
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>

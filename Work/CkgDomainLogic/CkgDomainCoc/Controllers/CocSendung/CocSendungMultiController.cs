@@ -19,10 +19,15 @@ namespace ServicesMvc.Controllers
         public ActionResult MultiVerfolgung()
         {
             ViewModel.DataMarkForRefreshMulti();
-
+            ViewModel.InitStandorte();
+            InitInternalViewModel();
             return View(ViewModel);
         }
 
+        private void InitInternalViewModel()
+        {
+            SendungsAuftragPlaceSelektor.GetViewModel = GetViewModel<SendungenViewModel>;
+        }
 
         #region Sendungen, Suche nach ID
 
@@ -144,14 +149,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadSendungenPlace(SendungsAuftragIdSelektor model)
+        public ActionResult LoadSendungenPlace(SendungsAuftragPlaceSelektor model)
         {
-            ViewModel.SendungsAuftragIdSelektor = model;
+            ViewModel.SendungsAuftragPlaceSelektor = model;
 
             if (ModelState.IsValid)
-                ViewModel.LoadSendungenId(model, ModelState.AddModelError);
+                ViewModel.LoadSendungenPlace(model, ModelState.AddModelError);
 
-            return PartialView("VerfolgungMulti/Place/Suche", ViewModel.SendungsAuftragIdSelektor);
+            return PartialView("VerfolgungMulti/Place/Suche", ViewModel.SendungsAuftragPlaceSelektor);
         }
 
         [HttpPost]

@@ -112,6 +112,18 @@ namespace CkgDomainLogic.CoC.Services
             return error;
         }
 
+        public List<SelectItem> GetFahrzeugstandorte()
+        {
+
+            Z_M_PDI_LISTE.Init(SAP);
+            Z_M_PDI_LISTE.SetImportParameter_I_KUNNR(SAP, "0000219853"); // LogonContext.KundenNr.ToSapKunnr()
+            SAP.Execute();
+            var result = Z_M_PDI_LISTE.GT_WEB.ToList(SAP);
+
+            return result.Select(gtWeb => new SelectItem(gtWeb.DADPDI, gtWeb.ORT01)).ToList();
+
+        }
+
         private static void CreateRowForAuftrag(
             List<Z_DPM_WEB_ZULASSUNG_01.GT_AUF> auftraegeList,
             VinWunschkennzeichen auftrag,
@@ -353,6 +365,30 @@ namespace CkgDomainLogic.CoC.Services
             var liste = Z_DPM_READ_SENDTAB_03.GT_OUT.GetExportList(SAP).ToList();
             
             return CoCAppModelMappings.Z_DPM_READ_SENDTAB_03_GT_OUT_To_SendungsAuftrag.Copy(liste).ToList();
+        }
+
+        public List<SendungsAuftrag> GetSendungsAuftraegePlace(SendungsAuftragPlaceSelektor model)
+        {
+            Z_DPM_READ_SENDTAB_04.Init(SAP);
+
+            Z_DPM_READ_SENDTAB_04.SetImportParameter_I_AG(SAP, "0000314582");
+
+            if (model.Kennzeichen.IsNotNullOrEmpty())
+                Z_DPM_READ_SENDTAB_04.SetImportParameter_I_ZZKENN(SAP, model.Kennzeichen);
+            if (model.FIN.IsNotNullOrEmpty())
+                Z_DPM_READ_SENDTAB_04.SetImportParameter_I_CHASSIS_NUM(SAP, model.FIN);
+            if (model.Fahrzeugstandort.IsNotNullOrEmpty())
+                Z_DPM_READ_SENDTAB_04.SetImportParameter_I_KUNPDI(SAP, model.Fahrzeugstandort);
+            if (!model.DatumRangeZul.IsNull())
+                Z_DPM_READ_SENDTAB_04.SetImportParameter_I_ZULDAT_BIS(SAP, model.DatumRangeZul.EndDate);
+            if (!model.DatumRangeZul.IsNull())
+                Z_DPM_READ_SENDTAB_04.SetImportParameter_I_ZULDAT_VON(SAP, model.DatumRangeZul.StartDate);
+
+            SAP.Execute();
+
+            var liste = Z_DPM_READ_SENDTAB_04.GT_OUT.GetExportList(SAP).ToList();
+            return CoCAppModelMappings.Z_DPM_READ_SENDTAB_04_GT_OUT_To_SendungsAuftrag.Copy(liste).ToList();
+
         }
 
         #endregion

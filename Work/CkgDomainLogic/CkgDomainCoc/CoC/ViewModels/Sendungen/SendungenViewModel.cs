@@ -21,6 +21,13 @@ namespace CkgDomainLogic.CoC.ViewModels
         [XmlIgnore]
         public IZulassungDataService DataService { get { return CacheGet<IZulassungDataService>(); } }
 
+        public List<SelectItem> Standorte
+        {
+            get { return PropertyCacheGet(() => DataService.GetFahrzeugstandorte()); }
+            set { PropertyCacheSet(value); }
+        }
+
+
         public int CurrentAppID { get; set; }
 
         public bool ShowStatusInGrid { get; set; }
@@ -201,7 +208,13 @@ namespace CkgDomainLogic.CoC.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-       
+        public SendungsAuftragPlaceSelektor SendungsAuftragPlaceSelektor
+        {
+            get { return PropertyCacheGet(() => new SendungsAuftragPlaceSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
+
         public void LoadSendungenFin(SendungsAuftragFinSelektor model, Action<string, string> addModelError)
         {
             PropertyCacheClear(this, m => m.SendungenDocsFiltered);
@@ -219,9 +232,36 @@ namespace CkgDomainLogic.CoC.ViewModels
         #endregion
 
 
+
         private void GetCurrentAppID()
         {
             CurrentAppID = LogonContext.GetAppIdCurrent();
+        }
+
+
+        [XmlIgnore]
+        public List<SendungsAuftrag> SendungenPlaces
+        {
+            get { return PropertyCacheGet(() => new List<SendungsAuftrag>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void LoadSendungenPlace(SendungsAuftragPlaceSelektor model, Action<string, string> addModelError)
+        {
+            PropertyCacheClear(this, m => m.SendungenDocsFiltered);
+            SendungenPlaces = DataService.GetSendungsAuftraegePlace(model);
+
+            if (SendungenPlaces.None())
+                addModelError("", Localize.NoDataFound);
+            else if (!ShowStatusInGrid)
+                SendungenPlaces.ForEach(x => x.StatusText = "");
+
+            DataMarkForRefresh();
+        }
+
+        public void InitStandorte()
+        {
+            Standorte = DataService.GetFahrzeugstandorte();
         }
     }
 }

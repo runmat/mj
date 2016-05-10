@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.CoC.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -7,6 +12,11 @@ namespace CkgDomainLogic.CoC.Models
 {
     public class SendungsAuftragPlaceSelektor : Store
     {
+
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<SendungenViewModel> GetViewModel { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DateRange)]
         public DateRange DatumRangeZul
         {
@@ -16,13 +26,8 @@ namespace CkgDomainLogic.CoC.Models
 
         public List<SelectItem> Standorte
         {
-            get
-            {
-             return 
-            }
-            
+            get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().Standorte; }
         }
-
         public string Fahrzeugstandort { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VIN)]

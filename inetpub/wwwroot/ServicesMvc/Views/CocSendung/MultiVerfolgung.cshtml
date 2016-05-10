@@ -26,7 +26,7 @@
         @Html.Partial("VerfolgungMulti/Fin/Suche", Model.SendungsAuftragFinSelektor)
     </div>
     <div id="searchBoxPlace" class="divPlace hide">
-        @Html.Partial("VerfolgungMulti/Place/Suche", Model.SendungsAuftragFinSelektor)
+        @Html.Partial("VerfolgungMulti/Place/Suche", Model.SendungsAuftragPlaceSelektor)
     </div>
 
 }
@@ -278,6 +278,59 @@
 
     // </Suche nach Fin>
 
+    // <Suche nach Places>
+
+    function ShowCocSendungenPlaces() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenPlace",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenFinSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenPlaceSearchResult(result) {
+        SearchFormHide();
+        $("#divGridPlace").html(result);
+
+        // move our Grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenPlace");
+
+        setTimeout(function () { $("#divGridPlace").slideDown(); }, 1000);
+    }
+
+
+    function OnDataBound_GridCocSendungenPlace() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenPlace() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+
+    function OnColumnReorder_GridCocSendungenPlace() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach Places>
 
 
 </script>

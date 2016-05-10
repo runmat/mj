@@ -2,6 +2,7 @@
 using CkgDomainLogic.CoC.Models;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.CoC.Contracts
 {
@@ -28,6 +29,11 @@ namespace CkgDomainLogic.CoC.Contracts
 
         #endregion
 
+        #region General
+
+        List<SelectItem> GetFahrzeugstandorte();
+
+        #endregion
 
         #region Sendungsaufträge
 
@@ -51,6 +57,10 @@ namespace CkgDomainLogic.CoC.Contracts
 
         List<SendungsAuftrag> GetSendungsAuftraegeFin(SendungsAuftragFinSelektor model);
 
+        #endregion
+
+        #region Sendungsaufträge, nach Ort
+        List<SendungsAuftrag> GetSendungsAuftraegePlace(SendungsAuftragPlaceSelektor model);
         #endregion
     }
 }
