@@ -179,7 +179,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ShowFreieAuftraegeDetails(string auftragsId)
         {
-            var model = ViewModel.FreieAuftraege.FirstOrDefault(f => f.AuftragsNrFriendly == auftragsId);
+            var model = ViewModel.FreieAuftraege.FirstOrDefault(f => f.AuftragsNr == auftragsId);
 
             return PartialView("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", model);
         }
