@@ -1032,7 +1032,6 @@
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
@@ -3172,6 +3171,9 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
+    <Content Include="Views\Leasing\EndgueltigerVersand.cshtml" />
+    <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandSuche.cshtml" />
+    <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandGrid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
@@ -3234,6 +3236,7 @@
     <Folder Include="assets\plugins\jquery-validation\test\qunit\" />
     <Folder Include="assets\plugins\jquery-validation\test\selects\" />
     <Folder Include="TmpUpload\Images\" />
+    <Folder Include="Views\_Page_Views_EndgueltigerVersand_cshtml\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
