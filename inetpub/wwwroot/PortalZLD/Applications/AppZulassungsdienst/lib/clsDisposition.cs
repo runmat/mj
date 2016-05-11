@@ -254,6 +254,8 @@ namespace AppZulassungsdienst.lib
 
             try
             {
+                var aemterOk = Dispositionen.Where(d => !string.IsNullOrEmpty(d.MobileUserId) && string.IsNullOrEmpty(d.SaveError)).ToList();
+
                 connection.Open();
 
                 var command = connection.CreateCommand();
@@ -267,6 +269,22 @@ namespace AppZulassungsdienst.lib
                 command.Parameters.AddWithValue("@VkBur", VKBUR);
                 command.Parameters.AddWithValue("@Modus", Modus);
                 command.Parameters.AddWithValue("@Datum", ZulDat);
+
+                if (aemterOk.Any())
+                {
+                    command.CommandText += " AND Amt IN (";
+
+                    for (var i = 0; i < aemterOk.Count; i++)
+                    {
+                        var parameter = string.Format("@aemterOk{0}", i);
+                        command.CommandText += parameter + ",";
+                        command.Parameters.AddWithValue(parameter, aemterOk[i].Amt);
+                    }
+
+                    command.CommandText = command.CommandText.TrimEnd(',');
+                    command.CommandText += ")";
+                }
+
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)

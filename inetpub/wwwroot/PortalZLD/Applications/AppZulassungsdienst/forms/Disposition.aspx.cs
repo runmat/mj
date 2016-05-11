@@ -196,11 +196,7 @@ namespace AppZulassungsdienst.forms
 
         private void SelectionChanged()
         {
-            if (!rbNichtDisponiert.Checked)
-            {
-                chkAlleAemter.Checked = false;
-                chkAlleAemter.Visible = false;
-            }
+            chkAlleAemter.Visible = rbNichtDisponiert.Checked;
 
             if (ApplyZulDate())
             {
@@ -211,7 +207,7 @@ namespace AppZulassungsdienst.forms
                 else
                     objDispo.Modus = "1";
 
-                objDispo.AlleAemter = chkAlleAemter.Checked;
+                objDispo.AlleAemter = (rbNichtDisponiert.Checked && chkAlleAemter.Checked);
 
                 objDispo.LoadDispos();
                 Session["objDispo"] = objDispo;
