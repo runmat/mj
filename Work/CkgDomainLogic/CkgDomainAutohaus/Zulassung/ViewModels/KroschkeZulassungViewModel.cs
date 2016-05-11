@@ -73,6 +73,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public SonderzulassungsMode SonderzulassungsMode { get; set; }
         [XmlIgnore]
         public bool ModusSonderzulassung => SonderzulassungsMode != SonderzulassungsMode.None;
+        [XmlIgnore]
+        public bool ModusSonderzulassungAuto => SonderzulassungsMode != SonderzulassungsMode.None && SonderzulassungsMode != SonderzulassungsMode.Default;
 
 
         public bool ModusPartnerportal { get; set; }
@@ -125,7 +127,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         xmlFileName = (Zulassung.Zulassungsdaten.IsSchnellabmeldung ? "StepsKroschkeSchnellabmeldung.xml" : "StepsKroschkeAbmeldung.xml");
                     else if (ModusVersandzulassung)
                         xmlFileName = "StepsKroschkeVersandzulassung.xml";
-                    else if (ModusSonderzulassung && SonderzulassungsMode != SonderzulassungsMode.Default)
+                    else if (ModusSonderzulassungAuto)
                         xmlFileName = $"StepsKroschkeSz{SonderzulassungsMode.ToString("F").ToLowerFirstUpper()}.xml";
 
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, xmlFileName));
@@ -641,12 +643,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = 
                 !forShoppingCartSave && 
-                (!ModusSonderzulassung || SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung) && 
+                (!ModusSonderzulassung) && 
                 !ModusVersandzulassung && 
                 !ModusAbmeldung && 
                 !Zulassung.Zulassungsdaten.IsMassenzulassung;
 
-            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, (ModusSonderzulassung && !forShoppingCartSave));
+            var zulArtAuto = Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln;
+            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), zulArtAuto, (ModusSonderzulassung && !forShoppingCartSave));
+
             ZulassungsVorgangsarten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
 
             Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
@@ -960,7 +964,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return PropertyCacheGet(() => (ZulassungDataService != null ? ZulassungDataService.Fahrzeugarten : new List<Domaenenfestwert>())); }
         }
 
-        public void GetSonderzulassungErsatzkennzeichen(Fahrzeugdaten model)
+        private void GetSonderzulassungErsatzkennzeichen(Fahrzeugdaten model)
         {
             model.ErsatzKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
@@ -974,7 +978,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
         }
 
-        public void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
+        private void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
         {
             model.HaendlerKennzeichenTyp = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
             model.KennzeichenMenge = Zulassung.Zulassungsdaten.ZulassungsartMenge;
@@ -1036,8 +1040,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
             {
-                // Für "Umkennzeichnung" die notwendigen Dokumente analog zum ZI-Pool anzeigen:
-                SeparateNecessaryDocuments = ZiPoolDetails.ErforderlicheDokumente;
+                // Für "Umkennzeichnung" die notwendigen Dokumente des ZI-Pools anzeigen:
                 return;
             }
 
@@ -1202,7 +1205,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulDat.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
         }
 
-        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
+        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state, bool loadFromShoppingCart = false)
         {
             UpdateZulassungsdatenModel(model);
 
@@ -1224,11 +1227,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
             {
-                Zulassung.Fahrzeugdaten.FahrgestellNr = Zulassung.Zulassungsdaten.FahrgestellNr = model.FahrgestellNr;
-                Zulassung.Fahrzeugdaten.AuftragsNr = Zulassung.Zulassungsdaten.AuftragsNr = model.AuftragsNr;
-                Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = Zulassung.Zulassungsdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
-                Zulassung.Fahrzeugdaten.BestellNr = Zulassung.Zulassungsdaten.BestellNr = model.BestellNr;
-                Zulassung.Fahrzeugdaten.Kostenstelle = Zulassung.Zulassungsdaten.Kostenstelle = model.Kostenstelle;
+                if (loadFromShoppingCart)
+                {
+                    Zulassung.Zulassungsdaten.FahrgestellNr = model.FahrgestellNr = Zulassung.Fahrzeugdaten.FahrgestellNr;
+                    Zulassung.Zulassungsdaten.AuftragsNr = model.AuftragsNr = Zulassung.Fahrzeugdaten.AuftragsNr;
+                    Zulassung.Zulassungsdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel = Zulassung.Fahrzeugdaten.VerkaeuferKuerzel;
+                    Zulassung.Zulassungsdaten.BestellNr = model.BestellNr = Zulassung.Fahrzeugdaten.BestellNr;
+                    Zulassung.Zulassungsdaten.Kostenstelle = model.Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle;
+                }
+                else
+                {
+                    Zulassung.Fahrzeugdaten.FahrgestellNr = Zulassung.Zulassungsdaten.FahrgestellNr = model.FahrgestellNr;
+                    Zulassung.Fahrzeugdaten.AuftragsNr = Zulassung.Zulassungsdaten.AuftragsNr = model.AuftragsNr;
+                    Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = Zulassung.Zulassungsdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
+                    Zulassung.Fahrzeugdaten.BestellNr = Zulassung.Zulassungsdaten.BestellNr = model.BestellNr;
+                    Zulassung.Fahrzeugdaten.Kostenstelle = Zulassung.Zulassungsdaten.Kostenstelle = model.Kostenstelle;
+                }
             }
 
             // 20150602 MMA
@@ -1426,12 +1440,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
 
-                Zulassung.Zulassungsdaten.FahrgestellNr = Zulassung.Fahrzeugdaten.FahrgestellNr;
-                Zulassung.Zulassungsdaten.AuftragsNr = Zulassung.Fahrzeugdaten.AuftragsNr;
-                Zulassung.Zulassungsdaten.VerkaeuferKuerzel = Zulassung.Fahrzeugdaten.VerkaeuferKuerzel;
-                Zulassung.Zulassungsdaten.BestellNr = Zulassung.Fahrzeugdaten.BestellNr;
-                Zulassung.Zulassungsdaten.Kostenstelle = Zulassung.Fahrzeugdaten.Kostenstelle;
-
                 InitZulassungFromShoppingCart();
             }
 
@@ -1497,6 +1505,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             StepModels.Add("Fahrzeugdaten", () => this);
             StepModels.Add("Ersatzkennzeichen", () => this);
             StepModels.Add("Haendlerkennzeichen", () => this);
+            StepModels.Add("Umkennzeichnung", () => this);
             StepModels.Add("Zulassungsdaten", () => this);
             StepModels.Add("OptionenDienstleistungen", () => this);
             StepModels.Add("Summary", () => this);
@@ -1504,9 +1513,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         void InitZulassungFromShoppingCart()
         {
-            SetZulassungsdaten(Zulassung.Zulassungsdaten, null);
+            SetZulassungsdaten(Zulassung.Zulassungsdaten, null, true);
             GetSonderzulassungErsatzkennzeichen(Zulassung.Fahrzeugdaten);
             GetSonderzulassungHaendlerkennzeichen(Zulassung.Fahrzeugdaten);
+
             TryGetSeparateNecessaryDocumentsForSonderzulassung();
         }
 

@@ -38,7 +38,7 @@ else
         @Html.FormDatePickerFor(m => m.Zulassungsdatum, new {@class = "m-wrap small"}) 
         @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
 
-        @if (Model.ZulassungsartAutomatischErmitteln && Model.SonderzulassungsMode != SonderzulassungsMode.Umkennzeichnung)
+        @if (Model.ZulassungsartAutomatischErmitteln)
         {
             <div class="kroschke-evb-control-group-border">
                 <div id="hint-versandzulassung" class="alert alert-success">
@@ -80,7 +80,7 @@ else
 
     <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-right">
         
-        @if (Model.ZulassungsartAutomatischErmitteln)
+        @if (Model.ZulassungsartAutomatischErmitteln || Model.ModusSonderzulassungAuto)
         {
             if (Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
             {
@@ -96,7 +96,7 @@ else
             @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new {@class = "m-wrap small uppercase", maxlength = 7})
         }
 
-        @if (Model.ZulassungsartAutomatischErmitteln)
+        @if (Model.ZulassungsartAutomatischErmitteln && !Model.ModusSonderzulassungAuto)
         {
             @Html.FormRadioButtonListFor(m => m.HaltereintragVorhanden, Zulassungsdaten.HaltereintragVorhandenOptions.ToSelectList(), new { @class = "m-wrap" })
         }

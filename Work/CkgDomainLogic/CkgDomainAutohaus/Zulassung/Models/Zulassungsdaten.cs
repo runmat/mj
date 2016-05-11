@@ -38,7 +38,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public SonderzulassungsMode SonderzulassungsMode { get; set; }
         [XmlIgnore]
-        public bool ModusSonderzulassung { get { return SonderzulassungsMode != SonderzulassungsMode.None; } }
+        public bool ModusSonderzulassung => GetZulassungViewModel?.Invoke().ModusSonderzulassung ?? false;
+        [XmlIgnore]
+        public bool ModusSonderzulassungAuto => GetZulassungViewModel?.Invoke().ModusSonderzulassungAuto ?? false;
 
         public bool ModusPartnerportal { get; set; }
 
