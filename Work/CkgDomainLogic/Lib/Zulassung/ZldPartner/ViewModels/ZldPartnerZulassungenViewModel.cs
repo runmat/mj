@@ -190,7 +190,7 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == datensatzId);
             if (zul != null)
             {
-                var sonstigePositionen = OffeneZulassungen.Where(z => z.BelegNr == zul.BelegNr && z.BelegPosition != zul.BelegPosition).ToList();
+                var sonstigePositionen = OffeneZulassungen.Where(z => (z.BelegNr == zul.BelegNr && z.BelegPosition != zul.BelegPosition) || (z.BelegNrSort == zul.BelegNrSort && z.BelegPositionSort != zul.BelegPositionSort)).ToList();
 
                 switch (property)
                 {
