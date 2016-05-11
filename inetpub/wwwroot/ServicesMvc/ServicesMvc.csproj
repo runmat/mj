@@ -3175,6 +3175,7 @@
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandSuche.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandGrid.cshtml" />
     <Content Include="Views\Equi\DokumenteOhneDaten\DetailsForm.cshtml" />
+    <Content Include="Views\Equi\ErweiterterBriefbestand\DetailsForm.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
