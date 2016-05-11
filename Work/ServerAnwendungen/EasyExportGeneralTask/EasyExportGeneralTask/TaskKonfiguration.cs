@@ -130,7 +130,8 @@ namespace EasyExportGeneralTask
         Europcar,
         WKDA,
         WKDA_Selbstabmelder,
-        StarCar2
+        StarCar2,
+        WKDA_AT
     }
 
     public class ArchivDefinition

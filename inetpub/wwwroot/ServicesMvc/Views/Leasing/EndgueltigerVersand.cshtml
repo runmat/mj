@@ -1,0 +1,61 @@
+﻿@model LeasingEndgueltigerVersandViewModel
+@using CkgDomainLogic.Leasing.ViewModels
+
+@{
+    ViewBag.Title = "EndgueltigerVersand";
+}
+
+<h3 class="page-title" id="headerTitle">Nachträglicher endgültiger Versand</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("EndgueltigerVersand/EndgueltigerVersandSuche", Model.EndgueltigerVersandSelektor)
+}
+
+    @using (Html.FormSearchResultsGrid())
+    {
+        <div id="divGrid">
+
+          
+        </div>
+    }
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function FormPreparePrivate() {}
+
+    function ShowEndgueltigerVersandSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridEndgueltigerVersand");
+        //alert('1');
+        $("#divGrid").slideDown();
+        //alert('2');
+    }
+
+
+    function OnDataBound_GridEndgueltigerVersand() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridEndgueltigerVersand() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridEndgueltigerVersand() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+
+</script>
