@@ -98,10 +98,6 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\Autofac.Mvc4.3.1.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="CkgDomainInternal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Work\CkgDomainLogic\CkgDomainInternal\bin\Debug\CkgDomainInternal.dll</HintPath>
-    </Reference>
     <Reference Include="Commons.Web.Mvc.PrecompiledViews, Version=1.0.5.0, Culture=neutral, PublicKeyToken=b66b1a10e1d96b4d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\work\GAC\Commons.Web.Mvc.PrecompiledViews.dll</HintPath>
@@ -476,6 +472,12 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
+    <Content Include="Documents\Templates\UploadFahrgestellnummern.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadKennzeichen.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -3186,6 +3188,10 @@
     <Content Include="Views\Equi\Historie\Partial\LebenslaufGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\VorschaedenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\ModellAusstattung.cshtml" />
+    <Content Include="Views\Remarketing\ReportFehlendeDaten.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\Grid.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\Suche.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\FileUpload.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -3610,9 +3616,17 @@
       <Project>{7FC30B76-8E4D-448B-B6E2-7EE0BE4D278C}</Project>
       <Name>CkgDomainInsurance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainInternal\CkgDomainInternal.csproj">
+      <Project>{32D4DC60-D382-415A-B8C1-EA11A66FDC10}</Project>
+      <Name>CkgDomainInternal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainLeasing\CkgDomainLeasing.csproj">
       <Project>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</Project>
       <Name>CkgDomainLeasing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainRemarketing\CkgDomainRemarketing.csproj">
+      <Project>{61521148-EA24-447A-AF13-CA9D7BD3D722}</Project>
+      <Name>CkgDomainRemarketing</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
       <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>

@@ -459,6 +459,8 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_SET_SCHADENDAT_PDF");
             //FunctionReflector.WriteOrmForSapFunction("Z_M_ABEZUFZG_NEU");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_SCHADENRG_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_REM_002");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_AUFTR6_001");
 
             #endregion
 

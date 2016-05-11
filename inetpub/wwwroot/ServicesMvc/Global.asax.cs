@@ -40,6 +40,8 @@ namespace ServicesMvc
             yield return Assembly.Load("CkgDomainInsurance");
             yield return Assembly.Load("CkgDomainFahrer");
             yield return Assembly.Load("CkgDomainAutohaus");
+            yield return Assembly.Load("CkgDomainInternal");
+            yield return Assembly.Load("CkgDomainRemarketing");
         }
 
         protected void Application_Start()

@@ -56,6 +56,8 @@ using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Services;
 using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.Zanf.Services;
+using CkgDomainLogic.Remarketing.Contracts;
+using CkgDomainLogic.Remarketing.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -94,7 +96,6 @@ namespace ServicesMvc
             // container soll die Controller ermitteln für die Runtime
             assemblies.ToListOrEmptyList().ForEach(asm => builder.RegisterControllers(asm));
 
-            builder.RegisterControllers(Assembly.Load("CkgDomainInternal"));
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -260,6 +261,7 @@ namespace ServicesMvc
 
             builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FehlendeDatenDataServiceSAP>().As<IFehlendeDatenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
