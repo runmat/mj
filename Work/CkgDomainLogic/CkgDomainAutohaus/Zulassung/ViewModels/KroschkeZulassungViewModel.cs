@@ -91,6 +91,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
+        public string FormatHomepageButtonLabel(string label)
+        {
+            var splitWords = new []{ "kennzeichen"};
+
+            label = splitWords.Aggregate(label, (current, splitWord) => current.Replace(splitWord, $" {splitWord}"));
+
+            return label;
+        }
 
         public bool ModusPartnerportal { get; set; }
 

@@ -283,6 +283,10 @@
     <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
+    <Content Include="Images\icons\flat\white\64x64\cross-plus.png" />
+    <Content Include="Images\icons\flat\white\64x64\factory.png" />
+    <Content Include="Images\icons\flat\white\64x64\highway-junction.png" />
+    <Content Include="Images\icons\flat\white\64x64\right-box.png" />
     <Content Include="_Themes\AH2015\images\checkbox-hover-halfcheck.png" />
     <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />

@@ -4,7 +4,7 @@
     {
         public string LocalizeKey { get; set; }
 
-        public string IconCssClass { get; set; }
+        public string IconFileName { get; set; }
 
         public string AppUrl { get; set; }
     }
