@@ -1,4 +1,7 @@
 ﻿@using CkgDomainLogic.Equi.Models
+@using CkgDomainLogic.Equi.ViewModels
+@model ErweiterterBriefbestandViewModel
+
 @{ var gridName = "GridFahrzeugbriefeErweitert"; }
 
 <div class="form-actions PageTopMenu">
@@ -11,6 +14,12 @@
     .XAjaxDataBinding("FahrzeugbriefeErweitertAjaxBinding", "Equi")
     .Columns(columns =>
     {
+        columns.XBound(c => c.Eingangsdatum).Filterable(false).Sortable(false).Visible(Model.IstEditierberechtigt)
+                  .ClientTemplate(
+                      "<button onclick='ItemEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                      + "&nbsp;"
+              );
+
         columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Fahrgestellnummer);
         columns.XBound(c => c.Kennzeichen);
