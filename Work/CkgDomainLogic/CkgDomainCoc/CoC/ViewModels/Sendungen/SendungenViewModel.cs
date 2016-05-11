@@ -179,6 +179,18 @@ namespace CkgDomainLogic.CoC.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<SendungsAuftrag> SendungenPlacesFiltered
+        {
+            get
+            {
+                FilteredObjectsCurrent = () => SendungenPlacesFiltered;
+                return PropertyCacheGet(() => SendungenPlaces);
+            }
+            private set { PropertyCacheSet(value); }
+        }
+
+
         public void LoadSendungenDocs(SendungsAuftragDocsSelektor model, Action<string, string> addModelError)
         {
             PropertyCacheClear(this, m => m.SendungenDocsFiltered);

@@ -137,7 +137,7 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult SendungenPlacesAjaxBinding()
         {
-            return View(new GridModel(ViewModel.SendungenIdFiltered));
+            return View(new GridModel(ViewModel.SendungenPlacesFiltered));
         }
 
         [HttpPost]
