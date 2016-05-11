@@ -207,7 +207,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             SonderzulassungsMode mode;
             if (sonderzulassungMode.IsNotNullOrEmpty() && Enum.TryParse(sonderzulassungMode.ToLowerFirstUpper(), out mode))
-                    SonderzulassungsMode = mode;
+                SonderzulassungsMode = mode;
         }
 
         public void SetParamPartnerportal(string partnerportal)
@@ -662,10 +662,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     Zulassung.Zulassungsdaten.ZulassungsartMatNr = abmArt.MaterialNr;
             }
 
-            if (ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
-            {
-                Zulassung.Zulassungsdaten.ZulassungsartMatNr = "619".PadLeft0(18);
-            }
+            var matNr = "";
+            if (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
+                matNr = "619";
+            if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+                matNr = "596";
+
+            if (matNr.IsNotNullOrEmpty())
+                Zulassung.Zulassungsdaten.ZulassungsartMatNr = matNr.PadLeft0(18);
         }
 
         public void UpdateZulassungsart(string haltereintragVorhanden, bool expressversand)
@@ -698,7 +702,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     }
                 }
 
-                if (zulArt != null)
+                if (zulArt != null && (SonderzulassungsMode == SonderzulassungsMode.None || SonderzulassungsMode == SonderzulassungsMode.Default))
                     Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
             }
         }
@@ -1015,6 +1019,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             TryGetSeparateNecessaryDocumentsForSonderzulassung();
         }
 
+        public void SummaryPrepare()
+        {
+            if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+                TryGetSeparateNecessaryDocumentsForSonderzulassung();
+        }
+
         private void TryGetSeparateNecessaryDocumentsForSonderzulassung()
         {
             var generalConf = DependencyResolver.Current.GetService<IGeneralConfigurationProvider>();
@@ -1023,6 +1033,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!ModusSonderzulassung || SonderzulassungsMode == SonderzulassungsMode.Default)
                 return;
+
+            if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                // Für "Umkennzeichnung" die notwendigen Dokumente analog zum ZI-Pool anzeigen:
+                SeparateNecessaryDocuments = ZiPoolDetails.ErforderlicheDokumente;
+                return;
+            }
 
             var szModeAsText = SonderzulassungsMode.ToString("F").ToLowerFirstUpper();
             var localizeKeys = generalConf.GetConfigAllServerVal("Autohaus", $"Autohaus_Sonderzul_Docs_{szModeAsText}");
@@ -1117,20 +1134,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public List<SimpleUiListItem> SeparateNecessaryDocuments { get; private set; }
 
         [XmlIgnore]
-        public bool SummaryHasSeparateNecessaryDocuments
-        {
-            get { return SeparateNecessaryDocuments != null && SeparateNecessaryDocuments.Any(); }
-        }
+        public bool SummaryHasSeparateNecessaryDocuments => SeparateNecessaryDocuments != null && SeparateNecessaryDocuments.Any();
+
         [XmlIgnore]
-        public bool SummaryHasZiPoolDocuments
-        {
-            get { return ZiPoolDetails.ErforderlicheDokumente.Any(); }  
-        }
+        public bool SummaryHasZiPoolDocuments => ZiPoolDetails.ErforderlicheDokumente.Any();
+
         [XmlIgnore]
-        public bool SummaryHasDocuments
-        {
-            get { return SummaryHasSeparateNecessaryDocuments || SummaryHasZiPoolDocuments; }
-        }
+        public bool SummaryHasDocuments => SummaryHasSeparateNecessaryDocuments || SummaryHasZiPoolDocuments;
 
         public string DienstleistungsartZiPool
         {
@@ -1214,11 +1224,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
             {
-                Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr;
-                Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
-                Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
-                Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
-                Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
+                Zulassung.Fahrzeugdaten.FahrgestellNr = Zulassung.Zulassungsdaten.FahrgestellNr = model.FahrgestellNr;
+                Zulassung.Fahrzeugdaten.AuftragsNr = Zulassung.Zulassungsdaten.AuftragsNr = model.AuftragsNr;
+                Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = Zulassung.Zulassungsdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
+                Zulassung.Fahrzeugdaten.BestellNr = Zulassung.Zulassungsdaten.BestellNr = model.BestellNr;
+                Zulassung.Fahrzeugdaten.Kostenstelle = Zulassung.Zulassungsdaten.Kostenstelle = model.Kostenstelle;
             }
 
             // 20150602 MMA
@@ -1251,11 +1261,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (ModusVersandzulassung)
                 zulDaten.HaltereintragVorhanden = (zulDaten.Zulassungsart.Belegtyp == "AN" ? "N" : "J");
 
-            if (!ModusAbmeldung && !ModusSonderzulassung)
+            if (!ModusAbmeldung && (!ModusSonderzulassung || SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung))
                 ZiPoolDaten = ZulassungDataService.GetZiPoolDaten(zulDaten.Zulassungskreis, (e, x) =>
                 {
-                    if (state != null)
-                        state.AddModelError(e, x);
+                    state?.AddModelError(e, x);
                 });
         }
 

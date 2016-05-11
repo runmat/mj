@@ -22,7 +22,6 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen2;
         private string _wunschkennzeichen3;
         private string _kennzeichen;
-        private int _zulassungsartMenge = 1;
         private string _fahrgestellNr;
         private string _kostenstelle;
         private string _bestellNr;
@@ -45,14 +44,14 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
-        public string ZulassungsartMatNr { get; set; }
+        public string ZulassungsartMatNr
+        {
+            get;
+            set;
+        }
 
         [LocalizedDisplay(LocalizeConstants.Amount)]
-        public int ZulassungsartMenge
-        {
-            get { return _zulassungsartMenge; }
-            set { _zulassungsartMenge = value; }
-        }
+        public int ZulassungsartMenge { get; set; } = 1;
 
         public Material Zulassungsart
         {
@@ -111,15 +110,9 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedNumberPlate)]
-        public bool WunschkennzeichenVorhanden
-        {
-            get
-            {
-                return !ModusAbmeldung &&
-                            (KennzeichenReserviert ||
-                             (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
-            }
-        }
+        public bool WunschkennzeichenVorhanden => !ModusAbmeldung &&
+                                                  (KennzeichenReserviert ||
+                                                   (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
 
         public static string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
@@ -168,7 +161,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string HaltereintragVorhanden { get; set; }
 
         [XmlIgnore]
-        public static string HaltereintragVorhandenOptions { get { return String.Format("J,{0};N,{1}", Localize.Yes, Localize.No); } }
+        public static string HaltereintragVorhandenOptions => $"J,{Localize.Yes};N,{Localize.No}";
 
         [LocalizedDisplay(LocalizeConstants.Autohaus_KroschkePrimeExpressversand_Info)]
         public bool Expressversand { get; set; }
@@ -287,6 +280,12 @@ namespace CkgDomainLogic.Autohaus.Models
                     if (GetZulassungViewModel().FinList.Any(f => mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
                         yield return new ValidationResult($"Bitte die Fahrzeugliste unten prüfen! Für jedes Fahrzeug gilt: Mindesthaltedauer = {Localize.MindestHaltedauerRangeError}", new[] { "MindesthaltedauerDays" });
                 }
+            }
+
+            if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                if (FahrgestellNr.IsNullOrEmpty())
+                    yield return new ValidationResult($"{Localize.FieldIsRequired}", new[] { "FahrgestellNr" });
             }
         }
 
