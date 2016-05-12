@@ -1,0 +1,171 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Leasing.Models
+@{
+    var gridName = "GridEndgueltigerVersand";
+}
+
+<div style="margin-bottom: 15px">
+    <span id="result" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+
+    </span>
+</div>
+
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="VersandAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4>
+
+<style>
+
+</style>
+
+@(Html.Telerik()
+        .Grid<EndgueltigerVersandModel>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("EndgueltigerVersandAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+    columns.XBound(c => c.Aktion)
+        .ClientTemplate("<# if (data.IsMissing) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.EQUNR #>' onchange='OnSelectionChange_GridVorgaengeAuswahl($(this))' /> <# } #>")
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='OnAllSelectionChange_GridVorgaengeAuswahl($(this).is(\":checked\"))' />")
+            .Filterable(false);
+
+        columns.XBoundAllExcept(m => m.Aktion);
+    })
+    .XAutoColumnConfiguration()
+    .Pageable()
+    .Filterable()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XToolBar("Leasing")
+        .ToolBar(commands =>
+        {
+        commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportEndgueltigerVersandFilteredPDF", "Leasing");
+    }).ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+)
+
+
+<div class="form-actions clearfix">
+    <div class="pull-left">
+        <button type="button" onclick="SendEndgueltig()" class="btn blue"> <i class="icon-ok margin-right-10"></i>Endgültig</button>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+</script>
+
+
+<script>
+    function SendEndgueltig() {
+        $.ajax({
+            type: "POST",
+            url: "SendFinally",
+            loadingShow: false,
+            success: function (result) {
+
+                if (_modelStateValid) {
+                    $("#divGrid").html(result);
+                    $("#result").removeClass('hide');
+                    $("#result > span").html('Die selektierten Briefe wurden als endgültigt versandt markiert.');
+                } else {
+                    $("#divGrid").html(result);
+                    $("#result").removeClass('hide');
+                    $("#result > span").html(@ViewContext.ViewData.ModelState["Error"]);
+                }
+            }
+
+                
+        });
+    }
+
+    function OnRowDataBound_GridEndgueltigerVersand(e) {
+        // alert("OnRowDataBound_GridVorgaenge");
+        $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+    }
+
+    function OnDataBound_GridEndgueltigerVersand() {
+        // alert("OnDataBound_GridFahrzeugAkteBestand");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridEndgueltigerVersand");
+    }
+
+
+    function OnSelectionChange_GridVorgaengeAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+        $.ajax({
+            type: "POST",
+            url: "VorgangAuswahlSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function(result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridVorgangAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideButtons();
+                if (_selectedItemsCount == 0) {
+                    $("#VersandAuswahlCount").addClass('hide');
+                    return;
+                }
+                $("#VersandAuswahlCount").removeClass('hide');
+                $("#VersandAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Brief' + (_selectedItemsCount != 1 ? 'e' : '')  + ' ausgewählt!');
+            }
+        });
+    }
+
+    function OnAllSelectionChange_GridVorgaengeAuswahl(check) {
+        $.ajax({
+            type: "POST",
+            url: "VorgangAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function(result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridVorgangAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideButtons();
+
+                FilterGrid("@gridName");
+            }
+        });
+    }
+
+    function GridVorgangAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#VersandAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#VersandAuswahlCount").removeClass('hide');
+        $("#VersandAuswahlCount > span").html('Sie haben ' + count + ' Brief' + (count != 1 ? 'e' : '') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+
+
+    }
+
+    function ShowHideButtons() {
+        if (_selectedItemsCount > 0) {
+            $('#btnDelete').removeClass('hide');
+        } else {
+            $('#btnDelete').addClass('hide');
+        }
+
+        if (_selectedItemsCount > 1) {
+            $('#btnMultiReg').removeClass('hide');
+            $('#btnMultiCancellation').removeClass('hide');
+        } else {
+            $('#btnMultiReg').addClass('hide');
+            $('#btnMultiCancellation').addClass('hide');
+        }
+    }
+
+</script>
