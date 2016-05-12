@@ -362,6 +362,14 @@ namespace CkgDomainLogic.General.Database.Services
             return (erg > 0);
         }
 
+
+        public void SetLoggedOn(bool loginStatus)
+        {
+            Database.ExecuteSqlCommand("UPDATE WebUser SET LoggedOn = {0} WHERE Username = {1}",
+                   loginStatus ? 1 : 0,
+                   UserName);
+        }
+
         public void SetLastLogin(DateTime zeitpunkt)
         {
             Database.ExecuteSqlCommand("UPDATE WebUser SET LastLogin = {0} WHERE Username = {1}",
