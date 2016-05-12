@@ -9,7 +9,11 @@
     @Html.Partial("DokumenteOhneDaten/DokumenteOhneDatenGrid", Model)
 </div>
 
+<div id="divGridItemDetails"></div>
+
 <script type="text/javascript">
+
+    var _modelIsValid = false;
 
     var ladeHinweis = '@Localize.LoadingData';
 
@@ -49,6 +53,64 @@
 
     function OnColumnReorder_GridDokumenteOhneDaten() {
         FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ItemEdit(fin) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "ItemEdit",
+            data: { fin: fin },
+            loadingShow: true,
+            success: function (result) {
+                ShowItemDetails(result);                
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ShowItemDetails(result) {
+        $("#divGridItemDetails").html(result);
+        GridItemDetailsFormPreparePrivateAjax();
+        $("#divDokumenteOhneDatenGrid").slideUp(function () {
+            $("#divGridItemDetails").show();
+        });
+        scrollToTop();
+    }
+
+    function CloseItemDetails() {
+        CloseItemDetailsInner();      
+        FilterGrid("GridDokumenteOhneDaten");
+    }
+
+    function CloseItemDetailsInner() {
+        $("#divGridItemDetails").slideUp(function () {
+            $("#divDokumenteOhneDatenGrid").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function GridItemDetailsFormPreparePrivateAjax() {
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        $("button[type='submit']").click(function () {
+            LoadingShow();
+        });
+
+        if (_modelIsValid)
+            CloseItemDetails();
+    }
+
+    function DokumenteOhneDatenAjaxFormComplete() {
+        FormPrepareAjax();
+        if (_modelIsValid)
+            CloseItemDetails();
     }
 
 </script>

@@ -49,6 +49,7 @@ namespace ServicesMvc.Controllers
         {
             BriefversandViewModel.VersandModus = modus;
             BriefversandViewModel.DataMarkForRefresh(vins);
+            BriefversandViewModel.Init();
 
             return View("Briefversand", BriefversandViewModel);
         }
@@ -145,15 +146,17 @@ namespace ServicesMvc.Controllers
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
             int allSelectionCount, allCount = 0, allFoundCount = 0;
+            string sperrvermerk = "";
+            bool mustBeConfirmed;
             if (vin.IsNullOrEmpty())
-                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount);
+                BriefversandViewModel.SelectFahrzeuge(isChecked, f => !f.IsMissing, out allSelectionCount, out allCount, out allFoundCount, out mustBeConfirmed);
             else
-                BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount);
+                sperrvermerk = BriefversandViewModel.SelectFahrzeug(vin, isChecked,  out allSelectionCount, out mustBeConfirmed);
 
             var allSelected = BriefversandViewModel.FahrzeugeFiltered.Count ==
                   BriefversandViewModel.FahrzeugeFiltered.ToListOrEmptyList().Count(x => x.IsSelected);
 
-            return Json(new { allSelectionCount, allCount, allFoundCount, allSelected });
+            return Json(new { allSelectionCount, allCount, allFoundCount, allSelected, mustBeConfirmed, sperrvermerk });
         }
 
         #endregion

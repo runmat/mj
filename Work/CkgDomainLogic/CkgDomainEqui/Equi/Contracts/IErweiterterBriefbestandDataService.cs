@@ -11,5 +11,7 @@ namespace CkgDomainLogic.Equi.Contracts
         List<FahrzeugbriefErweitert> Fahrzeugbriefe { get; }
 
         void MarkForRefreshFahrzeugbriefe();
+
+        string SaveSperrvermerk(FahrzeugbriefErweitert model);
     }
 }

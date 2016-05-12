@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@using CkgDomainLogic.Leasing.Models.UIModels
+@model EndgueltigerVersandSuchParameter
+<div id="c">
+    @using (Ajax.BeginForm("GetTempVersand", "Leasing", null,
+                new MvcAjaxOptions("EndgueltigerVersandSuche") { OnComplete = "ShowEndgueltigerVersand();" }, new { id = "EndgueltigerVersandSearchForm" }))
+    {
+        <div class="form-horizontal">
+
+            @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap" })
+
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap" })
+
+            @Html.FormTextBoxFor(m => m.Vertragsnummer, new { @class = "m-wrap" })
+            
+            @Html.FormDateRangePickerFor(m => m.Zeitraum, new { })
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowEndgueltigerVersand() {
+
+        //FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowEndgueltigerVersand",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowEndgueltigerVersandSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
+
