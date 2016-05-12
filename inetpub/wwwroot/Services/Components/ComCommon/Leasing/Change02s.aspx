@@ -216,9 +216,9 @@
                                                             </ItemTemplate>
                                                             
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Fahrgestellnummer" HeaderStyle-Width="120">
+                                                        <asp:TemplateField HeaderText="Fahrgestellnummer" HeaderStyle-Width="150">
                                                             <ItemTemplate>
-                                                                <asp:TextBox ID="txtGridFahrgestellnummer" runat="server" Enabled="False" Width="110px" style="font-size:11px;font-weight:bold"
+                                                                <asp:TextBox ID="txtGridFahrgestellnummer" runat="server" Enabled="False" Width="145px" style="font-size:11px;font-weight:bold"
                                                                     Text='<%# Bind("CHASSIS_NUM") %>'></asp:TextBox>
                                                             </ItemTemplate>
                                                             
