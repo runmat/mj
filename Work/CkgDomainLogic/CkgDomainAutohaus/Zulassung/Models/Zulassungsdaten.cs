@@ -83,8 +83,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         static List<Material> Abmeldearten => GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Abmeldearten;
 
-        public string Belegtyp => Zulassungsart.Belegtyp;
+        public string Belegtyp => Zulassungsart.Belegtyp.IsNotNullOrEmpty() ? Zulassungsart.Belegtyp : GetZulassungViewModel?.Invoke().GetDefaultBelegTyp();
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
@@ -213,6 +214,9 @@ namespace CkgDomainLogic.Autohaus.Models
             set { _bestellNr = value.NotNullOrEmpty().ToUpper(); }
         }
 
+        [LocalizedDisplay(LocalizeConstants.KeepExistingLicensePlate)]
+        public bool BestehendesKennzeichenBeibehalten { get; set; }
+
 
         public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 
@@ -229,6 +233,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public static bool IstFirmeneigeneZulassung(string matNr) { return (TrimMatNr(matNr) == "619"); }
 
         public static bool IstZollzulassung(string matNr) { return (TrimMatNr(matNr) == "600"); }
+
 
         static string TrimMatNr(string matNr)
         {
@@ -279,7 +284,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (GetZulassungViewModel != null && ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
                 {
-                    if (GetZulassungViewModel().FinList.Any(f => mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
+                    if (GetZulassungViewModel().FinList.Any(f => f.FIN.IsNotNullOrEmpty() && mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
                         yield return new ValidationResult($"Bitte die Fahrzeugliste unten prüfen! Für jedes Fahrzeug gilt: Mindesthaltedauer = {Localize.MindestHaltedauerRangeError}", new[] { "MindesthaltedauerDays" });
                 }
             }
@@ -320,7 +325,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
             if (ModusAbmeldung)
             {
-                s += $"<br/>{Localize.CancellationDate}: {(Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.CancellationDate}: {Abmeldedatum?.ToShortDateString() ?? ""}";
                 s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (VorhandenesKennzeichenReservieren)
@@ -328,7 +333,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
             else
             {
-                s += $"<br/>{Localize.RegistrationDate}: {(Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.RegistrationDate}: {Zulassungsdatum?.ToShortDateString() ?? ""}";
                 s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (!string.IsNullOrEmpty(EvbNr))

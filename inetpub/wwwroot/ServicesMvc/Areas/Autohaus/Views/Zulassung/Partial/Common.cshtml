@@ -539,6 +539,11 @@
         $("#AjaxFormZulassungsdaten").submit();
     }
 
+    function CheckBestehendesKennzeichenBeibehalten() {
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormZulassungsdaten").submit();
+    }
+
     function ZulassungskreisOnChange() {
         $.ajax(
             {

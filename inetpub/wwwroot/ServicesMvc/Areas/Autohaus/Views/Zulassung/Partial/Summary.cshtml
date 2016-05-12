@@ -39,13 +39,13 @@
 
                 @using (Html.PortletBox(Localize.RequiredDocumentsForRegistration, "icon-file", isCollapsible: false))
                 {
-                    if (Model.SummaryHasZiPoolDocuments)
-                    {
-                        @Html.Partial("Partial/ErforderlicheDokumente", Model.ZiPoolDetails.ErforderlicheDokumente)
-                    }
                     if (Model.SummaryHasSeparateNecessaryDocuments)
                     {
                         @Html.Partial("Partial/ErforderlicheDokumente", Model.SeparateNecessaryDocuments)
+                    }
+                    else if (Model.SummaryHasZiPoolDocuments)
+                    {
+                        @Html.Partial("Partial/ErforderlicheDokumente", Model.ZiPoolDetails.ErforderlicheDokumente)
                     }
                 }
 

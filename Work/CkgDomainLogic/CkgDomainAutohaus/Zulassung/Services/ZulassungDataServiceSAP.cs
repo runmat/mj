@@ -255,13 +255,13 @@ namespace CkgDomainLogic.Autohaus.Services
 
             var item = checkResults.First();
 
-            zulassung.Ist48hZulassung = item.IST_48H.XToBool();
+            zulassung.Ist48HZulassung = item.IST_48H.XToBool();
             zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
 
             var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
 
             // Abweichende Versandadresse?
-            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
+            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48HZulassung && !String.IsNullOrEmpty(item.NAME1)))
             {
                     var adrs48h = AppModelMappings.Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse.Copy(item);
 

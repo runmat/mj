@@ -76,14 +76,14 @@ namespace ServicesMvc.Autohaus.Controllers
         #region Massenzulassung
 
         [CkgApplication]
-        public ActionResult IndexMultiReg(string sonderzulassung = "", string sonderzulassungMode = "")
+        public ActionResult IndexMultiReg(string sonderzulassung = "", string sonderzulassungMode = "", string zulassungFromShoppingCart = "")
         {
             ViewModel.SetParamAbmeldung("");
             ViewModel.SetParamVersandzulassung("");
             ViewModel.SetParamSonderzulassung(sonderzulassung, sonderzulassungMode);
             ViewModel.SetParamPartnerportal("");
 
-            ViewModel.DataInit();
+            ViewModel.DataInit(zulassungFromShoppingCart);
             ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
 
             ShoppingCartLoadAndCacheItems();
@@ -700,7 +700,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 ModelState.Clear();
                 model.IsValid = false;
 
-                ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
+                ViewData.Add("MaterialList", ViewModel.GetMaterialList());
                 return PartialView("Partial/ZulassungsdatenForm", model);
             }
 
@@ -711,7 +711,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
             model.IsValid = ModelState.IsValid;
 
-            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
+            ViewData.Add("MaterialList", ViewModel.GetMaterialList());
             return PartialView("Partial/ZulassungsdatenForm", model);
         }
 
@@ -765,7 +765,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Zulassung.Zulassungsdaten.KennzeichenReserviert = kennzeichenReserviert;
 
-            ViewData.Add("MaterialList", (ViewModel.ModusAbmeldung ? ViewModel.Abmeldearten : ViewModel.Zulassungsarten));
+            ViewData.Add("MaterialList", ViewModel.GetMaterialList());
             return PartialView("Partial/ZulassungsdatenForm", ViewModel.Zulassung.Zulassungsdaten);
         }
 
@@ -1069,9 +1069,13 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "", string partnerportal = "")
+        public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "", string partnerportal = "", string sonderzulassungMode = "")
         {
-            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung, partnerportal: partnerportal);
+            //var szMode = sonderzulassungMode.NotNullOrEmpty().ToLower();
+            //if (sonderzulassung.IsNotNullOrEmpty() && (szMode == "firmeneigen" || szMode == "umschreibung"))
+            //    return IndexMultiReg(sonderzulassung, sonderzulassungMode, zulassungFromShoppingCart: "1");
+
+            return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung, partnerportal: partnerportal, sonderzulassungMode: sonderzulassungMode);
         }
 
         [HttpPost]

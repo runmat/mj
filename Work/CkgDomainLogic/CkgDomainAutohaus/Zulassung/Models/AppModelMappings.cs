@@ -369,7 +369,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
                         d.Versanddaten.VersandDienstleisterId = s.VS_DIENSTLEISTER;
                         //d.Versanddaten.VersandDienstleister.VersandOption = s.VS_OPTION;
-                        d.Ist48hZulassung = s.Z48H_VSZUL.XToBool();
+                        d.Ist48HZulassung = s.Z48H_VSZUL.XToBool();
                     }));
             }
         }
@@ -732,7 +732,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
                             d.VS_DIENSTLEISTER = s.Versanddaten.VersandDienstleisterId;
                             //d.VS_OPTION = s.Versanddaten.VersandDienstleister.VersandOption;
-                            d.Z48H_VSZUL = s.Ist48hZulassung.BoolToX();
+                            d.Z48H_VSZUL = s.Ist48HZulassung.BoolToX();
                         }));
             }
         }
