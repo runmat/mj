@@ -9,5 +9,7 @@ namespace CkgDomainLogic.Equi.Contracts
         List<DokumentOhneDaten> DokumenteOhneDaten { get; }
 
         void MarkForRefreshDokumenteOhneDaten();
+
+        string SaveSperrvermerk(DokumentOhneDaten model);
     }
 }

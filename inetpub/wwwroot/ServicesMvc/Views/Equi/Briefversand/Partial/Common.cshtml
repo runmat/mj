@@ -468,16 +468,45 @@
         $.uniform.update($("#uncheckAllRecords"));
     }
 
+
+    function UnSelectCheckbox(id) {
+        var ctl = $('#' + id);
+        $('#' + id).attr('checked', false);
+        OnSelectionChange_GridFahrzeugAuswahl(ctl);
+    }
+
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
 
         Grid_FormatMultiRowSelected(cb);
-
+                
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
             data: { vin: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function(result) {
+                if (cb.is(':checked') && result.mustBeConfirmed === true) {                    
+		            var content =
+		                $("<div></div>")
+		                    .addClass("white-popup align-center")
+		                    .append($("<div></div>")
+		                        .addClass("alert alert-warning")
+		                        .html("Achtung, Sie beauftragen ein Fahrzeug bei dem '" + result.sperrvermerk + "' eingetragen ist. Versandauftrag trotzdem einstellen?"))
+		                    .append($("<button>Wirklich einstellen</button>").addClass("btn green").attr("onclick", "$.magnificPopup.close();"))
+		                    .append($("<button>Abbrechen</button>").addClass("btn red").attr("onclick", "UnSelectCheckbox('" + cb[0].id + "');return $.magnificPopup.close();"));
+	    	      	  
+	    	        $("#global-popup").html(content);
+	    	        $.magnificPopup.open({
+	    	            items: { src: $("#global-popup") },
+	    	            type: 'inline',
+	    	            alignTop: false,
+	    	            closeBtnInside: false,
+	    	            closeOnContentClick: false,
+	    	            closeOnBgClick: false,
+	    	            mainClass: 'my-mfp-zoom-in'
+	    	        });	    	      	                            
+                }
+	    
                 var count = result.allSelectionCount;
                 $("#count").text(count); // Popup Count
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
@@ -501,6 +530,18 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function(result) {
+	    	if (check && result.mustBeConfirmed === true) {                
+	    	        $.magnificPopup.open({
+	    	            items: {
+	    	                src: $("#ConfirmReferenz")
+	    	                //test: $("#count").text()
+	    	            },
+	    	            type: 'inline',
+	    	            alignTop: false,
+	    	            removalDelay: 300,
+	    	            mainClass: 'my-mfp-zoom-in'
+	    	        });                  
+                }
                 var count = result.allSelectionCount;
                 $("#count").text(count); // Popup Count
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
@@ -684,6 +725,25 @@
     }
 
 </style>
+
+
+@(Html.Telerik().Window()
+    .Name("Confirm2")
+    .Visible(false)
+    .Title("Sind Sie sicher?")
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(900)
+    .Height(700)
+      .Content(@<text>
+        <div class="white-popup mfp-hide align-center" id="ConfirmReferenz">
+            Achtung, Sie beauftragen Fahrzeuge mit Sperrvermerk. Wollen Sie den Versandauftrag trotzdem einstellen?<br />
+            <div id="controls" class="margin-top-20  margin-left-50">
+                <input type="button" onclick="GridFahrzeugAuswahl_OnAllSelectionChange(false); $.magnificPopup.close();" class="btn red" value="Abbrechen"/>
+                <input type="button" onclick="$.magnificPopup.close();" class="btn green" value="Wirklich absenden!"/>                
+            </div>
+        </div></text>))
 
 
 @(Html.Telerik().Window()
