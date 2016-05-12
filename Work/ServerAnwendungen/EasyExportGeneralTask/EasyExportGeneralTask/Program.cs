@@ -44,9 +44,10 @@ namespace EasyExportGeneralTask
             //args = new[] { "WKDA" };
             //args = new[] { "WKDA_Selbstabmelder" };
             //args = new[] { "StarCar2" };
+            //args = new[] { "WKDA_AT" };
             // ----- TEST -----
 
-            if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
+            if ((args.Length > 0) && (!string.IsNullOrEmpty(args[0])))
             {
                 string configName = args[0];
 
@@ -104,12 +105,8 @@ namespace EasyExportGeneralTask
             {
                 LC = new LoggingClass(Konfiguration.easyLogPathXml, taskConfiguration.Name);
                 logDS = LC.ReadLog(taskConfiguration.LogfilesMitTitelStattKennzeichen);
-                logCustomer = logDS.FindCustomer(taskConfiguration.easyLocation, taskConfiguration.easyArchiveNameFirst);
-
-                if (logCustomer == null)
-                {
-                    logCustomer = new LogCustomer(taskConfiguration.easyLocation, taskConfiguration.easyArchiveNameFirst, logDS);
-                }
+                logCustomer = logDS.FindCustomer(taskConfiguration.easyLocation, taskConfiguration.easyArchiveNameFirst) ??
+                              new LogCustomer(taskConfiguration.easyLocation, taskConfiguration.easyArchiveNameFirst, logDS);
             }
             catch (Exception)
             {
@@ -297,7 +294,7 @@ namespace EasyExportGeneralTask
                 case AblaufTyp.WKDA:
                     #region WKDA
 
-                    QueryWKDA();
+                    QueryWKDA(false, false);
 
                     #endregion
                     break;
@@ -305,7 +302,7 @@ namespace EasyExportGeneralTask
                 case AblaufTyp.WKDA_Selbstabmelder:
                     #region WKDA_Selbstabmelder
 
-                    QueryWKDA(true);
+                    QueryWKDA(true, false);
 
                     #endregion
                     break;
@@ -314,6 +311,14 @@ namespace EasyExportGeneralTask
                     #region StarCar2
 
                     QueryStarCar2();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.WKDA_AT:
+                    #region WKDA_AT
+
+                    QueryWKDA(false, true);
 
                     #endregion
                     break;
@@ -424,7 +429,7 @@ namespace EasyExportGeneralTask
         /// </summary>
         private static void clearFolders()
         {
-            if (!String.IsNullOrEmpty(taskConfiguration.exportPathZBII))
+            if (!string.IsNullOrEmpty(taskConfiguration.exportPathZBII))
             {
                 foreach (string filePath in Directory.GetFiles(taskConfiguration.exportPathZBII))
                 {
@@ -432,7 +437,7 @@ namespace EasyExportGeneralTask
                 }
             }
 
-            if (!String.IsNullOrEmpty(taskConfiguration.exportPathSteuerB))
+            if (!string.IsNullOrEmpty(taskConfiguration.exportPathSteuerB))
             {
                 foreach (string filePath in Directory.GetFiles(taskConfiguration.exportPathSteuerB))
                 {
@@ -440,7 +445,7 @@ namespace EasyExportGeneralTask
                 }
             }
 
-            if (!String.IsNullOrEmpty(taskConfiguration.easyBlobPathLocal))
+            if (!string.IsNullOrEmpty(taskConfiguration.easyBlobPathLocal))
             {
                 foreach (string filePath in Directory.GetFiles(taskConfiguration.easyBlobPathLocal))
                 {
@@ -463,7 +468,7 @@ namespace EasyExportGeneralTask
                 result.clear();
 
                 // EasyArchiv-Query initialisieren
-                clsQueryClass Weblink = new clsQueryClass();
+                var Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
                 if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
@@ -472,7 +477,7 @@ namespace EasyExportGeneralTask
                 }
 
                 // Fahrzeugpapiere aus Archiv holen
-                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameDokumente, queryexpression, ref total_hits, ref result, taskConfiguration);
+                var status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameDokumente, queryexpression, ref total_hits, ref result, taskConfiguration);
 
                 if (status == "Keine Daten gefunden.")
                 {
@@ -520,11 +525,11 @@ namespace EasyExportGeneralTask
                 }
 
                 // Bilder holen
-                for (int i = 0; i < result.hitList.Rows.Count; i++)
+                for (var i = 0; i < result.hitList.Rows.Count; i++)
                 {
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i, blnFehlersaetze);
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -534,18 +539,9 @@ namespace EasyExportGeneralTask
 
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung zur Zusammenführung u extrahieren der coc zu den ZBII gestartet", EventLogEntryType.Information);
 
-                DataRow[] selection;
+                var selection = result.hitList.Select("[.TITEL]='ZB2'" + (blnFehlersaetze ? " AND found=true" : ""));
 
-                if (blnFehlersaetze)
-                {
-                    selection = result.hitList.Select("[.TITEL]='ZB2' AND found=true");
-                }
-                else
-                {
-                    selection = result.hitList.Select("[.TITEL]='ZB2'");
-                }
-
-                foreach (DataRow row in selection)
+                foreach (var row in selection)
                 {
                     var fin = row["FAHRGESTELLNR"].ToString();
 
@@ -831,7 +827,7 @@ namespace EasyExportGeneralTask
                 {
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i, blnFehlersaetze);
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -916,7 +912,7 @@ namespace EasyExportGeneralTask
                     string strKennzeichen = Helper.verfaelscheKennzeichen(result.hitList.Rows[i]["KENNZEICHEN"].ToString());
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i, blnFehlersaetze, new[] { strKennzeichen });
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -962,7 +958,7 @@ namespace EasyExportGeneralTask
                 {
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i);
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -1034,7 +1030,7 @@ namespace EasyExportGeneralTask
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
@@ -1049,7 +1045,7 @@ namespace EasyExportGeneralTask
                             {
                                 string datum = result.hitList.Rows[i][2].ToString();
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1059,7 +1055,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1075,8 +1071,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             } 
         }
 
@@ -1120,7 +1116,7 @@ namespace EasyExportGeneralTask
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
@@ -1136,7 +1132,7 @@ namespace EasyExportGeneralTask
                                 string strTmpDat = result.hitList.Rows[i][".ARCHIVDATUM"].ToString();
                                 string datum = strTmpDat.Substring(6, 4) + strTmpDat.Substring(3, 2) + strTmpDat.Substring(0, 2);
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1165,7 +1161,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { strSubj });
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1181,8 +1177,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -1219,14 +1215,14 @@ namespace EasyExportGeneralTask
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, 0, false, new[] { strTidnr });
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1235,8 +1231,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -1327,10 +1323,10 @@ namespace EasyExportGeneralTask
                     string strKennzeichen = Helper.verfaelscheKennzeichen(result.hitList.Rows[i]["KENNZEICHEN"].ToString());
                     string mvanummer = "";
 
-                    DataRow[] dRows = tblSapData.Select("CHASSIS_NUM='" + result.hitList.Rows[i]["FAHRGESTELLNUMMER"].ToString() + "'");
+                    DataRow[] dRows = tblSapData.Select("CHASSIS_NUM='" + result.hitList.Rows[i]["FAHRGESTELLNUMMER"] + "'");
                     if (dRows.Length > 0)
                     {
-                        if (String.IsNullOrEmpty(strKennzeichen))
+                        if (string.IsNullOrEmpty(strKennzeichen))
                         {
                             strKennzeichen = Helper.verfaelscheKennzeichen(dRows[0]["LICENSE_NUM"].ToString());
                         }
@@ -1345,7 +1341,7 @@ namespace EasyExportGeneralTask
 
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i, blnFehlersaetze, new[] { strKennzeichen, mvanummer });
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -1353,8 +1349,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -1402,14 +1398,14 @@ namespace EasyExportGeneralTask
                         }
 
                         // Datensätze ohne VIN überspringen
-                        if (String.IsNullOrEmpty(row["ZZFAHRG"].ToString()))
+                        if (string.IsNullOrEmpty(row["ZZFAHRG"].ToString()))
                         {
                             continue;
                         }
 
                         string strBautl = row["BAUTL"].ToString().TrimStart('0');
 
-                        logWriter.WriteLine(DateTime.Now.ToString() + " - Verarbeite " + row["ZZFAHRG"].ToString() + ", " + strBautl);
+                        logWriter.WriteLine(DateTime.Now + " - Verarbeite " + row["ZZFAHRG"] + ", " + strBautl);
 
                         if (werte.Contains(strBautl))
                         {
@@ -1439,11 +1435,11 @@ namespace EasyExportGeneralTask
 
                         string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
-                        logWriter.WriteLine(DateTime.Now.ToString() + " - Abfragestatus für " + row["ZZFAHRG"].ToString() + ", " + strBautl + ": " + status);
+                        logWriter.WriteLine(DateTime.Now + " - Abfragestatus für " + row["ZZFAHRG"] + ", " + strBautl + ": " + status);
 
                         if (status != "Keine Daten gefunden.")
                         {
-                            if (!String.IsNullOrEmpty(status))
+                            if (!string.IsNullOrEmpty(status))
                             {
                                 throw new Exception(status);
                             }
@@ -1458,7 +1454,7 @@ namespace EasyExportGeneralTask
                                 {
                                     string datum = result.hitList.Rows[i][4].ToString();
 
-                                    if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                    if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                     {
                                         strDate = datum;
                                         iIndex = i;
@@ -1468,22 +1464,22 @@ namespace EasyExportGeneralTask
 
                             status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { ExportTyp });
 
-                            logWriter.WriteLine(DateTime.Now.ToString() + " - Dokumentabrufstatus für " + row["ZZFAHRG"].ToString() + ", " + strBautl + ": " + status);
+                            logWriter.WriteLine(DateTime.Now + " - Dokumentabrufstatus für " + row["ZZFAHRG"] + ", " + strBautl + ": " + status);
 
-                            if (!String.IsNullOrEmpty(status))
+                            if (!string.IsNullOrEmpty(status))
                             {
                                 Console.WriteLine(status);
                             }
                             else if (taskConfiguration.DatumInSapSetzen)
                             {
-                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " +
-                                                    row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
+                                logWriter.WriteLine(DateTime.Now + " - Setze Datum für " +
+                                                    row["ZZFAHRG"] + ", " + strBautl + " in SAP");
 
                                 if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                                 {
                                     blnErrorOccured = true;
-                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " +
-                                                        row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
+                                    logWriter.WriteLine(DateTime.Now + " - Datum setzen für " +
+                                                        row["ZZFAHRG"] + ", " + strBautl + " fehlgeschlagen");
                                 }
                             }
                         }
@@ -1492,8 +1488,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -1534,7 +1530,7 @@ namespace EasyExportGeneralTask
                 {
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i);
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -1584,7 +1580,7 @@ namespace EasyExportGeneralTask
 
                     if (status != "Keine Daten gefunden.")
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
@@ -1599,7 +1595,7 @@ namespace EasyExportGeneralTask
                             {
                                 string datum = result.hitList.Rows[i][4].ToString();
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1609,7 +1605,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1660,7 +1656,7 @@ namespace EasyExportGeneralTask
 
                     result.clear();
 
-                    string queryexpression = String.Format(".1001={0} & .110={1}", item.ZZFAHRG, item.MNCOD.SubstringTry(0, 3));
+                    string queryexpression = string.Format(".1001={0} & .110={1}", item.ZZFAHRG, item.MNCOD.SubstringTry(0, 3));
 
                     string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
@@ -1673,7 +1669,7 @@ namespace EasyExportGeneralTask
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
@@ -1689,7 +1685,7 @@ namespace EasyExportGeneralTask
                                 string strTmpDat = result.hitList.Rows[i][".ARCHIVDATUM"].ToString();
                                 string datum = strTmpDat.Substring(6, 4) + strTmpDat.Substring(3, 2) + strTmpDat.Substring(0, 2);
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1699,7 +1695,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1715,8 +1711,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -1753,7 +1749,7 @@ namespace EasyExportGeneralTask
                 {
                     status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i);
 
-                    if (!String.IsNullOrEmpty(status))
+                    if (!string.IsNullOrEmpty(status))
                     {
                         Console.WriteLine(status);
                     }
@@ -1790,7 +1786,7 @@ namespace EasyExportGeneralTask
                         break;
                     }
 
-                    if (String.IsNullOrEmpty(item.EMAIL))
+                    if (string.IsNullOrEmpty(item.EMAIL))
                     {
                         throw new Exception("Es wurde keine Emailadresse in der Tabelle gefunden (CHASSIS_NUM=" + item.CHASSIS_NUM + ")");
                     }
@@ -1803,7 +1799,7 @@ namespace EasyExportGeneralTask
 
                     if (status != "Keine Daten gefunden.")
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             throw new Exception(status);
                         }
@@ -1818,7 +1814,7 @@ namespace EasyExportGeneralTask
                             {
                                 string datum = result.hitList.Rows[i][2].ToString();
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1828,7 +1824,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -1846,15 +1842,15 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
         /// <summary>
         /// Archivabfrage für WKDA
         /// </summary>
-        private static void QueryWKDA(bool selbstabmelder = false)
+        private static void QueryWKDA(bool selbstabmelder, bool at)
         {
             try
             {
@@ -1880,8 +1876,8 @@ namespace EasyExportGeneralTask
 
                     if (status == "Keine Daten gefunden.")
                     {
-                        var ablageDateiName = String.Format("{0}_ZB1.pdf", item.FAHRG);
-                        var ablageDateiPfad = Path.Combine(Konfiguration.WkdaDokumentAblagePfad, ablageDateiName);
+                        var ablageDateiName = string.Format("{0}_ZB1.pdf", item.FAHRG);
+                        var ablageDateiPfad = Path.Combine((at ? Konfiguration.WkdaAtDokumentAblagePfad : Konfiguration.WkdaDokumentAblagePfad), ablageDateiName);
 
                         if (File.Exists(ablageDateiPfad))
                         {
@@ -1904,7 +1900,7 @@ namespace EasyExportGeneralTask
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                             throw new Exception(status);
 
                         int iIndex = 0;
@@ -1917,7 +1913,7 @@ namespace EasyExportGeneralTask
                             {
                                 string datum = result.hitList.Rows[i][2].ToString();
 
-                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                if ((string.IsNullOrEmpty(strDate)) || (string.Compare(datum, strDate) > 0))
                                 {
                                     strDate = datum;
                                     iIndex = i;
@@ -1927,7 +1923,7 @@ namespace EasyExportGeneralTask
 
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
-                        if (!String.IsNullOrEmpty(status))
+                        if (!string.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
                         }
@@ -2001,7 +1997,7 @@ namespace EasyExportGeneralTask
                             {
                                 var fInfo = new FileInfo(zipDatei);
 
-                                var mailBetreff = String.Format("Abmeldebestätigung {0}", fInfo.Name);
+                                var mailBetreff = string.Format("Abmeldebestätigung {0}", fInfo.Name);
 
                                 Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, zipDatei);
 
@@ -2020,8 +2016,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -2154,8 +2150,8 @@ namespace EasyExportGeneralTask
             }
             catch (Exception ex)
             {
-                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
-                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex, EventLogEntryType.Warning);
             }
         }
 
@@ -2249,7 +2245,7 @@ namespace EasyExportGeneralTask
             List<string> Deletelist = new List<string>();
 
             // Dateien zum clearen im allg. Exportverzeichnis finden
-            if (!String.IsNullOrEmpty(taskConfiguration.easyBlobPathLocal))
+            if (!string.IsNullOrEmpty(taskConfiguration.easyBlobPathLocal))
             {
                 Filelist = Directory.GetFiles(taskConfiguration.easyBlobPathLocal);
 
@@ -2264,7 +2260,7 @@ namespace EasyExportGeneralTask
             }
 
             // ZBII zum clearen finden
-            if (!String.IsNullOrEmpty(taskConfiguration.exportPathZBII))
+            if (!string.IsNullOrEmpty(taskConfiguration.exportPathZBII))
             {
                 Filelist = Directory.GetFiles(taskConfiguration.exportPathZBII);
 
@@ -2279,7 +2275,7 @@ namespace EasyExportGeneralTask
             }
 
             // Steuerbescheide zum clearen finden
-            if (!String.IsNullOrEmpty(taskConfiguration.exportPathSteuerB))
+            if (!string.IsNullOrEmpty(taskConfiguration.exportPathSteuerB))
             {
                 Filelist = Directory.GetFiles(taskConfiguration.exportPathSteuerB);
 

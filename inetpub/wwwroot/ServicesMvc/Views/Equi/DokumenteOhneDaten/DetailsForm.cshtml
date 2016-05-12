@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model DokumentOhneDaten
+
+<div id="DivDokumenteOhneDaten">
+    @using (Ajax.BeginForm("DokumenteOhneDatenFormSave", "Equi", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivDokumenteOhneDaten", OnComplete = "DokumenteOhneDatenAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "DokumenteOhneDatenAjaxForm" }))
+    {
+
+        @Html.FormValidationSummary()
+                      
+        @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap large", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap large", col = "right", @readonly = "readonly" })
+
+
+        @Html.FormDropDownListFor(m => m.Sperrvermerk, Model.SperrvermerkListe.ToSelectList(), new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Referenz, new { @class = "m-wrap large", col = "right" })
+        
+                
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
