@@ -389,9 +389,11 @@ namespace CkgDomainLogic.Equi.Models
                         d.Eingangsdatum = s.DATAB;
                         d.Fahrgestellnummer = s.CHASSIS_NUM;
                         d.Kennzeichen = s.LICENSE_NUM;
-                        d.ZB2 = s.TIDNR;
+                        d.ZB2 = s.TIDNR;                        
                         d.Name1 = s.NAME1_ZH;
                         d.Name2 = s.NAME2_ZH;
+                        d.Sperrvermerk = s.ZZREFERENZ1;
+                        d.Referenz = s.ZZREFERENZ2;
                         d.Strasse = s.STREET_ZH;
                         d.Hausnummer = s.HOUSE_NUM1_ZH;
                         d.PLZ = s.POST_CODE1_ZH;
