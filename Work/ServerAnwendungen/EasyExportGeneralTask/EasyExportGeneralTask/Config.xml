@@ -806,4 +806,53 @@
         <exportPathZip></exportPathZip>
     </TaskKonfiguration>
 
+  <TaskKonfiguration>
+    <!--Name der Taskkonfiguration, wird per Aufrufparameter selektiert (beliebig, solange eindeutig)-->
+    <Name>WKDA_AT</Name>
+    <!--Kundennummer (10-stellig), optional-->
+    <Kundennummer>0010080071</Kundennummer>
+    <!--Name des Programmablauf-Typs (Athlon/Alphabet/LeasePlan/CharterWay_All/CharterWay_Single/EuropaService/StarCar/XLeasing/XLCheck/DCBank/DaimlerFleet/SixtMobility)-->
+    <Ablauf>WKDA_AT</Ablauf>
+    <!--Soll Archiv mit Datum abgefragt werden? (true/false)-->
+    <AbfrageNachDatum>false</AbfrageNachDatum>
+    <!--relevant, wenn AbfrageNachDatum=true (JJJJ-MM-TT). Abfrage mit aktuellem Tagesdatum, wenn=1900-01-01-->
+    <Abfragedatum>1900-01-01</Abfragedatum>
+    <!--Eindeutige Satz-ID im Log mit Titel statt Kennzeichen? (true/false)-->
+    <LogfilesMitTitelStattKennzeichen>false</LogfilesMitTitelStattKennzeichen>
+    <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
+    <VerzeichnisseLeeren>true</VerzeichnisseLeeren>
+    <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
+    <DatumInSapSetzen>true</DatumInSapSetzen>
+    <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
+    <MailsSenden>true</MailsSenden>
+    <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->
+    <!--<MailEmpfaenger>anne.mueller@auto1.com</MailEmpfaenger>-->
+    <MailEmpfaenger>marco.carl@kroschke.de</MailEmpfaenger>
+    <!--Sollen NoData-Mails (Info, dass Dokument nicht gefunden) versendet werden?-->
+    <NoDataMailsSenden>true</NoDataMailsSenden>
+    <!--Empfänger für NoData-Mails (Info, dass Dokument nicht gefunden)-->
+    <!--<NoDataMailEmpfaenger>pm-dad@dad.de</NoDataMailEmpfaenger>-->
+    <NoDataMailEmpfaenger>marco.carl@kroschke.de</NoDataMailEmpfaenger>
+    <!--Archiv-Lagerort-->
+    <easyLocation>AUTO1_AT</easyLocation>
+    <!--<easyBlobPathLocal>C:\TEMP\WKDA_AT\</easyBlobPathLocal>-->
+    <easyBlobPathLocal>C:\TEMP\_Test\WKDA_AT</easyBlobPathLocal>
+    <Archive>
+      <ArchivDefinition>
+        <!--Archivname-->
+        <Name>WKDAAT</Name>
+        <!--Archivtyp (Standard/Dokumente/Steuerbescheide)-->
+        <Typ>Standard</Typ>
+        <!--Enthält Archivname die Jahreszahl? (true/false)-->
+        <IstJahresarchiv>true</IstJahresarchiv>
+        <!--Jahreszahl im Archivnamen 4-stellig? (true/false), sonst 2-stellig-->
+        <IstJahrVierstellig>false</IstJahrVierstellig>
+      </ArchivDefinition>
+    </Archive>
+    <exportPathZBII></exportPathZBII>
+    <exportPathSteuerB></exportPathSteuerB>
+    <!--<exportPathZip>\\vms013\prod\archiv\portal\wkda\österreich</exportPathZip>-->
+    <exportPathZip>C:\TEMP\_Test\ARCHIV_WKDAAT</exportPathZip>
+  </TaskKonfiguration>
+
 </ArrayOfTaskKonfiguration>

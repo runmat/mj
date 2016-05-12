@@ -52,6 +52,24 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult ReferenceItemEdit(string fin)
+        {
+            ModelState.Clear();
+            return PartialView("ErweiterterBriefbestand/DetailsForm", ErweiterterBriefbestandViewModel.GetItem(fin));
+        }
+
+        [HttpPost]
+        public ActionResult DetailsFormSave(FahrzeugbriefErweitert model)
+        {
+            if (ModelState.IsValid)
+                model.SAPError = ErweiterterBriefbestandViewModel.SaveItem(model);
+
+            return PartialView("ErweiterterBriefbestand/DetailsForm", model);
+        }
+
+        #region Filter & Export
+
+        [HttpPost]
         public ActionResult FilterGridFahrzeugbriefeErweitert(string filterValue, string filterColumns)
         {
             ErweiterterBriefbestandViewModel.FilterFahrzeugbriefe(filterValue, filterColumns);
@@ -74,6 +92,8 @@ namespace ServicesMvc.Controllers
 
             return new EmptyResult();
         }
+
+        #endregion
 
     }
 }
