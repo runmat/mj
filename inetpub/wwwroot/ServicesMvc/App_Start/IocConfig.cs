@@ -265,6 +265,7 @@ namespace ServicesMvc
             builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<AppBatchZuordnungDataService>().As<IAppBatchZuordnungDataService>().InstancePerHttpRequest();
 
+            builder.RegisterType<LeasingEndgueltigerVersandDataServiceSAP>().As<ILeasingEndgueltigerVersandDataService>().InstancePerHttpRequest();
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
     }

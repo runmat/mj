@@ -2,6 +2,8 @@
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace CkgDomainLogic.Equi.Models
 {
@@ -87,5 +89,24 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.CustomerContinuance)]
         public string VertragsStatus { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BlockingNotice)]
+        [Required]
+        public List<string> SperrvermerkListe
+        {
+            get
+            {
+                var list = new List<string>();
+                list.Add("");
+                list.Add("Sicherungsübereignung");
+                list.Add("Verbundhaftung");
+                list.Add("C+R");
+                list.Add("Other");
+                return list;
+            }
+        }
+
+        public string SAPError { get; set; }
+
     }
 }
