@@ -33,5 +33,6 @@ namespace EasyExportGeneralTask
         public static bool pauseAfterCompletion { get { return (ConfigurationManager.AppSettings["PauseAfterCompletion"].ToUpper() == "TRUE"); } }
 
         public static string WkdaDokumentAblagePfad { get { return ConfigurationManager.AppSettings["WkdaDokumentAblagePfad"]; } }
+        public static string WkdaAtDokumentAblagePfad { get { return ConfigurationManager.AppSettings["WkdaAtDokumentAblagePfad"]; } }
     }
 }
