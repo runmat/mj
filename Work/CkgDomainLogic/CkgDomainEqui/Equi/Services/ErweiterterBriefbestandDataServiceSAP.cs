@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Equi.Contracts;
@@ -39,6 +40,30 @@ namespace CkgDomainLogic.Equi.Services
             var sapList = Z_DPM_BRIEFBESTAND_002.GT_DATEN.GetExportListWithExecute(SAP);
 
             return AppModelMappings.Z_DPM_BRIEFBESTAND_002_GT_DATEN_To_FahrzeugbriefErweitert.Copy(sapList);
+        }
+
+        public string SaveSperrvermerk(FahrzeugbriefErweitert model)
+        {
+            string error = "";
+
+            try
+            {
+                Z_DPM_SET_EQUI_REFERENZ.Init(SAP, "IMP_AG", LogonContext.KundenNr.ToSapKunnr());
+                Z_DPM_SET_EQUI_REFERENZ.SetImportParameter_IMP_FIN(SAP, model.Fahrgestellnummer);
+                Z_DPM_SET_EQUI_REFERENZ.SetImportParameter_IMP_REFERENZ1(SAP, model.Referenz1);
+                if (!string.IsNullOrEmpty(model.Referenz1))
+                    Z_DPM_SET_EQUI_REFERENZ.SetImportParameter_IMP_REFERENZ2(SAP, model.Referenz2);
+                else
+                    Z_DPM_SET_EQUI_REFERENZ.SetImportParameter_IMP_REFERENZ2(SAP, "");
+
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                error = "SAP error: " + e.Message;
+            }
+            return error;
         }
     }
 }
