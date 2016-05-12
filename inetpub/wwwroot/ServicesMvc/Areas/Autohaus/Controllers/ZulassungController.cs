@@ -26,7 +26,7 @@ namespace ServicesMvc.Autohaus.Controllers
 {
     public class ZulassungController : CkgDomainController 
     {
-        public override string DataContextKey { get { return GetDataContextKey<KroschkeZulassungViewModel>(); } }
+        public override string DataContextKey => GetDataContextKey<KroschkeZulassungViewModel>();
 
         public KroschkeZulassungViewModel ViewModel 
         { 
@@ -230,11 +230,17 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SzUmschreibung()
+        {
+            return IndexMultiReg(sonderzulassung: "1", sonderzulassungMode: "umschreibung");
+        }
+
+        [CkgApplication]
         public ActionResult SzFirmeneigen()
         {
             return IndexMultiReg(sonderzulassung: "1", sonderzulassungMode: "firmeneigen");
         }
-        
+
         [CkgApplication]
         public ActionResult Schnellabmeldung()
         {

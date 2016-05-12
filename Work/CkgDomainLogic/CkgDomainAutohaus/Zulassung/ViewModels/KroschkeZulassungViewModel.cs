@@ -25,7 +25,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Autohaus.ViewModels
 {
-    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen, Firmeneigen, Umkennzeichnung }
+    public enum SonderzulassungsMode { None, Default, Ersatzkennzeichen, Haendlerkennzeichen, Firmeneigen, Umkennzeichnung, Umschreibung }
 
     [DashboardProviderViewModel]
     public class KroschkeZulassungViewModel : CkgBaseViewModel
@@ -1103,7 +1103,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore, ScriptIgnore]
         public List<Material> Zulassungsarten
         {
-            get { return ZulassungsVorgangsarten.Where(z => !z.IstAbmeldung).ToList().CopyAndInsertAtTop(new Material { MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose }); }
+            get
+            {
+                var istUmschreibung = SonderzulassungsMode == SonderzulassungsMode.Umschreibung;
+
+                return ZulassungsVorgangsarten.Where(z => !z.IstAbmeldung).ToList()
+                    .CopyAndInsertAtTop(new Material {MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose})
+                    .CopyAndInsertAtTopIfNotNull(istUmschreibung ? new Material() : null);
+            }
         }
 
         [XmlIgnore, ScriptIgnore]
