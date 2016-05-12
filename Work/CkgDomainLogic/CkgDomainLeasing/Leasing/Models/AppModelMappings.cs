@@ -150,6 +150,41 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_TEMP_VERSENDUNGEN_01.GT_OUT, EndgueltigerVersandModel> Z_DPM_TEMP_VERSENDUNGEN_01_GT_OUT_To_EndgueltigerVersandModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_TEMP_VERSENDUNGEN_01.GT_OUT, EndgueltigerVersandModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.Vertragsnummer = s.LIZNR;
+                        d.EQUNR = s.EQUNR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_TEMP_END_SPERR_01.GT_FZG, EndgueltigerVersandModel> Z_DPM_TEMP_END_SPERR_01_GT_FZG_To_EndgueltigerVersandModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_TEMP_END_SPERR_01.GT_FZG, EndgueltigerVersandModel>(
+                    new Dictionary<string, string>(),
+                    null,
+                    (s, d) =>
+                    {
+                        d.EQUNR = s.EQUNR;
+                    }));
+            }
+        }
+
+
+
+
+
         static public ModelMapping<Z_M_KLAERFAELLEVW.GT_WEB, NichtDurchfuehrbareZulassung> Z_M_KLAERFAELLEVW_GT_WEB_To_NichtDurchfuehrbareZulassung
         {
             get

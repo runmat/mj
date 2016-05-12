@@ -57,6 +57,12 @@ namespace SapORM.Models
 
 			public string CITY1_ZH { get; set; }
 
+			public string EQUNR { get; set; }
+
+			public string ZZREFERENZ1 { get; set; }
+
+			public string ZZREFERENZ2 { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -71,6 +77,9 @@ namespace SapORM.Models
 					HOUSE_NUM1_ZH = (string)row["HOUSE_NUM1_ZH"],
 					POST_CODE1_ZH = (string)row["POST_CODE1_ZH"],
 					CITY1_ZH = (string)row["CITY1_ZH"],
+					EQUNR = (string)row["EQUNR"],
+					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
+					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
