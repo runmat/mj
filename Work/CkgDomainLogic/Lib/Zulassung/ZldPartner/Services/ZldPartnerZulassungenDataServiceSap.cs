@@ -89,15 +89,20 @@ namespace CkgDomainLogic.ZldPartner.Services
 
             foreach (var item in zulassungen)
             {
-                if (item.NeuePosition && ergList.Any(e => e.EBELN == item.BelegNr && e.MATNR == item.MaterialNr))
-                    item.BelegPosition = ergList.First(e => e.EBELN == item.BelegNr && e.MATNR == item.MaterialNr).EBELP;
+                var savedPos = ergList.FirstOrDefault(e => (e.EBELN == item.BelegNr || e.EBELN_SORT == item.BelegNrSort) && e.MATNR == item.MaterialNr);
 
-                if (ergList.Any(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition))
-                    item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition).MESSAGE;
-                else if (ergList.Any(e => e.EBELN == item.BelegNr))
-                    item.SaveMessage = ergList.First(e => e.EBELN == item.BelegNr).MESSAGE;
-                else
-                    item.SaveMessage = "";
+                if (item.NeuePosition && savedPos != null)
+                {
+                    item.BelegNr = savedPos.EBELN;
+                    item.BelegPosition = savedPos.EBELP;
+                    item.BelegNrSort = savedPos.EBELN_SORT;
+                    item.BelegPositionSort = savedPos.EBELP_SORT;
+                }
+
+                var ergPos = ergList.FirstOrDefault(e => (e.EBELN == item.BelegNr && e.EBELP == item.BelegPosition) || (e.EBELN_SORT == item.BelegNrSort && e.EBELP_SORT == item.BelegPositionSort)) ??
+                             ergList.FirstOrDefault(e => e.EBELN == item.BelegNr || e.EBELN_SORT == item.BelegNrSort);
+
+                item.SaveMessage = (ergPos != null ? ergPos.MESSAGE : "");
 
                 if (item.SaveOk)
                 {
