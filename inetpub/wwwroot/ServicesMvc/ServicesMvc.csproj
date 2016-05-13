@@ -284,6 +284,8 @@
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
     <Content Include="Images\icons\flat\white\64x64\cross-plus.png" />
+    <Content Include="Images\icons\flat\white\64x64\duplicate.png" />
+    <Content Include="Images\icons\flat\white\64x64\edit.png" />
     <Content Include="Images\icons\flat\white\64x64\factory.png" />
     <Content Include="Images\icons\flat\white\64x64\highway-junction.png" />
     <Content Include="Images\icons\flat\white\64x64\right-box.png" />
