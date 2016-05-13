@@ -1200,6 +1200,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 switch (Zulassung.Zulassungsdaten.Belegtyp)
                 {
+                    case "AS":
                     case "AU":
                         return "UMK";
 
