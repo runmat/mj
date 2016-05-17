@@ -1,5 +1,4 @@
-﻿using System;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Remarketing.Models

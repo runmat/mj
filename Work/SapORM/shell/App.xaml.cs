@@ -461,6 +461,14 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_SCHADENRG_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_REM_002");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_AUFTR6_001");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_HC_NR_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_BELASTUNGSANZEIGE_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_BELASTUNGSA_RBUTT_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_BELASTUNGSA_IBUTT_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_READ_REKLATEXT");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_READ_BLOCKADETEXT_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_UPD_STATNEU_BELA_01");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_UPD_STAT_BELAST_02");
 
             #endregion
 

@@ -48,12 +48,124 @@ namespace CkgDomainLogic.Remarketing.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_HC_NR_01.GT_WEB, Hereinnahmecenter> Z_DPM_READ_HC_NR_01_GT_WEB_To_Hereinnahmecenter
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_HC_NR_01.GT_WEB, Hereinnahmecenter>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HereinnahmecenterId = s.POS_KURZTEXT;
+                        d.HereinnahmecenterName = s.POS_TEXT;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_BELASTUNGSANZEIGE_02.GT_OUT, Belastungsanzeige> Z_DPM_REM_BELASTUNGSANZEIGE_02_GT_OUT_To_Belastungsanzeige
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_BELASTUNGSANZEIGE_02.GT_OUT, Belastungsanzeige>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FahrgestellNr = s.FAHRGNR;
+                        d.Kennzeichen = s.KENNZ;
+                        d.InventarNr = s.INVENTAR;
+                        d.AutoVermieter = s.AVNAME;
+                        d.Hereinnahmecenter = s.HCNAME;
+                        d.HcEingang = s.HCEINGDAT;
+                        d.Beauftragungsdatum = s.GUTAUFTRAGDAT;
+                        d.Summe = s.SUMME;
+                        d.AnzahlGutachten = s.AZGUT;
+                        d.Status = s.STATU;
+                        d.StatusText = s.DDTEXT;
+                        d.Gutachtendatum = s.GUTADAT;
+                        d.MinderwertAv = s.MINWERT_AV;
+                        d.AnzahlReparaturKalkulationen = s.REPKALK.NotNullOrEmpty().ToInt(0);
+                        d.DatumReparaturKalkulation = s.REPKALKDAT;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_BELASTUNGSA_IBUTT_02.GT_OUT, Gutachten> Z_DPM_REM_BELASTUNGSA_IBUTT_02_GT_OUT_To_Gutachten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_BELASTUNGSA_IBUTT_02.GT_OUT, Gutachten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FahrgestellNr = s.FAHRGNR;
+                        d.LfdNr = s.LFDNR;
+                        d.Eingangsdatum = s.INDATUM;
+                        d.Gutachter = s.GUTA;
+                        d.GutachtenId = s.GUTAID;
+                        d.Gutachtendatum = s.GUTADAT;
+                        d.Schadenskennzeichen = s.SCHADKZ;
+                        d.Schadensbetrag = s.SCHADBETR;
+                        d.SchadensbetragAv = s.SCHADBETR_AV;
+                        d.Reparaturkennzeichen = s.REPKZ;
+                        d.Aufbereitungsbetrag = s.AUFBETR;
+                        d.AufbereitungsbetragAv = s.AUFBETR_AV;
+                        d.Wertminderungsbetrag = s.WRTMBETR;
+                        d.WertminderungsbetragAv = s.WRTMBETR_AV;
+                        d.Fehlteilbetrag = s.FEHLTBETR;
+                        d.FehlteilbetragAv = s.FEHLTBETR_AV;
+                        d.Restwert = s.RESTWERT;
+                        d.MaengelwertAv = s.MAEWERT_AV;
+                        d.OptWertAv = s.OPTWRTAV;
+                        d.MinderwertAv = s.MINWERT_AV;
+                        d.BeschaedigungenAv = s.BESCHAED_AV;
+                        d.VorschaedenRepariertAv = s.VORSCHAED_REP_AV;
+                        d.SchaedenUnrepariertAv = s.SCHAED_UNREP_AV;
+                        d.VorschaedenWertminderung = s.VORSCHAED_WERTMIND;
+                        d.SchaedenUnrepariertWertminderung = s.SCHAED_UNREP_WMIND;
+                    }
+                ));
+            }
+        }
+
         #endregion
 
 
         #region ToSap
 
-        
+        static public ModelMapping<Z_DPM_REM_UPD_STATNEU_BELA_01.GT_DAT, Belastungsanzeige> Z_DPM_REM_UPD_STATNEU_BELA_01_GT_DAT_From_Belastungsanzeige
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_UPD_STATNEU_BELA_01.GT_DAT, Belastungsanzeige>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.FAHRGNR = s.FahrgestellNr;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_UPD_STAT_BELAST_02.GT_IN, Belastungsanzeige> Z_DPM_REM_UPD_STAT_BELAST_02_GT_IN_From_Belastungsanzeige
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_UPD_STAT_BELAST_02.GT_IN, Belastungsanzeige>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.FAHRGNR = s.FahrgestellNr;
+                        d.KENNZ = s.Kennzeichen;
+                        d.STATU = s.Status;
+                        d.BLOCKTEXT = s.BlockadeText;
+                    }
+                ));
+            }
+        }
 
         #endregion
     }

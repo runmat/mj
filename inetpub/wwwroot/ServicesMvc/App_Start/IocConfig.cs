@@ -262,6 +262,7 @@ namespace ServicesMvc
             builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<FehlendeDatenDataServiceSAP>().As<IFehlendeDatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<BelastungsanzeigenDataServiceSAP>().As<IBelastungsanzeigenDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<LeasingEndgueltigerVersandDataServiceSAP>().As<ILeasingEndgueltigerVersandDataService>().InstancePerHttpRequest();
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();

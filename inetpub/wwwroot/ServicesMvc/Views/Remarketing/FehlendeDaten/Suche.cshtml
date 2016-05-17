@@ -3,51 +3,49 @@
 
 <div id="divFehlendeDatenSuche">
     @using (Ajax.BeginForm("LoadFehlendeDaten", "Remarketing", null,
-        new MvcAjaxOptions("divFehlendeDatenSuche") { OnComplete = "ShowFehlendeDaten();" }, new { id = "FehlendeDatenForm" }))
+        new MvcAjaxOptions { UpdateTargetId = "divFehlendeDatenSuche", OnComplete = "ShowFehlendeDaten();" },
+        new { @class = "form-horizontal label-width-175", id = "AjaxFormFehlendeDaten" }))
     {    
-        <div class="form-horizontal label-width-175" id="searchForm">
-            
-            @Html.FormValidationSummary()
+        @Html.FormValidationSummary()
 
 
-            @Html.HiddenFor(m => m.AuswahlChanged)
+        @Html.HiddenFor(m => m.AuswahlChanged)
 
-            @Html.FormRadioButtonListFor(m => m.Auswahl, FehlendeDatenSelektor.AuswahlList.ToSelectList(), new { @class = "m-wrap" })
+        @Html.FormRadioButtonListFor(m => m.Auswahl, FehlendeDatenSelektor.AuswahlList.ToSelectList(), new { @class = "m-wrap" })
 
-            @if (Model.Auswahl == "A")
+        if (Model.Auswahl == "A")
+        {
+            @Html.FormDropDownListFor(m => m.Vermieter, FehlendeDatenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
+
+            @Html.FormDateRangePickerFor(m => m.DatumRange)
+        }
+        else
+        {
+            if (Model.Auswahl == "F")
             {
-                @Html.FormDropDownListFor(m => m.Vermieter, FehlendeDatenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
-
-                @Html.FormDateRangePickerFor(m => m.DatumRange)
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" }) 
             }
             else
             {
-                if (Model.Auswahl == "F")
-                {
-                    @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" }) 
-                }
-                else
-                {
-                    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
-                }
-                
-                <div class="row-fluid">
-                    <div class="span12">
-                        @Html.Partial("FehlendeDaten/FileUpload", Model)
-                    </div>
-                </div>
+                @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
             }
-
-            @Html.FormDropDownListFor(m => m.Bestandsart, FehlendeDatenSelektor.BestandsartList.ToSelectList(), new { @class = "m-wrap" })
-
-            <div class="space10"></div>
-
-            @*@Html.FormRequiredFieldsSummary()*@
-
-            <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+                
+            <div class="row-fluid">
+                <div class="span12">
+                    @Html.Partial("FehlendeDaten/FileUpload", Model)
+                </div>
             </div>
-        </div>  
+        }
+
+        @Html.FormDropDownListFor(m => m.Bestandsart, FehlendeDatenSelektor.BestandsartList.ToSelectList(), new { @class = "m-wrap" })
+
+        <div class="space10"></div>
+
+        @*@Html.FormRequiredFieldsSummary()*@
+
+        <div class="form-actions">
+            <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+        </div>
         
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
@@ -57,9 +55,9 @@
                 $("#AuswahlChanged").val(false);
             }
 
-            $("#searchForm input[type=radio]").change(function () {
+            $("#AjaxFormFehlendeDaten input[type=radio]").change(function () {
                 // Dynamische Eingabefelder aktualisieren
-                $("#FehlendeDatenForm").submit();
+                $("#AjaxFormFehlendeDaten").submit();
             });
         </script>
     }

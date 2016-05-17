@@ -3196,6 +3196,13 @@
     <Content Include="Views\Remarketing\FehlendeDaten\Grid.cshtml" />
     <Content Include="Views\Remarketing\FehlendeDaten\Suche.cshtml" />
     <Content Include="Views\Remarketing\FehlendeDaten\FileUpload.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Suche.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Grid.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\GridGutachten.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\InfoForm.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\SetReklamationForm.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\SetBlockForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
