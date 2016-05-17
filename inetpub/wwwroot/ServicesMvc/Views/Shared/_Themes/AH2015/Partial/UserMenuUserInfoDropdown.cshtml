@@ -3,8 +3,10 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         @if (Model.UserNameForDisplay == "Pia Schmidt")
         {
-            <div id="divUserbild" style='height: 100%; width: 100%; object-fit: contain'>
-                <div class="userbild" style="background-image: url(/ServicesMvc/_Themes/AH2015/images/blondeFrau.jpg);"> </div>
+            <div id="divUserbild" >
+                <div class="userbild" style="background-color: white;">
+                    <img alt="@Model.UserNameForDisplay" src="~/assets/img/blondeFrau.jpg">
+                </div>
             </div>
         }
         else
