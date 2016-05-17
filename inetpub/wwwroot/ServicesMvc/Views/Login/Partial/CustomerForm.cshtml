@@ -7,27 +7,27 @@
                             new { @class = "no-loading-indicator form-vertical login-form", id = "AjaxFormCustomer" }))
 {
 
-    <h3 class="form-title">@Localize.PleaseEnterCustomerInfo</h3>
+    <h3 class="form-title margin-bottom-10 margin-top-10">@Localize.PleaseEnterCustomerInfo</h3>
 
     @Html.HiddenFor(m => m.ModeCaptchaReset)
 
     @*@Html.FormDropDownListFor(m => m.Anrede, CustomerModel.Anreden.ToSelectList(), new { @class = "m-wrap medium", placeholder = "Anrede" })*@
 
-    @Html.FormPlaceholderTextBoxFor(m => m.Anrede, new {@class = "m-wrap"})
+    @Html.FormPlaceholderTextBoxFor(m => m.Firma, new { @class = "m-wrap" })
 
-    @Html.FormPlaceholderTextBoxFor(m => m.Referenzbenutzer, new {@class = "m-wrap"})
+    @Html.FormPlaceholderTextBoxFor(m => m.Anrede, new {@class = "m-wrap help-inline" })   
+
+    @Html.FormPlaceholderTextBoxFor(m => m.Vorname, new { @class = "m-wrap" })
 
     @Html.FormPlaceholderTextBoxFor(m => m.Name, new {@class = "m-wrap"})
 
-    @Html.FormPlaceholderTextBoxFor(m => m.Vorname, new {@class = "m-wrap"})
-
-    @Html.FormPlaceholderTextBoxFor(m => m.Firma, new {@class = "m-wrap"})
+    @Html.FormPlaceholderTextBoxFor(m => m.Referenzbenutzer, new { @class = "m-wrap" })
 
     @Html.FormPlaceholderTextBoxFor(m => m.Telefon, new {@class = "m-wrap"})
 
     @Html.FormPlaceholderTextBoxFor(m => m.EMailAdresse, new {@class = "m-wrap placeholder-no-fix", autocomplete = "off"}, "icon-user")
 
-    @Html.FormTextAreaFor(m => m.FrageProblem, new {@class = "m-wrap", placeholder = Localize.AddYourQuestionHere })
+    @Html.FormTextAreaFor(m => m.FrageProblem, new {@class = "m-wrap", placeholder = Localize.AddYourQuestionHere, id = "FrageProblem" })
 
     <div class="captcha-wrapper">
         <img src="~/Shared/Captcha?id=@Guid.NewGuid()" alt="captcha" class="captcha-image"/>
@@ -56,6 +56,8 @@
         }
 
         $("#ModeCaptchaReset").val(false);
+
+        $("label:contains('FrageProblem')").hide(true);
 
         function FormPreparePrivate() {
             Login.init();
