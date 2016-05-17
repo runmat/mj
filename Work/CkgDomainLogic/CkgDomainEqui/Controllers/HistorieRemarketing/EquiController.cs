@@ -50,18 +50,6 @@ namespace ServicesMvc.Controllers
             return View(new GridModel(EquipmentHistorieRemarketingViewModel.HistorieInfosFiltered));
         }
 
-        [GridAction]
-        public ActionResult EquiHistorieRemarketingLebenslaufAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieRemarketingViewModel.EquipmentHistorie.Lebenslauf));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieRemarketingVorschaedenAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieRemarketingViewModel.EquipmentHistorie.Vorschaeden));
-        }
-
         public ActionResult ShowBelastungsanzeige()
         {
             var pdfBytes = EquipmentHistorieRemarketingViewModel.GetBelastungsanzeigePdf();

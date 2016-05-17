@@ -83,7 +83,11 @@ namespace CkgDomainLogic.Remarketing.Models
                         d.Status = s.STATU;
                         d.StatusText = s.DDTEXT;
                         d.Gutachtendatum = s.GUTADAT;
+                        d.Freigabedatum = s.SOLLFREI;
+                        d.RechnungsNr = s.RENNR;
+                        d.Gutachter = s.GUTA;
                         d.MinderwertAv = s.MINWERT_AV;
+                        d.Mietfahrzeug = s.FLAG_MIETFZG.XToBool();
                         d.AnzahlReparaturKalkulationen = s.REPKALK.NotNullOrEmpty().ToInt(0);
                         d.DatumReparaturKalkulation = s.REPKALKDAT;
                     }

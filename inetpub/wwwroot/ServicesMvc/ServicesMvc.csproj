@@ -261,6 +261,8 @@
     <Content Include="assets\img\bg\12.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
+    <Content Include="assets\plugins\glyphicons_halflings\images\Tool.png" />
+    <Content Include="assets\plugins\glyphicons_halflings\images\TUEV.png" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\DataConverter-main.css" />

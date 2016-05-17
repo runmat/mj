@@ -11,7 +11,7 @@
     .XAjaxDataBinding("BelastungsanzeigenAjaxBinding", "Remarketing")
     .Columns(columns =>
     {
-        columns.XBound(c => c.Auswahl).Filterable(false).Sortable(false).Groupable(false).Visible((Model.IsAv && Model.Selektor.Status == "0") || (!Model.IsAv && !string.IsNullOrEmpty(Model.Selektor.Status) && Model.Selektor.Status != "4"))
+        columns.XBound(c => c.Auswahl).Filterable(false).Sortable(false).Groupable(false).Visible(Model.ShowCheckBoxColumn)
             .ClientTemplate(
                 "<input type='checkbox' name='checkedRecords' <# if (data.Auswahl) { #> checked <# } #> value='<#= data.FahrgestellNr #>' onchange='OnSelectionChange_GridBelastungsanzeigen($(this))' />"
             )
@@ -19,24 +19,19 @@
                 "<input type='checkbox' id='uncheckAllRecords' onchange='OnAllSelectionChange_GridBelastungsanzeigen($(this).is(\":checked\"))' />"
             );
 
-        columns.XBound(c => c.Status).Filterable(false).Sortable(false).Groupable(false).Visible(Model.IsAv)
+        columns.XBound(c => c.Status).Filterable(false).Sortable(false).Groupable(false).Visible(Model.IsAv).Title("")
             .ClientTemplate(
                 "<button onclick='SetReklamation(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips <# if (data.Status != \"0\" && data.Status != \"3\") { #>" + "hide" + "<# } #>' data-original-title='" + Localize.ClaimAsVerb + "' data-placement='right'><i class='halflings-icon remove white'></i></button>"
             );
-        
-        columns.XBound(c => c.AnzahlReparaturKalkulationen).Filterable(false).Sortable(false).Groupable(false)
+
+        columns.XBound(c => c.AnzahlReparaturKalkulationen).Filterable(false).Sortable(false).Groupable(false).Title("")
             .ClientTemplate(
-                "<button onclick='ShowReklamation(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips <# if (data.StatusText != \"Widersprochen\") { #>" + "hide" + "<# } #>' data-original-title='" + Localize.Objection + "' data-placement='right'><i class='halflings-icon comments white'></i></button>"
-                + "&nbsp;"
-                + "<button onclick='ShowBlockade(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips <# if (data.StatusText != \"Blockiert\") { #>" + "hide" + "<# } #>' data-original-title='" + Localize.CauseOfBlock + "' data-placement='right'><i class='halflings-icon comments white'></i></button>"
-                + "&nbsp;"
-                + "<button onclick='ShowGutachten(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ShowSurvey + "' data-placement='right'><i class='halflings-icon info-sign white'></i></button>"
-                + "&nbsp;"
-                + "<a class='btn mini gray pdf tooltips' data-original-title='" + Localize.DebitNote + "' data-placement='right' href='GetBelastungsanzeigePdf?fin=<#= data.FahrgestellNr #>' ></a>"
-                + "&nbsp;"
-                + "<a class='btn mini gray tuev tooltips <# if (data.Gutachter != \"TUEV\" || !data.FahrgestellNr) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.TuevSurvey + "' data-placement='right' href='" + Model.TuevGutachtenBaseUrl + "<#= data.FahrgestellNr #>' ></a>"
-                + "&nbsp;"
-                + "<a class='btn mini gray pdf tooltips <# if (!data.AnzahlReparaturKalkulationen || AnzahlReparaturKalkulationen == 0) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.RepairCalculation + "' data-placement='right' href='GetReparaturKalkulationPdf?fin=<#= data.FahrgestellNr #>' ></a>"
+                "<button onclick='ShowReklamation(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips margin-right-5 <# if (data.StatusText != \"Widersprochen\") { #>" + "hide" + "<# } #>' data-original-title='" + Localize.Objection + "' data-placement='right'><i class='halflings-icon comments white'></i></button>"
+                + "<button onclick='ShowBlockade(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips margin-right-5 <# if (data.StatusText != \"Blockiert\") { #>" + "hide" + "<# } #>' data-original-title='" + Localize.CauseOfBlock + "' data-placement='right'><i class='halflings-icon comments white'></i></button>"
+                + "<button onclick='ShowGutachten(\"<#= data.FahrgestellNr #>\");' class='btn mini gray tooltips margin-right-5' data-original-title='" + Localize.ShowSurvey + "' data-placement='right'><i class='halflings-icon info-sign white'></i></button>"
+                + "<a class='btn mini gray pdf tooltips margin-right-5 a_btn_mini' data-original-title='" + Localize.DebitNote + "' data-placement='right' href='GetBelastungsanzeigePdf?fin=<#= data.FahrgestellNr #>' target='_blank'></a>"
+                + "<a class='btn mini gray tuev tooltips margin-right-5 a_btn_mini <# if (data.Gutachter != \"TUEV\" || !data.FahrgestellNr) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.TuevSurvey + "' data-placement='right' href='" + Model.TuevGutachtenBaseUrl + "<#= data.FahrgestellNr #>' target='_blank'></a>"
+                + "<a class='btn mini gray tool tooltips a_btn_mini <# if (!data.AnzahlReparaturKalkulationen || AnzahlReparaturKalkulationen == 0) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.RepairCalculation + "' data-placement='right' href='GetReparaturKalkulationPdf?fin=<#= data.FahrgestellNr #>' target='_blank'></a>"
             );
 
         columns.XBound(c => c.FahrgestellNr)
@@ -69,7 +64,11 @@
     })
 )
 
-<div class="form-horizontal">
+<script type="text/javascript">
+    _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+</script>
+
+<div class="form-horizontal margin-top-10">
     <div class="form-actions">
         <button type="button" class="btn green @(Model.IsAv || string.IsNullOrEmpty(Model.Selektor.Status) || Model.Selektor.Status.In("1,4,9") ? "hide" : "")" onclick="SetBlock();">@Localize.BlockAsVerb</button>
         <button type="button" class="btn green @(Model.IsAv || Model.Selektor.Status != "9" ? "hide" : "")" onclick="SetNoBlock();">@Localize.Reverse</button>

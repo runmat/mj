@@ -48,7 +48,7 @@
 
         // prepare multi row selection
         App.initUniform();
-        Grid_PrepareMultiRowSelected("GridBelastungsanzeigen");
+        Grid_PrepareMultiRowSelected("GridBelastungsanzeigen", true);
     }
 
     function OnLoad_GridBelastungsanzeigen() {
@@ -65,6 +65,8 @@
 
     function ShowBelastungsanzeigenSearchResult(result) {
         SearchFormHide();
+        $("#divGridGutachten").html("");
+        $("#divEquiHistorie").html("");
         $("#divGrid").html(result);
 
         // move our grid filter form into grid's toolbar:
@@ -81,7 +83,7 @@
             data: { id: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
-                GridVorgangAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                GridBelastungsanzeigen_MultiSelectUpdate(result.allSelectionCount);
             }
         });
     }
@@ -93,8 +95,8 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                GridVorgangAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FilterGrid("@gridName");
+                GridBelastungsanzeigen_MultiSelectUpdate(result.allSelectionCount);
+                FilterGrid("GridBelastungsanzeigen");
             }
         });
     }
@@ -110,7 +112,6 @@
     }
 
     function ShowEquiHistorieAjax(fin) {
-        LoadingShow();
         $.ajax(
         {
             type: "POST",
@@ -118,12 +119,14 @@
             loadingShow: true,
             data: { fahrgestellnummer: fin },
             success: function (result) {
-                ShowEquiHistorie(result);
+                if (_modelStateValid) {
+                    ShowEquiHistorieRemarketing(result);
+                }
             }
         });
     }
 
-    function ShowEquiHistorie(result) {
+    function ShowEquiHistorieRemarketing(result) {
         $("#divEquiHistorie").html(result);
         $("#divGrid").slideUp();
         $("#divEquiHistorie").slideDown();
@@ -132,7 +135,7 @@
         FormPreparePrivateAjax();
     }
 
-    function CloseEquiHistorieDetail() {
+    function CloseEquiHistorieRemarketingDetail() {
         $("#btnBackToResult").hide();
         $("#divEquiHistorie").html("");
         $("#divEquiHistorie").slideUp(function () { $("#divGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
@@ -157,6 +160,8 @@
     }
 
     function SetReklamation(fin) {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
@@ -164,7 +169,9 @@
             data: { fahrgestellNr: fin },
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigeDetail(result);
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigeDetail(result);
+                }
             }
         });
 
@@ -172,6 +179,8 @@
     }
 
     function ShowReklamation(fin) {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
@@ -179,7 +188,9 @@
             data: { fahrgestellNr: fin },
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigeDetail(result);
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigeDetail(result);
+                }
             }
         });
 
@@ -187,6 +198,8 @@
     }
 
     function ShowBlockade(fin) {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
@@ -194,7 +207,9 @@
             data: { fahrgestellNr: fin },
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigeDetail(result);
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigeDetail(result);
+                }
             }
         });
 
@@ -202,6 +217,8 @@
     }
 
     function ShowGutachten(fin) {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
@@ -209,7 +226,9 @@
             data: { fahrgestellNr: fin },
             loadingShow: true,
             success: function (result) {
-                ShowGutachten(result);
+                if (_modelStateValid) {
+                    ShowGutachtenResult(result);
+                }
             }
         });
 
@@ -217,13 +236,22 @@
     }
 
     function SetBlock() {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
             url: "BelastungsanzeigeSetBlock",
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigeDetail(result);
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigeDetail(result);
+                }
             }
         });
 
@@ -231,13 +259,22 @@
     }
 
     function SetNoBlock() {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
             url: "BelastungsanzeigeSetNoBlock",
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigenSearchResult(result);
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigenSearchResult(result);
+                }
             }
         });
 
@@ -245,13 +282,22 @@
     }
 
     function SetInArbeit() {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
             url: "BelastungsanzeigeSetInArbeit",
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigenSearchResult(result);
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigenSearchResult(result);
+                }
             }
         });
 
@@ -259,22 +305,35 @@
     }
 
     function SetOpen() {
+        FormPreparePrivateAjax();
+
         $.ajax(
         {
             type: "POST",
             url: "BelastungsanzeigeSetOpen",
             loadingShow: true,
             success: function (result) {
-                ShowBelastungsanzeigenSearchResult(result);
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                if (_modelStateValid) {
+                    ShowBelastungsanzeigenSearchResult(result);
+                }
             }
         });
 
         return false;
     }
 
-    function CloseBelastungsanzeigeDetail() {
-        $(".mfp-close").trigger("click");
-        GridBelastungsanzeigenRefresh();
+    function CloseBelastungsanzeigeDetail(ignoreModelState) {
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid || ignoreModelState) {
+            $(".mfp-close").trigger("click");
+            GridBelastungsanzeigenRefresh();
+        }
     }
 
     function GetGridGutachten() {
@@ -307,7 +366,7 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowGutachten(result) {
+    function ShowGutachtenResult(result) {
         $("#divGrid").slideUp();
         $("#divGridGutachten").html(result);
 

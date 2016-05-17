@@ -51,24 +51,6 @@ namespace ServicesMvc.Controllers
         }
 
         [GridAction]
-        public ActionResult EquiHistorieVermieterLebenslaufZb2AjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufZb2));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieVermieterLebenslaufFsmAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufFsm));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieVermieterTueteninhaltFsmAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.InhalteFsm));
-        }
-
-        [GridAction]
         public ActionResult EquiHistorieVermieterFahrzeugAnforderungenAjaxBinding()
         {
             return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.FahrzeugAnforderungen));

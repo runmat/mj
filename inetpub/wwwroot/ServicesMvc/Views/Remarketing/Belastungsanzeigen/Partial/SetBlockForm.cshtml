@@ -2,7 +2,7 @@
 
 <div id="divSetBlock" class="margin-top-20">
     @using (Ajax.BeginForm("SetBlockForm", "Remarketing", null,
-        new MvcAjaxOptions { UpdateTargetId = "divSetBlock", OnComplete = "CloseBelastungsanzeigeDetail();" },
+        new MvcAjaxOptions { UpdateTargetId = "divSetBlock", OnComplete = "CloseBelastungsanzeigeDetail(false);" },
         new { @class = "form-horizontal", id = "AjaxFormSetBlock" }))
     {
         @Html.FormValidationSummary()
@@ -19,7 +19,7 @@
         
         <div class="form-actions">
             <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Apply</button>
-            <button type="button" class="btn" onclick="CloseBelastungsanzeigeDetail();">@Localize.Cancel</button>
+            <button type="button" class="btn" onclick="CloseBelastungsanzeigeDetail(true);">@Localize.Cancel</button>
         </div>
 
         <script type="text/javascript">

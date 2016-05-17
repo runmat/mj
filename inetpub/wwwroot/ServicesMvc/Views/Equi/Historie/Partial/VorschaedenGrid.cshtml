@@ -1,10 +1,10 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@{ var gridName = "GridEquiVorschaeden"; }
+@model IEnumerable<EquiVorschaden>
 
 @(Html.XTelerik()
     .XGrid<EquiVorschaden>()
-    .Name(gridName)
-    .XAjaxDataBinding("EquiHistorieRemarketingVorschaedenAjaxBinding", "Equi")
+    .Name("GridEquiVorschaeden")
+    .BindTo(Model)
     .Columns(columns =>
     {
         columns.XBound(c => c.FahrgestellNr);
@@ -17,9 +17,10 @@
         columns.XBound(c => c.Repariert);
         columns.XBound(c => c.Wertminderungsbetrag);
     })
-    .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Erstellungsdatum).Ascending())
-    .Groupable(g => g.Enabled(false))
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Erstellungsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
 )

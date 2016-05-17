@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Remarketing.Models;
@@ -38,7 +34,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ShowBelastungsanzeigen()
         {
-            return PartialView("Belastungsanzeigen/Grid");
+            return PartialView("Belastungsanzeigen/Grid", BelastungsanzeigenViewModel);
         }
 
         [GridAction]
@@ -100,9 +96,38 @@ namespace ServicesMvc.Controllers
             return PartialView("Belastungsanzeigen/GridGutachten", BelastungsanzeigenViewModel);
         }
 
+        [GridAction]
+        public ActionResult GutachtenAjaxBinding()
+        {
+            return View(new GridModel(BelastungsanzeigenViewModel.GutachtenFiltered));
+        }
+
+        public ActionResult GetBelastungsanzeigePdf(string fin)
+        {
+            var pdfBytes = BelastungsanzeigenViewModel.GetBelastungsanzeigePdf(fin);
+
+            if (pdfBytes == null)
+                return new ContentResult { Content = Localize.NoDocumentsFound };
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = string.Format("{0}.pdf", Localize.DebitNote) };
+        }
+
+        public ActionResult GetReparaturKalkulationPdf(string fin)
+        {
+            var pdfBytes = BelastungsanzeigenViewModel.GetReparaturKalkulationPdf(fin);
+
+            if (pdfBytes == null)
+                return new ContentResult { Content = Localize.NoDocumentsFound };
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = string.Format("{0}.pdf", Localize.RepairCalculation) };
+        }
+
         [HttpPost]
         public ActionResult BelastungsanzeigeSetBlock()
         {
+            if (BelastungsanzeigenViewModel.BelastungsanzeigenSelected.None())
+                return Json(new { message = Localize.NoVehicleSelected });
+
             var model = BelastungsanzeigenViewModel.GetSetBlockadeModel();
 
             return PartialView("Belastungsanzeigen/Partial/SetBlockForm", model);
@@ -120,28 +145,37 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult BelastungsanzeigeSetNoBlock()
         {
+            if (BelastungsanzeigenViewModel.BelastungsanzeigenSelected.None())
+                return Json(new { message = Localize.NoVehicleSelected });
+
             if (ModelState.IsValid)
                 BelastungsanzeigenViewModel.ResetBlockade(ModelState.AddModelError);
 
-            return PartialView("Belastungsanzeigen/Grid");
+            return ShowBelastungsanzeigen();
         }
 
         [HttpPost]
         public ActionResult BelastungsanzeigeSetInArbeit()
         {
+            if (BelastungsanzeigenViewModel.BelastungsanzeigenSelected.None())
+                return Json(new { message = Localize.NoVehicleSelected });
+
             if (ModelState.IsValid)
                 BelastungsanzeigenViewModel.SetInBearbeitung(ModelState.AddModelError);
 
-            return PartialView("Belastungsanzeigen/Grid");
+            return ShowBelastungsanzeigen();
         }
 
         [HttpPost]
         public ActionResult BelastungsanzeigeSetOpen()
         {
+            if (BelastungsanzeigenViewModel.BelastungsanzeigenSelected.None())
+                return Json(new { message = Localize.NoVehicleSelected });
+
             if (ModelState.IsValid)
                 BelastungsanzeigenViewModel.SetOffen(ModelState.AddModelError);
 
-            return PartialView("Belastungsanzeigen/Grid");
+            return ShowBelastungsanzeigen();
         }
 
         [HttpPost]

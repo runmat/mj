@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Remarketing.Contracts;
@@ -14,11 +15,14 @@ namespace ServicesMvc.Controllers
 
         public RemarketingController(IAppSettings appSettings, 
             ILogonContextDataService logonContext, 
-            IFehlendeDatenDataService fehlendeDatenDataService
+            IFehlendeDatenDataService fehlendeDatenDataService,
+            IBelastungsanzeigenDataService belastungsanzeigenDataService,
+            IEasyAccessDataService easyAccessDataService
             )
             : base(appSettings, logonContext)
         {
             InitViewModel(FehlendeDatenViewModel, appSettings, logonContext, fehlendeDatenDataService);
+            InitViewModel(BelastungsanzeigenViewModel, appSettings, logonContext, belastungsanzeigenDataService, easyAccessDataService);
 
             InitModelStatics();
         }
@@ -26,6 +30,7 @@ namespace ServicesMvc.Controllers
         void InitModelStatics()
         {
             FehlendeDatenSelektor.GetViewModel = GetViewModel<FehlendeDatenViewModel>;
+            BelastungsanzeigenSelektor.GetViewModel = GetViewModel<BelastungsanzeigenViewModel>;
         }
 
         public ActionResult Index(string un, string appID)

@@ -1,18 +1,19 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@{ var gridName = "GridEquiLebenslauf"; }
+@model IEnumerable<EquiLebenslauf>
 
 @(Html.XTelerik()
     .XGrid<EquiLebenslauf>()
-    .Name(gridName)
-    .XAjaxDataBinding("EquiHistorieRemarketingLebenslaufAjaxBinding", "Equi")
+    .Name("GridEquiLebenslauf")
+    .BindTo(Model)
     .Columns(columns =>
     {
         columns.XBound(c => c.Datum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Ereignis);
     })
-    .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Datum).Ascending())
-    .Groupable(g => g.Enabled(false))
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Datum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
 )

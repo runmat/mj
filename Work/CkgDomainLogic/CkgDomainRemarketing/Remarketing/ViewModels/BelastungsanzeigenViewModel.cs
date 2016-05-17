@@ -103,6 +103,11 @@ namespace CkgDomainLogic.Remarketing.ViewModels
             get { return LogonContext.GroupName.NotNullOrEmpty().StartsWith("AV"); }
         }
 
+        public bool ShowCheckBoxColumn
+        {
+            get { return (IsAv && Selektor.Status == "0") || (!IsAv && !string.IsNullOrEmpty(Selektor.Status) && Selektor.Status != "4"); }
+        }
+
         public string TuevGutachtenBaseUrl {
             get { return PropertyCacheGet(() => ApplicationConfiguration.GetApplicationConfigValue("TuevGutachtenUrl", "0", LogonContext.CustomerID)); }
         }
@@ -162,6 +167,9 @@ namespace CkgDomainLogic.Remarketing.ViewModels
 
         public byte[] GetBelastungsanzeigePdf(string fahrgestellNr)
         {
+            var item = Belastungsanzeigen.FirstOrDefault(b => b.FahrgestellNr == fahrgestellNr);
+            var datum = (item != null && item.Freigabedatum.HasValue ? item.Freigabedatum.Value : DateTime.Now);
+
             var lagerort = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenLagerort", "0", LogonContext.CustomerID);
             var archiv = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenName", "0", LogonContext.CustomerID);
 
@@ -170,7 +178,7 @@ namespace CkgDomainLogic.Remarketing.ViewModels
 
             var mitJahr = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenMitJahr", "0", LogonContext.CustomerID);
             if (string.Compare(mitJahr, "true", true) == 0)
-                archiv += DateTime.Now.ToString("yy");
+                archiv += datum.ToString("yy");
 
             var relDocPaths = EasyAccessDataService.GetDocuments(lagerort, archiv, "SGW", string.Format(".1001={0}", fahrgestellNr));
 
@@ -181,8 +189,11 @@ namespace CkgDomainLogic.Remarketing.ViewModels
             return (fileList.None() ? null : PdfDocumentFactory.MergePdfDocuments(fileList));
         }
 
-        public byte[] GetReparaturKalkulationPdf(string fahrgestellNr, int anzahlRepKalk)
+        public byte[] GetReparaturKalkulationPdf(string fahrgestellNr)
         {
+            var item = Belastungsanzeigen.FirstOrDefault(b => b.FahrgestellNr == fahrgestellNr);
+            var anzahlRepKalk = (item != null ? item.AnzahlReparaturKalkulationen : 0);
+
             var repKalkUrl = ApplicationConfiguration.GetApplicationConfigValue("RepKalkUrl", "0", LogonContext.CustomerID, LogonContext.Group.GroupID);
             var fileList = new List<byte[]>();
 
@@ -303,6 +314,8 @@ namespace CkgDomainLogic.Remarketing.ViewModels
                 addModelError("", ergMessage);
                 return;
             }
+
+            Belastungsanzeigen.RemoveAll(b => b.Auswahl);
 
             PropertyCacheClear(this, m => m.BelastungsanzeigenFiltered);
         }

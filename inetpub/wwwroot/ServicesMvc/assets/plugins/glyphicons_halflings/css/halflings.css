@@ -1052,3 +1052,9 @@ html .halflings {
   background-position: 8px 2px;
   background-repeat: no-repeat;
 }
+
+.tool,.tool:hover {
+  background-image: url(../images/Tool.png);
+  background-position: 8px 2px;
+  background-repeat: no-repeat;
+}

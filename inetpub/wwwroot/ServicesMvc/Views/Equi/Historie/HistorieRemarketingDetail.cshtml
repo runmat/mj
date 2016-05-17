@@ -30,10 +30,10 @@
             @Html.Partial("Historie/Partial/ModellAusstattung", Model)
         </div>
         <div class="tab-pane overflow-x-auto" id="tab_1_2">
-            @Html.Partial("Historie/Partial/VorschaedenGrid")
+            @Html.Partial("Historie/Partial/VorschaedenGrid", Model.Vorschaeden)
         </div>
         <div class="tab-pane overflow-x-auto" id="tab_1_3">
-            @Html.Partial("Historie/Partial/LebenslaufGrid")
+            @Html.Partial("Historie/Partial/LebenslaufGrid", Model.Lebenslauf)
         </div>
         <div class="tab-pane" id="tab_1_4">
             @Html.Partial("Historie/Partial/Typdaten", Model.Typdaten)
