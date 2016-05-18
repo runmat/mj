@@ -594,27 +594,30 @@ namespace AppZulassungsdienst.forms
 
             txtStVa.Text = kopfdaten.Landkreis;
 
-            var adressdaten = objVorVersand.AktuellerVorgang.Adressdaten;
-
-            txtName1.Text = adressdaten.Name1;
-            txtName2.Text = adressdaten.Name2;
-            txtPlz.Text = adressdaten.Plz;
-            txtOrt.Text = adressdaten.Ort;
-            txtStrasse.Text = adressdaten.Strasse;
-
-            var bankdaten = objVorVersand.AktuellerVorgang.Bankdaten;
-
-            chkEinzug.Checked = bankdaten.Einzug.IsTrue();
-            chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
-            txtSWIFT.Text = bankdaten.SWIFT;
-            txtIBAN.Text = bankdaten.IBAN;
-            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
-            hfKontonummer.Value = bankdaten.KontoNr;
-            if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
+            if (!_newVersand)
             {
-                txtGeldinstitut.Text = bankdaten.Geldinstitut;
+                var adressdaten = objVorVersand.AktuellerVorgang.Adressdaten;
+
+                txtName1.Text = adressdaten.Name1;
+                txtName2.Text = adressdaten.Name2;
+                txtPlz.Text = adressdaten.Plz;
+                txtOrt.Text = adressdaten.Ort;
+                txtStrasse.Text = adressdaten.Strasse;
+
+                var bankdaten = objVorVersand.AktuellerVorgang.Bankdaten;
+
+                chkEinzug.Checked = bankdaten.Einzug.IsTrue();
+                chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
+                txtSWIFT.Text = bankdaten.SWIFT;
+                txtIBAN.Text = bankdaten.IBAN;
+                hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+                hfKontonummer.Value = bankdaten.KontoNr;
+                if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
+                {
+                    txtGeldinstitut.Text = bankdaten.Geldinstitut;
+                }
+                txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             }
-            txtKontoinhaber.Text = bankdaten.Kontoinhaber;
 
             TableToJSArray();
             SetJavaFunctions();
