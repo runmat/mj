@@ -176,9 +176,6 @@ namespace AppZulassungsdienst.forms
 
             objNacherf.SelLief = "0";
 
-            objNacherf.SelVorgang = "NZ";
-            objNacherf.SelStatus = "NZ";
-
             if (objNacherf.SelAnnahmeAH)
             {
                 objNacherf.SelVorgang = "A";
@@ -195,7 +192,12 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                if (rbOK.Checked)
+                if (rbNZ.Checked)
+                {
+                    objNacherf.SelVorgang = "NZ";
+                    objNacherf.SelStatus = "NZ";
+                }
+                else if (rbOK.Checked)
                 {
                     objNacherf.SelVorgang = "OK";
                     objNacherf.SelStatus = "OK";
@@ -215,6 +217,12 @@ namespace AppZulassungsdienst.forms
                     objNacherf.SelVorgang = "ANZ";
                     objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung
                 }
+                else
+                {
+                    objNacherf.SelVorgang = "ANZOKON";
+                    objNacherf.SelStatus = "NZ,OK,ON,OA,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Vorgänge außer KE,VE,VZ,AV,AX
+                }
+
                 objNacherf.SelFlieger = chkFlieger.Checked;
                 objNacherf.SelNochNichtAbgesendete = false;
             }
