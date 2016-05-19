@@ -12,8 +12,15 @@
         @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
 
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
-        
-        @Html.FormDropDownListFor(m => m.Vermieter, BelastungsanzeigenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
+
+        if (Model.IsAv)
+        {
+            @Html.HiddenFor(m => m.Vermieter)
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.Vermieter, BelastungsanzeigenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
+        }
 
         @Html.FormDropDownListFor(m => m.Hereinnahmecenter, BelastungsanzeigenSelektor.HereinnahmecenterList.ToSelectList(), new { @class = "m-wrap" })
 

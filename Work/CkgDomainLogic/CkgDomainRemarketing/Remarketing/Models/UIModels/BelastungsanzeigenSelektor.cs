@@ -66,6 +66,8 @@ namespace CkgDomainLogic.Remarketing.Models
         [LocalizedDisplay(LocalizeConstants.ContractYear)]
         public string Vertragsjahr { get; set; }
 
+        public bool IsAv { get { return (GetViewModel != null && GetViewModel().IsAv); } }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var vertragsJahr = Vertragsjahr.NotNullOrEmpty().Trim();
