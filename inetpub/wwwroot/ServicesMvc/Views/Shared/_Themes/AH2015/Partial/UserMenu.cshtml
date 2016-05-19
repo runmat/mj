@@ -49,13 +49,15 @@
 
             $(clone).appendTo("#divUserbild").css("position", "absolute").animate({
                 height: "200px",
-                width: "200px"
-            }, 200, function () {
+                width: "200px",
+                left: "-50px"
+        }, 300, function () {
 
                 $(clone).bind("mouseout", function (e) {
                     $(clone).animate({
                         height: "50px",
-                        width: "50px"
+                        width: "50px",
+                        left: "13px"
                     }, 500, function () { $(clone).remove(); });
 
                 }); // end mouseout
