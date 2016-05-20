@@ -1612,6 +1612,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() && !regexTuevAu.IsMatch(x.TuevAu)))
                     addModelError(string.Empty, string.Format("{0} {1} ({2}: {3})", Localize.TuevAu, Localize.Invalid.NotNullOrEmpty().ToLower(), Localize.Format, Localize.DateFormat_MMJJ));
             }
+            else if (ModusAbmeldung)
+            {
+                if (Zulassung.Zulassungsdaten.Kennzeichen.IsNullOrEmpty())
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+            }
         }
 
         public bool ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
