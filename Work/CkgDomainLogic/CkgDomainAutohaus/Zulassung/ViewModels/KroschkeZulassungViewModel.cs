@@ -1594,7 +1594,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
-                if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
@@ -1602,7 +1602,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (FinList.None(x => x.IsSchnellabmeldungSpeicherrelevant))
                     addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
 
-                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
@@ -1614,7 +1614,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else if (ModusAbmeldung)
             {
-                if (zulassungsdatenModel.Kennzeichen.IsNullOrEmpty())
+                if (zulassungsdatenModel.Kennzeichen.IsNullOrEmpty() || zulassungsdatenModel.Kennzeichen.EndsWith("-"))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
             }
         }
