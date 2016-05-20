@@ -1531,7 +1531,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-            if ((Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung) && FinList.None(x => !string.IsNullOrEmpty(x.FIN)))
+            if ((Zulassung.Zulassungsdaten.IsMassenzulassung && FinList.None(x => !string.IsNullOrEmpty(x.FIN))) && (Zulassung.Zulassungsdaten.IsMassenabmeldung && FinList.None(x => x.IsMassenabmeldungSpeicherrelevant)))
                 addModelError(string.Empty, Localize.NoVehicleSelected);
 
             if (fahrzeugdatenModel.HasEtikett)
@@ -1591,6 +1591,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         }
                     }
                 }
+            }
+            else if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+            {
+                if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {

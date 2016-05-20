@@ -349,7 +349,7 @@
 
                         columns.XBound(c => c.FIN).ClientTemplate(
                                 Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
-                            ).Title(Localize.VIN + " <span class='requiredField requiredFieldMarker'>*</span>");
+                                ).Title(Localize.VIN + (isMassenabmeldung ? "" : " <span class='requiredField requiredFieldMarker'>*</span>"));
                           
                         columns.XBound(c => c.HandelsName).ClientTemplate(
                                 Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
