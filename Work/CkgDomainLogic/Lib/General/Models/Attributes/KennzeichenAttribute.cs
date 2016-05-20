@@ -8,7 +8,7 @@ namespace CkgDomainLogic.General.Models
     public class KennzeichenAttribute : RegularExpressionAttribute, IKennzeichenAttribute, IAttributeWithModelMappingConvert
     {
         public KennzeichenAttribute()
-            : base("[A-Z]{1,3}-([A-Z]{1,2}[0-9]{1,4}$)*")
+            : base("[A-ZÄÖÜ]{1,3}-([A-Z]{1,2}[0-9A-ZÄÖÜ]{1,18}$)*")
         {
             ErrorMessageResourceType = typeof(CommonResources);
             ErrorMessageResourceName = "InvalidLicenseNo";

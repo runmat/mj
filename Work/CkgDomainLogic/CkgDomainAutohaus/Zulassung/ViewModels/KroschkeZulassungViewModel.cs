@@ -1737,7 +1737,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (saveDataToSap)
             {
                 var zulOhneEvb = zulassungenToSave.Where(z => !z.Zulassungsdaten.ModusAbmeldung && string.IsNullOrEmpty(z.Zulassungsdaten.EvbNr));
-                if (zulOhneEvb.Any())
+                if (SonderzulassungsMode != SonderzulassungsMode.Umkennzeichnung && zulOhneEvb.Any())
                 {
                     SaveErrorMessage = string.Join(", ", zulOhneEvb.Select(z => string.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
                     return;
