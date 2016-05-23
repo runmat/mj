@@ -164,12 +164,14 @@ namespace CkgDomainLogic.Autohaus.Models
             return s;
         }
 
-        public string GetSummaryStringErsatzkennzeichen()
+        public string GetSummaryStringErsatzkennzeichen(DateTime? zulassungsDatum)
         {
             const string mask = "<br/>{0}: ";
             var vm = GetZulassungViewModel();
 
             var s = AuftragsNr.PrependIfNotNull(string.Format("{0}: ", Localize.AhZulassungReferenceNo));
+
+            s += zulassungsDatum?.ToShortDateString().PrependIfNotNull(string.Format(mask, Localize.RegistrationDate));
 
             var kk = vm.Zulassung.ErsatzKennzeichenTypen.FirstOrDefault(k => k.Key == vm.Zulassung.Zulassungsdaten.ZulassungsartMatNr);
             if (kk != null)
@@ -184,12 +186,14 @@ namespace CkgDomainLogic.Autohaus.Models
             return s;
         }
 
-        public string GetSummaryStringHaendlerkennzeichen()
+        public string GetSummaryStringHaendlerkennzeichen(DateTime? zulassungsDatum)
         {
             const string mask = "<br/>{0}: ";
             var vm = GetZulassungViewModel();
 
             var s = AuftragsNr.PrependIfNotNull(string.Format("{0}: ", Localize.AhZulassungReferenceNo));
+
+            s += zulassungsDatum?.ToShortDateString().PrependIfNotNull(string.Format(mask, Localize.RegistrationDate));
 
             var kk = vm.Zulassung.HaendlerKennzeichenTypen.FirstOrDefault(k => k.Key == vm.Zulassung.Zulassungsdaten.ZulassungsartMatNr);
             if (kk != null)

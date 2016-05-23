@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
-@model Fahrzeugdaten
+@model Haendlerkennzeichendaten
 
 <div id="DivHaendlerkennzeichen" class="margin-top-20">
     
@@ -8,20 +8,22 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormDropDownListFor(m => m.HaendlerKennzeichenTyp, Model.HaendlerKennzeichenTypen.ToSelectList(), new {@class = "m-wrap large" })
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap medium uppercase"},
-            postControlHtml:@<text>
-                                @Html.FormTextBoxFor(m => m.KennzeichenMenge, new { @class = "m-wrap xsmall" }, useRawTemplate:true)
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+        
+        @Html.FormDropDownListFor(m => m.Fahrzeugdaten.HaendlerKennzeichenTyp, Model.Fahrzeugdaten.HaendlerKennzeichenTypen.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kennzeichen, new { @class = "m-wrap medium uppercase" },
+            postControlHtml: @<text>
+                                @Html.FormTextBoxFor(m => m.Fahrzeugdaten.KennzeichenMenge, new { @class = "m-wrap xsmall" }, useRawTemplate: true)
                              </text>)
         
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
-        @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
-        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
 
         <div class="hide">
-            @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+            @Html.FormDropDownListFor(m => m.Fahrzeugdaten.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
         </div>
     }
 

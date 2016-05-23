@@ -583,16 +583,14 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Ersatzkennzeichen()
         {
-            return PartialView("Partial/Ersatzkennzeichen", ViewModel.StepModels["Fahrzeugdaten"]());
+            return PartialView("Partial/Ersatzkennzeichen", ViewModel.StepModels["Ersatzkennzeichen"]());
         }
 
         [HttpPost]
-        public ActionResult ErsatzkennzeichenForm(Fahrzeugdaten model)
+        public ActionResult ErsatzkennzeichenForm(Ersatzkennzeichendaten model)
         {
             if (ModelState.IsValid)
-            {
                 ViewModel.SetSonderzulassungErsatzkennzeichen(model);
-            }
 
             return PartialView("Partial/ErsatzkennzeichenForm", model);
         }
@@ -604,16 +602,14 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Haendlerkennzeichen()
         {
-            return PartialView("Partial/Haendlerkennzeichen", ViewModel.StepModels["Fahrzeugdaten"]());
+            return PartialView("Partial/Haendlerkennzeichen", ViewModel.StepModels["Haendlerkennzeichen"]());
         }
 
         [HttpPost]
-        public ActionResult HaendlerkennzeichenForm(Fahrzeugdaten model)
+        public ActionResult HaendlerkennzeichenForm(Haendlerkennzeichendaten model)
         {
             if (ModelState.IsValid)
-            {
                 ViewModel.SetSonderzulassungHaendlerkennzeichen(model);
-            }
 
             return PartialView("Partial/HaendlerkennzeichenForm", model);
         }

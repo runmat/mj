@@ -159,8 +159,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public List<SelectItem> HaendlerKennzeichenTypen => new List<SelectItem>
         {
             new SelectItem {Key = "679".PadLeft(18, '0'), Text = "Händlerkennzeichen verlängern"},
-            // ToDo: Key "600" => Key = "???"
-            new SelectItem {Key = "600".PadLeft(18, '0'), Text = "Erneuerung der Kennzeichen"},
+            new SelectItem {Key = "574".PadLeft(18, '0'), Text = "Erneuerung der Kennzeichen"},
             new SelectItem {Key = "94".PadLeft(18, '0'), Text = "Fahrtenbuch (blau)"},
             new SelectItem {Key = "95".PadLeft(18, '0'), Text = "Nachweisheft - rote Kennzeichen (rosa)"},
         };
@@ -186,6 +185,16 @@ namespace CkgDomainLogic.Autohaus.Models
             Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();
             Versanddaten = new Versanddaten();
+        }
+
+        public Ersatzkennzeichendaten GetErsatzkennzeichendatenModel()
+        {
+            return new Ersatzkennzeichendaten { Zulassungsdatum = Zulassungsdaten.Zulassungsdatum, Fahrzeugdaten = Fahrzeugdaten };
+        }
+
+        public Haendlerkennzeichendaten GetHaendlerkennzeichendatenModel()
+        {
+            return new Haendlerkennzeichendaten { Zulassungsdatum = Zulassungsdaten.Zulassungsdatum, Fahrzeugdaten = Fahrzeugdaten };
         }
 
         [XmlIgnore, ScriptIgnore]
@@ -321,14 +330,14 @@ namespace CkgDomainLogic.Autohaus.Models
                                     new GeneralEntity
                                     {
                                         Title = "Ersatzkennzeichen",
-                                        Body = Fahrzeugdaten.GetSummaryStringErsatzkennzeichen()
+                                        Body = Fahrzeugdaten.GetSummaryStringErsatzkennzeichen(Zulassungsdaten.Zulassungsdatum)
                                     }),
                             (!keysToLower.Contains("haendlerkennzeichen")
                                     ? null :
                                     new GeneralEntity
                                     {
                                         Title = "Händlerkennzeichen",
-                                        Body = Fahrzeugdaten.GetSummaryStringHaendlerkennzeichen()
+                                        Body = Fahrzeugdaten.GetSummaryStringHaendlerkennzeichen(Zulassungsdaten.Zulassungsdatum)
                                     }),
 
                             (!keysToLower.Contains("halteradresse")

@@ -613,7 +613,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
             if (Zulassung.Zulassungsdaten.EvbNr.IsNullOrEmpty())
-                Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
+                Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -994,12 +994,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
         }
 
-        public void SetSonderzulassungErsatzkennzeichen(Fahrzeugdaten model)
+        public void SetSonderzulassungErsatzkennzeichen(Ersatzkennzeichendaten model)
         {
-            SetFahrzeugdaten(model);
+            Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
 
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ErsatzKennzeichenTyp;
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+            SetFahrzeugdaten(model.Fahrzeugdaten);
+
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.Fahrzeugdaten.ErsatzKennzeichenTyp;
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Fahrzeugdaten.Kennzeichen;
         }
 
         private void GetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
@@ -1009,13 +1011,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             model.Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen;
         }
 
-        public void SetSonderzulassungHaendlerkennzeichen(Fahrzeugdaten model)
+        public void SetSonderzulassungHaendlerkennzeichen(Haendlerkennzeichendaten model)
         {
-            SetFahrzeugdaten(model);
+            Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
 
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.HaendlerKennzeichenTyp;
-            Zulassung.Zulassungsdaten.ZulassungsartMenge = model.KennzeichenMenge;
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
+            SetFahrzeugdaten(model.Fahrzeugdaten);
+
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.Fahrzeugdaten.HaendlerKennzeichenTyp;
+            Zulassung.Zulassungsdaten.ZulassungsartMenge = model.Fahrzeugdaten.KennzeichenMenge;
+            Zulassung.Zulassungsdaten.Kennzeichen = model.Fahrzeugdaten.Kennzeichen;
         }
 
         public void SetFahrzeugdaten(Fahrzeugdaten model)
@@ -1501,6 +1505,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 AnzahlHinzuzufuegendeFahrzeuge = 1
                             }
                     };
+
+                if (!ModusAbmeldung)
+                    Zulassung.Zulassungsdaten.Zulassungsdatum = DateService.NaechsterWerktag();
             }
             else
             {
@@ -1709,7 +1716,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     }
                     else
                     {
-                        singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
+                        singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb.NotNullOrEmpty().ToUpper();
                         singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
@@ -1749,7 +1756,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
             
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusPartnerportal);
+            var formularartenExclude = (SonderzulassungsMode == SonderzulassungsMode.Ersatzkennzeichen ? new List<string> { "SEPA" } : null);
+
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusPartnerportal, formularartenExclude);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
