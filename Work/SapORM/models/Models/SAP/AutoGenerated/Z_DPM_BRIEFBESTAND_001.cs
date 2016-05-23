@@ -95,38 +95,71 @@ namespace SapORM.Models
 
 			public DateTime? REPLA_DATE { get; set; }
 
+			public string ZZHERSTELLER_SCH { get; set; }
+
+			public string ZZTYP_SCHL { get; set; }
+
+			public string ZZFABRIKNAME { get; set; }
+
+			public string ZZHANDELSNAME { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_DATEN
-				{
-					EQUNR = (string)row["EQUNR"],
-					CHASSIS_NUM = (string)row["CHASSIS_NUM"],
-					LICENSE_NUM = (string)row["LICENSE_NUM"],
-					LIZNR = (string)row["LIZNR"],
-					TIDNR = (string)row["TIDNR"],
-					ABCKZ = (string)row["ABCKZ"],
-					MSGRP = (string)row["MSGRP"],
-					STORT = (string)row["STORT"],
-					ZZVGRUND = (string)row["ZZVGRUND"],
-					DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
-					ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
-					EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
-					PICKDAT = string.IsNullOrEmpty(row["PICKDAT"].ToString()) ? null : (DateTime?)row["PICKDAT"],
-					ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
-					ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
-					SWERK = (string)row["SWERK"],
-					TEXT_STO = (string)row["TEXT_STO"],
-					ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
-					REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+				GT_DATEN o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_DATEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						EQUNR = (string)row["EQUNR"],
+						CHASSIS_NUM = (string)row["CHASSIS_NUM"],
+						LICENSE_NUM = (string)row["LICENSE_NUM"],
+						LIZNR = (string)row["LIZNR"],
+						TIDNR = (string)row["TIDNR"],
+						ABCKZ = (string)row["ABCKZ"],
+						MSGRP = (string)row["MSGRP"],
+						STORT = (string)row["STORT"],
+						ZZVGRUND = (string)row["ZZVGRUND"],
+						DATAB = string.IsNullOrEmpty(row["DATAB"].ToString()) ? null : (DateTime?)row["DATAB"],
+						ZZTMPDT = string.IsNullOrEmpty(row["ZZTMPDT"].ToString()) ? null : (DateTime?)row["ZZTMPDT"],
+						EXPIRY_DATE = string.IsNullOrEmpty(row["EXPIRY_DATE"].ToString()) ? null : (DateTime?)row["EXPIRY_DATE"],
+						PICKDAT = string.IsNullOrEmpty(row["PICKDAT"].ToString()) ? null : (DateTime?)row["PICKDAT"],
+						ZZREFERENZ1 = (string)row["ZZREFERENZ1"],
+						ZZREFERENZ2 = (string)row["ZZREFERENZ2"],
+						SWERK = (string)row["SWERK"],
+						TEXT_STO = (string)row["TEXT_STO"],
+						ZZZLDAT = string.IsNullOrEmpty(row["ZZZLDAT"].ToString()) ? null : (DateTime?)row["ZZZLDAT"],
+						REPLA_DATE = string.IsNullOrEmpty(row["REPLA_DATE"].ToString()) ? null : (DateTime?)row["REPLA_DATE"],
+						ZZHERSTELLER_SCH = (string)row["ZZHERSTELLER_SCH"],
+						ZZTYP_SCHL = (string)row["ZZTYP_SCHL"],
+						ZZFABRIKNAME = (string)row["ZZFABRIKNAME"],
+						ZZHANDELSNAME = (string)row["ZZHANDELSNAME"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_DATEN
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
