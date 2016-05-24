@@ -270,6 +270,7 @@
     <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
+    <Content Include="Images\shipping-icons\none.png" />
     <Content Include="_Themes\AH2015\images\checkbox-hover-halfcheck.png" />
     <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
