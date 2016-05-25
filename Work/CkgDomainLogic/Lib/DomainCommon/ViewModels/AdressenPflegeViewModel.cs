@@ -78,7 +78,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             get
             {
                 AdressenDataService.KundennrOverride = KundennrOverride;
-                return AdressenDataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList();
+                return AdressenDataService.Adressen.ToList();
             }
         }
 
@@ -197,6 +197,31 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void ValidateModel(Adresse model, bool insertMode, Action<Expression<Func<Adresse, object>>, string> addModelError)
         {
+        }
+
+        #endregion
+
+
+        #region 
+
+        public void SelectAdresse(string id, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var sl = Adressen.FirstOrDefault(f => f.KundenNr == id);
+            if (sl == null)
+                return;
+
+            sl.IsSelected = select;
+            allSelectionCount = Adressen.Count(c => c.IsSelected);
+        }
+
+        public void SelectAdressen(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {
+            Adressen.ToListOrEmptyList().ForEach(sl => (sl.IsSelected) = select);
+                      
+            allSelectionCount = Adressen.Count(c => c.IsSelected);
+            allCount = Adressen.Count;
+            allFoundCount = Adressen.Count;
         }
 
         #endregion

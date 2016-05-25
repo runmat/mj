@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.DomainCommon.ViewModels;
@@ -8,6 +9,7 @@ using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using CkgDomainLogic.Partner.ViewModels;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using Telerik.Web.Mvc;
 // ReSharper disable RedundantAnonymousTypePropertyName
 
@@ -82,6 +84,20 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
             return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
+
+
+        [HttpPost]
+        public JsonResult AdsressenAuswahlSelectionChanged(string id, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (id.IsNotNullOrEmpty())
+                ViewModel.SelectAdresse(id, isChecked, out allSelectionCount);
+            else                
+                ViewModel.SelectAdressen(isChecked, out allSelectionCount, out allCount, out allFoundCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
 
         [GridAction]
         public ActionResult PartnerAjaxBinding()

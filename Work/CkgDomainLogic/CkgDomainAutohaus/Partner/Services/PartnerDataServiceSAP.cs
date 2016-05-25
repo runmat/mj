@@ -43,7 +43,21 @@ namespace CkgDomainLogic.Partner.Services
             return (a1.KundenNr.ToSapKunnr() == a2.KundenNr.ToSapKunnr());
         }
 
-        override public List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
+
+        public override List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null,
+            bool kundennrMitgeben = true)
+        {           
+            List<Adresse> result = null;
+
+            AdressenKennung = "HALTER";
+            var list = LoadFromSapPrivate(internalKey, kennungOverride);
+            AdressenKennung = "KAEUFER";
+            result = list.Concat(LoadFromSapPrivate(internalKey, kennungOverride)).ToList();
+            AdressenKennung = "ZAHLERKFZSTEUER";
+            return result.Concat(LoadFromSapPrivate(internalKey, kennungOverride)).ToList();
+        }
+
+        List<Adresse> LoadFromSapPrivate(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
         {
             Z_AHP_READ_PARTNER.Init(SAP);
 

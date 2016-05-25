@@ -120,6 +120,8 @@ namespace CkgDomainLogic.DomainCommon.Models
         [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
         public List<string> KennungenToInsert { get; set; }
 
+        [GridHidden]
+        public bool IsSelected { get; set; }
 
         #region Bankdaten
 

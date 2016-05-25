@@ -23,6 +23,9 @@
     var _modelStateValid = 'false';
     var _partnerKennungLocalized = '';
 
+    $("#btnPartnerSuche").trigger("click");
+    $("#divPartnerSuche").hide(true);
+
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
     }
@@ -80,6 +83,9 @@
     function OnDataBound_GridAdressen() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridAdressen");
         LoadingHide();
     }
 
@@ -141,6 +147,68 @@
             });
 
         return false;
-
     }
+
+
+
+    function OnSelectionChange_GridAdressen(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "AdsressenAuswahlSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {                
+                var count = result.allSelectionCount;
+                //$("#count").text(count); // Popup Count
+                result.allSelected = result.allSelectionCount === count;
+                GridAdressen_MultiSelectUpdate(result.allSelectionCount, result.allSelected);               
+                if (count === 0) {
+                    $("#AdressenAuswahlCount").addClass('hide');
+                    return;
+                }                
+                $("#AdressenAuswahlCount").removeClass('hide');
+                $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridAdressen_OnAllSelectionChange(cb) {
+        var check = cb.is(':checked');
+        $.ajax({
+            type: "POST",
+            url: "AdsressenAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {               
+                //var count = result.allSelectionCount;
+                //$("#count").text(count); // Popup Count
+                result.allSelected = result.allSelectionCount === result.allCount;
+                GridAdressen_MultiSelectUpdate(result.allSelectionCount, result.allSelected);               
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridAdressen");
+            }
+        });
+    }
+
+    function GridAdressen_MultiSelectUpdate(count, allSelected) {
+        //alert(allSelected);
+        if (count == 0) {
+            $("#AdressenAuswahlCount").addClass('hide');
+            $("#checkAllRecords").attr("checked", allSelected);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }      
+
+        $("#AdressenAuswahlCount").removeClass('hide');
+        $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+        $(".checkedRecords").attr("checked", allSelected);
+        $.uniform.update($("#checkedRecords"));
+    }
+
+
 </script>
