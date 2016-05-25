@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Remarketing.Models;
 
 namespace CkgDomainLogic.Remarketing.Contracts
 {
-    public interface IBelastungsanzeigenDataService : ICkgGeneralDataService
+    public interface IBelastungsanzeigenDataService : IRemarketingDataService
     {
-        List<Vermieter> GetVermieter();
-
-        List<Hereinnahmecenter> GetHereinnahmecenter();
-
         List<Belastungsanzeige> GetBelastungsanzeigen(BelastungsanzeigenSelektor selektor);
 
         List<Gutachten> GetGutachten(string fahrgestellNr);

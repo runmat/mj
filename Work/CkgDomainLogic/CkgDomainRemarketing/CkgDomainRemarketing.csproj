@@ -61,23 +61,32 @@
   <ItemGroup>
     <Compile Include="Controllers\Belastungsanzeigen\RemarketingController.cs" />
     <Compile Include="Controllers\FehlendeDaten\RemarketingController.cs" />
+    <Compile Include="Controllers\GemeldeteVorschaeden\RemarketingController.cs" />
     <Compile Include="Controllers\RemarketingController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remarketing\Contracts\IGemeldeteVorschaedenDataService.cs" />
+    <Compile Include="Remarketing\Contracts\IRemarketingDataService.cs" />
     <Compile Include="Remarketing\Contracts\IFehlendeDatenDataService.cs" />
     <Compile Include="Remarketing\Contracts\IBelastungsanzeigenDataService.cs" />
     <Compile Include="Remarketing\Models\AppModelMappings.cs" />
+    <Compile Include="Remarketing\Models\DataModels\Schadensmeldung.cs" />
     <Compile Include="Remarketing\Models\DataModels\FehlendeDaten.cs" />
     <Compile Include="Remarketing\Models\DataModels\Belastungsanzeige.cs" />
     <Compile Include="Remarketing\Models\DataModels\Gutachten.cs" />
     <Compile Include="Remarketing\Models\DataModels\Hereinnahmecenter.cs" />
     <Compile Include="Remarketing\Models\DataModels\Vermieter.cs" />
+    <Compile Include="Remarketing\Models\UIModels\GemeldeteVorschaedenSelektor.cs" />
     <Compile Include="Remarketing\Models\UIModels\FehlendeDatenSelektor.cs" />
     <Compile Include="Remarketing\Models\UIModels\BelastungsanzeigenSelektor.cs" />
     <Compile Include="Remarketing\Models\UIModels\InfoAnzeigeModel.cs" />
     <Compile Include="Remarketing\Models\UIModels\SetBlockadeModel.cs" />
+    <Compile Include="Remarketing\Models\UIModels\EditVorschadenModel.cs" />
     <Compile Include="Remarketing\Models\UIModels\SetReklamationModel.cs" />
+    <Compile Include="Remarketing\Services\GemeldeteVorschaedenDataServiceSAP.cs" />
+    <Compile Include="Remarketing\Services\RemarketingDataServiceSAP.cs" />
     <Compile Include="Remarketing\Services\FehlendeDatenDataServiceSAP.cs" />
     <Compile Include="Remarketing\Services\BelastungsanzeigenDataServiceSAP.cs" />
+    <Compile Include="Remarketing\ViewModels\GemeldeteVorschaedenViewModel.cs" />
     <Compile Include="Remarketing\ViewModels\FehlendeDatenViewModel.cs" />
     <Compile Include="Remarketing\ViewModels\BelastungsanzeigenViewModel.cs" />
   </ItemGroup>

@@ -133,6 +133,31 @@ namespace CkgDomainLogic.Remarketing.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_REM_SCHADENSBERICHT_02.GT_OUT, Schadensmeldung> Z_DPM_REM_SCHADENSBERICHT_02_GT_OUT_To_Schadensmeldung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_SCHADENSBERICHT_02.GT_OUT, Schadensmeldung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.VermieterId = s.AVNR;
+                        d.FahrgestellNr = s.FAHRGNR;
+                        d.Kennzeichen = s.KENNZ;
+                        d.LaufendeNr = s.LFDNR;
+                        d.Schadensbetrag = s.PREIS;
+                        d.Schadensdatum = s.SCHAD_DAT;
+                        d.Beschreibung = s.BESCHREIBUNG;
+                        d.InventarNr = s.INVENTAR;
+                        d.Hereinnahmecenter = s.HCNAME;
+                        d.HcEingang = s.HCEINGDAT;
+                        d.ModellBezeichnung = s.MODELLGRP;
+                        d.Modell = s.MODELL;
+                    }
+                ));
+            }
+        }
+
         #endregion
 
 
@@ -166,6 +191,26 @@ namespace CkgDomainLogic.Remarketing.Models
                         d.KENNZ = s.Kennzeichen;
                         d.STATU = s.Status;
                         d.BLOCKTEXT = s.BlockadeText;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_REM_AEND_SCHADEN_01.GT_IN, EditVorschadenModel> Z_DPM_REM_AEND_SCHADEN_01_GT_IN_From_EditVorschadenModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_REM_AEND_SCHADEN_01.GT_IN, EditVorschadenModel>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.FAHRGNR = s.FahrgestellNr;
+                        d.KENNZ = s.Kennzeichen;
+                        d.LFDNR = s.LaufendeNr;
+                        d.PREIS = s.Schadensbetrag.ToString();
+                        d.SCHAD_DAT = s.Schadensdatum;
+                        d.BESCHREIBUNG = s.Beschreibung;
                     }
                 ));
             }

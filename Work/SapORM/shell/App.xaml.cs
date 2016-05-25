@@ -469,6 +469,8 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_READ_BLOCKADETEXT_02");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_UPD_STATNEU_BELA_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_UPD_STAT_BELAST_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_SCHADENSBERICHT_02");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_REM_AEND_SCHADEN_01");
 
             #endregion
 
