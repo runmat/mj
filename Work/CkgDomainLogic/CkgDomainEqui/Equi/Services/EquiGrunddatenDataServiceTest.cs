@@ -11,6 +11,21 @@ namespace CkgDomainLogic.Equi.Services
 {
     public class EquiGrunddatenDataServiceTest : CkgGeneralDataServiceTest, IEquiGrunddatenDataService
     {
+        public List<SelectItem> GetZielorte()
+        {
+            return new List<SelectItem>();
+        }
+
+        public List<SelectItem> GetStandorte()
+        {
+            return new List<SelectItem>();
+        }
+
+        public List<SelectItem> GetBetriebsnummern()
+        {
+            return new List<SelectItem>();
+        }
+
         public List<EquiGrunddaten> GetEquis(EquiGrunddatenSelektor suchparameter)
         {
             var list = XmlService.XmlDeserializeFromFile<List<EquiGrunddaten>>(Path.Combine(AppSettings.DataPath, @"GrunddatenEquis_02.xml"));
