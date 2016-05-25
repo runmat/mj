@@ -26,7 +26,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 //new VersandDienstleister { Id = "UPS", Name = "UPS", LogoFileName = "ups.png", LogoFileNameExpress = "ups.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
                 //new VersandDienstleister { Id = "TNT", Name = "TNT", LogoFileName = "tnt.png", LogoFileNameExpress = "tnt-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = false },
                 new VersandDienstleister { Id = "DHL", Name = "DHL", LogoFileName = "dhl.png", LogoFileNameExpress = "dhl-express.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = true },
-                new VersandDienstleister { Id = "NONE", Name = "NONE", LogoFileName = "none.png", LogoFileNameExpress = "none.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = true }
+                new VersandDienstleister { Id = "NONE", Name = "", LogoFileName = "none.png", LogoFileNameExpress = "none.png", VersandOptionen = defaultVersandOptionen, Verfuegbar = true }
             };
         }
 
