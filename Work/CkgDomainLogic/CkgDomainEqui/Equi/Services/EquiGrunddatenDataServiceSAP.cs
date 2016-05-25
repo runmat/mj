@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Equi.Models.AppModelMappings;
@@ -19,10 +17,30 @@ namespace CkgDomainLogic.Equi.Services
         {
         }
 
+        public List<SelectItem> GetZielorte()
+        {
+            return GetAuftr006Data("ZIELORT");
+        }
+
+        public List<SelectItem> GetStandorte()
+        {
+            return GetAuftr006Data("STANDORT");
+        }
+
+        public List<SelectItem> GetBetriebsnummern()
+        {
+            return GetAuftr006Data("BETRIEBNR");
+        }
+
+        private List<SelectItem> GetAuftr006Data(string kennung)
+        {
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR, I_KENNUNG", LogonContext.KundenNr.ToSapKunnr(), kennung);
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_To_SelectItem.Copy(Z_DPM_READ_AUFTR_006.GT_OUT.GetExportListWithExecute(SAP)).ToList();
+        }
+
         public List<EquiGrunddaten> GetEquis(EquiGrunddatenSelektor suchparameter)
         {
-            List<EquiGrunddaten> liste;
-
             Z_DPM_CD_READ_GRUEQUIDAT_02.Init(SAP, "I_AG", LogonContext.KundenNr.PadLeft(10, '0'));
 
             if (suchparameter.ErstzulassungsDatumRange.IsSelected)
@@ -53,19 +71,19 @@ namespace CkgDomainLogic.Equi.Services
             // Standorte
             if (suchparameter.Standorte.AnyAndNotNull())
             {
-                var standortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_To_Standort.CopyBack(suchparameter.Standorte.Select(e => new Standort { Id = e })).ToList();
+                var standortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_From_SelectItem.CopyBack(suchparameter.Standorte.Select(e => new SelectItem { Key = e })).ToList();
                 SAP.ApplyImport(standortList);
             }
             // Betriebe
             if (suchparameter.Betriebsnummern.AnyAndNotNull())
             {
-                var betriebList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_BETRIEB_To_Betriebsnummer.CopyBack(suchparameter.Betriebsnummern.Select(e => new Betriebsnummer { Id = e })).ToList();
+                var betriebList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_BETRIEB_From_SelectItem.CopyBack(suchparameter.Betriebsnummern.Select(e => new SelectItem { Key = e })).ToList();
                 SAP.ApplyImport(betriebList);
             }
             // Zielorte
             if (suchparameter.Zielorte.AnyAndNotNull())
             {
-                var zielortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_ZIELORT_To_Zielort.CopyBack(suchparameter.Zielorte.Select(e => new Zielort { Id = e })).ToList();
+                var zielortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_ZIELORT_From_SelectItem.CopyBack(suchparameter.Zielorte.Select(e => new SelectItem { Key = e })).ToList();
                 SAP.ApplyImport(zielortList);
             }
 
@@ -87,11 +105,7 @@ namespace CkgDomainLogic.Equi.Services
             var sapItemsEquis = Z_DPM_CD_READ_GRUEQUIDAT_02.GT_OUT.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_OUT_To_GrunddatenEqui.Copy(sapItemsEquis).OrderBy(w => w.Fahrgestellnummer).ToList();
 
-            liste = webItemsEquis;
-
-            //XmlService.XmlSerializeToFile(liste, Path.Combine(AppSettings.DataPath, @"GrunddatenEquis_02.xml"));
-
-            return liste;
+            return webItemsEquis;
         }
     }
 }
