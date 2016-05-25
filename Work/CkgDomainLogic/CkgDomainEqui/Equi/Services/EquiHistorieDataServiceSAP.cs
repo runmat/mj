@@ -46,7 +46,7 @@ namespace CkgDomainLogic.Equi.Services
         {
             Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR, I_ZZFAHRG", LogonContext.KundenNr.ToSapKunnr(), fin);
 
-            var sapItems = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithInitExecute(SAP);
+            var sapItems = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithExecute(SAP);
             if (sapItems.None())
                 return new EquiHistorie();
 
@@ -119,7 +119,7 @@ namespace CkgDomainLogic.Equi.Services
         {
             Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
 
-            var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportListWithInitExecute(SAP);
+            var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportListWithExecute(SAP);
             if (sapItems.None())
                 return new EquiHistorieVermieter();
 
