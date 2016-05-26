@@ -238,27 +238,18 @@ Partial Public Class AutUserUpload
 
         Dim TempTable As DataTable = CType(Session("UploadTable"), DataTable)
 
-        Dim blnTestUser As Boolean
         Dim _User As User
 
         lblError.Text = ""
 
         For Each TempRow As DataRow In TempTable.Rows
-            'Wert "ja" unabhängig von Groß-/Kleinschreibung erfassen
-            blnTestUser = False
-            If TempRow(UploadExcelColumns.TestUser) IsNot Nothing Then
-                If TempRow(UploadExcelColumns.TestUser).ToString().ToUpper() = "JA" Then
-                    blnTestUser = True
-                End If
-            End If
-
             _User = New User(-1, _
-                              TempRow(UploadExcelColumns.Username), _
-                              TempRow(UploadExcelColumns.Reference), _
-                              TempRow(UploadExcelColumns.Reference2), _
-                              TempRow(UploadExcelColumns.Reference3), _
+                              TempRow(UploadExcelColumns.Username).ToString(), _
+                              TempRow(UploadExcelColumns.Reference).ToString(), _
+                              TempRow(UploadExcelColumns.Reference2).ToString(), _
+                              TempRow(UploadExcelColumns.Reference3).ToString(), _
                               (RechtWarenkorbNurEigene AndAlso TempRow(14).ToString.ToUpper() = "JA"), _
-                              blnTestUser, _
+                              (TempRow(UploadExcelColumns.TestUser).ToString().ToUpper() = "JA"), _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _
                               False, _
@@ -269,12 +260,12 @@ Partial Public Class AutUserUpload
                               0, _
                               m_User.UserName, _
                               chkBenutzerFreigeben.Checked, _
-                              TempRow(UploadExcelColumns.Firstname), _
-                              TempRow(UploadExcelColumns.LastName), _
-                              TempRow(UploadExcelColumns.Title), _
-                              TempRow(UploadExcelColumns.Store), _
+                              TempRow(UploadExcelColumns.Firstname).ToString(), _
+                              TempRow(UploadExcelColumns.LastName).ToString(), _
+                              TempRow(UploadExcelColumns.Title).ToString(), _
+                              TempRow(UploadExcelColumns.Store).ToString(), _
                               False, _
-                              IIf(TempRow(UploadExcelColumns.ValidFrom) Is DBNull.Value, String.Empty, TempRow(UploadExcelColumns.ValidFrom)), _
+                              TempRow(UploadExcelColumns.ValidFrom).ToString(), _
                               "")
 
             _User.Email = TempRow(UploadExcelColumns.EMailAdress).ToString()
@@ -283,7 +274,7 @@ Partial Public Class AutUserUpload
                 _User.UrlRemoteLoginKey = HttpUtility.UrlEncode(Guid.NewGuid().ToString)
             End If
 
-            Dim intGroupID As Integer = GetGroupID(TempRow(UploadExcelColumns.Groupname))
+            Dim intGroupID As Integer = GetGroupID(TempRow(UploadExcelColumns.Groupname).ToString())
 
             If intGroupID > 0 Then
                 'Gruppe ausgewählt
@@ -305,7 +296,7 @@ Partial Public Class AutUserUpload
                 Exit Sub
             End If
 
-            Dim intOrganizationID As Integer = GetOrganizationID(TempRow(UploadExcelColumns.Organization))
+            Dim intOrganizationID As Integer = GetOrganizationID(TempRow(UploadExcelColumns.Organization).ToString())
 
             If _User.Save() Then
                 _User.SetLastLogin(Now)
