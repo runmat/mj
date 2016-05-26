@@ -1856,6 +1856,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten fahrzeugdatenModel)
         {
+            if (ZulassungsAbmeldearten.None())
+                addModelError(string.Empty, string.Format("{0}: {1}", Localize.Error, Localize.NoRegistrationTypesFound));
+
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 var zulkreis = $"{fahrzeugdatenModel.Zulassungskreis}{"-"}";
