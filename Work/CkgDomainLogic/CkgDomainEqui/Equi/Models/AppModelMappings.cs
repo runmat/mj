@@ -38,28 +38,6 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
-        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_ZIELORT, Zielort> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_ZIELORT_To_Zielort
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_ZIELORT, Zielort>(
-                    new Dictionary<string, string> {
-                        { "ZIELORT", "Id" },
-                    }));
-            }
-        }
-
-        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_BETRIEB, Betriebsnummer> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_BETRIEB_To_Betriebsnummer
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_BETRIEB, Betriebsnummer>(
-                    new Dictionary<string, string> {
-                        { "BETRIEB", "Id" },
-                    }));
-            }
-        }
-
         static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_FIN_17, Fahrgestellnummer> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_FIN_17_To_Fahrgestellnummer
         {
             get
@@ -78,17 +56,6 @@ namespace CkgDomainLogic.Equi.Models
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_FIN_10, Fahrgestellnummer10>(
                     new Dictionary<string, string> {
                         { "FIN_10", "FIN" },
-                    }));
-            }
-        }
-
-        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_STORT, Standort> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_To_Standort
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_STORT, Standort>(
-                    new Dictionary<string, string> {
-                        { "STORT", "Id" },
                     }));
             }
         }
@@ -846,7 +813,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.ErsatzteilKennung = s.ERSKZ;
                         d.ErsatzteilKennungText = s.ETEXT;
                         d.Status = s.STATUS_TEXT;
-                        d.EntgueltigVersandt = !(d.Status.NotNullOrEmpty().ToUpper().Contains("LAGERND") || d.Status.NotNullOrEmpty().ToUpper().Contains("TEMPORÄR")); ;
+                        d.EntgueltigVersandt = !(d.Status.NotNullOrEmpty().ToUpper().Contains("LAGERND") || d.Status.NotNullOrEmpty().ToUpper().Contains("TEMPORÄR"));
                         d.IstLagernd = (d.ErsatzteilKennung.NotNullOrEmpty().ToUpper() == "L");
                     }));
             }
@@ -926,6 +893,48 @@ namespace CkgDomainLogic.Equi.Models
                         d.VERS_ID = s.VersandID;
                         d.ZZMANSP = (s.Mahnsperre ? "X" : "");
                         d.ZZMANSP_DATBI = s.MahnsperreBis;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_ZIELORT, SelectItem> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_ZIELORT_From_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_ZIELORT, SelectItem>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.ZIELORT = s.Key;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_STORT, SelectItem> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_From_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_STORT, SelectItem>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.STORT = s.Key;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_BETRIEB, SelectItem> Z_DPM_CD_READ_GRUEQUIDAT_02_GT_BETRIEB_From_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_BETRIEB, SelectItem>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.BETRIEB = s.Key;
                     }));
             }
         }

@@ -191,7 +191,6 @@
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />
     <Compile Include="Equi\Models\UIModels\EquiGrunddatenSelektor.cs" />
-    <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
@@ -298,8 +297,6 @@
     <Compile Include="Fahrzeuge\ViewModels\Zb2BestandSecurityFleetViewModel.cs" />
     <Compile Include="General\Models\Fahrgestellnummer.cs" />
     <Compile Include="General\Models\Fahrgestellnummer10.cs" />
-    <Compile Include="Equi\Models\DataModels\Standort.cs" />
-    <Compile Include="Equi\Models\DataModels\Zielort.cs" />
     <Compile Include="Equi\Services\EquiHistorieDataServiceSAP.cs" />
     <Compile Include="Equi\Services\EquiGrunddatenDataServiceSAP.cs" />
     <Compile Include="Equi\Services\EquiGrunddatenDataServiceTest.cs" />
