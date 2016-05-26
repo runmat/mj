@@ -3207,8 +3207,6 @@
     <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\SetBlockForm.cshtml" />
     <Content Include="Views\Remarketing\GemeldeteVorschaeden.cshtml" />
     <Content Include="Views\Remarketing\GemeldeteVorschaeden\Grid.cshtml" />
-    <Content Include="Views\Remarketing\GemeldeteVorschaeden\Partial\InfoForm.cshtml" />
-    <Content Include="Views\Remarketing\GemeldeteVorschaeden\Partial\SetBlockForm.cshtml" />
     <Content Include="Views\Remarketing\GemeldeteVorschaeden\Partial\EditVorschadenForm.cshtml" />
     <Content Include="Views\Remarketing\GemeldeteVorschaeden\Suche.cshtml" />
     <None Include="Web.config">

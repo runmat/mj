@@ -2,23 +2,27 @@
 
 <div id="divEditVorschaden" class="margin-top-20">
     @using (Ajax.BeginForm("EditVorschadenForm", "Remarketing", null,
-        new MvcAjaxOptions { UpdateTargetId = "divEditVorschaden", OnComplete = "CloseVorschadenEdit();" },
+        new MvcAjaxOptions { UpdateTargetId = "divEditVorschaden", OnComplete = "CloseVorschadenEdit(false);" },
         new { @class = "form-horizontal", id = "AjaxFormEditVorschaden" }))
     {
         @Html.FormValidationSummary()
 
-        
+
+        @Html.HiddenFor(m => m.LaufendeNr)
         @Html.HiddenFor(m => m.FahrgestellNr)
-        
-        <h4 class="form-section">@Localize.PleaseEnterADescriptionHere</h4>
-        
-        @Html.FormTextAreaFor(m => m.Reklamationstext, new { @class = "m-wrap" })
-        
-        @Html.FormTextBoxFor(m => m.Sachbearbeiter, new { @class = "m-wrap" })
+        @Html.HiddenFor(m => m.Kennzeichen)
 
-        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.LaufendeNr, new { @class = "m-wrap" })
 
-        @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap" })
+        @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap" })
+
+        @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap" })
+
+        @Html.FormTextAreaFor(m => m.Beschreibung, new { @class = "m-wrap" })
+        
+        @Html.FormTextBoxFor(m => m.Schadensbetrag, new { @class = "m-wrap" })
+
+        @Html.FormDatePickerFor(m => m.Schadensdatum, new { @class = "m-wrap" })
         
         <div class="space20"></div>
         
@@ -26,8 +30,8 @@
         @Html.FormRequiredFieldsSummary()
         
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Apply</button>
-            <button type="button" class="btn" onclick="CloseBelastungsanzeigeDetail(true);">@Localize.Cancel</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseVorschadenEdit(true);">@Localize.Cancel</button>
         </div>
 
         <script type="text/javascript">

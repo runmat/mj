@@ -4,7 +4,7 @@
 <div id="divGemeldeteVorschaedenSuche">
     @using (Ajax.BeginForm("LoadGemeldeteVorschaeden", "Remarketing", null,
         new MvcAjaxOptions { UpdateTargetId = "divGemeldeteVorschaedenSuche", OnComplete = "ShowGemeldeteVorschaeden();" },
-        new { @class = "form-horizontal label-width-175", id = "AjaxFormGemeldeteVorschaeden" }))
+        new { @class = "form-horizontal", id = "AjaxFormGemeldeteVorschaeden" }))
     {    
         @Html.FormValidationSummary()
 
@@ -53,7 +53,7 @@
             type: "POST",
             url: "ShowGemeldeteVorschaeden",
             loadingShow: true,
-            success: function (result) {
+            success: function(result) {
                 SearchResultsTryHide();
 
                 if (_modelStateValid)

@@ -134,12 +134,18 @@
             removalDelay: 300,
             mainClass: 'my-mfp-zoom-in'
         });
+
+        FormPreparePrivateAjax();
     }
 
-    function CloseVorschadenEdit() {
+    function CloseVorschadenEdit(ignoreModelState) {
         FormPreparePrivateAjax();
 
-        if (_modelStateValid) {
+        if (_modelStateValid || ignoreModelState) {
+            if (!ignoreModelState) {
+                SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+            }
+
             $(".mfp-close").trigger("click");
             GridRefresh();
         }

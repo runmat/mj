@@ -141,7 +141,7 @@ namespace CkgDomainLogic.Remarketing.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.VermieterId = s.AVNR;
+                        d.Vermieter = s.AVNR;
                         d.FahrgestellNr = s.FAHRGNR;
                         d.Kennzeichen = s.KENNZ;
                         d.LaufendeNr = s.LFDNR;

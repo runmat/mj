@@ -42,11 +42,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditVorschaden(string fahrgestellNr, string kennzeichem, string laufendeNr)
+        public ActionResult EditVorschaden(string fahrgestellNr, string kennzeichen, string laufendeNr)
         {
-            var model = GemeldeteVorschaedenViewModel.GetEditVorschadenModel(fahrgestellNr, kennzeichem, laufendeNr);
+            var model = GemeldeteVorschaedenViewModel.GetEditVorschadenModel(fahrgestellNr, kennzeichen, laufendeNr);
 
-            return PartialView("GemeldeteVorschaeden/Partial/SetReklamationForm", model);
+            return PartialView("GemeldeteVorschaeden/Partial/EditVorschadenForm", model);
         }
 
         [HttpPost]

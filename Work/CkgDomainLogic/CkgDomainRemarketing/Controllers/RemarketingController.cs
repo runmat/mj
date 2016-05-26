@@ -17,12 +17,14 @@ namespace ServicesMvc.Controllers
             ILogonContextDataService logonContext, 
             IFehlendeDatenDataService fehlendeDatenDataService,
             IBelastungsanzeigenDataService belastungsanzeigenDataService,
-            IEasyAccessDataService easyAccessDataService
+            IEasyAccessDataService easyAccessDataService,
+            IGemeldeteVorschaedenDataService gemeldeteVorschaedenDataService
             )
             : base(appSettings, logonContext)
         {
             InitViewModel(FehlendeDatenViewModel, appSettings, logonContext, fehlendeDatenDataService);
             InitViewModel(BelastungsanzeigenViewModel, appSettings, logonContext, belastungsanzeigenDataService, easyAccessDataService);
+            InitViewModel(GemeldeteVorschaedenViewModel, appSettings, logonContext, gemeldeteVorschaedenDataService);
 
             InitModelStatics();
         }
@@ -31,6 +33,7 @@ namespace ServicesMvc.Controllers
         {
             FehlendeDatenSelektor.GetViewModel = GetViewModel<FehlendeDatenViewModel>;
             BelastungsanzeigenSelektor.GetViewModel = GetViewModel<BelastungsanzeigenViewModel>;
+            GemeldeteVorschaedenSelektor.GetViewModel = GetViewModel<GemeldeteVorschaedenViewModel>;
         }
 
         public ActionResult Index(string un, string appID)

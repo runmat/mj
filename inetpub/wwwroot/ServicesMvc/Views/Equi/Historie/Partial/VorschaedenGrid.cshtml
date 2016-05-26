@@ -10,7 +10,7 @@
         columns.XBound(c => c.FahrgestellNr);
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.Erstellungsdatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.Preis);
+        columns.XBound(c => c.Preis).Format("{0:c}");
         columns.XBound(c => c.Schadensdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Beschreibung);
         columns.XBound(c => c.DatumUpdate).Format("{0:dd.MM.yyyy}");

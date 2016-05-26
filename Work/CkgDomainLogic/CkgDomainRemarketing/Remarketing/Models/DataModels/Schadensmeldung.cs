@@ -7,13 +7,7 @@ namespace CkgDomainLogic.Remarketing.Models
     public class Schadensmeldung
     {
         [LocalizedDisplay(LocalizeConstants.CarRentalCompany)]
-        public string VermieterId { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CarRentalCompany)]
-        public string VermieterName { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CarRentalCompany)]
-        public string Vermieter { get { return string.Format("{0} {1}", VermieterId, VermieterName); } }
+        public string Vermieter { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }

@@ -13,7 +13,7 @@
     {
         columns.XBound(c => c.Aktion).Filterable(false).Sortable(false).Groupable(false).Visible(Model.IsAv).Title("")
             .ClientTemplate(
-                "<button onclick='EditVorschaden(\"<#= data.FahrgestellNr #>\",\"<#= data.Kennzeichen #>\",\"<#= data.LaufendeNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditNotification + "' data-placement='right'><i class='halflings-icon remove white'></i></button>"
+                "<button onclick='EditVorschaden(\"<#= data.FahrgestellNr #>\",\"<#= data.Kennzeichen #>\",\"<#= data.LaufendeNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditNotification + "' data-placement='right'><i class='halflings-icon pencil white'></i></button>"
             );
 
         columns.XBound(c => c.LaufendeNr);
@@ -25,7 +25,7 @@
 
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.InventarNr);
-        columns.XBound(c => c.VermieterName);
+        columns.XBound(c => c.Vermieter);
         columns.XBound(c => c.Schadensbetrag).Format("{0:c}");
         columns.XBound(c => c.Schadensdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Beschreibung);

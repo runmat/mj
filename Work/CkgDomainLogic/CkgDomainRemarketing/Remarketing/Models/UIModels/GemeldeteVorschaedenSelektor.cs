@@ -15,7 +15,7 @@ namespace CkgDomainLogic.Remarketing.Models
     public class GemeldeteVorschaedenSelektor : Store, IValidatableObject
     {
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
-        public static Func<BelastungsanzeigenViewModel> GetViewModel { get; set; }
+        public static Func<GemeldeteVorschaedenViewModel> GetViewModel { get; set; }
 
         private string _fahrgestellNr;
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
@@ -45,7 +45,7 @@ namespace CkgDomainLogic.Remarketing.Models
             get { return (GetViewModel == null ? new List<Vermieter>() : GetViewModel().Vermieter).CopyAndInsertAtTop(new Vermieter { VermieterId = "", VermieterName = Localize.DropdownDefaultOptionAll }); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]
+        [LocalizedDisplay(LocalizeConstants.DamageDate)]
         public DateRange SchadensdatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.ContractYear)]

@@ -52,8 +52,9 @@ namespace CkgDomainLogic.Remarketing.Services
             SAP.ApplyImport(sapList);
 
             var errItems = Z_DPM_REM_AEND_SCHADEN_01.GT_ERR.GetExportListWithExecute(SAP);
+            var errText = (errItems.Any() ? errItems.First().ZBEM : "");
 
-            return (SAP.ResultCode != 0 ? SAP.ResultMessage : (errItems.Any() ? errItems.First().ZBEM : ""));
+            return (SAP.ResultCode != 0 ? SAP.ResultMessage + " " + errText : errText);
         }
     }
 }
