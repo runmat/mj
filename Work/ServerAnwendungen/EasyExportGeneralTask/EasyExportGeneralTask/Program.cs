@@ -45,6 +45,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "WKDA_Selbstabmelder" };
             //args = new[] { "StarCar2" };
             //args = new[] { "WKDA_AT" };
+            //args = new[] { "WKDA_AT_Selbstabmelder" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!string.IsNullOrEmpty(args[0])))
@@ -319,6 +320,14 @@ namespace EasyExportGeneralTask
                     #region WKDA_AT
 
                     QueryWKDA(false, true);
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.WKDA_AT_Selbstabmelder:
+                    #region WKDA_AT_Selbstabmelder
+
+                    QueryWKDA(true, true);
 
                     #endregion
                     break;
