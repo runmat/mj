@@ -1,5 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -7,10 +6,7 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Models;
-using System.Web.Mvc;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -23,6 +19,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get { return PropertyCacheGet(() => new EquiGrunddatenSelektor { Standorte = new List<string> {"1601"}}); } set { PropertyCacheSet(value); }
         }
+
+        [XmlIgnore]
+        public List<SelectItem> Zielorte { get { return PropertyCacheGet(() => DataService.GetZielorte()); } }
+
+        [XmlIgnore]
+        public List<SelectItem> Standorte { get { return PropertyCacheGet(() => DataService.GetStandorte()); } }
+
+        [XmlIgnore]
+        public List<SelectItem> Betriebsnummern { get { return PropertyCacheGet(() => DataService.GetBetriebsnummern()); } }
 
         [XmlIgnore]
         public List<EquiGrunddaten> GrunddatenEquis

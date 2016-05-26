@@ -57,6 +57,7 @@ namespace ServicesMvc.Controllers
             FahrzeugAnforderung.GetViewModel = GetViewModel<EquiHistorieVermieterViewModel>;
             EquiHistorie.GetViewModel = GetViewModel<EquiHistorieViewModel>;
             EquiHistorieInfo.GetViewModel = GetViewModel<EquiHistorieViewModel>;
+            EquiGrunddatenSelektor.GetViewModel = GetViewModel<EquiGrunddatenViewModel>;
         }
 
         public ActionResult Index()
