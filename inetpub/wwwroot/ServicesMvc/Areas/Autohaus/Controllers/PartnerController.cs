@@ -80,8 +80,21 @@ namespace ServicesMvc.Autohaus.Controllers
 
         [HttpPost]
         public ActionResult ShowPartnerGrid()
-        {
+        {            
             ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
+            return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult ShowAdressenGrid()
+        {
+            // TODO -> offensichtlich dürfen nur Halter ein Fzg. zulassen, das muss dann demnächst aus dem BAPI kommen
+            // PartnerKennung -> in das Model
+            ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
+
+            ViewModel.LoadPartners();
+
             return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
 
