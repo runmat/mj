@@ -1854,10 +1854,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten fahrzeugdatenModel)
+        public void ValidateZulassungsdatenForm(ModelStateDictionary modelState, Zulassungsdaten fahrzeugdatenModel)
         {
-            if (ZulassungsAbmeldearten.None())
-                addModelError(string.Empty, string.Format("{0}: {1}", Localize.Error, Localize.NoRegistrationTypesFound));
+            if (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen && fahrzeugdatenModel.MindesthaltedauerDays == 0)            
+                modelState["MindesthaltedauerDays"].Errors.Clear();
+                                    
+            if (ZulassungsVorgangsarten.None())
+                modelState.AddModelError(string.Empty, string.Format("{0}: {1}", Localize.Error, Localize.NoRegistrationTypesFound));
 
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
@@ -1874,7 +1877,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (tmpFinList.Any())
                 {
-                    addModelError(string.Empty, Localize.PleaseEnterOnlyPersonalisedLicenseOrReservationInformation);
+                    modelState.AddModelError(string.Empty, Localize.PleaseEnterOnlyPersonalisedLicenseOrReservationInformation);
                 }
                 else
                 {
@@ -1893,14 +1896,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
                 if (FinList.None(x => x.IsSchnellabmeldungSpeicherrelevant))
-                    addModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
+                    modelState.AddModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
-                    addModelError(string.Empty,
+                    modelState.AddModelError(string.Empty,
                         $"{Localize.LicenseNo} {Localize.Required.NotNullOrEmpty().ToLower()}");
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
-                    addModelError(string.Empty,
+                    modelState.AddModelError(string.Empty,
                         $"{Localize.CarOwner} {Localize.Required.NotNullOrEmpty().ToLower()}");
 
                 var regexTuevAu = new Regex("^(0[1-9]|1[0-2])[0-9]{2}$");
@@ -1909,7 +1912,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         x =>
                             x.IsSchnellabmeldungSpeicherrelevant && x.TuevAu.IsNotNullOrEmpty() &&
                             !regexTuevAu.IsMatch(x.TuevAu)))
-                    addModelError(string.Empty,
+                    modelState.AddModelError(string.Empty,
                         $"{Localize.TuevAu} {Localize.Invalid.NotNullOrEmpty().ToLower()} ({Localize.Format}: {Localize.DateFormat_MMJJ})");
             }
         }

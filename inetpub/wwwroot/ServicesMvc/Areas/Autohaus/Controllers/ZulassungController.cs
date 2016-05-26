@@ -700,7 +700,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 return PartialView("Partial/ZulassungsdatenForm", model);
             }
 
-            ViewModel.ValidateZulassungsdatenForm(ModelState.AddModelError, model);
+            ViewModel.ValidateZulassungsdatenForm(ModelState, model);
 
             if (ModelState.IsValid)
                 ViewModel.SetZulassungsdaten(model, ModelState);
