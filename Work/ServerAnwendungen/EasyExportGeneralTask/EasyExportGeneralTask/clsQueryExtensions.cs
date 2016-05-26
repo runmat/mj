@@ -289,6 +289,8 @@ namespace EasyExportGeneralTask
 
                         case AblaufTyp.WKDA:
                         case AblaufTyp.WKDA_Selbstabmelder:
+                        case AblaufTyp.WKDA_AT:
+                        case AblaufTyp.WKDA_AT_Selbstabmelder:
                             strFahrgestellnummer = row["FIN"].ToString();
                             Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT dataObjWkda = null;
                             if (additionalData != null)
