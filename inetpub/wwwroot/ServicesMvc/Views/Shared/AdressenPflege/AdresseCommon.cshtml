@@ -158,6 +158,21 @@
         });
     }
 
+    
+    function AdressenLoeschen() {
+        
+        $.ajax({
+            type: "POST",
+            url: "AdressenLoeschen",
+            data: { },            
+            success: function (result) {
+                TryAddressGridRefresh();
+            }
+        });
+
+
+    }
+
     function OnSelectionChange_GridAdresse(cb) {
 
         Grid_FormatMultiRowSelected(cb);
@@ -171,10 +186,12 @@
                 var count = result.allSelectionCount;
                 if (count === 0) {
                     $("#AdressenAuswahlCount").addClass('hide');
+                    $("#btnAddresseLoeschen").addClass('hide');
                     return;
                 }
+                $("#btnAddresseLoeschen").removeClass('hide');
                 $("#AdressenAuswahlCount").removeClass('hide');
-                $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+                $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
             }
         });
     }
@@ -202,14 +219,15 @@
         var cb = $("input[name=checkedRecords]");
 
         if (count == 0) {
+            $("#btnAddresseLoeschen").addClass('hide');
             $("#AdressenAuswahlCount").addClass('hide');
             $("#checkAllRecords").attr("checked", allSelected);
             cb.parents().removeClass("checked");
             return;
         }
-
-        $("#AdressenAuswahlCount").removeClass('hide');
-        $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+        
+        $("#btnAddresseLoeschen").removeClass('hide');
+        $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
         $(".checkedRecords").attr("checked", allSelected);
 
         cb.parents().addClass("checked");

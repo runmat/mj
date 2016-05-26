@@ -85,6 +85,14 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
 
+        public ActionResult AdressenLoeschen()
+        {
+            ViewModel.DeleteItems(ModelState);
+            ViewModel.LoadPartners(); // TODO -> aus dem Model entfernen...
+            return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
+        }
+        
+
 
         [HttpPost]
         public ActionResult ShowAdressenGrid()

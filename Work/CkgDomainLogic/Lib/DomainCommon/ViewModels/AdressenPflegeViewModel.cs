@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
@@ -167,6 +168,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                     Land = "DE",
                 };
         }
+
+        public void DeleteItems(ModelStateDictionary modelState)
+        {            
+            var adrList = Adressen.Where(s => s.IsSelected).ToList();
+
+            AdressenDataService.SaveAdressen(adrList, modelState.AddModelError);
+            
+            // TODO -> wieso geht das nicht?
+            //foreach (var adresse in adrList)            
+            //    Adressen.RemoveAll(a => a.KundenNr == adresse.KundenNr);                                   
+        } 
 
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {

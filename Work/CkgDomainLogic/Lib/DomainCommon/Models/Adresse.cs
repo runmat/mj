@@ -16,6 +16,7 @@ namespace CkgDomainLogic.DomainCommon.Models
 {
     public class Adresse : CommonUiModel, IAddressStreetHouseNo, IValidatableObject
     {
+
         [SelectListKey]
         [ModelMappingCompareIgnore]
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
@@ -122,6 +123,21 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         [GridHidden]
         public bool IsSelected { get; set; }
+           
+        [GridHidden]
+        public bool IstInAllenRollen { get; set; }
+
+        [GridHidden]
+        public bool IstKaeufer { get; set; }
+       
+        [GridHidden]
+        public bool IstSteuerzahler { get; set; }
+
+        [GridHidden]
+        public bool IstHalter { get; set; }
+
+        [GridHidden]
+        public bool Loeschkennzeichen { get; set; }
 
         #region Bankdaten
 
