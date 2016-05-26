@@ -68,10 +68,13 @@ namespace CkgDomainLogic.Equi.Services
             if (suchparameter.NurAbgemeldeteFahrzeuge)
                 SAP.SetImportParameter("I_NUR_ABGEM_FZG", "X");
 
+            if (suchparameter.NurTemporaererVersand)
+                SAP.SetImportParameter("I_ABCKZ", "1");
+
             // Standorte
             if (suchparameter.Standorte.AnyAndNotNull())
             {
-                var standortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_From_SelectItem.CopyBack(suchparameter.Standorte.Select(e => new SelectItem { Key = e })).ToList();
+                var standortList = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_STORT_From_SelectItem.CopyBack(suchparameter.Standorte.Select(e => new SelectItem { Key = (suchparameter.NurTemporaererVersand ? string.Format("9999_{0}", e) : e) })).ToList();
                 SAP.ApplyImport(standortList);
             }
             // Betriebe
