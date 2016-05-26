@@ -5175,3 +5175,6 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 
 .icon-shopping-cart:before {  content: "\f07a"; }
 
+ul.ui-autocomplete {
+    z-index: 99999999;
+}

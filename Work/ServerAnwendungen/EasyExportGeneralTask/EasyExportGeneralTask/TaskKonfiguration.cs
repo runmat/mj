@@ -131,7 +131,8 @@ namespace EasyExportGeneralTask
         WKDA,
         WKDA_Selbstabmelder,
         StarCar2,
-        WKDA_AT
+        WKDA_AT,
+        WKDA_AT_Selbstabmelder
     }
 
     public class ArchivDefinition
