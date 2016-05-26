@@ -1,7 +1,9 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -16,57 +18,13 @@ namespace CkgDomainLogic.Equi.Models
     public class EquiGrunddatenSelektor : Store 
     {
         [LocalizedDisplay(LocalizeConstants._Zielorte)]
-        public static List<Zielort> AlleZielorte
-        {
-            get
-            {
-                return new List<Zielort>
-                {
-                    new Zielort("", ""), 
-                    new Zielort("900", "900 Neckarsulm"), 
-                    new Zielort("960", "960 Ingolstadt")
-                };
-            }
-        }
+        public static List<SelectItem> AlleZielorte { get { return (GetViewModel == null ? new List<SelectItem>() : GetViewModel().Zielorte); } }
 
         [LocalizedDisplay(LocalizeConstants._Standorte)]
-        public static List<Standort> AlleStandorte 
-        {
-            get
-            {
-                return new List<Standort>
-                {
-                    new Standort("", ""),
-                    new Standort("1601", "Ingolstadt Neuwagen"),
-                    new Standort("1602", "Ingolstadt SD"),
-                    new Standort("1603", "Gebrauchtwagen"),
-                    new Standort("1604", "Ingolstadt MFC"),
-                    new Standort("1610", "Ingolstadt E-Neuwagen"),
-                    new Standort("1651", "Neckarsulm Neuwagen"),
-                    new Standort("1653", "Neckarsulm E-Neuwagen")
-                };
-            }
-        }
-
+        public static List<SelectItem> AlleStandorte  { get { return (GetViewModel == null ? new List<SelectItem>() : GetViewModel().Standorte); } }
 
         [LocalizedDisplay(LocalizeConstants._Betriebsnummern)]
-        public static List<Betriebsnummer> AlleBetriebsnummern
-        {
-            get
-            {
-                return new List<Betriebsnummer>
-                {
-                    new Betriebsnummer("", ""), 
-                    new Betriebsnummer("849", "849 Direktkunden Kauf"), 
-                    new Betriebsnummer("923", "923 Geschäftsfahrzeuge"), 
-                    new Betriebsnummer("926", "926 Vorserienfahrzeuge"), 
-                    new Betriebsnummer("953", "953 Behörden-Miete/VIP-Miete Fahrzeuge"), 
-                    new Betriebsnummer("956", "956 Leasingfahrzeuge"), 
-                    new Betriebsnummer("980", "980 Mitarbeiter Kauffahrzeuge")
-                };
-            }
-        }
-
+        public static List<SelectItem> AlleBetriebsnummern { get { return (GetViewModel == null ? new List<SelectItem>() : GetViewModel().Betriebsnummern); } }
 
         [LocalizedDisplay(LocalizeConstants._Zielorte)]
         public List<string> Zielorte { get; set; }
@@ -128,5 +86,8 @@ namespace CkgDomainLogic.Equi.Models
                     "VehiclesOnlyUnlicensed", Localize.VehiclesOnlyWithoutFirstRegistration);
             }
         }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<EquiGrunddatenViewModel> GetViewModel { get; set; }
     }
 }
