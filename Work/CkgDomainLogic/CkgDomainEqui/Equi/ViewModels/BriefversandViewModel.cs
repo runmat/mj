@@ -277,7 +277,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
-        public bool SperrvermerkBestaetigen { get;  private set; }
+        public bool SperrvermerkBestaetigen { get;  set; }
 
         #region Step "Versandadresse"
 
