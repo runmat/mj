@@ -1721,7 +1721,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     else
                     {
                         singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb.NotNullOrEmpty().ToUpper();
-                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
+                        singleZulassung.Zulassungsdaten.Kennzeichen = (Zulassung.Zulassungsdaten.IsMassenabmeldung ? fahrzeugAkteBestand.Kennzeichen : fahrzeugAkteBestand.WunschKennz1);
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                         singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
                         singleZulassung.Zulassungsdaten.MindesthaltedauerDays = fahrzeugAkteBestand.MindesthaltedauerDays;
