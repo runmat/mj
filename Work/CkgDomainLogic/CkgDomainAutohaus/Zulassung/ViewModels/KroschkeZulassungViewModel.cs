@@ -1151,8 +1151,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
-                return ZulassungsVorgangsarten.Where(z => !z.IstAbmeldung).ToList()
-                                                .CopyAndInsertAtTop(new Material {MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose});
+                return ZulassungsVorgangsarten.Where(z => !z.IstAbmeldung
+                                                    &&  z.MaterialNr.TrimStart('0') != "8" 
+                                                    &&  z.MaterialNr.TrimStart('0') != "596" 
+                                                    &&  z.MaterialNr.TrimStart('0') != "619"
+                                                    &&  z.MaterialNr.TrimStart('0') != "679").ToList()
+                    .CopyAndInsertAtTop(new Material {MaterialNr = "", MaterialText = Localize.DropdownDefaultOptionPleaseChoose});
             }
         }
 
