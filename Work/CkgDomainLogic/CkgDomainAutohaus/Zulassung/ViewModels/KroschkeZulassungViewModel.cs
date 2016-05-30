@@ -1786,7 +1786,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     && SonderzulassungsMode != SonderzulassungsMode.Haendlerkennzeichen
                     && zulOhneEvb.Any())
                 {
-                    SaveErrorMessage = string.Join(", ", zulOhneEvb.Select(z => string.Format("{0}: {1}", z.FahrgestellNr, Localize.EvbNumberRequired)));
+                    SaveErrorMessage = string.Join(", ", zulOhneEvb.Select(z => $"{z.FahrgestellNr}: {Localize.EvbNumberRequired}"));
                     return;
                 }
             }
@@ -1872,7 +1872,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 else
                 {
                     if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
-                        addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+                        addModelError("Farbe", $"{Localize.Color} {Localize.Required.ToLower()}");
 
                     if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
                         addModelError("FzgModell",
