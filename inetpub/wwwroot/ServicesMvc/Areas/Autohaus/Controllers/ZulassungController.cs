@@ -1067,10 +1067,6 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult ZulassungFromShoppingCart(string id, string versandzulassung = "", string sonderzulassung = "", string schnellabmeldung = "", string abmeldung = "", string partnerportal = "", string sonderzulassungMode = "")
         {
-            //var szMode = sonderzulassungMode.NotNullOrEmpty().ToLower();
-            //if (sonderzulassung.IsNotNullOrEmpty() && (szMode == "firmeneigen" || szMode == "umschreibung"))
-            //    return IndexMultiReg(sonderzulassung, sonderzulassungMode, zulassungFromShoppingCart: "1");
-
             return Index("", "", zulassungFromShoppingCart: "1", versandzulassung: versandzulassung, sonderzulassung: sonderzulassung, schnellabmeldung: schnellabmeldung, abmeldung: abmeldung, partnerportal: partnerportal, sonderzulassungMode: sonderzulassungMode);
         }
 

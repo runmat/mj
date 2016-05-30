@@ -295,10 +295,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (FinList.Any())
             {
                 var firstFahrzeug = FinList.First();
-            var isEqual = true;
+                var isEqual = true;
 
                 foreach (var item in FinList)
-            {
+                {
                     var fahrzeugAkteBestand = item;
 
                     var fzgArt = Fahrzeugarten.FirstOrDefault(a => a.Beschreibung.NotNullOrEmpty().ToUpper() == fahrzeugAkteBestand.FahrzeugArt.NotNullOrEmpty().ToUpper());
@@ -309,13 +309,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     if (fahrzeugAkteBestand.SelectedHalter == null || firstFahrzeug.SelectedHalter == null ||
                         ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
-                {
-                    isEqual = false;
+                    {
+                        isEqual = false;
+                    }
                 }
-            }
 
                 if (isEqual) // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
-                SetParamHalter(firstFahrzeug.Halter);
+                   SetParamHalter(firstFahrzeug.Halter);
             }
             else
             {
@@ -1603,6 +1603,39 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             GetSonderzulassungHaendlerkennzeichen(Zulassung.Fahrzeugdaten);
 
             TryGetSeparateNecessaryDocumentsForSonderzulassung();
+
+            if (ModusSonderzulassung && (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen || SonderzulassungsMode == SonderzulassungsMode.Umschreibung))
+            {
+                var fzg = new FahrzeugAkteBestand
+                {
+                    FinID = "SC001",
+                    FIN = Zulassung.FahrgestellNr,
+                    HandelsName = "(wie ursprüngl. erfasst)",
+                    ZulassungFahrzeugartId = Zulassung.Fahrzeugdaten.FahrzeugartId,
+
+                    VorhandenesKennzReservieren = Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren,
+                    Evb = Zulassung.Zulassungsdaten.EvbNr,
+                    Kennzeichen = Zulassung.Zulassungsdaten.Kennzeichen,
+                    WunschKennz1 = Zulassung.Zulassungsdaten.Kennzeichen,
+                    WunschKennz2 = Zulassung.Zulassungsdaten.Wunschkennzeichen2,
+                    WunschKennz3 = Zulassung.Zulassungsdaten.Wunschkennzeichen3,
+                    MindesthaltedauerDays = Zulassung.Zulassungsdaten.MindesthaltedauerDays,
+
+                    FzgModell = Zulassung.Fahrzeugdaten.FzgModell,
+                    Farbe = Zulassung.Fahrzeugdaten.Farbe,
+
+                    ResKennz = null,
+                    ReservationNr = Zulassung.Zulassungsdaten.ReservierungsNr,
+                    ReservationName = Zulassung.Zulassungsdaten.ReservierungsName,
+                };
+                if (fzg.ReservationNr.IsNotNullOrEmpty() || fzg.ReservationName.IsNotNullOrEmpty())
+                {
+                    fzg.ResKennz = fzg.WunschKennz1;
+                    fzg.WunschKennz1 = null;
+                }
+
+                SetFinList(new List<FahrzeugAkteBestand> { fzg });
+            }
         }
 
         public void DataMarkForRefresh()
@@ -1867,7 +1900,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 modelState["MindesthaltedauerDays"].Errors.Clear();
                                     
             if (ZulassungsVorgangsarten.None())
-                modelState.AddModelError(string.Empty, string.Format("{0}: {1}", Localize.Error, Localize.NoRegistrationTypesFound));
+                modelState.AddModelError(string.Empty, $"{Localize.Error}: {Localize.NoRegistrationTypesFound}");
 
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
