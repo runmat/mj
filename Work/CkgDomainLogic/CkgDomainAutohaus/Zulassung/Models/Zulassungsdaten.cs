@@ -85,7 +85,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string ZulassungskreisBezeichnung { get; set; }
 
         [RequiredConditional]
-        [LocalizedDisplay(LocalizeConstants.EvbNumber)]
+        [LocalizedDisplay(LocalizeConstants.EvbNo)]
         public string EvbNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo1)]
