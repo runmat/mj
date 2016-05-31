@@ -36,5 +36,17 @@ namespace GeneralTools.Services
         {
             return (GetFeiertag(datum) != null);
         }
+
+        public static DateTime NaechsterWerktag(bool inklHeute = false)
+        {
+            var datum = (inklHeute ? DateTime.Today : DateTime.Today.AddDays(1));
+
+            while (IstFeiertag(datum) || datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
+            {
+                datum = datum.AddDays(1);
+            }
+
+            return datum;
+        }
     }
 }

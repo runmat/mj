@@ -255,13 +255,13 @@ namespace CkgDomainLogic.Autohaus.Services
 
             var item = checkResults.First();
 
-            zulassung.Ist48hZulassung = item.IST_48H.XToBool();
+            zulassung.Ist48HZulassung = item.IST_48H.XToBool();
             zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
 
             var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
 
             // Abweichende Versandadresse?
-            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
+            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48HZulassung && !String.IsNullOrEmpty(item.NAME1)))
             {
                     var adrs48h = AppModelMappings.Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse.Copy(item);
 
@@ -276,7 +276,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal, List<string> zusatzformularartenToExclude = null)
         {
             try
             {
@@ -418,7 +418,10 @@ namespace CkgDomainLogic.Autohaus.Services
 
             // alle PDF Formulare abrufen:
             var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
-            
+
+            if (zusatzformularartenToExclude != null)
+                fileNamesSap.RemoveAll(f => f.FORMART.In(zusatzformularartenToExclude));
+
             var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
 
             // alle relativen Pfade zu absoluten Pfaden konvertieren:

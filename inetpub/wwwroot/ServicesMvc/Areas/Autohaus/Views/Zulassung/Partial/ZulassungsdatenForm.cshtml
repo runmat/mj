@@ -142,8 +142,6 @@
         vertical-align: middle;
         padding-left: 10px;
     }
-
-
 </style>
 
 <script type="text/javascript">
@@ -389,6 +387,7 @@
         @Html.HiddenFor(m => m.IsSchnellabmeldung)
         @Html.HiddenFor(m => m.AnzahlAbmeldungenAenderbar)
         @Html.HiddenFor(m => m.ModusPartnerportal)
+        @Html.HiddenFor(m => m.SonderzulassungsMode)
 
         if (Model.ModusAbmeldung)
         {

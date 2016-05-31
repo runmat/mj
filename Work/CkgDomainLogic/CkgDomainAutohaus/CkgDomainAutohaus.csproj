@@ -150,6 +150,8 @@
     <Compile Include="Zulassung\Models\BankAdressdaten.cs" />
     <Compile Include="Zulassung\Models\Fahrzeugdaten.cs" />
     <Compile Include="Zulassung\Models\UIModels\ZulassungHomepageItem.cs" />
+    <Compile Include="Zulassung\Models\Haendlerkennzeichendaten.cs" />
+    <Compile Include="Zulassung\Models\Ersatzkennzeichendaten.cs" />
     <Compile Include="Zulassung\Models\Versanddaten.cs" />
     <Compile Include="Zulassung\Models\StatusverfolgungTrackingInfo.cs" />
     <Compile Include="Zulassung\Models\PdfFormular.cs" />

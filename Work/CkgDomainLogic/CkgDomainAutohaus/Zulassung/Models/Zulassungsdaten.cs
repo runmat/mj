@@ -22,7 +22,10 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen2;
         private string _wunschkennzeichen3;
         private string _kennzeichen;
-        private int _zulassungsartMenge = 1;
+        private string _fahrgestellNr;
+        private string _kostenstelle;
+        private string _bestellNr;
+        private string _auftragsNr;
 
         public bool ModusAbmeldung { get; set; }
 
@@ -35,20 +38,22 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public SonderzulassungsMode SonderzulassungsMode { get; set; }
         [XmlIgnore]
-        public bool ModusSonderzulassung { get { return SonderzulassungsMode != SonderzulassungsMode.None; } }
+        public bool ModusSonderzulassung => GetZulassungViewModel?.Invoke().ModusSonderzulassung ?? false;
+        [XmlIgnore]
+        public bool ModusSonderzulassungAuto => GetZulassungViewModel?.Invoke().ModusSonderzulassungAuto ?? false;
 
         public bool ModusPartnerportal { get; set; }
 
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
-        public string ZulassungsartMatNr { get; set; }
+        public string ZulassungsartMatNr
+        {
+            get;
+            set;
+        }
 
         [LocalizedDisplay(LocalizeConstants.Amount)]
-        public int ZulassungsartMenge
-        {
-            get { return _zulassungsartMenge; }
-            set { _zulassungsartMenge = value; }
-        }
+        public int ZulassungsartMenge { get; set; } = 1;
 
         public Material Zulassungsart
         {
@@ -78,8 +83,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         static List<Material> Abmeldearten => GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Abmeldearten;
 
-        public string Belegtyp => Zulassungsart.Belegtyp;
+        public string Belegtyp => Zulassungsart.Belegtyp.IsNotNullOrEmpty() ? Zulassungsart.Belegtyp : GetZulassungViewModel?.Invoke().GetDefaultBelegTyp();
 
+        [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
@@ -107,15 +113,9 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedNumberPlate)]
-        public bool WunschkennzeichenVorhanden
-        {
-            get
-            {
-                return !ModusAbmeldung &&
-                            (KennzeichenReserviert ||
-                             (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
-            }
-        }
+        public bool WunschkennzeichenVorhanden => !ModusAbmeldung &&
+                                                  (KennzeichenReserviert ||
+                                                   (KennzeichenIsValid(Kennzeichen) || KennzeichenIsValid(Wunschkennzeichen2) || KennzeichenIsValid(Wunschkennzeichen3)));
 
         public static string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
         {
@@ -164,7 +164,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string HaltereintragVorhanden { get; set; }
 
         [XmlIgnore]
-        public static string HaltereintragVorhandenOptions { get { return String.Format("J,{0};N,{1}", Localize.Yes, Localize.No); } }
+        public static string HaltereintragVorhandenOptions => $"J,{Localize.Yes};N,{Localize.No}";
 
         [LocalizedDisplay(LocalizeConstants.Autohaus_KroschkePrimeExpressversand_Info)]
         public bool Expressversand { get; set; }
@@ -181,6 +181,43 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool IsValid { get; set; }
 
+
+        [LocalizedDisplay(LocalizeConstants.VIN)]
+        [RequiredConditional]
+        public string FahrgestellNr
+        {
+            get { return _fahrgestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _fahrgestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungReferenceNo)]
+        public string AuftragsNr
+        {
+            get { return _auftragsNr.NotNullOrEmpty().ToUpper(); }
+            set { _auftragsNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungSalesman)]
+        public string VerkaeuferKuerzel { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungCostcenter)]
+        public string Kostenstelle
+        {
+            get { return _kostenstelle.NotNullOrEmpty().ToUpper(); }
+            set { _kostenstelle = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.AhZulassungOrderNo)]
+        public string BestellNr
+        {
+            get { return _bestellNr.NotNullOrEmpty().ToUpper(); }
+            set { _bestellNr = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.KeepExistingLicensePlate)]
+        public bool BestehendesKennzeichenBeibehalten { get; set; }
+
+
         public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 
         public static bool IstGebrauchtzulassung(string matNr) { return (TrimMatNr(matNr) == "588"); }
@@ -196,6 +233,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public static bool IstFirmeneigeneZulassung(string matNr) { return (TrimMatNr(matNr) == "619"); }
 
         public static bool IstZollzulassung(string matNr) { return (TrimMatNr(matNr) == "600"); }
+
 
         static string TrimMatNr(string matNr)
         {
@@ -246,9 +284,15 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (GetZulassungViewModel != null && ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
                 {
-                    if (GetZulassungViewModel().FinList.Any(f => mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
+                    if (GetZulassungViewModel().FinList.Any(f => f.FIN.IsNotNullOrEmpty() && mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
                         yield return new ValidationResult($"Bitte die Fahrzeugliste unten prüfen! Für jedes Fahrzeug gilt: Mindesthaltedauer = {Localize.MindestHaltedauerRangeError}", new[] { "MindesthaltedauerDays" });
                 }
+            }
+
+            if (SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                if (FahrgestellNr.IsNullOrEmpty())
+                    yield return new ValidationResult($"{Localize.FieldIsRequired}", new[] { "FahrgestellNr" });
             }
         }
 
@@ -281,7 +325,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
             if (ModusAbmeldung)
             {
-                s += $"<br/>{Localize.CancellationDate}: {(Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.CancellationDate}: {Abmeldedatum?.ToShortDateString() ?? ""}";
                 s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (VorhandenesKennzeichenReservieren)
@@ -289,7 +333,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
             else
             {
-                s += $"<br/>{Localize.RegistrationDate}: {(Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.RegistrationDate}: {Zulassungsdatum?.ToShortDateString() ?? ""}";
                 s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (!string.IsNullOrEmpty(EvbNr))

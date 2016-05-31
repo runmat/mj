@@ -110,6 +110,9 @@
             var stepName = FormWizard.GetStepKey(step - 1);
 
             try {
+                if (stepName === "Umkennzeichnung")
+                    stepName = "Zulassungsdaten";
+
                 $("#AjaxForm" + stepName).submit();
                 window.scrollTo(0, 0);
                 return false;
@@ -532,6 +535,11 @@
     }
 
     function CheckKennzeichenReserviert() {
+        $("#UiUpdateOnly").val(true);
+        $("#AjaxFormZulassungsdaten").submit();
+    }
+
+    function CheckBestehendesKennzeichenBeibehalten() {
         $("#UiUpdateOnly").val(true);
         $("#AjaxFormZulassungsdaten").submit();
     }

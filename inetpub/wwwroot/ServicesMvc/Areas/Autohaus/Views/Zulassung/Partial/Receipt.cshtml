@@ -116,7 +116,7 @@ else
         var isAbmeldung = '@Model.ModusAbmeldung';
         var isPartnerportal = '@Model.ModusPartnerportal';
 
-        if (isMassenzulassung === "True" || isMassenabmeldung === "True") {
+        if (isSonderzulassung !== "True" && (isMassenzulassung === "True" || isMassenabmeldung === "True")) {
             window.location = "../Fahrzeugbestand/index";
         } else if (window.location.pathname.indexOf("ZulassungFromShoppingCart") > -1) {
             var replaceAction = "Index";
