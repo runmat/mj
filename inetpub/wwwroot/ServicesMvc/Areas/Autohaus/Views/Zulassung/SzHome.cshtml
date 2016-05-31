@@ -1,0 +1,46 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+<style type="text/css">
+    .sz-home.wrapper {
+        display: table;
+        margin: 30px;
+    }
+    .sz-home .tile {
+        margin: 10px 30px 12px 0;
+        background-color: #3BAFDA !important;
+    }
+    a.tile:hover {
+        text-decoration: none !important;
+    }
+    .sz-home .tile-object {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .sz-home .tile-body img {
+        display: inline-block;
+        text-align: left;
+        margin: 0 0 0 22px !important;
+    }
+</style>
+
+<h3 class="page-title">
+    @Localize.SpecialRegistrations <small></small>
+</h3>
+
+<div class="sz-home wrapper">
+
+    @foreach (var homepageButton in Model.SonderzulassungsHomepageItems)
+    {
+        <a class="tile" href="@homepageButton.AppUrl">
+            <div class="tile-body">
+                <img src="@homepageButton.IconFileName" alt=""/>
+            </div>
+            <div class="tile-object">
+                @Model.FormatHomepageButtonLabel(Localize.TranslateResourceKey(homepageButton.LocalizeKey))
+            </div>
+        </a>
+    }
+
+</div>

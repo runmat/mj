@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -148,6 +149,7 @@
     <Compile Include="General\Models\UiModel.cs" />
     <Compile Include="Zulassung\Models\BankAdressdaten.cs" />
     <Compile Include="Zulassung\Models\Fahrzeugdaten.cs" />
+    <Compile Include="Zulassung\Models\UIModels\ZulassungHomepageItem.cs" />
     <Compile Include="Zulassung\Models\Versanddaten.cs" />
     <Compile Include="Zulassung\Models\StatusverfolgungTrackingInfo.cs" />
     <Compile Include="Zulassung\Models\PdfFormular.cs" />

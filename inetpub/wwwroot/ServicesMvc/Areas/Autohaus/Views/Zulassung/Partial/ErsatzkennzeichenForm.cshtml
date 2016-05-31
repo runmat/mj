@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Fahrzeugdaten
+
+<div id="DivErsatzkennzeichen" class="margin-top-20">
+    
+    @using (Ajax.BeginForm("ErsatzkennzeichenForm", "Zulassung", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivErsatzkennzeichen", OnComplete = "AjaxFormErsatzkennzeichenComplete();"}, new {@class = "form-horizontal", id = "AjaxFormErsatzkennzeichen"}))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormDropDownListFor(m => m.ErsatzKennzeichenTyp, Model.ErsatzKennzeichenTypen.ToSelectList(), new {@class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase" })
+
+
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
+
+        <div class="hide">
+            @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+        </div>
+    }
+
+    <script type="text/javascript">
+        _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    </script>
+
+</div>

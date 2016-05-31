@@ -312,7 +312,7 @@ namespace CkgDomainLogic.Autohaus.Services
                         BelegNr = vorgang.BelegNr,
                         PositionsNr = posNr.ToString().PadLeft0(6),
                         MaterialNr = vorgang.Zulassungsdaten.ZulassungsartMatNr,
-                        Menge = "1"
+                        Menge = vorgang.Zulassungsdaten.ZulassungsartMenge.ToString()
                     });
 
                     vorgang.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = vorgang.BelegNr);
@@ -700,7 +700,9 @@ namespace CkgDomainLogic.Autohaus.Services
                 var posItems = posListe.Where(p => p.BelegNr == vorgang.BelegNr);
                 if (posItems.Any(p => p.PositionsNr == "000010"))
                 {
-                    vorgang.Zulassungsdaten.ZulassungsartMatNr = posItems.First(p => p.PositionsNr == "000010").MaterialNr;
+                    var firstMat = posItems.First(p => p.PositionsNr == "000010");
+                    vorgang.Zulassungsdaten.ZulassungsartMatNr = firstMat.MaterialNr;
+                    vorgang.Zulassungsdaten.ZulassungsartMenge = firstMat.Menge.ToInt(1);
                     vorgang.OptionenDienstleistungen.ZulassungsartMatNr = vorgang.Zulassungsdaten.ZulassungsartMatNr;
 
                     var kennzGroesse = vorgang.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == item.KENNZFORM);

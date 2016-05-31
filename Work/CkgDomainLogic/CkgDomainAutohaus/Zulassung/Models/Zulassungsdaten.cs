@@ -22,6 +22,7 @@ namespace CkgDomainLogic.Autohaus.Models
         private string _wunschkennzeichen2;
         private string _wunschkennzeichen3;
         private string _kennzeichen;
+        private int _zulassungsartMenge = 1;
 
         public bool ModusAbmeldung { get; set; }
 
@@ -32,13 +33,22 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusVersandzulassung { get; set; }
 
-        public bool ModusSonderzulassung { get; set; }
+        public SonderzulassungsMode SonderzulassungsMode { get; set; }
+        [XmlIgnore]
+        public bool ModusSonderzulassung { get { return SonderzulassungsMode != SonderzulassungsMode.None; } }
 
         public bool ModusPartnerportal { get; set; }
 
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Amount)]
+        public int ZulassungsartMenge
+        {
+            get { return _zulassungsartMenge; }
+            set { _zulassungsartMenge = value; }
+        }
 
         public Material Zulassungsart
         {
@@ -63,12 +73,12 @@ namespace CkgDomainLogic.Autohaus.Models
         public string WunschkennzeichenReservierenUrl { get; set; }
 
         [XmlIgnore]
-        static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
+        static List<Material> MaterialList => GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten;
 
         [XmlIgnore]
-        static List<Material> Abmeldearten { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Abmeldearten; } }
+        static List<Material> Abmeldearten => GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Abmeldearten;
 
-        public string Belegtyp { get { return Zulassungsart.Belegtyp; } }
+        public string Belegtyp => Zulassungsart.Belegtyp;
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
@@ -195,23 +205,23 @@ namespace CkgDomainLogic.Autohaus.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (ZulassungsartAutomatischErmitteln && !Versandzulassung && String.IsNullOrEmpty(HaltereintragVorhanden))
-                yield return new ValidationResult(string.Format("{0}", Localize.CarOwnerEntryExistsRequiredHint), new[] { "HaltereintragVorhanden" });
+                yield return new ValidationResult($"{Localize.CarOwnerEntryExistsRequiredHint}", new[] { "HaltereintragVorhanden" });
 
             if (ModusAbmeldung)
             {
                 if (Abmeldedatum == null)
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.CancellationDate, Localize.Required.ToLower()), new[] { "Abmeldedatum" });
+                    yield return new ValidationResult($"{Localize.CancellationDate} {Localize.Required.ToLower()}", new[] { "Abmeldedatum" });
             }
             else
             {
                 if (Zulassungskreis.IsNullOrEmpty())
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationArea, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+                    yield return new ValidationResult($"{Localize.RegistrationArea} {Localize.Required.ToLower()}", new[] { "Zulassungskreis" });
 
                 if (!Zulassungsdatum.HasValue)
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
+                    yield return new ValidationResult($"{Localize.RegistrationDate} {Localize.Required.ToLower()}", new[] { "Zulassungsdatum" });
 
                 if (ZulassungsartMatNr.IsNullOrEmpty())
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr", "ZulassungsartText" });
+                    yield return new ValidationResult($"{Localize.RegistrationType} {Localize.Required.ToLower()}", new[] { "ZulassungsartMatNr", "ZulassungsartText" });
 
                 if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
@@ -225,11 +235,21 @@ namespace CkgDomainLogic.Autohaus.Models
 
             // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv...
             if (KennzeichenReserviert && ReservierungsName.IsNullOrEmpty())
-                yield return new ValidationResult(string.Format("{0} {1}", Localize.ReservationName, Localize.Required.ToLower()), new[] { "ReservierungsName" });
+                yield return new ValidationResult($"{Localize.ReservationName} {Localize.Required.ToLower()}", new[] { "ReservierungsName" });
 
             // 20150608 MMA 8083 Mindesthaltedauer
-            if (IstFirmeneigeneZulassung(ZulassungsartMatNr) && (MindesthaltedauerDays == null || MindesthaltedauerDays < 1 || MindesthaltedauerDays > 360))
-                yield return new ValidationResult(string.Format("{0}", Localize.MindestHaltedauerRangeError), new[] { "MindesthaltedauerDays" });
+            Func<int?, bool> mindesthaltedauerDaysInvalid = days => days == null || days < 1 || days > 360;
+            if (IstFirmeneigeneZulassung(ZulassungsartMatNr))
+            {
+                if (mindesthaltedauerDaysInvalid(MindesthaltedauerDays))
+                    yield return new ValidationResult($"{Localize.MindestHaltedauerRangeError}", new[] {"MindesthaltedauerDays"});
+
+                if (GetZulassungViewModel != null && ModusSonderzulassung && SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
+                {
+                    if (GetZulassungViewModel().FinList.Any(f => mindesthaltedauerDaysInvalid(f.MindesthaltedauerDays)))
+                        yield return new ValidationResult($"Bitte die Fahrzeugliste unten prüfen! Für jedes Fahrzeug gilt: Mindesthaltedauer = {Localize.MindestHaltedauerRangeError}", new[] { "MindesthaltedauerDays" });
+                }
+            }
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)
@@ -247,7 +267,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 var feiertag = DateService.GetFeiertag(datum);
                 if (feiertag != null)
                     yield return new ValidationResult(
-                        string.Format("Der {0} ist ein Feiertag, '{1}'. Bitte vermeiden Sie Feiertage.", datum.ToString("dd.MM.yy"), feiertag.Name)
+                        $"Der {datum.ToString("dd.MM.yy")} ist ein Feiertag, '{feiertag.Name}'. Bitte vermeiden Sie Feiertage."
                         , new[] { datePropertyName });
             }
         }
@@ -257,36 +277,36 @@ namespace CkgDomainLogic.Autohaus.Models
             var s = "";
 
             if (Zulassungsart != null)
-                s += string.Format("{0}: {1}", Localize.RegistrationType, Zulassungsart.MaterialText);
+                s += $"{Localize.RegistrationType}: {Zulassungsart.MaterialText}";
 
             if (ModusAbmeldung)
             {
-                s += string.Format("<br/>{0}: {1}", Localize.CancellationDate, (Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : ""));
-                s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+                s += $"<br/>{Localize.CancellationDate}: {(Abmeldedatum.HasValue ? Abmeldedatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (VorhandenesKennzeichenReservieren)
-                    s += string.Format("<br/>{0}", Localize.ReserveExistingLicenseNo);
+                    s += $"<br/>{Localize.ReserveExistingLicenseNo}";
             }
             else
             {
-                s += string.Format("<br/>{0}: {1}", Localize.RegistrationDate, (Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : ""));
-                s += string.Format("<br/>{0}: {1} {2}", Localize.RegistrationDistrict, Zulassungskreis, ZulassungskreisBezeichnung);
+                s += $"<br/>{Localize.RegistrationDate}: {(Zulassungsdatum.HasValue ? Zulassungsdatum.Value.ToShortDateString() : "")}";
+                s += $"<br/>{Localize.RegistrationDistrict}: {Zulassungskreis} {ZulassungskreisBezeichnung}";
 
                 if (!string.IsNullOrEmpty(EvbNr))
-                    s += string.Format("<br/>{0}: {1}", Localize.EvbNumber, EvbNr);
+                    s += $"<br/>{Localize.EvbNumber}: {EvbNr}";
 
-                s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo, Kennzeichen);
+                s += $"<br/>{Localize.PersonalisedLicenseNo}: {Kennzeichen}";
 
                 if (KennzeichenReserviert)
                 {
-                    s += string.Format("<br/>{0}", Localize.LicenseNoReserved);
-                    s += string.Format("<br/>{0}: {1}", Localize.ReservationNo, ReservierungsNr);
-                    s += string.Format("<br/>{0}: {1}", Localize.ReservationName, ReservierungsName);
+                    s += $"<br/>{Localize.LicenseNoReserved}";
+                    s += $"<br/>{Localize.ReservationNo}: {ReservierungsNr}";
+                    s += $"<br/>{Localize.ReservationName}: {ReservierungsName}";
                 }
                 else
                 {
-                    s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo2, Wunschkennzeichen2);
-                    s += string.Format("<br/>{0}: {1}", Localize.PersonalisedLicenseNo3, Wunschkennzeichen3);
+                    s += $"<br/>{Localize.PersonalisedLicenseNo2}: {Wunschkennzeichen2}";
+                    s += $"<br/>{Localize.PersonalisedLicenseNo3}: {Wunschkennzeichen3}";
                 }
             }
 
