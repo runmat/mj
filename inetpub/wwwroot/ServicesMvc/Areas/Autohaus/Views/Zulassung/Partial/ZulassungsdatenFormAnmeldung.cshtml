@@ -86,7 +86,7 @@ else
                     </span>
                  </text>)
     
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo))
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo1))
         @if (Model.KennzeichenReserviert)
         {
             @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium" })
