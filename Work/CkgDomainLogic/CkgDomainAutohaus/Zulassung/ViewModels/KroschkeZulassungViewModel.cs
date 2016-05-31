@@ -1393,7 +1393,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung || Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            if (saveFromShoppingCart || (!Zulassung.Zulassungsdaten.IsMassenzulassung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung))
+            {
+                zulassungenToSave = zulassungen;
+            }
+            else
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
                 foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => !string.IsNullOrEmpty(x.FIN) || (Zulassung.Zulassungsdaten.IsSchnellabmeldung && x.IsSchnellabmeldungSpeicherrelevant)))
@@ -1453,10 +1457,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     zulassungenToSave.Add(singleZulassung);
                 }
-            }
-            else
-            {
-                zulassungenToSave = zulassungen;
             }
             
             if (saveDataToSap)

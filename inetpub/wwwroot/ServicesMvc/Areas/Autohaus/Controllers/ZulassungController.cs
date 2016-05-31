@@ -754,6 +754,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
 
             ShoppingCartLoadAndCacheItems();
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -983,6 +984,8 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.LoadZulassungsAbmeldeArten(forShoppingCartSave: true);
             ViewModel.Save(warenkorb, saveDataToSap: true, saveFromShoppingCart: true);
+
+            TempData["KundenauswahlWarenkorb"] = ViewModel.KundenauswahlWarenkorb;
 
             return PartialView("Partial/Receipt", ViewModel);
         }
