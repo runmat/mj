@@ -271,6 +271,8 @@
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
     <Content Include="_Themes\AH2015\images\blondeFrau.jpg" />
+    <Content Include="Images\icons\24x24\search-24x24-2.png" />
+    <Content Include="Images\icons\24x24\search-24x24.png" />
     <Content Include="_Themes\AH2015\images\checkbox-hover-halfcheck.png" />
     <Content Include="Images\close-button-16x16.png" />
     <Content Include="Images\Commands\24x24\OK.png" />
@@ -479,6 +481,7 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
+    <Content Include="Areas\Autohaus\Views\Clever\Redirect\Index.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -3175,6 +3178,8 @@
     <Content Include="Views\Leasing\UnzugelasseneFahrzeuge.cshtml" />
     <Content Include="Views\Shared\Partial\TelerikGridExportMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\TelerikGridExportMenu.cshtml" />
+    <None Include="Views\Shared\Partial\IconView.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\IconView.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
