@@ -1742,8 +1742,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (!Zulassung.Zulassungsdaten.IsMassenzulassung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung)
+            if (saveFromShoppingCart || (!Zulassung.Zulassungsdaten.IsMassenzulassung && !Zulassung.Zulassungsdaten.IsMassenabmeldung && !Zulassung.Zulassungsdaten.IsSchnellabmeldung))
+            {
                 zulassungenToSave = zulassungen;
+            }
             else
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
