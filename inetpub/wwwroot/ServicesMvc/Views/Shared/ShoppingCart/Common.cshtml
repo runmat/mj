@@ -259,7 +259,7 @@
         }
 
         $(".shopping-cart-item-selection-count").removeClass('hide');
-        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
+        SetGridShoppingCart_MultiSelectItemCountHint(count);
     }
 
     function GridShoppingCart_OnAllSelectionChange(check) {
@@ -281,7 +281,7 @@
     }
 
     function GridShoppingCart_MultiSelectUpdate(count) {
-        if (count == 0) {
+        if (count === 0) {
             $(".shopping-cart-item-selection-count").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
             $.uniform.update($("#uncheckAllRecords"));
@@ -295,15 +295,23 @@
             $(".shopping-cart-item-selection-count").removeClass("hide");
         }
 
-        $(".shopping-cart-item-selection-count").html(GridShoppingCart_MultiSelectItemCountHint(count));
+        SetGridShoppingCart_MultiSelectItemCountHint(count);
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }   
     
-    function GridShoppingCart_MultiSelectItemCountHint(count) {
-        return  '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
+    function SetGridShoppingCart_MultiSelectItemCountHint(count) {
+        if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
+            $(".shopping-cart-item-selection-count").addClass("hide");
+            return;
+        }
+
+        var html = '<button onclick="return ShoppingCartSelectedItemsSubmit(this);" class="btn blue rounded">' +
                 '<i class="icon-chevron-right margin-right-10"></i>' + 
-                 count + ' ' + (count == 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+                 count + ' ' + (count === 1 ? 'Eintrag' : 'Einträge') + ' absenden!' + '</button>';
+    
+        $(".shopping-cart-item-selection-count").removeClass("hide");
+        $(".shopping-cart-item-selection-count").html(html);
     }
     
 </script>

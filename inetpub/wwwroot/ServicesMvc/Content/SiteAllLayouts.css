@@ -1538,19 +1538,19 @@ div.span-alert-placeholder .alert {
 .prime-control .prime-checkbox-image {
     display: inline-block;
     margin: 0 0 0 20px;
-    width: 200px;
-    height: 65px;
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;
+    width: 1px;
+    height: 80px;
+    /*background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;*/
 }
 .prime-control label.checkbox.checked .prime-checkbox-image {
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;
+    /*background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;*/
 }
 
 .prime-control span.prime-helphint-icon {
     display: inline-block;
     vertical-align: top;
     margin: 3px 0 0 2px;
-    background: url(/ServicesMvc/images/kroschke-prime-info-icon.png) 0 0 no-repeat;
+    background: url(/ServicesMvc/images/kroschke-prime-info-icon.png?v=20160329) 0 0 no-repeat;
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -1562,7 +1562,7 @@ div.span-alert-placeholder .alert {
     border: 1px solid #e0e0e0 !important;
     border-radius: 10px !important;
     box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.25)!important;
-    background-color: #FBF6EC;
+    background-color: #EBF4F7;
     line-height: 20px;
     white-space: normal;
 }

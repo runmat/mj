@@ -1,6 +1,10 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
 @model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
+@{
+    var twoColumnMode = Model.SummaryHasDocuments;
+}
+
 <h4>@Model.ZulassungSummary.Header</h4>
 
 @Html.SpanAlert("WaitHint")
@@ -9,37 +13,44 @@
 
     <div class="row-fluid">
 
-        <div class="@(Model.ModusAbmeldung || Model.ModusSonderzulassung ? "span12" : "span8")">
+        <div class="@(twoColumnMode ? "span8" : "span12")">
             
             @using (Html.PortletBox("", "icon-table", isCollapsible: false))
             {
-<div class="SummaryItems">
+                <div class="SummaryItems">
                     @foreach (var item in Model.ZulassungSummary.Items)
-    {
-        <div class="SummaryItem @item.Tag">
-            <h5 class="SummaryItemTitle">@item.TitleAsHtml</h5>
+                    {
+                        <div class="SummaryItem @item.Tag">
+                            <h5 class="SummaryItemTitle">@item.TitleAsHtml</h5>
     
-            <div class="SummaryItemBody">
-                @item.BodyAsHtml
+                            <div class="SummaryItemBody">
+                                @item.BodyAsHtml
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+
+        @if (twoColumnMode)
+        {
+            <div class="span4">
+
+                @using (Html.PortletBox(Localize.RequiredDocumentsForRegistration, "icon-file", isCollapsible: false))
+                {
+                    if (Model.SummaryHasSeparateNecessaryDocuments)
+                    {
+                        @Html.Partial("Partial/ErforderlicheDokumente", Model.SeparateNecessaryDocuments)
+                    }
+                    else if (Model.SummaryHasZiPoolDocuments)
+                    {
+                        @Html.Partial("Partial/ErforderlicheDokumente", Model.ZiPoolDetails.ErforderlicheDokumente)
+                    }
+                }
+
             </div>
-        </div>
-    }
-</div>
-            }
-
-        </div>
-
-    @if (!Model.ModusAbmeldung && !Model.ModusSonderzulassung)
-{
-        <div class="span4">
-
-            @using (Html.PortletBox(Localize.RequiredDocumentsForRegistration, "icon-file", isCollapsible: false))
-            {
-                @Html.Partial("Partial/ZiPoolInfoListe", Model.ZiPoolDetails)
-            }
-
-        </div>
-    }
+        }
 
     </div>
 
@@ -66,6 +77,7 @@
                       columns.XBound(c => c.WunschKennz3);
                       columns.XBound(c => c.ReservationNr);
                       columns.XBound(c => c.ReservationName);
+                      columns.XBound(c => c.MindesthaltedauerDays);
                       columns.XBound(c => c.ZulassungFahrzeugart);
                   })
               .XAutoColumnConfiguration()

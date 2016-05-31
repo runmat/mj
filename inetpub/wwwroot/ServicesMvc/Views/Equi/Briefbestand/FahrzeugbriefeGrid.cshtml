@@ -1,4 +1,7 @@
 ﻿@using CkgDomainLogic.Equi.Models
+
+@model CkgDomainLogic.Equi.ViewModels.BriefbestandViewModel
+
 @{ var gridName = "GridFahrzeugbriefe"; }
 
 @(Html.XTelerik()
@@ -8,7 +11,6 @@
     .Columns(columns =>
     {
         columns.XBound(c => c.Kennzeichen);
-        //columns.XBound(c => c.Fahrgestellnummer);
         columns.XBound(c => c.Fahrgestellnummer).ClientTemplate(
                "<a href='#' class='link tooltips' data-original-title='Historie' data-placement='right' onclick='ShowEquiHistorieAjax(\"<#= data.Fahrgestellnummer #>\");'><#= data.Fahrgestellnummer #></a>"
            );
@@ -21,6 +23,10 @@
         columns.XBound(c => c.Ummeldedatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Referenz1);
         columns.XBound(c => c.Referenz2);
+        columns.XBound(c => c.HerstellerSchluessel).Visible(Model.ShowTypdaten);
+        columns.XBound(c => c.TypSchluessel).Visible(Model.ShowTypdaten);
+        columns.XBound(c => c.FahrzeugHersteller).Visible(Model.ShowTypdaten);
+        columns.XBound(c => c.FahrzeugTyp).Visible(Model.ShowTypdaten);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugbriefe"))
@@ -32,4 +38,3 @@
         commands.FilteredDataCommand("ExportFahrzeugbriefeFilteredPDF", "Equi");
     })
 )
-

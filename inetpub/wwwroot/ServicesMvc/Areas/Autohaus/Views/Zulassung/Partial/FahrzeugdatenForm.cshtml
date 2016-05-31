@@ -14,7 +14,8 @@
     if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
     if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 
-    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];  
+    var fahrzeugfarbenList = (List<Domaenenfestwert>)ViewData["FahrzeugfarbenList"];
+    var isFromShoppingCart = Zulassungsdaten.GetZulassungViewModel().ZulassungFromShoppingCart;
 }
 
 <style>
@@ -40,15 +41,15 @@
     .kennzeichen-etikette-image {
         display: inline-block;
         margin: 0 0 0 10px;
-        width: 150px;
-        height: 64px;
-        background: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen-etikette.png?v=20160307) 0 0 no-repeat;
+        width: 300px;
+        height: 80px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-kennzeichen.png?v=20160329) 0 0 no-repeat;
         }
     .kroschke-prime-etikette-form {
         background: url(/ServicesMvc/images/kroschke-prime-etikette-bg.png);
         margin: 5px 0 20px 15px;
         padding: 15px 10px 10px 25px;
-        border: 3px solid #E7A741;
+        border: 3px solid #8FC6DA;
         border-radius: 32px !important;
         box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.75)!important;
         width: 360px;
@@ -128,9 +129,9 @@
         var divObj = $('#KennzeichenLabelFields');
 
         if (isSelected) {
-            divObj.removeClass("hidden");
+            divObj.removeClass("hide");
         } else {
-            divObj.addClass("hidden");
+            divObj.addClass("hide");
         }
     }
 
@@ -141,8 +142,8 @@
             grid.showColumn("FzgModell");
             grid.showColumn("Farbe");
         } else {
-          grid.hideColumn("FzgModell");
-          grid.hideColumn("Farbe");
+            grid.hideColumn("FzgModell");
+            grid.hideColumn("Farbe");
         }
     }
 
@@ -150,14 +151,14 @@
         var items = @Html.Raw(Json.Encode(fahrzeugfarbenList.ToList().Select(a => a.Beschreibung.ToJavascriptString())));
 
         tb.autocomplete({
-            minLength: 0,
-            source: items,
-            create: function () {
+                minLength: 0,
+                source: items,
+                create: function () {
                     $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
                         return $('<li>')
                             .append('<a>' + FromJavascriptString(item.label) + '</a>')
                             .appendTo(ul);
-                        };
+                    };
                 }
             })
             .focus(function(){
@@ -238,14 +239,6 @@
         var field = $(this).data('fieldname');
         var value = $(this).val();
         SetFinValue(finId, field, value);
-    });
-
-    $(function() {
-        ShowHideKennzLabelDiv();
-        InitDefaultColorAutocomplete($(".colorautocomplete"));
-        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
-
-        $('#Farbe').show(); // Workaround
     });
 
 </script>
@@ -342,25 +335,28 @@
                     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Fahrzeugliste anzeigen
                       .Columns(columns =>
                       {
-                          columns.XBound(c => c.FinID).Visible(false);
+                      columns.XBound(c => c.FinID).Visible(false);
 
-                        columns.XBound(c => c.Aktion).Filterable(false).ClientTemplate(
-                            "<button onclick='return ZulassungVehicleRemove(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>");
+                          if (!isFromShoppingCart)
+                          {
+                              columns.XBound(c => c.Aktion).Filterable(false).ClientTemplate(
+                                  "<button onclick='return ZulassungVehicleRemove(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>");
+                          }
 
-                        columns.XBound(c => c.FIN).ClientTemplate(
-                                Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
-                            ).Title(Localize.VIN + " <span class='requiredField requiredFieldMarker'>*</span>");
-                          
-                        columns.XBound(c => c.HandelsName).ClientTemplate(
-                                Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
-                            );
+                          columns.XBound(c => c.FIN).ClientTemplate(
+                                  Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
+                              ).Title(Localize.VIN + " <span class='requiredField requiredFieldMarker'>*</span>");
 
-                        columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>");
-                        columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>");
+                          columns.XBound(c => c.HandelsName).ClientTemplate(
+                                  Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
+                              );
 
-                        columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
-                                Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
-                            );
+                          columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>").Hidden(!Model.HasEtikett);
+                          columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>").Hidden(!Model.HasEtikett);
+
+                          columns.XBound(c => c.ZulassungFahrzeugartId).ClientTemplate(
+                                  Html.DropDownList("ZulassungFahrzeugartId", Fahrzeugdaten.FahrzeugartList.ToSelectList(), new Dictionary<string, object> { { "class", "m-wrap small editvinvalue" }, { "data-fieldname", "ZulassungFahrzeugartId" } }).ToHtmlString()
+                          );
                       })
                       .XPageSize(10)
                       .XAutoColumnConfiguration()
@@ -368,14 +364,32 @@
                       .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                     .XToolBar("Zulassung")
                           )
-        
-            <div class="form-actions clearfix">
-                <div class="pull-left">
-                    @Html.TextBoxFor(m => m.AnzahlHinzuzufuegendeFahrzeuge, new { @class = "m-wrap tiny", maxlength = 3 })
-                    <button class="btn blue" onclick="ZulassungVehicleAdd();">@Localize.AddVehicleVehicles</button>
+
+            if (!isFromShoppingCart)
+            {
+                <div class="form-actions clearfix">
+                    <div class="pull-left">
+                        @Html.TextBoxFor(m => m.AnzahlHinzuzufuegendeFahrzeuge, new { @class = "m-wrap tiny", maxlength = 3 })
+                        <button class="btn blue" onclick="ZulassungVehicleAdd();">@Localize.AddVehicleVehicles</button>
+                    </div>
                 </div>
-            </div>
+            }
         }
     }
     
 </div>
+
+<script>
+    
+    function FahrzeugdatenStepInit() {
+        //console.log("FahrzeugdatenStepInit()");
+        ShowHideKennzLabelDiv();
+        InitDefaultColorAutocomplete($(".colorautocomplete"));
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+
+        $('#Farbe').show(); // Workaround
+    }
+
+    FahrzeugdatenStepInit();
+
+</script>
