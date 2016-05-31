@@ -185,11 +185,11 @@
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
-                if (count === 0) {
+                if (count === 0) {              
                     $("#AdressenAuswahlCount").addClass('hide');
                     $("#btnAddresseLoeschen").addClass('hide');
                     return;
-                }
+                }              
                 $("#btnAddresseLoeschen").removeClass('hide');
                 $("#AdressenAuswahlCount").removeClass('hide');
                 $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
@@ -205,11 +205,10 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                result.allSelected = result.allSelectionCount === result.allCount;
+                result.allSelected = result.allSelectionCount === result.allCount;               
+                //$("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                //$("#csv-upload-reset > span.all-count").text(result.allCount);
                 GridAdresse_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
-
-                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
-                $("#csv-upload-reset > span.all-count").text(result.allCount);
                 FilterGrid("GridAdresse");
             }
         });
@@ -222,17 +221,15 @@
         if (count == 0) {
             $("#btnAddresseLoeschen").addClass('hide');
             $("#AdressenAuswahlCount").addClass('hide');
-            $("#checkAllRecords").attr("checked", allSelected);
-            cb.parents().removeClass("checked");
+            $("#checkAllRecords").attr("checked", allSelected);            
             return;
         }
         
         $("#btnAddresseLoeschen").removeClass('hide');
+        $("#AdressenAuswahlCount").removeClass('hide');
         $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
         $(".checkedRecords").attr("checked", allSelected);
-
-        cb.parents().addClass("checked");
-    }
+   }
 
 
 </script>

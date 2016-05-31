@@ -53,15 +53,7 @@
         </div>
 
         @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium" })
-
-        if (Model.InsertModeTmp)
-        {
-            @Html.FormMultiSelectListFor(m => m.KennungenToInsert, CkgDomainLogic.Partner.Models.PartnerSelektor.PartnerKennungen.ToSelectList(), new { @class = "m-wrap chosen" },
-                                            postControlHtml: @<text>
-                                                                <a href="#" onclick="return false" class="btn white mini margin-left-10 valign-top tooltips" data-original-title="@Localize.PartnerRoleAddHint" data-placement="right"><i class="icon-info-sign bigger margin-right-5"></i> @Localize.PartnerRole</a>
-                                                             </text>)
-        }
-
+       
         @Html.FormRequiredFieldsSummary()
 
         <div class="form-actions">

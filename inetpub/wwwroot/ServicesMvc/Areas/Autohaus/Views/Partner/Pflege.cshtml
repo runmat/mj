@@ -2,13 +2,13 @@
 
 @Html.Partial("AdressenPflege/AdresseCommon")
 
-<h3 class="page-title">Partner <small>Pflege</small> </h3>
+<h3 class="page-title">Adressen <small>Pflege</small> </h3>
 
 
 <div id="divSearchAndGrid">
     @using (Html.FormSearchBox())
-    {
-        @Html.Partial("Partial/PartnerSuche", Model.PartnerSelektor)
+    {        
+        @Html.Partial("Partial/PartnerSuche", Model.PartnerSelektor)        
     }
 
     @using (Html.FormSearchResultsGrid())
@@ -30,7 +30,7 @@
 
     function ShowAdressenGrid() {
 
-        $("#FormSearchBox").hide(true);        
+        $("#FormSearchBox").addClass('hide');        
         $(".caption").text('');
 
         $.ajax({
