@@ -134,10 +134,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         public bool IstSteuerzahler { get; set; }
 
         [GridHidden]
-        public bool IstHalter { get; set; }
-
-        [GridHidden]
-        public bool Loeschkennzeichen { get; set; }
+        public bool IstHalter { get; set; }      
 
         #region Bankdaten
 

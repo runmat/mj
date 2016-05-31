@@ -88,7 +88,7 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult AdressenLoeschen()
         {
             ViewModel.DeleteItems(ModelState);
-            ViewModel.LoadPartners(); // TODO -> aus dem Model entfernen...
+          
             return PartialView("../Partner/AdressenPflege/AdressenGrid", ViewModel);
         }
         
@@ -97,9 +97,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ShowAdressenGrid()
         {
-            // TODO -> offensichtlich dürfen nur Halter ein Fzg. zulassen, das muss dann demnächst aus dem BAPI kommen
-            // PartnerKennung -> in das Model
-            ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
+            // TODO (ggf. oder das hier löschen) -> dürfen nur Halter Fzg. zulassen? 
+            
+            // ViewData["ZulassungAvailable"] = ViewModel.PartnerSelektor.PartnerKennung.ToUpper() == "HALTER";
 
             ViewModel.LoadPartners();
 

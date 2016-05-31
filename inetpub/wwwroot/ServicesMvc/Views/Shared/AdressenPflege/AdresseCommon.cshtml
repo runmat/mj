@@ -165,8 +165,9 @@
             type: "POST",
             url: "AdressenLoeschen",
             data: { },            
-            success: function (result) {
+            success: function () {
                 TryAddressGridRefresh();
+                GridAdresse_MultiSelectUpdate(0, false);
             }
         });
 

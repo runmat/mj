@@ -174,10 +174,11 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             var adrList = Adressen.Where(s => s.IsSelected).ToList();
 
             AdressenDataService.SaveAdressen(adrList, modelState.AddModelError);
-            
-            // TODO -> wieso geht das nicht?
-            //foreach (var adresse in adrList)            
-            //    Adressen.RemoveAll(a => a.KundenNr == adresse.KundenNr);                                   
+
+            var kuNummern = adrList.Select(s => s.KundenNr);
+
+            foreach (var kundennummer in kuNummern)                           
+                AdressenDataService.Adressen.RemoveAll(a => a.KundenNr == kundennummer);            
         } 
 
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
