@@ -31,7 +31,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
                 {
                     var dict = new Dictionary<string, string>();
 
-                    if (MappedUpload && DataMappingsForCustomer.Count != 1)
+                    if (MappedUpload && DataMappingsForCustomerAndProcess.Count != 1)
                         dict.Add("MappingSelection", Localize.MappingSelection);
 
                     dict.Add("FileUpload", Localize.UploadExcelFile);
@@ -73,7 +73,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void InitViewModel(bool mappedUpload = false)
         {
-            DataConverterInit();
+            DataConverterInit("UploadFahrzeug");
 
             MappedUpload = mappedUpload;
 

@@ -40,7 +40,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
                 {
                     var dict = new Dictionary<string, string>();
 
-                    if (DataMappingsForCustomer.Count != 1)
+                    if (DataMappingsForCustomerAndProcess.Count != 1)
                         dict.Add("MappingSelection", Localize.MappingSelection);
 
                     dict.Add("FileUpload", Localize.UploadExcelFile);
@@ -100,7 +100,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
             Modus = modus;
             SubmitMode = false;
 
-            DataConverterInit();
+            DataConverterInit(Modus == UploadModus.PartnerUpload ? "UploadPartnerdaten" : Modus == UploadModus.FahrzeugUpload ? "UploadFahrzeugdaten" : "UploadPartnerUndFahrzeugdaten");
 
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);

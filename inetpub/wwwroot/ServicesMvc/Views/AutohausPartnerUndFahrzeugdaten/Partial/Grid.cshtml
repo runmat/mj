@@ -62,6 +62,9 @@ else
             columns.XBound(c => c.Referenz2);
             columns.XBound(c => c.Gewerblich);
             columns.XBound(c => c.Partnerrolle);
+            columns.XBound(c => c.Iban);
+            columns.XBound(c => c.Stichtagsabbuchung).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.EvbNr);
             columns.XBound(c => c.KundendatenSpeichern);
         })
         .XAutoColumnConfiguration()
@@ -138,6 +141,9 @@ else
             columns.XBound(c => c.Halter.Referenz2);
             columns.XBound(c => c.Halter.Gewerblich);
             columns.XBound(c => c.Halter.Partnerrolle).Visible(false);
+            columns.XBound(c => c.Halter.Iban);
+            columns.XBound(c => c.Halter.Stichtagsabbuchung).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.Halter.EvbNr);
             columns.XBound(c => c.Halter.KundendatenSpeichern);
             columns.XBound(c => c.Fahrzeug.FahrgestellNr);
             columns.XBound(c => c.Fahrzeug.HerstellerSchluessel);

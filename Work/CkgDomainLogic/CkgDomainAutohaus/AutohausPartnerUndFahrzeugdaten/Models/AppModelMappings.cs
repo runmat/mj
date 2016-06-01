@@ -40,6 +40,9 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
                         d.SAVEKDDATEN = s.KundendatenSpeichern.BoolToX();
                         d.STRASSE = s.Strasse;
                         d.TELEFON = s.Telefon;
+                        d.IBAN = s.Iban;
+                        d.SEPA_STICHTAG = s.Stichtagsabbuchung;
+                        d.EVBNR = s.EvbNr;
                     }));
             }
         }
