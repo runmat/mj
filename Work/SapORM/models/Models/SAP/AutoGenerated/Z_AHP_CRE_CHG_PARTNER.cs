@@ -82,6 +82,18 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -94,6 +106,12 @@ namespace SapORM.Models
 					{
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
 
 						KUNNR = (string)row["KUNNR"],
 						PARTART = (string)row["PARTART"],
@@ -274,6 +292,18 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_OUT_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -286,6 +316,12 @@ namespace SapORM.Models
 					{
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
 
 						KUNNR = (string)row["KUNNR"],
 						PARTART = (string)row["PARTART"],
@@ -466,6 +502,18 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
 			private bool MappingErrorProcessed { get; set; }
 
 			public static GT_WEB_IMP Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -478,6 +526,12 @@ namespace SapORM.Models
 					{
 						SAPConnection = sapConnection,
 						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
 
 						KUNNR = (string)row["KUNNR"],
 						PARTART = (string)row["PARTART"],
