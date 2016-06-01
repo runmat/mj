@@ -294,10 +294,8 @@ namespace CarDocu.Models
 
         public bool CheckPdfPageCountIsValid(string documentTypeCode, int scanImagesCount)
         {
-            PdfPageCountIsValid = true;
-
-            if (documentTypeCode.IsNullOrEmpty())
-                return true;
+            if (documentTypeCode == null)
+                return false;
 
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
