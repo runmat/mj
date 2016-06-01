@@ -294,6 +294,8 @@ namespace CarDocu.Models
 
         public bool CheckPdfPageCountIsValid(string documentTypeCode, int scanImagesCount)
         {
+            PdfPageCountIsValid = true;
+
             if (documentTypeCode.IsNullOrEmpty())
                 return false;
 
