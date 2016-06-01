@@ -189,7 +189,7 @@ namespace CkgDomainLogic.General.Controllers
 
                     var showCustomImage = GeneralConfigurationProvider.GetConfigVal("Login", "DisplayCustomPictureInsteadOfAvatar");
                     if (showCustomImage.ToUpper() == "TRUE")
-                        LogonContext.UserNameForDisplay = "Pia Schmidt";                    
+                        LogonContext.UserNameForDisplay = "Claudia Schmidt";                    
                 }
                 else
                 {
