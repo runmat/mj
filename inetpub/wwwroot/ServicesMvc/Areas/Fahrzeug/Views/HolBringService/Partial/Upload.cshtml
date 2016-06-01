@@ -1,19 +1,19 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload
 
 <script>
-    
+
     var firstRequest = '@Request["firstRequest"]';
 
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-    
-    $(function () {
+
+    $(function() {
         $("#pdfContentUpload").resizable({
             helper: "ui-resizable-helper"
         });
 
         ResizePdfContainer();
 
-        $(window).resize(function () {
+        $(window).resize(function() {
             ResizePdfContainer();
         });
 
@@ -22,6 +22,10 @@
         if ($("#UploadFileName").val().length > 0) {
             $('#BtnRemoveFile').removeClass("hidden");
         }
+        setTimeout(function() {
+            resizeIframe(); 
+        }, 2500);
+        
 
     });
 
@@ -70,11 +74,49 @@
         $('#UploadFileName').val("");
     }
 
+
+    
+   	var iframe = document.getElementById('uploadedPdf');
+
+    function pageY(elem) {
+        return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+    }
+
+    function resizeIframe() {
+        var height = document.documentElement.clientHeight;
+        height -= pageY(document.getElementById('uploadedPdf')) * 1.4 ;
+        height = (height < 0) ? 0 : height;
+        document.getElementById('uploadedPdf').style.height = height + 'px';
+        //alert('Test');
+        return false;
+    }
+
+    // .onload doesn't work with IE8 and older.
+    if (iframe.attachEvent) {
+        iframe.attachEvent("onload", resizeIframe);
+    } else {    
+        iframe.onload=resizeIframe;
+    }
+    window.onresize = resizeIframe;
+
+    $(window).trigger('resize');
 </script>
-<div id="DivUpload" class="margin-top-20">
+
+<style>
+.container-fluid {
+    margin-bottom: 0px;
+}
+.form-actions {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+</style>
+
+<div id="DivUpload" class="margin-top-5 ">
     @using (Ajax.BeginForm("Upload", "HolBringService", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivUpload", OnComplete = "AjaxFormUploadComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormUpload" }))
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormUpload"}))
     {
         @Html.FormValidationSummary()
         
@@ -89,27 +131,23 @@
                               .Name("fileUpload")
                               .Localizable("de-DE")
                               .Async(async => async
-                                                  .Save("UploadPdfStart", "HolBringService")
-                                                  .SaveField("uploadFiles")
-                                                  .AutoUpload(true))
+                                  .Save("UploadPdfStart", "HolBringService")
+                                  .SaveField("uploadFiles")
+                                  .AutoUpload(true))
                               .Multiple(false)
                               .ShowFileList(false)
                               .ClientEvents(events => events
-                                                          .OnUpload("UploadStart")
-                                                          .OnSuccess("UploadFinished")
-                                                          .OnError("UploadError")
+                                  .OnUpload("UploadStart")
+                                  .OnSuccess("UploadFinished")
+                                  .OnError("UploadError")
                               )
                               )
                     </div>
+
                 </div>
                 
                 @Html.HiddenFor(m => m.DeleteUploadedPdf)
                 @Html.HiddenFor(m => m.UploadFileName)
-
-                <div id="pdfContentUpload" class="ui-widget-content pdfContentStyle hidden">
-                    <iframe id="uploadedPdf" src="ShowUploadedPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
-                </div>    
-                
             </div>
             <div class="span5">
                 <button id="BtnRemoveFile" onclick="RemovePdfFile();" type="button" class="btn green hidden">
@@ -117,4 +155,5 @@
             </div>
         </div>
     }
+    <iframe id="uploadedPdf" src="ShowUploadedPdf" onLoad="resizeIframe()" class="ui-widget-content" frameborder="no" style="position: relative; height: 100%; width: 100%;"/>
 </div>

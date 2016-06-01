@@ -55,5 +55,11 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return PartialView("StatusverfolgungZulassungDetails", detailDaten);
         }
+
+        public ActionResult RedirectPage(string targetUrl)
+        {
+            ViewData["target"] = targetUrl;
+            return View("Redirect/Index");
+        }
     }
 }
