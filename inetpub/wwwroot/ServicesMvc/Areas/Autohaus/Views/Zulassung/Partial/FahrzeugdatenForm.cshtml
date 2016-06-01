@@ -343,13 +343,14 @@
                                   "<button onclick='return ZulassungVehicleRemove(\"<#= data.FinID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.VehicleDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>");
                           }
 
-                          columns.XBound(c => c.FIN).ClientTemplate(
-                                  Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
-                              ).Title(Localize.VIN + " <span class='requiredField requiredFieldMarker'>*</span>");
+                        columns.XBound(c => c.FIN).ClientTemplate(
+                                Html.TextBox("FIN", "<#= data.FIN #>", new Dictionary<string, object> { { "class", "m-wrap medium uppercase editvinvalue" }, { "data-fieldname", "FIN" } }).ToHtmlString()
+                                ).Title(Localize.VIN + (isMassenabmeldung ? "" : " <span class='requiredField requiredFieldMarker'>*</span>"));
+                          
+                        columns.XBound(c => c.HandelsName).ClientTemplate(
+                                Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
+                            );
 
-                          columns.XBound(c => c.HandelsName).ClientTemplate(
-                                  Html.TextBox("HandelsName", "<#= data.HandelsName #>", new Dictionary<string, object> { { "class", "m-wrap medium editvinvalue" }, { "data-fieldname", "HandelsName" } }).ToHtmlString()
-                              );
 
                           columns.XBound(c => c.FzgModell).ClientTemplate("<input type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title(Localize.Model + " <span class='requiredField requiredFieldMarker'>*</span>").Hidden(!Model.HasEtikett);
                           columns.XBound(c => c.Farbe).ClientTemplate("<input type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title(Localize.Color + " <span class='requiredField requiredFieldMarker'>*</span>").Hidden(!Model.HasEtikett);

@@ -119,7 +119,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [GridAction]
         public ActionResult FahrzeugAuswahlSelectedAjaxBinding()
         {
-            var items = ViewModel.FinList.Where(x => !string.IsNullOrEmpty(x.FIN) || (ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung && x.IsSchnellabmeldungSpeicherrelevant));
+            var items = ViewModel.FinList.Where(x => !string.IsNullOrEmpty(x.FIN) || (ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung && x.IsMassenabmeldungSpeicherrelevant) || (ViewModel.Zulassung.Zulassungsdaten.IsSchnellabmeldung && x.IsSchnellabmeldungSpeicherrelevant));
             return View(new GridModel(items));
         }
 

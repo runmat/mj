@@ -103,6 +103,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
         public bool VorhandenesKennzReservieren { get; set; }
 
+        public bool IsMassenabmeldungSpeicherrelevant
+        {
+            get { return (FIN.IsNotNullOrEmpty() || HandelsName.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || ZulassungFahrzeugart.IsNotNullOrEmpty()); }
+        }
+
         #endregion
 
         #region Schnellabmeldung

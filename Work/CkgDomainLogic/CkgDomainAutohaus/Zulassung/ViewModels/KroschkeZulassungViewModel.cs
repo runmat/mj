@@ -1880,8 +1880,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-            if ((Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung) &&
-                FinList.None(x => !string.IsNullOrEmpty(x.FIN)))
+            if ((Zulassung.Zulassungsdaten.IsMassenzulassung && FinList.None(x => !string.IsNullOrEmpty(x.FIN))) || (Zulassung.Zulassungsdaten.IsMassenabmeldung && FinList.None(x => x.IsMassenabmeldungSpeicherrelevant)))
                 addModelError(string.Empty, Localize.NoVehicleSelected);
 
             if (fahrzeugdatenModel.HasEtikett)
@@ -1921,9 +1920,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        public void ValidateZulassungsdatenForm(ModelStateDictionary modelState, Zulassungsdaten fahrzeugdatenModel)
+        public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten zulassungsdatenModel)
         {
-            if (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen && fahrzeugdatenModel.MindesthaltedauerDays == 0)            
+            if (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen && zulassungsdatenModel.MindesthaltedauerDays == 0)            
                 modelState["MindesthaltedauerDays"].Errors.Clear();
                                     
             if (ZulassungsVorgangsarten.None())
@@ -1931,7 +1930,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
-                var zulkreis = $"{fahrzeugdatenModel.Zulassungskreis}{"-"}";
+                var zulkreis = string.Format("{0}{1}", zulassungsdatenModel.Zulassungskreis, "-");
 
                 var tmpFinList = FinList.Where(x => !string.IsNullOrEmpty(x.FIN)
                                                     &&
@@ -1960,12 +1959,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     }
                 }
             }
+            else if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+            {
+                if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+            }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
                 if (FinList.None(x => x.IsSchnellabmeldungSpeicherrelevant))
                     modelState.AddModelError(string.Empty, Localize.PleaseChooseOneOrMoreVehicles);
 
-                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNullOrEmpty()))
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
                     modelState.AddModelError(string.Empty,
                         $"{Localize.LicenseNo} {Localize.Required.NotNullOrEmpty().ToLower()}");
 
@@ -1981,6 +1985,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             !regexTuevAu.IsMatch(x.TuevAu)))
                     modelState.AddModelError(string.Empty,
                         $"{Localize.TuevAu} {Localize.Invalid.NotNullOrEmpty().ToLower()} ({Localize.Format}: {Localize.DateFormat_MMJJ})");
+            }
+            else if (ModusAbmeldung)
+            {
+                if (zulassungsdatenModel.Kennzeichen.IsNullOrEmpty() || zulassungsdatenModel.Kennzeichen.EndsWith("-"))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
             }
         }
 
