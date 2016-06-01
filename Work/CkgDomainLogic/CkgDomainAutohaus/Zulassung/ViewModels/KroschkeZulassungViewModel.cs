@@ -1927,7 +1927,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten zulassungsdatenModel)
+        public void ValidateZulassungsdatenForm(ModelStateDictionary modelState, Zulassungsdaten zulassungsdatenModel)
         {
             if (SonderzulassungsMode == SonderzulassungsMode.Firmeneigen && zulassungsdatenModel.MindesthaltedauerDays == 0)            
                 modelState["MindesthaltedauerDays"].Errors.Clear();
@@ -1969,10 +1969,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
                 if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+                    modelState.AddModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
 
                 if (FinList.Any(x => x.Kennzeichen.IsNotNullOrEmpty() && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
-                    addModelError(string.Empty, Localize.LicenseNoInvalid);
+                    modelState.AddModelError(string.Empty, Localize.LicenseNoInvalid);
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
@@ -1984,7 +1984,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         $"{Localize.LicenseNo} {Localize.Required.NotNullOrEmpty().ToLower()}");
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNotNullOrEmpty() && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
-                    addModelError(string.Empty, Localize.LicenseNoInvalid);
+                    modelState.AddModelError(string.Empty, Localize.LicenseNoInvalid);
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
                     modelState.AddModelError(string.Empty,
@@ -2002,7 +2002,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else if (ModusAbmeldung)
             {
                 if (zulassungsdatenModel.Kennzeichen.IsNullOrEmpty() || zulassungsdatenModel.Kennzeichen.EndsWith("-"))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+                    modelState.AddModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
             }
         }
 
