@@ -40,7 +40,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
                 {
                     var dict = new Dictionary<string, string>();
 
-                    if (DataMappingsForCustomer.Count != 1)
+                    if (DataMappingsForCustomerAndProcess.Count != 1)
                         dict.Add("MappingSelection", Localize.MappingSelection);
 
                     dict.Add("FileUpload", Localize.UploadExcelFile);
@@ -100,7 +100,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
             Modus = modus;
             SubmitMode = false;
 
-            DataConverterInit();
+            DataConverterInit(Modus == UploadModus.PartnerUpload ? "UploadPartnerdaten" : Modus == UploadModus.FahrzeugUpload ? "UploadFahrzeugdaten" : "UploadPartnerUndFahrzeugdaten");
 
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
@@ -196,15 +196,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
 
         public void ValidateUploadItems()
         {
-            if (UploadItems.Any())
-            {
-                UploadItems.ForEach(ValidateSingleUploadItem);
-
-                if (UploadItems.First() is UploadFahrzeugdaten)
-                    UploadDataService.LoadTypdaten(UploadItems.Select(u => (UploadFahrzeugdaten)u));
-                else if (UploadItems.First() is UploadPartnerUndFahrzeugdaten)
-                    UploadDataService.LoadTypdaten(UploadItems.Select(u => ((UploadPartnerUndFahrzeugdaten)u).Fahrzeug).Where(f => !string.IsNullOrEmpty(f.FahrgestellNr)));
-            }
+            UploadItems.ForEach(ValidateSingleUploadItem);
 
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;
