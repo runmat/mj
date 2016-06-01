@@ -307,7 +307,7 @@ namespace CarDocu.Models
             else
             {
                 PdfPageCountIsValid = (documentType.EnforceExactPageCount == 0 || scanImagesCount == 0 || documentType.EnforceExactPageCount == scanImagesCount);
-                PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+                PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : ValidFinNumber ? FinNumber : FileService.CreateFriendlyGuid());
             }
 
             return PdfPageCountIsValid;
