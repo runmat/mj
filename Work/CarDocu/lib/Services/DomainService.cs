@@ -7,7 +7,6 @@ using CarDocu.Models;
 using GeneralTools.Services;
 using System.Collections.ObjectModel;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using WebTools.Services;
 
@@ -15,38 +14,32 @@ namespace CarDocu.Services
 {
     public static class DomainService
     {
-        public static bool DebugIsAdminEnvironment
-        {
-            get
-            {
-                return Environment.UserName.ToLower().Contains("xjenzenm") &&
-                       Environment.MachineName.ToUpper().Contains("AHW570");
-            }
-        }
+        public static bool DebugIsAdminEnvironment => Environment.UserName.ToLower().Contains("jenzenm") &&
+                                                      Environment.MachineName.ToUpper().Contains("AHW590");
 
-        public static string AppName { get { return AppSettings.AppName; } }
+        public static string AppName => AppSettings.AppName;
 
-        public static string AppVersion { get { return $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00")}"; } }
+        public static string AppVersion => $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00")}";
 
-        public static DateTime JobCancelDate { get { return DateTime.Parse("01.01.2000"); } }
+        public static DateTime JobCancelDate => DateTime.Parse("01.01.2000");
 
-        public static string DomainPath { get { return Repository.AppSettings.DomainPath; } }
+        public static string DomainPath => Repository.AppSettings.DomainPath;
 
-        public static string DomainName { get { return Repository.AppSettings.DomainName; } }
+        public static string DomainName => Repository.AppSettings.DomainName;
 
         private static DomainRepository _repository;
-        public static DomainRepository Repository { get { return (_repository ?? (_repository = new DomainRepository())); } }
-        public static bool RepositoryIsInitialized {  get { return _repository != null; } }
+        public static DomainRepository Repository => (_repository ?? (_repository = new DomainRepository()));
+        public static bool RepositoryIsInitialized => _repository != null;
 
         private static DomainThreads _threads;
-        public static DomainThreads Threads { get { return (_threads ?? (_threads = new DomainThreads())); } }
+        public static DomainThreads Threads => (_threads ?? (_threads = new DomainThreads()));
 
         private static SimpleLogger _logger;
-        public static SimpleLogger Logger { get { return (_logger ?? (_logger = new SimpleLogger(Repository.UserErrorLogDirectoryName))); } }
+        public static SimpleLogger Logger => (_logger ?? (_logger = new SimpleLogger(Repository.UserErrorLogDirectoryName)));
 
         private static ObservableCollection<StatusMessage>  _statusMessages = new ObservableCollection<StatusMessage>();
-        public static ObservableCollection<StatusMessage> StatusMessages { get { return (_statusMessages ?? (_statusMessages = new ObservableCollection<StatusMessage>())); } }
-        
+        public static ObservableCollection<StatusMessage> StatusMessages => (_statusMessages ?? (_statusMessages = new ObservableCollection<StatusMessage>()));
+
         static public bool UserLogon(Func<string> getUserLoginDataFromDialog, bool forceAdminLogon = false)
         {
             if (forceAdminLogon)

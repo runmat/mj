@@ -50,7 +50,7 @@ namespace CarDocu.Models
             set { _pdfIsSynchronized = value; SendPropertyChanged("PdfIsSynchronized"); }
         }
 
-        public bool FinNumberUppercase { get { return SelectedDocumentType.InputRuleObject.AllowedLengths.Any(); } }
+        public bool FinNumberUppercase => SelectedDocumentType?.InputRuleObject.AllowedLengths.Any() ?? false;
 
         [XmlIgnore]
         public bool ValidFinNumber
@@ -287,9 +287,10 @@ namespace CarDocu.Models
             ScanImages.ForEach(scanImage => scanImage.ParentDocument = this);
         }
 
-        public string PdfDirectoryName { get { return GetDocumentPdfDirectoryName(); } }
+        public string PdfDirectoryName => GetDocumentPdfDirectoryName();
 
-        public bool PdfPageCountIsValid { get; set; }
+        [XmlIgnore]
+        public bool PdfPageCountIsValid { get; private set; }
 
         public bool CheckPdfPageCountIsValid(string documentTypeCode, int scanImagesCount)
         {
@@ -322,11 +323,11 @@ namespace CarDocu.Models
                 // FIN = ursprünglich 17 Stellen
                 // FIN = letzte 11 Stellen (von ursprünglich 17) und von diesen 11 Stellen dann die 9. Stelle löschen:
                 pdfFinNumber = pdfFinNumber.Substring(6);
-                pdfFinNumber = string.Format("{0}{1}", pdfFinNumber.Substring(0, 8), pdfFinNumber.Substring(9));
+                pdfFinNumber = $"{pdfFinNumber.Substring(0, 8)}{pdfFinNumber.Substring(9)}";
             }
 
             if (!PdfPageCountIsValid || !ValidFinNumber)
-                pdfFinNumber = string.Format("FEHLER_{0}", PdfErrorGuid);
+                pdfFinNumber = $"FEHLER_{PdfErrorGuid}";
 
             return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
         }

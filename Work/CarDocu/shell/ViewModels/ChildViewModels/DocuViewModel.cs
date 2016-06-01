@@ -48,7 +48,7 @@ namespace CarDocu.ViewModels
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
         public ICommand ScanDocumentTemplateInsertCommand { get; private set; }
 
-        public bool UiModeBatchScanOnly { get { return Parent.UiModeBatchScanOnly; } }
+        public bool UiModeBatchScanOnly => Parent.UiModeBatchScanOnly;
 
         private bool _finNumberAlertHintVisible;
         public bool FinNumberAlertHintVisible
@@ -186,15 +186,9 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public double DocuArtSelectionSmallOpacity 
-        { 
-            get { return DocuArtSelectionBigVisible ? 0.2 : 1.0; }
-        }
+        public double DocuArtSelectionSmallOpacity => DocuArtSelectionBigVisible ? 0.2 : 1.0;
 
-        public int GlobalDocumentTypesColumnCount 
-        {
-            get { return GlobalDocumentTypes.Count == 0 ? 1 : ((GlobalDocumentTypes.Count+2)/3); }
-        }
+        public int GlobalDocumentTypesColumnCount => GlobalDocumentTypes.Count == 0 ? 1 : ((GlobalDocumentTypes.Count+2)/3);
 
 // ReSharper disable InconsistentNaming
         private bool _dummyNoValidDocumentType_NeededForFinTextBoxFocus;
@@ -254,9 +248,9 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public bool ModeTemplate { get { return ScanDocument != null && ScanDocument.IsTemplate; } }
+        public bool ModeTemplate => ScanDocument != null && ScanDocument.IsTemplate;
 
-        public bool ScanAppendAvailable { get { return !IsStoredModel || (ScanDocument != null && ScanDocument.IsTemplate); } }
+        public bool ScanAppendAvailable => !IsStoredModel || (ScanDocument != null && ScanDocument.IsTemplate);
 
         public string FinNumber 
         {
@@ -268,15 +262,9 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public CharacterCasing CharacterCasing
-        {
-            get { return ScanDocument.FinNumberUppercase ? CharacterCasing.Upper : CharacterCasing.Normal; }
-        }
+        public CharacterCasing CharacterCasing => ScanDocument.FinNumberUppercase ? CharacterCasing.Upper : CharacterCasing.Normal;
 
-        public bool ValidDocumentType
-        {
-            get { return !_dummyNoValidDocumentType_NeededForFinTextBoxFocus && ScanDocument.ValidDocumentType; }
-        }
+        public bool ValidDocumentType => !_dummyNoValidDocumentType_NeededForFinTextBoxFocus && ScanDocument.ValidDocumentType;
 
         public bool IsTestMode
         {
@@ -300,7 +288,7 @@ namespace CarDocu.ViewModels
                 SendPropertyChanged("BatchSummary");
             }
         }
-        public ObservableCollection<StatusMessage> StatusMessages { get { return DomainService.StatusMessages; } }
+        public ObservableCollection<StatusMessage> StatusMessages => DomainService.StatusMessages;
 
 
         private void SendPropertyChangedFin()
@@ -312,25 +300,13 @@ namespace CarDocu.ViewModels
             SendPropertyChanged("FinNumberInputHintVisible");
         }
 
-        public bool FinNumberInputHintVisible
-        {
-            get { return ScanDocument.ValidFinNumber; }
-        }
+        public bool FinNumberInputHintVisible => ScanDocument.ValidFinNumber;
 
-        public bool FinNumberBackgroundOk
-        {
-            get { return string.IsNullOrEmpty(FinNumber) || ScanDocument.ValidFinNumber; }
-        }
+        public bool FinNumberBackgroundOk => string.IsNullOrEmpty(FinNumber) || ScanDocument.ValidFinNumber;
 
-        public Media.Brush FinNumberBackground
-        {
-            get { return FinNumberBackgroundOk ? Media.Brushes.LightGoldenrodYellow : Media.Brushes.LightPink; }
-        }
+        public Media.Brush FinNumberBackground => FinNumberBackgroundOk ? Media.Brushes.LightGoldenrodYellow : Media.Brushes.LightPink;
 
-        public Media.Brush FinNumberForeground
-        {
-            get { return FinNumberBackgroundOk ? Media.Brushes.Blue : Media.Brushes.Red; }
-        }
+        public Media.Brush FinNumberForeground => FinNumberBackgroundOk ? Media.Brushes.Blue : Media.Brushes.Red;
 
         public string LastScannedBarcodeType { get; private set; }
 
@@ -722,7 +698,7 @@ namespace CarDocu.ViewModels
             {
                 var globalCode = DomainService.Repository.EnterpriseSettings.DocumentTypes.FirstOrDefault(dt => dt.Code == commandParameter);
                 var codeName = (globalCode != null ? globalCode.Name : commandParameter);
-                Tools.AlertError(string.Format("Fehler: Dieses Dokument enthält keine Dokumentenart '{0}'.", codeName));
+                Tools.AlertError($"Fehler: Dieses Dokument enthält keine Dokumentenart '{codeName}'.");
                 return;
             }
 
@@ -788,14 +764,10 @@ namespace CarDocu.ViewModels
         {
             try
             {
-                var repeatings = 50;
+                const int repeatings = 50;
                 var testDirectory = new DirectoryInfo(TempRootPath);
 
-                var allFilesCount = 0;
-                foreach (var dir in testDirectory.GetDirectories())
-                {
-                    allFilesCount += dir.GetFiles().Length * repeatings;
-                }
+                var allFilesCount = testDirectory.GetDirectories().Sum(dir => dir.GetFiles().Length*repeatings);
 
                 progressBarOperation.Current = 0;
                 progressBarOperation.Total = allFilesCount;
@@ -807,15 +779,12 @@ namespace CarDocu.ViewModels
                 {
                     foreach (var dir in testDirectory.GetDirectories())
                     {
-                        foreach (var file in dir.GetFiles())
+                        foreach (var file in dir.GetFiles().Where(file => file.Extension.ToLower() == ".jpg" || file.Extension.ToLower() == ".jpeg"))
                         {
-                            if (file.Extension.ToLower() == ".jpg" || file.Extension.ToLower() == ".jpeg")
-                            {
-                                BatchScanPageScanned(new Bitmap(file.FullName));
-                                Thread.Sleep(10);
-                                progressBarOperation.Current++;
-                                progressBarOperation.Details = "Scanne Datei " + progressBarOperation.Current + " von " + allFilesCount;
-                            }
+                            BatchScanPageScanned(new Bitmap(file.FullName));
+                            Thread.Sleep(10);
+                            progressBarOperation.Current++;
+                            progressBarOperation.Details = "Scanne Datei " + progressBarOperation.Current + " von " + allFilesCount;
                         }
                     }
                 }
@@ -949,13 +918,7 @@ namespace CarDocu.ViewModels
             }
         }
 
-        public bool FinNumberAsTagCollection
-        {
-            get
-            {
-                return (SelectedDocumentType?.UseTagCollectionForDocumentNameEditing).GetValueOrDefault();
-            }
-        }
+        public bool FinNumberAsTagCollection => (SelectedDocumentType?.UseTagCollectionForDocumentNameEditing).GetValueOrDefault();
 
         public string SelectedTag
         {
