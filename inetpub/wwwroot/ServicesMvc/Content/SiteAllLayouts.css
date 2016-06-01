@@ -1450,7 +1450,6 @@ div.span-alert-placeholder .alert {
     display: inline-block;
     width: 80%;
 }
-}
 
 #divFormControlsTranslations {
     width: 800px;
@@ -1674,6 +1673,54 @@ div.span-alert-placeholder .alert {
 
 .bg-color-ckg-palered, .portlet.box.bg-color-ckg-palered {
     background-color: #f2dede !important;
+}
+
+.color-ckg-blue {
+    color: #0A2D69 !important;
+}
+
+.color-ckg-lightblue {
+    color: #6E8CBF !important;
+}
+
+.color-ckg-paleblue {
+    color: #A3E8FF !important;
+}
+
+.bg-color-ckg-blue, .portlet.box.bg-color-ckg-blue {
+    background-color: #0A2D69 !important;
+}
+
+.bg-color-ckg-lightblue, .portlet.box.bg-color-ckg-lightblue {
+    background-color: #6E8CBF !important;
+}
+
+.bg-color-ckg-paleblue, .portlet.box.bg-color-ckg-paleblue {
+    background-color: #A3E8FF !important;
+}
+
+.color-ckg-gray {
+    color: #9B9B9B !important;
+}
+
+.color-ckg-lightgray {
+    color: #DDDDDD !important;
+}
+
+.color-ckg-palegray {
+    color: #DEE9EE !important;
+}
+
+.bg-color-ckg-gray, .portlet.box.bg-color-ckg-gray {
+    background-color: #9B9B9B !important;
+}
+
+.bg-color-ckg-lightgray, .portlet.box.bg-color-ckg-lightgray {
+    background-color: #DDDDDD !important;
+}
+
+.bg-color-ckg-palegray, .portlet.box.bg-color-ckg-palegray {
+    background-color: #DEE9EE !important;
 }
 
 .bg-white, .portlet.box.bg-white {

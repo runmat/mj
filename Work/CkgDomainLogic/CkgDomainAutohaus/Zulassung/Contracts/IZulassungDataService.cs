@@ -54,6 +54,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError);
 
+        bool Check48hExpressForZulst(string kreis, Action<string, string> addModelError);
+
         #endregion
 
         #region Statusverfolgung
