@@ -220,21 +220,21 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public void SelectAdresse(string id, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var sl = Adressen.FirstOrDefault(f => f.KundenNr == id);
+            var sl = AdressenFiltered.FirstOrDefault(f => f.KundenNr == id);
             if (sl == null)
                 return;
 
             sl.IsSelected = select;
-            allSelectionCount = Adressen.Count(c => c.IsSelected);
+            allSelectionCount = AdressenFiltered.Count(c => c.IsSelected);
         }
 
         public void SelectAdressen(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            Adressen.ToListOrEmptyList().ForEach(sl => (sl.IsSelected) = select);
+            AdressenFiltered.ToListOrEmptyList().ForEach(sl => (sl.IsSelected) = select);
                       
-            allSelectionCount = Adressen.Count(c => c.IsSelected);
-            allCount = Adressen.Count;
-            allFoundCount = Adressen.Count;
+            allSelectionCount = AdressenFiltered.Count(c => c.IsSelected);
+            allCount = AdressenFiltered.Count;
+            allFoundCount = AdressenFiltered.Count;
         }
 
         #endregion
