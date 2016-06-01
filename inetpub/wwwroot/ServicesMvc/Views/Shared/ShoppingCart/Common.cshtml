@@ -1,7 +1,9 @@
 ﻿@{
-    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+    var logonContext = (CkgDomainLogic.General.Contracts.ILogonContextDataService) SessionHelper.GetSessionObject("LogonContext");
 
     var _submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
+
+    var _warenkorbNichtBearbeiten = logonContext.GetCategorySettingsForWebUser("WARENKORB_NICHT_BEARBEITEN");
 }
 
 
@@ -81,6 +83,8 @@
 
     var _submitRightAuftraegeNichtAbsenden = '@_submitRightAuftraegeNichtAbsenden';
 
+    var _warenkorbNichtBearbeiten = '@_warenkorbNichtBearbeiten';
+
     function ShoppingCartHide() {
         $(".shopping-cart-body").html("");
         $(".hidden-on-shopping-cart-opened").slideDown(200);
@@ -103,7 +107,7 @@
                 ShoppingCartShowResult(result);
             }
         });
-
+        
         return false;
     };
     
@@ -118,6 +122,7 @@
         $(".shopping-cart-body-inner").html(result);
         $(".hidden-on-shopping-cart-opened").slideUp(200);
         $(".shopping-cart-body-inner").slideDown(200);
+       
         FormPreparePrivateGridShoppingCard();
         ShoppingCartMenuRefreshCount();
     }
@@ -221,6 +226,13 @@
         // prepare multi row selection
         App.initUniform();
         Grid_PrepareMultiRowSelected("GridShoppingCart", true);
+
+        if (_warenkorbNichtBearbeiten.toLowerCase() === 'true') {
+            $('.conditionalHide').hide();
+        }
+        else {
+            $('.conditionalHide').show();
+        }
     }
 
     function OnColumnShowHide_GridShoppingCart() {
@@ -288,13 +300,12 @@
             return;
         }
 
-
         if (_submitRightAuftraegeNichtAbsenden.toLowerCase() === "true") {
             $(".shopping-cart-item-selection-count").addClass("hide");
         } else {
             $(".shopping-cart-item-selection-count").removeClass("hide");
         }
-
+        
         SetGridShoppingCart_MultiSelectItemCountHint(count);
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));

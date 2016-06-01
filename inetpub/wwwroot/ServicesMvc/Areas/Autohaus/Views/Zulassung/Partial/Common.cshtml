@@ -1,7 +1,9 @@
 ﻿@using CkgDomainLogic.General.Contracts
 @model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel 
 @{
-    var logonContext = (LogonContextDataServiceBase)SessionHelper.GetSessionObject("LogonContext");
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+
+    var _editWarenkorbNichtBearbeiten = logonContext.GetCategorySettingsForWebUser("WARENKORB_NICHT_BEARBEITEN");
 
     var submitRightAuftraegeNichtAbsenden = logonContext.GetCategorySettingsForWebUser("AUFTRAEGE_NICHT_ABSENDEN");
 }
@@ -62,7 +64,7 @@
     var _showShoppingcartInitial = @(Model.ShoppingCartInitialShow.ToString().ToLower());
     var _skipBankAddressData = false;
     var _submitRightAuftraegeNichtAbsenden = '@submitRightAuftraegeNichtAbsenden';
-
+    var _editWarenkorbNichtBearbeiten = '@_editWarenkorbNichtBearbeiten';
 
     function KroschkeZulassungFormPreparePrivate() {
         FormPreparePrivate();
@@ -213,6 +215,12 @@
     }
 
     function ShoppingCartZulassungItemEdit(id, zulParams) {
+
+        if(_editWarenkorbNichtBearbeiten === 'true'){
+            alert("Leider keine ausreichende Berechtigung zum Bearbeiten");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: "ShoppingCartZulassungItemEdit",
@@ -234,6 +242,11 @@
     }
 
     function ShoppingCartZulassungItemRemove(id) {
+
+        if(_editWarenkorbNichtBearbeiten === 'true'){
+            alert("Leider keine ausreichende Berechtigung zum Löschen");
+            return;
+        }
 
         if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
             return false;
