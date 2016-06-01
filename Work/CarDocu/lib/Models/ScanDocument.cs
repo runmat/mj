@@ -297,7 +297,7 @@ namespace CarDocu.Models
             PdfPageCountIsValid = true;
 
             if (documentTypeCode.IsNullOrEmpty())
-                return false;
+                return true;
 
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,10 +13,7 @@ namespace CarDocu.Models
     public class DocumentType : ModelBase
     {
         static private List<string> _barcodeList;
-        static public List<string> BarcodeListProp
-        {
-            get { return (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13", "CODE_39" })); }
-        }
+        static public List<string> BarcodeListProp => (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13", "CODE_39" }));
 
         private string _code;
         public string Code
