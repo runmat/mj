@@ -431,19 +431,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 switch (field.ToLower())
                 {
                     case "wunschkennz1":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz1 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz1 = value.NotNullOrEmpty().Replace(" ", "").ToUpper());
                         break;
 
                     case "wunschkennz2":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz2 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz2 = value.NotNullOrEmpty().Replace(" ", "").ToUpper());
                         break;
 
                     case "wunschkennz3":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz3 = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.WunschKennz3 = value.NotNullOrEmpty().Replace(" ", "").ToUpper());
                         break;
 
                     case "kennzeichen":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Kennzeichen = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.Kennzeichen = value.NotNullOrEmpty().Replace(" ", "").ToUpper());
                         break;
 
                     case "vorhandeneskennzreservieren":
@@ -474,7 +474,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         break;
 
                     case "fin":
-                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.FIN = value);
+                        FinList.Where(x => x.FinID == finId).ToList().ForEach(x => x.FIN = value.NotNullOrEmpty().Replace(" ", "").ToUpper());
                         break;
 
                     case "halter":
@@ -649,6 +649,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         static bool KennzeichenIsValid(string kennzeichen)
         {
             return Zulassungsdaten.KennzeichenIsValid(kennzeichen);
+        }
+
+        static bool KennzeichenFormatIsValid(string kennzeichen)
+        {
+            var regexItem = new Regex("^[A-ZÄÖÜ]{1,3}-[0-9A-ZÄÖÜ]{1,18}$");
+
+            return regexItem.IsMatch(kennzeichen);
         }
 
         public void DataMarkForRefreshHalterAdressen()
@@ -1963,6 +1970,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 if (FinList.Any(x => x.IsMassenabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.LicenseNo, Localize.Required.NotNullOrEmpty().ToLower()));
+
+                if (FinList.Any(x => x.Kennzeichen.IsNotNullOrEmpty() && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
+                    addModelError(string.Empty, Localize.LicenseNoInvalid);
             }
             else if (Zulassung.Zulassungsdaten.IsSchnellabmeldung)
             {
@@ -1972,6 +1982,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && (x.Kennzeichen.IsNullOrEmpty() || x.Kennzeichen.EndsWith("-"))))
                     modelState.AddModelError(string.Empty,
                         $"{Localize.LicenseNo} {Localize.Required.NotNullOrEmpty().ToLower()}");
+
+                if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Kennzeichen.IsNotNullOrEmpty() && Zulassung.Halter.Adresse.Land == "DE" && !KennzeichenFormatIsValid(x.Kennzeichen)))
+                    addModelError(string.Empty, Localize.LicenseNoInvalid);
 
                 if (FinList.Any(x => x.IsSchnellabmeldungSpeicherrelevant && x.Halter.IsNullOrEmpty()))
                     modelState.AddModelError(string.Empty,
