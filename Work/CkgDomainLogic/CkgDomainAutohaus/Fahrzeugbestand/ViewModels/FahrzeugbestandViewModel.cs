@@ -14,7 +14,6 @@ using GeneralTools.Models;
 using System.Web.Script.Serialization;
 using GeneralTools.Services;
 using SapORM.Contracts;
-using WebTools.Services;
 
 namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 {
@@ -59,7 +58,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         {
             DataMarkForRefresh();
 
-            if (!String.IsNullOrEmpty(partnerId))
+            if (!string.IsNullOrEmpty(partnerId))
             {
                 var partnerIdClear = CryptoMd5.Decrypt(partnerId);
 
@@ -67,8 +66,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
                     FahrzeugAkteBestandSelektor.Halter = partnerIdClear.ToSapKunnr();
             }
 
-            if (!String.IsNullOrEmpty(fzgId))
-                FahrzeugAkteBestandSelektor.FinId = CryptoMd5.Decrypt(fzgId);
+            if (!string.IsNullOrEmpty(fzgId))
+                FahrzeugAkteBestandSelektor.FIN = CryptoMd5.Decrypt(fzgId);
         }
 
         public override void DataMarkForRefresh()

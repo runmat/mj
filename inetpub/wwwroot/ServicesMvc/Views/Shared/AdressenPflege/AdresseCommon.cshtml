@@ -40,6 +40,10 @@
     function OnDataBound_GridAdresse() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+
+        // class=checker ...
+        App.initUniform();
+        //Grid_PrepareMultiRowSelected("GridAdressen");
     }
 
     function OnColumnShowHide_GridAdresse() {
@@ -153,6 +157,80 @@
             }
         });
     }
+
+    
+    function AdressenLoeschen() {
+        
+        $.ajax({
+            type: "POST",
+            url: "AdressenLoeschen",
+            data: { },            
+            success: function () {
+                TryAddressGridRefresh();
+                GridAdresse_MultiSelectUpdate(0, false);
+            }
+        });
+
+
+    }
+
+    function OnSelectionChange_GridAdresse(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "AdsressenAuswahlSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                if (count === 0) {              
+                    $("#AdressenAuswahlCount").addClass('hide');
+                    $("#btnAddresseLoeschen").addClass('hide');
+                    return;
+                }              
+                $("#btnAddresseLoeschen").removeClass('hide');
+                $("#AdressenAuswahlCount").removeClass('hide');
+                $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
+            }
+        });
+    }
+
+    function GridAdresse_OnAllSelectionChange(cb) {
+        var check = cb.is(':checked');
+        $.ajax({
+            type: "POST",
+            url: "AdsressenAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                result.allSelected = result.allSelectionCount === result.allCount;               
+                //$("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                //$("#csv-upload-reset > span.all-count").text(result.allCount);
+                GridAdresse_MultiSelectUpdate(result.allSelectionCount, result.allSelected);
+                FilterGrid("GridAdresse");
+            }
+        });
+    }
+
+    function GridAdresse_MultiSelectUpdate(count, allSelected) {
+        //alert(allSelected);
+        var cb = $("input[name=checkedRecords]");
+
+        if (count == 0) {
+            $("#btnAddresseLoeschen").addClass('hide');
+            $("#AdressenAuswahlCount").addClass('hide');
+            $("#checkAllRecords").attr("checked", allSelected);            
+            return;
+        }
+        
+        $("#btnAddresseLoeschen").removeClass('hide');
+        $("#AdressenAuswahlCount").removeClass('hide');
+        $("#AdressenAuswahlCount > span").html('Sie haben ' + count + ' Adresse' + (count == 1 ? '' : 'n') + ' zum Löschen vorgemerkt!');
+        $(".checkedRecords").attr("checked", allSelected);
+   }
+
 
 </script>
 

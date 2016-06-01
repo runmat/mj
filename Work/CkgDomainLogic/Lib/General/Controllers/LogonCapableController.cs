@@ -282,9 +282,10 @@ namespace CkgDomainLogic.General.Controllers
             LogonTimeoutCheckIgnore = true;
 
             var timeoutOccurred = LogonTimeoutOccurred; // || LogonContext.UserName.IsNullOrEmpty();
-            if (timeoutOccurred)
+            if (timeoutOccurred) {
+                LogonContext.LogoutUser();
                 LogonContext = null;
-
+            }
             return Json(new { timeoutOccurred });
         }
 
@@ -309,7 +310,7 @@ namespace CkgDomainLogic.General.Controllers
         public JsonResult UserLogout()
         {
             var logoutUrl = LogonContext.LogoutUrl.NotNullOrEmpty();
-
+            LogonContext.LogoutUser();
             if (logoutUrl.IsNotNullOrEmpty() && !logoutUrl.ToLower().StartsWith("http"))
                 logoutUrl = "http://" + logoutUrl.ToLower();
 

@@ -468,11 +468,11 @@
         $.uniform.update($("#uncheckAllRecords"));
     }
 
-
     function UnSelectCheckbox(id) {
         var ctl = $('#' + id);
-        $('#' + id).attr('checked', false);
-        OnSelectionChange_GridFahrzeugAuswahl(ctl);
+        ctl.attr('checked', false);
+        ctl.parents(".checked").removeClass("checked");
+        OnSelectionChange_GridFahrzeugAuswahl(ctl);        
     }
 
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {

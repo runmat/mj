@@ -97,5 +97,7 @@ namespace CkgDomainLogic.General.Contracts
         void MaintenanceMessageConfirmAndDontShowAgain();
 
         int GetAppIdCurrent();
+
+        string GetCategorySettingsForWebUser(string rightname);
     }
 }
