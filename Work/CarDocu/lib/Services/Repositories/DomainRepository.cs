@@ -626,7 +626,7 @@ namespace CarDocu.Services
 
         public DocumentType GetImageDocumentType(string documentTypeCode)
         {
-            if (documentTypeCode.IsNullOrEmpty())
+            if (documentTypeCode == null)
                 return null;
 
             return EnterpriseSettings.DocumentTypes.FirstOrDefault(docTypes => docTypes.Code == documentTypeCode);
