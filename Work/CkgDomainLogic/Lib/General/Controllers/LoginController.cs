@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Services;
 using MvcTools.Web;
@@ -187,9 +188,13 @@ namespace CkgDomainLogic.General.Controllers
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
 
-                    var showCustomImage = GeneralConfigurationProvider.GetConfigVal("Login", "DisplayCustomPictureInsteadOfAvatar");
-                    if (showCustomImage.ToUpper() == "TRUE")
-                        LogonContext.UserNameForDisplay = "Claudia Schmidt";                    
+                    var customImagePath = GeneralConfigurationProvider.GetConfigVal("Login", "DisplayCustomPictureInsteadOfAvatar");
+                    var customName = GeneralConfigurationProvider.GetConfigVal("Login", "DisplayCustomNameForCustomPicture");
+                    if (System.IO.File.Exists(Server.MapPath(customImagePath)))
+                    {
+                        LogonContext.CustomPicturePath = customImagePath;
+                        LogonContext.UserNameForDisplay = customName;
+                    }
                 }
                 else
                 {
