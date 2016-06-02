@@ -5,6 +5,8 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using CkgDomainInternal.Verbandbuch.Contracts;
 using CkgDomainInternal.Verbandbuch.Services;
+using CkgDomainLogic.Admin.Contracts;
+using CkgDomainLogic.Admin.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Services;
 using CkgDomainLogic.Charts.Contracts;
@@ -261,6 +263,8 @@ namespace ServicesMvc
 
             builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<AppBatchZuordnungDataService>().As<IAppBatchZuordnungDataService>().InstancePerHttpRequest();
+
             builder.RegisterType<LeasingEndgueltigerVersandDataServiceSAP>().As<ILeasingEndgueltigerVersandDataService>().InstancePerHttpRequest();
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

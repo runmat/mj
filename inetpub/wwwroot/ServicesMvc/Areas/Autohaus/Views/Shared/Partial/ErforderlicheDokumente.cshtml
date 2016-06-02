@@ -1,0 +1,41 @@
+﻿@model List<MvcTools.Models.SimpleUiListItem>
+
+<style>
+
+    .dd-handle, .dd-handle:hover {
+        height: auto;
+        cursor: default !important;
+        border-radius: 7px !important;
+        
+        background-color: transparent;
+        color: black;
+    }
+
+    .necessary-document-item-original, .necessary-document-item-original:hover,
+    .separate-necessary-document-item, .separate-necessary-document-item:hover {
+        background-color: #a0c539;
+    }
+
+    .necessary-document-item-copy, .necessary-document-item-copy:hover {
+        background-color: #cddf9a; /* fallback color for older browsers */
+        background-color: rgba(160, 197, 57, 0.5);
+    }
+    
+    .necessary-document-item-error, .necessary-document-item-error:hover {
+        background-color: #f2dede;
+    }
+    
+</style>
+
+<ul id="ZiPoolInfo" class="dd-list">
+    
+    @foreach (var item in Model.ToListOrEmptyList())
+    {
+        <li class="dd-item">
+            <div class="dd-handle @item.StyleCssClass">
+                @item.Text
+            </div>
+        </li>
+    }
+
+</ul>

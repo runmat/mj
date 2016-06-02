@@ -30,8 +30,8 @@
             .Filterable(false);
         columns.XBound(c => c.BelegNr).Width(145).Title("").Filterable(false).Sortable(false)
                 .ClientTemplate(
-                        "<button onclick='return ShoppingCartZulassungItemEdit(\"<#= data.BelegNr #>\", \"<#= data.ZulassungFromShoppingCartParameters #>\");' class='btn mini blue tooltips margin-right-10' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
-                        "<button onclick='return ShoppingCartZulassungItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                        "<button onclick='return ShoppingCartZulassungItemEdit(\"<#= data.BelegNr #>\", \"<#= data.ZulassungFromShoppingCartParameters #>\");' class='btn mini blue tooltips margin-right-10 conditionalHide' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
+                        "<button onclick='return ShoppingCartZulassungItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips conditionalHide' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
             );
         columns.XBound(c => c.BeauftragungsArt);
         columns.XBound(c => c.FahrgestellNr);

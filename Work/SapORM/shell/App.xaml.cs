@@ -456,6 +456,9 @@ namespace SapORM
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_READ_RECHERCHE_PROT_01");
             //FunctionReflector.WriteOrmForSapFunction("Z_ZLD_EXPORT_PDF_TAGLI");
             //FunctionReflector.WriteOrmForSapFunction("Z_DPM_POSTAL_CODE_CHECK");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_CD_ABGL_STRAFZETTEL");
+            //FunctionReflector.WriteOrmForSapFunction("Z_DPM_CD_ABGL_ABMELDUNGEN");
+            //FunctionReflector.WriteOrmForSapFunction("Z_AHP_GET_ZLD_48H_VERSAND");
 
             #endregion
 

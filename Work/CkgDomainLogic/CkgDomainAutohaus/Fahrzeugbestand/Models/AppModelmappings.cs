@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
+using SapORM.Contracts;
 using SapORM.Models;
 
 namespace CkgDomainLogic.Fahrzeugbestand.Models
@@ -156,6 +157,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.EvbNr = s.EVBNR;                      // 20150612 MMA ITA 8127
                         d.Stichtagsabbuchung = s.SEPA_STICHTAG; // 20150612 MMA ITA 8127
                         d.Iban = s.IBAN;
+                        
+                        d.IstInAllenRollen = s.ROLLE_ALLE.ToUpper() == "X";
+                        d.IstHalter = s.ROLLE_HALTER.ToUpper() == "X";
+                        d.IstKaeufer = s.ROLLE_KAEUFER.ToUpper() == "X";
+                        d.IstSteuerzahler = s.ROLLE_KOINH.ToUpper() == "X";
                     }));
             }
         }
@@ -163,7 +169,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         private static readonly Dictionary<string, string> PartnerToAdresseDict = new Dictionary<string, string>
             {
                 {"KUNNR", "KundenNr"},
-                {"PARTART", "Kennung"},
+                {"PARTART", "Kennung"}, // ita8931
                 {"NAME1", "Name1"},
                 {"NAME2", "Name2"},
                 {"STRASSE", "Strasse"},
@@ -193,7 +199,13 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     (s, d) =>
                         {
                             d.GEWERBE = s.Gewerblich.BoolToX();
-                            d.SAVEKDDATEN = true.BoolToX();
+                            d.SAVEKDDATEN = true.BoolToX(); 
+                            d.ROLLE_ALLE = true.BoolToX();
+                            d.ROLLE_HALTER = s.IstHalter ? true.BoolToX() : "";
+                            d.ROLLE_KAEUFER = s.IstKaeufer ? true.BoolToX() : "";
+                            d.ROLLE_KOINH = s.IstSteuerzahler ? true.BoolToX() : "";
+                            d.LOEVM = s.IsSelected ? true.BoolToX() : "";
+                            d.GROSS_KUNNR = "";
                         }));
             }
         }
@@ -206,6 +218,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                     PartnerToAdresseDict,
                     (s, d) =>
                         {
+                            d.IstInAllenRollen = s.ROLLE_ALLE.ToUpper() == "X";
+                            d.IstHalter = s.ROLLE_HALTER.ToUpper() == "X";
+                            d.IstKaeufer = s.ROLLE_KAEUFER.ToUpper() == "X";
+                            d.IstSteuerzahler = s.ROLLE_KOINH.ToUpper() == "X";
                         }));
             }
         }
