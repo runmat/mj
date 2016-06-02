@@ -44,6 +44,8 @@ namespace EasyExportGeneralTask
             //args = new[] { "WKDA" };
             //args = new[] { "WKDA_Selbstabmelder" };
             //args = new[] { "StarCar2" };
+            //args = new[] { "CarDocu_Strafzettel" };
+            //args = new[] { "CarDocu_Abmeldung" };
             //args = new[] { "WKDA_AT" };
             //args = new[] { "WKDA_AT_Selbstabmelder" };
             // ----- TEST -----
@@ -312,6 +314,22 @@ namespace EasyExportGeneralTask
                     #region StarCar2
 
                     QueryStarCar2();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.CarDocu_Strafzettel:
+                    #region CarDocu_Strafzettel
+
+                    QueryCarDocu_Strafzettel();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.CarDocu_Abmeldung:
+                    #region CarDocu_Abmeldung
+
+                    QueryCarDocu_Abmeldung();
 
                     #endregion
                     break;
@@ -2155,6 +2173,108 @@ namespace EasyExportGeneralTask
 
                         #endregion
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für CarDocu - Strafzettel
+        /// </summary>
+        private static void QueryCarDocu_Strafzettel()
+        {
+            try
+            {
+                Z_DPM_CD_ABGL_STRAFZETTEL.Init(S.AP, "I_AG", taskConfiguration.Kundennummer);
+
+                if (taskConfiguration.AbfrageNachDatum)
+                    S.AP.SetImportParameter("I_VORGDAT", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
+
+                var sapResults = Z_DPM_CD_ABGL_STRAFZETTEL.ET_OUT.GetExportListWithExecute(S.AP);
+
+                // EasyArchiv-Query initialisieren
+                var Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                var nichtGefundene = new List<Z_DPM_CD_ABGL_STRAFZETTEL.ET_OUT>();
+
+                foreach (var item in sapResults)
+                {
+                    result.clear();
+
+                    var queryexpression = string.Format(".1001={0}", item.VERTRAGS_NR);
+
+                    var status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    if (status == "Keine Daten gefunden.")
+                        nichtGefundene.Add(item);
+                }
+
+                if (nichtGefundene.Any() && taskConfiguration.NoDataMailsSenden)
+                {
+                    var mailText = "AG / Anlagedatum / Vertragsnummer / Kennzeichen" + Environment.NewLine + Environment.NewLine;
+
+                    foreach (var item in nichtGefundene)
+                    {
+                        mailText += string.Format("{0} / {1} / {2} / {3}{4}", item.KUNNR_AG, item.EIGDA.ToString("dd.MM.yyyy"), item.VERTRAGS_NR, item.LICENSE_NUM, Environment.NewLine);
+                    }
+
+                    Helper.SendEMail("Fehlende Dokumente optische Archivierung Strafzettel", mailText, taskConfiguration.NoDataMailEmpfaenger, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für CarDocu - Abmeldung
+        /// </summary>
+        private static void QueryCarDocu_Abmeldung()
+        {
+            try
+            {
+                Z_DPM_CD_ABGL_ABMELDUNGEN.Init(S.AP, "I_AG", taskConfiguration.Kundennummer);
+
+                if (taskConfiguration.AbfrageNachDatum)
+                    S.AP.SetImportParameter("I_ANLAGEDATUM", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
+
+                var sapResults = Z_DPM_CD_ABGL_ABMELDUNGEN.ET_OUT.GetExportListWithExecute(S.AP);
+
+                // EasyArchiv-Query initialisieren
+                var Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                var nichtGefundene = new List<Z_DPM_CD_ABGL_ABMELDUNGEN.ET_OUT>();
+
+                foreach (var item in sapResults)
+                {
+                    result.clear();
+
+                    var queryexpression = string.Format(".1001={0}", item.CHASSIS_NUM);
+
+                    var status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    if (status == "Keine Daten gefunden.")
+                        nichtGefundene.Add(item);
+                }
+
+                if (nichtGefundene.Any() && taskConfiguration.NoDataMailsSenden)
+                {
+                    var mailText = "AG / Anlagedatum / Fahrgestellnummer / Kennzeichen" + Environment.NewLine + Environment.NewLine;
+
+                    foreach (var item in nichtGefundene)
+                    {
+                        mailText += string.Format("{0} / {1} / {2} / {3}{4}", item.KUNNR_AG, item.ANLAGEDATUM.ToString("dd.MM.yyyy"), item.CHASSIS_NUM, item.LICENSE_NUM, Environment.NewLine);
+                    }
+
+                    Helper.SendEMail("Fehlende Dokumente optische Archivierung Abmeldungen", mailText, taskConfiguration.NoDataMailEmpfaenger, "");
                 }
             }
             catch (Exception ex)

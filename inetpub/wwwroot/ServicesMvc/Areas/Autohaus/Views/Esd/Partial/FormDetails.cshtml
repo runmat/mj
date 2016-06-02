@@ -61,7 +61,19 @@
                 
                     <div class="span6">
 
-                        @using (Html.PortletBox(Localize.Country + " / " + Localize.VehicleData, "", "light-grey bg-white box-top", false))
+                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white box-top", false))
+                        {
+                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
+
+                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
+                        }
+
+
+                        @using (Html.PortletBox(Localize.Country + " / " + Localize.VehicleData, "", "light-grey bg-white box-bottom", false))
                         {
                             @Html.FormDropDownListFor(m => m.Land, EsdBeauftragung.LaenderAuswahlliste.ToSelectList(), new {@class = "m-wrap small"},
                                                                         postControlHtml:@<text><div id="land-icon"><i></i></div></text>)
@@ -73,42 +85,11 @@
                             @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium" })
                         }
 
-                        @using (Html.PortletBox(Localize.Contactperson, "", "light-grey bg-white box-bottom", false))
-                        {
-                            @Html.FormTextBoxFor(m => m.AnsprechVorname, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.AnsprechNachname, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.AnsprechEmail, new { @class = "m-wrap" })
-
-                            @Html.FormTextBoxFor(m => m.AnsprechTelefonNr, new { @class = "m-wrap" })
-                        }
-
                     </div>
 
                     <div class="span6">
-                        
-                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white box-top", false))
-                        {
-                            <div class="dienstleistungen-wrapper">
-
-                                @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
-
-                                <div class="dienstleistungen-header">
-                                    <span class="header-left">@Localize.AvailableServices</span>
-                                    <span class="header-right">@Localize.SelectedServices</span>
-                                </div>
-
-                                <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
-                                    @foreach (var dl in Model.AvailableDienstleistungen)
-                                    {
-                                        <option value="@dl.MaterialNr" @dl.SelectedAsString>@dl.Name</option>
-                                    }
-                                </select>
-                            </div>
-                        }
-
-                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white box-bottom", false))
+                      
+                        @using (Html.PortletBox(Localize.CustomerData, "", "light-grey bg-white box-top", false))
                         {
                             @Html.FormTextBoxFor(m => m.KundeVorname, new {@class = "m-wrap"})
 
@@ -118,6 +99,24 @@
 
                             @Html.FormTextBoxFor(m => m.KundeTelefonNr, new {@class = "m-wrap"})
                         }
+
+                        @using (Html.PortletBox(Localize.Services, "", "light-grey bg-white box-bottom", false))
+                        {
+                            <div class="dienstleistungen-wrapper">
+                                @Html.HiddenFor(m => m.GewaehlteDienstleistungenString)
+                                <div class="dienstleistungen-header">
+                                    <span class="header-left">@Localize.AvailableServices</span>
+                                    <span class="header-right">@Localize.SelectedServices</span>
+                                </div>
+                                <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
+                                    @foreach (var dl in Model.AvailableDienstleistungen)
+                                    {
+                                        <option value="@dl.MaterialNr" @dl.SelectedAsString>@dl.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+
 
                     </div>
 

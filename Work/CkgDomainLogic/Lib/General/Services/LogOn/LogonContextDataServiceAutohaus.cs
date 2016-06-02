@@ -105,7 +105,7 @@ namespace CkgDomainLogic.General.Services
                 });
 
             dbContext.SetLastLogin(DateTime.Now);
-
+            dbContext.SetLoggedOn(true);
             return true;
         }
 

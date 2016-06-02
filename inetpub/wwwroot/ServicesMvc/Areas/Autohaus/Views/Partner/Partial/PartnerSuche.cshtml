@@ -17,7 +17,7 @@
             @Html.FormRadioButtonListFor(m => m.PartnerKennung, PartnerSelektor.PartnerKennungen, new { @class = "m-wrap" })
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+                <button type="submit" id="btnPartnerSuche" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
             </div>
         </div>  
         
@@ -27,4 +27,7 @@
         </script>
     }
 </div>
+
+
+
 

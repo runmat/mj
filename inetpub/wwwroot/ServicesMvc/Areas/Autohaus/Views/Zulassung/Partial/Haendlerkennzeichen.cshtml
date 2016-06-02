@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+<style>
+    .control-group-raw {
+        font-size: 1.1em;
+    }
+    #KennzeichenMenge.m-wrap.xsmall {
+        width: 21px !important;
+    }
+</style>
+
+<script type="text/javascript">
+
+    function AjaxFormHaendlerkennzeichenComplete() {
+        FormPrepareAjax();
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+</script>
+
+
+<h4>@Localize.Dealer @Localize.LicenseNo</h4>
+
+@Html.Partial("Partial/HaendlerkennzeichenForm", @Model.Zulassung.GetHaendlerkennzeichendatenModel())
+

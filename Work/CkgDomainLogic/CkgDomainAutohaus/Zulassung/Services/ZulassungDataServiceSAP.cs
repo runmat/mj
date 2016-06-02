@@ -258,13 +258,13 @@ namespace CkgDomainLogic.Autohaus.Services
 
             var item = checkResults.First();
 
-            zulassung.Ist48hZulassung = item.IST_48H.XToBool();
+            zulassung.Ist48HZulassung = item.IST_48H.XToBool();
             zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
 
             var generellAbwAdresseVerwenden = item.ABW_ADR_GENERELL.XToBool();
 
             // Abweichende Versandadresse?
-            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48hZulassung && !String.IsNullOrEmpty(item.NAME1)))
+            if ((zulassung.Zulassungsdaten.ModusVersandzulassung && generellAbwAdresseVerwenden) || (zulassung.Ist48HZulassung && !String.IsNullOrEmpty(item.NAME1)))
             {
                     var adrs48h = AppModelMappings.Z_ZLD_CHECK_48H_ES_VERSAND_48H_To_Adresse.Copy(item);
 
@@ -279,7 +279,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal, List<string> zusatzformularartenToExclude = null)
         {
             try
             {
@@ -315,7 +315,7 @@ namespace CkgDomainLogic.Autohaus.Services
                         BelegNr = vorgang.BelegNr,
                         PositionsNr = posNr.ToString().PadLeft0(6),
                         MaterialNr = vorgang.Zulassungsdaten.ZulassungsartMatNr,
-                        Menge = "1"
+                        Menge = vorgang.Zulassungsdaten.ZulassungsartMenge.ToString()
                     });
 
                     vorgang.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = vorgang.BelegNr);
@@ -421,7 +421,10 @@ namespace CkgDomainLogic.Autohaus.Services
 
             // alle PDF Formulare abrufen:
             var fileNamesSap = Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME.GetExportList(SAP);
-            
+
+            if (zusatzformularartenToExclude != null)
+                fileNamesSap.RemoveAll(f => f.FORMART.In(zusatzformularartenToExclude));
+
             var fileNames = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular.Copy(fileNamesSap).ToListOrEmptyList();
 
             // alle relativen Pfade zu absoluten Pfaden konvertieren:
@@ -592,7 +595,28 @@ namespace CkgDomainLogic.Autohaus.Services
                 addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
 
             return AppModelMappings.Z_M_ZGBS_BEN_ZULASSUNGSUNT_GT_WEB_To_ZiPoolDaten.Copy(Z_M_ZGBS_BEN_ZULASSUNGSUNT.GT_WEB.GetExportList(SAP)).FirstOrDefault();
-        } 
+        }
+
+        public bool Check48hExpressForZulst(string kreis, Action<string, string> addModelError)
+        {
+            try
+            {
+                Z_AHP_GET_ZLD_48H_VERSAND.Init(SAP, "I_KREISKZ", kreis);
+
+                SAP.Execute();
+            }
+            catch (Exception e)
+            {
+                addModelError("", e.FormatSapSaveException());
+            }
+
+            if (SAP.ResultCode != 0)
+                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+
+            var sapItem = Z_AHP_GET_ZLD_48H_VERSAND.ET_ZLD_48H.GetExportList(SAP).FirstOrDefault();
+
+            return (sapItem != null && sapItem.Z48H.XToBool());
+        }
 
         #endregion
 
@@ -703,7 +727,9 @@ namespace CkgDomainLogic.Autohaus.Services
                 var posItems = posListe.Where(p => p.BelegNr == vorgang.BelegNr);
                 if (posItems.Any(p => p.PositionsNr == "000010"))
                 {
-                    vorgang.Zulassungsdaten.ZulassungsartMatNr = posItems.First(p => p.PositionsNr == "000010").MaterialNr;
+                    var firstMat = posItems.First(p => p.PositionsNr == "000010");
+                    vorgang.Zulassungsdaten.ZulassungsartMatNr = firstMat.MaterialNr;
+                    vorgang.Zulassungsdaten.ZulassungsartMenge = firstMat.Menge.ToInt(1);
                     vorgang.OptionenDienstleistungen.ZulassungsartMatNr = vorgang.Zulassungsdaten.ZulassungsartMatNr;
 
                     var kennzGroesse = vorgang.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == item.KENNZFORM);

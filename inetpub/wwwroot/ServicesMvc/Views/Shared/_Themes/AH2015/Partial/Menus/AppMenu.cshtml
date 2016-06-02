@@ -53,7 +53,11 @@
                         }
                         else
                         {
-                            <a class="@appFavoriteClassName" onclick="return OnMenuItemClick(this, @menuItem.AppID, false);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(menuItem)</a>
+                            <a class="@appFavoriteClassName submenu-item" onclick="return OnMenuItemClick(this, @menuItem.AppID, false);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">
+                                @Html.Partial("_Themes/AH2015/Partial/IconView", menuItem)
+                                @logonContext.TranslateMenuAppName(menuItem)
+
+                            </a>
                         }
                     </li>
                 }

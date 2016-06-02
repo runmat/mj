@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string Check48hExpress(Vorgang zulassung);
 
-        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal);
+        string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool partnerportal, List<string> zusatzformularartenToExclude = null);
 
         List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern);
 
@@ -53,6 +53,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
         List<PdfFormular> GetFormulare(FormulareSelektor selector, Action<string, string> addModelError);
 
         ZiPoolDaten GetZiPoolDaten(string kreis, Action<string, string> addModelError);
+
+        bool Check48hExpressForZulst(string kreis, Action<string, string> addModelError);
 
         #endregion
 

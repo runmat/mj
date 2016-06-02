@@ -54,10 +54,10 @@
 
     span.expressversand {
         display: inline-block;
-        margin: 0 0 0 10px;
-        width: 100px;
-        height: 64px;
-        background: url(/ServicesMvc/_Themes/AH2015/images/express-versand.png) 0 0 no-repeat;
+        margin: 0 0 0 13px;
+        width: 260px;
+        height: 80px;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-express-versand.png?v=20160330_1412) 0 0 no-repeat;
         padding: 0 0 0 0;
     }
 
@@ -79,12 +79,14 @@
     }
     .kroschke-evb-control-group .control-label {
         padding-top: 24px;
+        width: 280px !important;
     }
     .kroschke-evb-control-group .controls {
         padding-top: 20px;
+        margin-left: 290px !important;
     }
     .kroschke-evb {
-        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-evb.png) 55px 0px no-repeat;
+        background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-evb.png) 122px 0px no-repeat;
         height: 53px;
     }
 
@@ -114,6 +116,9 @@
         vertical-align: middle;
         padding-left: 10px;
     }
+    #EvbNr {
+        width: 67px!important;
+    }
 
     #hint-versandzulassung {
         display: block;
@@ -137,8 +142,6 @@
         vertical-align: middle;
         padding-left: 10px;
     }
-
-
 </style>
 
 <script type="text/javascript">
@@ -201,7 +204,15 @@
         }
     }   
 
-    $(function () {
+    function EvbTest() {
+        var group = $("#EvbNr").closest(".control-group");
+        var label = group.find(".control-label");
+
+        group.addClass("kroschke-evb-control-group");
+        label.addClass("kroschke-evb");
+    }
+
+    function InitZulassungsdatenFormUI() {
         $('#Zulassungskreis').off('change').on('change').change(function() {
             var zulassungskreis = $(this).val();
             SetZulassungskreis(zulassungskreis);
@@ -210,15 +221,11 @@
         InitEvbVersInfo("EvbNr", "evb-info"); // Anzeige der Versichererdaten gem. EVB
 
         EvbTest();
-    });
-
-    function EvbTest() {
-        var group = $("#EvbNr").closest(".control-group");
-        var label = group.find(".control-label");
-
-        group.addClass("kroschke-evb-control-group");
-        label.addClass("kroschke-evb");
     }
+
+    $(function () {
+        InitZulassungsdatenFormUI();
+    });
 
     function UpdateAnzahlAbmeldungen() {
         var anzAbm = $("#AnzahlAbmeldungen").val();
@@ -300,6 +307,11 @@
                     SetFinValue(finId, field, value);
                 });
 
+                $(document).off('change', '.editmisc');
+                $(document).on('change', '.editmisc', function () {            // Auswirkung auf ein Fahrzeug
+                    SonderzulMiscGridTextboxOnChange($(this));
+                }); 
+
                 // Kennzeichenänderung bei Massenabmeldung
                 $(document).off('focus', '.blockwk');
                 $(document).on('focus', '.blockwk', function () {     
@@ -347,6 +359,7 @@
         }
     }           
         
+        
         </text>
     }
 
@@ -375,6 +388,7 @@
         @Html.HiddenFor(m => m.AnzahlAbmeldungenAenderbar)
         @Html.HiddenFor(m => m.ModusPartnerportal)
         @Html.HiddenFor(m => m.SimuliereVersand)
+        @Html.HiddenFor(m => m.SonderzulassungsMode)
 
         if (Model.ModusAbmeldung)
         {
