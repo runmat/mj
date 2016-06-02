@@ -20,6 +20,10 @@ namespace CkgDomainLogic.General.Controllers
         protected override bool NeedsAuhentification { get { return false; } }
 
 
+        static IGeneralConfigurationProvider GeneralConfigurationProvider { get { return DependencyResolver.Current.GetService<IGeneralConfigurationProvider>(); } }
+
+
+
         public LoginController(IAppSettings appSettings, ILogonContextDataService logonContext, ISecurityService securityService, ILocalizationService localizationService)
             : base(appSettings, logonContext)
         {
@@ -182,6 +186,10 @@ namespace CkgDomainLogic.General.Controllers
                 {
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
+
+                    var showCustomImage = GeneralConfigurationProvider.GetConfigVal("Login", "DisplayCustomPictureInsteadOfAvatar");
+                    if (showCustomImage.ToUpper() == "TRUE")
+                        LogonContext.UserNameForDisplay = "Pia Schmidt";                    
                 }
                 else
                 {

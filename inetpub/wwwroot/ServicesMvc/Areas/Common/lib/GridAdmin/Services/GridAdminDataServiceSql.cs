@@ -174,7 +174,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             if (generalConf == null)
                 return new Dictionary<string, string>();
 
-            return generalConf.GetConfigAllServersVals("ConnectionString", null, "Description like '%INTER_SERVER_ACCESS%'");
+            return generalConf.GetConfigAllServerVals("ConnectionString", null, "Description like '%INTER_SERVER_ACCESS%'");
         }
     }
 }

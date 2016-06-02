@@ -356,5 +356,10 @@ namespace CkgDomainLogic.General.Services
         {
             return "";
         }
+
+        public string GetCategorySettingsForWebUser(string rightname)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

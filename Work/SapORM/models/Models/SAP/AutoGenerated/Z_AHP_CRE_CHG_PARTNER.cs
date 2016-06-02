@@ -82,39 +82,78 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_OUT
-				{
-					KUNNR = (string)row["KUNNR"],
-					PARTART = (string)row["PARTART"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					STRASSE = (string)row["STRASSE"],
-					HAUSNR = (string)row["HAUSNR"],
-					PLZNR = (string)row["PLZNR"],
-					ORT = (string)row["ORT"],
-					LAND = (string)row["LAND"],
-					EMAIL = (string)row["EMAIL"],
-					TELEFON = (string)row["TELEFON"],
-					FAX = (string)row["FAX"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					GEWERBE = (string)row["GEWERBE"],
-					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
-					REFKUNNR = (string)row["REFKUNNR"],
-					REFKUNNR2 = (string)row["REFKUNNR2"],
-					EVBNR = (string)row["EVBNR"],
-					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
-					IBAN = (string)row["IBAN"],
+				GT_OUT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
+
+						KUNNR = (string)row["KUNNR"],
+						PARTART = (string)row["PARTART"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						STRASSE = (string)row["STRASSE"],
+						HAUSNR = (string)row["HAUSNR"],
+						PLZNR = (string)row["PLZNR"],
+						ORT = (string)row["ORT"],
+						LAND = (string)row["LAND"],
+						EMAIL = (string)row["EMAIL"],
+						TELEFON = (string)row["TELEFON"],
+						FAX = (string)row["FAX"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						GEWERBE = (string)row["GEWERBE"],
+						SAVEKDDATEN = (string)row["SAVEKDDATEN"],
+						REFKUNNR = (string)row["REFKUNNR"],
+						REFKUNNR2 = (string)row["REFKUNNR2"],
+						EVBNR = (string)row["EVBNR"],
+						SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
+						IBAN = (string)row["IBAN"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_OUT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -253,39 +292,78 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_OUT_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_OUT_ERR
-				{
-					KUNNR = (string)row["KUNNR"],
-					PARTART = (string)row["PARTART"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					STRASSE = (string)row["STRASSE"],
-					HAUSNR = (string)row["HAUSNR"],
-					PLZNR = (string)row["PLZNR"],
-					ORT = (string)row["ORT"],
-					LAND = (string)row["LAND"],
-					EMAIL = (string)row["EMAIL"],
-					TELEFON = (string)row["TELEFON"],
-					FAX = (string)row["FAX"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					GEWERBE = (string)row["GEWERBE"],
-					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
-					REFKUNNR = (string)row["REFKUNNR"],
-					REFKUNNR2 = (string)row["REFKUNNR2"],
-					EVBNR = (string)row["EVBNR"],
-					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
-					IBAN = (string)row["IBAN"],
+				GT_OUT_ERR o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_OUT_ERR
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
+
+						KUNNR = (string)row["KUNNR"],
+						PARTART = (string)row["PARTART"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						STRASSE = (string)row["STRASSE"],
+						HAUSNR = (string)row["HAUSNR"],
+						PLZNR = (string)row["PLZNR"],
+						ORT = (string)row["ORT"],
+						LAND = (string)row["LAND"],
+						EMAIL = (string)row["EMAIL"],
+						TELEFON = (string)row["TELEFON"],
+						FAX = (string)row["FAX"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						GEWERBE = (string)row["GEWERBE"],
+						SAVEKDDATEN = (string)row["SAVEKDDATEN"],
+						REFKUNNR = (string)row["REFKUNNR"],
+						REFKUNNR2 = (string)row["REFKUNNR2"],
+						EVBNR = (string)row["EVBNR"],
+						SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
+						IBAN = (string)row["IBAN"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_OUT_ERR
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
@@ -424,39 +502,78 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_WEB_IMP Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_WEB_IMP
-				{
-					KUNNR = (string)row["KUNNR"],
-					PARTART = (string)row["PARTART"],
-					NAME1 = (string)row["NAME1"],
-					NAME2 = (string)row["NAME2"],
-					STRASSE = (string)row["STRASSE"],
-					HAUSNR = (string)row["HAUSNR"],
-					PLZNR = (string)row["PLZNR"],
-					ORT = (string)row["ORT"],
-					LAND = (string)row["LAND"],
-					EMAIL = (string)row["EMAIL"],
-					TELEFON = (string)row["TELEFON"],
-					FAX = (string)row["FAX"],
-					BEMERKUNG = (string)row["BEMERKUNG"],
-					GEWERBE = (string)row["GEWERBE"],
-					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
-					REFKUNNR = (string)row["REFKUNNR"],
-					REFKUNNR2 = (string)row["REFKUNNR2"],
-					EVBNR = (string)row["EVBNR"],
-					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
-					IBAN = (string)row["IBAN"],
+				GT_WEB_IMP o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_WEB_IMP
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
+
+						KUNNR = (string)row["KUNNR"],
+						PARTART = (string)row["PARTART"],
+						NAME1 = (string)row["NAME1"],
+						NAME2 = (string)row["NAME2"],
+						STRASSE = (string)row["STRASSE"],
+						HAUSNR = (string)row["HAUSNR"],
+						PLZNR = (string)row["PLZNR"],
+						ORT = (string)row["ORT"],
+						LAND = (string)row["LAND"],
+						EMAIL = (string)row["EMAIL"],
+						TELEFON = (string)row["TELEFON"],
+						FAX = (string)row["FAX"],
+						BEMERKUNG = (string)row["BEMERKUNG"],
+						GEWERBE = (string)row["GEWERBE"],
+						SAVEKDDATEN = (string)row["SAVEKDDATEN"],
+						REFKUNNR = (string)row["REFKUNNR"],
+						REFKUNNR2 = (string)row["REFKUNNR2"],
+						EVBNR = (string)row["EVBNR"],
+						SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
+						IBAN = (string)row["IBAN"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_WEB_IMP
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 

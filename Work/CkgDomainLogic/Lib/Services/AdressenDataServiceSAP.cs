@@ -19,6 +19,8 @@ namespace CkgDomainLogic.DomainCommon.Services
 
         public List<Adresse> Adressen { get { return PropertyCacheGet(() => LoadFromSap()); } }
 
+        //public List<Adresse> Adressen => LoadFromSap();
+
         public List<Adresse> RgAdressen { get { return PropertyCacheGet(() => GetCustomerAdressen("RG")); } }
         public List<Adresse> ReAdressen { get { return PropertyCacheGet(() => GetCustomerAdressen("RE")); } }
         public Adresse AgAdresse { get { return PropertyCacheGet(() => GetCustomerAdressen("AG").FirstOrDefault()); } }

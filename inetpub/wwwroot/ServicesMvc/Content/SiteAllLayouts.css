@@ -1450,7 +1450,6 @@ div.span-alert-placeholder .alert {
     display: inline-block;
     width: 80%;
 }
-}
 
 #divFormControlsTranslations {
     width: 800px;
@@ -1538,19 +1537,19 @@ div.span-alert-placeholder .alert {
 .prime-control .prime-checkbox-image {
     display: inline-block;
     margin: 0 0 0 20px;
-    width: 200px;
-    height: 65px;
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;
+    width: 1px;
+    height: 80px;
+    /*background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-up.png) 0 0 no-repeat;*/
 }
 .prime-control label.checkbox.checked .prime-checkbox-image {
-    background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;
+    /*background: url(/ServicesMvc/_Themes/AH2015/images/kroschke-prime-flag-down.png) 0 0 no-repeat;*/
 }
 
 .prime-control span.prime-helphint-icon {
     display: inline-block;
     vertical-align: top;
     margin: 3px 0 0 2px;
-    background: url(/ServicesMvc/images/kroschke-prime-info-icon.png) 0 0 no-repeat;
+    background: url(/ServicesMvc/images/kroschke-prime-info-icon.png?v=20160329) 0 0 no-repeat;
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -1562,7 +1561,7 @@ div.span-alert-placeholder .alert {
     border: 1px solid #e0e0e0 !important;
     border-radius: 10px !important;
     box-shadow: 5px 5px 20px -1px rgba(0,0,0,0.25)!important;
-    background-color: #FBF6EC;
+    background-color: #EBF4F7;
     line-height: 20px;
     white-space: normal;
 }
@@ -1674,6 +1673,54 @@ div.span-alert-placeholder .alert {
 
 .bg-color-ckg-palered, .portlet.box.bg-color-ckg-palered {
     background-color: #f2dede !important;
+}
+
+.color-ckg-blue {
+    color: #0A2D69 !important;
+}
+
+.color-ckg-lightblue {
+    color: #6E8CBF !important;
+}
+
+.color-ckg-paleblue {
+    color: #A3E8FF !important;
+}
+
+.bg-color-ckg-blue, .portlet.box.bg-color-ckg-blue {
+    background-color: #0A2D69 !important;
+}
+
+.bg-color-ckg-lightblue, .portlet.box.bg-color-ckg-lightblue {
+    background-color: #6E8CBF !important;
+}
+
+.bg-color-ckg-paleblue, .portlet.box.bg-color-ckg-paleblue {
+    background-color: #A3E8FF !important;
+}
+
+.color-ckg-gray {
+    color: #9B9B9B !important;
+}
+
+.color-ckg-lightgray {
+    color: #DDDDDD !important;
+}
+
+.color-ckg-palegray {
+    color: #DEE9EE !important;
+}
+
+.bg-color-ckg-gray, .portlet.box.bg-color-ckg-gray {
+    background-color: #9B9B9B !important;
+}
+
+.bg-color-ckg-lightgray, .portlet.box.bg-color-ckg-lightgray {
+    background-color: #DDDDDD !important;
+}
+
+.bg-color-ckg-palegray, .portlet.box.bg-color-ckg-palegray {
+    background-color: #DEE9EE !important;
 }
 
 .bg-white, .portlet.box.bg-white {

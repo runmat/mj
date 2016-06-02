@@ -20,9 +20,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
                 if (!String.IsNullOrEmpty(ValidationErrorsJson) && ValidationErrorsJson != "[]")
                     return Localize.Error;
 
-                if (!Fahrzeug.TypdatenGefunden)
-                    return Localize.TypeDataNotFound;
-
                 return Localize.OK;
             }
         }
@@ -38,7 +35,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
 
         [ModelMappingCompareIgnore]
         [GridHidden]
-        public bool IsValid { get { return (ValidationOk && Fahrzeug.TypdatenGefunden); } }
+        public bool IsValid { get { return ValidationOk; } }
 
         public Partnerdaten Halter { get; set; }
 
