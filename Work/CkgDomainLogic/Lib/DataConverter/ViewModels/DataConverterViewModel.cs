@@ -63,7 +63,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
 
         public MappedUploadMappingSelectionModel MappingSelectionModel
         {
-            get { return PropertyCacheGet(() => new MappedUploadMappingSelectionModel { MappingId = (DataMappingsForCustomer.Count == 1 ? DataMappingsForCustomer.First().Id : 0) }); }
+            get { return PropertyCacheGet(() => new MappedUploadMappingSelectionModel { MappingId = (DataMappingsForCustomerAndProcess.Count == 1 ? DataMappingsForCustomerAndProcess.First().Id : 0) }); }
             set { PropertyCacheSet(value); }
         }
 
@@ -81,8 +81,10 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public string CurrentProcessName { get; set; }
+
         [XmlIgnore]
-        public List<DataConverterMappingInfo> DataMappingsForCustomer { get { return PropertyCacheGet(() => LoadDataMappingsForCustomer()); } }
+        public List<DataConverterMappingInfo> DataMappingsForCustomerAndProcess { get { return PropertyCacheGet(() => LoadDataMappingsForCustomerAndProcess()); } }
 
         public DataMappingModel MappingModel { get; set; }
 
@@ -102,9 +104,11 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             set { _fileContainsHeadings = value; FileContainsHeadingsChanged(); }
         }
 
-        public void DataConverterInit()
+        public void DataConverterInit(string currentUploadProcessName = "")
         {
             MappingModel = new DataMappingModel();
+
+            CurrentProcessName = currentUploadProcessName;
 
             DataMarkForRefresh(true);
         }
@@ -112,7 +116,7 @@ namespace CkgDomainLogic.DataConverter.ViewModels
         private void DataMarkForRefresh(bool refreshStammdaten = false)
         {
             PropertyCacheClear(this, m => m.DataMappingsFiltered);
-            PropertyCacheClear(this, m => m.DataMappingsForCustomer);
+            PropertyCacheClear(this, m => m.DataMappingsForCustomerAndProcess);
 
             if (refreshStammdaten)
             {
@@ -137,9 +141,9 @@ namespace CkgDomainLogic.DataConverter.ViewModels
             DataMarkForRefresh();
         }
 
-        public List<DataConverterMappingInfo> LoadDataMappingsForCustomer()
+        public List<DataConverterMappingInfo> LoadDataMappingsForCustomerAndProcess()
         {
-            return DataConverterDataService.GetDataMappingInfos(new DataMappingSelektor { CustomerId = LogonContext.User.CustomerID, ProzessName = "" });
+            return DataConverterDataService.GetDataMappingInfos(new DataMappingSelektor { CustomerId = LogonContext.User.CustomerID, ProzessName = CurrentProcessName });
         }
 
         public void FilterDataMappings(string filterValue, string filterProperties)

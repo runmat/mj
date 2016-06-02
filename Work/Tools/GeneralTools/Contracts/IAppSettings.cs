@@ -12,6 +12,7 @@ namespace GeneralTools.Contracts
 
         string AppOwnerNameAndFullName { get; }
 
+        string AppOwnerSuffix { get; }
         string AppOwnerImpressumPartialViewName { get; }
 
         string AppOwnerKontaktPartialViewName { get; }

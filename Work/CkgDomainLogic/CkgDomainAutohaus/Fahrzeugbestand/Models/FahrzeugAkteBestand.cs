@@ -87,11 +87,14 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         {
             get
             {
-                var fzgArt = (GetZulassungViewModel != null ? GetZulassungViewModel().Fahrzeugarten.FirstOrDefault(a => a.Wert == ZulassungFahrzeugartId) : null);
+                var fzgArt = GetZulassungViewModel?.Invoke().Fahrzeugarten.FirstOrDefault(a => a.Wert == ZulassungFahrzeugartId);
 
                 return (fzgArt != null ? fzgArt.Beschreibung : ZulassungFahrzeugartId);
             }
         }
+
+        [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]
+        public int? MindesthaltedauerDays { get; set; }
 
         #endregion
 
@@ -99,6 +102,11 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
         public bool VorhandenesKennzReservieren { get; set; }
+
+        public bool IsMassenabmeldungSpeicherrelevant
+        {
+            get { return (FIN.IsNotNullOrEmpty() || HandelsName.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || ZulassungFahrzeugart.IsNotNullOrEmpty()); }
+        }
 
         #endregion
 
@@ -113,10 +121,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.TuevAu)]
         public string TuevAu { get; set; }
 
-        public bool IsSchnellabmeldungSpeicherrelevant
-        {
-            get { return (FIN.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || Halter.IsNotNullOrEmpty() || AuftragsNummer.IsNotNullOrEmpty() || BestellNr.IsNotNullOrEmpty() || Kostenstelle.IsNotNullOrEmpty()); }
-        }
+        public bool IsSchnellabmeldungSpeicherrelevant => (FIN.IsNotNullOrEmpty() || Kennzeichen.IsNotNullOrEmpty() || VorhandenesKennzReservieren || Halter.IsNotNullOrEmpty() || AuftragsNummer.IsNotNullOrEmpty() || BestellNr.IsNotNullOrEmpty() || Kostenstelle.IsNotNullOrEmpty());
 
         #endregion
 

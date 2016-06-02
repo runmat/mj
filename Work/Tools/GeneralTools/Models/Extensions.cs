@@ -50,6 +50,14 @@ namespace GeneralTools.Models
             return ModelMapping.Copy<TSource, TSource>(source, onInit: onInit).ToList();
         }
 
+        public static List<TSource> CopyAndInsertAtTopIfNotNull<TSource>(this List<TSource> source, TSource itemToInsert) where TSource : class, new()
+        {
+            if (itemToInsert == null)
+                return source;
+
+            return source.CopyAndInsertAtTop(itemToInsert);
+        }
+
         public static List<TSource> CopyAndInsertAtTop<TSource>(this List<TSource> source, TSource itemToInsert) where TSource : class, new()
         {
             var copiedList = source.Copy();
