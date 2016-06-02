@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
@@ -78,7 +79,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             get
             {
                 AdressenDataService.KundennrOverride = KundennrOverride;
-                return AdressenDataService.Adressen.Where(a => a.Kennung == AdressenKennung).ToList();
+                return AdressenDataService.Adressen.ToList();
             }
         }
 
@@ -168,6 +169,18 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                 };
         }
 
+        public void DeleteItems(ModelStateDictionary modelState)
+        {            
+            var adrList = Adressen.Where(s => s.IsSelected).ToList();
+
+            AdressenDataService.SaveAdressen(adrList, modelState.AddModelError);
+
+            var kuNummern = adrList.Select(s => s.KundenNr);
+
+            foreach (var kundennummer in kuNummern)                           
+                AdressenDataService.Adressen.RemoveAll(a => a.KundenNr == kundennummer);            
+        } 
+
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {
             AdressenDataService.KundennrOverride = KundennrOverride;
@@ -197,6 +210,31 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void ValidateModel(Adresse model, bool insertMode, Action<Expression<Func<Adresse, object>>, string> addModelError)
         {
+        }
+
+        #endregion
+
+
+        #region 
+
+        public void SelectAdresse(string id, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var sl = AdressenFiltered.FirstOrDefault(f => f.KundenNr == id);
+            if (sl == null)
+                return;
+
+            sl.IsSelected = select;
+            allSelectionCount = AdressenFiltered.Count(c => c.IsSelected);
+        }
+
+        public void SelectAdressen(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {
+            AdressenFiltered.ToListOrEmptyList().ForEach(sl => (sl.IsSelected) = select);
+                      
+            allSelectionCount = AdressenFiltered.Count(c => c.IsSelected);
+            allCount = AdressenFiltered.Count;
+            allFoundCount = AdressenFiltered.Count;
         }
 
         #endregion

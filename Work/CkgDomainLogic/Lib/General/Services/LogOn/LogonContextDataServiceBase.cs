@@ -442,16 +442,16 @@ namespace CkgDomainLogic.General.Services
         {
             get
             {
-                if (Customer.Master && User.CustomerAdmin)
+                if (Customer != null && Customer.Master && User != null && User.CustomerAdmin)
                     return AdminLevel.Master;
 
-                if (User.FirstLevelAdmin)
+                if (User != null && User.FirstLevelAdmin)
                     return AdminLevel.FirstLevel;
 
-                if (User.CustomerAdmin)
+                if (User != null && User.CustomerAdmin)
                     return AdminLevel.Customer;
 
-                if (Organization.OrganizationAdmin)
+                if (Organization != null && Organization.OrganizationAdmin)
                     return AdminLevel.Organization;
 
                 return AdminLevel.None;

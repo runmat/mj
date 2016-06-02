@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -30,7 +31,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
                 {
                     var dict = new Dictionary<string, string>();
 
-                    if (MappedUpload && DataMappingsForCustomer.Count != 1)
+                    if (MappedUpload && DataMappingsForCustomerAndProcess.Count != 1)
                         dict.Add("MappingSelection", Localize.MappingSelection);
 
                     dict.Add("FileUpload", Localize.UploadExcelFile);
@@ -72,7 +73,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void InitViewModel(bool mappedUpload = false)
         {
-            DataConverterInit();
+            DataConverterInit("UploadFahrzeug");
 
             MappedUpload = mappedUpload;
 
@@ -175,9 +176,20 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public void ValidateUploadItems()
         {
-            UploadDataService.ValidateFahrzeugdatenCsvUpload();
+            UploadItems.ForEach(ValidateSingleUploadItem);
+
             if (!UploadItemsUploadErrorsOccurred)
                 SubmitMode = true;
+        }
+
+        private void ValidateSingleUploadItem(UploadFahrzeug item)
+        {
+            var liste = new List<ValidationResult>();
+
+            item.ValidationOk = Validator.TryValidateObject(item, new ValidationContext(item, null, null), liste, true);
+
+            var ser = new JavaScriptSerializer();
+            item.ValidationErrorsJson = ser.Serialize(liste);
         }
 
         public void ResetSubmitMode()

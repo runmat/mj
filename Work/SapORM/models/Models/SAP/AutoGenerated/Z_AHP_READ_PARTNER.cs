@@ -107,6 +107,18 @@ namespace SapORM.Models
 
 			public string IBAN { get; set; }
 
+			public string GROSS_KUNNR { get; set; }
+
+			public string LOEVM { get; set; }
+
+			public string ROLLE_ALLE { get; set; }
+
+			public string ROLLE_HALTER { get; set; }
+
+			public string ROLLE_KAEUFER { get; set; }
+
+			public string ROLLE_KOINH { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -131,6 +143,12 @@ namespace SapORM.Models
 					EVBNR = (string)row["EVBNR"],
 					SEPA_STICHTAG = string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString()) ? null : (DateTime?)row["SEPA_STICHTAG"],
 					IBAN = (string)row["IBAN"],
+					GROSS_KUNNR = (string)row["GROSS_KUNNR"],
+					LOEVM = (string)row["LOEVM"],
+					ROLLE_ALLE = (string)row["ROLLE_ALLE"],
+					ROLLE_HALTER = (string)row["ROLLE_HALTER"],
+					ROLLE_KAEUFER = (string)row["ROLLE_KAEUFER"],
+					ROLLE_KOINH = (string)row["ROLLE_KOINH"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
