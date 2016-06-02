@@ -13,6 +13,8 @@ namespace ServicesMvc
             filters.Add(new ValidateInputAttribute(false));
 
             filters.Add(new CkgAuthorizeAttribute());
+
+            filters.Add(new CkgApplicationAttribute());
         }
     }
 }

@@ -9,10 +9,10 @@
             
             @Html.FormValidationSummary()
 
-            @Html.FormMultiSelectListFor(m => m.Standorte, EquiGrunddatenSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormMultiSelectListFor(m => m.Betriebsnummern, EquiGrunddatenSelektor.AlleBetriebsnummern.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "right" })
+            @Html.FormMultiSelectListFor(m => m.Standorte, EquiGrunddatenSelektor.AlleStandorte.ToSelectList(), new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.Betriebsnummern, EquiGrunddatenSelektor.AlleBetriebsnummern.ToSelectList(), new { @class = "m-wrap chosen", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.Zielorte, EquiGrunddatenSelektor.AlleZielorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen" })
+            @Html.FormMultiSelectListFor(m => m.Zielorte, EquiGrunddatenSelektor.AlleZielorte.ToSelectList(), new { @class = "m-wrap chosen" })
 
             @Html.FormTextAreaFor(m => m.Fahrgestellnummer, new { @class = "m-wrap uppercase", col = "left" }, null, 40, 3)
             @Html.FormTextAreaFor(m => m.Fahrgestellnummer10, new { @class = "m-wrap uppercase", col = "right" }, null, 40, 3)
@@ -23,7 +23,9 @@
 
             @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, EquiGrunddatenSelektor.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" }, labelHidden:true)
-            
+
+            @Html.FormCheckBoxFor(m => m.NurTemporaererVersand, labelHidden: true)
+
 
             @*@Html.FormRequiredFieldsSummary()*@
 

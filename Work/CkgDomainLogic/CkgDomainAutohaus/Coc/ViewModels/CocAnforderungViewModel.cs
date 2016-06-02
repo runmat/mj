@@ -111,6 +111,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var mailText = "Folgende CoC-Bestellung wurde eben im Portal Kroschke ON aufgegeben:<br/>";
             mailText += "<br/>";
             mailText += "Fahrzeugdaten:<br/>";
+            mailText += string.Format("{0}: {1}<br/>", Localize.ChassisNo, CocAnforderung.FahrgestellNr);
             mailText += string.Format("{0}: {1}<br/>", Localize.VehicleType, CocAnforderung.Kopfdaten.FahrzeugTypBezeichnung);
             mailText += string.Format("{0}: {1}<br/>", Localize.Manufacturer, CocAnforderung.Kopfdaten.HerstellerBezeichnung);
             mailText += string.Format("{0}: {1}<br/>", Localize.CountryOfFirstRegistration, CocAnforderung.Kopfdaten.LandDerErstenZulassungBezeichnung);

@@ -2,13 +2,13 @@
 
 @Html.Partial("AdressenPflege/AdresseCommon")
 
-<h3 class="page-title">Partner <small>Pflege</small> </h3>
+<h3 class="page-title">Adressen <small>Pflege</small> </h3>
 
 
 <div id="divSearchAndGrid">
     @using (Html.FormSearchBox())
-    {
-        @Html.Partial("Partial/PartnerSuche", Model.PartnerSelektor)
+    {        
+        @Html.Partial("Partial/PartnerSuche", Model.PartnerSelektor)        
     }
 
     @using (Html.FormSearchResultsGrid())
@@ -22,6 +22,33 @@
 
     var _modelStateValid = 'false';
     var _partnerKennungLocalized = '';
+
+    //$("#btnPartnerSuche").trigger("click");
+    //$("#divPartnerSuche").hide(true);  
+
+    ShowAdressenGrid();
+
+    function ShowAdressenGrid() {
+
+        $("#FormSearchBox").addClass('hide');        
+        $(".caption").text('');
+
+        $.ajax({
+            type: "POST",
+            url: "ShowAdressenGrid",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowPartnerSearchResult(result);                   
+                }
+
+                LoadingHide();
+            }
+        });
+    }
 
     function FormPreparePrivate() {
         FormPreparePrivateAdressenPflege();
@@ -79,7 +106,7 @@
     
     function OnDataBound_GridAdressen() {
         FilteredData_Grid_OnDataBound($(this));
-        jQuery('.tooltips').tooltip();
+        jQuery('.tooltips').tooltip();       
         LoadingHide();
     }
 
@@ -141,6 +168,7 @@
             });
 
         return false;
-
     }
+   
+
 </script>

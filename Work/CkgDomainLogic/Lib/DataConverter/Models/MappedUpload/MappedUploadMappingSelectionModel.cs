@@ -19,7 +19,7 @@ namespace CkgDomainLogic.DataConverter.Models
         public int MappingId { get; set; }
 
         [XmlIgnore]
-        public List<DataConverterMappingInfo> MappingList { get { return GetViewModel == null ? new List<DataConverterMappingInfo>() : GetViewModel().DataMappingsForCustomer; } }
+        public List<DataConverterMappingInfo> MappingList { get { return GetViewModel == null ? new List<DataConverterMappingInfo>() : GetViewModel().DataMappingsForCustomerAndProcess; } }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<DataConverterViewModel> GetViewModel { get; set; }

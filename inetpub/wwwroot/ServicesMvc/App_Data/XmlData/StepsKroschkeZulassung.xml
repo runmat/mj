@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dictionary>
-    <item>
-        <key>
-            <string>Rechnungsdaten</string>
-        </key>
-        <value>
-            <string>Auftrag&amp;shy;geber</string>
-        </value>
-    </item>
   <item>
-      <key>
-        <string>HalterAdresse</string>
-      </key>
-      <value>
-        <string>Halter</string>
-      </value>
-    </item>
-    <item>
-        <key>
-            <string>ZahlerKfzSteuer</string>
-        </key>
-        <value>
-            <string>Zahler Kfz-Steuer</string>
-        </value>
-    </item>
-    <item>
-        <key>
-            <string>BankAdressdaten</string>
-        </key>
-        <value>
-            <string>Adresse</string>
-        </value>
-    </item>
-    <item>
-        <key>
+    <key>
+      <string>Rechnungsdaten</string>
+    </key>
+    <value>
+      <string>Auftrag&amp;shy;geber</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>HalterAdresse</string>
+    </key>
+    <value>
+      <string>Halter</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>ZahlerKfzSteuer</string>
+    </key>
+    <value>
+      <string>Zahler Kfz-Steuer</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>BankAdressdaten</string>
+    </key>
+    <value>
+      <string>Adresse</string>
+    </value>
+  </item>
+  <item>
+    <key>
       <string>Fahrzeugdaten</string>
     </key>
     <value>
@@ -41,36 +41,36 @@
     </value>
   </item>
   <item>
-        <key>
-            <string>Zulassungsdaten</string>
-        </key>
-        <value>
-            <string>Zulassung</string>
-        </value>
-    </item>
-    <item>
-      <key>
-        <string>OptionenDienstleistungen</string>
-      </key>
-      <value>
-        <string>Optionen</string>
-      </value>
-    </item>
-    
-    <item>
-        <key>
-            <string>Summary</string>
-        </key>
-        <value>
-            <string>Übersicht</string>
-        </value>
-    </item>
-    <item>
-        <key>
-            <string>Receipt</string>
-        </key>
-        <value>
-            <string>Fertig!</string>
-        </value>
-    </item>
+    <key>
+      <string>Zulassungsdaten</string>
+    </key>
+    <value>
+      <string>Zulassung</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>OptionenDienstleistungen</string>
+    </key>
+    <value>
+      <string>Optionen</string>
+    </value>
+  </item>
+
+  <item>
+    <key>
+      <string>Summary</string>
+    </key>
+    <value>
+      <string>Übersicht</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>Receipt</string>
+    </key>
+    <value>
+      <string>Fertig!</string>
+    </value>
+  </item>
 </dictionary>
