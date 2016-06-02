@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Database.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using GeneralTools.Models;
 
@@ -57,10 +58,24 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public bool AdminMode { get; set; }
 
-        public void DataInit(bool generalMode, bool adminMode)
+        public bool OnMode { get; set; }
+
+        public string ApplicationTitle
+        {
+            get
+            {
+                if (GeneralMode)
+                    return (OnMode ? Localize.Document_KroschkeDokumentencenter : Localize.Document_Dokumentencenter);
+
+                return (OnMode ? Localize.Document_KroschkeInfocenter : Localize.Document_Infocenter);
+            }
+        }
+
+        public void DataInit(bool generalMode, bool adminMode, bool onMode)
         {
             GeneralMode = generalMode;
             AdminMode = adminMode;
+            OnMode = onMode;
 
             DataMarkForRefresh(true);
         }

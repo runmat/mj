@@ -362,6 +362,14 @@ namespace CkgDomainLogic.General.Database.Services
             return (erg > 0);
         }
 
+
+        public void SetLoggedOn(bool loginStatus)
+        {
+            Database.ExecuteSqlCommand("UPDATE WebUser SET LoggedOn = {0} WHERE Username = {1}",
+                   loginStatus ? 1 : 0,
+                   UserName);
+        }
+
         public void SetLastLogin(DateTime zeitpunkt)
         {
             Database.ExecuteSqlCommand("UPDATE WebUser SET LastLogin = {0} WHERE Username = {1}",
@@ -1113,6 +1121,37 @@ namespace CkgDomainLogic.General.Database.Services
             var rowsAffected = Database.ExecuteSqlCommand("DELETE FROM DataMapping WHERE Id = {0}", mappingId);
 
             return (rowsAffected > 0);
+        }
+
+        #endregion
+
+        #region Batch-Zuordnung
+
+        public enum ApplicationBatchZuordnungHistoryChangeType
+        {
+            Insert,
+            Delete
+        }
+
+        public List<Application> GetAllApplications()
+        {
+            return Database.SqlQuery<Application>("SELECT * FROM Application").ToListOrEmptyList();
+        }
+
+        public DbSet<ApplicationCustomerRight> ApplicationCustomerRights { get; set; }
+
+        public DbSet<ApplicationGroupRight> ApplicationGroupRights { get; set; }
+
+        public void WriteApplicationCustomerRightBatchHistory(int appId, int customerId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
+        {
+            Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchCustomerAssignmentHistory (AppID,CustomerID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
+                    appId, customerId, aenderung.ToString(), UserName, zeitstempel);
+        }
+
+        public void WriteApplicationGroupRightBatchHistory(int appId, int groupId, DateTime zeitstempel, ApplicationBatchZuordnungHistoryChangeType aenderung)
+        {
+            Database.ExecuteSqlCommand("INSERT INTO ApplicationBatchGroupAssignmentHistory (AppID,GroupID,ChangeType,ChangedBy,ChangedAt) VALUES ({0},{1},{2},{3},{4})",
+                    appId, groupId, aenderung.ToString(), UserName, zeitstempel);
         }
 
         #endregion

@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Haendlerkennzeichendaten
+
+<div id="DivHaendlerkennzeichen" class="margin-top-20">
+    
+    @using (Ajax.BeginForm("HaendlerkennzeichenForm", "Zulassung", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivHaendlerkennzeichen", OnComplete = "AjaxFormHaendlerkennzeichenComplete();"}, new {@class = "form-horizontal", id = "AjaxFormHaendlerkennzeichen"}))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+        
+        @Html.FormDropDownListFor(m => m.Fahrzeugdaten.HaendlerKennzeichenTyp, Model.Fahrzeugdaten.HaendlerKennzeichenTypen.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kennzeichen, new { @class = "m-wrap medium uppercase" },
+            postControlHtml: @<text>
+                                @Html.FormTextBoxFor(m => m.Fahrzeugdaten.KennzeichenMenge, new { @class = "m-wrap xsmall" }, useRawTemplate: true)
+                             </text>)
+        
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
+
+        <div class="hide">
+            @Html.FormDropDownListFor(m => m.Fahrzeugdaten.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+        </div>
+    }
+
+    <script type="text/javascript">
+        _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    </script>
+
+</div>

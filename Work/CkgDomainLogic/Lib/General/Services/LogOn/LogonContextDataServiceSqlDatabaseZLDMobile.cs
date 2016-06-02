@@ -76,7 +76,7 @@ namespace CkgDomainLogic.General.Services
             UserNameEncryptedToUrlEncoded = CryptoMd5Web.EncryptToUrlEncoded(User.Username);
 
             dbContext.SetLastLogin(DateTime.Now);
-
+            dbContext.SetLoggedOn(true);
             return true;
         }
 

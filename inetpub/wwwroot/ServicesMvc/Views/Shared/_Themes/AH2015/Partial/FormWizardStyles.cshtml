@@ -25,6 +25,10 @@
         list-style: none;
         margin-bottom: 5px;
     }
+
+    .cursor-pointer .step {
+        cursor: pointer !important;
+    }
     
     .form-wizard .steps .navbar-inner ul li a {
         box-sizing: border-box;
@@ -66,10 +70,30 @@
 	    right: -1em;
     }
 
-    .form-wizard .steps .navbar-inner ul li:nth-child(even).done a
+
+    .form-wizard .steps .navbar-inner ul li.done a
     {
         color: white;
         background-color: #6E8CBF !important;
+    }
+    .form-wizard .steps .navbar-inner ul li.done a::before
+    {
+	    border-color: #6E8CBF #6E8CBF #6E8CBF transparent;
+    }
+    .form-wizard .steps .navbar-inner ul li.done a::after
+    {
+	    border-left: 1em solid #6E8CBF;
+    }
+
+
+
+
+
+    /* ----- FÜR abwechselnde Steps ------
+    .form-wizard .steps .navbar-inner ul li:nth-child(even).done a
+    {
+        color: white;
+        background-color: #6E8CBF ;
     }
     .form-wizard .steps .navbar-inner ul li:nth-child(even).done a::before
     {
@@ -83,29 +107,31 @@
     .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a
     {
         color: white;
-        background-color: #3AAFDA !important;
+        background-color: #6E8CBF !important;
     }
     .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a::before
     {
-	    border-color: #3AAFDA #3AAFDA #3AAFDA transparent;
+	    border-color: #6E8CBF #6E8CBF #6E8CBF transparent;
     }
     .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a::after
     {
-	    border-left: 1em solid #3AAFDA;
+	    border-left: 1em solid #6E8CBF;
     }
-    
+    */
+
+
     .form-wizard .steps .navbar-inner ul li.active a
     {
         color: white;
-        background-color: #2a4D89 !important;
+        background-color: #3AAFDA !important;
     }
     .form-wizard .steps .navbar-inner ul li.active a::before
     {
-	    border-color: #2a4D89 #2a4D89 #2a4D89 transparent;
+	    border-color: #3AAFDA #3AAFDA #3AAFDA transparent;
     }
     .form-wizard .steps .navbar-inner ul li.active a::after 
     {
-	    border-left: 1em solid #2a4D89;
+	    border-left: 1em solid #3AAFDA;
     }
     
     /* </Breadcrumbs> */
@@ -208,12 +234,12 @@
      }
 
     .form-wizard .steps .navbar-inner ul li.active:first-child a::before{
-        border-color: #2a4d89;
+        border-color: #3AAFDA;
         border-radius: 4px 0 0 4px !important;
     }
 
     .form-wizard .steps .navbar-inner ul li.done:first-child a::before{
-        border-color: #3AAFDA ;
+        border-color: #6E8CBF ;
         border-radius: 4px 0 0 4px !important;
     }
     

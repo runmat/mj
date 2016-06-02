@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Controllers
         [CkgApplication]
         public ActionResult DocumentsForCurrentGroup()
         {
-            ViewModel.DataInit(false, false);
+            ViewModel.DataInit(false, false, false);
 
             return View("Index", ViewModel);
         }
@@ -50,7 +50,7 @@ namespace CkgDomainLogic.Controllers
         [CkgApplication]
         public ActionResult DocumentsForCurrentCustomer()
         {
-            ViewModel.DataInit(false, true);
+            ViewModel.DataInit(false, true, false);
 
             return View("Index", ViewModel);
         }
@@ -58,7 +58,7 @@ namespace CkgDomainLogic.Controllers
         [CkgApplication]
         public ActionResult DocumentsGeneral()
         {
-            ViewModel.DataInit(true, false);
+            ViewModel.DataInit(true, false, false);
 
             return View("Index", ViewModel);
         }
@@ -66,7 +66,39 @@ namespace CkgDomainLogic.Controllers
         [CkgApplication]
         public ActionResult DocumentsGeneralAdmin()
         {
-            ViewModel.DataInit(true, true);
+            ViewModel.DataInit(true, true, false);
+
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult DocumentsForCurrentGroupOn()
+        {
+            ViewModel.DataInit(false, false, true);
+
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult DocumentsForCurrentCustomerOn()
+        {
+            ViewModel.DataInit(false, true, true);
+
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult DocumentsGeneralOn()
+        {
+            ViewModel.DataInit(true, false, true);
+
+            return View("Index", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult DocumentsGeneralAdminOn()
+        {
+            ViewModel.DataInit(true, true, true);
 
             return View("Index", ViewModel);
         }

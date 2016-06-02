@@ -1,0 +1,160 @@
+﻿@model CkgDomainLogic.Admin.ViewModels.AppBatchZuordnungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Admin_ApplicationAssignment <small></small></h3>
+
+@Html.SpanAlert("Message")
+
+@using (Html.FormSearchBox())
+{
+    <div id="divGrid1">
+        @Html.Partial("Partial/GridApplications", Model)
+    </div>
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid2"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridApplications");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function SelectApplication(appId) {
+        $.ajax({
+            type: "POST",
+            url: "ShowAppZuordnungen",
+            data: { appId: appId },
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowAppZuordnungenSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowAppZuordnungenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid2").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAppZuordnungen");
+
+        $("#divGrid2").slideDown();
+    }
+
+    function GetGrid1() {
+        return $("#GridApplications").data("tGrid");
+    }
+
+    function OnDataBound_GridApplications() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridApplications() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridApplications() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetGrid2() {
+        return $("#GridAppZuordnungen").data("tGrid");
+    }
+
+    function OnDataBound_GridAppZuordnungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridAppZuordnungen");
+    }
+
+    function OnColumnShowHide_GridAppZuordnungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAppZuordnungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnSelectionChange_GridAppZuordnungen(cb) {
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "AppZuordnungenSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                GridAppZuordnungen_MultiSelectUpdate(result.allSelectionCount);
+            }
+        });
+    }
+
+    function GridAppZuordnungen_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "AppZuordnungenSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridAppZuordnungen_MultiSelectUpdate(result.allSelectionCount);
+                GetGrid2().ajaxRequest();
+            }
+        });
+    }
+
+    function GridAppZuordnungen_MultiSelectUpdate(count) {
+        if (count === 0) {
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function SaveAppZuordnungen() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SaveAppZuordnungen",
+            loadingShow: true,
+            success: function (result) {
+
+                if (!result.success) {
+                    FilterGrid("GridAppZuordnungen");
+                    SpanAlertWarning("Message", result.message, 3000);
+                    return;
+                }
+
+                SpanAlertSuccess("Message", '@Localize.SaveSuccessful', 2000);
+                FilterGrid("GridAppZuordnungen");
+            }
+        });
+
+        return false;
+    }
+
+</script>
