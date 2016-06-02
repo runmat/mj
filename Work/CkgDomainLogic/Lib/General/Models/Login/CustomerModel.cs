@@ -9,9 +9,11 @@ namespace CkgDomainLogic.General.Models
 {
     public class CustomerModel : IValidatableObject
     {
-       
+
+        const string AnredeSelektor = "Bitte auswählen...";
+
         public static string[] Anreden {
-            get { return new string[] { "", "Herr", "Frau"}; }
+            get { return new string[] { AnredeSelektor, "Herr", "Frau"}; }
         }
 
         public bool ModeCaptchaReset { get; set; }
@@ -50,7 +52,7 @@ namespace CkgDomainLogic.General.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {           
-            if (Anrede.IsNullOrEmpty())
+            if (Anrede.IsNullOrEmpty() || Anrede == AnredeSelektor)
                 yield return new ValidationResult("Anrede ist erforderliches Pflichtfeld", new[] { "Anrede" });
             if (Name.IsNullOrEmpty())
                 yield return new ValidationResult("Name ist erforderliches Pflichtfeld", new[] { "Name" });
