@@ -18,78 +18,60 @@ namespace CarDocu.Services
 
         #region Settings
 
-        public string UserErrorLogDirectoryName
-        {
-            get
-            {
-                return EnsurePathExists(Path.Combine(DomainService.DomainPath, "ErrorLogs", LogonUser.LoginName.Replace(AdminNamePostFix, "")));
-            }
-        }
+        public string UserErrorLogDirectoryName => EnsurePathExists(Path.Combine(DomainService.DomainPath, "ErrorLogs", LogonUser.LoginName.Replace(AdminNamePostFix, "")));
 
-        public string PdfDirectoryName { get { return EnsurePathExists(Path.Combine(DomainService.DomainPath, "PDF", LogonUser.LoginName.Replace(AdminNamePostFix, ""))); } }
+        public string PdfDirectoryName => EnsurePathExists(Path.Combine(DomainService.DomainPath, "PDF", LogonUser.LoginName.Replace(AdminNamePostFix, "")));
 
-        public string GlobalSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(DomainService.DomainPath, GetType().Name)); } }
+        public string GlobalSettingsDirectoryName => EnsurePathExists(Path.Combine(DomainService.DomainPath, GetType().Name));
         public DomainGlobalSettings GlobalSettings { get; private set; }
 
-        public string TemplateSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(GlobalSettingsDirectoryName, "Templates")); } }
+        public string TemplateSettingsDirectoryName => EnsurePathExists(Path.Combine(GlobalSettingsDirectoryName, "Templates"));
 
-        public string EnterpriseSettingsDirectoryName { get { return GlobalSettingsDirectoryName; } }
+        public string EnterpriseSettingsDirectoryName => GlobalSettingsDirectoryName;
         public EnterpriseSettings EnterpriseSettings { get; private set; }
 
-        public string UserSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(GlobalSettingsDirectoryName, "Users", LogonUser.LoginID)); } }
+        public string UserSettingsDirectoryName => EnsurePathExists(Path.Combine(GlobalSettingsDirectoryName, "Users", LogonUser.LoginID));
         public DomainUserSettings UserSettings { get; set; }
 
-        public string AppSettingsDirectoryName { get { return EnsurePathExists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AppSettings.AppSettingsDirectoryName)); } }
+        public string AppSettingsDirectoryName => EnsurePathExists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AppSettings.AppSettingsDirectoryName));
         public AppSettings AppSettings { get; set; }
 
         #endregion
 
 
-        public string UserName { get { return LogonUser.FullName; } }
+        public string UserName => LogonUser.FullName;
 
         public ScanDocumentRepository ScanDocumentRepository { get; set; }
 
         public ScanDocumentRepository ScanTemplateRepository { get; set; }
 
-        public string AdminNamePostFix { get { return "!17"; } }
+        public string AdminNamePostFix => "!17";
         private DomainUser _adminUser;
-        public DomainUser AdminUser
+        public DomainUser AdminUser => (_adminUser ?? (_adminUser = new DomainUser
         {
-            get
-            {
-                return (_adminUser ?? (_adminUser = new DomainUser
-                {
-                    IsAdmin = true,
-                    IsMaster = true,
-                    LoginID = "405ce46f-2280-4fc2-82fc-d1cfd47fe9a6_sys",
-                    LoginName = "Admin" + AdminNamePostFix,
-                    VorName = "",
-                    NachName = "Admin",
-                    Email = "matthias.jenzen@kroschke.de",
-                    DomainLocation = (GlobalSettings.DomainLocations.Any() ? GlobalSettings.DomainLocations.First() : null),
-                }));
-            }
-        }
+            IsAdmin = true,
+            IsMaster = true,
+            LoginID = "405ce46f-2280-4fc2-82fc-d1cfd47fe9a6_sys",
+            LoginName = "Admin" + AdminNamePostFix,
+            VorName = "",
+            NachName = "Admin",
+            Email = "matthias.jenzen@kroschke.de",
+            DomainLocation = (GlobalSettings.DomainLocations.Any() ? GlobalSettings.DomainLocations.First() : null),
+        }));
 
         private DocumentType _scanTemplateDocType;
-        public DocumentType ScanTemplateDocType
+        public DocumentType ScanTemplateDocType => (_scanTemplateDocType ?? (_scanTemplateDocType = new DocumentType
         {
-            get
-            {
-                return (_scanTemplateDocType ?? (_scanTemplateDocType = new DocumentType
-                {
-                    Code = "SCAN_TEMPLATE",
-                    SapCode = "",
-                    ArchiveCode = "",
-                    Name = "Vorlage",
-                    Sort = 0,
-                    InputRule = "TP",
-                    IsSystemInternal = true,
-                    IsTemplate = true,
-                    Archive = new Archive(),
-                }));
-            }
-        }
+            Code = "SCAN_TEMPLATE",
+            SapCode = "",
+            ArchiveCode = "",
+            Name = "Vorlage",
+            Sort = 0,
+            InputRule = "TP",
+            IsSystemInternal = true,
+            IsTemplate = true,
+            Archive = new Archive(),
+        }));
 
         public DomainUser LogonUser { get; set; }
 
@@ -433,7 +415,7 @@ namespace CarDocu.Services
             var zipArchivePath = GlobalSettings.ZipArchive.Path;
             var tempPath = GlobalSettings.TempPath;
 
-            var tempRawFileName = string.Format("{0}__{1}.zip", "CkgScanClient_PDF___", DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss"));
+            var tempRawFileName = $"{"CkgScanClient_PDF___"}__{DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss")}.zip";
             var tempFileName = Path.Combine(tempPath, tempRawFileName);
 
             var fileList = Directory.EnumerateFiles(directoryToZip, "*.*", SearchOption.AllDirectories).ToList();
@@ -453,7 +435,7 @@ namespace CarDocu.Services
                         return false;
 
                     var e = zip.AddFile(filename, "PDF");
-                    e.Comment = string.Format("Datei hinzugefügt von '{0}'", DomainService.AppName);
+                    e.Comment = $"Datei hinzugefügt von '{DomainService.AppName}'";
 
                     progressBarOperation.Current++;
                     Thread.Sleep(1);
@@ -461,7 +443,7 @@ namespace CarDocu.Services
 
                 progressBarOperation.ProgressInfoVisible = false;
                 progressBarOperation.BusyCircleVisible = true;
-                zip.Comment = string.Format("ZIP-Datei erstellt von '{0}' auf Rechner '{1}'", DomainService.AppName, System.Net.Dns.GetHostName());
+                zip.Comment = $"ZIP-Datei erstellt von '{DomainService.AppName}' auf Rechner '{System.Net.Dns.GetHostName()}'";
 
                 // lengthly atomar operation here...
                 progressBarOperation.Details = "Erstelle ZIP Datei ... bitte warten ...";
@@ -556,7 +538,7 @@ namespace CarDocu.Services
                     if (progressBarOperation.IsCancellationPending)
                         return false;
 
-                    progressBarOperation.Details = string.Format("Lösche Datei '{0}'", filename);
+                    progressBarOperation.Details = $"Lösche Datei '{filename}'";
                     var pdfFileName = Path.Combine(PdfDirectoryName, filename);
 
                     // PDF Datei löschen
@@ -576,7 +558,7 @@ namespace CarDocu.Services
 
                     var directoryInfo = new DirectoryInfo(scanDocument.GetDocumentPrivateDirectoryName());
                     var directoryName = directoryInfo.Name;
-                    progressBarOperation.Details = string.Format("Lösche temporäres Verzeichnis '{0}'", directoryName);
+                    progressBarOperation.Details = $"Lösche temporäres Verzeichnis '{directoryName}'";
 
                     // ScanDocument aus Repository löschen  +  ScanDocument temp. Verzeichnis löschen
                     var task = TaskService.StartLongRunningTask(() =>
@@ -586,7 +568,7 @@ namespace CarDocu.Services
                             ScanDocumentRepository.TryDeleteScanDocument(sdOrg, false);
                     });
                     if (!task.Wait(10000))
-                        throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
+                        throw new Exception($"Timeout beim Löschen des temporären Verzeichnisses '{directoryName}'");
 
                     progressBarOperation.Current++;
                     Thread.Sleep(50);

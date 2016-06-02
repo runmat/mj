@@ -29,13 +29,8 @@ namespace CarDocu.Models
 
         public string KundenNr { get; set; }
 
-        private List<ScanImage> _scanImages = new List<ScanImage>();
         [XmlIgnore]
-        public List<ScanImage> ScanImages
-        {
-            get { return _scanImages; }
-            set { _scanImages = value; }
-        }
+        public List<ScanImage> ScanImages { get; set; } = new List<ScanImage>();
 
         public int ScanImagesCount { get; set; }
 
@@ -91,10 +86,7 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
-        public bool ValidDocumentType
-        {
-            get { return (SelectedDocumentType != null); }
-        }
+        public bool ValidDocumentType => (SelectedDocumentType != null);
 
         [XmlIgnore]
         public List<string> ScanDocumentTypeCodes { get { return ScanImages.GroupBy(scanImage => scanImage.ImageDocumentTypeCode).Select(g => g.Key).ToList(); } }
@@ -146,7 +138,7 @@ namespace CarDocu.Models
                 XmlLoadScanImages();
 
             var firstScanImage = ScanImages.FirstOrDefault(); 
-            return firstScanImage != null && firstScanImage.ImageDocumentType != null ? firstScanImage.ImageDocumentType.Archive : GetDefaultArchive();
+            return firstScanImage?.ImageDocumentType != null ? firstScanImage.ImageDocumentType.Archive : GetDefaultArchive();
         }
 
         public void EnsureDocumentType()
@@ -273,7 +265,7 @@ namespace CarDocu.Models
 
         void CreateDebugHintTextFile()
         {
-            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), string.Format("{0}.txt", FinNumber))); }
+            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), $"{FinNumber}.txt")); }
             catch
             {
                 // ignored
@@ -329,7 +321,7 @@ namespace CarDocu.Models
             if (!PdfPageCountIsValid || !ValidFinNumber)
                 pdfFinNumber = $"FEHLER_{PdfErrorGuid}";
 
-            return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
+            return Path.Combine(directoryName, $"{pdfFinNumber}{documentTypeCode}.{extension}");
         }
 
         public string PdfGetFileName(string documentTypeCode)
@@ -349,7 +341,7 @@ namespace CarDocu.Models
         {
             const string extension = "pdf";
             var directoryName = PdfDirectoryName;
-            var oldFiles = Directory.GetFiles(directoryName, string.Format("{0}*.{1}", FinNumber, extension)).ToList();
+            var oldFiles = Directory.GetFiles(directoryName, $"{FinNumber}*.{extension}").ToList();
             if (FinNumber.IsNotNullOrEmpty())
                 foreach (var oldFile in oldFiles)
                 {
@@ -368,9 +360,8 @@ namespace CarDocu.Models
                         }
                         catch
                         {
-                            saveAgain = Tools.Confirm(string.Format(
-                                "Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{0}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?",
-                                    Path.GetFileName(oldFile)));
+                            saveAgain = Tools.Confirm(
+                                $"Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{Path.GetFileName(oldFile)}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?");
                             if (!saveAgain)
                                 return;
                         }
@@ -404,8 +395,8 @@ namespace CarDocu.Models
 
                     if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
                     {
-                        Tools.AlertError(string.Format("Beim Erstellen der PDF-Datei '{0}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{1}", 
-                                            Path.GetFileName(pdfFileName), errorMessage));
+                        Tools.AlertError(
+                            $"Beim Erstellen der PDF-Datei '{Path.GetFileName(pdfFileName)}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{errorMessage}");
                     }
                 });
 

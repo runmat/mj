@@ -9,15 +9,12 @@ namespace CarDocu.ViewModels
     {
         #region Properties
 
-        public string Title { get { return string.Format("Start-Einstellungen {0}, Version {1}", DomainService.AppName, DomainService.AppVersion); } }
+        public string Title => $"Start-Einstellungen {DomainService.AppName}, Version {DomainService.AppVersion}";
 
         private readonly string _userHintForArchives;
 
         private AppSettingsEditViewModel _appSettingsEditViewModel;
-        public AppSettingsEditViewModel AppSettingsEditViewModel
-        {
-            get { return (_appSettingsEditViewModel ?? (_appSettingsEditViewModel = new AppSettingsEditViewModel(_userHintForArchives))); }
-        }
+        public AppSettingsEditViewModel AppSettingsEditViewModel => (_appSettingsEditViewModel ?? (_appSettingsEditViewModel = new AppSettingsEditViewModel(_userHintForArchives)));
 
         public ICommand OkCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }

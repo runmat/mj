@@ -210,10 +210,7 @@ namespace CarDocu.Models
             }
         }
         
-        public bool BarcodeNumericRangeVisible
-        {
-            get { return IsBatchScanAllowed && !BarcodeAlphanumericAllowed; }
-        }
+        public bool BarcodeNumericRangeVisible => IsBatchScanAllowed && !BarcodeAlphanumericAllowed;
 
         private long _barcodeRangeStart = 1000000000009;
         public long BarcodeRangeStart
@@ -281,7 +278,7 @@ namespace CarDocu.Models
             }
         }
 
-        public bool UseExternalCommandline { get { return ExternalCommandlineProgramPath.IsNotNullOrEmpty(); } }
+        public bool UseExternalCommandline => ExternalCommandlineProgramPath.IsNotNullOrEmpty();
 
         private string _externalCommandlineArguments;
 
@@ -331,10 +328,8 @@ namespace CarDocu.Models
             }
         }
 
-        public string TagCollectionCheckBoxHint
-        {
-            get { return string.Format("Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {0})", InlineNetworkDeliveryArchiveFolder); }
-        }
+        public string TagCollectionCheckBoxHint =>
+            $"Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {InlineNetworkDeliveryArchiveFolder})";
 
         private readonly Media.Brush _brushBackgroundValid = Media.Brushes.LightGoldenrodYellow;
         private readonly Media.Brush _brushBackgroundInvalid = Media.Brushes.LightPink;
@@ -342,28 +337,16 @@ namespace CarDocu.Models
         private readonly Media.Brush _brushForegroundInvalid = Media.Brushes.Red;
 
         [XmlIgnore]
-        public Media.Brush BarcodeRangeStartBackground
-        {
-            get { return BarcodeRangeBackgroundOk(BarcodeRangeStart) ? _brushBackgroundValid : _brushBackgroundInvalid; }
-        }
+        public Media.Brush BarcodeRangeStartBackground => BarcodeRangeBackgroundOk(BarcodeRangeStart) ? _brushBackgroundValid : _brushBackgroundInvalid;
 
         [XmlIgnore]
-        public Media.Brush BarcodeRangeStartForeground
-        {
-            get { return BarcodeRangeBackgroundOk(BarcodeRangeStart) ? _brushForegroundValid : _brushForegroundInvalid; }
-        }
+        public Media.Brush BarcodeRangeStartForeground => BarcodeRangeBackgroundOk(BarcodeRangeStart) ? _brushForegroundValid : _brushForegroundInvalid;
 
         [XmlIgnore]
-        public Media.Brush BarcodeRangeEndBackground
-        {
-            get { return BarcodeRangeBackgroundOk(BarcodeRangeEnd) ? _brushBackgroundValid : _brushBackgroundInvalid; }
-        }
+        public Media.Brush BarcodeRangeEndBackground => BarcodeRangeBackgroundOk(BarcodeRangeEnd) ? _brushBackgroundValid : _brushBackgroundInvalid;
 
         [XmlIgnore]
-        public Media.Brush BarcodeRangeEndForeground
-        {
-            get { return BarcodeRangeBackgroundOk(BarcodeRangeEnd) ? _brushForegroundValid : _brushForegroundInvalid; }
-        }
+        public Media.Brush BarcodeRangeEndForeground => BarcodeRangeBackgroundOk(BarcodeRangeEnd) ? _brushForegroundValid : _brushForegroundInvalid;
 
         internal bool BarcodeRangeBackgroundOk(long barcode)
         {
@@ -377,120 +360,84 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
-        public bool FileNameAbbreviationMinimumLengthAvailable
-        {
-            get { return FileNameAbbreviationMinimumLength > 0; }
-        }
+        public bool FileNameAbbreviationMinimumLengthAvailable => FileNameAbbreviationMinimumLength > 0;
 
         [XmlIgnore]
-        public int FileNameAbbreviationMinimumLength
-        {
-            get { return InputRuleObject == null ? 0 : InputRuleObject.FileNameAbbreviationAllowedMinimumLength; }
-        }
+        public int FileNameAbbreviationMinimumLength => InputRuleObject?.FileNameAbbreviationAllowedMinimumLength ?? 0;
 
         [XmlIgnore]
-        public string FileNameAbbreviationMinimumLengthText
-        {
-            get { return string.Format("Länge des Dateinamens auf {0} Zeichen kürzen", FileNameAbbreviationMinimumLength); }
-        }
+        public string FileNameAbbreviationMinimumLengthText => $"Länge des Dateinamens auf {FileNameAbbreviationMinimumLength} Zeichen kürzen";
 
         [XmlIgnore]
         public DocumentTypeInputRule InputRuleObject { get { return InputRules.First(i => i.ID == InputRule); } }
 
-        public string InputRuleName { get { return InputRuleObject.InputRuleName; } }
+        public string InputRuleName => InputRuleObject.InputRuleName;
 
         [XmlIgnore]
-        static public List<DocumentTypeInputRule> InputRules
+        static public List<DocumentTypeInputRule> InputRules => new List<DocumentTypeInputRule>
         {
-            get
+            new DocumentTypeInputRule
             {
-                return new List<DocumentTypeInputRule>
-                           {
-                               new DocumentTypeInputRule
-                                   {
-                                       ID = "FG",  Name = "FIN", 
-                                       AllowedLengths = new List<int> {10, 17}, 
-                                       FileNameAbbreviationAllowedMinimumLength = 10
-                                   },
-                               new DocumentTypeInputRule
-                                   {
-                                       ID = "ST",  Name = "Strafzettel", 
-                                       AllowedLengths = new List<int> {13}
-                                   },
-                               new DocumentTypeInputRule
-                                   {
-                                       ID = "ST8",  Name = "Strafzettel", 
-                                       AllowedLengths = new List<int> {8}
-                                   },
-                               new DocumentTypeInputRule
-                                   {
-                                       ID = "TP",  Name = "Scan-Template", 
-                                       AllowedLengths = new List<int>(), 
-                                       InputRuleName = "Beliebiger Freitext:"
-                                   },
-                           };
-            }
-        }
+                ID = "FG",  Name = "FIN", 
+                AllowedLengths = new List<int> {10, 17}, 
+                FileNameAbbreviationAllowedMinimumLength = 10
+            },
+            new DocumentTypeInputRule
+            {
+                ID = "ST",  Name = "Strafzettel", 
+                AllowedLengths = new List<int> {13}
+            },
+            new DocumentTypeInputRule
+            {
+                ID = "ST8",  Name = "Strafzettel", 
+                AllowedLengths = new List<int> {8}
+            },
+            new DocumentTypeInputRule
+            {
+                ID = "TP",  Name = "Scan-Template", 
+                AllowedLengths = new List<int>(), 
+                InputRuleName = "Beliebiger Freitext:"
+            },
+        };
 
         [XmlIgnore]
         public DocumentTypeWebServiceFunction WebServiceFunctionObject { get { return WebServiceFunctions.First(i => i.ID == WebServiceFunction); } }
 
         [XmlIgnore]
-        public bool WebServiceFunctionAvailable
-        {
-            get { return ArchiveCode == "EASY"; }
-        }
+        public bool WebServiceFunctionAvailable => ArchiveCode == "EASY";
 
         [XmlIgnore]
-        public bool IsDisabledGlobalDeleteAndBackupFileAfterDelivery
-        {
-            get { return !IsEnabledGlobalDeleteAndBackupFileAfterDelivery; }
-        }
+        public bool IsDisabledGlobalDeleteAndBackupFileAfterDelivery => !IsEnabledGlobalDeleteAndBackupFileAfterDelivery;
 
         [XmlIgnore]
-        public bool IsEnabledGlobalDeleteAndBackupFileAfterDelivery
-        {
-            get { return DomainService.Repository.AppSettings.GlobalDeleteAndBackupFileAfterDelivery; }
-        }
+        public bool IsEnabledGlobalDeleteAndBackupFileAfterDelivery => DomainService.Repository.AppSettings.GlobalDeleteAndBackupFileAfterDelivery;
 
         [XmlIgnore]
-        public double OpacityGlobalDeleteAndBackupFileAfterDelivery
-        {
-            get { return IsDisabledGlobalDeleteAndBackupFileAfterDelivery ? 1.0 : 0.4; }
-        }
+        public double OpacityGlobalDeleteAndBackupFileAfterDelivery => IsDisabledGlobalDeleteAndBackupFileAfterDelivery ? 1.0 : 0.4;
 
         [XmlIgnore]
-        static public List<DocumentTypeWebServiceFunction> WebServiceFunctions
+        static public List<DocumentTypeWebServiceFunction> WebServiceFunctions => new List<DocumentTypeWebServiceFunction>
         {
-            get
+            new DocumentTypeWebServiceFunction
             {
-                return new List<DocumentTypeWebServiceFunction>
-                           {
-                               new DocumentTypeWebServiceFunction
-                                   {
-                                       ID = "", FriendlyName = "(Keine Schnittstelle)"
-                                   },
-                               new DocumentTypeWebServiceFunction
-                                   {
-                                       ID = "CARDOCU", FriendlyName = "CarDocu Strafzettel"
-                                   },
-                               new DocumentTypeWebServiceFunction
-                                   {
-                                       ID = "VWL", FriendlyName = "VW Leasing Klärfälle"
-                                   },
-                               new DocumentTypeWebServiceFunction
-                                   {
-                                       ID = "WKDA", FriendlyName = "WKDA Wiesbaden"
-                                   },
-                           };
-            }
-        }
+                ID = "", FriendlyName = "(Keine Schnittstelle)"
+            },
+            new DocumentTypeWebServiceFunction
+            {
+                ID = "CARDOCU", FriendlyName = "CarDocu Strafzettel"
+            },
+            new DocumentTypeWebServiceFunction
+            {
+                ID = "VWL", FriendlyName = "VW Leasing Klärfälle"
+            },
+            new DocumentTypeWebServiceFunction
+            {
+                ID = "WKDA", FriendlyName = "WKDA Wiesbaden"
+            },
+        };
 
         [XmlIgnore]
-        static public List<Archive> Archives
-        {
-            get { return DomainService.Repository.GlobalSettings.ArchivesForDocTypes; }
-        }
+        static public List<Archive> Archives => DomainService.Repository.GlobalSettings.ArchivesForDocTypes;
 
         private Archive _archive;
         [XmlIgnore] 
@@ -504,61 +451,32 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
-        public string IconSource { 
-            get { return ((Image)Application.Current.TryFindResource(Archive.GetIconSourceKey(ArchiveCode))).Source.ToString(); } 
-        }
+        public string IconSource => ((Image)Application.Current.TryFindResource(Archive.GetIconSourceKey(ArchiveCode))).Source.ToString();
 
         [XmlIgnore]
-        public string IsBatchScanAllowedText
-        {
-            get { return "Aktiviert die Batchverarbeitung für diesen Dokumententyp."; }
-        }
+        public string IsBatchScanAllowedText => "Aktiviert die Batchverarbeitung für diesen Dokumententyp.";
 
         [XmlIgnore]
-        public string IsBatchScanAllowedTooltip
-        {
-            get { return "Batchverarbeitung für diesen Dokumententyp ist aktiviert."; }
-        }
+        public string IsBatchScanAllowedTooltip => "Batchverarbeitung für diesen Dokumententyp ist aktiviert.";
 
         [XmlIgnore]
-        public string IsOcrAllowedText
-        {
-            get { return "Aktiviert die Barcode-Erkennung für diesen Dokumententyp."; }
-        }
+        public string IsOcrAllowedText => "Aktiviert die Barcode-Erkennung für diesen Dokumententyp.";
 
         [XmlIgnore]
-        public string BarcodeAlphanumericAllowedText
-        {
-            get { return "Alphanumerischer Barcode erlaubt (ansonsten rein numerisch)."; }
-        }
+        public string BarcodeAlphanumericAllowedText => "Alphanumerischer Barcode erlaubt (ansonsten rein numerisch).";
 
         [XmlIgnore]
-        public bool ShowErrorBarcodeRangeStart
-        {
-            get
-            {
-                return !BarcodeRangeBackgroundOk(BarcodeRangeStart);
-            }
-        }
+        public bool ShowErrorBarcodeRangeStart => !BarcodeRangeBackgroundOk(BarcodeRangeStart);
 
         [XmlIgnore]
-        public string ErrorTextBarcodeRangeStart
-        {
-            get { return "Barcode hat die falsche Länge!"; }
-        }
+        public string ErrorTextBarcodeRangeStart => "Barcode hat die falsche Länge!";
 
         [XmlIgnore]
-        public bool ShowErrorBarcodeRangeEnd
-        {
-            get { return !BarcodeRangeBackgroundOk(BarcodeRangeEnd); }
-        }
+        public bool ShowErrorBarcodeRangeEnd => !BarcodeRangeBackgroundOk(BarcodeRangeEnd);
 
         [XmlIgnore]
-        public string ErrorTextBarcodeRangeEnd
-        {
-            get { return "Barcode hat die falsche Länge!"; }
-        }
-        
+        public string ErrorTextBarcodeRangeEnd => "Barcode hat die falsche Länge!";
+
 
         /// <summary>
         /// Prüft ob die angegebene Fin innerhalb des aktuellen Nummernkreises des Dokumententyps liegt.

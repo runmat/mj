@@ -8,13 +8,7 @@ namespace CarDocu.Services
     public class SapWebService
     {
         private de.kroschke.sgw.Service _service;
-        private de.kroschke.sgw.Service Service
-        {
-            get
-            {
-                return (_service ?? (_service = new de.kroschke.sgw.Service { Url = DomainService.Repository.GlobalSettings.SapSettings.WebServiceUrl }));
-            }
-        }
+        private de.kroschke.sgw.Service Service => (_service ?? (_service = new de.kroschke.sgw.Service { Url = DomainService.Repository.GlobalSettings.SapSettings.WebServiceUrl }));
 
         public bool IsOnline()
         {
@@ -22,10 +16,7 @@ namespace CarDocu.Services
 
             try
             {
-                if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
-                    isOnline = true;
-                else
-                    isOnline = DomainService.CheckOnlineState();
+                isOnline = DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled || DomainService.CheckOnlineState();
             }
             catch { isOnline = false; }
 
