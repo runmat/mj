@@ -30,11 +30,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             set { DataService.DatenFilter.SelektionsfilterTempVersendete = value; }
         }
 
-        public int CurrentAppID { get; set; }
+        public bool ShowTypdaten { get; set; }
 
         public void LoadFahrzeugbriefe()
         {
-            GetCurrentAppID();
+            ShowTypdaten = GetApplicationConfigBoolValueForCustomer("ShowTypdaten");
             ApplyDatenfilter(true, true);
             DataService.MarkForRefreshFahrzeugbriefe();
             MarkForRefreshFahrzeugbriefeFiltered();
@@ -49,11 +49,6 @@ namespace CkgDomainLogic.Equi.ViewModels
         public void MarkForRefreshFahrzeugbriefeFiltered()
         {
             PropertyCacheClear(this, m => m.FahrzeugbriefeFiltered);
-        }
-
-        private void GetCurrentAppID()
-        {
-            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
 
         #region Filter

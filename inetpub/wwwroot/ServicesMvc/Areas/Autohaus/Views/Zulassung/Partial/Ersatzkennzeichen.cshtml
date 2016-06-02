@@ -1,0 +1,24 @@
+﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+
+<style>
+
+
+</style>
+
+<script type="text/javascript">
+
+    function AjaxFormErsatzkennzeichenComplete() {
+        FormPrepareAjax();
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+</script>
+
+
+<h4>@Localize.LicenseNo</h4>
+
+@Html.Partial("Partial/ErsatzkennzeichenForm", @Model.Zulassung.GetErsatzkennzeichendatenModel())
+

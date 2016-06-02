@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Weiterleitung";
+}
+
+<meta http-equiv="refresh" content="5; URL=@ViewData["target"]">
+
+<h3 class="page-title" id="headerTitle">Weiterleitung... <small></small></h3>
+
+<div class="form-horizontal label-width-250 margin-bottom-20 margin-top-20 CleverSearchFieldContainer">
+
+    Sie versuchen auf eine Seite außerhalb des geschützten Bereichs zu gelangen: <br/>
+
+    <a href="@ViewData["target"]">@ViewData["target"]</a> <br/>
+
+    Sie werden innerhalb von 5 Sekunden auf die angeforderte Seite weitergeleitet.<br/><br/>
+
+    Sollten sie nicht weitergeleitet werden, klicken sie bitte <a href="@ViewData["target"]">hier</a>
+
+
+</div>

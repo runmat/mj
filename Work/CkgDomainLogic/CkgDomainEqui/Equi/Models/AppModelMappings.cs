@@ -262,6 +262,10 @@ namespace CkgDomainLogic.Equi.Models
                         d.Referenz2 = s.ZZREFERENZ2;
                         d.Erstzulassungsdatum = s.REPLA_DATE;
                         d.Ummeldedatum = s.ZZZLDAT;
+                        d.HerstellerSchluessel = s.ZZHERSTELLER_SCH;
+                        d.FahrzeugHersteller = s.ZZFABRIKNAME;
+                        d.TypSchluessel = s.ZZTYP_SCHL;
+                        d.FahrzeugTyp = s.ZZHANDELSNAME;
                     }));
             }
         }

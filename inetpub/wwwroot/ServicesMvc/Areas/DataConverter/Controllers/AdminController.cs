@@ -230,11 +230,11 @@ namespace ServicesMvc.DataConverter.Controllers
             // Alle DatenRecords der Quellfelder ermitteln...
             var sourceFieldList = ViewModel.RecalcSourceFields();
 
-            // Alle DatenRecords der Zielfelder ermitteln...
-            var destFieldList = ViewModel.RecalcDestFields();
-
             // Alle Prozessoren zur späteren Ausgabe aktualisieren...
             var processorList = ViewModel.RecalcProcessors();
+
+            // Alle DatenRecords der Zielfelder ermitteln...
+            var destFieldList = ViewModel.RecalcDestFields();
 
             return Json(new { SourceFieldList = sourceFieldList, DestFieldList = destFieldList, ConnectionList = ViewModel.MappingModel.DataConnections, ProcessorList = processorList, RecordInfoText = ViewModel.MappingModel.RecordInfoText });
         }

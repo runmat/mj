@@ -42,17 +42,14 @@ namespace CkgDomainLogic.Partner.Services
         {
             return (a1.KundenNr.ToSapKunnr() == a2.KundenNr.ToSapKunnr());
         }
-
-        override public List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
+      
+        public override List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
         {
             Z_AHP_READ_PARTNER.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
             if (SubKundennr.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_KUNNR_PARVW", SubKundennr.ToSapKunnr());
-
-            if (kennungOverride.IsNotNullOrEmpty() || AdressenKennung.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_PARTART", TranslateFromFriendlyAdressenKennung(kennungOverride.IsNotNullOrEmpty() ? kennungOverride : AdressenKennung));
 
             var sapList = Z_AHP_READ_PARTNER.GT_OUT.GetExportListWithExecute(SAP);
 
