@@ -116,7 +116,7 @@ namespace CkgDomainLogic.CoC.Services
         {
 
             Z_M_PDI_LISTE.Init(SAP);
-            Z_M_PDI_LISTE.SetImportParameter_I_KUNNR(SAP, "0000314582"); // LogonContext.KundenNr.ToSapKunnr()
+            Z_M_PDI_LISTE.SetImportParameter_I_KUNNR(SAP, LogonContext.KundenNr.ToSapKunnr()); 
             SAP.Execute();
             var result = Z_M_PDI_LISTE.GT_WEB.ToList(SAP);
 
