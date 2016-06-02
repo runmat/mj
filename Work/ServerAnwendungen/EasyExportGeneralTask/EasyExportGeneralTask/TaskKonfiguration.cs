@@ -131,6 +131,9 @@ namespace EasyExportGeneralTask
         WKDA,
         WKDA_Selbstabmelder,
         StarCar2,
+        CarDocu_Strafzettel,
+        CarDocu_Abmeldung,
+
         WKDA_AT,
         WKDA_AT_Selbstabmelder
     }

@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.General.Database.Models
+
+@{ var gridName = "GridApplications"; }
+
+@(Html.XTelerik()
+    .XGrid<Application>()
+    .Name(gridName)
+    .XAjaxDataBinding("ApplicationsAjaxBinding", "AppBatchZuordnung")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.AppID).Filterable(false).Sortable(false).Title(Localize.Selection)
+            .ClientTemplate(
+                "<button onclick='SelectApplication(\"<#= data.AppID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Select + "' data-placement='right'><i class='halflings-icon white ok'></i></button>"
+        );
+        
+        columns.XBound(c => c.AppFriendlyName);
+        columns.XBound(c => c.AppURL);
+        columns.XBound(c => c.AppTechType);
+        columns.XBound(c => c.AppDescription);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .Groupable(g => g.Enabled(false))
+    .XSort(sortOrder => sortOrder.Add(c => c.AppFriendlyName).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportApplicationsFilteredExcel", "AppBatchZuordnung");
+        commands.FilteredDataCommand("ExportApplicationsFilteredPDF", "AppBatchZuordnung");
+    })
+)

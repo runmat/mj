@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+    <item>
+        <key>
+            <string>Rechnungsdaten</string>
+        </key>
+        <value>
+            <string>Auftrag&amp;shy;geber</string>
+        </value>
+    </item>
+  <item>
+      <key>
+        <string>HalterAdresse</string>
+      </key>
+      <value>
+        <string>Halter</string>
+      </value>
+    </item>
+    <item>
+        <key>
+            <string>Ersatzkennzeichen</string>
+        </key>
+        <value>
+            <string>Ersatzkennzeichen</string>
+        </value>
+    </item>
+    <item>
+        <key>
+            <string>Summary</string>
+        </key>
+        <value>
+            <string>Übersicht</string>
+        </value>
+    </item>
+    <item>
+        <key>
+            <string>Receipt</string>
+        </key>
+        <value>
+            <string>Fertig!</string>
+        </value>
+    </item>
+</dictionary>
