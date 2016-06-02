@@ -10,7 +10,7 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onblur = "TryLoadKreisByPlz();" })
+            @Html.FormTextBoxFor(m => m.Postleitzahl, new { @class = "m-wrap small", col = "left", @onchange = "TryLoadKreisByPlz();" })
             @Html.FormDropDownListFor(m => m.Zulassungskreis, FormulareSelektor.Zulassungskreise.ToSelectList(), new { @class = "m-wrap", col = "right", @onchange = "ClearPlz();" })
 
 

@@ -12,7 +12,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.VehicleId)]
         public string FahrzeugID { get; set; }
 
-        [Required]
         [StringLength(30)]
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }
@@ -95,16 +94,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [StringLength(20)]
         [LocalizedDisplay(LocalizeConstants.CompanyRef2)]
         public string Firmenreferenz2 { get; set; }
-
-        [ModelMappingCompareIgnore]
-        [GridHidden]
-        public bool TypdatenGefunden { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.FactoryName)]
-        public string FabrikName { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.TradeName)]
-        public string HandelsName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string Halter { get; set; }

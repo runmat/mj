@@ -23,7 +23,9 @@
 
             @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, EquiGrunddatenSelektor.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" }, labelHidden:true)
-            
+
+            @Html.FormCheckBoxFor(m => m.NurTemporaererVersand, labelHidden: true)
+
 
             @*@Html.FormRequiredFieldsSummary()*@
 
