@@ -1,5 +1,16 @@
 ﻿@model CustomerModel
 
+<style>
+    #forget-password {
+        color: black !important;
+    }
+    
+    #Anrede {
+        width:100% !important;
+        height: 100% !important;
+    }
+</style>
+
 <div id="DivCustomerInfo">
 
 @using (Ajax.BeginForm("CustomerForm", "Login", null,
@@ -9,13 +20,13 @@
 
     <h3 class="form-title margin-bottom-10 margin-top-10">@Localize.PleaseEnterCustomerInfo</h3>
 
-    @Html.HiddenFor(m => m.ModeCaptchaReset)
-
-    @*@Html.FormDropDownListFor(m => m.Anrede, CustomerModel.Anreden.ToSelectList(), new { @class = "m-wrap medium", placeholder = "Anrede" })*@
+    @Html.HiddenFor(m => m.ModeCaptchaReset)  
 
     @Html.FormPlaceholderTextBoxFor(m => m.Firma, new { @class = "m-wrap" })
 
-    @Html.FormPlaceholderTextBoxFor(m => m.Anrede, new {@class = "m-wrap help-inline" })   
+    @*@Html.FormPlaceholderTextBoxFor(m => m.Anrede, new {@class = "m-wrap help-inline" })*@
+
+    @Html.FormDropDownListFor(m => m.Anrede, CustomerModel.Anreden.ToSelectList(), new { @class = "m-wrap" })    
 
     @Html.FormPlaceholderTextBoxFor(m => m.Vorname, new { @class = "m-wrap" })
 
@@ -41,8 +52,10 @@
     <div class="forget-password margin-top-10">
         <button type="submit" class="btn green"> Absenden</button>     
     </div>
+    <div class="forget-password margin-top-10">
+        <h4><a href="javascript:RedirectToLoginPage();" id="forget-password"><i class="icon-chevron-right"></i> @Localize.Login</a></h4>
+    </div>
 
-    
     <script type="text/javascript">
         
         _modeCaptchaReset = @Model.ModeCaptchaReset.ToString().ToLower();
@@ -80,6 +93,11 @@
 
         function FormPreparePrivateAjax() {
             FormPrepareAjax();
+        }
+
+        function RedirectToLoginPage() {
+            var redirectUrl = "/ServicesMvc/Login";
+            location.replace(redirectUrl);
         }
 
     </script>

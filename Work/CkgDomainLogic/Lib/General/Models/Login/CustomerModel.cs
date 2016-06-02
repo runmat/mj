@@ -44,6 +44,10 @@ namespace CkgDomainLogic.General.Models
                 
         public string FrageProblem { get; set; }
 
+        public string HerkunftsUrl { get; set; }
+
+        public string ZielEmailAdresse { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {           
             if (Anrede.IsNullOrEmpty())

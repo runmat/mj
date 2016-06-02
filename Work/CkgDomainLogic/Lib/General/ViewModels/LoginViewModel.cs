@@ -178,23 +178,22 @@ namespace CkgDomainLogic.General.ViewModels
         {
             try
             {
-                var userEmail = "Web-Administrator@DataConverterMappingData.de";
-                var subject = "Webuseranfrage";
+                var userEmail = model.ZielEmailAdresse;
+                var subject = "Hilfe / neuer Account";
                 var body = "";
-
-                userEmail = "peter.hase@kroschke.de";
-                userEmail = "Hinrich.Braasch@kroschke.de";
-
-                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";
-                body += Localize.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
-                body += Localize.Name + ": " + model.Name + "<br/>";
-                body += Localize.FirstName + ": " + model.Vorname + "<br/>";
+                
                 body += Localize.Company + ": " + model.Firma + "<br/>";
+                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";                                
+                body += Localize.FirstName + ": " + model.Vorname + "<br/>";
+                body += Localize.Name + ": " + model.Name + "<br/>";
+                body += Localize.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
                 body += Localize.Phone + ": " + model.Telefon + "<br/>";
-                body += Localize.EmailAddress + ": " + model.EMailAdresse + "<br/>";
-                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/>";             
-               
-                AppSettings.MailService.SendMail(userEmail, subject, body);
+                body += Localize.EmailAddress + ": " + model.EMailAdresse + "<br/><br/>";
+                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/><br/>";
+
+                body += "Server Url: " + model.HerkunftsUrl;
+
+               AppSettings.MailService.SendMail(userEmail, subject, body);
             }
             catch
             {

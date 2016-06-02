@@ -258,6 +258,9 @@ namespace CkgDomainLogic.General.Controllers
                     return PartialView("Partial/CustomerForm", model);
                 }
 
+                model.HerkunftsUrl = HttpContext.Request.Url.OriginalString;               
+                model.ZielEmailAdresse = GeneralConfigurationProvider.GetConfigVal("Login", "NoAccessNeedHelpWebAdministrator");
+
                 ViewModel.TrySendCustomerEmail(model, ModelState.AddModelError);
 
                 SetViewModel<CustomerModel>(null);
