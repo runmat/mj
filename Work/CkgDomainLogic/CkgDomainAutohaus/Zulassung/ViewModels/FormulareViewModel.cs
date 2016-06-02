@@ -62,6 +62,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public bool Versand48hMoeglich { get; set; }
+
         public ZiPoolDetaildaten ZiPoolDetails
         {
             get
@@ -90,17 +92,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ApplySelection(FormulareSelektor selektor)
         {
-            // bei einer leeren Plz wurde der Kreis geändert, andernfalls wurde bereits vorher per "GetKreisByPlz" der Kreis automatisch ermittelt
+            // bei einer leeren Plz wurde der Kreis geändert, sonst ggf. die Plz
             if (string.IsNullOrEmpty(selektor.Postleitzahl))
+            {
                 FormulareSelektor = selektor;
+            }
             else
+            {
+                if (selektor.Postleitzahl != FormulareSelektor.Postleitzahl && selektor.Zulassungskreis == FormulareSelektor.Zulassungskreis)
+                    GetKreisByPlz(selektor.Postleitzahl);
+
                 selektor.Zulassungskreis = FormulareSelektor.Zulassungskreis;
+            }
         }
 
         public void LoadFormulareAndZiPoolDaten(Action<string, string> addModelError)
         {
             Formulare = DataService.GetFormulare(FormulareSelektor, addModelError);
             ZiPoolDaten = DataService.GetZiPoolDaten(FormulareSelektor.Zulassungskreis, addModelError);
+            Versand48hMoeglich = DataService.Check48hExpressForZulst(FormulareSelektor.Zulassungskreis, addModelError);
 
             if ((Formulare == null || Formulare.None()) && ZiPoolDaten == null)
                 addModelError("", Localize.NoDataFound);

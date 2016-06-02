@@ -20,6 +20,7 @@ namespace ZLDMobile.Services
         public string AppOwnerFullName { get; set; }
 
         public string AppOwnerNameAndFullName { get; private set; }
+        public string AppOwnerSuffix { get; private set; }
 
         public string AppOwnerImpressumPartialViewName { get; private set; }
 
@@ -69,6 +70,9 @@ namespace ZLDMobile.Services
         }
 
         public int TokenExpirationMinutes { get; set; }
+        public string CustomCssFile { get; private set; }
+        public string PortalWelcomeMessageStartLocalized { get; private set; }
+        public string PortalWelcomeMessageEndLocalized { get; private set; }
 
         public string GlobalErrorlogDirectory { get { return ConfigurationManager.AppSettings["GlobalErrorlogDirectory"]; } }
     }

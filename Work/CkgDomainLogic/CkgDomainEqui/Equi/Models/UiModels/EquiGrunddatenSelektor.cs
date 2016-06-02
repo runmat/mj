@@ -87,6 +87,10 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        [LocalizedDisplay(LocalizeConstants.OnlyTemporaryDispatch)]
+        [FormPersistable]
+        public bool NurTemporaererVersand { get; set; }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<EquiGrunddatenViewModel> GetViewModel { get; set; }
     }

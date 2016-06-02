@@ -194,7 +194,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
             var pdfBytes = ViewModel.Overview.PdfUploaded;
             if (pdfBytes == null)
             {
-                const string html = "<html><p>Keine Datei gew&auml;hlt</p></html>";
+                string html = "<html><p>" + Localize.DefaultEmptyPdf +"</p></html>";
                 pdfBytes = PdfDocumentFactory.HtmlToPdf(html);
             }
 

@@ -22,6 +22,7 @@ namespace CkgDomainLogic.Services
         public string AppOwnerFullName { get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerFullName"); } }
 
         public string AppOwnerNameAndFullName { get { return string.Format("{0}{1}", AppOwnerName.AppendIfNotNull(" - "), AppOwnerFullName ); } }
+        public string AppOwnerSuffix { get { return GeneralConfiguration.GetConfigValue("Global", "AppOwnerSuffix").NotNullOr(""); } }
 
         public string AppOwnerImpressumPartialViewName
         {

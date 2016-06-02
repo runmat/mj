@@ -49,7 +49,7 @@ namespace CkgDomainLogic.Autohaus.Models
             get
             {
                 if (Dienstleistung == "XXX")
-                    return new List<SimpleUiListItem> { new SimpleUiListItem { StyleCssClass = "zipool-item-error", Text = Localize.ZiPoolMessageNoInformationForThisCase } };
+                    return new List<SimpleUiListItem> { new SimpleUiListItem { StyleCssClass = "necessary-document-item-error", Text = Localize.ZiPoolMessageNoInformationForThisCase } };
 
                 var liste = new List<SimpleUiListItem>();
 
@@ -92,7 +92,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 liste.Add(new SimpleUiListItem
                 {
                     Text = string.Format("{0} ({1})", bezeichnung, ergebnisWert),
-                    StyleCssClass = string.Format("zipool-item-{0}", (ergebnisWert == Localize.Original ? "original" : "copy"))
+                    StyleCssClass = string.Format("necessary-document-item-{0}", (ergebnisWert == Localize.Original ? "original" : "copy"))
                 });
         }
     }

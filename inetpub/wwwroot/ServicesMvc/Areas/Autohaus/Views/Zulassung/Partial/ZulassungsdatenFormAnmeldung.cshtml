@@ -1,4 +1,5 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Autohaus.ViewModels
 @using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 
@@ -8,15 +9,32 @@
 
 @Html.HiddenFor(m => m.UiUpdateOnly)
 
-@if (Model.IsMassenzulassung)
+@if (Model.IsMassenzulassung || (Model.SonderzulassungsMode == SonderzulassungsMode.Firmeneigen || Model.SonderzulassungsMode == SonderzulassungsMode.Umschreibung))
 {
     @Html.HiddenFor(m => m.HaltereintragVorhanden)
     @Html.HiddenFor(m => m.Expressversand)
-    
-    @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
-    @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
 
-    @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+    if (Model.SonderzulassungsMode == SonderzulassungsMode.Firmeneigen || Model.SonderzulassungsMode == SonderzulassungsMode.Umschreibung)
+    {
+        @Html.HiddenFor(m => m.ZulassungsartMatNr)
+
+        if (Model.SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
+        {
+            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left", onchange = "SonderzulHaltedauerOnChange()", onkeyup = "SonderzulHaltedauerOnKeyPress()", autocomplete = "off" })
+        }
+        if (Model.SonderzulassungsMode == SonderzulassungsMode.Umschreibung)
+        {
+            @Html.FormCheckBoxFor(m => m.BestehendesKennzeichenBeibehalten, new {@class = "m-wrap xsmall", col = "left", onchange = "CheckBestehendesKennzeichenBeibehalten()" })
+        }
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small", col = "right" })
+    }
+    else
+    {
+        @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
+        @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
+            
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+    }
 
     @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" })
 }
@@ -44,22 +62,38 @@ else
             @Html.HiddenFor(m => m.Expressversand)
         }
 
-        <div class="kroschke-evb-control-group-border">
-            @Html.FormTextBoxFor(m => m.EvbNr, new {@class = "m-wrap small uppercase", maxlength = 7}, postControlHtml:
-                @<text><button class="btn green" onclick="return false;"><i class='icon-chevron-right'></i></button></text>)
-            <div class="control-group">
-                <div class="alert hide" id="evb-info">
-                    <i></i>
-                    <div></div>
+        @if (Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+        {
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase" })
+            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap medium" })
+
+            @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase" })
+            @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
+        }
+        else
+        {
+            <div class="kroschke-evb-control-group-border">
+                @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml:
+                                    @<text><button class="btn green" onclick="return false;"><i class='icon-chevron-right'></i></button></text>)
+                <div class="control-group">
+                    <div class="alert hide" id="evb-info">
+                        <i></i>
+                        <div></div>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 
     <div class="span6 form-horizontal zulassungsdaten" id="zulassungsdaten-right">
         
-        @if (Model.ZulassungsartAutomatischErmitteln)
+        @if (Model.ZulassungsartAutomatischErmitteln || Model.ModusSonderzulassungAuto)
         {
+            if (Model.SonderzulassungsMode == SonderzulassungsMode.Umkennzeichnung)
+            {
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
+            }
+
             @Html.HiddenFor(m => m.ZulassungsartMatNr)
             @Html.HiddenFor(m => m.MindesthaltedauerDays)
         }
@@ -69,7 +103,7 @@ else
             @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new {@class = "m-wrap small uppercase", maxlength = 7})
         }
 
-        @if (Model.ZulassungsartAutomatischErmitteln)
+        @if (Model.ZulassungsartAutomatischErmitteln && !Model.ModusSonderzulassungAuto)
         {
             @Html.FormRadioButtonListFor(m => m.HaltereintragVorhanden, Zulassungsdaten.HaltereintragVorhandenOptions.ToSelectList(), new { @class = "m-wrap" })
         }
@@ -86,7 +120,7 @@ else
                     </span>
                  </text>)
     
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo))
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();" }, labelText: (Model.KennzeichenReserviert ? Localize.LicenseNo : Localize.PersonalisedLicenseNo1))
         @if (Model.KennzeichenReserviert)
         {
             @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium" })
@@ -123,11 +157,20 @@ else
                     columns.XBound(c => c.HandelsName);
                     columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                     columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
-                    columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
-                    columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
-                    columns.XBound(c => c.ResKennz).ClientTemplate("<input id='ResKennz_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockrk blockdisabled' data-fieldname='ResKennz' value='<#= data.ResKennz #>' />");
-                    columns.XBound(c => c.ReservationNr).ClientTemplate("<input id='ReservationNr_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationNr' value='<#= data.ReservationNr #>' />");
-                    columns.XBound(c => c.ReservationName).ClientTemplate("<input id='ReservationName_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationName' value='<#= data.ReservationName #>' />");
+
+                    if (Model.SonderzulassungsMode != SonderzulassungsMode.Umschreibung || !Model.BestehendesKennzeichenBeibehalten)
+                    {
+                        columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
+                        columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
+                        columns.XBound(c => c.ResKennz).ClientTemplate("<input id='ResKennz_<#= data.FinID #>' type='text' class='inputwidth uppercase editkennz blockrk blockdisabled' data-fieldname='ResKennz' value='<#= data.ResKennz #>' />");
+                        columns.XBound(c => c.ReservationNr).ClientTemplate("<input id='ReservationNr_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationNr' value='<#= data.ReservationNr #>' />");
+                        columns.XBound(c => c.ReservationName).ClientTemplate("<input id='ReservationName_<#= data.FinID #>' type='text' class='inputwidth editreskennz blockrk blockdisabled' data-fieldname='ReservationName' value='<#= data.ReservationName #>' />");
+                    }
+
+                    if (Model.SonderzulassungsMode == SonderzulassungsMode.Firmeneigen)
+                    {
+                        columns.XBound(c => c.MindesthaltedauerDays).ClientTemplate("<input id='MindesthaltedauerDays_<#= data.FinID #>' type='text' class='inputwidth editmisc blockrk haltedauer' data-fieldname='MindesthaltedauerDays' value='<#= data.MindesthaltedauerDays #>' onkeyup='SonderzulHaltedauerOnKeyPress()' autocomplete='off' />");
+                    }
                     columns.XBound(c => c.ZulassungFahrzeugart);
                 })
                 .XAutoColumnConfiguration()
