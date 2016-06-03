@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Windows.Input;
 using CarDocu.Models;
 using GeneralTools.Services;
 
@@ -13,18 +11,13 @@ namespace CarDocu.Services.Threads
     /// </summary>
     public class ArchiveBackgroundTask : CardocuBackgroundTask
     {
-        private ArchiveLogItems _logItems = new ArchiveLogItems(); 
-        public ArchiveLogItems LogItems 
-        { 
-            get { return _logItems; }
-            set { _logItems = value; }
-        }
+        public ArchiveLogItems LogItems { get; set; } = new ArchiveLogItems();
 
-        public override string Name { get { return "Netzwerk-Versand"; } }
+        public override string Name => "Netzwerk-Versand";
 
         // keep this interval nearly endlees, to avoid sending to many test-mails from our smtp server.
         // (currently only at application startup one test-mail will be sent to check availability of our smtp server)
-        protected override int OnlineStatusIntervalSeconds { get { return 999999; } }
+        protected override int OnlineStatusIntervalSeconds => 999999;
 
 
         protected override bool NativeThreadLoop()

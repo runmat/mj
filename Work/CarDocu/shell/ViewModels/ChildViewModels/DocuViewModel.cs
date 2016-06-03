@@ -288,6 +288,7 @@ namespace CarDocu.ViewModels
                 SendPropertyChanged("BatchSummary");
             }
         }
+
         public ObservableCollection<StatusMessage> StatusMessages => DomainService.StatusMessages;
 
 
@@ -493,6 +494,8 @@ namespace CarDocu.ViewModels
             StatusMessages.Clear();
 
             BatchSummary.Available = true;
+            BatchSummary.IsCancelled = false;
+            BatchSummary.LastRecognizedBarcode = "";
             BatchSummary.Title = "Stapel Scan läuft ...";
             BatchSummary.ResultsAvailable = false;
             BatchSummary.ResultsGoodItems = BatchSummary.ResultsBadItems = BatchSummary.ResultsTotalItems = 0;
@@ -647,7 +650,9 @@ namespace CarDocu.ViewModels
             if (ScanDocument.ScanImages.Any())
             {
                 DomainService.Repository.ScanDocumentRepositoryTryAddScanDocument(ScanDocument);
-                DomainService.Repository.ScanDocumentRepositorySave();
+
+                if (!ScanDocument.BatchScanned)
+                    DomainService.Repository.ScanDocumentRepositorySave();
             }
 
             if (archiveToHistory)
@@ -848,10 +853,20 @@ namespace CarDocu.ViewModels
 
             ScanDocument.ScanImages.Clear();
 
-            if (scanDocumentIsValid)
-                BatchSummary.ResultsGoodItems++;
-            else
+            if (BatchSummary.IsCancelled)
+                return;
+
+            if (!scanDocumentIsValid)
+            {
                 BatchSummary.ResultsBadItems++;
+                BatchSummary.IsCancelled = true;
+            }
+            else
+            {
+                BatchSummary.ResultsGoodItems++;
+
+                BatchSummary.LastRecognizedBarcode = ScanDocument.FinNumber;
+            }
 
             BatchSummary.Title += ".";
             BatchSummary.ResultsTotalItems = BatchSummary.ResultsBadItems + BatchSummary.ResultsGoodItems;
@@ -875,6 +890,11 @@ namespace CarDocu.ViewModels
             BatchSummary.ResultsAvailable = true;
             BatchSummary.Title = "Stapel Scan beendet, Ergebnis:";
             UpdateUI();
+
+            if (BatchSummary.IsCancelled)
+                DomainService.Repository.DeleteAllPausedItemsForBackgroundTasks();
+            else
+                DomainService.Repository.EnqueueAllPausedItemsForBackgroundTasks();
 
             return true;
         }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Input;
 using CarDocu.Models;
 using GeneralTools.Services;
 using Ionic.Zip;
@@ -44,6 +45,8 @@ namespace CarDocu.Services
         public ScanDocumentRepository ScanDocumentRepository { get; set; }
 
         public ScanDocumentRepository ScanTemplateRepository { get; set; }
+
+        public List<CardocuQueueEntity> PausedItemsForQueue { get; set; } = new List<CardocuQueueEntity>();
 
         public string AdminNamePostFix => "!17";
         private DomainUser _adminUser;
@@ -273,8 +276,41 @@ namespace CarDocu.Services
             if (scanDocument.BackgroundDeliveryDisabled)
                 return;
 
-            DomainService.Threads.SapBackgroundTask.Enqueue(new SapLogItem { DocumentID = scanDocument.DocumentID });
-            DomainService.Threads.ArchiveBackgroundTask.Enqueue(new ArchiveLogItem { DocumentID = scanDocument.DocumentID });
+            var sapLogItem = new SapLogItem {DocumentID = scanDocument.DocumentID};
+            var archiveLogItem = new ArchiveLogItem {DocumentID = scanDocument.DocumentID};
+            if (scanDocument.BatchScanned)
+            {
+                PausedItemsForQueue.Add(sapLogItem);
+                PausedItemsForQueue.Add(archiveLogItem);
+                return;
+            }
+
+            EnqueueItemForBackgroundTask(sapLogItem);
+            EnqueueItemForBackgroundTask(archiveLogItem);
+        }
+
+        public void EnqueueAllPausedItemsForBackgroundTasks()
+        {
+            DomainService.Repository.ScanDocumentRepositorySave();
+            PausedItemsForQueue.ForEach(item => EnqueueItemForBackgroundTask(item));
+
+            DeleteAllPausedItemsForBackgroundTasks();
+        }
+
+        public void DeleteAllPausedItemsForBackgroundTasks()
+        {
+            PausedItemsForQueue.Clear();
+
+            DomainService.Repository.ScanDocumentRepositoryLoad();
+        }
+
+        private static void EnqueueItemForBackgroundTask(CardocuQueueEntity item)
+        { 
+            if (item is SapLogItem)
+                DomainService.Threads.SapBackgroundTask.Enqueue(item);
+
+            if (item is ArchiveLogItem)
+                DomainService.Threads.ArchiveBackgroundTask.Enqueue(item);
         }
 
         public void UserSettingsSave()
