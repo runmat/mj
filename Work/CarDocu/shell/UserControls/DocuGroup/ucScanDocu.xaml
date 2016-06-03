@@ -29,14 +29,23 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,250,0,0" 
+                    Grid.ColumnSpan="2" Grid.RowSpan="1" CornerRadius="50" Padding="25" 
+                    Background="{StaticResource brGradientLightWhiteInverse}" 
+                    Visibility="{Binding AskForDomainSelectionAtLogin, Converter={StaticResource BooleanVisibilityConverter}}">
+                <StackPanel Opacity="0.5" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock FontSize="30" Text="Domain" Style="{StaticResource lbHeaderBig}" Margin="0,0,25,0" />
+                    <TextBlock FontSize="75" Text="{Binding DomainName}" Foreground="Green" Style="{StaticResource lbHeaderBig}"  />
+                </StackPanel>
+            </Border>
+
             <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding SelectedScanImageHeight}">
                 <StackPanel Margin="0">
 
-                    <StackPanel Orientation="Horizontal"  Visibility="{Binding BatchSummary.Available, Converter={StaticResource BooleanVisibilityInverseConverter}}" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding BatchSummary.Available, Converter={StaticResource BooleanVisibilityInverseConverter}}" Margin="0,0,0,5">
                         <TextBlock Text="{Binding Title}" Style="{StaticResource lbHeaderBig}"  Margin="0,0,0,0" />
                         <TextBlock Text="TEST-MODUS" Foreground="Red" FontSize="20" FontWeight="Bold" Visibility="{Binding IsTestMode, Converter={StaticResource BooleanVisibilityConverter}}" Margin="20,0,0,0" />
                     </StackPanel>
-
                     
                     <StackPanel DataContext="{Binding BatchSummary}">
                         <StackPanel Visibility="{Binding Available, Converter={StaticResource BooleanVisibilityConverter}}" Margin="0,0,0,0">

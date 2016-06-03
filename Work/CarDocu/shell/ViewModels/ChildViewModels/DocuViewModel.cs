@@ -289,6 +289,10 @@ namespace CarDocu.ViewModels
             }
         }
 
+        public bool AskForDomainSelectionAtLogin => DomainService.Repository.AppSettings.AskForDomainSelectionAtLogin;
+
+        public string DomainName => DomainService.DomainName;
+
         public ObservableCollection<StatusMessage> StatusMessages => DomainService.StatusMessages;
 
 

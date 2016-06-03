@@ -14,7 +14,7 @@ namespace CarDocu.Services
 {
     public static class DomainService
     {
-        public static bool DebugIsAdminEnvironment => Environment.UserName.ToLower().Contains("jenzenm") &&
+        public static bool DebugIsAdminEnvironment => Environment.UserName.ToLower().Contains("xjenzenm") &&
                                                       Environment.MachineName.ToUpper().Contains("AHW590");
 
         public static string AppName => AppSettings.AppName;
