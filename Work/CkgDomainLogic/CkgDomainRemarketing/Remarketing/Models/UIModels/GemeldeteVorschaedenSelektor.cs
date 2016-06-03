@@ -57,9 +57,6 @@ namespace CkgDomainLogic.Remarketing.Models
         {
             var vertragsJahr = Vertragsjahr.NotNullOrEmpty().Trim();
 
-            if (string.IsNullOrEmpty(FahrgestellNr) && string.IsNullOrEmpty(Kennzeichen) && string.IsNullOrEmpty(InventarNr) && vertragsJahr.Length < 4)
-                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, new[] { "FahrgestellNr", "Kennzeichen", "InventarNr", "Vertragsjahr" });
-
             if (!string.IsNullOrEmpty(vertragsJahr) && (vertragsJahr.Length < 4 || !vertragsJahr.IsNumeric() || vertragsJahr.ToInt(0) < 1900 || vertragsJahr.ToInt(0) > 2500))
                 yield return new ValidationResult(string.Format("{0} {1}", Localize.ContractYear, Localize.Invalid.ToLower()), new[] { "Vertragsjahr" });
         }
