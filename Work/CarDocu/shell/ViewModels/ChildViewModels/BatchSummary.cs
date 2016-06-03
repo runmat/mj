@@ -70,6 +70,17 @@ namespace CarDocu.ViewModels
             }
         }
 
+        private string _lastAcceptedScan;
+        public string LastAcceptedScan
+        {
+            get { return _lastAcceptedScan; }
+            set
+            {
+                _lastAcceptedScan = value;
+                SendPropertyChanged("LastAcceptedScan");
+            }
+        }
+
         private string _lastRecognizedBarcode;
         public string LastRecognizedBarcode
         {

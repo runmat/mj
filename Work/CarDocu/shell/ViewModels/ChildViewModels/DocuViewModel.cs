@@ -495,6 +495,7 @@ namespace CarDocu.ViewModels
 
             BatchSummary.Available = true;
             BatchSummary.IsCancelled = false;
+            BatchSummary.LastAcceptedScan = "";
             BatchSummary.LastRecognizedBarcode = "";
             BatchSummary.Title = "Stapel Scan läuft ...";
             BatchSummary.ResultsAvailable = false;
@@ -854,18 +855,23 @@ namespace CarDocu.ViewModels
             ScanDocument.ScanImages.Clear();
 
             if (BatchSummary.IsCancelled)
+            {
                 return;
+            }
 
             if (!scanDocumentIsValid)
             {
                 BatchSummary.ResultsBadItems++;
                 BatchSummary.IsCancelled = true;
+
+                if (ScanDocument.ValidFinNumber)
+                    BatchSummary.LastRecognizedBarcode = ScanDocument.FinNumber;
             }
             else
             {
                 BatchSummary.ResultsGoodItems++;
 
-                BatchSummary.LastRecognizedBarcode = ScanDocument.FinNumber;
+                BatchSummary.LastAcceptedScan = ScanDocument.FinNumber;
             }
 
             BatchSummary.Title += ".";

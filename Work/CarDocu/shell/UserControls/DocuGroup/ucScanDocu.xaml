@@ -68,14 +68,18 @@
                                     </StackPanel>
                                     <StackPanel Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Margin="15">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="0,5,0,5" Style="{StaticResource lbHeaderBig}" Foreground="Red">
+                                            <TextBlock Style="{StaticResource lbHeaderBig}" Foreground="Red">
                                                     Mindestens ein Teil-Scan war nicht erfolgreich!
                                                     Der gesamte Stapel-Scan wird daher verworfen und muss erneut gescannt werden!
                                             </TextBlock>
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                            <TextBlock Style="{StaticResource lbHeaderBig}" Foreground="Green">Letzter erfolgreich erkannter Barcode:</TextBlock>
-                                            <TextBlock Text="{Binding LastRecognizedBarcode}" Foreground="Green" Style="{StaticResource lbHeaderBig}" Margin="5,0,0,0" />
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding LastAcceptedScan, Converter={StaticResource StringVisibilityConverter}}">
+                                            <TextBlock Width="300" Style="{StaticResource lbHeaderBig}" Foreground="Black">Letzter erfolgreich verarbeiteter Teil-Scan:</TextBlock>
+                                            <TextBlock Text="{Binding LastAcceptedScan}" Foreground="Green" Style="{StaticResource lbHeaderBig}" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding LastRecognizedBarcode, Converter={StaticResource StringVisibilityConverter}}">
+                                            <TextBlock Width="300" Style="{StaticResource lbHeaderBig}" Foreground="Black" Opacity="0.4">Letzter erfolgreich erkannter Barcode:</TextBlock>
+                                            <TextBlock Text="{Binding LastRecognizedBarcode}" Foreground="Green" Opacity="0.5" Style="{StaticResource lbHeaderBig}" Margin="5,0,0,0" />
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
