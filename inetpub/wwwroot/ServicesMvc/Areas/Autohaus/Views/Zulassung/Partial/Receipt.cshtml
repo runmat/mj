@@ -68,9 +68,14 @@ else
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
                     }
 
-                    @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && p.Belegnummer == zulassungBelegNr))
+                    @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => p.IstAuftragsZettel && p.Belegnummer == zulassungBelegNr))
                     {
-                        <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
+                        <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @Localize.OrderForm <i class="icon-download-alt"></i></a>
+                    }
+
+                    @foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassungBelegNr).Select(p => p.Typ).Distinct().ToList())
+                    {
+                        <a href="ZusatzformularAsPdf?id=@zulassungBelegNr&typ=@zusatzformularTyp" class="btn blue tooltips margin-right-5 margin-bottom-5"> @zusatzformularTyp <i class="icon-download-alt"></i></a>
                     }
 
                     @if (zulassung.VersandlabelPdf != null)
