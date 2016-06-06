@@ -110,7 +110,9 @@ namespace CarDocu.Services
 
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
-                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
+                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() 
+                                        ? "" 
+                                        : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name.Replace(srcFileInfo.Extension, DateTime.Today.ToString("_yyyyMMdd") + srcFileInfo.Extension));
 
                     if (docType.UseExternalCommandline)
                     {

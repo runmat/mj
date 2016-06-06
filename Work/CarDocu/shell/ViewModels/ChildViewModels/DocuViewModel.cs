@@ -938,7 +938,8 @@ namespace CarDocu.ViewModels
                 if (SelectedDocumentType == null || SelectedDocumentType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty())
                     return "";
 
-                var tagsDirectory = Path.Combine(SelectedDocumentType.InlineNetworkDeliveryArchiveFolder, "_tags");
+                var tagsDirectory = SelectedDocumentType.InlineNetworkDeliveryTagsFolder;
+                
                 FileService.TryDirectoryCreate(tagsDirectory);
                 var di = new DirectoryInfo(tagsDirectory);
                 if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)

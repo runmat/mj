@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -316,6 +318,16 @@ namespace CarDocu.Models
             }
         }
 
+        public string InlineNetworkDeliveryTagsFolder
+        {
+            get
+            {
+                var tagsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "_tags_scanclient");
+
+                return tagsDirectory;
+            }
+        }
+
         bool _useTagCollectionForDocumentNameEditing;
 
         public bool UseTagCollectionForDocumentNameEditing
@@ -329,7 +341,7 @@ namespace CarDocu.Models
         }
 
         public string TagCollectionCheckBoxHint =>
-            $"Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {InlineNetworkDeliveryArchiveFolder})";
+            $"Schlagwortliste für neue Dokumentennamen verwenden (Schlagwortliste wird hier gespeichert: {InlineNetworkDeliveryTagsFolder})";
 
         private readonly Media.Brush _brushBackgroundValid = Media.Brushes.LightGoldenrodYellow;
         private readonly Media.Brush _brushBackgroundInvalid = Media.Brushes.LightPink;
