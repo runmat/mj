@@ -968,12 +968,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var list = PartnerDataService.Adressen;
             list.ForEach(a => a.Typ = "Halter");
 
-            PartnerDataService.AdressenKennung = "KAEUFER";
-            PartnerDataService.MarkForRefreshAdressen();
-            var listKaeufer = PartnerDataService.Adressen;
-            listKaeufer.ForEach(a => a.Typ = "Kaeufer");
-
-            list.AddRange(listKaeufer);
             return list;
         }
 
