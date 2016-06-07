@@ -15,12 +15,17 @@ namespace GeneralTools.Services
             return GetConfigValue(context, keyName);
         }
 
+        public IDictionary<string, string> GetConfigVals(string context, string connectionString = null, string filterClause = null)
+        {
+            return GetConfigValues(context, connectionString, filterClause);
+        }
+
         public string GetConfigAllServerVal(string context, string keyName)
         {
             return GetConfigAllServerValue(context, keyName);
         }
 
-        public IDictionary<string, string> GetConfigAllServersVals(string context, string connectionString = null, string filterClause = null)
+        public IDictionary<string, string> GetConfigAllServerVals(string context, string connectionString = null, string filterClause = null)
         {
             return GetConfigAllServersValues(context, connectionString, filterClause);
         }
@@ -58,6 +63,40 @@ namespace GeneralTools.Services
                 return "";
             }
         }
+
+        public static IDictionary<string, string> GetConfigValues(string context, string connectionString = null, string filterClause = null)
+        {
+            var encryptedPwd = GetConfigAllServerValue("ConnectionStringMetadata", "Database User Pwd");
+            var decryptedPwd = CryptoMd5.Decrypt(encryptedPwd);
+
+            try
+            {
+                var cnn = new SqlConnection(connectionString ?? ConfigurationManager.AppSettings["Connectionstring"]);
+                var cmd = cnn.CreateCommand();
+                cmd.CommandText = "SELECT [key], value FROM Config " +
+                                  "WHERE Context = @Context" +
+                                  (filterClause == null ? "" : " AND " + filterClause);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@Context", context);
+
+                cnn.Open();
+                var dr = cmd.ExecuteReader();
+                var dt = new DataTable();
+                dt.Load(dr);
+                cnn.Close();
+
+                if (dt.Rows.Count > 0)
+                    return dt.Rows.OfType<DataRow>().ToDictionary(row => row[0].ToString(), row => row[1].ToString().Replace("******", decryptedPwd));
+
+                return new Dictionary<string, string>();
+            }
+            // ReSharper disable once UnusedVariable
+            catch (Exception)
+            {
+                return new Dictionary<string, string>();
+            }
+        }
+
         public static string GetConfigAllServerValue(string context, string keyName)
         {
             try

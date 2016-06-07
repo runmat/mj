@@ -31,15 +31,9 @@
                     </div>
                 </label>
             </div>
-            
+
             <!-- Tools, export options, etc -->
-            <div class="outer-export-menu btn-group pull-right margin-left-15">
-				<button class="btn dropdown-toggle" data-toggle="dropdown">Export <i class="icon-angle-down"></i></button>
-				<ul class="dropdown-menu pull-right">
-				    <li><a class="outer-export-link-excel" href="#"><i class="menu-item excel-export">Excel</i></a></li>
-					<li><a class="outer-export-link-pdf" href="#"><i class="menu-item pdf-export">PDF</i></a></li>
-				</ul>
-			</div>
+            @Html.Partial("Partial/TelerikGridExportMenu")
 
             <!-- Overall Column Filter -->
             <div class="dataTables_filter smartphone">

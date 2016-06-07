@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -53,7 +54,6 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
 
-        [Required]
         [StringLength(10)]
         [LocalizedDisplay(LocalizeConstants.Reference1)]
         public string Referenz1 { get; set; }
@@ -68,6 +68,17 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.Models
         [StringLength(4)]
         [LocalizedDisplay(LocalizeConstants.PartnerRole)]
         public string Partnerrolle { get; set; }
+
+        [StringLength(34)]
+        [LocalizedDisplay(LocalizeConstants.Iban)]
+        public string Iban { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.SepaBooking)]
+        public DateTime? Stichtagsabbuchung { get; set; }
+
+        [StringLength(7)]
+        [LocalizedDisplay(LocalizeConstants.EVB)]
+        public string EvbNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SaveCustomerData)]
         public bool KundendatenSpeichern { get; set; }

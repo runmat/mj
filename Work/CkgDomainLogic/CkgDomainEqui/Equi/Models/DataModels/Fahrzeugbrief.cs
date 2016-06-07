@@ -95,8 +95,14 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Memo)]
         public string Memo { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
+        public string HerstellerSchluessel { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string FahrzeugHersteller { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TypeKey)]
+        public string TypSchluessel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugTyp { get; set; }

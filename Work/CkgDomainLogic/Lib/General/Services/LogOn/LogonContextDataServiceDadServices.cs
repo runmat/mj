@@ -191,7 +191,7 @@ namespace CkgDomainLogic.General.Services
             UserAppsSetAppTypeRank();
 
             dbContext.SetLastLogin(DateTime.Now);
-
+            dbContext.SetLoggedOn(true);
             return true;
         }
 
@@ -396,6 +396,7 @@ namespace CkgDomainLogic.General.Services
 
         public override void LogoutUser()
         {
+            var dbContext = CreateDbContext(UserName);
             UserID = "";
             UserName = "";
             User = null;
@@ -412,6 +413,7 @@ namespace CkgDomainLogic.General.Services
             if (UserApps != null)
                 UserApps.Clear();
             UserNameEncryptedToUrlEncoded = "";
+            dbContext.SetLoggedOn(false);
         }
 
         public override bool ChangePassword(string oldPassword, string newPassword)

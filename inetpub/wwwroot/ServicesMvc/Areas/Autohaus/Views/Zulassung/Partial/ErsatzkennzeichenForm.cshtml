@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@model Ersatzkennzeichendaten
+
+<div id="DivErsatzkennzeichen" class="margin-top-20">
+    
+    @using (Ajax.BeginForm("ErsatzkennzeichenForm", "Zulassung", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivErsatzkennzeichen", OnComplete = "AjaxFormErsatzkennzeichenComplete();"}, new {@class = "form-horizontal", id = "AjaxFormErsatzkennzeichen"}))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+        
+        @Html.FormDropDownListFor(m => m.Fahrzeugdaten.ErsatzKennzeichenTyp, Model.Fahrzeugdaten.ErsatzKennzeichenTypen.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.FahrgestellNr, new { @class = "m-wrap medium uppercase" })
+
+
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugdaten.Kostenstelle, new { @class = "m-wrap small uppercase", col = "right" })
+
+        <div class="hide">
+            @Html.FormDropDownListFor(m => m.Fahrzeugdaten.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+        </div>
+    }
+
+    <script type="text/javascript">
+        _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    </script>
+
+</div>
