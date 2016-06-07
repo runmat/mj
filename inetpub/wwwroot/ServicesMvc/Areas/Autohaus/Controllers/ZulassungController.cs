@@ -986,7 +986,12 @@ namespace ServicesMvc.Autohaus.Controllers
                 if (zulassung.KundenformularPdf != null)
                     pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
 
-                foreach(var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
+                foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => p.IstAuftragsListe && p.Belegnummer == zulassung.BelegNr))
+                {
+                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ));
+                }
+
+                foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
                 {
                     pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(zulassung.BelegNr, zusatzformularTyp));
                 }
