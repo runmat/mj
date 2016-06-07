@@ -73,7 +73,7 @@ else
                         <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @Localize.OrderForm <i class="icon-download-alt"></i></a>
                     }
 
-                    @foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassungBelegNr).Select(p => p.Typ).Distinct().ToList())
+                    @foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassungBelegNr).Select(p => p.Typ).Distinct().OrderBy(t => t).ToList())
                     {
                         <a href="ZusatzformularAsPdf?id=@zulassungBelegNr&typ=@zusatzformularTyp" class="btn blue tooltips margin-right-5 margin-bottom-5"> @zusatzformularTyp <i class="icon-download-alt"></i></a>
                     }

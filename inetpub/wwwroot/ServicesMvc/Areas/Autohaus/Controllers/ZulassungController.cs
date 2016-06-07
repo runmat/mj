@@ -928,7 +928,7 @@ namespace ServicesMvc.Autohaus.Controllers
             if (zulassung == null)
                 return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
-            var zusatzFormulare = zulassung.Zusatzformulare.Where(z => z.Typ == typ).ToList();
+            var zusatzFormulare = zulassung.Zusatzformulare.Where(z => !z.IstAuftragsListe && z.Typ == typ).ToList();
             if (zusatzFormulare.None())
                 return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound);
 
@@ -986,12 +986,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 if (zulassung.KundenformularPdf != null)
                     pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
 
-                foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => p.IstAuftragsListe && p.Belegnummer == zulassung.BelegNr))
-                {
-                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ));
-                }
-
-                foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
+                foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
                 {
                     pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(zulassung.BelegNr, zusatzformularTyp));
                 }
