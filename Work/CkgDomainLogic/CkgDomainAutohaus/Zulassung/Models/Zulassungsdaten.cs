@@ -110,7 +110,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
-            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedNumberPlate)]
@@ -133,7 +133,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string Wunschkennzeichen2
         {
             get { return _wunschkennzeichen2.NotNullOrEmpty().ToUpper(); }
-            set { _wunschkennzeichen2 = value.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennzeichen2 = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
@@ -141,7 +141,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string Wunschkennzeichen3
         {
             get { return _wunschkennzeichen3.NotNullOrEmpty().ToUpper(); }
-            set { _wunschkennzeichen3 = value.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennzeichen3 = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNoReserved)]

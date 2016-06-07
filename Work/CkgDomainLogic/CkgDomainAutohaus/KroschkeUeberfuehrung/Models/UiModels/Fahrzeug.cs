@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         public string KennzeichenOrt
         {
             get { return _mKennzeichenOrt; }
-            set { _mKennzeichenOrt = (value == null ? null : value.ToUpper()); }
+            set { _mKennzeichenOrt = (value == null ? null : value.ToUpper().Replace(" ", "")); }
         }
 
         private string _mKennzeichenRest;
@@ -41,7 +41,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
         public string KennzeichenRest
         {
             get { return _mKennzeichenRest; }
-            set { _mKennzeichenRest = (value == null ? null : value.ToUpper()); }
+            set { _mKennzeichenRest = (value == null ? null : value.ToUpper().Replace(" ", "")); }
         }
 
         private string _mTyp;
