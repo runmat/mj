@@ -1,0 +1,40 @@
+﻿@model CkgDomainLogic.Fahrer.Models.FahrerAuftrag
+
+<div class="grid-auftrags-command-bar">
+
+
+    <div class="checker" id="uniform-undefined">
+        <span class="">
+            <input type="checkbox" value="@Model.AuftragsNr"  name="selectedItem" checked="checked" onclick="SelectItem($(this))" style="opacity: 0;">
+        </span>
+    </div>
+</div>
+
+
+<script>
+    function SelectItem(cb) {
+        $.ajax({
+            type: "POST",
+            url: "SetSelectedFreierFahrerAuftragsKey",
+            data: { auftragsKey: cb.val() },
+            loadingShow: false,
+            success: function (result) {
+                if (result.KeyChanged) {
+                    $("input[type=checkbox][value=" + result.OldKey + "]").parent().removeClass("checked");
+                    $("input[type=checkbox][value=" + cb.val() + "]").parent().addClass("checked");
+                }
+                else {
+                    $("input[type=checkbox][value=" + cb.val() + "]").parent().removeClass("checked");
+                }
+
+                if (result.newKey !== "")
+                    $("#btnRegisterForOrder").css("display", "inline");
+                else
+                    $("#btnRegisterForOrder").css("display", "none");
+
+                $("#Ergebnis").addClass("hide");
+
+            }
+        });
+    }
+</script>   

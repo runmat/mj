@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrer.Models;
@@ -38,6 +39,8 @@ namespace ServicesMvc.Controllers
         }
 
 
+        #region APPLICATIONS
+
         [CkgApplication]
         public ActionResult Index()
         {
@@ -51,6 +54,7 @@ namespace ServicesMvc.Controllers
 
             return View(ViewModel);
         }
+
 
         [CkgApplication]
         public ActionResult Auftraege()
@@ -78,6 +82,16 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult FreieAuftraege()
+        {
+            ViewModel.LoadFreieAuftraege();
+
+            PreparePartialViews();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult QmReport()
         {
             return View(ViewModel);
@@ -92,7 +106,7 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
-
+        #endregion
 
         [HttpPost]
         public JsonResult LoadFahrerAuftragsFahrten()
@@ -161,6 +175,53 @@ namespace ServicesMvc.Controllers
 
 
         #region Fahrer Aufträge
+
+        [HttpPost]
+        public ActionResult ShowFreieAuftraegeDetails(string auftragsId)
+        {
+            var model = ViewModel.FreieAuftraege.FirstOrDefault(f => f.AuftragsNr == auftragsId);
+
+            return PartialView("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", model);
+        }
+
+
+        [HttpPost]
+        public ActionResult SetSelectedFreierFahrerAuftragsKey(string auftragsKey)
+        {
+            bool changed = false;
+            string oldkey = String.Empty;
+
+            var newKey = ViewModel.SetSelectedFreierFahrerAuftragsKey(auftragsKey, out oldkey, out changed);
+                
+            return Json(new
+                        { KeyChanged = changed,
+                          OldKey = oldkey,
+                          newKey = newKey
+            });
+        }
+
+        [HttpPost]
+        public ActionResult AcceptFreieFahrt()
+        {
+            var result = ViewModel.SaveSelectedFreieFahrt();
+            SetSelectedFreierFahrerAuftragsKey("");
+
+            ViewModel.LoadFreieAuftraege();
+            PreparePartialViews();
+                
+            return Json(new
+            {
+                message = result,
+                view = this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGrid", ViewModel)
+            });
+        }
+
+        private void PreparePartialViews()
+        {
+            FahrerAuftrag.FreierAuftragDetailsTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsDetails", auftrag);
+            FahrerAuftrag.FreierAuftragsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreieAuftraegeGridAuftragsCommandBar", auftrag);
+            FahrerAuftrag.FreierAuftragDetailsCommandTemplate = auftrag => this.RenderPartialViewToString("Partial/Auftraege/FreierAuftragDetailsCommand", auftrag);
+        }
 
         [GridAction]
         public ActionResult FahrerAuftraegeAjaxBinding()
@@ -334,6 +395,12 @@ namespace ServicesMvc.Controllers
         public ActionResult FahrerProtokolleAjaxBinding()
         {
             return View(new GridModel(ViewModel.FahrerProtokolleFiltered));
+        }
+
+        [GridAction]
+        public ActionResult FreieAuftraegeAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.FreieAuftraegeFiltered));
         }
 
         [HttpPost]

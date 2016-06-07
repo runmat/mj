@@ -3224,6 +3224,10 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Rechercheprotokoll.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollPartial.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\RechercheprotokollVersuchPartial.cshtml" />
+    <Content Include="Views\Fahrer\FreieAuftraege.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGrid.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsCommandBar.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsDetails.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandSuche.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandGrid.cshtml" />
@@ -3232,6 +3236,7 @@
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Auftraege\FreierAuftragDetailsCommand.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
