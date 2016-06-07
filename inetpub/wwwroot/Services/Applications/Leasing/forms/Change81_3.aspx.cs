@@ -142,10 +142,10 @@ namespace Leasing.forms
             var item = new ListItem("-- keine Auswahl --", "kein");
             ddlDienstleistung.Items.Add(item);
 
-            item = new ListItem("Ummeldung innerorts", "2052");
+            item = new ListItem("Ummeldung ohne Kennzeichenwechsel", "2052");
             ddlDienstleistung.Items.Add(item);
 
-            item = new ListItem("Ummeldung ausserorts", "572");
+            item = new ListItem("Ummeldung mit Kennzeichenwechsel", "572");
             ddlDienstleistung.Items.Add(item);
 
             item = new ListItem("Umkennzeichnung", "1294");
@@ -163,7 +163,7 @@ namespace Leasing.forms
             item = new ListItem("Korrektur wegen Fehleintrag", "1380-2");
             ddlDienstleistung.Items.Add(item);
 
-            item = new ListItem("Abmeldung", "1380-3");
+            item = new ListItem("Abmeldung", "2900");
             ddlDienstleistung.Items.Add(item);
 
             item = new ListItem("Wiederzulassung", "1462");
