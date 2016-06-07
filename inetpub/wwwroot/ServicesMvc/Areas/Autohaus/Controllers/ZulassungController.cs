@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
@@ -986,11 +985,6 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 if (zulassung.KundenformularPdf != null)
                     pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
-
-                foreach(var pdfFormular in zulassung.Zusatzformulare.Where(p => p.IstAuftragsZettel && p.Belegnummer == zulassung.BelegNr))
-                {
-                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ));
-                }
 
                 foreach(var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && !p.IstAuftragsZettel && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
                 {
