@@ -703,12 +703,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 !Zulassung.Zulassungsdaten.IsMassenzulassung;
 
             var zulArtAuto = Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln;
-            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), zulArtAuto, (ModusSonderzulassung && !forShoppingCartSave));
+            var ermittelteZulassungsarten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), zulArtAuto, (ModusSonderzulassung && !forShoppingCartSave), Zulassung.Rechnungsdaten.KundenNr);
+
 
             ZulassungsVorgangsarten = ermittelteZulassungsarten.Where(z => z.IstVersand || !ModusVersandzulassung).ToList();
 
-            Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV"));
-            Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich));
+
+            Zulassung.Zulassungsdaten.Versandzulassung = (!ModusAbmeldung && Zulassungsarten.Any(z => z.Belegtyp == "AV" || z.SimuliereVersand));
+            Zulassung.Zulassungsdaten.ExpressversandMoeglich = (!ModusAbmeldung && Zulassungsarten.Any(z => (z.Belegtyp == "AV" || z.SimuliereVersand) && !z.ZulassungAmFolgetagNichtMoeglich));
 
             if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
                 Zulassung.Zulassungsdaten.Expressversand = false;
@@ -748,7 +750,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (Zulassung.Zulassungsdaten.Versandzulassung)
                 {
-                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand);
+                    zulArt = Zulassungsarten.FirstOrDefault(z => (z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand) || z.SimuliereVersand);
                 }
                 else
                 {
@@ -763,7 +765,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 }
 
                 if (zulArt != null && (SonderzulassungsMode == SonderzulassungsMode.None || SonderzulassungsMode == SonderzulassungsMode.Default))
+                {
                     Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+
+                    if (Zulassung.Zulassungsdaten.SimuliereVersand && Zulassung.Zulassungsdaten.ExpressversandMoeglich)
+                        Zulassung.Zulassungsdaten.Expressversand = true;
+                }
             }
         }
 
@@ -1229,6 +1236,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
+                if (Zulassung.Zulassungsdaten.SimuliereVersand)
+                    return (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J" ? "UMS" : "ZUL");
+
                 if (SonderzulassungsMode == SonderzulassungsMode.Umschreibung)
                     return "UMS";
 
@@ -1357,7 +1367,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
-            if (ModusVersandzulassung || zulDaten.Zulassungsart.Auf48hVersandPruefen)
+            if (ModusVersandzulassung || (zulDaten.Zulassungsart.Auf48hVersandPruefen && zulDaten.SimuliereVersand))
             {
                 Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDaten.Zulassungskreis);
 
@@ -1546,10 +1556,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 SonderzulassungsMode = Zulassung.Zulassungsdaten.SonderzulassungsMode;
                 ModusPartnerportal = Zulassung.Zulassungsdaten.ModusPartnerportal;
 
-                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
-                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
-
-                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
+                Zulassung.Zulassungsdaten.Expressversand = (Zulassung.Zulassungsdaten.Belegtyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
 
                 InitZulassungFromShoppingCart();
             }
@@ -1594,9 +1601,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 LoadZulassungsAbmeldeArten(Zulassung.Zulassungsdaten.Zulassungskreis);
 
-                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
-                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
-                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
+                Zulassung.Zulassungsdaten.Expressversand = (Zulassung.Zulassungsdaten.Belegtyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;

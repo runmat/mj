@@ -85,6 +85,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string Belegtyp => Zulassungsart.Belegtyp.IsNotNullOrEmpty() ? Zulassungsart.Belegtyp : GetZulassungViewModel?.Invoke().GetDefaultBelegTyp();
 
+        public bool SimuliereVersand { get { return Zulassungsart.SimuliereVersand; } }
+
         [RequiredConditional]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
