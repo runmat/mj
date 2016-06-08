@@ -266,6 +266,7 @@ namespace AppZulassungsdienst.forms
                 {
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
 
+                    objVorVersand.AktuellerVorgang.Adressdaten.Land = kunde.Land;
                     ucBankdatenAdresse.SetLand(kunde.Land);
                 }
 
@@ -1030,6 +1031,9 @@ namespace AppZulassungsdienst.forms
                 {
                     IsCpd = kunde.Cpd;
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+
+                    objVorVersand.AktuellerVorgang.Adressdaten.Land = kunde.Land;
+                    ucBankdatenAdresse.SetLand(kunde.Land);
                 }
 
                 Boolean bnoError = ucBankdatenAdresse.proofBankAndAddressData(objCommon, IsCpd, IsCPDmitEinzug);
@@ -1061,6 +1065,7 @@ namespace AppZulassungsdienst.forms
             adressdaten.Strasse = ucBankdatenAdresse.Strasse;
             adressdaten.Plz = ucBankdatenAdresse.Plz;
             adressdaten.Ort = ucBankdatenAdresse.Ort;
+            adressdaten.Land = ucBankdatenAdresse.Land;
 
             var bankdaten = objVorVersand.AktuellerVorgang.Bankdaten;
 
@@ -1082,7 +1087,10 @@ namespace AppZulassungsdienst.forms
         {
             var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
 
-            ucBankdatenAdresse.SelectValues((kunde != null ? kunde.Land : "DE"), objVorVersand.AktuellerVorgang.Bankdaten, objVorVersand.AktuellerVorgang.Adressdaten);
+            if (kunde != null)
+                objVorVersand.AktuellerVorgang.Adressdaten.Land = kunde.Land;
+
+            ucBankdatenAdresse.SelectValues(objVorVersand.AktuellerVorgang.Bankdaten, objVorVersand.AktuellerVorgang.Adressdaten);
         }
 
         #endregion

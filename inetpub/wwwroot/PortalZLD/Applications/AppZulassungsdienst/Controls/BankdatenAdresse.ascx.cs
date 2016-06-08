@@ -63,7 +63,7 @@ namespace AppZulassungsdienst.Controls
             ihLand.Value = "";
         }
 
-        public void SelectValues(string land, ZLDBankdaten bankdaten, ZLDAdressdaten adressdaten)
+        public void SelectValues(ZLDBankdaten bankdaten, ZLDAdressdaten adressdaten)
         {
             txtName1.Text = adressdaten.Name1;
             txtName2.Text = adressdaten.Name2;

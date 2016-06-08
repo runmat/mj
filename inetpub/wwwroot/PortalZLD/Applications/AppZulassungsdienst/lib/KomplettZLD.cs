@@ -688,7 +688,7 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        public void SendVorgaengeToSap(string userName)
+        public void SendVorgaengeToSap(List<Kundenstammdaten> kundenStamm, string userName)
         {
             ClearError();
 
@@ -732,6 +732,13 @@ namespace AppZulassungsdienst.lib
                     var bankdaten = ModelMapping.Copy<ZLDVorgangBank, ZLDBankdaten>(tmpBank);
                     var adressdaten = ModelMapping.Copy<ZLDVorgangAdresse, ZLDAdressdaten>(tmpAdresse);
                     var positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPosition>(tmpPositionen).ToList();
+
+                    var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
+                    if (kunde != null)
+                    {
+                        kopfdaten.BarzahlungKunde = kunde.Bar;
+                        adressdaten.Land = kunde.Land;
+                    }
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
