@@ -92,7 +92,8 @@ namespace ServicesMvc
 
         protected void Session_End(object sender, EventArgs e)
         {
-           LogonContext.LogoutUser();
+            if (LogonContext != null)
+                LogonContext.LogoutUser();
         }
 
         protected void Application_BeginRequest()
