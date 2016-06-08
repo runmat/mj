@@ -832,7 +832,29 @@ namespace GeneralTools.Models
 
             return DateTime.Today;
         }
+
+        public static string ToTimeFormatted(this string stringValue)
+        {
+           if (stringValue.IsNullOrEmpty())
+              return String.Empty;
+
+
+            switch (stringValue.Length)
+                {
+                    case 4:
+                         return String.Format("{0}:{1}:{2}", stringValue.Substring(0, 2), stringValue.Substring(2, 2));
+                    case 6:
+                        return String.Format("{0}:{1}:{2}", stringValue.Substring(0, 2), stringValue.Substring(2, 2), stringValue.Substring(4, 2));
+                    default:
+                        return String.Empty;
+            }
+
+        }
+
     }
+
+
+
     public static class ExpressionExtensions
     {
         public static string GetPropertyName(this LambdaExpression lambda, bool forGridBinding = false)

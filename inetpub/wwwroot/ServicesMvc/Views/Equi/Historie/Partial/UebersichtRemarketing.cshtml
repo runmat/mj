@@ -1,0 +1,129 @@
+﻿@model CkgDomainLogic.Equi.Models.EquiHistorieRemarketing
+
+<style type="text/css">  
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<form action="#" class="form-horizontal">
+    
+    <h4 class="form-section">@Localize.OverviewGeneralData</h4>
+
+    @Html.FormTextBlockFor(m => m.Vermieter, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Auslieferdatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Zulassungsdatum, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Selbstvermarktung, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.HatVorschaeden, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Zusatzdaten.UpePreisFormatted, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.HcEingang, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Hereinnahmecenter, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.KmStand, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.EingangZb2, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.EingangSchluessel, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Zusatzdaten.Vertragsjahr, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.DatumVertragswidrigkeit, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.ArtVertragswidrigkeit, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.TuevRueckmeldung, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.MietfahrzeugAbrechnungsdatum, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.MietfahrzeugRueckkaufrechnungErstellt, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.TuevManuellBeauftragt, new { @class = "m-wrap", col = "right3" })
+
+
+    <h4 class="form-section">@Localize.DebitNote</h4>
+
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.LaufendeNr, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.Erstellungsdatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.SummeFormatted, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.Gutachter, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.GutachtenId, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.KmStand, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.Status, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.SchadenrechnungsNr, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.DatumSchadenrechnung, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.WiderspruchText, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.WiderspruchDatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.BlockadeText, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.BlockadeDatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Belastungsanzeige.BlockadeUser, new { @class = "m-wrap", col = "right3" })
+    
+    
+    <h4 class="form-section">@Localize.Remarketing</h4>
+    
+    @Html.FormTextBlockFor(m => m.Zusatzdaten.HcAusgang, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.AusgangZb2, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.AusgangSchluessel, new { @class = "m-wrap", col = "right3" })
+    
+
+    <h4 class="form-section">@Localize.DocumentsForVehicle</h4>
+
+    <div class="row-fluid">
+
+        <div class="span3">
+            @if (Model.HasBelastungsanzeige)
+            {
+                <a href='@Url.Action("ShowBelastungsanzeige", "Equi")' target="_blank" class="btn"> @Localize.DebitNote <i class="icon-download-alt"></i></a>
+            }
+            else
+            {
+                <span>@Localize.NoDebitNote</span>
+            }
+        </div>
+
+        <div class="span3">
+            @if (Model.HasSchadensgutachten)
+            {
+                <a href='@Url.Action("ShowSchadensgutachten", "Equi")' target="_blank" class="btn"> @Localize.DamageSurvey <i class="icon-download-alt"></i></a>
+            }
+            else
+            {
+                <span>@Localize.NoDamageSurvey</span>
+            }
+        </div>
+
+        <div class="span2">
+            @if (Model.HasTuevGutachten)
+            {
+                <a href='@Model.TuevGutachtenUrl' target="_blank" class="btn"> @Localize.Survey <img src="/ServicesMvc/images/tuev.png" alt=""/></a>
+            }
+            else
+            {
+                <span>@Localize.NoSurvey</span>
+            }
+        </div>
+
+        <div class="span2">
+            @if (Model.HasReparaturKalkulation)
+            {
+                <a href='@Url.Action("ShowReparaturKalkulation", "Equi")' target="_blank" class="btn"> @Localize.RepCalc <img src="/ServicesMvc/images/tool.png" alt=""/></a>
+            }
+            else
+            {
+                <span>@Localize.NoRepCalc</span>
+            }
+        </div>
+
+        <div class="span2">
+            @if (Model.HasRechnung)
+            {
+                <a href='@Url.Action("ShowRechnung", "Equi")' target="_blank" class="btn"> @Localize.Invoice <i class="icon-download-alt"></i></a>
+            }
+            else
+            {
+                <span>@Localize.NoInvoice</span>
+            }
+        </div>
+
+    </div>
+
+</form>

@@ -13,10 +13,20 @@ namespace CkgDomainLogic.Equi.ViewModels
     public class EquiHistorieVermieterViewModel : CkgBaseViewModel 
     {
         [XmlIgnore]
-        public IEquiHistorieVermieterDataService DataService { get { return CacheGet<IEquiHistorieVermieterDataService>(); } }
+        public IEquiHistorieDataService DataService { get { return CacheGet<IEquiHistorieDataService>(); } }
+
+        public EquiHistorieSuchparameter Suchparameter
+        {
+            get { return PropertyCacheGet(() => new EquiHistorieSuchparameter()); }
+            set { PropertyCacheSet(value); }
+        }
 
         [XmlIgnore]
-        public List<EquiHistorieInfoVermieter> HistorieInfos { get { return DataService.HistorieInfos; } }
+        public List<EquiHistorieVermieterInfo> HistorieInfos
+        {
+            get { return PropertyCacheGet(() => new List<EquiHistorieVermieterInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
 
         public EquiHistorieVermieter EquipmentHistorie { get; set; }
 
@@ -24,7 +34,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                return PropertyCacheGet(() => DataService.FahrzeugAnforderungenLoadDocTypes()
+                return PropertyCacheGet(() => DataService.GetFahrzeugAnforderungenDocTypes()
                                                 .ToListOrEmptyList()
                                                     .CopyAndInsertAtTop(new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose)));
             }
@@ -35,29 +45,26 @@ namespace CkgDomainLogic.Equi.ViewModels
             get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen", true).ToBool(); }
         }
 
-        public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
+        public int LoadHistorieInfos(ModelStateDictionary state)
         {
-            DataService.Suchparameter = suchparameter;
-            DataService.MarkForRefreshHistorieInfos();
+            HistorieInfos = DataService.GetHistorieVermieterInfos(Suchparameter);
+
             PropertyCacheClear(this, m => m.HistorieInfosFiltered);
 
-            suchparameter.AnzahlTreffer = HistorieInfos.Count;
+            Suchparameter.AnzahlTreffer = HistorieInfos.Count;
 
             if (HistorieInfos.None())
                 state.AddModelError("", Localize.NoDataFound);
+
+            return Suchparameter.AnzahlTreffer;
         }
 
-        public void LoadHistorie(string fahrgestellNr)
+        public void LoadHistorie(string fin)
         {
-            if (!String.IsNullOrEmpty(fahrgestellNr))
-            {
-                EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
-            }
+            if (!string.IsNullOrEmpty(fin))
+                EquipmentHistorie = DataService.GetHistorieVermieterDetail(fin);
             else if (HistorieInfos.Count == 1)
-            {
-                var item = HistorieInfos[0];
-                EquipmentHistorie = DataService.GetEquiHistorie(item.FahrgestellNr);
-            }
+                EquipmentHistorie = DataService.GetHistorieVermieterDetail(HistorieInfos[0].FahrgestellNr);
 
             LoadFahrzeugAnforderungen();
         }
@@ -67,7 +74,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             if (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null)
                 return;
 
-            EquipmentHistorie.FahrzeugAnforderungen = DataService.FahrzeugAnforderungenLoad(EquipmentHistorie.HistorieInfo.FahrgestellNr).ToListOrEmptyList();
+            EquipmentHistorie.FahrzeugAnforderungen = DataService.GetFahrzeugAnforderungen(EquipmentHistorie.HistorieInfo.FahrgestellNr).ToListOrEmptyList();
             EquipmentHistorie.FahrzeugAnforderungenAnzeigen = FahrzeugAnforderungenAnzeigen;
         }
 
@@ -80,7 +87,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                     AnlageDatum = DateTime.Today,
                     AnlageUser = LogonContext.UserName,
                     EmailAnlageUser = LogonContext.GetEmailAddressForUser(),
-                    SendEmailToAnlageUser = true,
+                    SendEmailToAnlageUser = true
                 };
         }
 
@@ -89,20 +96,20 @@ namespace CkgDomainLogic.Equi.ViewModels
             if (!item.SendEmailToAnlageUser)
                 item.EmailAnlageUser = "";
 
-            DataService.FahrzeugAnforderungSave(item);
+            DataService.SaveFahrzeugAnforderung(item);
 
             LoadFahrzeugAnforderungen();
         }
 
         public byte[] GetHistorieAsPdf()
         {
-            return DataService.GetHistorieAsPdf(EquipmentHistorie.HistorieInfo.FahrgestellNr);
+            return DataService.GetHistorieVermieterAsPdf(EquipmentHistorie.HistorieInfo.FahrgestellNr);
         }
 
         #region Filter
 
         [XmlIgnore]
-        public List<EquiHistorieInfoVermieter> HistorieInfosFiltered
+        public List<EquiHistorieVermieterInfo> HistorieInfosFiltered
         {
             get { return PropertyCacheGet(() => HistorieInfos); }
             private set { PropertyCacheSet(value); }

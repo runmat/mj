@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Windows.Input;
 using CarDocu.Models;
 using GeneralTools.Services;
 
@@ -13,16 +11,11 @@ namespace CarDocu.Services.Threads
     /// </summary>
     public class SapBackgroundTask : CardocuBackgroundTask
     {
-        private SapLogItems _logItems = new SapLogItems();
-        public SapLogItems LogItems
-        {
-            get { return _logItems; }
-            set { _logItems = value; }
-        }
+        public SapLogItems LogItems { get; set; } = new SapLogItems();
 
-        public override string Name { get { return "SAP Meldung"; } }
+        public override string Name => "SAP Meldung";
 
-        protected override int OnlineStatusIntervalSeconds { get { return 3; } }
+        protected override int OnlineStatusIntervalSeconds => 3;
 
         protected override bool NativeThreadLoop()
         {
