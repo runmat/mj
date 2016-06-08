@@ -368,7 +368,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.Farbe = s.FARBE;
                         d.Fahrzeugdaten.FzgModell = s.FZGTYP;
 
-                        d.Versanddaten.VersandDienstleisterId = s.VS_DIENSTLEISTER;
+                        d.Versanddaten.VersandDienstleisterId = (s.VS_DIENSTLEISTER.IsNullOrEmpty() ? "NONE" : s.VS_DIENSTLEISTER);
                         //d.Versanddaten.VersandDienstleister.VersandOption = s.VS_OPTION;
                         d.Ist48HZulassung = s.Z48H_VSZUL.XToBool();
                     }));
@@ -731,7 +731,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.FARBE = s.Fahrzeugdaten.Farbe;
                             d.FZGTYP = s.Fahrzeugdaten.FzgModell;
 
-                            d.VS_DIENSTLEISTER = s.Versanddaten.VersandDienstleisterId;
+                            d.VS_DIENSTLEISTER = (s.Versanddaten.VersandDienstleisterId == "NONE" ? "" : s.Versanddaten.VersandDienstleisterId);
                             //d.VS_OPTION = s.Versanddaten.VersandDienstleister.VersandOption;
                             d.Z48H_VSZUL = s.Ist48HZulassung.BoolToX();
                         }));

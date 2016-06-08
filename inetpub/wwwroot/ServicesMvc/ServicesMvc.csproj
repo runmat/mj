@@ -291,6 +291,7 @@
     <Content Include="Images\flags\64x64\EU.png" />
     <Content Include="Images\Tool.png" />
     <Content Include="Images\TUEV.png" />
+    <Content Include="Images\shipping-icons\none.png" />
     <Content Include="_Themes\AH2015\images\blondeFrau.jpg" />
     <Content Include="Images\icons\24x24\search-24x24-2.png" />
     <Content Include="Images\icons\24x24\search-24x24.png" />
