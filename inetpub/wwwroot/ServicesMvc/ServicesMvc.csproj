@@ -99,10 +99,6 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\Autofac.Mvc4.3.1.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="CkgDomainInternal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Work\CkgDomainLogic\CkgDomainInternal\bin\Debug\CkgDomainInternal.dll</HintPath>
-    </Reference>
     <Reference Include="Commons.Web.Mvc.PrecompiledViews, Version=1.0.5.0, Culture=neutral, PublicKeyToken=b66b1a10e1d96b4d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\work\GAC\Commons.Web.Mvc.PrecompiledViews.dll</HintPath>
@@ -286,11 +282,15 @@
     <Content Include="assets\img\bg\12.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
+    <Content Include="assets\plugins\glyphicons_halflings\images\Tool.png" />
+    <Content Include="assets\plugins\glyphicons_halflings\images\TUEV.png" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\DataConverter-main.css" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="Images\flags\64x64\EU.png" />
+    <Content Include="Images\Tool.png" />
+    <Content Include="Images\TUEV.png" />
     <Content Include="_Themes\AH2015\images\blondeFrau.jpg" />
     <Content Include="Images\icons\24x24\search-24x24-2.png" />
     <Content Include="Images\icons\24x24\search-24x24.png" />
@@ -508,6 +508,12 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersanddatenForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\VersandDienstleisterForm.cshtml" />
     <Content Include="Documents\Templates\KfzKennzeichengroessen.pdf" />
+    <Content Include="Documents\Templates\UploadFahrgestellnummern.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadKennzeichen.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Areas\Autohaus\Views\Clever\Redirect\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\SzHome.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\Ersatzkennzeichen.cshtml" />
@@ -3228,6 +3234,9 @@
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGrid.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsCommandBar.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreieAuftraegeGridAuftragsDetails.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieRemarketingSuche.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieRemarketingGrid.cshtml" />
+    <Content Include="Views\Equi\FahrzeugHistorieRemarketing.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandSuche.cshtml" />
     <Content Include="Views\Leasing\EndgueltigerVersand\EndgueltigerVersandGrid.cshtml" />
@@ -3237,6 +3246,27 @@
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreierAuftragDetailsCommand.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieRemarketingDetail.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\UebersichtRemarketing.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\BriefSchluesseldaten.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\LebenslaufGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\VorschaedenGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\ModellAusstattung.cshtml" />
+    <Content Include="Views\Remarketing\ReportFehlendeDaten.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\Grid.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\Suche.cshtml" />
+    <Content Include="Views\Remarketing\FehlendeDaten\FileUpload.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Suche.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Grid.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\GridGutachten.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\InfoForm.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\SetReklamationForm.cshtml" />
+    <Content Include="Views\Remarketing\Belastungsanzeigen\Partial\SetBlockForm.cshtml" />
+    <Content Include="Views\Remarketing\GemeldeteVorschaeden.cshtml" />
+    <Content Include="Views\Remarketing\GemeldeteVorschaeden\Grid.cshtml" />
+    <Content Include="Views\Remarketing\GemeldeteVorschaeden\Partial\EditVorschadenForm.cshtml" />
+    <Content Include="Views\Remarketing\GemeldeteVorschaeden\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -3662,9 +3692,17 @@
       <Project>{7FC30B76-8E4D-448B-B6E2-7EE0BE4D278C}</Project>
       <Name>CkgDomainInsurance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainInternal\CkgDomainInternal.csproj">
+      <Project>{32D4DC60-D382-415A-B8C1-EA11A66FDC10}</Project>
+      <Name>CkgDomainInternal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainLeasing\CkgDomainLeasing.csproj">
       <Project>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</Project>
       <Name>CkgDomainLeasing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainRemarketing\CkgDomainRemarketing.csproj">
+      <Project>{61521148-EA24-447A-AF13-CA9D7BD3D722}</Project>
+      <Name>CkgDomainRemarketing</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
       <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>

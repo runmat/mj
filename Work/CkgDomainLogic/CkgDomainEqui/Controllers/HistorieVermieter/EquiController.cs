@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
@@ -31,10 +30,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistorieVermieterEquis(EquiHistorieSuchparameter model)
         {
+            EquipmentHistorieVermieterViewModel.Suchparameter = model;
+
             if (ModelState.IsValid)
-            {
-                EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
-            }
+                model.AnzahlTreffer = EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ModelState);
 
             return PartialView("Historie/HistorieVermieterSuche", model);
         }
@@ -46,27 +45,9 @@ namespace ServicesMvc.Controllers
         }
 
         [GridAction]
-        public ActionResult EquiHistorieInfosVermieterAjaxBinding()
+        public ActionResult EquiHistorieVermieterInfosAjaxBinding()
         {
             return View(new GridModel(EquipmentHistorieVermieterViewModel.HistorieInfosFiltered));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieVermieterLebenslaufZb2AjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufZb2));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieVermieterLebenslaufFsmAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufFsm));
-        }
-
-        [GridAction]
-        public ActionResult EquiHistorieVermieterTueteninhaltFsmAjaxBinding()
-        {
-            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.InhalteFsm));
         }
 
         [GridAction]
@@ -102,14 +83,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterGridEquiHistorieInfosVermieter(string filterValue, string filterColumns)
+        public ActionResult FilterGridEquiHistorieVermieterInfos(string filterValue, string filterColumns)
         {
             EquipmentHistorieVermieterViewModel.FilterHistorieInfos(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
-        public ActionResult ExportEquiHistorieInfosVermieterFilteredExcel(int page, string orderBy, string filterBy)
+        public ActionResult ExportEquiHistorieVermieterInfosFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.VehicleHistory, dt);
@@ -117,7 +98,7 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult ExportEquiHistorieInfosVermieterFilteredPDF(int page, string orderBy, string filterBy)
+        public ActionResult ExportEquiHistorieVermieterInfosFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.VehicleHistory, dt, landscapeOrientation: true);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -26,15 +25,25 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public IEasyAccessDataService EasyAccessDataService { get { return CacheGet<IEasyAccessDataService>(); } }
 
+        public EquiHistorieSuchparameter Suchparameter
+        {
+            get { return PropertyCacheGet(() => new EquiHistorieSuchparameter()); }
+            set { PropertyCacheSet(value); }
+        }
+
         [XmlIgnore]
-        public List<EquiHistorieInfo> HistorieInfos { get { return DataService.HistorieInfos; } }
+        public List<EquiHistorieInfo> HistorieInfos
+        {
+            get { return PropertyCacheGet(() => new List<EquiHistorieInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public EquiHistorie EquipmentHistorie { get; set; }
 
         [XmlIgnore]
         public List<EasyAccessArchiveDefinition> Archives { get; private set; }
     
         public bool HasArchives { get { return (Archives.AnyAndNotNull()); } }
-
-        public EquiHistorie EquipmentHistorie { get; set; }
 
         public int CurrentAppID { get; set; }
 
@@ -84,30 +93,26 @@ namespace CkgDomainLogic.Equi.ViewModels
             EquipmentHistorie.Stuecklisten = DataServiceBriefbestand.GetStuecklisten(EquipmentHistorie.Equipmentnummer);
         }
 
-        public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
+        public int LoadHistorieInfos(ModelStateDictionary state)
         {
-            DataService.Suchparameter = suchparameter;
-            DataService.MarkForRefreshHistorieInfos();
+            HistorieInfos = DataService.GetHistorieInfos(Suchparameter);
+
             PropertyCacheClear(this, m => m.HistorieInfosFiltered);
 
-            suchparameter.AnzahlTreffer = HistorieInfos.Count;
+            Suchparameter.AnzahlTreffer = HistorieInfos.Count;
 
-            if (HistorieInfos.Count == 0)
-            {
+            if (HistorieInfos.None())
                 state.AddModelError("", Localize.NoDataFound);
-            }
+
+            return Suchparameter.AnzahlTreffer;
         }
 
         private void LoadHistorie(string fin)
         {
-            if (!String.IsNullOrEmpty(fin))
-            {
-                EquipmentHistorie = DataService.GetEquiHistorie(fin, CurrentAppID);
-            }
+            if (!string.IsNullOrEmpty(fin))
+                EquipmentHistorie = DataService.GetHistorieDetail(fin, CurrentAppID);
             else if (HistorieInfos.Count == 1)
-            {
-                EquipmentHistorie = DataService.GetEquiHistorie(HistorieInfos[0].Fahrgestellnummer, CurrentAppID);
-            }
+                EquipmentHistorie = DataService.GetHistorieDetail(HistorieInfos[0].Fahrgestellnummer, CurrentAppID);
         }
 
         public GeneralSummary CreateSummaryModel()
