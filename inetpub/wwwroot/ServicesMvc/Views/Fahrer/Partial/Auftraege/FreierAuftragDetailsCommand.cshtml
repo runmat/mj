@@ -1,0 +1,26 @@
+﻿@using GeneralTools.Resources
+@model CkgDomainLogic.Fahrer.Models.FahrerAuftrag
+
+<div class="grid-auftrags-command-bar">
+
+    <button type="button" class="btn blue" onclick="ShowDetailsX('@Model.AuftragsNr')">
+        <i class="icon-info"></i>   
+            @LocalizeConstants.Details
+    </button>
+    
+</div>
+
+
+<style>
+    
+    #PopupDiv > .grid-auftrags-details {
+        width: auto !important;
+    }
+
+</style>
+
+<div id="PopupDiv"class="white-popup mfp-hide">
+
+
+
+</div>

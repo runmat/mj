@@ -1,0 +1,64 @@
+﻿@model CkgDomainLogic.Equi.Models.EquiHistorieRemarketing
+
+<style type="text/css">
+    
+     .form-horizontal .control-group {
+         margin-bottom: 5px;
+     }
+     
+</style>
+
+<form action="#" class="form-horizontal">
+    
+    <h4 class="form-section">@Localize.InvoiceData</h4>
+
+    @Html.FormTextBlockFor(m => m.Versanddaten.ExterneBelegnummer, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.Rechnungsbetrag, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.Belegdatum, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Versanddaten.ValutaFixDatum, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.Freigabedatum, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.Zahlungsart, new { @class = "m-wrap", col = "right3" })
+
+
+    <h4 class="form-section">@Localize.ReceiptAndDispatchZb2AndKey</h4>
+
+    @Html.FormTextBlockFor(m => m.EingangZb2, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.VersandZb2, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormTextBlockFor(m => m.EingangSchluessel, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.VersandSchluessel, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "right3" })
+    
+    
+    <h4 class="form-section">@Localize.ShippingAddress @Localize.Dealer</h4>
+    
+    @Html.FormTextBlockFor(m => m.Versanddaten.Haendler, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerName1, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerName2, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerName3, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerStrasse, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerPlz, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerOrt, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.HaendlerLand, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "right3" })
+
+
+    <h4 class="form-section">@Localize.ShippingAddress @Localize.Bank</h4>
+
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankName1, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankName2, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankName3, new { @class = "m-wrap", col = "right3" })
+
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankStrasse, new { @class = "m-wrap", col = "left3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankPlz, new { @class = "m-wrap", col = "middle3" })
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankOrt, new { @class = "m-wrap", col = "right3" })
+    
+    @Html.FormTextBlockFor(m => m.Versanddaten.BankLand, new { @class = "m-wrap", col = "left3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "middle3" })
+    @Html.FormPlaceHolder(controlHtmlAttributes: new { @class = "m-wrap", col = "right3" })
+
+</form>

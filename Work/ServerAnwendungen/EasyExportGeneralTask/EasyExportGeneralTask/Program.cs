@@ -90,9 +90,8 @@ namespace EasyExportGeneralTask
             if (taskConfiguration.AbfrageNachDatum)
             {
                 if (taskConfiguration.Abfragedatum.Year == 1900)
-                {
                     taskConfiguration.Abfragedatum = DateTime.Today;
-                }
+
                 Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Verarbeitung gestartet. Selektionsdatum=" + taskConfiguration.Abfragedatum.ToShortDateString());
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung gestartet. Selektionsdatum=" + taskConfiguration.Abfragedatum.ToShortDateString(), EventLogEntryType.Information);
             }
@@ -498,10 +497,8 @@ namespace EasyExportGeneralTask
                 var Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 // Fahrzeugpapiere aus Archiv holen
                 var status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameDokumente, queryexpression, ref total_hits, ref result, taskConfiguration);
@@ -795,10 +792,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 #region Dokumente aus Archiv(en) holen
 
@@ -883,10 +878,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 // Dokumente aus Archiv holen
                 string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
@@ -967,10 +960,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 // Dokumente aus Archiv holen
                 string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
@@ -1279,10 +1270,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 // Dokumente aus Archiv holen
                 string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
@@ -1535,10 +1524,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 #region Dokumente aus Archiv(en) holen
 
@@ -1581,10 +1568,8 @@ namespace EasyExportGeneralTask
             {
                 S.AP.Init("Z_DPM_EXP_ABMELDUNGEN_DF_01", "I_KUNNRS", taskConfiguration.Kundennummer);
 
-                if (taskConfiguration.AbfrageNachDatum && taskConfiguration.Abfragedatum.Year > 1900)
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     S.AP.SetImportParameter("I_QMDAT", taskConfiguration.Abfragedatum.ToShortDateString());
-                }
 
                 DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT_JOB");
 
@@ -1758,10 +1743,8 @@ namespace EasyExportGeneralTask
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
-                {
+                if (taskConfiguration.AbfrageNachDatum)
                     queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
-                }
 
                 // Dokumente aus Archiv holen
                 string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
@@ -2058,7 +2041,7 @@ namespace EasyExportGeneralTask
                 Z_DPM_READ_MELD_OPAV_02.Init(S.AP, "I_KUNNRS, I_QMDAT", taskConfiguration.Kundennummer, DateTime.Today);
 
                 if (taskConfiguration.AbfrageNachDatum)
-                    S.AP.SetImportParameter("I_QMDAT", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today));
+                    S.AP.SetImportParameter("I_QMDAT", taskConfiguration.Abfragedatum);
 
                 var sapResults = Z_DPM_READ_MELD_OPAV_02.GT_OUT.GetExportListWithExecute(S.AP);
 
@@ -2086,7 +2069,7 @@ namespace EasyExportGeneralTask
                             string queryexpression = ".1001=" + item.CHASSIS_NUM + " & .110=" + dokumentenTyp;
 
                             if (taskConfiguration.AbfrageNachDatum)
-                                queryexpression += " & .103=#" + (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today).ToShortDateString();
+                                queryexpression += " & .103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
 
                             string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
@@ -2192,7 +2175,7 @@ namespace EasyExportGeneralTask
                 Z_DPM_CD_ABGL_STRAFZETTEL.Init(S.AP, "I_AG", taskConfiguration.Kundennummer);
 
                 if (taskConfiguration.AbfrageNachDatum)
-                    S.AP.SetImportParameter("I_VORGDAT", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
+                    S.AP.SetImportParameter("I_VORGDAT", (taskConfiguration.Abfragedatum.Date != DateTime.Today.Date ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
 
                 var sapResults = Z_DPM_CD_ABGL_STRAFZETTEL.ET_OUT.GetExportListWithExecute(S.AP);
 
@@ -2243,7 +2226,7 @@ namespace EasyExportGeneralTask
                 Z_DPM_CD_ABGL_ABMELDUNGEN.Init(S.AP, "I_AG", taskConfiguration.Kundennummer);
 
                 if (taskConfiguration.AbfrageNachDatum)
-                    S.AP.SetImportParameter("I_ANLAGEDATUM", (taskConfiguration.Abfragedatum.Year > 1900 ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
+                    S.AP.SetImportParameter("I_ANLAGEDATUM", (taskConfiguration.Abfragedatum.Date != DateTime.Today.Date ? taskConfiguration.Abfragedatum : DateTime.Today.AddDays(-1)));
 
                 var sapResults = Z_DPM_CD_ABGL_ABMELDUNGEN.ET_OUT.GetExportListWithExecute(S.AP);
 

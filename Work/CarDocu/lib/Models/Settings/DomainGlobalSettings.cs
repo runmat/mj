@@ -14,26 +14,11 @@ namespace CarDocu.Models
 
         public string DomainDataUrl { get; set; }
 
-        private List<DomainUser> _domainUsers = new List<DomainUser>();
-        public List<DomainUser> DomainUsers
-        {
-            get { return _domainUsers; }
-            set { _domainUsers = value; }
-        }
+        public List<DomainUser> DomainUsers { get; set; } = new List<DomainUser>();
 
-        private List<DomainLocation> _domainLocations = new List<DomainLocation>();
-        public List<DomainLocation> DomainLocations
-        {
-            get { return _domainLocations; }
-            set { _domainLocations = value; }
-        }
+        public List<DomainLocation> DomainLocations { get; set; } = new List<DomainLocation>();
 
-        private List<Archive> _archives = new List<Archive>();
-        public List<Archive> Archives
-        {
-            get { return _archives; }
-            set { _archives = value; }
-        }
+        public List<Archive> Archives { get; set; } = new List<Archive>();
 
         private List<Archive> _archivesForDocTypes;
         [XmlIgnore] 
@@ -42,26 +27,11 @@ namespace CarDocu.Models
             get { return _archivesForDocTypes ?? (_archivesForDocTypes = Archives.Where(archive => !archive.IsInternal).ToList()); }
         }
 
-        private SmtpSettings _smtpSettings = new SmtpSettings();
-        public SmtpSettings SmtpSettings
-        {
-            get { return _smtpSettings; }
-            set { _smtpSettings = value; }
-        }
+        public SmtpSettings SmtpSettings { get; set; } = new SmtpSettings();
 
-        private SapSettings _sapSettings = new SapSettings();
-        public SapSettings SapSettings
-        {
-            get { return _sapSettings; }
-            set { _sapSettings = value; }
-        }
+        public SapSettings SapSettings { get; set; } = new SapSettings();
 
-        private ScanSettings _scanSettings = new ScanSettings();
-        public ScanSettings ScanSettings 
-        { 
-            get { return _scanSettings; }
-            set { _scanSettings = value; }
-        }
+        public ScanSettings ScanSettings { get; set; } = new ScanSettings();
 
         [XmlIgnore]
         public Archive ZipArchive { get { return Archives.FirstOrDefault(archive => archive.ID == "ZIP"); } }
@@ -114,8 +84,10 @@ namespace CarDocu.Models
                     return tempPath;
                 }
                 catch (Exception)
-                {}
-                 
+                {
+                    // ignored
+                }
+
                 return "";
             }
         }

@@ -1,10 +1,10 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@{ var gridName = "GridEquiHistorieInfosVermieter"; }
+@{ var gridName = "GridEquiHistorieVermieterInfos"; }
 
 @(Html.XTelerik()
-    .XGrid<EquiHistorieInfoVermieter>()
+    .XGrid<EquiHistorieVermieterInfo>()
     .Name(gridName)
-    .XAjaxDataBinding("EquiHistorieInfosVermieterAjaxBinding", "Equi")
+    .XAjaxDataBinding("EquiHistorieVermieterInfosAjaxBinding", "Equi")
     .Columns(columns =>
     {
         columns.XBound(c => c.Kennzeichen);
@@ -15,13 +15,13 @@
         columns.XBound(c => c.Referenz1);
     })
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieInfosVermieter"))
+        .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieVermieterInfos"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Ascending())
     .ToolBar(commands =>
     {
-        commands.FilteredDataCommand("ExportEquiHistorieInfosVermieterFilteredExcel", "Equi");
-        commands.FilteredDataCommand("ExportEquiHistorieInfosVermieterFilteredPDF", "Equi");
+        commands.FilteredDataCommand("ExportEquiHistorieVermieterInfosFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportEquiHistorieVermieterInfosFilteredPDF", "Equi");
     })
 )
 

@@ -1,0 +1,67 @@
+﻿@using CkgDomainLogic.Remarketing.Models
+@model GemeldeteVorschaedenSelektor
+
+<div id="divGemeldeteVorschaedenSuche">
+    @using (Ajax.BeginForm("LoadGemeldeteVorschaeden", "Remarketing", null,
+        new MvcAjaxOptions { UpdateTargetId = "divGemeldeteVorschaedenSuche", OnComplete = "ShowGemeldeteVorschaeden();" },
+        new { @class = "form-horizontal", id = "AjaxFormGemeldeteVorschaeden" }))
+    {    
+        @Html.FormValidationSummary()
+
+
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+
+        @Html.FormTextBoxFor(m => m.InventarNr, new { @class = "m-wrap" })
+
+        if (Model.IsAv)
+        {
+            @Html.HiddenFor(m => m.Vermieter)
+        }
+        else
+        {
+            @Html.FormDropDownListFor(m => m.Vermieter, GemeldeteVorschaedenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
+        }
+
+        @Html.FormDateRangePickerFor(m => m.SchadensdatumRange)
+
+        @Html.FormTextBoxFor(m => m.Vertragsjahr, new { @class = "m-wrap xsmall", maxlength = 4 })
+        
+        <div class="space10"></div>
+
+        
+        @*@Html.FormRequiredFieldsSummary()*@
+
+        <div class="form-actions">
+            <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowGemeldeteVorschaeden() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowGemeldeteVorschaeden",
+            loadingShow: true,
+            success: function(result) {
+                SearchResultsTryHide();
+
+                if (_modelStateValid)
+                    ShowGemeldeteVorschaedenSearchResult(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
