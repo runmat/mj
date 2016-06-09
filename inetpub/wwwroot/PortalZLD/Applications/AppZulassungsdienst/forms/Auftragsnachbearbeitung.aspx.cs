@@ -707,7 +707,7 @@ namespace AppZulassungsdienst.forms
                             foreach (DataRow BarRow in objNachbearbeitung.tblBarquittungen.Rows)
                             {
                                 BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
-                                BarRow["Path"] = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
+                                BarRow["Path"] = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
                             }
                         }
                         GridView2.DataSource = objNachbearbeitung.tblBarquittungen;
