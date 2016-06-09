@@ -16,7 +16,6 @@ namespace CarDocu.ViewModels
         }
 
         private string _title;
-
         public string Title
         {
             get { return _title; }
@@ -28,7 +27,6 @@ namespace CarDocu.ViewModels
         }
 
         private bool _resultsAvailable;
-
         public bool ResultsAvailable
         {
             get { return _resultsAvailable; }
@@ -40,7 +38,6 @@ namespace CarDocu.ViewModels
         }
 
         private int _resultsTotalItems;
-
         public int ResultsTotalItems
         {
             get { return _resultsTotalItems; }
@@ -52,7 +49,6 @@ namespace CarDocu.ViewModels
         }
 
         private int _resultsGoodItems;
-
         public int ResultsGoodItems
         {
             get { return _resultsGoodItems; }
@@ -64,7 +60,6 @@ namespace CarDocu.ViewModels
         }
 
         private int _resultsBadItems;
-
         public int ResultsBadItems
         {
             get { return _resultsBadItems; }
@@ -74,5 +69,29 @@ namespace CarDocu.ViewModels
                 SendPropertyChanged("ResultsBadItems");
             }
         }
+
+        private string _lastAcceptedScan;
+        public string LastAcceptedScan
+        {
+            get { return _lastAcceptedScan; }
+            set
+            {
+                _lastAcceptedScan = value;
+                SendPropertyChanged("LastAcceptedScan");
+            }
+        }
+
+        private string _lastRecognizedBarcode;
+        public string LastRecognizedBarcode
+        {
+            get { return _lastRecognizedBarcode; }
+            set
+            {
+                _lastRecognizedBarcode = value;
+                SendPropertyChanged("LastRecognizedBarcode");
+            }
+        }
+
+        public bool IsCancelled { get; set; }
     }
 }

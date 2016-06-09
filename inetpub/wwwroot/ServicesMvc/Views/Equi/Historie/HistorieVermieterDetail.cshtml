@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@using MvcTools.Models
+
 @model EquiHistorieVermieter
 
 <style type="text/css">
@@ -40,13 +40,13 @@
             </div>
         }
         <div class="tab-pane overflow-x-auto" id="tab_1_2">
-            @Html.Partial("Historie/Partial/TueteninhaltFsmGrid")
+            @Html.Partial("Historie/Partial/TueteninhaltFsmGrid", Model.InhalteFsm)
         </div>
         <div class="tab-pane overflow-x-auto" id="tab_1_3">
-            @Html.Partial("Historie/Partial/LebenslaufFsmGrid")
+            @Html.Partial("Historie/Partial/LebenslaufFsmGrid", Model.LebenslaufFsm)
         </div>
         <div class="tab-pane overflow-x-auto" id="tab_1_4">
-            @Html.Partial("Historie/Partial/LebenslaufZb2Grid")
+            @Html.Partial("Historie/Partial/LebenslaufZb2Grid", Model.LebenslaufZb2)
         </div>
         <div class="tab-pane" id="tab_1_5">
             @Html.Partial("Historie/Partial/Typdaten", @Model.Typdaten)

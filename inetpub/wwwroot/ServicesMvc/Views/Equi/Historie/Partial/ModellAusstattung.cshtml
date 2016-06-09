@@ -1,0 +1,47 @@
+﻿@model CkgDomainLogic.Equi.Models.EquiHistorieRemarketing
+
+<style type="text/css">
+    
+     .form-horizontal .control-group {
+         margin-bottom: 5px;
+     }
+     
+</style>
+
+<form action="#" class="form-horizontal label-width-200">
+    
+    <h4 class="form-section">@Localize.Model</h4>
+
+    @Html.FormTextBlockFor(m => m.AusstattungModell.CodeBezeichnung, new { @class = "m-wrap" }, labelText: string.Format("{0} / {1}", Localize.ModelCode, Localize.Description))
+
+
+    <h4 class="form-section">@Localize.ExteriorColor</h4>
+
+    @Html.FormTextBlockFor(m => m.AusstattungAussenfarbe.CodeBezeichnung, new { @class = "m-wrap" }, labelText: string.Format("{0} / {1}", Localize.ColorCode, Localize.Description))
+    
+    
+    <h4 class="form-section">@Localize.InteriorColor</h4>
+    
+    @Html.FormTextBlockFor(m => m.AusstattungInnenfarbe.CodeBezeichnung, new { @class = "m-wrap" }, labelText: string.Format("{0} / {1}", Localize.ColorCode, Localize.Description))
+
+
+    <h4 class="form-section">@Localize.Equipments</h4>
+
+    @for (var i = 0; i < Model.AusstattungenSonstige.Count; i++)
+    {
+        <div class="control-group">
+
+            <label class="control-label">
+                @string.Format("{0} {1} {2} / {3}", i, Localize.Equipment, Localize.Code, Localize.Description)
+            </label>
+
+            <div class="controls">
+                <span class="m-wrap">
+                    @Model.AusstattungenSonstige[i].CodeBezeichnung
+                </span>
+            </div>
+
+        </div>
+    }
+
+</form>

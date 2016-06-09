@@ -4,7 +4,6 @@ using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.Equi.Contracts;
-using CkgDomainLogic.Equi.ViewModels;
 using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
@@ -29,7 +28,6 @@ namespace ServicesMvc.Controllers
             IFahrzeuguebersichtDataService fahrzeuguebersichtDataService,
             IFahrzeugSperrenVerschiebenDataService sperrenVerschiebenDataService,
             IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
-            IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
             IEquiHistorieDataService equiHistorieDataService,
             IUploadAvislisteDataService uploadAvislisteDataService,
             ICarporterfassungDataService carporterfassungDataService
@@ -53,7 +51,6 @@ namespace ServicesMvc.Controllers
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
             InitViewModel(FahrzeugzulaeufeViewModel, appSettings, logonContext, fahrzeugzulaeufeDataService);
             InitViewModel(SperrenVerschiebenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
-            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
             InitViewModel(UploadAvislisteViewModel, appSettings, logonContext, uploadAvislisteDataService);
             InitViewModel(CarporterfassungViewModel, appSettings, logonContext, carporterfassungDataService);
@@ -63,16 +60,11 @@ namespace ServicesMvc.Controllers
 
         private void InitModelStatics()
         {
-            Zb2BestandSecurityFleetSelektor.GetViewModel =
-                GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.Zb2BestandSecurityFleetViewModel>;
-            TreuhandverwaltungSelektor.GetViewModel =
-                GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel>;
-            FahrzeuguebersichtSelektor.GetViewModel =
-                GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
-            CarporterfassungModel.GetViewModel =
-                GetViewModel<CarporterfassungViewModel>;
-            CarportnacherfassungSelektor.GetViewModel =
-                GetViewModel<CarporterfassungViewModel>;
+            Zb2BestandSecurityFleetSelektor.GetViewModel = GetViewModel<Zb2BestandSecurityFleetViewModel>;
+            TreuhandverwaltungSelektor.GetViewModel = GetViewModel<TreuhandverwaltungViewModel>;
+            FahrzeuguebersichtSelektor.GetViewModel = GetViewModel<FahrzeuguebersichtViewModel>;
+            CarporterfassungModel.GetViewModel = GetViewModel<CarporterfassungViewModel>;
+            CarportnacherfassungSelektor.GetViewModel = GetViewModel<CarporterfassungViewModel>;
 
             Unfallmeldung.GetViewModel = GetViewModel<UnfallmeldungenViewModel>;
             Fahrzeuguebersicht.GetSperrenVerschiebenViewModel = GetViewModel<FahrzeugSperrenVerschiebenViewModel>;
