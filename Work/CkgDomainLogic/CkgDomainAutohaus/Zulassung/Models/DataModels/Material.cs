@@ -22,5 +22,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public bool Auf48hVersandPruefen { get; set; }
 
         public bool ZulassungAmFolgetagNichtMoeglich { get; set; }
+
+        public bool SimuliereVersand { get; set; }
     }
 }

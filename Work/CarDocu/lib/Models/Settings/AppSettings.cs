@@ -68,19 +68,19 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
-        public bool IsValidAtFirstGlance { get { return !string.IsNullOrEmpty(DomainName) && !string.IsNullOrEmpty(DomainPath); } }
+        public bool IsValidAtFirstGlance => !string.IsNullOrEmpty(DomainName) && !string.IsNullOrEmpty(DomainPath);
 
         [XmlIgnore]
-        public static string AppCompanyName { get { return ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyCompanyAttribute), false)).Company; } }
+        public static string AppCompanyName => ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyCompanyAttribute), false)).Company;
 
         [XmlIgnore]
-        public static string AppSettingsDirectoryName { get { return AppCompanyName + @"\CarDocu_Scan"; } }
+        public static string AppSettingsDirectoryName => AppCompanyName + @"\CarDocu_Scan";
 
         [XmlIgnore]
-        public static string AppName { get { return "CKG Scan Client"; } }
+        public static string AppName => "CKG Scan Client";
 
         [XmlIgnore]
-        public static string AppVersion { get { return $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor}"; } }
+        public static string AppVersion => $"{Assembly.GetEntryAssembly().GetName().Version.Major}.{Assembly.GetEntryAssembly().GetName().Version.Minor}";
 
         public void Init()
         {

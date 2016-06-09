@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -73,30 +72,30 @@ namespace CarDocu.Services
         }
 
         [XmlIgnore]
-        public string IsBusyIconSource { get { return ((Image)Application.Current.TryFindResource(GetBusyIconSourceKey())).Source.ToString(); } }
+        public string IsBusyIconSource => ((Image)Application.Current.TryFindResource(GetBusyIconSourceKey())).Source.ToString();
 
         public string GetBusyIconSourceKey()
         {
-            return string.Format("image/16x16/{0}", IsBusy ? "hourglass" : "empty");
+            return $"image/16x16/{(IsBusy ? "hourglass" : "empty")}";
         }
 
-        public string BusyToolTip { get { return IsBusy ? "1 Hintergrundprozess noch aktiv!" : ""; } }
+        public string BusyToolTip => IsBusy ? "1 Hintergrundprozess noch aktiv!" : "";
 
         [XmlIgnore]
-        public string IsOnlineIconSource { get { return ((Image)Application.Current.TryFindResource(GetOnlineIconSourceKey())).Source.ToString(); } }
+        public string IsOnlineIconSource => ((Image)Application.Current.TryFindResource(GetOnlineIconSourceKey())).Source.ToString();
 
         public string GetOnlineIconSourceKey()
         {
-            return string.Format("image/16x16/ball_{0}", IsOnline ? "green" : "red");
+            return $"image/16x16/ball_{(IsOnline ? "green" : "red")}";
         }
 
-        public string OnlineToolTip { get { return IsOnline ? "Service ist online!" : "Service ist aktuell nicht verfügbar bzw. offline!"; } }
+        public string OnlineToolTip => IsOnline ? "Service ist online!" : "Service ist aktuell nicht verfügbar bzw. offline!";
 
         public bool NativeThreadLoopIsEnabled { get; set; }
 
         public abstract string Name { get; }
 
-        protected virtual int OnlineStatusIntervalSeconds { get { return 300; } }
+        protected virtual int OnlineStatusIntervalSeconds => 300;
 
         protected DateTime? OnlineStatusLastCheckDate { get; set; }
 
@@ -162,7 +161,11 @@ namespace CarDocu.Services
      
         public void Dispose()
         {
-            try { _nativeTask.Dispose(); } catch {}
+            try { _nativeTask.Dispose(); }
+            catch
+            {
+                // ignored
+            }
         }
         
         public override void Enqueue(CardocuQueueEntity item)
@@ -338,11 +341,8 @@ namespace CarDocu.Services
         /// <param name="e">Arguments detailing the change</param>
         protected virtual void SendPropertyChanged(PropertyChangedEventArgs e)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            var handler = PropertyChanged;
+            handler?.Invoke(this, e);
         }
 
         public void SendPropertyChanged<TProperty>(Expression<Func<TProperty>> property)

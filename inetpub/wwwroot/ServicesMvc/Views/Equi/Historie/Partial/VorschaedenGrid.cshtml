@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model IEnumerable<EquiVorschaden>
+
+@(Html.XTelerik()
+    .XGrid<EquiVorschaden>()
+    .Name("GridEquiVorschaeden")
+    .BindTo(Model)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Erstellungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Preis).Format("{0:c}");
+        columns.XBound(c => c.Schadensdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Beschreibung);
+        columns.XBound(c => c.DatumUpdate).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Repariert);
+        columns.XBound(c => c.Wertminderungsbetrag);
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .XPageSize(10)
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Erstellungsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)

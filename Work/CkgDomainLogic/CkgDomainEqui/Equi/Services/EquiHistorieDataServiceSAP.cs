@@ -5,7 +5,6 @@ using System.Linq;
 using CkgDomainLogic.Archive.Models;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
@@ -17,178 +16,358 @@ namespace CkgDomainLogic.Equi.Services
 {
     public class EquiHistorieDataServiceSAP : CkgGeneralDataServiceSAP, IEquiHistorieDataService
     {
-        public EquiHistorieSuchparameter Suchparameter { get; set; }
-
-        public List<EquiHistorieInfo> HistorieInfos { get { return PropertyCacheGet(() => LoadHistorieInfosFromSap().ToList()); } }
-
         public EquiHistorieDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            Suchparameter = new EquiHistorieSuchparameter();
         }
 
-        public void MarkForRefreshHistorieInfos()
+        #region Standard
+
+        public List<EquiHistorieInfo> GetHistorieInfos(EquiHistorieSuchparameter suchparameter)
         {
-            PropertyCacheClear(this, m => m.HistorieInfos);
+            Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            if (!string.IsNullOrEmpty(suchparameter.Kennzeichen))
+                SAP.SetImportParameter("I_ZZKENN", suchparameter.Kennzeichen.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.FahrgestellNr))
+                SAP.SetImportParameter("I_ZZFAHRG", suchparameter.FahrgestellNr.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.BriefNr))
+                SAP.SetImportParameter("I_ZZBRIEF", suchparameter.BriefNr.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.VertragsNr))
+                SAP.SetImportParameter("I_ZZREF1", suchparameter.VertragsNr.ToUpper());
+
+            return AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_EQUI_To_EquiHistorieInfo.Copy(Z_M_BRIEFLEBENSLAUF_001.GT_EQUI.GetExportListWithExecute(SAP)).ToList();
         }
 
-        private IEnumerable<EquiHistorieInfo> LoadHistorieInfosFromSap()
+        public EquiHistorie GetHistorieDetail(string fin, int appId)
         {
-            SAP.Init("Z_M_BRIEFLEBENSLAUF_001", "I_KUNNR", LogonContext.KundenNr.PadLeft(10, '0'));
+            Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR, I_ZZFAHRG", LogonContext.KundenNr.ToSapKunnr(), fin);
 
-            if (!string.IsNullOrEmpty(Suchparameter.Kennzeichen))
-                SAP.SetImportParameter("I_ZZKENN", Suchparameter.Kennzeichen.ToUpper());
+            var sapItems = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportListWithExecute(SAP);
+            if (sapItems.None())
+                return new EquiHistorie();
 
-            if (!string.IsNullOrEmpty(Suchparameter.FahrgestellNr))
-                SAP.SetImportParameter("I_ZZFAHRG", Suchparameter.FahrgestellNr.ToUpper());
+            var hist = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_WEB_To_EquiHistorie.Copy(sapItems).ToList().First();
 
-            if (!string.IsNullOrEmpty(Suchparameter.BriefNr))
-                SAP.SetImportParameter("I_ZZBRIEF", Suchparameter.BriefNr.ToUpper());
+            hist.Meldungen = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_QMEL_To_EquiMeldungsdaten.Copy(Z_M_BRIEFLEBENSLAUF_001.GT_QMEL.GetExportList(SAP)).ToList();
 
-            if (!string.IsNullOrEmpty(Suchparameter.VertragsNr))
-                SAP.SetImportParameter("I_ZZREF1", Suchparameter.VertragsNr.ToUpper());
+            hist.Aktionen = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_QMMA_To_EquiAktionsdaten.Copy(Z_M_BRIEFLEBENSLAUF_001.GT_QMMA.GetExportList(SAP)).ToList();
 
-            var sapList = Z_M_BRIEFLEBENSLAUF_001.GT_EQUI.GetExportListWithExecute(SAP);
+            hist.Haendlerdaten = (AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_ADDR_To_EquiHaendlerdaten.Copy(Z_M_BRIEFLEBENSLAUF_001.GT_ADDR.GetExportList(SAP)).FirstOrDefault() ?? new EquiHaendlerdaten());
 
-            return AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_EQUI_To_EquiHistorieInfo.Copy(sapList);
+            hist.Haendlerdaten.HaendlerNr = hist.HaendlerNr;
+            hist.Haendlerdaten.Finanzierungsart = hist.Finanzierungsart;
+
+            var sapItemsText = Z_M_BRIEFLEBENSLAUF_001.GT_TEXT.GetExportList(SAP);
+
+            if (sapItemsText.Any())
+            {
+                var texte = from t in sapItemsText
+                            select t.TDLINE;
+
+                hist.Bemerkungen = string.Join(Environment.NewLine, texte);
+            }
+
+            using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
+            {
+                hist.Versandgrund = dbContext.GetAbrufgrundBezeichnung(hist.VersandgrundId);
+            }
+
+            hist.Typdaten = (GetTypdaten(hist.Equipmentnummer) ?? new EquiTypdaten());
+
+            var custId = LogonContext.Customer.CustomerID;
+            var grpId = LogonContext.Group.GroupID;
+
+            hist.ShowTypdaten = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieTypdatenAnzeigen", appId.ToString(), custId, grpId).ToBool();
+            hist.ShowMeldungen = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieLebenslaufAnzeigen", appId.ToString(), custId, grpId).ToBool();
+            hist.ShowAktionen = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieUebermittlungAnzeigen", appId.ToString(), custId, grpId).ToBool();
+            hist.ShowHaendlerdaten = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieHaendlerdatenAnzeigen", appId.ToString(), custId, grpId).ToBool();
+
+            return hist;
         }
 
-        public EquiHistorie GetEquiHistorie(string fahrgestellnummer, int appId)
+        #endregion
+        
+        #region Vermieter
+
+        public List<EquiHistorieVermieterInfo> GetHistorieVermieterInfos(EquiHistorieSuchparameter suchparameter)
         {
-            EquiHistorie hist = null;
+            Z_DPM_FAHRZEUGHISTORIE_AVM.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            SAP.Init("Z_M_BRIEFLEBENSLAUF_001", "I_KUNNR", LogonContext.KundenNr.PadLeft(10, '0'));
+            if (!string.IsNullOrEmpty(suchparameter.Kennzeichen))
+                SAP.SetImportParameter("I_LICENSE_NUM", suchparameter.Kennzeichen.ToUpper());
 
-            SAP.SetImportParameter("I_ZZFAHRG", fahrgestellnummer);
+            if (!string.IsNullOrEmpty(suchparameter.FahrgestellNr))
+                SAP.SetImportParameter("I_CHASSIS_NUM", suchparameter.FahrgestellNr.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.BriefNr))
+                SAP.SetImportParameter("I_TIDNR", suchparameter.BriefNr.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.VertragsNr))
+                SAP.SetImportParameter("I_LIZNR", suchparameter.VertragsNr.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.Referenz1))
+                SAP.SetImportParameter("I_REFERENZ1", suchparameter.Referenz1);
+
+            return AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieVermieterInfo.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public EquiHistorieVermieter GetHistorieVermieterDetail(string fin)
+        {
+            Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
+
+            var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportListWithExecute(SAP);
+            if (sapItems.None())
+                return new EquiHistorieVermieter();
+
+            var hist = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_UEBER_To_EquiHistorieVermieter.Copy(sapItems).ToList().First();
+
+            hist.HistorieInfo = (AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieVermieterInfo.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiHistorieVermieterInfo());
+
+            hist.Einsteuerungsdaten = (AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EINST_To_EquiEinsteuerung.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EINST.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiEinsteuerung());
+
+            hist.Aussteuerungsdaten = (AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_AUSST_To_EquiAussteuerung.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_AUSST.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiAussteuerung());
+
+            hist.Typdaten = (AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TYPEN_To_EquiTypdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TYPEN.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiTypdaten());
+
+            hist.Typdaten.Farbe = hist.Farbe;
+            hist.Typdaten.Farbcode = hist.Farbcode;
+
+            hist.LebenslaufZb2 = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLZB2_To_EquiMeldungsdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLZB2.GetExportList(SAP)).ToList();
+
+            hist.LebenslaufFsm = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLSCH_To_EquiMeldungsdaten.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLSCH.GetExportList(SAP)).ToList();
+
+            hist.InhalteFsm = AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TUETE_To_EquiTueteninhalt.Copy(Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TUETE.GetExportList(SAP)).ToList();
+
+            return hist;
+        }
+
+        public byte[] GetHistorieVermieterAsPdf(string fin)
+        {
+            Z_DPM_DRUCK_FZG_HISTORIE_AVM.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
 
             SAP.Execute();
 
-            // GT_WEB
-            var sapItemsHist = Z_M_BRIEFLEBENSLAUF_001.GT_WEB.GetExportList(SAP);
-            var webItemsHist = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_WEB_To_EquiHistorie.Copy(sapItemsHist).ToList();
-
-            // GT_QMEL
-            var sapItemsMeld = Z_M_BRIEFLEBENSLAUF_001.GT_QMEL.GetExportList(SAP);
-            var webItemsMeld = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_QMEL_To_EquiMeldungsdaten.Copy(sapItemsMeld).ToList();
-
-            // GT_QMMA
-            var sapItemsAktionen = Z_M_BRIEFLEBENSLAUF_001.GT_QMMA.GetExportList(SAP);
-            var webItemsAktionen = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_QMMA_To_EquiAktionsdaten.Copy(sapItemsAktionen).ToList();
-            
-            // GT_ADDR
-            var sapItemsAddr = Z_M_BRIEFLEBENSLAUF_001.GT_ADDR.GetExportList(SAP);
-            var webItemsAddr = AppModelMappings.Z_M_BRIEFLEBENSLAUF_001_GT_ADDR_To_EquiHaendlerdaten.Copy(sapItemsAddr).ToList();
-
-            // GT_TEXT
-            var sapItemsText = Z_M_BRIEFLEBENSLAUF_001.GT_TEXT.GetExportList(SAP);
-
-            if (webItemsHist.Count > 0)
-            {
-                hist = webItemsHist[0];
-                hist.Meldungen = webItemsMeld;
-                hist.Aktionen = webItemsAktionen;
-
-                if (webItemsAddr.Count > 0)
-                {
-                    hist.Haendlerdaten = webItemsAddr[0];
-                }
-                else
-                {
-                    hist.Haendlerdaten = new EquiHaendlerdaten();
-                }
-                hist.Haendlerdaten.HaendlerNr = hist.HaendlerNr;
-                hist.Haendlerdaten.Finanzierungsart = hist.Finanzierungsart;
-                    
-                if (sapItemsText.Count > 0)
-                {
-                    var texte = from t in sapItemsText
-                                select t.TDLINE;
-
-                    hist.Bemerkungen = String.Join(Environment.NewLine, texte);
-                }
-
-                using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
-                {
-                    hist.Versandgrund = dbContext.GetAbrufgrundBezeichnung(hist.VersandgrundId);
-                }
-
-                hist.Typdaten = GetTypdaten(hist.Equipmentnummer);
-
-                var custId = (LogonContext as ILogonContextDataService).Customer.CustomerID;
-                var grpId = (LogonContext as ILogonContextDataService).Group.GroupID;
-
-                hist.ShowTypdaten = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieTypdatenAnzeigen", appId.ToString(), custId, grpId).ToBool();
-                hist.ShowMeldungen = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieLebenslaufAnzeigen", appId.ToString(), custId, grpId).ToBool();
-                hist.ShowAktionen = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieUebermittlungAnzeigen", appId.ToString(), custId, grpId).ToBool();
-                hist.ShowHaendlerdaten = ApplicationConfiguration.GetApplicationConfigValue("FzgHistorieHaendlerdatenAnzeigen", appId.ToString(), custId, grpId).ToBool();
-            }
-
-            return hist ?? new EquiHistorie();
+            return SAP.GetExportParameterByte("E_PDF");
         }
+
+        #region Fahrzeug Anforderungen
+
+        public List<FahrzeugAnforderung> GetFahrzeugAnforderungen(string fin)
+        {
+            Z_DPM_AVM_DOKUMENT_KOPIE.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
+
+            return AppModelMappings.Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung.Copy(Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public void SaveFahrzeugAnforderung(FahrzeugAnforderung item)
+        {
+            Z_DPM_AVM_DOKUMENT_KOPIE.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            var sapList = AppModelMappings.Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung.CopyBack(new List<FahrzeugAnforderung> { item }).ToList();
+            SAP.ApplyImport(sapList);
+
+            SAP.Execute();
+        }
+
+        public List<SelectItem> GetFahrzeugAnforderungenDocTypes()
+        {
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR, I_KENNUNG", LogonContext.KundenNr.ToSapKunnr(), "KOPIE");
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_To_SelectItem.Copy(Z_DPM_READ_AUFTR_006.GT_OUT.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Remarketing
+
+        public List<EquiHistorieRemarketingInfo> GetHistorieRemarketingInfos(EquiHistorieSuchparameter suchparameter)
+        {
+            Z_DPM_REM_FAHRZEUGHIST_02.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            if (!string.IsNullOrEmpty(suchparameter.Kennzeichen))
+                SAP.SetImportParameter("I_KENNZ", suchparameter.Kennzeichen.ToUpper());
+
+            if (!string.IsNullOrEmpty(suchparameter.FahrgestellNr))
+                SAP.SetImportParameter("I_FAHRGNR", suchparameter.FahrgestellNr.ToUpper());
+
+            return AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketingInfo.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public EquiHistorieRemarketing GetHistorieRemarketingDetail(string fin)
+        {
+            Z_DPM_REM_FAHRZEUGHIST_02.Init(SAP, "I_KUNNR_AG, I_FAHRGNR", LogonContext.KundenNr.ToSapKunnr(), fin);
+
+            SAP.Execute();
+
+            var sapItems = Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportList(SAP);
+            if (sapItems.None())
+                return new EquiHistorieRemarketing();
+
+            var hist = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketing.Copy(sapItems).ToList().First();
+
+            hist.HistorieInfo = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN_To_EquiHistorieRemarketingInfo.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiHistorieRemarketingInfo());
+
+            hist.Gutachten = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_GUTA_To_EquiGutachten.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_GUTA.GetExportList(SAP)).ToList();
+
+            hist.Versanddaten = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_VERS_To_EquiVersanddaten.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_VERS.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiVersanddaten());
+
+            hist.LebenslaufBrief = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_LEB_B_To_EquiLebenslaufBrief.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_LEB_B.GetExportList(SAP)).ToList();
+
+            hist.LebenslaufSchluessel = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_LEB_T_To_EquiLebenslaufSchluessel.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_LEB_T.GetExportList(SAP)).ToList();
+
+            hist.Adressen = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_ADDR_B_To_SelectItem.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_ADDR_B.GetExportList(SAP)).ToList();
+
+            hist.Belastungsanzeige = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_BELAS_To_EquiBelastungsanzeige.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_BELAS.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiBelastungsanzeige());
+
+            hist.Rechnungsdaten = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_RECHNG_To_EquiRechnungsdaten.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_RECHNG.GetExportList(SAP)).ToList();
+
+            hist.Vorschaeden = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_SCHADEN_To_EquiVorschaden.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_SCHADEN.GetExportList(SAP)).ToList();
+
+            hist.Zusatzdaten = (AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_DATEN2_To_EquiZusatzdatenRemarketing.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_DATEN2.GetExportList(SAP)).ToList().FirstOrDefault() ?? new EquiZusatzdatenRemarketing());
+
+            hist.Ausstattungen = AppModelMappings.Z_DPM_REM_FAHRZEUGHIST_02_GT_AUSST_To_EquiAusstattung.Copy(Z_DPM_REM_FAHRZEUGHIST_02.GT_AUSST.GetExportList(SAP)).ToList();
+
+            hist.Schadenrechnung = (GetSchadenrechnung(fin) ?? new EquiSchadenrechnung());
+
+            hist.Typdaten = (GetTypdaten(hist.Equipmentnummer) ?? new EquiTypdaten());
+
+            hist.Lebenslauf = GetLebenslauf(hist).OrderBy(l => l.Datum).ToList();
+
+            hist.UploaddatumSchadensgutachten = GetUploaddatumSchadensgutachten(fin);
+
+            hist.TuevGutachtenBaseUrl = ApplicationConfiguration.GetApplicationConfigValue("TuevGutachtenUrl", "0", LogonContext.CustomerID);
+
+            return hist;
+        }
+
+        private EquiSchadenrechnung GetSchadenrechnung(string fin)
+        {
+            Z_DPM_REM_SCHADENRG_01.Init(SAP, "I_KUNNR, I_FIN, I_STATU", LogonContext.KundenNr.ToSapKunnr(), fin, "A");
+
+            SAP.Execute();
+
+            return AppModelMappings.Z_DPM_REM_SCHADENRG_01_GT_OUT_To_EquiSchadenrechnung.Copy(Z_DPM_REM_SCHADENRG_01.GT_OUT.GetExportList(SAP)).FirstOrDefault();
+        }
+
+        private IEnumerable<EquiLebenslauf> GetLebenslauf(EquiHistorieRemarketing hist)
+        {
+            var liste = new List<EquiLebenslauf>();
+
+            if (hist.Auslieferdatum.HasValue)
+                liste.Add(new EquiLebenslauf(hist.Auslieferdatum.Value, string.Format("{0} {1}",
+                    Localize.DeliveryToCarRentalCompany,
+                    hist.Vermieter)));
+
+            if (hist.Zulassungsdatum.HasValue)
+                liste.Add(new EquiLebenslauf(hist.Zulassungsdatum.Value, string.Format("{0} ({1})",
+                    Localize.Registered,
+                    hist.HistorieInfo.Kennzeichen)));
+
+            if (hist.HcEingang.HasValue)
+                liste.Add(new EquiLebenslauf(hist.HcEingang.Value, string.Format("{0} {1}, {2} {3}",
+                    Localize.ReceivedAtTakeInCenter,
+                    (string.IsNullOrEmpty(hist.Hereinnahmecenter) ? hist.HcOrt : string.Format("{0} ({1})", hist.HcOrt, hist.Hereinnahmecenter)),
+                    Localize.Mileage,
+                    hist.KmStand)));
+
+            if (hist.EingangSchluessel.HasValue)
+                liste.Add(new EquiLebenslauf(hist.EingangSchluessel.Value, Localize.KeyReceived));
+
+            if (hist.EingangZb2.HasValue)
+                liste.Add(new EquiLebenslauf(hist.EingangZb2.Value, Localize.Zb2Received));
+
+            hist.Gutachten.ForEach(guta =>
+            {
+                if (guta.EingangGutachten.HasValue)
+                    liste.Add(new EquiLebenslauf(guta.EingangGutachten.Value, Localize.SurveyReceived));
+            });
+
+            if (hist.Zusatzdaten.HcAusgang.HasValue)
+                liste.Add(new EquiLebenslauf(hist.Zusatzdaten.HcAusgang.Value, string.Format("{0} {1}",
+                    Localize.DispatchedByTakeInCenter,
+                    (string.IsNullOrEmpty(hist.Hereinnahmecenter) ? hist.HcOrt : string.Format("{0} ({1})", hist.HcOrt, hist.Hereinnahmecenter)))));
+
+            if (hist.Zusatzdaten.GutachtenAuftragsdatum.HasValue)
+                liste.Add(new EquiLebenslauf(hist.Zusatzdaten.GutachtenAuftragsdatum.Value, 
+                    string.Format(Localize.SurveyOrderedFromSurveyor, hist.Gutachten.FirstOrDefault(new EquiGutachten()).Gutachter)));
+
+            hist.LebenslaufSchluessel.ForEach(lebT =>
+            {
+                if (lebT.AusgangSchluessel.HasValue)
+                    liste.Add(new EquiLebenslauf(lebT.AusgangSchluessel.Value, Localize.KeyDispatched));
+            });
+
+            hist.LebenslaufBrief.ForEach(lebB =>
+            {
+                if (lebB.AusgangZb2.HasValue)
+                    liste.Add(new EquiLebenslauf(lebB.AusgangZb2.Value, Localize.Zb2Dispatched));
+            });
+
+            hist.Vorschaeden.ForEach(schad =>
+            {
+                if (schad.Erstellungsdatum.HasValue && schad.Preis.HasValue)
+                    liste.Add(new EquiLebenslauf(schad.Erstellungsdatum.Value, string.Format("{0}, {1}",
+                        Localize.PreviousDamageReported,
+                        schad.Preis.ToString("c"))));
+            });
+
+            if (hist.Belastungsanzeige.DatumSchadenrechnung.HasValue)
+                liste.Add(new EquiLebenslauf(hist.Belastungsanzeige.DatumSchadenrechnung.Value, Localize.BillPrinted));
+
+            hist.Rechnungsdaten.ForEach(rech =>
+            {
+                if (rech.Rechnungsdatum.HasValue)
+                {
+                    switch (rech.BelegArt)
+                    {
+                        case "1":
+                            liste.Add(new EquiLebenslauf(rech.Rechnungsdatum.Value, Localize.CreditCreated));
+                            break;
+
+                        case "2":
+                            liste.Add(new EquiLebenslauf(rech.Rechnungsdatum.Value, string.Format("{0} {1}",
+                                Localize.AdditionalChargeCreatedTo,
+                                rech.Empfaenger)));
+                            break;
+                    }
+                }
+            });
+
+            return liste;
+        }
+
+        private string GetUploaddatumSchadensgutachten(string fin)
+        {
+            Z_DPM_REM_SET_SCHADENDAT_PDF.Init(SAP, "I_KUNNR, I_READ", LogonContext.KundenNr.ToSapKunnr(), "X");
+
+            var finList = new List<Z_DPM_REM_SET_SCHADENDAT_PDF.GT_IN> { new Z_DPM_REM_SET_SCHADENDAT_PDF.GT_IN { FIN = fin } };
+            SAP.ApplyImport(finList);
+
+            SAP.Execute();
+
+            var ergItem = Z_DPM_REM_SET_SCHADENDAT_PDF.GT_OUT.GetExportList(SAP).FirstOrDefault();
+
+            return (ergItem != null ? ergItem.SDPDF_DAT : "");
+        }
+
+        #endregion
+
+        #region Common
 
         private EquiTypdaten GetTypdaten(string equiNr)
         {
-            var erg = new EquiTypdaten();
+            if (equiNr.IsNullOrEmpty())
+                return new EquiTypdaten();
 
-            SAP.InitExecute("Z_M_ABEZUFZG", "ZZKUNNR, ZZEQUNR", LogonContext.KundenNr.PadLeft(10, '0'), equiNr.PadLeft(18, '0'));
+            Z_M_ABEZUFZG_NEU.Init(SAP, "ZZKUNNR, ZZEQUNR", LogonContext.KundenNr.ToSapKunnr(), equiNr.PadLeft0(18));
 
-            erg.Abgasrichtlinie = SAP.GetExportParameter("ZZABGASRICHTL_TG");
-            erg.AnzahlAchsen = SAP.GetExportParameter("ZZANZACHS").TrimStart('0');
-            erg.AnzahlAntriebsachsen = SAP.GetExportParameter("ZZANTRIEBSACHS").TrimStart('0');
-            erg.AnzahlSitze = SAP.GetExportParameter("ZZANZSITZE").TrimStart('0');
-            erg.Aufbauart = SAP.GetExportParameter("ZZTEXT_AUFBAU");
-            erg.Bemerkungen = String.Join(Environment.NewLine,
-                SAP.GetExportParameter("ZZBEMER1"),
-                SAP.GetExportParameter("ZZBEMER2"),
-                SAP.GetExportParameter("ZZBEMER3"),
-                SAP.GetExportParameter("ZZBEMER4"),
-                SAP.GetExportParameter("ZZBEMER5"),
-                SAP.GetExportParameter("ZZBEMER6"),
-                SAP.GetExportParameter("ZZBEMER7"),
-                SAP.GetExportParameter("ZZBEMER8"),
-                SAP.GetExportParameter("ZZBEMER9"),
-                SAP.GetExportParameter("ZZBEMER10"),
-                SAP.GetExportParameter("ZZBEMER11"),
-                SAP.GetExportParameter("ZZBEMER12"),
-                SAP.GetExportParameter("ZZBEMER13"),
-                SAP.GetExportParameter("ZZBEMER14")).TrimEnd('\r', '\n');
-            erg.BereifungAchse1 = SAP.GetExportParameter("ZZBEREIFACHSE1");
-            erg.BereifungAchse2 = SAP.GetExportParameter("ZZBEREIFACHSE2");
-            erg.BereifungAchse3 = SAP.GetExportParameter("ZZBEREIFACHSE3");
-            erg.Breite = SAP.GetExportParameter("ZZBREITEMIN").TrimStart('0');
-            erg.Co2Emission = SAP.GetExportParameter("ZZCO2KOMBI");
-            erg.Fabrikname = SAP.GetExportParameter("ZZFABRIKNAME");
-            erg.Fahrgeraeusch = SAP.GetExportParameter("ZZFAHRGERAEUSCH").TrimStart('0');
-            erg.Fahrzeugklasse = SAP.GetExportParameter("ZZFHRZKLASSE_TXT");
-            erg.Farbcode = SAP.GetExportParameter("ZZFARBE");
-            erg.Farbe = SAP.GetExportParameter("ZFARBE_KLAR");
-            erg.FassungsvermoegenTank = SAP.GetExportParameter("ZZFASSVERMOEGEN");
-            erg.GenehmigungsNr = SAP.GetExportParameter("ZZGENEHMIGNR");
-            erg.Genehmigungsdatum = (DateTime?)(SAP.GetExportParameter("ZZGENEHMIGDAT").ToDateTimeOrNull());
-            erg.Handelsname = SAP.GetExportParameter("ZZHANDELSNAME");
-            erg.HerstSchluessel = SAP.GetExportParameter("ZZHERSTELLER_SCH");
-            erg.Hersteller = SAP.GetExportParameter("ZZHERST_TEXT");
-            erg.Hoechstgeschwindigkeit = SAP.GetExportParameter("ZZHOECHSTGESCHW");
-            erg.Hoehe = SAP.GetExportParameter("ZZHOEHEMIN").TrimStart('0');
-            erg.Hubraum = SAP.GetExportParameter("ZZHUBRAUM").TrimStart('0');
-            erg.Kraftstoffart = SAP.GetExportParameter("ZZKRAFTSTOFF_TXT");
-            erg.Kraftstoffcode = SAP.GetExportParameter("ZZCODE_KRAFTSTOF");
-            erg.Laenge = SAP.GetExportParameter("ZZLAENGEMIN").TrimStart('0');
-            erg.Leistung = SAP.GetExportParameter("ZZNENNLEISTUNG").TrimStart('0');
-            erg.MaxAchslastAchse1 = SAP.GetExportParameter("ZZACHSL_A1_STA").TrimStart('0');
-            erg.MaxAchslastAchse2 = SAP.GetExportParameter("ZZACHSL_A2_STA").TrimStart('0');
-            erg.MaxAchslastAchse3 = SAP.GetExportParameter("ZZACHSL_A3_STA").TrimStart('0');
-            erg.NationaleEmissionsklasseCode = SAP.GetExportParameter("ZZSLD");
-            erg.NationaleEmissionsklasse = SAP.GetExportParameter("ZZNATIONALE_EMIK");
-            erg.Standgeraeusch = SAP.GetExportParameter("ZZSTANDGERAEUSCH").TrimStart('0');
-            erg.Typ = SAP.GetExportParameter("ZZKLARTEXT_TYP");
-            erg.TypSchluessel = SAP.GetExportParameter("ZZTYP_SCHL");
-            erg.UmdrehungenProMin = SAP.GetExportParameter("ZZBEIUMDREH").TrimStart('0');
-            erg.Variante = SAP.GetExportParameter("ZZVARIANTE");
-            erg.Version = SAP.GetExportParameter("ZZVERSION");
-            erg.ZulGesamtgewicht = SAP.GetExportParameter("ZZZULGESGEW").TrimStart('0');
-
-            return erg;
+            return AppModelMappings.Z_M_ABEZUFZG_NEU_E_ABE_DATEN_To_EquiTypdaten.Copy(Z_M_ABEZUFZG_NEU.E_ABE_DATEN.GetExportListWithExecute(SAP)).FirstOrDefault();
         }
 
         public List<EasyAccessArchiveDefinition> GetArchiveDefinitions()
@@ -203,6 +382,8 @@ namespace CkgDomainLogic.Equi.Services
             }
 
             return defList;
-        } 
+        }
+
+        #endregion
     }
 }

@@ -175,7 +175,7 @@ namespace CkgDomainLogic.AutohausPartnerUndFahrzeugdaten.ViewModels
         private static void FormatFahrzeug(Fahrzeugdaten fzg)
         {
             fzg.FahrgestellNr = fzg.FahrgestellNr.NotNullOrEmpty().ToUpper();
-            fzg.Kennzeichen = fzg.Kennzeichen.NotNullOrEmpty().ToUpper();
+            fzg.Kennzeichen = fzg.Kennzeichen.NotNullOrEmpty().ToUpper().Replace(" ", "");
 
             // Aspose-Import dichtet immer 00:00:00 bei Datumswerten dazu...
             if (!string.IsNullOrEmpty(fzg.Erstzulassung) && fzg.Erstzulassung.EndsWith(" 00:00:00"))
