@@ -3,7 +3,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Equi.Models
 {
-    public class EquiHistorieInfoVermieter
+    public class EquiHistorieVermieterInfo
     {
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         public string EquipmentNr { get; set; }

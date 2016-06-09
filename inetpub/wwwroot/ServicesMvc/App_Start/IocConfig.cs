@@ -58,6 +58,8 @@ using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Services;
 using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.Zanf.Services;
+using CkgDomainLogic.Remarketing.Contracts;
+using CkgDomainLogic.Remarketing.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -96,7 +98,6 @@ namespace ServicesMvc
             // container soll die Controller ermitteln für die Runtime
             assemblies.ToListOrEmptyList().ForEach(asm => builder.RegisterControllers(asm));
 
-            builder.RegisterControllers(Assembly.Load("CkgDomainInternal"));
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -227,7 +228,6 @@ namespace ServicesMvc
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
             builder.RegisterType<NichtDurchfuehrbZulDataServiceSAP>().As<INichtDurchfuehrbZulDataService>().InstancePerHttpRequest();
-            builder.RegisterType<EquiHistorieVermieterDataServiceSAP>().As<IEquiHistorieVermieterDataService>().InstancePerHttpRequest();
             builder.RegisterType<FahrzeugzulaeufeDataServiceSAP>().As<IFahrzeugzulaeufeDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
@@ -263,6 +263,10 @@ namespace ServicesMvc
 
             builder.RegisterType<DataConverterDataService>().As<IDataConverterDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadPartnerUndFahrzeugdatenDataServiceSap>().As<IUploadPartnerUndFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FehlendeDatenDataServiceSAP>().As<IFehlendeDatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<BelastungsanzeigenDataServiceSAP>().As<IBelastungsanzeigenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<GemeldeteVorschaedenDataServiceSAP>().As<IGemeldeteVorschaedenDataService>().InstancePerHttpRequest();
+
             builder.RegisterType<AppBatchZuordnungDataService>().As<IAppBatchZuordnungDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<LeasingEndgueltigerVersandDataServiceSAP>().As<ILeasingEndgueltigerVersandDataService>().InstancePerHttpRequest();

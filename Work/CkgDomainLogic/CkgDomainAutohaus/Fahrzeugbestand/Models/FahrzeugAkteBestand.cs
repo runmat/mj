@@ -19,6 +19,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
     {
         private string _fin;
         private string _kennzeichen;
+        private string _wunschkennz1;
+        private string _wunschkennz2;
+        private string _wunschkennz3;
         private string _typSchluessel;
 
         [LocalizedDisplay(LocalizeConstants.VIN)]
@@ -57,13 +60,25 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string Zb2Nr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
-        public string WunschKennz1 { get; set; }
+        public string WunschKennz1
+        {
+            get { return _wunschkennz1.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennz1 = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo2)]
-        public string WunschKennz2 { get; set; }
+        public string WunschKennz2
+        {
+            get { return _wunschkennz2.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennz2 = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo3)]
-        public string WunschKennz3 { get; set; }
+        public string WunschKennz3
+        {
+            get { return _wunschkennz3.NotNullOrEmpty().ToUpper(); }
+            set { _wunschkennz3 = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.ReservedLicenseNo)]
         public string ResKennz { get; set; }
@@ -216,7 +231,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
-            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationNo)]

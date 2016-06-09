@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -17,10 +16,7 @@ namespace CarDocu.ViewModels
         #region Properties
 
         private AdminViewModel _adminViewModel;
-        public AdminViewModel AdminViewModel
-        {
-            get { return (_adminViewModel ?? (_adminViewModel = new AdminViewModel { Parent = this })); }
-        }
+        public AdminViewModel AdminViewModel => (_adminViewModel ?? (_adminViewModel = new AdminViewModel { Parent = this }));
 
         private DocuViewModel _newDocuViewModel;
         public DocuViewModel NewDocuViewModel
@@ -37,23 +33,14 @@ namespace CarDocu.ViewModels
         }
 
         private AllDocusViewModel _allDocusViewModel; 
-        public AllDocusViewModel AllDocusViewModel 
-        { 
-            get { return (_allDocusViewModel ?? (_allDocusViewModel = new AllDocusViewModel { Parent = this })); }
-        }
+        public AllDocusViewModel AllDocusViewModel => (_allDocusViewModel ?? (_allDocusViewModel = new AllDocusViewModel { Parent = this }));
 
         private BackstageViewModel _backstageViewModel;
-        public BackstageViewModel BackstageViewModel
-        {
-            get { return (_backstageViewModel ?? (_backstageViewModel = new BackstageViewModel())); }
-        }
+        public BackstageViewModel BackstageViewModel => (_backstageViewModel ?? (_backstageViewModel = new BackstageViewModel()));
 
-        public DomainUser LogonUser 
-        { 
-            get { return DomainService.Repository.LogonUser; }
-        }
+        public DomainUser LogonUser => DomainService.Repository.LogonUser;
 
-        public bool UiModeBatchScanOnly { get { return LogonUser.BatchScanOnly; } }
+        public bool UiModeBatchScanOnly => LogonUser.BatchScanOnly;
 
         public ICommand LocationSelectionToggleCommand { get; private set; }
         public ICommand LocationSelectionHideCommand { get; private set; }
@@ -64,11 +51,11 @@ namespace CarDocu.ViewModels
             set { _locationSelectionVisible = value; SendPropertyChanged("LocationSelectionVisible"); }
         }
 
-        public IEnumerable<CardocuBackgroundTask> CardocuBackgroundThreads { get { return DomainService.Threads.BackgroundThreads; } }
+        public IEnumerable<CardocuBackgroundTask> CardocuBackgroundThreads => DomainService.Threads.BackgroundThreads;
 
-        public static IEnumerable<DomainLocation> DomainLocations { get { return DomainService.Repository.GlobalSettings.DomainLocations; } }
+        public static IEnumerable<DomainLocation> DomainLocations => DomainService.Repository.GlobalSettings.DomainLocations;
 
-        public static MainWindow MainWindow { get { return ((MainWindow) Application.Current.MainWindow); } }
+        public static MainWindow MainWindow => ((MainWindow) Application.Current.MainWindow);
 
         private bool _storedDocuTabVisible; 
         public bool StoredDocuTabVisible 
@@ -97,11 +84,11 @@ namespace CarDocu.ViewModels
         }
 
         // ReSharper disable PossibleUnintendedReferenceComparison
-        public bool StoredDocuTabSelected { get { return MainWindow.Ribbon.SelectedTabItem == MainWindow.StoredDocuTab; } }
+        public bool StoredDocuTabSelected => MainWindow.Ribbon.SelectedTabItem == MainWindow.StoredDocuTab;
         // ReSharper restore PossibleUnintendedReferenceComparison
 
         // ReSharper disable PossibleUnintendedReferenceComparison
-        public bool NewDocuTabSelected { get { return MainWindow.Ribbon.SelectedTabItem == MainWindow.NewDocuTab; } }
+        public bool NewDocuTabSelected => MainWindow.Ribbon.SelectedTabItem == MainWindow.NewDocuTab;
         // ReSharper restore PossibleUnintendedReferenceComparison
 
         #endregion
@@ -156,10 +143,8 @@ namespace CarDocu.ViewModels
                 //StoredDocuViewModel = null;
             }
 
-            if (NewDocuViewModel != null)
-                NewDocuViewModel.RibbonSelectedTabChanged();
-            if (StoredDocuViewModel != null)
-                StoredDocuViewModel.RibbonSelectedTabChanged();
+            NewDocuViewModel?.RibbonSelectedTabChanged();
+            StoredDocuViewModel?.RibbonSelectedTabChanged();
 
             GC.Collect();
         }
@@ -182,7 +167,7 @@ namespace CarDocu.ViewModels
 
                                        SelectedDocumentType = DomainService.Repository.GetImageDocumentType(DomainService.Repository.UserSettings.SelectedDocumentTypeCode),
 
-                                       FinNumber = "" //Guid.NewGuid().ToString().Substring(0,11)
+                                       FinNumber = "" 
                                    }
             });
             if (batchSummary != null)

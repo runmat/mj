@@ -1,0 +1,30 @@
+﻿@using CkgDomainLogic.Remarketing.Models
+@{ var gridName = "GridFehlendeDaten"; }
+
+@(Html.Telerik()
+    .Grid<FehlendeDaten>()
+    .Name(gridName)
+    .XAjaxDataBinding("FehlendeDatenAjaxBinding", "Remarketing")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vermieter);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Zb2Eingang).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.CarportEingang).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Rechnungsuebermittlung).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Eingangsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Stilllegungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.DatumHcUebergabeTuevSued).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.DatumErstellungBelastungsanzeige).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFehlendeDaten"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFehlendeDatenFilteredExcel", "Remarketing");
+        commands.FilteredDataCommand("ExportFehlendeDatenFilteredPDF", "Remarketing");
+    })
+)

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalMvcTools", "PortalMvcTools\PortalMvcTools.csproj", "{F85C8A84-DF3A-46AE-B7C0-2D7F06325B97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesMvc", "ServicesMvc.csproj", "{E86B27EC-F063-4855-B15C-EE93256CB27D}"
@@ -44,6 +42,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesMvcTest", "..\..\..\Work\Tools\ServicesMvcTest\ServicesMvcTest.csproj", "{E55D68AD-FA2E-490A-AC49-E58C369A0D4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainInternal", "..\..\..\Work\CkgDomainLogic\CkgDomainInternal\CkgDomainInternal.csproj", "{32D4DC60-D382-415A-B8C1-EA11A66FDC10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CkgDomainRemarketing", "..\..\..\Work\CkgDomainLogic\CkgDomainRemarketing\CkgDomainRemarketing.csproj", "{61521148-EA24-447A-AF13-CA9D7BD3D722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -345,6 +345,21 @@ Global
 		{32D4DC60-D382-415A-B8C1-EA11A66FDC10}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{32D4DC60-D382-415A-B8C1-EA11A66FDC10}.Release|x86.ActiveCfg = Release|Any CPU
 		{32D4DC60-D382-415A-B8C1-EA11A66FDC10}.Release|x86.Build.0 = Release|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.DebugQuick|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.DebugQuick|Mixed Platforms.Build.0 = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.DebugQuick|x86.ActiveCfg = Debug|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{61521148-EA24-447A-AF13-CA9D7BD3D722}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

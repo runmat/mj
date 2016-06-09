@@ -18,27 +18,21 @@ namespace CarDocu.ViewModels
     {
         #region Properties
 
-        public static AppSettings AppSettings
-        {
-            get { return DomainService.Repository.AppSettings; }
-        }
+        public static AppSettings AppSettings => DomainService.Repository.AppSettings;
 
-        public static DomainGlobalSettings GlobalSettings
-        {
-            get { return DomainService.Repository.GlobalSettings; }
-        }
+        public static DomainGlobalSettings GlobalSettings => DomainService.Repository.GlobalSettings;
 
-        public IEnumerable<Archive> Archives { get { return GlobalSettings?.Archives; } }
+        public IEnumerable<Archive> Archives => GlobalSettings?.Archives;
 
-        public SmtpSettings SmtpSettings { get { return GlobalSettings?.SmtpSettings; } }
+        public SmtpSettings SmtpSettings => GlobalSettings?.SmtpSettings;
 
-        public SapSettings SapSettings { get { return GlobalSettings?.SapSettings; } }
+        public SapSettings SapSettings => GlobalSettings?.SapSettings;
 
-        public ScanSettings ScanSettings { get { return GlobalSettings?.ScanSettings; } }
+        public ScanSettings ScanSettings => GlobalSettings?.ScanSettings;
 
         public string UserHintForArchives { get; set; }
 
-        public bool CurrentUserIsMaster { get { return DomainService.Repository.LogonUser.IsMaster; } }
+        public bool CurrentUserIsMaster => DomainService.Repository.LogonUser.IsMaster;
 
         public ICommand SaveCommand { get; private set; }
         public ICommand SetPathCommand { get; private set; }
@@ -56,8 +50,7 @@ namespace CarDocu.ViewModels
             UserHintForArchives = userHintForArchives;
             AppSettings.PropertyChanged += AppSettingsItemsPropertyChanged;
 
-            if (Archives != null)
-                Archives.ToList().ForEach(archive => archive.PropertyChanged += GlobalItemsPropertyChanged);
+            Archives?.ToList().ForEach(archive => archive.PropertyChanged += GlobalItemsPropertyChanged);
             if (SmtpSettings != null)
                 SmtpSettings.PropertyChanged += GlobalItemsPropertyChanged;
             if (SapSettings != null)
@@ -99,7 +92,7 @@ namespace CarDocu.ViewModels
             {
                 var archive = GlobalSettings.Archives.FirstOrDefault(a => a.ID == (string) e);
                 if (archive != null)
-                    if (GetPathFromDialog(AppSettings.DomainPath, string.Format("Pfad zum {0} setzen:", archive.Name) , ref path))
+                    if (GetPathFromDialog(AppSettings.DomainPath, $"Pfad zum {archive.Name} setzen:", ref path))
                         archive.Path = path;
             }
         }
