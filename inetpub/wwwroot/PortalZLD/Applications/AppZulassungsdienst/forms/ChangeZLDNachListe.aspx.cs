@@ -112,7 +112,7 @@ namespace AppZulassungsdienst.forms
                     cmdSend.Visible = false;
                 }
 
-                if (objNacherf.SelVorgang == "VZ" || objNacherf.SelVorgang == "VE" || objNacherf.SelVorgang == "AV" || objNacherf.SelVorgang == "AX")
+                if (objNacherf.SelVorgang.In("VZ,VE,AV,AX"))
                 {
                     tr2.Visible = false;
                 }
@@ -181,7 +181,7 @@ namespace AppZulassungsdienst.forms
             {
                 Response.Redirect("UploadRechnungsanhang.aspx?AppID=" + Session["AppID"].ToString());
             }
-            else if (objNacherf.SelVorgang == "VZ" || objNacherf.SelVorgang == "VE" || objNacherf.SelVorgang == "AV" || objNacherf.SelVorgang == "AX")
+            else if (objNacherf.SelVorgang.In("VZ,VE,AV,AX"))
             {
                 Response.Redirect("ChangeSelectVersand.aspx?AppID=" + Session["AppID"].ToString());
             }
@@ -332,6 +332,41 @@ namespace AppZulassungsdienst.forms
                         calculateGebuehr();
                         Session["objNacherf"] = objNacherf;
                         break;
+
+                    case "Versand":
+                        newLoeschkz = "V";
+
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
+
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
+
+                        lblLoeschKZ.Text = newLoeschkz;
+
+                        foreach (GridViewRow row in GridView1.Rows)
+                        {
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
+                            {
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                lblLoeschKZ.Text = newLoeschkz;
+
+                                SetGridRowEdited(row, true);
+                            }
+                        }
+
+                        calculateGebuehr();
+                        Session["objNacherf"] = objNacherf;
+                        break;
                 }
             }
             catch (Exception ex)
@@ -438,7 +473,7 @@ namespace AppZulassungsdienst.forms
                 cmdSave.Enabled = false;
                 cmdOK.Enabled = false;
                 cmdContinue.Visible = true;
-                Fillgrid(0, "", GridFilterMode.ShowOnlyAandL);
+                Fillgrid(0, "", GridFilterMode.ShowOnlyAandLandV);
                 trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
@@ -740,23 +775,23 @@ namespace AppZulassungsdienst.forms
                     if (objNacherf.DataFilterActive)
                     {
                         srcList = objNacherf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     else
                     {
-                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     break;
 
-                case GridFilterMode.ShowOnlyAandL:
+                case GridFilterMode.ShowOnlyAandLandV:
                     if (objNacherf.DataFilterActive)
                     {
                         srcList = objNacherf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("A,L,V")).ToList();
                     }
                     else
                     {
-                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("A,L,V")).ToList();
                     }
                     break;
 
@@ -911,7 +946,7 @@ namespace AppZulassungsdienst.forms
                                 row.Cells[3].CssClass = "TablePadding Flieger";
                             }
 
-                            if (objNacherf.SelVorgang == "VZ" || objNacherf.SelVorgang == "VE" || objNacherf.SelVorgang == "AV" || objNacherf.SelVorgang == "AX")
+                            if (objNacherf.SelVorgang.In("VZ,VE,AV,AX"))
                             {
                                 txtGebPreis.Attributes.Add("onchange", "CalculateGebAmt('" + txtGebPreis.ClientID + "','" + txtGebPreisOld.ClientID + "','" +
                                                         lblGesamtGeb.ClientID + "','" + lblLoeschKZ.ClientID + "'," + iMenge + ")");
@@ -1687,7 +1722,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleRE.Enabled = false;
                 cmdContinue.Visible = true;
 
-                Fillgrid(0, "", (objNacherf.SelAnnahmeAH ? GridFilterMode.ShowOnlyAandL : GridFilterMode.ShowOnlyOandL));
+                Fillgrid(0, "", (objNacherf.SelAnnahmeAH ? GridFilterMode.ShowOnlyAandLandV : GridFilterMode.ShowOnlyOandL));
 
                 trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";

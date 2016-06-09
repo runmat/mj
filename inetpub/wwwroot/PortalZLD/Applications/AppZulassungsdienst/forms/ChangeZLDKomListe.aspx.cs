@@ -790,11 +790,11 @@ namespace AppZulassungsdienst.forms
                     if (objKompletterf.DataFilterActive)
                     {
                         srcList = objKompletterf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     else
                     {
-                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     break;
 

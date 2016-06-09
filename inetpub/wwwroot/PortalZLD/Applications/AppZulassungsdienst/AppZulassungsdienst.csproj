@@ -127,13 +127,6 @@
     <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.designer.cs">
       <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
     </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.designer.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
-    </Compile>
     <Compile Include="forms\AHVersandChange_2.aspx.cs">
       <DependentUpon>AHVersandChange_2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -618,7 +611,6 @@
   <ItemGroup>
     <Content Include="Controls\BankdatenAdresse.ascx" />
     <Content Include="Controls\DialogErfassungDLBezeichnung.ascx" />
-    <Content Include="forms\AHVersandChange.aspx" />
     <Content Include="forms\AHVersandChange_2.aspx" />
     <Content Include="forms\AHVersandListe.aspx" />
     <Content Include="forms\Change01ZLD.aspx" />

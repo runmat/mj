@@ -120,6 +120,7 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
+            objNacherf.SelVersandAH = true;
             objNacherf.SelID = txtID.Text;
             objNacherf.SelKunde = txtKunnr.Text;
             objNacherf.SelKreis = txtStVa.Text.NotNullOrEmpty().ToUpper();

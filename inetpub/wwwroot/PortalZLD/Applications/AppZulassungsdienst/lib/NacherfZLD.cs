@@ -59,6 +59,7 @@ namespace AppZulassungsdienst.lib
         public String SelVorgang { get; set; }
         public bool SelFlieger { get; set; }
         public bool SelAnnahmeAH { get; set; }
+        public bool SelVersandAH { get; set; }
         public bool SelAenderungAngenommene { get; set; }
         public bool SelSofortabrechnung { get; set; }
         public bool SelEditDurchzufVersZul { get; set; }
@@ -729,7 +730,7 @@ namespace AppZulassungsdienst.lib
                 vgList = Vorgangsliste;
             }
 
-            if (vgList.None() || (blnAnnahmeAhSenden && vgList.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
+            if (vgList.None() || (blnAnnahmeAhSenden && vgList.None(vg => vg.WebBearbeitungsStatus.In("A,L,V"))))
                 return;
 
             ExecuteSapZugriff(() =>
@@ -742,7 +743,7 @@ namespace AppZulassungsdienst.lib
 
                 if (blnAnnahmeAhSenden)
                 {
-                    idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                    idList = vgList.Where(vg => vg.WebBearbeitungsStatus.In("A,L,V")).GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
                 else
                 {
@@ -778,7 +779,6 @@ namespace AppZulassungsdienst.lib
                         {
                             if (p.PositionsNr == "10")
                             {
-                                // für "neue AH-Vorgänge" den beb_status aktualisieren
                                 switch (p.WebBearbeitungsStatus)
                                 {
                                     case "A":
@@ -786,6 +786,9 @@ namespace AppZulassungsdienst.lib
                                         break;
                                     case "L":
                                         kopf.Bearbeitungsstatus = "L";
+                                        break;
+                                    case "V":
+                                        kopf.Belegart = "AV";
                                         break;
                                     default:
                                         kopf.Bearbeitungsstatus = "1";
@@ -881,7 +884,7 @@ namespace AppZulassungsdienst.lib
                 vgList = Vorgangsliste;
             }
 
-            if (vgList.None(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L"))
+            if (vgList.None(vg => vg.WebBearbeitungsStatus.In("O,L")))
             {
                 RaiseError(9999, "Es sind keine Vorgänge mit \"O\" oder \"L\" markiert");
                 return;
@@ -893,7 +896,7 @@ namespace AppZulassungsdienst.lib
 
                 ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, true);
 
-                var idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                var idList = vgList.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
                 var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L"));
                 var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "L"));
@@ -904,7 +907,7 @@ namespace AppZulassungsdienst.lib
 
                     if (!SelSofortabrechnung && !versandZulDurchf)
                     {
-                        if (kopf.Belegart == "VZ" || kopf.Belegart == "VE" || kopf.Belegart == "AV" || kopf.Belegart == "AX")
+                        if (kopf.Belegart.In("VZ,VE,AV,AX"))
                         {
                             kopf.VersandzulassungErledigtDatum = DateTime.Now;
                             kopf.VersandzulassungBearbeitungsstatus = "VD";

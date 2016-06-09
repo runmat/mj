@@ -168,7 +168,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lb_zurueck_Click(object sender, EventArgs e)
         {
-            Response.Redirect("AHVersandChange.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + Request.QueryString["id"] + "&Back=X");
+            Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + Request.QueryString["id"] + "&B=true");
         }
 
         /// <summary>
