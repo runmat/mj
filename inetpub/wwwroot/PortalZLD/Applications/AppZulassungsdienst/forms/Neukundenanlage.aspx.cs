@@ -234,13 +234,13 @@ namespace AppZulassungsdienst.forms
                 {
                     ddLand.BorderStyle = BorderStyle.Solid;
                     ddLand.BorderWidth = 1;
-                    ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    ddLand.BorderColor = ZLDCommon.BorderColorError;
+                    rbLieferscheinKunde.BorderColor = ZLDCommon.BorderColorError;
                     rbLieferscheinKunde.BorderStyle = BorderStyle.Solid;
                     rbLieferscheinKunde.BorderWidth = 1;
                     lblError.Text = "Achtung! Bitte die markierten Positionen bearbeiten.";
-                    rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    rbLieferscheinKunde.BorderColor = ZLDCommon.BorderColorError;
+                    lblNeukundeResultatMeldung.ForeColor = ZLDCommon.BorderColorError;
                     lblNeukundeResultatMeldung.Text = "Land abweichend von Deutschland! Kein Lieferschein möglich.";
                     MPENeukundeResultat.Show();
                 }
@@ -498,10 +498,10 @@ namespace AppZulassungsdienst.forms
             {
                 rbBarkunde.BorderStyle = BorderStyle.Solid;
                 rbBarkunde.BorderWidth = 1;
-                rbBarkunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbBarkunde.BorderColor = ZLDCommon.BorderColorError;
                 rbLieferscheinKunde.BorderStyle = BorderStyle.Solid;
                 rbLieferscheinKunde.BorderWidth = 1;
-                rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbLieferscheinKunde.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (rbLieferscheinKunde.Checked)
@@ -510,10 +510,10 @@ namespace AppZulassungsdienst.forms
                 {
                     rbEinzugJa.BorderStyle = BorderStyle.Solid;
                     rbEinzugJa.BorderWidth = 1;
-                    rbEinzugJa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    rbEinzugJa.BorderColor = ZLDCommon.BorderColorError;
                     rbEinzugNein.BorderStyle = BorderStyle.Solid;
                     rbEinzugNein.BorderWidth = 1;
-                    rbEinzugNein.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    rbEinzugNein.BorderColor = ZLDCommon.BorderColorError;
                     bReturn = true;
                 }
             }
@@ -521,91 +521,91 @@ namespace AppZulassungsdienst.forms
             {
                 rbFirma.BorderStyle = BorderStyle.Solid;
                 rbFirma.BorderWidth = 1;
-                rbFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbFirma.BorderColor = ZLDCommon.BorderColorError;
                 rbHerr.BorderStyle = BorderStyle.Solid;
                 rbHerr.BorderWidth = 1;
-                rbHerr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbHerr.BorderColor = ZLDCommon.BorderColorError;
                 rbFrau.BorderStyle = BorderStyle.Solid;
                 rbFrau.BorderWidth = 1;
-                rbFrau.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbFrau.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (ddlBranche.SelectedIndex == -1)
             {
                 ddlBranche.BorderStyle = BorderStyle.Solid;
                 ddlBranche.BorderWidth = 1;
-                ddlBranche.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                ddlBranche.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             else if (ddlBranche.SelectedValue == "0004" && String.IsNullOrEmpty(txtBrancheFrei.Text))
             {
-                txtBrancheFrei.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtBrancheFrei.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (String.IsNullOrEmpty(txtName1.Text))
             {
-                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtName1.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
 
             if (String.IsNullOrEmpty(txtName1.Text))
             {
-                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtName1.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
 
             if (String.IsNullOrEmpty(txtStrasse.Text))
             {
-                txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtStrasse.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
 
             if (String.IsNullOrEmpty(txtHausnr.Text))
             {
-                txtHausnr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtHausnr.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (String.IsNullOrEmpty(txtOrt.Text))
             {
-                txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtOrt.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (String.IsNullOrEmpty(txtPlz.Text))
             {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtPlz.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             else if (ddLand.SelectedValue == "DE" && txtPlz.Text.Trim().Length != 5)
             {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtPlz.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             if (ddLand.SelectedIndex == -1)
             {
                 ddLand.BorderStyle = BorderStyle.Solid;
                 ddLand.BorderWidth = 1;
-                ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                ddLand.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             else if (ddLand.SelectedValue != "DE")
             {
                 if (String.IsNullOrEmpty(txtUIDNummer.Text))
                 {
-                    txtUIDNummer.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtUIDNummer.BorderColor = ZLDCommon.BorderColorError;
                     bReturn = true;
                 }
             }
 
             if (rbJa.Checked && String.IsNullOrEmpty(txtIBAN.Text))
             {
-                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtIBAN.BorderColor = ZLDCommon.BorderColorError;
+                txtSWIFT.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
 
             if (String.IsNullOrEmpty(txtUmsatz.Text))
             {
-                txtUmsatz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtUmsatz.BorderColor = ZLDCommon.BorderColorError;
                 bReturn = true;
             }
             return bReturn;
@@ -625,7 +625,7 @@ namespace AppZulassungsdienst.forms
                 if (objNeukunde.ErrorOccured)
                 {
                     lblError.Text = objNeukunde.Message;
-                    lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    lblNeukundeResultatMeldung.ForeColor = ZLDCommon.BorderColorError;
                     lblNeukundeResultatMeldung.Text = objNeukunde.Message;
                     return false;
                 }
@@ -654,7 +654,7 @@ namespace AppZulassungsdienst.forms
             if (objNeukunde.ErrorOccured)
             {
                 lblError.Text = objNeukunde.Message;
-                lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblNeukundeResultatMeldung.ForeColor = ZLDCommon.BorderColorError;
                 lblNeukundeResultatMeldung.Text = objNeukunde.Message;
             }
             else

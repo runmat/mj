@@ -27,6 +27,8 @@ namespace AppZulassungsdienst.lib.Models
 
         public string Ort { get; set; }
 
+        public string Land { get; set; }
+
         public string Kontoinhaber { get; set; }
 
         public string SWIFT { get; set; }

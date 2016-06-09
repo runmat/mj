@@ -22,5 +22,7 @@ namespace SapORM.Models
         string LOEKZ { get; set; }
 
         string BEMERKUNG { get; set; }
+
+        string LAND1 { get; set; }
     }
 }
