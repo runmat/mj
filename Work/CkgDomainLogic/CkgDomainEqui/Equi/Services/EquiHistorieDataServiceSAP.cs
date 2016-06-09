@@ -117,7 +117,7 @@ namespace CkgDomainLogic.Equi.Services
 
         public EquiHistorieVermieter GetHistorieVermieterDetail(string fin)
         {
-            Z_M_BRIEFLEBENSLAUF_001.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
+            Z_DPM_FAHRZEUGHISTORIE_AVM.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fin);
 
             var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportListWithExecute(SAP);
             if (sapItems.None())
