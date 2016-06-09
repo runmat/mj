@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Contracts.CalendarService;
 using Microsoft.Office.Interop.Outlook;
@@ -42,6 +43,9 @@ namespace AwsAbfuhrkalender.Services
                 {
                     var sItem = item.Subject + " -> " + item.Start.ToLongDateString();
                     var date = item.Start;
+
+                    if (date < DateTime.Parse("09.06.2016"))
+                        continue;
 
                     list.Add( new CalendarItem
                                      {

@@ -113,8 +113,8 @@ namespace GoogleCalendar.Services
 
         public void ImportCalendarItems(List<CalendarItem> items)
         {
-            if (items.Any())
-                DeleteAllItems(items.First().Date.Year);
+            //if (items.Any())
+            //    DeleteAllItems(items.First().Date.Year);
 
             items.ForEach(item => ImportDayAction(item.Date.Year, item.Date.Month, item.Date.Day, item.ItemType));
         }
