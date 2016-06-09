@@ -343,6 +343,8 @@ namespace CkgDomainLogic.General.Services
         public string VkOrg { get; private set; }
         public string VkBur { get; private set; }
 
+        public string CustomPicturePath { get; set; }
+
         public string PersistanceKey { get { return UserName; } }
 
         public IPersistanceService PersistanceService { get; set; }

@@ -22,6 +22,8 @@ namespace CkgDomainLogic.General.Services
 
         public string UserNameForDisplay { get; set; }
 
+        public string CustomPicturePath { get; set; }
+
         public ILocalizationService LocalizationService { get; private set; }
 
         public List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return new List<IMaintenanceSecurityRuleDataProvider>(); } }

@@ -51,10 +51,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadHistorieEquis(EquiHistorieSuchparameter model)
         {
+            EquipmentHistorieViewModel.Suchparameter = model;
+
             if (ModelState.IsValid)
-            {
-                EquipmentHistorieViewModel.LoadHistorieInfos(ref model, ModelState);
-            }
+                model.AnzahlTreffer = EquipmentHistorieViewModel.LoadHistorieInfos(ModelState);
 
             return PartialView("Historie/HistorieSuche", model);
         }

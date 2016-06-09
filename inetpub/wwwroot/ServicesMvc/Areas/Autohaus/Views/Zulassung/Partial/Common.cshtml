@@ -628,9 +628,14 @@
     function ApplyZulassungsart() {
         var versZul = $("#Versandzulassung").val();
         var exprVers = $("#ExpressversandMoeglich").val();
+        var simVers = $("#SimuliereVersand").val();
 
         if ((typeof (versZul) !== "undefined") && versZul.toString().toLowerCase() == 'true') {
-            $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+            if (typeof (simVers) !== "undefined" && simVers.toString().toString().toLowerCase() == 'true') {
+                $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
+            } else {
+                $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+            }
             $("#Expressversand").closest(".kroschke-evb-control-group-border").show();
         }
         else {
@@ -644,6 +649,7 @@
         else {
             $("#Expressversand").closest(".kroschke-evb-control-group-border .inner").hide();
         }
+
         $.uniform.update($("#Expressversand"));
     }
 

@@ -120,8 +120,8 @@ namespace CkgDomainLogic.Equi.Models
         {
             get
             {
-                return String.Format("{0} {1}" + (String.IsNullOrEmpty(HalterStrasse) && String.IsNullOrEmpty(HalterHausnummer) ? "" : Environment.NewLine)
-                    + "{2} {3}" + (String.IsNullOrEmpty(HalterPlz) && String.IsNullOrEmpty(HalterOrt) ? "" : Environment.NewLine)
+                return string.Format("{0} {1}" + (string.IsNullOrEmpty(HalterStrasse) && string.IsNullOrEmpty(HalterHausnummer) ? "" : Environment.NewLine)
+                    + "{2} {3}" + (string.IsNullOrEmpty(HalterPlz) && string.IsNullOrEmpty(HalterOrt) ? "" : Environment.NewLine)
                     + "{4} {5}",
                     HalterName1, HalterName2,
                     HalterStrasse, HalterHausnummer,
@@ -146,8 +146,8 @@ namespace CkgDomainLogic.Equi.Models
         {
             get
             {
-                return String.Format("{0} {1}" + (String.IsNullOrEmpty(StandortStrasse) && String.IsNullOrEmpty(StandortHausnummer) ? "" : Environment.NewLine)
-                    + "{2} {3}" + (String.IsNullOrEmpty(StandortPlz) && String.IsNullOrEmpty(StandortOrt) ? "" : Environment.NewLine)
+                return string.Format("{0} {1}" + (string.IsNullOrEmpty(StandortStrasse) && string.IsNullOrEmpty(StandortHausnummer) ? "" : Environment.NewLine)
+                    + "{2} {3}" + (string.IsNullOrEmpty(StandortPlz) && string.IsNullOrEmpty(StandortOrt) ? "" : Environment.NewLine)
                     + "{4} {5}",
                     StandortName1, StandortName2,
                     StandortStrasse, StandortHausnummer,
@@ -226,7 +226,7 @@ namespace CkgDomainLogic.Equi.Models
 
         public bool ShowHaendlerdaten { get; set; }
 
-        public bool ShowStuecklisten { get { return Stuecklisten != null ? true : false; } }
+        public bool ShowStuecklisten { get { return (Stuecklisten != null); } }
 
         public bool HasArchives { get { return (GetViewModel != null && GetViewModel().HasArchives); } }
 
@@ -238,79 +238,79 @@ namespace CkgDomainLogic.Equi.Models
             var strText = Localize.VehicleData;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Manufacturer, Hersteller);
+            strText += string.Format("{0}: {1}", Localize.Manufacturer, Hersteller);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CarModel, Fahrzeugmodell);
+            strText += string.Format("{0}: {1}", Localize.CarModel, Fahrzeugmodell);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Color, Typdaten.FarbeText);
+            strText += string.Format("{0}: {1}", Localize.Color, Typdaten.FarbeText);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ManufacturerKey, HerstellerSchluessel);
+            strText += string.Format("{0}: {1}", Localize.ManufacturerKey, HerstellerSchluessel);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.TypeKey, TypSchluessel);
+            strText += string.Format("{0}: {1}", Localize.TypeKey, TypSchluessel);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Variant_Version, VarianteVersion);
+            strText += string.Format("{0}: {1}", Localize.Variant_Version, VarianteVersion);
             strText += "<br/>";
             strText += "<br/>";
             strText += Localize.ZB2Data;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ZB2No, Briefnummer);
+            strText += string.Format("{0}: {1}", Localize.ZB2No, Briefnummer);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.FirstRegistration, Erstzulassungsdatum.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.FirstRegistration, Erstzulassungsdatum.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CancellationDate, Abmeldedatum.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.CancellationDate, Abmeldedatum.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CocAvailable, CocVorhanden);
+            strText += string.Format("{0}: {1}", Localize.CocAvailable, CocVorhanden);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CarOwner, Halter);
+            strText += string.Format("{0}: {1}", Localize.CarOwner, Halter);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Location, Standort);
+            strText += string.Format("{0}: {1}", Localize.Location, Standort);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CauseOfDispatch, Versandgrund);
+            strText += string.Format("{0}: {1}", Localize.CauseOfDispatch, Versandgrund);
             strText += "<br/>";
             strText += "<br/>";
             strText += Localize.DeRegistrationData;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CarportArrival, CarportEingang.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.CarportArrival, CarportEingang.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.LicensePlateArrival, KennzeichenEingang.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.LicensePlateArrival, KennzeichenEingang.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.CheckInDeregistrationOrder, CheckInAbmeldeauftrag.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.CheckInDeregistrationOrder, CheckInAbmeldeauftrag.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ZB1, Fahrzeugschein);
+            strText += string.Format("{0}: {1}", Localize.ZB1, Fahrzeugschein);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.BothLicensePlatesAvailable, BeideKennzeichenVorhanden);
+            strText += string.Format("{0}: {1}", Localize.BothLicensePlatesAvailable, BeideKennzeichenVorhanden);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.DateOfDeactivation, Stilllegung.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.DateOfDeactivation, Stilllegung.NotNullOrEmptyToString());
             strText += "<br/>";
             strText += "<br/>";
             strText += Localize.ChangeData;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ReRegistrationDate, Ummeldedatum.NotNullOrEmptyToString());
+            strText += string.Format("{0}: {1}", Localize.ReRegistrationDate, Ummeldedatum.NotNullOrEmptyToString());
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.LicenseNoOld, KennzeichenAlt);
+            strText += string.Format("{0}: {1}", Localize.LicenseNoOld, KennzeichenAlt);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ZB2NoOld, BriefnummerAlt);
+            strText += string.Format("{0}: {1}", Localize.ZB2NoOld, BriefnummerAlt);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.ZB2Mobilisation, Briefaufbietung);
+            strText += string.Format("{0}: {1}", Localize.ZB2Mobilisation, Briefaufbietung);
             strText += "<br/>";
             strText += "<br/>";
             strText += Localize.References;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.OrderNo, Ordernummer);
+            strText += string.Format("{0}: {1}", Localize.OrderNo, Ordernummer);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Reference1, Referenz1);
+            strText += string.Format("{0}: {1}", Localize.Reference1, Referenz1);
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Reference2, Referenz2);
+            strText += string.Format("{0}: {1}", Localize.Reference2, Referenz2);
             strText += "<br/>";
             strText += "<br/>";
             strText += Localize.Comments;
             strText += "<br/>";
             strText += "<br/>";
-            strText += String.Format("{0}: {1}", Localize.Comments, Bemerkungen);
+            strText += string.Format("{0}: {1}", Localize.Comments, Bemerkungen);
 
             return strText;
         }
@@ -321,13 +321,13 @@ namespace CkgDomainLogic.Equi.Models
             strText += "<br/>";
             strText += "<br/>";
 
-            strText += String.Format("{0} {1} {2} {3} {4} {5}",
+            strText += string.Format("{0} {1} {2} {3} {4} {5}",
                 Localize.Process, Localize.ExecutionDate, Localize.ShippingAddress, Localize.AcquisitionDate, Localize.DispatchType, Localize.InstructedBy);
             strText += "<br/>";
 
             foreach (var item in Meldungen)
             {
-                strText += String.Format("{0} {1} {2} {3} {4} {5}",
+                strText += string.Format("{0} {1} {2} {3} {4} {5}",
                 item.Vorgang, item.Durchfuehrungsdatum.NotNullOrEmptyToString(), item.Versandadresse, item.Erfassungsdatum.NotNullOrEmptyToString(), item.Versandart, item.BeauftragtDurch);
                 strText += "<br/>";
             }
@@ -344,13 +344,13 @@ namespace CkgDomainLogic.Equi.Models
             strText += "<br/>";
             strText += "<br/>";
 
-            strText += String.Format("{0} {1} {2} {3}",
+            strText += string.Format("{0} {1} {2} {3}",
                 Localize.ActionCode, Localize.Process, Localize.StatusDate, Localize.TransmissionDate);
             strText += "<br/>";
 
             foreach (var item in Aktionen)
             {
-                strText += String.Format("{0} {1} {2} {3}",
+                strText += string.Format("{0} {1} {2} {3}",
                 item.Aktionscode, item.Vorgang, item.Statusdatum.NotNullOrEmptyToString(), item.Uebermittlungsdatum.NotNullOrEmptyToString());
                 strText += "<br/>";
             }

@@ -38,7 +38,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         List<Domaenenfestwert> GetFahrzeugfarben { get; }
 
-        List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung);
+        List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung, string kundenNr);
 
         #region Zulassungs Report
 

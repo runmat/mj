@@ -27,10 +27,10 @@ namespace CkgDomainLogic.Equi.Models
         {
             get
             {
-                if (String.IsNullOrEmpty(Farbcode))
+                if (string.IsNullOrEmpty(Farbcode))
                     return Farbe;
 
-                return String.Format("{0} ({1})", Farbe, Farbcode);
+                return string.Format("{0} ({1})", Farbe, Farbcode);
             }
         }
 
@@ -52,7 +52,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Reference2_VehicleHistory)]
         public string Referenz2 { get; set; }
 
-        public EquiHistorieInfoVermieter HistorieInfo { get; set; }
+        public EquiHistorieVermieterInfo HistorieInfo { get; set; }
 
         public EquiEinsteuerung Einsteuerungsdaten { get; set; }
 

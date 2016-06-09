@@ -6,9 +6,15 @@
 @(Html.Telerik()
     .Grid<FahrerAuftrag>()
     .Name(gridName)
-
     .XAjaxDataBinding("FahrerAuftraegeAjaxBinding", "Fahrer")
-    .Columns(columns => columns.XBoundAll())
+    .Columns(columns => columns.XBoundAllExcept(
+        c => c.UebergabeZeitBis,
+        c => c.UebergabeZeitVon,
+        c => c.UebernahmeZeitBis,
+        c => c.UebernahmeZeitVon,
+        c => c.FreierAuftragDetails, 
+        c => c.FreierAuftragCommand,
+        c => c.FreierAuftragDetailsCommand))
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)

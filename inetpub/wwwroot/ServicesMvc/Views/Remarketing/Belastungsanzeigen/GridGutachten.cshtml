@@ -1,0 +1,37 @@
+﻿@using CkgDomainLogic.Remarketing.Models
+
+@{ var gridName = "GridGutachten"; }
+
+@(Html.Telerik()
+    .Grid<Gutachten>()
+    .Name(gridName)
+    .XAjaxDataBinding("GutachtenAjaxBinding", "Remarketing")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Gutachter);
+        columns.XBound(c => c.GutachtenId);
+        columns.XBound(c => c.Gutachtendatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.BeschaedigungenAv).Format("{0:c}");
+        columns.XBound(c => c.FehlteilbetragAv).Format("{0:c}");
+        columns.XBound(c => c.VorschaedenRepariertAv).Format("{0:c}");
+        columns.XBound(c => c.SchaedenUnrepariertAv).Format("{0:c}");
+        columns.XBound(c => c.VorschaedenWertminderung).Format("{0:c}");
+        columns.XBound(c => c.SchaedenUnrepariertWertminderung).Format("{0:c}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridGutachten"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportGutachtenFilteredExcel", "Remarketing");
+        commands.FilteredDataCommand("ExportGutachtenFilteredPDF", "Remarketing");
+    })
+)
+
+<div class="form-horizontal"> 
+    <div class="form-actions">
+        <button type="button" class="btn" onclick="CloseGutachten();"><i class="m-icon-swapleft"></i> @Localize.Back</button>
+    </div>
+</div>

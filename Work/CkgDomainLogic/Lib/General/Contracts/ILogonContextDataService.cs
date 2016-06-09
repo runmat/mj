@@ -25,6 +25,8 @@ namespace CkgDomainLogic.General.Contracts
 
         string UserNameForDisplay { get; set; }
 
+        string CustomPicturePath { get; set; }
+
         WebUserInfo UserInfo { get; set; }
 
         LogonLevel UserLogonLevel { get; set; }

@@ -1,0 +1,102 @@
+﻿@model CkgDomainLogic.Remarketing.ViewModels.FehlendeDatenViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Remarketing_FehlendeDaten <small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("FehlendeDaten/Suche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridFehlendeDaten").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridFehlendeDatenItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridFehlendeDaten() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_GridFehlendeDaten() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridFehlendeDaten() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFehlendeDaten() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowFehlendeDatenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFehlendeDaten");
+
+        $("#divGrid").slideDown();
+    }
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var filename = e.files[0].name;
+
+        var fileExt = filename.split('.').pop().toLowerCase();
+
+        if (fileExt != "csv" && fileExt != "xls" && fileExt != "xlsx") {
+            alert("Nur folgende Formate sind möglich: csv, xls, xlsx");
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        $("#FehlendeDatenForm").submit();
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
+    }
+
+</script>

@@ -29,14 +29,23 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,250,0,0" 
+                    Grid.ColumnSpan="2" Grid.RowSpan="1" CornerRadius="50" Padding="25" 
+                    Background="{StaticResource brGradientLightWhiteInverse}" 
+                    Visibility="{Binding AskForDomainSelectionAtLogin, Converter={StaticResource BooleanVisibilityConverter}}">
+                <StackPanel Opacity="0.5" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock FontSize="30" Text="Domain" Style="{StaticResource lbHeaderBig}" Margin="0,0,25,0" />
+                    <TextBlock FontSize="75" Text="{Binding DomainName}" Foreground="Green" Style="{StaticResource lbHeaderBig}"  />
+                </StackPanel>
+            </Border>
+
             <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding SelectedScanImageHeight}">
                 <StackPanel Margin="0">
 
-                    <StackPanel Orientation="Horizontal"  Visibility="{Binding BatchSummary.Available, Converter={StaticResource BooleanVisibilityInverseConverter}}" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding BatchSummary.Available, Converter={StaticResource BooleanVisibilityInverseConverter}}" Margin="0,0,0,5">
                         <TextBlock Text="{Binding Title}" Style="{StaticResource lbHeaderBig}"  Margin="0,0,0,0" />
                         <TextBlock Text="TEST-MODUS" Foreground="Red" FontSize="20" FontWeight="Bold" Visibility="{Binding IsTestMode, Converter={StaticResource BooleanVisibilityConverter}}" Margin="20,0,0,0" />
                     </StackPanel>
-
                     
                     <StackPanel DataContext="{Binding BatchSummary}">
                         <StackPanel Visibility="{Binding Available, Converter={StaticResource BooleanVisibilityConverter}}" Margin="0,0,0,0">
@@ -56,14 +65,32 @@
                             </ItemsControl>
 
                             <Border Background="Ivory" Visibility="{Binding ResultsAvailable, Converter={StaticResource BooleanVisibilityConverter}}" BorderBrush="Gray" BorderThickness="1" Margin="25,15,25,0">
-                                <StackPanel Orientation="Horizontal" Margin="15">
-                                    <TextBlock Text="{Binding ResultsTotalItems, StringFormat={}{0} gesamt}" Style="{StaticResource lbHeaderBig}" Foreground="Black" Margin="0,0,20,0" />
-                                    <TextBlock Text="{Binding ResultsGoodItems, StringFormat={}{0} Ok}" Style="{StaticResource lbHeaderBig}"  Foreground="Green" Margin="0,0,5,0" />
-                                    <TextBlock Text=" / " Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,0,5,0" />
-                                    <TextBlock Text="{Binding ResultsBadItems, StringFormat={}{0}x Klärfall}" Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Foreground="DarkRed" Margin="0,0,5,0" />
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="15">
+                                        <TextBlock Text="{Binding ResultsTotalItems, StringFormat={}{0} gesamt}" Style="{StaticResource lbHeaderBig}" Foreground="Black" Margin="0,0,20,0" />
+                                        <TextBlock Text="{Binding ResultsGoodItems, StringFormat={}{0} Ok}" Style="{StaticResource lbHeaderBig}"  Foreground="Green" Margin="0,0,5,0" />
+                                        <TextBlock Text=" / " Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,0,5,0" />
+                                        <TextBlock Text="{Binding ResultsBadItems, StringFormat={}{0}x Klärfall}" Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Foreground="DarkRed" Margin="0,0,5,0" />
 
-                                    <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityInverseConverter}}" Margin="15,0,0,0" />
-                                    <ContentPresenter Content="{StaticResource image/24x24/warning}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Opacity="0.5" Margin="15,0,0,0" />
+                                        <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityInverseConverter}}" Margin="15,0,0,0" />
+                                        <ContentPresenter Content="{StaticResource image/24x24/warning}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Opacity="1.0" Margin="15,0,0,0" />
+                                    </StackPanel>
+                                    <StackPanel Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Margin="15">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource lbHeaderBig}" Foreground="Red">
+                                                    Mindestens ein Teil-Scan war nicht erfolgreich!
+                                                    Der gesamte Stapel-Scan wird daher verworfen und muss erneut gescannt werden!
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding LastAcceptedScan, Converter={StaticResource StringVisibilityConverter}}">
+                                            <TextBlock Width="300" Style="{StaticResource lbHeaderBig}" Foreground="Black">Letzter erfolgreich verarbeiteter Teil-Scan:</TextBlock>
+                                            <TextBlock Text="{Binding LastAcceptedScan}" Foreground="Green" Style="{StaticResource lbHeaderBig}" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Visibility="{Binding LastRecognizedBarcode, Converter={StaticResource StringVisibilityConverter}}">
+                                            <TextBlock Width="300" Style="{StaticResource lbHeaderBig}" Foreground="Black" Opacity="0.4">Letzter erfolgreich erkannter Barcode:</TextBlock>
+                                            <TextBlock Text="{Binding LastRecognizedBarcode}" Foreground="Green" Opacity="0.5" Style="{StaticResource lbHeaderBig}" Margin="5,0,0,0" />
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </StackPanel>

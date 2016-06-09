@@ -27,6 +27,11 @@ namespace SapORM.Models
 			sap.SetImportParameter("I_KREISKZ", value);
 		}
 
+		public static void SetImportParameter_I_KUNNR(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_KUNNR", value);
+		}
+
 		public static void SetImportParameter_I_MODUS(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_MODUS", value);
@@ -35,6 +40,11 @@ namespace SapORM.Models
 		public static void SetImportParameter_I_VKBUR(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_VKBUR", value);
+		}
+
+		public static void SetImportParameter_I_VKORG(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_VKORG", value);
 		}
 
 		public static string GetExportParameter_E_MESSAGE(ISapDataService sap)
@@ -73,27 +83,51 @@ namespace SapORM.Models
 
 			public string ZULASSUNG { get; set; }
 
+			public string SIMULIERE_VERSAND { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_MAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_MAT
-				{
-					MATNR = (string)row["MATNR"],
-					BLTYP = (string)row["BLTYP"],
-					MAKTX = (string)row["MAKTX"],
-					ABMELDUNG = (string)row["ABMELDUNG"],
-					VERSAND = (string)row["VERSAND"],
-					Z48H_VERSAND = (string)row["Z48H_VERSAND"],
-					NO_NEXT_DAY = (string)row["NO_NEXT_DAY"],
-					ZULASSUNG = (string)row["ZULASSUNG"],
+				GT_MAT o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_MAT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						MATNR = (string)row["MATNR"],
+						BLTYP = (string)row["BLTYP"],
+						MAKTX = (string)row["MAKTX"],
+						ABMELDUNG = (string)row["ABMELDUNG"],
+						VERSAND = (string)row["VERSAND"],
+						Z48H_VERSAND = (string)row["Z48H_VERSAND"],
+						NO_NEXT_DAY = (string)row["NO_NEXT_DAY"],
+						ZULASSUNG = (string)row["ZULASSUNG"],
+						SIMULIERE_VERSAND = (string)row["SIMULIERE_VERSAND"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_MAT
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
