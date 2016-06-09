@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Fahrer.Models
+@{
+    var gridName = "GridFreieAuftraege";
+}
+
+@(Html.Telerik()
+    .Grid<FahrerAuftrag>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("FreieAuftraegeAjaxBinding", "Fahrer")
+    .Columns(columns =>
+    
+        columns.XBoundAllExcept(
+            c => c.UebernahmeZeitVonFormatted, 
+            c => c.UebernahmeZeitBisFormatted,
+            c => c.UebergabeZeitVonFormatted,
+            c => c.UebergabeZeitBisFormatted,
+            c => c.AuftragsNr,
+            c => c.AbholDatum,
+            c => c.AuftragsCommand,
+            c => c.AuftragsDetails
+           
+    ))
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.WunschLieferDatum).Ascending())
+    .XToolBar("Fahrer")
+    .Groupable(g => g.Enabled(false))
+)
+

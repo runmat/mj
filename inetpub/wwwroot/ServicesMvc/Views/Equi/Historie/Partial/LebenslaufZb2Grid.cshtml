@@ -1,10 +1,10 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@{ var gridName = "GridEquiLebenslaufZb2"; }
+@model IEnumerable<EquiMeldungsdaten>
 
 @(Html.XTelerik()
     .XGrid<EquiMeldungsdaten>()
-    .Name(gridName)
-    .XAjaxDataBinding("EquiHistorieVermieterLebenslaufZb2AjaxBinding", "Equi")
+    .Name("GridEquiLebenslaufZb2")
+    .BindTo(Model)
     .Columns(columns =>
     {
         columns.XBound(c => c.Vorgang);
@@ -14,8 +14,10 @@
         columns.XBound(c => c.Versandart);
         columns.XBound(c => c.BeauftragtDurch);
     })
-    .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Durchfuehrungsdatum).Ascending())
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Durchfuehrungsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
 )

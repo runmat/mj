@@ -23,7 +23,7 @@ namespace CkgDomainLogic.Archive.Services
 
         public EasyAccessDataService()
         {
-            m_easyAccess = new EasyAccess((ILogonContextDataService)LogonContext);
+            m_easyAccess = new EasyAccess(LogonContext);
         }
 
         public void MarkForRefreshSuchparameter()
@@ -61,7 +61,7 @@ namespace CkgDomainLogic.Archive.Services
             EasyAccessSuchparameter erg = new EasyAccessSuchparameter();
 
             // LogonContext nochmal explizit setzen, da nicht zwangsläufig schon im Konstruktor komplett
-            m_easyAccess.setUser((ILogonContextDataService)LogonContext);
+            m_easyAccess.setUser(LogonContext);
 
             LoadArchives(erg);
             LoadArchiveTypeSpecificData(erg, true);       
@@ -324,7 +324,7 @@ namespace CkgDomainLogic.Archive.Services
         public List<string> GetDocuments(List<EasyAccessArchiveDefinition> archivesToSearch, string query)
         {
             // LogonContext nochmal explizit setzen, da nicht zwangsläufig schon im Konstruktor komplett
-            m_easyAccess.setUser((ILogonContextDataService)LogonContext);
+            m_easyAccess.setUser(LogonContext);
 
             var docList = new List<string>();
 
@@ -365,6 +365,11 @@ namespace CkgDomainLogic.Archive.Services
             }
 
             return docList;
+        }
+
+        public List<string> GetDocuments(string archiveLocation, string archiveName, string archiveIndex, string query)
+        {
+            return GetDocuments(new List<EasyAccessArchiveDefinition> { new EasyAccessArchiveDefinition { Location = archiveLocation, IndexName = archiveIndex, Name = archiveName } }, query);
         }
     }
 }

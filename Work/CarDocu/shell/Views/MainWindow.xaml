@@ -8,7 +8,7 @@
                 xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
                  Icon="/cardocu.ico"
                 Height="900" Width="1280">
-    <StackPanel>
+    <StackPanel TextOptions.TextFormattingMode="Ideal">
 
         <fl:Ribbon x:Name="Ribbon" SelectedTabChanged="RibbonSelectedTabChanged">
             <!--Contextual Tab Groups-->

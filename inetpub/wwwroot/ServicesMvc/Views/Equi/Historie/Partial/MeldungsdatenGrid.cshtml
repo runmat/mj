@@ -21,5 +21,3 @@
     .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Durchfuehrungsdatum).Ascending()))
     .ClientEvents(events => events.OnDataBound("LoadingHide"))
 )
-
-
