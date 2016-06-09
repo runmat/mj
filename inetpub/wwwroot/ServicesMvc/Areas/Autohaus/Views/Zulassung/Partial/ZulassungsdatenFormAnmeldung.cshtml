@@ -53,7 +53,15 @@ else
                     <div>@Localize.Autohaus_Versandzulassung</div>
                 </div>
                 <div class="inner">
-                    @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                    @if (Model.SimuliereVersand)
+                    {
+                        @Html.HiddenFor(m => m.Expressversand)
+                        @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>, new { disabled = "disabled" })
+                    }
+                    else
+                    {
+                        @Html.FormPrimeCheckBoxFor(m => m.Expressversand, @<text><span class="expressversand">&nbsp;</span></text>)
+                    }
                 </div>
             </div>
         }
@@ -99,8 +107,8 @@ else
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new {@class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()"})
-            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new {@class = "m-wrap small uppercase", maxlength = 7})
+            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()" })
+            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", maxlength = 7 })
         }
 
         @if (Model.ZulassungsartAutomatischErmitteln && !Model.ModusSonderzulassungAuto)
@@ -112,7 +120,7 @@ else
             @Html.HiddenFor(m => m.HaltereintragVorhanden)
         }
 
-        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new {@class = "m-wrap xsmall", onchange = "CheckKennzeichenReserviert()"},
+        @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap xsmall", onchange = "CheckKennzeichenReserviert()" },
             postControlHtml:
                 @<text>
                     <span id="divWkzLink">

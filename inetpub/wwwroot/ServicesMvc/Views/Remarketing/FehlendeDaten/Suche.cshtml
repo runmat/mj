@@ -1,0 +1,87 @@
+﻿@using CkgDomainLogic.Remarketing.Models
+@model FehlendeDatenSelektor
+
+<div id="divFehlendeDatenSuche">
+    @using (Ajax.BeginForm("LoadFehlendeDaten", "Remarketing", null,
+        new MvcAjaxOptions { UpdateTargetId = "divFehlendeDatenSuche", OnComplete = "ShowFehlendeDaten();" },
+        new { @class = "form-horizontal label-width-175", id = "AjaxFormFehlendeDaten" }))
+    {    
+        @Html.FormValidationSummary()
+
+
+        @Html.HiddenFor(m => m.AuswahlChanged)
+
+        @Html.FormRadioButtonListFor(m => m.Auswahl, FehlendeDatenSelektor.AuswahlList.ToSelectList(), new { @class = "m-wrap" })
+
+        if (Model.Auswahl == "A")
+        {
+            @Html.FormDropDownListFor(m => m.Vermieter, FehlendeDatenSelektor.VermieterList.ToSelectList(), new { @class = "m-wrap" })
+
+            @Html.FormDateRangePickerFor(m => m.DatumRange)
+        }
+        else
+        {
+            if (Model.Auswahl == "F")
+            {
+                @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase" }) 
+            }
+            else
+            {
+                @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            }
+                
+            <div class="row-fluid">
+                <div class="span12">
+                    @Html.Partial("FehlendeDaten/FileUpload", Model)
+                </div>
+            </div>
+        }
+
+        @Html.FormDropDownListFor(m => m.Bestandsart, FehlendeDatenSelektor.BestandsartList.ToSelectList(), new { @class = "m-wrap" })
+
+        <div class="space10"></div>
+
+        @*@Html.FormRequiredFieldsSummary()*@
+
+        <div class="form-actions">
+            <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _auswahlChanged = @Model.AuswahlChanged.ToString().ToLower();
+
+            if (_auswahlChanged) {
+                $("#AuswahlChanged").val(false);
+            }
+
+            $("#AjaxFormFehlendeDaten input[type=radio]").change(function () {
+                // Dynamische Eingabefelder aktualisieren
+                $("#AjaxFormFehlendeDaten").submit();
+            });
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowFehlendeDaten() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFehlendeDaten",
+            loadingShow: true,
+            success: function (result) {
+                SearchResultsTryHide();
+
+                if (_modelStateValid && !_auswahlChanged)
+                    ShowFehlendeDatenSearchResult(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

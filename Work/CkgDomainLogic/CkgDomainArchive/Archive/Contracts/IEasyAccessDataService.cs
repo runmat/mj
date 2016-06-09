@@ -30,5 +30,7 @@ namespace CkgDomainLogic.Archive.Contracts
         List<string> GetDocuments(EasyAccessArchiveDefinition archiveToSearch, string query);
 
         List<string> GetDocuments(List<EasyAccessArchiveDefinition> archivesToSearch, string query);
+
+        List<string> GetDocuments(string archiveLocation, string archiveName, string archiveIndex, string query);
     }
 }

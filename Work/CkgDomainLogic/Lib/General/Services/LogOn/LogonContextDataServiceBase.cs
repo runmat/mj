@@ -52,6 +52,8 @@ namespace CkgDomainLogic.General.Services
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserNameForDisplay { get; set; }
 
+        public string CustomPicturePath { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.FirstName)]
         public string FirstName { get; set; }
 
@@ -59,12 +61,9 @@ namespace CkgDomainLogic.General.Services
         public string LastName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FullName)]
-        public string FullName { get { return FirstName.IsNullOrEmpty() ? LastName : string.Format("{0}, {1}", LastName, FirstName); } }
+        public string FullName { get { return FirstName.IsNullOrEmpty() ? LastName : string.Format("{0}, {1}", LastName, FirstName); } }      
 
         public string AppUrl { get; set; }
-
-        // ReSharper restore LocalizableElement
-
 
         public List<ApplicationType> AppTypes { get; set; }
 

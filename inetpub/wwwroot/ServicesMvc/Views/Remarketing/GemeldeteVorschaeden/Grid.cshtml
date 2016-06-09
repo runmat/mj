@@ -1,0 +1,50 @@
+﻿@using CkgDomainLogic.Remarketing.Models
+@model CkgDomainLogic.Remarketing.ViewModels.GemeldeteVorschaedenViewModel
+
+@{ var gridName = "GridGemeldeteVorschaeden"; }
+
+@Html.FormValidationSummary()
+
+@(Html.Telerik()
+    .Grid<Schadensmeldung>()
+    .Name(gridName)
+    .XAjaxDataBinding("GemeldeteVorschaedenAjaxBinding", "Remarketing")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Aktion).Filterable(false).Sortable(false).Groupable(false).Visible(Model.IsAv).Title("")
+            .ClientTemplate(
+                "<button onclick='EditVorschaden(\"<#= data.FahrgestellNr #>\",\"<#= data.Kennzeichen #>\",\"<#= data.LaufendeNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditNotification + "' data-placement='right'><i class='halflings-icon pencil white'></i></button>"
+            );
+
+        columns.XBound(c => c.LaufendeNr);
+
+        columns.XBound(c => c.FahrgestellNr)
+            .ClientTemplate(
+                "<a href='#' class='link tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right' onclick='ShowEquiHistorieAjax(\"<#= data.FahrgestellNr #>\");'><#= data.FahrgestellNr #></a>"
+            );
+
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.InventarNr);
+        columns.XBound(c => c.Vermieter);
+        columns.XBound(c => c.Schadensbetrag).Format("{0:c}");
+        columns.XBound(c => c.Schadensdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Beschreibung);
+        columns.XBound(c => c.HcEingang).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Hereinnahmecenter);
+        columns.XBound(c => c.Modell);
+        columns.XBound(c => c.ModellBezeichnung);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridGemeldeteVorschaeden"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportGemeldeteVorschaedenFilteredExcel", "Remarketing");
+        commands.FilteredDataCommand("ExportGemeldeteVorschaedenFilteredPDF", "Remarketing");
+    })
+)
+
+<script type="text/javascript">
+    _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+</script>

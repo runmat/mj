@@ -26,6 +26,17 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [XmlIgnore]
         public IFahrerDataService DataService { get { return CacheGet<IFahrerDataService>(); } }
 
+        #region Auftragsauswahl 
+
+
+        public bool UserIsInOdinGroup()
+        {
+            return ApplicationConfiguration.GetApplicationConfigValue("isOdinUser", "0", LogonContext.CustomerID,
+                LogonContext.Group.GroupID).NotNullOrEmpty().ToLower() == "true";
+        }
+
+        #endregion
+
         #region Verfügbarkeitsmeldung
 
         public IEnumerable ExcelDownloadFahrerMeldungenData
@@ -91,15 +102,31 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+
         [XmlIgnore]
         public List<FahrerAuftrag> FahrerAuftraegeFiltered
         {
             get { return PropertyCacheGet(() => FahrerAuftraege); }
             private set { PropertyCacheSet(value); }
         }
+        
+        
+        public List<FahrerAuftrag> FreieAuftraege
+        {
+            get { return PropertyCacheGet(() => new List<FahrerAuftrag>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<FahrerAuftrag> FreieAuftraegeFiltered
+        {
+            get { return PropertyCacheGet(() => FreieAuftraege); }
+            private set { PropertyCacheSet(value); }
+        }
+
 
         [LocalizedDisplay(LocalizeConstants.Order)]
-        public string SelectedFahrerAuftragsKey { get; set; }
+        public string SelectedFahrerAuftragsKey { get; set; }   
 
 
         public string AuftragsFahrtTypen { get { return string.Format("H,{0};R,{1}", Localize._FahrtHin, Localize._FahrtRueck); } }
@@ -110,6 +137,24 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             get { return _selectedFahrerAuftrag ?? FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); }
             private set { _selectedFahrerAuftrag = value; }
+        }
+
+        public string SelectedFreierFahrerAuftragKey { get; set; }
+
+
+        private FahrerAuftrag _selectedFreierFahrerAuftrag;
+        public FahrerAuftrag SelectedFreierFahrerAuftrag
+        {
+            get { return _selectedFreierFahrerAuftrag ?? FreieAuftraege.FirstOrDefault(a => a.AuftragsNr == SelectedFreierFahrerAuftragKey); }
+            private set { _selectedFreierFahrerAuftrag = value; }
+        }
+
+
+
+        public void LoadFreieAuftraege()
+        {
+            FreieAuftraege = DataService.LoadFreieAuftraege();
+            PropertyCacheClear(this, m => m.FreieAuftraegeFiltered);
         }
 
 
@@ -240,6 +285,21 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
 
             return "";
+        }
+
+        public string SetSelectedFreierFahrerAuftragsKey(string auftragsNr, out string oldkey , out bool changed )
+        {
+            changed = SelectedFreierFahrerAuftragKey != auftragsNr;
+            oldkey = String.Empty;
+            
+            if (changed)
+            {
+                oldkey = SelectedFreierFahrerAuftragKey;
+                SelectedFreierFahrerAuftragKey = auftragsNr;
+            } else
+                SelectedFreierFahrerAuftragKey = String.Empty;
+
+            return SelectedFreierFahrerAuftragKey;
         }
 
         public void SetSelectedFahrerAuftragsKey(string auftragsNr)
@@ -675,5 +735,13 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         #endregion
 
         #endregion
+
+        public string SaveSelectedFreieFahrt()
+        {
+            var result = DataService.SaveSelectedFreieFahrt(SelectedFreierFahrerAuftragKey);
+            DataService.LoadFreieAuftraege();
+
+            return result;
+        }
     }
 }
