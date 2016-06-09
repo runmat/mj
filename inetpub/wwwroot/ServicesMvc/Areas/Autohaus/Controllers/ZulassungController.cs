@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
@@ -912,10 +911,9 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
-            string dateiPfad;
-            var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
+            var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ);
 
-            return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(dateiPfad) };
+            return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = string.Format("{0}_{1}.pdf", id, typ) };
         }
 
         /// <summary>
@@ -923,23 +921,25 @@ namespace ServicesMvc.Autohaus.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="typ"></param>
-        /// <param name="dateiPfad"></param>
         /// <returns></returns>
-        private byte[] ZusatzformularAsPdfGetPdfBytes(string id, string typ, out string dateiPfad)
+        private byte[] ZusatzformularAsPdfGetPdfBytes(string id, string typ)
         {
-            dateiPfad = "Dummy";
-
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
                 return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
-            var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
-            if (zusatzFormular == null)
-                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
+            var zusatzFormulare = zulassung.Zusatzformulare.Where(z => !z.IstAuftragsListe && z.Typ == typ).ToList();
+            if (zusatzFormulare.None())
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound);
 
-            var zusatzformularPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
-            
-            dateiPfad = zusatzFormular.DateiPfad;
+            var pdfsToMerge = new List<byte[]>();
+
+            foreach (var item in zusatzFormulare)
+            {
+                pdfsToMerge.Add(System.IO.File.ReadAllBytes(item.DateiPfad));
+            }
+
+            var zusatzformularPdfBytes = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge);
 
             return zusatzformularPdfBytes;
         }
@@ -986,10 +986,9 @@ namespace ServicesMvc.Autohaus.Controllers
                 if (zulassung.KundenformularPdf != null)
                     pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
 
-                foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
+                foreach (var zusatzformularTyp in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && p.Belegnummer == zulassung.BelegNr).Select(p => p.Typ).Distinct().ToList())
                 {
-                    string dateiPfad;
-                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ, out dateiPfad));
+                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(zulassung.BelegNr, zusatzformularTyp));
                 }
 
                 if (zulassung.VersandlabelPdf != null)

@@ -1,0 +1,19 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model IEnumerable<EquiLebenslauf>
+
+@(Html.XTelerik()
+    .XGrid<EquiLebenslauf>()
+    .Name("GridEquiLebenslauf")
+    .BindTo(Model)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Datum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Ereignis);
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .XPageSize(10)
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Datum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)

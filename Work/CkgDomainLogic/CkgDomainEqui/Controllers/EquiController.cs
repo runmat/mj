@@ -14,8 +14,6 @@ namespace ServicesMvc.Controllers
     {
         public override string DataContextKey { get { return "EquiViewModel"; } }
 
-
-
         public EquiController(
             IAppSettings appSettings, 
             ILogonContextDataService logonContext, 
@@ -32,12 +30,11 @@ namespace ServicesMvc.Controllers
             IMahnsperreDataService mahnsperreDataService, 
             IBriefbestandVhcDataService briefbestandVhcDataService, 
             IKlaerfaelleVhcDataService klaerfaelleVhcDataService,
-            IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
             IEasyAccessDataService easyAccessDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenViewModel, appSettings, logonContext, equiGrunddatenDataService);
-            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService, easyAccessDataService);
+            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService, briefbestandDataService, easyAccessDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
             InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);
             InitViewModel(MahnreportViewModel, appSettings, logonContext, mahnreportDataService);
@@ -48,8 +45,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
             InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
-            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
-            InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, briefbestandDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
+            InitViewModel(EquipmentHistorieRemarketingViewModel, appSettings, logonContext, equiHistorieDataService, easyAccessDataService);
 
             InitModelStatics();
         }

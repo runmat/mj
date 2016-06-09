@@ -146,6 +146,7 @@
     <Compile Include="General\Models\DataModels\ZulassungsOption.cs" />
     <Compile Include="General\Models\DataModels\VersandOption.cs" />
     <Compile Include="General\Models\DynamicXml.cs" />
+    <Compile Include="General\Models\SimpleUploadItem.cs" />
     <Compile Include="General\Models\Login\ChangePasswordModel.cs" />
     <Compile Include="General\Models\Login\CustomerModel.cs" />
     <Compile Include="General\Models\Login\LoginModel.cs" />

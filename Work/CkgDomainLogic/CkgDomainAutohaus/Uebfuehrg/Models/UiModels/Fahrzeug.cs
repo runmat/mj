@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
         public string Kennzeichen
         {
             get { return _kennzeichen; }
-            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [Required]

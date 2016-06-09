@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using CarDocu.Models;
@@ -12,12 +11,7 @@ namespace CarDocu.Services
     {
         #region Properties
 
-        private List<ScanDocument> _scanDocuments = new List<ScanDocument>();
-        public List<ScanDocument> ScanDocuments
-        {
-            get { return _scanDocuments; }
-            set { _scanDocuments = value; }
-        }
+        public List<ScanDocument> ScanDocuments { get; set; } = new List<ScanDocument>();
 
         [XmlIgnore]
         public Action<ScanDocument> OnAddScanDocument;

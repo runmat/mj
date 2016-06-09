@@ -86,7 +86,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
-            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
