@@ -181,7 +181,7 @@ namespace CkgDomainLogic.Controllers
             get
             {
                 var folder = ConfigurationManager.AppSettings["DownloadPathSamba"];
-                var fileSourcePath = string.Concat(folder, LogonContext.KundenNr, @"\");
+                var fileSourcePath = string.Concat(folder, (ViewModel.GeneralMode ? "1" : LogonContext.KundenNr), @"\");
                 return fileSourcePath;
             }
         }

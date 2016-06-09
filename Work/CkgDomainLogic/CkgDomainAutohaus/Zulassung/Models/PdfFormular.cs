@@ -13,14 +13,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string DateiPfad { get; set; }
 
-
-
         public bool IstAuftragsZettel { get { return Typ.IsNullOrEmpty() && !DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"); } }
 
         public bool IstAuftragsListe { get { return Typ.IsNullOrEmpty() && DateiPfad.NotNullOrEmpty().ToLower().Contains("auftragsliste"); } }
 
         public bool IstVersandLabel { get { return Typ == "VS-LABEL"; } }
-
-        public string LabelForGui { get { return IstAuftragsZettel ? Localize.OrderForm : Label; } }
     }
 }

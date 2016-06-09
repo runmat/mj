@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using CkgDomainLogic.Fahrer.Models;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
@@ -39,5 +40,8 @@ namespace CkgDomainLogic.Fahrer.Contracts
         string SaveProtokollAndQmDaten(ProtokollEditModel item);
 
         List<string> GetProtokollArchivierungMailAdressenAndReferenz(FahrerAuftragsProtokoll protokoll);
+        List<FahrerAuftrag> LoadFreieAuftraege();
+
+        string SaveSelectedFreieFahrt(string auftragsnr);
     }
 }

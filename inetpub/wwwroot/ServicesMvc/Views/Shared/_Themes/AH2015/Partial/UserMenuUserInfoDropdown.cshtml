@@ -1,11 +1,11 @@
 ﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
 <li class="dropdown user">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        @if (Model.UserNameForDisplay == "Pia Schmidt")
+        @if (@Model.CustomPicturePath.IsNotNullOrEmpty())
         {
             <div id="divUserbild" >
                 <div class="userbild" style="background-color: white;">
-                    <img alt="@Model.UserNameForDisplay" src="~/_Themes/AH2015/images/blondeFrau.jpg">
+                    <img alt="@Model.UserNameForDisplay" src="@Model.CustomPicturePath" >                  
                 </div>
             </div>
         }

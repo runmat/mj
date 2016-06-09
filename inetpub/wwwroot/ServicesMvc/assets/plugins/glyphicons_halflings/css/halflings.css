@@ -1046,3 +1046,15 @@ html .halflings {
     margin-left: 2px!important;
     width: 16px;   
 }
+
+.tuev,.tuev:hover {
+  background-image: url(../images/TUEV.png);
+  background-position: 8px 2px;
+  background-repeat: no-repeat;
+}
+
+.tool,.tool:hover {
+  background-image: url(../images/Tool.png);
+  background-position: 8px 2px;
+  background-repeat: no-repeat;
+}

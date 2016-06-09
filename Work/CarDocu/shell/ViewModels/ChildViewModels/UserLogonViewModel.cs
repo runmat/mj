@@ -15,9 +15,9 @@ namespace CarDocu.ViewModels
     {
         #region Properties
 
-        public string Title { get { return $"{DomainService.AppName}, Login"; } }
+        public string Title => $"{DomainService.AppName}, Login";
 
-        public List<DomainLocation> DomainLocations { get { return GlobalSettings.DomainLocations; } }
+        public List<DomainLocation> DomainLocations => GlobalSettings.DomainLocations;
 
         private string  _domainLocationCode;
         public string DomainLocationCode
@@ -45,10 +45,7 @@ namespace CarDocu.ViewModels
 
         public string LoginData { get; set; }
 
-        public bool DomainSelectionRequired
-        {
-            get { return AppSettings.AskForDomainSelectionAtLogin; }
-        }
+        public bool DomainSelectionRequired => AppSettings.AskForDomainSelectionAtLogin;
 
         bool _specifyDomainManually;
         public bool SpecifyDomainManually

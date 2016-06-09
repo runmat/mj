@@ -621,6 +621,10 @@
         <GradientStop Color="#3F929292" Offset="0.50"/>
         <GradientStop Color="#3F555555" Offset="0"/>
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="brGradientLightWhiteInverse" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+        <GradientStop Color="#FFE6E6E6" Offset="1"/>
+    </LinearGradientBrush>
 
     <SolidColorBrush x:Key="brSolidGray" Color="#FF444444" />
     <LinearGradientBrush x:Key="brGradientGray" EndPoint="0.5,1" StartPoint="0.5,0">

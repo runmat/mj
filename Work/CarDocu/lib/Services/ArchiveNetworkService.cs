@@ -17,10 +17,7 @@ namespace CarDocu.Services
 
             try
             {
-                if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
-                    isOnline = true;
-                else
-                    isOnline = DomainService.CheckOnlineState();
+                isOnline = DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled || DomainService.CheckOnlineState();
             }
             catch { isOnline = false; }
 
@@ -113,14 +110,16 @@ namespace CarDocu.Services
 
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
-                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() ? "" : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name);
+                    var dstFileName2 = docType.InlineNetworkDeliveryArchiveFolder.IsNullOrEmpty() 
+                                        ? "" 
+                                        : Path.Combine(docType.InlineNetworkDeliveryArchiveFolder, srcFileInfo.Name.Replace(srcFileInfo.Extension, DateTime.Today.ToString("_yyyyMMdd") + srcFileInfo.Extension));
 
                     if (docType.UseExternalCommandline)
                     {
                         var externalCommandProgram = docType.ExternalCommandlineProgramPath;
                         var externalCommandArgs = docType.ExternalCommandlineArguments;
 
-                        var args = externalCommandArgs.Replace("%1", string.Format("\"{0}\"", srcFileName));
+                        var args = externalCommandArgs.Replace("%1", $"\"{srcFileName}\"");
 
                         var pi = new ProcessStartInfo
                         {
@@ -130,13 +129,13 @@ namespace CarDocu.Services
                         };
                         var p = Process.Start(pi);
                         if (p == null)
-                            throw new Exception(string.Format("Fehler beim Aufruf des externen Processes \"{0}\" mit Parameter {1}", externalCommandProgram, args));
+                            throw new Exception($"Fehler beim Aufruf des externen Processes \"{externalCommandProgram}\" mit Parameter {args}");
 
                         const int timeoutMinutes = 10;
                         p.WaitForExit(timeoutMinutes*60*1000);
 
                         if (p.ExitCode != 0)
-                            throw new Exception(string.Format("Externer Process meldet Fehler-Code {2}, Process = \"{0}\", Parameter = {1}", externalCommandProgram, args, p.ExitCode)); 
+                            throw new Exception($"Externer Process meldet Fehler-Code {p.ExitCode}, Process = \"{externalCommandProgram}\", Parameter = {args}"); 
                     }
                     else
                     {
@@ -251,7 +250,7 @@ namespace CarDocu.Services
 
                 var postfix = "";
                 if (allList.Count > 1)
-                    postfix = string.Format(", Mail {0} / {1}", (i + 1), allList.Count);
+                    postfix = $", Mail {(i + 1)} / {allList.Count}";
 
                 var subject = string.Format(mailSettings.EmailSubjectText, scanDocument.FinNumber, postfix);
                 var bodyText = string.Format(mailSettings.EmailBodyText, scanDocument.FinNumber, postfix);
