@@ -416,7 +416,7 @@
 
                                                         <asp:ImageButton ID="ImageButton1" CommandName="Confirm" CommandArgument='<%# Eval("Posting_Number") %>'
                                                             TabIndex="-1" ImageUrl="/PortalZLD/Images/haken_gruen.gif" Visible='<%# Eval("ASTATUS").ToString()=="ZA" %>' 
-                                                            ToolTip='<%# Eval("TRANSACT_NUMBER").ToString().Trim() == "34" ? "Vorgang bestätigen" : "Betrag erhalten" %>' 
+                                                            ToolTip='<%# Eval("TRANSACT_NUMBER").ToString().Trim() == "34" ? "Vorgang bestätigen" : (Eval("TRANSACT_NUMBER").ToString().Trim() == "31" ? "Betrag ausgegeben" : "Betrag erhalten") %>' 
                                                             Height="18px" Width="18px" runat="server" />
 
                                                         <asp:ImageButton ID="ibtnDel" CommandName="Del"  CommandArgument='<%# Eval("Posting_Number") %>'

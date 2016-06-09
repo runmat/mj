@@ -518,6 +518,7 @@
     <Compile Include="lib\Models\DataModels\Barabhebung.cs" />
     <Compile Include="lib\Models\DataModels\AmtDispos.cs" />
     <Compile Include="lib\Models\DataModels\Kennzeichenetikett.cs" />
+    <Compile Include="lib\Models\DataModels\AmtDisposSql.cs" />
     <Compile Include="lib\Models\DataModels\RechnungsanhangDaten.cs" />
     <Compile Include="lib\Models\DataModels\NochNichtAbgesendeterVorgang.cs" />
     <Compile Include="lib\Models\DataModels\Userdaten.cs" />
@@ -754,7 +755,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
