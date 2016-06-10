@@ -656,10 +656,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.StrasseHin = txtStrasseHin.Text;
             objVorerf.PLZHin = txtPlz.Text;
             objVorerf.OrtHin = txtOrt.Text;
-            txtNameHin1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasseHin.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtNameHin1.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasseHin.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPlz.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrt.BorderColor = ZLDCommon.BorderColorDefault;
             Session["objVorVersand"] = objVorerf;
             MPEAdrHin.Hide();
         }
@@ -684,10 +684,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.StrasseRueck = txtStrasseRueck.Text;
             objVorerf.PLZRueck = txtPLZRueck.Text;
             objVorerf.OrtRueck = txtOrtRueck.Text;
-            txtNameRueck1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasseRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPLZRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrtRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtNameRueck1.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasseRueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPLZRueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrtRueck.BorderColor = ZLDCommon.BorderColorDefault;
             if (CheckAdr2Rueck())
             {
                 lblAdrRueckError.Text = "Überprüfen Sie Ihre Eingaben!";
@@ -705,10 +705,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.Strasse2Rueck = txtStrasse2Rueck.Text;
             objVorerf.PLZ2Rueck = txtPLZ2Rueck.Text;
             objVorerf.Ort2Rueck = txtOrt2Rueck.Text;
-            txtName1Rueck2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasse2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPLZ2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtName1Rueck2.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasse2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPLZ2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrt2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
             Session["objVorVersand"] = objVorerf;
             MPEAdrRueck.Hide();
         }
@@ -731,10 +731,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.StrasseHin = txtStrasseHin.Text;
             objVorerf.PLZHin = txtPlz.Text;
             objVorerf.OrtHin = txtOrt.Text;
-            txtNameHin1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasseHin.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtNameHin1.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasseHin.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPlz.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrt.BorderColor = ZLDCommon.BorderColorDefault;
             Session["objVorVersand"] = objVorerf;
         }
 
@@ -759,10 +759,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.StrasseRueck = txtStrasseRueck.Text;
             objVorerf.PLZRueck = txtPLZRueck.Text;
             objVorerf.OrtRueck = txtOrtRueck.Text;
-            txtNameRueck1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasseRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPLZRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrtRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtNameRueck1.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasseRueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPLZRueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrtRueck.BorderColor = ZLDCommon.BorderColorDefault;
 
             txtDoc2Rueck.Text = "";
             txtName1Rueck2.Text = "";
@@ -776,10 +776,10 @@ namespace AppZulassungsdienst.forms
             objVorerf.Strasse2Rueck = txtStrasse2Rueck.Text;
             objVorerf.PLZ2Rueck = txtPLZ2Rueck.Text;
             objVorerf.Ort2Rueck = txtOrt2Rueck.Text;
-            txtName1Rueck2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtStrasse2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPLZ2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtOrt2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtName1Rueck2.BorderColor = ZLDCommon.BorderColorDefault;
+            txtStrasse2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPLZ2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
+            txtOrt2Rueck.BorderColor = ZLDCommon.BorderColorDefault;
             Session["objVorVersand"] = objVorerf;
         }
 
@@ -989,7 +989,7 @@ namespace AppZulassungsdienst.forms
             {
                 if (txtEVB.Text.Trim(' ').Length == 0)
                 {
-                    txtEVB.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtEVB.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
             }
@@ -998,7 +998,7 @@ namespace AppZulassungsdienst.forms
             {
                 if (txtFrei1.Text.Trim(' ').Length == 0)
                 {
-                    txtFrei1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtFrei1.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
             }
@@ -1007,7 +1007,7 @@ namespace AppZulassungsdienst.forms
             {
                 if (txtFrei2.Text.Trim(' ').Length == 0)
                 {
-                    txtFrei2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtFrei2.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
             }
@@ -1016,7 +1016,7 @@ namespace AppZulassungsdienst.forms
             {
                 if (txtFrei3.Text.Trim(' ').Length == 0)
                 {
-                    txtFrei3.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtFrei3.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
             }
@@ -1034,14 +1034,14 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void ClearErrorBorderColor()
         {
-            txtHandelsregFa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtGewerb.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtPersoName.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtReisepass.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtEVB.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtFrei1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtFrei2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-            txtFrei3.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtHandelsregFa.BorderColor = ZLDCommon.BorderColorDefault;
+            txtGewerb.BorderColor = ZLDCommon.BorderColorDefault;
+            txtPersoName.BorderColor = ZLDCommon.BorderColorDefault;
+            txtReisepass.BorderColor = ZLDCommon.BorderColorDefault;
+            txtEVB.BorderColor = ZLDCommon.BorderColorDefault;
+            txtFrei1.BorderColor = ZLDCommon.BorderColorDefault;
+            txtFrei2.BorderColor = ZLDCommon.BorderColorDefault;
+            txtFrei3.BorderColor = ZLDCommon.BorderColorDefault;
         }
 
         /// <summary>
@@ -1361,28 +1361,28 @@ namespace AppZulassungsdienst.forms
 
             if (txtNameHin1.Text.Length == 0)
             {
-                txtNameHin1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtNameHin1.BorderColor = ZLDCommon.BorderColorError;
                 bError = true;
             }
             if (txtStrasseHin.Text.Length == 0)
             {
-                txtStrasseHin.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtStrasseHin.BorderColor = ZLDCommon.BorderColorError;
                 bError = true;
             }
             else if (txtStrasseHin.Text.Contains("xxx") || txtStrasseHin.Text.Contains("XXX"))
             {
-                txtStrasseHin.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtStrasseHin.BorderColor = ZLDCommon.BorderColorError;
                 bError = true;
             }
 
             if (txtPlz.Text.Length < 5)
             {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtPlz.BorderColor = ZLDCommon.BorderColorError;
                 bError = true;
             }
             if (txtOrt.Text.Length == 0)
             {
-                txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtOrt.BorderColor = ZLDCommon.BorderColorError;
                 bError = true;
             }
 
@@ -1401,28 +1401,28 @@ namespace AppZulassungsdienst.forms
             {
                 if (txtNameRueck1.Text.Length == 0)
                 {
-                    txtNameRueck1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtNameRueck1.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 if (txtStrasseRueck.Text.Length == 0)
                 {
-                    txtStrasseRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtStrasseRueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 else if (txtStrasseRueck.Text.Contains("xxx") || txtStrasseRueck.Text.Contains("XXX"))
                 {
-                    txtStrasseRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtStrasseRueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
 
                 if (txtPLZRueck.Text.Length < 5)
                 {
-                    txtPLZRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtPLZRueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 if (txtOrtRueck.Text.Length == 0)
                 {
-                    txtOrtRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtOrtRueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
 
@@ -1443,27 +1443,27 @@ namespace AppZulassungsdienst.forms
 
                 if (txtName1Rueck2.Text.Length == 0)
                 {
-                    txtName1Rueck2.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtName1Rueck2.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 if (txtStrasse2Rueck.Text.Length == 0)
                 {
-                    txtStrasse2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtStrasse2Rueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 else if (txtStrasse2Rueck.Text.Contains("xxx") || txtStrasse2Rueck.Text.Contains("XXX"))
                 {
-                    txtStrasse2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtStrasse2Rueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 if (txtPLZ2Rueck.Text.Length < 5)
                 {
-                    txtPLZ2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtPLZ2Rueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
                 if (txtOrt2Rueck.Text.Length == 0)
                 {
-                    txtOrtRueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    txtOrtRueck.BorderColor = ZLDCommon.BorderColorError;
                     bError = true;
                 }
 
