@@ -15,6 +15,7 @@ using GeneralTools.Services;
 
 namespace Leasing.forms
 {
+    // ReSharper disable once InconsistentNaming
     public partial class Change81_4 : Page
     {
         private User _mUser;
@@ -58,6 +59,7 @@ namespace Leasing.forms
         }
 
  
+        // ReSharper disable once FunctionComplexityOverflow
         protected void DownloadSummary(object sender, EventArgs e)
         {
             var head = new DataTable("Kopf");
@@ -79,7 +81,7 @@ namespace Leasing.forms
                 var text = "Adresse: " + Environment.NewLine + _objDienstleistung.HalterName1;
                 if (!string.IsNullOrEmpty(_objDienstleistung.HalterName2))
                     text += " " + _objDienstleistung.HalterName2;
-                text += Environment.NewLine + _objDienstleistung.HalterPLZ + " " + _objDienstleistung.HalterOrt;
+                text += Environment.NewLine + _objDienstleistung.HalterPlz + " " + _objDienstleistung.HalterOrt;
                 text += Environment.NewLine + _objDienstleistung.HalterStrasse + " " + _objDienstleistung.HalterHausnr;
                 h["Wert"] = text;
                 details.Rows.Add(h);
@@ -91,9 +93,9 @@ namespace Leasing.forms
                 var text = "Wunschkennzeichen " + _objDienstleistung.Kreis + "-" + _objDienstleistung.Wunschkennzeichen;
                 text += Environment.NewLine + "reserviert auf " + _objDienstleistung.ReserviertAuf;
                 if (trVersicherungstr.Visible) text += Environment.NewLine + "Versicherungsträger: " + _objDienstleistung.Versicherungstraeger;
-                if (!string.IsNullOrEmpty(_objDienstleistung.EVBNr))
+                if (!string.IsNullOrEmpty(_objDienstleistung.EvbNr))
                 {
-                    var evbParts = _objDienstleistung.EVBNr.Split(' ');
+                    var evbParts = _objDienstleistung.EvbNr.Split(' ');
                     if (trEvbNr.Visible) text += Environment.NewLine + "eVB-Nummer: " + evbParts.FirstOrDefault();
                     DateTime von, bis;
                     if (evbParts.Length >= 3 && DateTime.TryParseExact(evbParts.ElementAt(1), "yyyyMMdd", null, DateTimeStyles.AssumeLocal, out von) &&
@@ -111,7 +113,7 @@ namespace Leasing.forms
                 em["Titel"] = "Empfänger Schein/Schilder";
                 var text = "Adresse: " + Environment.NewLine + _objDienstleistung.EmpfaengerName1;
                 if (!string.IsNullOrEmpty(_objDienstleistung.EmpfaengerName2)) text += " " + _objDienstleistung.EmpfaengerName2;
-                text += Environment.NewLine + _objDienstleistung.EmpfaengerPLZ + " " + _objDienstleistung.EmpfaengerOrt;
+                text += Environment.NewLine + _objDienstleistung.EmpfaengerPlz + " " + _objDienstleistung.EmpfaengerOrt;
                 text += Environment.NewLine + _objDienstleistung.EmpfaengerStrasse + " " + _objDienstleistung.EmpfaengerHausnr;
                 em["Wert"] = text;
                 details.Rows.Add(em);
@@ -214,7 +216,7 @@ namespace Leasing.forms
             lblAdresseName.Text = _objDienstleistung.HalterName1;
             if (!string.IsNullOrEmpty(_objDienstleistung.HalterName2))
             { lblAdresseName.Text += " " + _objDienstleistung.HalterName2; }
-            lblAdressePLZOrt.Text += _objDienstleistung.HalterPLZ + " ";
+            lblAdressePLZOrt.Text += _objDienstleistung.HalterPlz + " ";
             lblAdressePLZOrt.Text += _objDienstleistung.HalterOrt;
             lblAdresseStrasseNr.Text += _objDienstleistung.HalterStrasse + " ";
             lblAdresseStrasseNr.Text += _objDienstleistung.HalterHausnr;
@@ -227,7 +229,7 @@ namespace Leasing.forms
             lblAdresseNameEmpf.Text = _objDienstleistung.EmpfaengerName1;
             if (!string.IsNullOrEmpty(_objDienstleistung.EmpfaengerName2))
             { lblAdresseNameEmpf.Text += " " + _objDienstleistung.EmpfaengerName2; }
-            lblAdressePLZOrtEmpf.Text += _objDienstleistung.EmpfaengerPLZ + " ";
+            lblAdressePLZOrtEmpf.Text += _objDienstleistung.EmpfaengerPlz + " ";
             lblAdressePLZOrtEmpf.Text += _objDienstleistung.EmpfaengerOrt;
             lblAdresseStrasseNrEmpf.Text += _objDienstleistung.EmpfaengerStrasse + " ";
             lblAdresseStrasseNrEmpf.Text += _objDienstleistung.EmpfaengerHausnr;
@@ -235,9 +237,9 @@ namespace Leasing.forms
             lblDurchfuehrungsDatum.Text = _objDienstleistung.DurchfuehrungsDatum;
             lblBemerkung.Text = _objDienstleistung.Bemerkung;
 
-            if (!string.IsNullOrEmpty(_objDienstleistung.EVBNr))
+            if (!string.IsNullOrEmpty(_objDienstleistung.EvbNr))
             {
-                var split = _objDienstleistung.EVBNr.Split(' ');
+                var split = _objDienstleistung.EvbNr.Split(' ');
                 lblEVB.Text = split[0];
                 if (split.Length > 1)
                 {
@@ -289,14 +291,7 @@ namespace Leasing.forms
                     strDirection = "desc";
                 }
 
-                if (strDirection == "asc")
-                {
-                    strDirection = "desc";
-                }
-                else
-                {
-                    strDirection = "asc";
-                }
+                strDirection = strDirection == "asc" ? "desc" : "asc";
 
                 ViewState["Sort"] = strTempSort;
                 ViewState["Direction"] = strDirection;
@@ -396,7 +391,7 @@ namespace Leasing.forms
                     _objDienstleistung.Equimpent = row["EQUNR"].ToString();
                     _objDienstleistung.Fahrgestellnummer = row["Fahrgestellnummer"].ToString();
 
-                    _objDienstleistung.Anfordern(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+                    _objDienstleistung.Anfordern(Session["AppID"].ToString(), Session.SessionID, this);
                     row["STATUS"] = _objDienstleistung.Auftragsstatus;
 
                     if (string.IsNullOrEmpty(_objDienstleistung.Auftragsnummer) || _objDienstleistung.Status != 0)
@@ -418,12 +413,12 @@ namespace Leasing.forms
                 tmpDataView.RowFilter = "MANDT = '99'";
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
-                logApp.UpdateEntry("APP", Session["AppID"].ToString(), "Beauftragung sonstiger Dienstleistungen", null);
+                logApp.UpdateEntry("APP", Session["AppID"].ToString(), "Beauftragung sonstiger Dienstleistungen");
             }
             catch (Exception ex)
             {
                 lblError.Text = "Fehler: " + ex.Message;
-                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message, null);
+                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message);
                 throw;
             }
         }
@@ -446,7 +441,7 @@ namespace Leasing.forms
 
             try
             {
-                _objDienstleistung.AnfordernCustom(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+                _objDienstleistung.AnfordernCustom(Session["AppID"].ToString(), Session.SessionID, this);
 
                 if (!string.IsNullOrEmpty(_objDienstleistung.Auftragsnummer))
                 {
@@ -464,12 +459,12 @@ namespace Leasing.forms
                 tmpDataView.RowFilter = "MANDT = '99'";
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
-                logApp.UpdateEntry("APP", Session["AppID"].ToString(), "Beauftragung sonstiger Dienstleistungen", null);
+                logApp.UpdateEntry("APP", Session["AppID"].ToString(), "Beauftragung sonstiger Dienstleistungen");
             }
             catch (Exception ex)
             {
                 lblError.Text = "Fehler: " + ex.Message;
-                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message, null);
+                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message);
                 throw;
             }
             

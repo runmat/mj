@@ -11,64 +11,66 @@ using Leasing.lib;
 
 namespace Leasing.forms
 {
+    // ReSharper disable once InconsistentNaming
     public partial class Change81_3 : Page
     {
-        private User m_User;
-        private App m_App;
-        private Lp02 objDienstleistung;
+        private User _mUser;
 
+        private Lp02 _objDienstleistung;
+
+        // ReSharper disable once FunctionComplexityOverflow
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
-            Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
+            _mUser = Common.GetUser(this);
+            Common.FormAuth(this, _mUser);
+
             Common.GetAppIDFromQueryString(this);
-            lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            //lnkFahrzeugsuche.NavigateUrl = "Change81.aspx?AppID=" + Session["AppID"].ToString();
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            
             step1.NavigateUrl = "Change81.aspx?" + Request.QueryString;
             step2.NavigateUrl = "Change81_2.aspx?" + Request.QueryString;
 
             if (Session["objDienstleistung"] == null)
             {
-                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"].ToString());
+                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]);
             }
             else
             {
-                objDienstleistung = (Lp02)Session["objDienstleistung"];
+                _objDienstleistung = (Lp02)Session["objDienstleistung"];
             }
 
             if (!IsPostBack)
             {
-                txtHalterName1.Text = objDienstleistung.HalterName1;
-                txtHalterName2.Text = objDienstleistung.HalterName2;
-                txtHalterOrt.Text = objDienstleistung.HalterOrt;
-                txtHalterPLZ.Text = objDienstleistung.HalterPLZ;
-                txtHalterStrasse.Text = objDienstleistung.HalterStrasse;
-                txtHalterHausnr.Text = objDienstleistung.HalterHausnr;
-                txtStandortName1.Text = objDienstleistung.StandortName1;
-                txtStandortName2.Text = objDienstleistung.StandortName2;
-                txtStandortOrt.Text = objDienstleistung.StandortOrt;
-                txtStandortPLZ.Text = objDienstleistung.StandortPLZ;
-                txtStandortStrasse.Text = objDienstleistung.StandortStrasse;
-                txtStandortHausnr.Text = objDienstleistung.StandortHausnr;
-                txtKreis.Text = objDienstleistung.Kreis;
-                lblKreis.Text = objDienstleistung.Kreis;
-                txtWunschkennzeichen.Text = objDienstleistung.Wunschkennzeichen;
-                txtWunschkennzeichen.Text = objDienstleistung.Wunschkennzeichen;
-                txtReserviertAuf.Text = objDienstleistung.ReserviertAuf;
-                txtVersicherungstraeger.Text = objDienstleistung.Versicherungstraeger;
-                txtEmpfaengerName1.Text = objDienstleistung.EmpfaengerName1;
-                txtEmpfaengerName2.Text = objDienstleistung.EmpfaengerName2;
-                txtEmpfaengerOrt.Text = objDienstleistung.EmpfaengerOrt;
-                txtEmpfaengerPLZ.Text = objDienstleistung.EmpfaengerPLZ;
-                txtEmpfaengerStrasse.Text = objDienstleistung.EmpfaengerStrasse;
-                txtEmpfaengerHausnr.Text = objDienstleistung.EmpfaengerHausnr;
-                txtDurchfuehrungsDatum.Text = objDienstleistung.DurchfuehrungsDatum;
-                txtBemerkung.Text = objDienstleistung.Bemerkung;
+                txtHalterName1.Text = _objDienstleistung.HalterName1;
+                txtHalterName2.Text = _objDienstleistung.HalterName2;
+                txtHalterOrt.Text = _objDienstleistung.HalterOrt;
+                txtHalterPLZ.Text = _objDienstleistung.HalterPlz;
+                txtHalterStrasse.Text = _objDienstleistung.HalterStrasse;
+                txtHalterHausnr.Text = _objDienstleistung.HalterHausnr;
+                txtStandortName1.Text = _objDienstleistung.StandortName1;
+                txtStandortName2.Text = _objDienstleistung.StandortName2;
+                txtStandortOrt.Text = _objDienstleistung.StandortOrt;
+                txtStandortPLZ.Text = _objDienstleistung.StandortPlz;
+                txtStandortStrasse.Text = _objDienstleistung.StandortStrasse;
+                txtStandortHausnr.Text = _objDienstleistung.StandortHausnr;
+                txtKreis.Text = _objDienstleistung.Kreis;
+                lblKreis.Text = _objDienstleistung.Kreis;
+                txtWunschkennzeichen.Text = _objDienstleistung.Wunschkennzeichen;
+                txtWunschkennzeichen.Text = _objDienstleistung.Wunschkennzeichen;
+                txtReserviertAuf.Text = _objDienstleistung.ReserviertAuf;
+                txtVersicherungstraeger.Text = _objDienstleistung.Versicherungstraeger;
+                txtEmpfaengerName1.Text = _objDienstleistung.EmpfaengerName1;
+                txtEmpfaengerName2.Text = _objDienstleistung.EmpfaengerName2;
+                txtEmpfaengerOrt.Text = _objDienstleistung.EmpfaengerOrt;
+                txtEmpfaengerPLZ.Text = _objDienstleistung.EmpfaengerPlz;
+                txtEmpfaengerStrasse.Text = _objDienstleistung.EmpfaengerStrasse;
+                txtEmpfaengerHausnr.Text = _objDienstleistung.EmpfaengerHausnr;
+                txtDurchfuehrungsDatum.Text = _objDienstleistung.DurchfuehrungsDatum;
+                txtBemerkung.Text = _objDienstleistung.Bemerkung;
 
-                if (!string.IsNullOrEmpty(objDienstleistung.EVBNr))
+                if (!string.IsNullOrEmpty(_objDienstleistung.EvbNr))
                 {
-                    var split = objDienstleistung.EVBNr.Split(' ');
+                    var split = _objDienstleistung.EvbNr.Split(' ');
                     txtEVBNummer.Text = split[0];
                     if (split.Length > 1)
                     {
@@ -88,9 +90,9 @@ namespace Leasing.forms
                 FillDropDown();
                 FillLaender();
 
-                if (!string.IsNullOrEmpty(objDienstleistung.Auftragsgrund))
+                if (!string.IsNullOrEmpty(_objDienstleistung.Auftragsgrund))
                 {
-                    ddlDienstleistung.SelectedValue = objDienstleistung.Auftragsgrund;
+                    ddlDienstleistung.SelectedValue = _objDienstleistung.Auftragsgrund;
                     DisplaySelectedDienstleistung();
                 }
             }
@@ -120,12 +122,12 @@ namespace Leasing.forms
 
         private void FillDates()
         {
-            var tmpDataView = objDienstleistung.Fahrzeuge.DefaultView;
+            var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
             tmpDataView.RowFilter = "MANDT = '99'";
 
             if (tmpDataView.Count == 0)
             {
-                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"].ToString());
+                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]);
             }
             else
             {
@@ -133,7 +135,7 @@ namespace Leasing.forms
             }
 
             tmpDataView.RowFilter = "";
-            var dummyDate = objDienstleistung.SuggestionDay();
+            var dummyDate = _objDienstleistung.SuggestionDay();
             txtDurchfuehrungsDatum.Text = dummyDate.ToShortDateString();
         }
 
@@ -172,13 +174,14 @@ namespace Leasing.forms
 
         private void FillLaender()
         {
-            BindLandDDL(ddlHalterLand, revHalterPLZ, objDienstleistung.LaenderPLZ);
-            BindLandDDL(ddlEmpfaengerLand, revEmpfaengerPLZ, objDienstleistung.LaenderPLZ);
+            BindLandDdl(ddlHalterLand, revHalterPLZ, _objDienstleistung.LaenderPlz);
+            BindLandDdl(ddlEmpfaengerLand, revEmpfaengerPLZ, _objDienstleistung.LaenderPlz);
         }
 
-        private void BindLandDDL(DropDownList ddl, RegularExpressionValidator rev, DataTable table)
+        private void BindLandDdl(DropDownList ddl, RegularExpressionValidator rev, DataTable table)
         {
-            ddl.DataSource = objDienstleistung.LaenderPLZ;
+            if (table == null) throw new ArgumentNullException("table");
+            ddl.DataSource = _objDienstleistung.LaenderPlz;
             ddl.DataTextField = "FullDesc";
             ddl.DataValueField = "Land1";
             ddl.DataBind();
@@ -190,7 +193,7 @@ namespace Leasing.forms
 
             if (item != null) item.Selected = true;
 
-            ApplyPLZFormat(ddl, rev);
+            ApplyPlzFormat(ddl, rev);
         }
 
         protected void ddlDienstleistung_SelectedIndexChanged(object sender, EventArgs e)
@@ -282,13 +285,11 @@ namespace Leasing.forms
                     txtKreis.Text = "";
                     btnZulkreis.Visible = false;
                     break;
-                case "kein":
-                default:
-                    // nichts..
-                    break;
+                // nichts..
             }
         }
 
+        // ReSharper disable once FunctionComplexityOverflow
         protected void cmdSave_Click(object sender, EventArgs e)
         {
             if (ddlDienstleistung.SelectedIndex == 0)
@@ -298,16 +299,16 @@ namespace Leasing.forms
                 return;
             }
 
-            objDienstleistung.Auftragsgrund = ddlDienstleistung.SelectedValue;
-            objDienstleistung.BeauftragungKlartext = ddlDienstleistung.SelectedItem.Text;
+            _objDienstleistung.Auftragsgrund = ddlDienstleistung.SelectedValue;
+            _objDienstleistung.BeauftragungKlartext = ddlDienstleistung.SelectedItem.Text;
             if (pnlHalter.Visible)
             {
-                objDienstleistung.HalterName1 = txtHalterName1.Text;
-                objDienstleistung.HalterName2 = txtHalterName2.Text;
-                objDienstleistung.HalterOrt = txtHalterOrt.Text;
-                objDienstleistung.HalterPLZ = txtHalterPLZ.Text;
-                objDienstleistung.HalterStrasse = txtHalterStrasse.Text;
-                objDienstleistung.HalterHausnr = txtHalterHausnr.Text;
+                _objDienstleistung.HalterName1 = txtHalterName1.Text;
+                _objDienstleistung.HalterName2 = txtHalterName2.Text;
+                _objDienstleistung.HalterOrt = txtHalterOrt.Text;
+                _objDienstleistung.HalterPlz = txtHalterPLZ.Text;
+                _objDienstleistung.HalterStrasse = txtHalterStrasse.Text;
+                _objDienstleistung.HalterHausnr = txtHalterHausnr.Text;
             }
             else
             {
@@ -317,20 +318,20 @@ namespace Leasing.forms
                 txtHalterPLZ.Text = "";
                 txtHalterStrasse.Text = "";
                 txtHalterHausnr.Text = "";
-                objDienstleistung.HalterName1 = "";
-                objDienstleistung.HalterName2 = "";
-                objDienstleistung.HalterOrt = "";
-                objDienstleistung.HalterPLZ = "";
-                objDienstleistung.HalterStrasse = "";
-                objDienstleistung.HalterHausnr = "";
+                _objDienstleistung.HalterName1 = "";
+                _objDienstleistung.HalterName2 = "";
+                _objDienstleistung.HalterOrt = "";
+                _objDienstleistung.HalterPlz = "";
+                _objDienstleistung.HalterStrasse = "";
+                _objDienstleistung.HalterHausnr = "";
             }
 
             if (pnlZulDaten.Visible)
             {
                 if (trWunschkennzeichen.Visible)
                 {
-                    objDienstleistung.Kreis = txtKreis.Text;
-                    objDienstleistung.Wunschkennzeichen = txtWunschkennzeichen.Text;
+                    _objDienstleistung.Kreis = txtKreis.Text;
+                    _objDienstleistung.Wunschkennzeichen = txtWunschkennzeichen.Text;
                 }
                 else
                 {
@@ -340,7 +341,7 @@ namespace Leasing.forms
 
                 if (trReserviertAuf.Visible)
                 {
-                    objDienstleistung.ReserviertAuf = txtReserviertAuf.Text;
+                    _objDienstleistung.ReserviertAuf = txtReserviertAuf.Text;
 
                 }
                 else
@@ -353,13 +354,13 @@ namespace Leasing.forms
                     if (txtEVBNummer.Text != String.Empty)
                     {
                         var strFehlermeldung = "";
-                        if (txtEVBNummer.Text.Length > 6 && objDienstleistung.IsAlphaNumeric(txtEVBNummer.Text) && HelpProcedures.checkDate(ref txtEVBVon, ref txtEVBBis, ref strFehlermeldung, true, 0))
+                        if (txtEVBNummer.Text.Length > 6 && _objDienstleistung.IsAlphaNumeric(txtEVBNummer.Text) && HelpProcedures.checkDate(ref txtEVBVon, ref txtEVBBis, ref strFehlermeldung, true))
                         {
-                            objDienstleistung.Versicherungstraeger = txtVersicherungstraeger.Text;
+                            _objDienstleistung.Versicherungstraeger = txtVersicherungstraeger.Text;
                             if (txtEVBVon.Text != String.Empty)
                             {
-                                objDienstleistung.EVBNr = txtEVBNummer.Text + " " + HelpProcedures.MakeDateSAP(txtEVBVon.Text) + " " + HelpProcedures.MakeDateSAP(txtEVBBis.Text);
-                                objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
+                                _objDienstleistung.EvbNr = txtEVBNummer.Text + " " + HelpProcedures.MakeDateSAP(txtEVBVon.Text) + " " + HelpProcedures.MakeDateSAP(txtEVBBis.Text);
+                                _objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
 
                                 DateTime tmp;
 
@@ -367,16 +368,16 @@ namespace Leasing.forms
                                 var bis = DateTime.TryParse(txtEVBBis.Text, out tmp) ? tmp : (DateTime?)null;
 
 
-                                objDienstleistung.EvbGueltigVon = von;
-                                objDienstleistung.EvbGueltigBis = bis;
+                                _objDienstleistung.EvbGueltigVon = von;
+                                _objDienstleistung.EvbGueltigBis = bis;
                             }
                             else
                             {
-                                objDienstleistung.EVBNr = txtEVBNummer.Text;
-                                objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
+                                _objDienstleistung.EvbNr = txtEVBNummer.Text;
+                                _objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
                             }
                         }
-                        else if (txtEVBNummer.Text.Length < 7 || !objDienstleistung.IsAlphaNumeric(txtEVBNummer.Text))
+                        else if (txtEVBNummer.Text.Length < 7 || !_objDienstleistung.IsAlphaNumeric(txtEVBNummer.Text))
                         {
                             lblError.Text = "EVB-Nummer ungültig"; return;
                         }
@@ -389,20 +390,20 @@ namespace Leasing.forms
                     txtEVBNummer.Text = "";
                     txtEVBVon.Text = "";
                     txtEVBBis.Text = "";
-                    objDienstleistung.Versicherungstraeger = "";
-                    objDienstleistung.EVBNr = "";
-                    objDienstleistung.EvbNrSingle = "";
+                    _objDienstleistung.Versicherungstraeger = "";
+                    _objDienstleistung.EvbNr = "";
+                    _objDienstleistung.EvbNrSingle = "";
                 }
             }
 
             if (pnlEmpfaenger.Visible)
             {
-                objDienstleistung.EmpfaengerName1 = txtEmpfaengerName1.Text;
-                objDienstleistung.EmpfaengerName2 = txtEmpfaengerName2.Text;
-                objDienstleistung.EmpfaengerOrt = txtEmpfaengerOrt.Text;
-                objDienstleistung.EmpfaengerPLZ = txtEmpfaengerPLZ.Text;
-                objDienstleistung.EmpfaengerStrasse = txtEmpfaengerStrasse.Text;
-                objDienstleistung.EmpfaengerHausnr = txtEmpfaengerHausnr.Text;
+                _objDienstleistung.EmpfaengerName1 = txtEmpfaengerName1.Text;
+                _objDienstleistung.EmpfaengerName2 = txtEmpfaengerName2.Text;
+                _objDienstleistung.EmpfaengerOrt = txtEmpfaengerOrt.Text;
+                _objDienstleistung.EmpfaengerPlz = txtEmpfaengerPLZ.Text;
+                _objDienstleistung.EmpfaengerStrasse = txtEmpfaengerStrasse.Text;
+                _objDienstleistung.EmpfaengerHausnr = txtEmpfaengerHausnr.Text;
             }
             else
             {
@@ -412,17 +413,19 @@ namespace Leasing.forms
                 txtEmpfaengerPLZ.Text = "";
                 txtEmpfaengerStrasse.Text = "";
                 txtEmpfaengerHausnr.Text = "";
-                objDienstleistung.EmpfaengerName1 = "";
-                objDienstleistung.EmpfaengerName2 = "";
-                objDienstleistung.EmpfaengerOrt = "";
-                objDienstleistung.EmpfaengerPLZ = "";
-                objDienstleistung.EmpfaengerStrasse = "";
-                objDienstleistung.EmpfaengerHausnr = "";
+                _objDienstleistung.EmpfaengerName1 = "";
+                _objDienstleistung.EmpfaengerName2 = "";
+                _objDienstleistung.EmpfaengerOrt = "";
+                _objDienstleistung.EmpfaengerPlz = "";
+                _objDienstleistung.EmpfaengerStrasse = "";
+                _objDienstleistung.EmpfaengerHausnr = "";
             }
 
             if (pnlSonstiges.Visible)
             {
-                if (objDienstleistung.IsDate(txtDurchfuehrungsDatum.Text))
+                //if (objDienstleistung.IsDate(txtDurchfuehrungsDatum.Text))
+                DateTime val;
+                if (DateTime.TryParse(txtDurchfuehrungsDatum.Text,out val))
                 {
                     if (DateTime.Parse(txtDurchfuehrungsDatum.Text) < DateTime.Today)
                     {
@@ -430,18 +433,18 @@ namespace Leasing.forms
                         return;
                     }
 
-                    objDienstleistung.DurchfuehrungsDatum = txtDurchfuehrungsDatum.Text;
+                    _objDienstleistung.DurchfuehrungsDatum = txtDurchfuehrungsDatum.Text;
                 }
                 else
                 {
                     lblError.Text = "Bitte geben Sie ein gültiges Datum ein.";
                     return;
                 }
-                objDienstleistung.Bemerkung = txtBemerkung.Text;
+                _objDienstleistung.Bemerkung = txtBemerkung.Text;
             }
 
-            Session["objDienstleistung"] = objDienstleistung;
-            Response.Redirect("Change81_4.aspx?AppID=" + Session["AppID"].ToString());
+            Session["objDienstleistung"] = _objDienstleistung;
+            Response.Redirect("Change81_4.aspx?AppID=" + Session["AppID"]);
         }
 
         protected void SucheZulassungskreis(object sender, EventArgs e)
@@ -455,7 +458,7 @@ namespace Leasing.forms
                 return;
             }
 
-            String zulassungskreis = objDienstleistung.KreisSuche(Session["AppID"].ToString(),
+            String zulassungskreis = _objDienstleistung.KreisSuche(Session["AppID"].ToString(),
                 Session.SessionID, this, txtHalterPLZ.Text);
 
             if (zulassungskreis.IsNullOrEmpty())
@@ -465,27 +468,27 @@ namespace Leasing.forms
             }
             else
             {
-                objDienstleistung.Kreis = zulassungskreis;
+                _objDienstleistung.Kreis = zulassungskreis;
                 txtKreis.Text = zulassungskreis;
             }
 
-            Session["objDienstleistung"] = objDienstleistung;
+            Session["objDienstleistung"] = _objDienstleistung;
 
         }
 
         protected void HalterLandChanged(object sender, EventArgs e)
         {
-            ApplyPLZFormat(ddlHalterLand, revHalterPLZ);
+            ApplyPlzFormat(ddlHalterLand, revHalterPLZ);
         }
 
         protected void EmpfaengerLandChanged(object sender, EventArgs e)
         {
-            ApplyPLZFormat(ddlEmpfaengerLand, revEmpfaengerPLZ);
+            ApplyPlzFormat(ddlEmpfaengerLand, revEmpfaengerPLZ);
         }
 
-        private void ApplyPLZFormat(DropDownList ddl, RegularExpressionValidator rev)
+        private void ApplyPlzFormat(DropDownList ddl, RegularExpressionValidator rev)
         {
-            var row = objDienstleistung.LaenderPLZ.Select("Land1='" + ddl.SelectedValue + "'").FirstOrDefault();
+            var row = _objDienstleistung.LaenderPlz.Select("Land1='" + ddl.SelectedValue + "'").FirstOrDefault();
             
             if (row != null)
             {

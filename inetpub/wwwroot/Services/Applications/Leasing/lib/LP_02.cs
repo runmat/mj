@@ -6,7 +6,7 @@ using CKG.Base.Business;
 using CKG.Base.Common;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using GeneralTools.Models;
+
 
 namespace Leasing.lib
 {
@@ -14,78 +14,26 @@ namespace Leasing.lib
     {
 
         #region " Declarations"
-        String m_strBriefnummer;
-        DateTime _mDatEingangsdatumVon;
-        DateTime m_datEingangsdatumBis;
-        String m_strFahrgestellnummer;
-        String m_strHaendlerID;
-        DataTable m_tblHistory;
-        DataTable m_tableGrund;
-        DataTable m_tblResultModelle;
-        Int32 m_intResultCount;
-        String m_strExpress;
-        String m_auftragsgrund;
-        String m_strWunschkennzeichen;
-        String m_equ;
-        String m_Kreis;
-        String m_ReserviertAuf;
-        String m_Versicherungstraeger;
-        String m_DurchfuehrungsDatum;
-        String m_Bemerkung;
-        String evbNummer;
-        String m_strHalterName1;
-        String m_strHalterName2;
-        String m_strHalterOrt;
-        String m_strHalterPLZ;
-        String m_strHalterStrasse;
-        String m_strHalterHausnr;
-        String m_strStandortName1;
-        String m_strStandortName2;
-        String m_strStandortOrt;
-        String m_strStandortPLZ;
-        String m_strStandortStrasse;
-        String m_strStandortHausnr;
-        String m_strEmpfaengerName1;
-        String m_strEmpfaengerName2;
-        String m_strEmpfaengerOrt;
-        String m_strEmpfaengerPLZ;
-        String m_strEmpfaengerStrasse;
-        String m_strEmpfaengerHausnr;
-        String strAuftragsstatus;
-        String strAuftragsnummer;
-        String m_strSucheFahrgestellNr;
-        String m_strSucheKennzeichen;
-        String m_strSucheLeasingvertragsNr;
-        String m_strSucheNummerZB2;
-        DataTable m_laenderPlz;
+        DataTable _history;
+        String _auftragsnummer;
+        DataTable _laenderPlz;
 
         #endregion
 
         #region "Properties"
-        public String Equimpent
-        {
-            get { return m_equ; }
-            set { m_equ = value; }
-        }
+        public String Equimpent { get; set; }
 
-        public String Auftragsstatus
-        {
-            get { return strAuftragsstatus; }
-            set { strAuftragsstatus = value; }
-        }
+        public String Auftragsstatus { get; set; }
+
         public string Auftragsnummer { get; set; }
         public string BeauftragungKlartext { get; set; }
 
         public DataTable History
         {
-            get { return m_tblHistory; }
-            set { m_tblHistory = value; }
+            get { return _history; }
+            set { _history = value; }
         }
-        public DataTable ResultModelle
-        {
-            get { return m_tblResultModelle; }
-            set { m_tblResultModelle = value; }
-        }
+        public DataTable ResultModelle { get; set; }
 
         public DataTable Fahrzeuge
         {
@@ -93,175 +41,69 @@ namespace Leasing.lib
             set { m_tblResult = value; }
         }
 
-        public Int32 ResultCount
-        {
-            get { return m_intResultCount; }
-            set { m_intResultCount = value; }
-        }
-        public String SucheFahrgestellNr
-        {
-            get { return m_strSucheFahrgestellNr; }
-            set { m_strSucheFahrgestellNr = value; }
-        }
-        public String Fahrgestellnummer
-        {
-            get { return m_strFahrgestellnummer; }
-            set { m_strFahrgestellnummer = value; }
-        }
-        public String SucheKennzeichen
-        {
-            get { return m_strSucheKennzeichen; }
-            set { m_strSucheKennzeichen = value; }
-        }
+        public Int32 ResultCount { get; set; }
 
-        public String SucheLeasingvertragsNr
-        {
-            get { return m_strSucheLeasingvertragsNr; }
-            set { m_strSucheLeasingvertragsNr = value; }
-        }
-        public String SucheNummerZB2
-        {
-            get { return m_strSucheNummerZB2; }
-            set { m_strSucheNummerZB2 = value; }
-        }
+        public String SucheFahrgestellNr { get; set; }
 
-        public String HalterName1
-        {
-            get { return m_strHalterName1; }
-            set { m_strHalterName1 = value; }
-        }
-        public String HalterName2
-        {
-            get { return m_strHalterName2; }
-            set { m_strHalterName2 = value; }
-        }
+        public String Fahrgestellnummer { get; set; }
 
-        public String HalterOrt
-        {
-            get { return m_strHalterOrt; }
-            set { m_strHalterOrt = value; }
-        }
+        public String SucheKennzeichen { get; set; }
 
-        public String HalterPLZ
-        {
-            get { return m_strHalterPLZ; }
-            set { m_strHalterPLZ = value; }
-        }
+        public String SucheLeasingvertragsNr { get; set; }
 
-        public String HalterStrasse
-        {
-            get { return m_strHalterStrasse; }
-            set { m_strHalterStrasse = value; }
-        }
+        public String SucheNummerZb2 { get; set; }
 
-        public String HalterHausnr
-        {
-            get { return m_strHalterHausnr; }
-            set { m_strHalterHausnr = value; }
-        }
-        public String StandortName1
-        {
-            get { return m_strStandortName1; }
-            set { m_strStandortName1 = value; }
-        }
-        public String StandortName2
-        {
-            get { return m_strStandortName2; }
-            set { m_strStandortName2 = value; }
-        }
-        public String StandortOrt
-        {
-            get { return m_strStandortOrt; }
-            set { m_strStandortOrt = value; }
-        }
-        public String StandortPLZ
-        {
-            get { return m_strStandortPLZ; }
-            set { m_strStandortPLZ = value; }
-        }
-        public String StandortStrasse
-        {
-            get { return m_strStandortStrasse; }
-            set { m_strStandortStrasse = value; }
-        }
-        public String StandortHausnr
-        {
-            get { return m_strStandortHausnr; }
-            set { m_strStandortHausnr = value; }
-        }
-        public String Kreis
-        {
-            get { return m_Kreis; }
-            set { m_Kreis = value; }
-        }
+        public String HalterName1 { get; set; }
 
-        public String Wunschkennzeichen
-        {
-            get { return m_strWunschkennzeichen; }
-            set { m_strWunschkennzeichen = value; }
-        }
-        public String ReserviertAuf
-        {
-            get { return m_ReserviertAuf; }
-            set { m_ReserviertAuf = value; }
-        }
-        public String Versicherungstraeger
-        {
-            get { return m_Versicherungstraeger; }
-            set { m_Versicherungstraeger = value; }
-        }
-        public String EVBNr
-        {
-            get { return evbNummer; }
-            set { evbNummer = value; }
-        }
+        public String HalterName2 { get; set; }
 
-        public String EmpfaengerName1
-        {
-            get { return m_strEmpfaengerName1; }
-            set { m_strEmpfaengerName1 = value; }
-        }
-        public String EmpfaengerName2
-        {
-            get { return m_strEmpfaengerName2; }
-            set { m_strEmpfaengerName2 = value; }
-        }
-        public String EmpfaengerOrt
-        {
-            get { return m_strEmpfaengerOrt; }
-            set { m_strEmpfaengerOrt = value; }
-        }
-        public String EmpfaengerPLZ
-        {
-            get { return m_strEmpfaengerPLZ; }
-            set { m_strEmpfaengerPLZ = value; }
-        }
-        public String EmpfaengerStrasse
-        {
-            get { return m_strEmpfaengerStrasse; }
-            set { m_strEmpfaengerStrasse = value; }
-        }
-        public String EmpfaengerHausnr
-        {
-            get { return m_strEmpfaengerHausnr; }
-            set { m_strEmpfaengerHausnr = value; }
-        }
-        public String DurchfuehrungsDatum
-        {
-            get { return m_DurchfuehrungsDatum; }
-            set { m_DurchfuehrungsDatum = value; }
-        }
+        public String HalterOrt { get; set; }
 
-        public String Bemerkung
-        {
-            get { return m_Bemerkung; }
-            set { m_Bemerkung = value; }
-        }
-        public String Auftragsgrund
-        {
-            get { return m_auftragsgrund; }
-            set { m_auftragsgrund = value; }
-        }
+        public String HalterPlz { get; set; }
+
+        public String HalterStrasse { get; set; }
+
+        public String HalterHausnr { get; set; }
+
+        public String StandortName1 { get; set; }
+
+        public String StandortName2 { get; set; }
+
+        public String StandortOrt { get; set; }
+
+        public String StandortPlz { get; set; }
+
+        public String StandortStrasse { get; set; }
+
+        public String StandortHausnr { get; set; }
+
+        public String Kreis { get; set; }
+
+        public String Wunschkennzeichen { get; set; }
+
+        public String ReserviertAuf { get; set; }
+
+        public String Versicherungstraeger { get; set; }
+
+        public String EvbNr { get; set; }
+
+        public String EmpfaengerName1 { get; set; }
+
+        public String EmpfaengerName2 { get; set; }
+
+        public String EmpfaengerOrt { get; set; }
+
+        public String EmpfaengerPlz { get; set; }
+
+        public String EmpfaengerStrasse { get; set; }
+
+        public String EmpfaengerHausnr { get; set; }
+
+        public String DurchfuehrungsDatum { get; set; }
+
+        public String Bemerkung { get; set; }
+
+        public String Auftragsgrund { get; set; }
 
         public string EvbNrSingle { get; set; }
 
@@ -269,11 +111,11 @@ namespace Leasing.lib
 
         public DateTime? EvbGueltigBis { get; set; }
 
-        public DataTable LaenderPLZ
+        public DataTable LaenderPlz
         {
             get
             {
-                if (m_laenderPlz == null)
+                if (_laenderPlz == null)
                 {
                     var currentPage = PageHelper.GetCurrentPage();
                     var proxy = DynSapProxy.getProxy("Z_M_Land_Plz_001", ref m_objApp, ref m_objUser, ref currentPage);
@@ -293,10 +135,10 @@ namespace Leasing.lib
                     }
                     result.AcceptChanges();
 
-                    m_laenderPlz = result;
+                    _laenderPlz = result;
                 }
 
-                return m_laenderPlz;
+                return _laenderPlz;
             }
         }
         #endregion
@@ -305,15 +147,13 @@ namespace Leasing.lib
             : base(ref objUser, objApp, strFilename)
         { }
 
-        public void FillHistory(String strAppID, String strSessionID, String strAmtlKennzeichen, String strFahrgestellnummer, String strBriefnummer, String strOrdernummer, Page page)
+        public void FillHistory(String appId, String sessionId, String strAmtlKennzeichen, String strFahrgestellnummer, String strBriefnummer, String strOrdernummer, Page page)
         {
             m_strClassAndMethod = "LP_02.FillHistory";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
+            m_strAppID = appId;
+            m_strSessionID = sessionId;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-
-            DataTable tblFahrzeugeSap = new DataTable();
 
             try
             {
@@ -328,9 +168,9 @@ namespace Leasing.lib
 
                 myProxy.callBapi();
 
-                m_tblHistory = myProxy.getExportTable("GT_WEB");
-                m_intResultCount = Convert.ToInt32(myProxy.getExportParameter("E_COUNTER"));
-                if (m_intResultCount > 1)
+                _history = myProxy.getExportTable("GT_WEB");
+                ResultCount = Convert.ToInt32(myProxy.getExportParameter("E_COUNTER"));
+                if (ResultCount > 1)
                 {
                     m_tblResult = myProxy.getExportTable("ET_FAHRG");
                     m_tblResult.Columns.Add("DISPLAY");
@@ -338,7 +178,7 @@ namespace Leasing.lib
                     {
                         foreach (DataRow row in m_tblResult.Rows)
                         {
-                            String strTemp = row["ZZFAHRG"].ToString() + ", " + row["LIZNR"].ToString() + ", " + row["ZZKENN"].ToString();
+                            String strTemp = row["ZZFAHRG"] + ", " + row["LIZNR"] + ", " + row["ZZKENN"];
                             row["DISPLAY"] = strTemp;
                         }
                     }
@@ -347,7 +187,7 @@ namespace Leasing.lib
 
                 }
 
-                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR + ", ZZBRIEF=" + strBriefnummer.ToUpper() + ", ZFAHRG=" + strFahrgestellnummer.ToUpper() + ", ZZREF1=" + strOrdernummer.ToUpper() + ", ZZKENN=" + strAmtlKennzeichen.ToUpper() + ", Count=" + m_intResultCount.ToString(), ref m_tblHistory, false);
+                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR + ", ZZBRIEF=" + strBriefnummer.ToUpper() + ", ZFAHRG=" + strFahrgestellnummer.ToUpper() + ", ZZREF1=" + strOrdernummer.ToUpper() + ", ZZKENN=" + strAmtlKennzeichen.ToUpper() + ", Count=" + ResultCount, ref _history);
 
             }
             catch (Exception ex)
@@ -366,23 +206,19 @@ namespace Leasing.lib
                         m_intStatus = -9999;
                         break;
                 }
-                WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + ", ZZBRIEF=" + strBriefnummer.ToUpper() + ", ZFAHRG=" + strFahrgestellnummer.ToUpper() + ", ZZREF1=" + strOrdernummer.ToUpper() + ", ZZKENN=" + strAmtlKennzeichen.ToUpper() + ", Count=" + m_intResultCount.ToString(), ref m_tblHistory, false);
+                WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + ", ZZBRIEF=" + strBriefnummer.ToUpper() + ", ZFAHRG=" + strFahrgestellnummer.ToUpper() + ", ZZREF1=" + strOrdernummer.ToUpper() + ", ZZKENN=" + strAmtlKennzeichen.ToUpper() + ", Count=" + ResultCount, ref _history);
 
             }
 
         }
-        public void GiveCars(String strAppID, String strSessionID, Page page)
+        public void GiveCars(String appId, String sessionId, Page page)
         {
-            DataTable tableGrund = new DataTable();
-            DataTable tableFahrzeuge = new DataTable();
 
             m_strClassAndMethod = "LP_02.GiveCars";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
+            m_strAppID = appId;
+            m_strSessionID = sessionId;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-
-            DataTable tblFahrzeugeSap = new DataTable();
 
             try
             {
@@ -390,17 +226,16 @@ namespace Leasing.lib
 
 
                 myProxy.setImportParameter("I_KUNNR", m_objUser.KUNNR.PadLeft(10, '0'));
-                myProxy.setImportParameter("I_LICENSE_NUM", m_strSucheKennzeichen);
-                myProxy.setImportParameter("I_CHASSIS_NUM", m_strSucheFahrgestellNr);
-                myProxy.setImportParameter("I_LIZNR", m_strSucheLeasingvertragsNr);
-                myProxy.setImportParameter("I_TIDNR", m_strSucheNummerZB2);
+                myProxy.setImportParameter("I_LICENSE_NUM", SucheKennzeichen);
+                myProxy.setImportParameter("I_CHASSIS_NUM", SucheFahrgestellNr);
+                myProxy.setImportParameter("I_LIZNR", SucheLeasingvertragsNr);
+                myProxy.setImportParameter("I_TIDNR", SucheNummerZb2);
 
 
                 myProxy.callBapi();
 
-                m_tableGrund = myProxy.getExportTable("GT_GRU");
                 m_tblResult = myProxy.getExportTable("GT_WEB");
-                m_tblResult.Columns.Add("STATUS", Type.GetType("System.String"));
+                m_tblResult.Columns.Add("STATUS", typeof(String));
                 m_intStatus = 0;
 
                 foreach (DataRow row in m_tblResult.Rows)
@@ -417,9 +252,9 @@ namespace Leasing.lib
                     m_strMessage = "Keine Informationen gefunden.";
                 }
 
-                CreateOutPut(m_tblResult, strAppID);
+                CreateOutPut(m_tblResult, appId);
 
-                WriteLogEntry(true, "FahrgestellNr=" + m_strSucheFahrgestellNr + ", LVNr.=" + m_strSucheLeasingvertragsNr + ", KfzKz.=" + m_strSucheKennzeichen + ", KUNNR=" + m_objUser.KUNNR, ref m_tblResult, false);
+                WriteLogEntry(true, "FahrgestellNr=" + SucheFahrgestellNr + ", LVNr.=" + SucheLeasingvertragsNr + ", KfzKz.=" + SucheKennzeichen + ", KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
 
             }
             catch (Exception ex)
@@ -439,19 +274,17 @@ namespace Leasing.lib
                         m_strMessage = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
                         break;
                 }
-                WriteLogEntry(false, "FahrgestellNr=" + m_strSucheFahrgestellNr + ", LVNr.=" + m_strSucheLeasingvertragsNr + ", KfzKz.=" + m_strSucheKennzeichen + ", KUNNR=" + m_objUser.KUNNR, ref m_tblResult, false);
+                WriteLogEntry(false, "FahrgestellNr=" + SucheFahrgestellNr + ", LVNr.=" + SucheLeasingvertragsNr + ", KfzKz.=" + SucheKennzeichen + ", KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
 
         }
-        public void Anfordern(String strAppID, String strSessionID, Page page)
+        public void Anfordern(String appId, String sessionId, Page page)
         {
             m_strClassAndMethod = "LP_02.Anfordern";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
+            m_strAppID = appId;
+            m_strSessionID = sessionId;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-
-            DataTable tblFahrzeugeSap = new DataTable();
 
             try
             {
@@ -459,69 +292,66 @@ namespace Leasing.lib
 
 
                 myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
-                myProxy.setImportParameter("I_AUGRUND", m_auftragsgrund.Split('-')[0].PadLeft(18, '0'));
-                myProxy.setImportParameter("I_EXPRESS", m_strExpress);
+                myProxy.setImportParameter("I_AUGRUND", Auftragsgrund.Split('-')[0].PadLeft(18, '0'));
 
-                myProxy.setImportParameter("I_EQUNR", m_equ);
-                myProxy.setImportParameter("I_CHASSIS_NUM", m_strFahrgestellnummer);
-                myProxy.setImportParameter("I_WUKENNZ", m_Kreis + "-" + m_strWunschkennzeichen);
+                myProxy.setImportParameter("I_EQUNR", Equimpent);
+                myProxy.setImportParameter("I_CHASSIS_NUM", Fahrgestellnummer);
+                myProxy.setImportParameter("I_WUKENNZ", Kreis + "-" + Wunschkennzeichen);
 
-                myProxy.setImportParameter("I_RES_AUF", m_ReserviertAuf);
-                myProxy.setImportParameter("I_VERSTR", m_Versicherungstraeger);
-                myProxy.setImportParameter("I_LIEFDAT", m_DurchfuehrungsDatum);
+                myProxy.setImportParameter("I_RES_AUF", ReserviertAuf);
+                myProxy.setImportParameter("I_VERSTR", Versicherungstraeger);
+                myProxy.setImportParameter("I_LIEFDAT", DurchfuehrungsDatum);
 
-                myProxy.setImportParameter("I_BEMERKUNG", m_Bemerkung);
-                if (m_objUser.UserName.Length > 12)
-                { myProxy.setImportParameter("I_USER", m_objUser.UserName.Substring(0, 11)); }
-                else
-                { myProxy.setImportParameter("I_USER", m_objUser.UserName); }
+                myProxy.setImportParameter("I_BEMERKUNG", Bemerkung);
+                myProxy.setImportParameter("I_USER",
+                    m_objUser.UserName.Length > 12 ? m_objUser.UserName.Substring(0, 11) : m_objUser.UserName);
 
                 if (!string.IsNullOrEmpty(m_objUser.Store))
                     myProxy.setImportParameter("I_INFO_ZUM_AG", m_objUser.Store);
 
-                myProxy.setImportParameter("I_ZZVSNR", evbNummer);
+                myProxy.setImportParameter("I_ZZVSNR", EvbNr);
 
                 DataTable tblPartner = myProxy.getImportTable("T_PARTNERS");
 
                 DataRow objPartner;
-                if (m_strHalterName1.Length + m_strHalterName2.Length + m_strHalterStrasse.Length + m_strHalterPLZ.Length + m_strHalterOrt.Length > 0)
+                if (HalterName1.Length + HalterName2.Length + HalterStrasse.Length + HalterPlz.Length + HalterOrt.Length > 0)
                 {
                     objPartner = tblPartner.NewRow();
                     objPartner["Parvw"] = "ZH";
-                    objPartner["Name1"] = m_strHalterName1;
-                    objPartner["Name2"] = m_strHalterName2;
-                    objPartner["Street"] = m_strHalterStrasse;
-                    objPartner["House_Num1"] = m_strHalterHausnr;
-                    objPartner["Post_Code1"] = m_strHalterPLZ;
-                    objPartner["City1"] = m_strHalterOrt;
+                    objPartner["Name1"] = HalterName1;
+                    objPartner["Name2"] = HalterName2;
+                    objPartner["Street"] = HalterStrasse;
+                    objPartner["House_Num1"] = HalterHausnr;
+                    objPartner["Post_Code1"] = HalterPlz;
+                    objPartner["City1"] = HalterOrt;
                     objPartner["State"] = "DE";
                     tblPartner.Rows.Add(objPartner);
                 }
 
-                if (m_strEmpfaengerName1.Length + m_strEmpfaengerName2.Length + m_strEmpfaengerStrasse.Length + m_strEmpfaengerPLZ.Length + m_strEmpfaengerOrt.Length > 0)
+                if (EmpfaengerName1.Length + EmpfaengerName2.Length + EmpfaengerStrasse.Length + EmpfaengerPlz.Length + EmpfaengerOrt.Length > 0)
                 {
                     objPartner = tblPartner.NewRow();
                     objPartner["Parvw"] = "ZE";
-                    objPartner["Name1"] = m_strEmpfaengerName1;
-                    objPartner["Name2"] = m_strEmpfaengerName2;
-                    objPartner["Street"] = m_strEmpfaengerStrasse;
-                    objPartner["House_Num1"] = m_strEmpfaengerHausnr;
-                    objPartner["Post_Code1"] = m_strEmpfaengerPLZ;
-                    objPartner["City1"] = m_strEmpfaengerOrt;
+                    objPartner["Name1"] = EmpfaengerName1;
+                    objPartner["Name2"] = EmpfaengerName2;
+                    objPartner["Street"] = EmpfaengerStrasse;
+                    objPartner["House_Num1"] = EmpfaengerHausnr;
+                    objPartner["Post_Code1"] = EmpfaengerPlz;
+                    objPartner["City1"] = EmpfaengerOrt;
                     objPartner["State"] = "DE";
                     tblPartner.Rows.Add(objPartner);
                 }
 
                 myProxy.callBapi();
-                strAuftragsnummer = myProxy.getExportParameter("O_VBELN").TrimStart('0');
-                Auftragsnummer = strAuftragsnummer;
-                strAuftragsstatus = "Vorgang OK";
+                _auftragsnummer = myProxy.getExportParameter("O_VBELN").TrimStart('0');
+                Auftragsnummer = _auftragsnummer;
+                Auftragsstatus = "Vorgang OK";
 
-                if (strAuftragsnummer.Length == 0)
+                if (_auftragsnummer.Length == 0)
                 {
                     m_intStatus = -2100;
                     m_strMessage = "Ihre Anforderung konnte im System nicht erstellt werden.";
-                    strAuftragsstatus = "Keine Auftragsnummer erzeugt.";
+                    Auftragsstatus = "Keine Auftragsnummer erzeugt.";
                 }
 
             }
@@ -530,7 +360,7 @@ namespace Leasing.lib
                 switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
                 {
                     case "NO_DATA":
-                        strAuftragsstatus = "ZBII zum Kunden nicht vorhanden";
+                        Auftragsstatus = "ZBII zum Kunden nicht vorhanden";
                         m_intStatus = -4411;
                         break;
                     case "ERR_HALTER":
@@ -538,115 +368,115 @@ namespace Leasing.lib
                         m_strMessage = "Kein Halter vorhanden.";
                         break;
                     case "ERR_STANDORT":
-                        strAuftragsstatus = "Fehler bei Standortsuche";
+                        Auftragsstatus = "Fehler bei Standortsuche";
                         m_intStatus = -4413;
                         break;
                     case "ERR_INV_KUNNR":
-                        strAuftragsstatus = "Unbekannte Kunnr!";
+                        Auftragsstatus = "Unbekannte Kunnr!";
                         m_intStatus = -4415;
                         break;
                     case "ERR_NO_ZULDAT":
-                        strAuftragsstatus = "Kein Zulassungsdatum angegeben!";
+                        Auftragsstatus = "Kein Zulassungsdatum angegeben!";
                         m_intStatus = -4416;
                         break;
                     case "ERR_NO_TRANSNAME":
-                        strAuftragsstatus = "Kein Transaktionsname angegeben!";
+                        Auftragsstatus = "Kein Transaktionsname angegeben!";
                         m_intStatus = -4418;
                         break;
                     case "ERR_INV_FAHRG":
-                        strAuftragsstatus = "Ungültige Fahrgestellnummer!";
+                        Auftragsstatus = "Ungültige Fahrgestellnummer!";
                         m_intStatus = -4419;
                         break;
                     case "ERR_INV_BRIEFNR":
-                        strAuftragsstatus = "Ungültige Briefnummer!";
+                        Auftragsstatus = "Ungültige Briefnummer!";
                         m_intStatus = -4420;
                         break;
                     case "ERR_NO_LIF":
-                        strAuftragsstatus = "Kein Zulassungsdienst zu Zulassungsstelle gefunden!";
+                        Auftragsstatus = "Kein Zulassungsdienst zu Zulassungsstelle gefunden!";
                         m_intStatus = -4421;
                         break;
                     case "ERR_INV_PARVW":
-                        strAuftragsstatus = "Ungültige Partnerrolle angegeben!";
+                        Auftragsstatus = "Ungültige Partnerrolle angegeben!";
                         m_intStatus = -4422;
                         break;
                     case "ERR_INV_ZH":
-                        strAuftragsstatus = "Ungültige Kundennummer für Halter!";
+                        Auftragsstatus = "Ungültige Kundennummer für Halter!";
                         m_intStatus = -4423;
                         break;
                     case "ERR_INV_ZH_ABWADR":
-                        strAuftragsstatus = "Fehlende Information zu abw. Adresse für Halter!";
+                        Auftragsstatus = "Fehlende Information zu abw. Adresse für Halter!";
                         m_intStatus = -4424;
                         break;
                     case "ERR_INV_ZS":
-                        strAuftragsstatus = "Ungültige Kundennummer für Empfänger Brief!";
+                        Auftragsstatus = "Ungültige Kundennummer für Empfänger Brief!";
                         m_intStatus = -4425;
                         break;
                     case "ERR_INV_ZS_ABWADR":
-                        strAuftragsstatus = "Fehlende Information zu abw. Adresse für Empfänger Brief!";
+                        Auftragsstatus = "Fehlende Information zu abw. Adresse für Empfänger Brief!";
                         m_intStatus = -4426;
                         break;
                     case "ERR_INV_ZE":
-                        strAuftragsstatus = "Ungültige Kundennummer für Empänger Schein & Schilder!";
+                        Auftragsstatus = "Ungültige Kundennummer für Empänger Schein & Schilder!";
                         m_intStatus = -4427;
                         break;
                     case "ERR_INV_ZE_ABWADR":
-                        strAuftragsstatus = "Fehlende Information zu abw. Adresse für Empfänger Schein & Schilder!";
+                        Auftragsstatus = "Fehlende Information zu abw. Adresse für Empfänger Schein & Schilder!";
                         m_intStatus = -4428;
                         break;
                     case "ERR_INV_ZA":
-                        strAuftragsstatus = "Ungültige Kundennummer für Standort!";
+                        Auftragsstatus = "Ungültige Kundennummer für Standort!";
                         m_intStatus = -4429;
                         break;
                     case "ERR_INV_ZA_ABWADR":
-                        strAuftragsstatus = "Fehlende Information zu abw. Adresse für Standort!";
+                        Auftragsstatus = "Fehlende Information zu abw. Adresse für Standort!";
                         m_intStatus = -4430;
                         break;
                     case "ERR_SAVE":
-                        strAuftragsstatus = "Fehler beim Speichern!";
+                        Auftragsstatus = "Fehler beim Speichern!";
                         m_intStatus = -4431;
                         break;
                     case "ERR_INV_VERSART_STR1":
-                        strAuftragsstatus = "Fehlerhafte Versandart Strecke 1!";
+                        Auftragsstatus = "Fehlerhafte Versandart Strecke 1!";
                         m_intStatus = -4432;
                         break;
                     case "ERR_INV_VERSART_STR2":
-                        strAuftragsstatus = "Fehlerhafte Versandart Strecke 2!";
+                        Auftragsstatus = "Fehlerhafte Versandart Strecke 2!";
                         m_intStatus = -4433;
                         break;
                     case "ERR_INV_ZV":
-                        strAuftragsstatus = "Ungültige Kundennummer für Versicherer!";
+                        Auftragsstatus = "Ungültige Kundennummer für Versicherer!";
                         m_intStatus = -4434;
                         break;
                     case "ERR_INV_ZC":
-                        strAuftragsstatus = "Ungültige Kundennummer für abw. Versicherungsnehmer!";
+                        Auftragsstatus = "Ungültige Kundennummer für abw. Versicherungsnehmer!";
                         m_intStatus = -4435;
                         break;
                     case "ERR_INV_ZC_ABWADR":
-                        strAuftragsstatus = "Fehlende Information zu abw. Adresse für abw. Versicherungsnehmer!";
+                        Auftragsstatus = "Fehlende Information zu abw. Adresse für abw. Versicherungsnehmer!";
                         m_intStatus = -4436;
                         break;
                     case "ERR_NO_ZH":
-                        strAuftragsstatus = "Kein Halter angegeben!";
+                        Auftragsstatus = "Kein Halter angegeben!";
                         m_intStatus = -4437;
                         break;
                     case "ERR_NO_ZS":
-                        strAuftragsstatus = "Kein Empfänger Brief angegeben!";
+                        Auftragsstatus = "Kein Empfänger Brief angegeben!";
                         m_intStatus = -4438;
                         break;
                     case "ERR_NO_ZE":
-                        strAuftragsstatus = "Kein Empfänger Schein & Schilder angegeben!";
+                        Auftragsstatus = "Kein Empfänger Schein & Schilder angegeben!";
                         m_intStatus = -4439;
                         break;
                     case "ERR_SONST":
-                        strAuftragsstatus = "Unbekannter Fehler";
+                        Auftragsstatus = "Unbekannter Fehler";
                         m_intStatus = -4440;
                         break;
                     case "ERR_CS_MEL":
-                        strAuftragsstatus = "Fehler bei anlegen CS-Meldung";
+                        Auftragsstatus = "Fehler bei anlegen CS-Meldung";
                         m_intStatus = -4441;
                         break;
                     default:
-                        strAuftragsstatus = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
+                        Auftragsstatus = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
                         m_intStatus = -9999;
                         break;
                 }
@@ -656,7 +486,8 @@ namespace Leasing.lib
         }
 
 
-        public void AnfordernCustom(String strAppID, String strSessionID, Page page)
+        // ReSharper disable once FunctionComplexityOverflow
+        public void AnfordernCustom(String appId, String sessionId, Page page)
         {
 
             try
@@ -666,7 +497,7 @@ namespace Leasing.lib
 
                 myProxy.setImportParameter("AG", m_objUser.KUNNR.PadLeft(10, '0'));
                 myProxy.setImportParameter("WEB_USER", m_objUser.UserName);
-                myProxy.setImportParameter("I_MATNR", m_auftragsgrund.Split('-')[0].PadLeft(18, '0'));
+                myProxy.setImportParameter("I_MATNR", Auftragsgrund.Split('-')[0].PadLeft(18, '0'));
                 myProxy.setImportParameter("I_NEU", "X");
 
                 DataTable auftragsdaten = myProxy.getImportTable("GT_AUF");
@@ -689,10 +520,14 @@ namespace Leasing.lib
                         newRow["EVBBISDAT"] = EvbGueltigBis;
                     }
 
-                    newRow["ZULDAT"] = DurchfuehrungsDatum;
+                    if (!String.IsNullOrEmpty(DurchfuehrungsDatum))
+                    {
+                        newRow["ZULDAT"] = DurchfuehrungsDatum;
+                    }
+
                     newRow["ZZBRIEF"] = row["NummerZB2"];
                     newRow["ZZREFNR"] = row["Leasingnummer"];
-                    newRow["RES_PIN"] = m_ReserviertAuf;
+                    newRow["RES_PIN"] = ReserviertAuf;
 
                     newRow["WUNSCHKENNZ"] = Kreis + "-" + Wunschkennzeichen;
                     newRow["VERSICHERUNG"] = Versicherungstraeger;
@@ -717,30 +552,30 @@ namespace Leasing.lib
 
 
 
-                if (m_strHalterName1.Length + m_strHalterName2.Length + m_strHalterStrasse.Length +
-                    m_strHalterPLZ.Length + m_strHalterOrt.Length > 0)
+                if (HalterName1.Length + HalterName2.Length + HalterStrasse.Length +
+                    HalterPlz.Length + HalterOrt.Length > 0)
                 {
                     partnerRow = partner.NewRow();
                     partnerRow["PARTN_ROLE"] = "ZH";
-                    partnerRow["NAME"] = m_strHalterName1;
-                    partnerRow["NAME_2"] = m_strHalterName2;
-                    partnerRow["STREET"] = m_strHalterStrasse + SetSpaceInHouseNumber(m_strHalterHausnr);
-                    partnerRow["POSTL_CODE"] = m_strHalterPLZ;
-                    partnerRow["CITY"] = m_strHalterOrt;
+                    partnerRow["NAME"] = HalterName1;
+                    partnerRow["NAME_2"] = HalterName2;
+                    partnerRow["STREET"] = HalterStrasse + SetSpaceInHouseNumber(HalterHausnr);
+                    partnerRow["POSTL_CODE"] = HalterPlz;
+                    partnerRow["CITY"] = HalterOrt;
                     partnerRow["COUNTRY"] = "DE";
                     partner.Rows.Add(partnerRow);
                 }
 
-                if (m_strEmpfaengerName1.Length + m_strEmpfaengerName2.Length + m_strEmpfaengerStrasse.Length +
-                    m_strEmpfaengerPLZ.Length + m_strEmpfaengerOrt.Length > 0)
+                if (EmpfaengerName1.Length + EmpfaengerName2.Length + EmpfaengerStrasse.Length +
+                    EmpfaengerPlz.Length + EmpfaengerOrt.Length > 0)
                 {
                     partnerRow = partner.NewRow();
                     partnerRow["PARTN_ROLE"] = "ZE";
-                    partnerRow["NAME"] = m_strEmpfaengerName1;
-                    partnerRow["NAME_2"] = m_strEmpfaengerName2;
-                    partnerRow["STREET"] = m_strEmpfaengerStrasse + SetSpaceInHouseNumber(m_strEmpfaengerHausnr);
-                    partnerRow["POSTL_CODE"] = m_strEmpfaengerPLZ;
-                    partnerRow["CITY"] = m_strEmpfaengerOrt;
+                    partnerRow["NAME"] = EmpfaengerName1;
+                    partnerRow["NAME_2"] = EmpfaengerName2;
+                    partnerRow["STREET"] = EmpfaengerStrasse + SetSpaceInHouseNumber(EmpfaengerHausnr);
+                    partnerRow["POSTL_CODE"] = EmpfaengerPlz;
+                    partnerRow["CITY"] = EmpfaengerOrt;
                     partnerRow["COUNTRY"] = "DE";
                     partner.Rows.Add(partnerRow);
                 }
@@ -771,7 +606,7 @@ namespace Leasing.lib
             }
             catch (Exception ex)
             {
-                strAuftragsstatus = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
+                Auftragsstatus = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
                 m_intStatus = -9999;
             }
             
@@ -779,7 +614,7 @@ namespace Leasing.lib
         }
 
 
-        String SetSpaceInHouseNumber(String houseNumber)
+        static String SetSpaceInHouseNumber(String houseNumber)
         {
             if (!String.IsNullOrEmpty(houseNumber))
             {
@@ -792,7 +627,7 @@ namespace Leasing.lib
 
         public DataTable GiveResultStructure(Page page)
         {
-            DataTable tblTemp = new DataTable();
+            var tblTemp = new DataTable();
 
             tblTemp.Columns.Add("EQUNR", typeof(String));
             tblTemp.Columns.Add("MANDT", typeof(String));
@@ -825,38 +660,14 @@ namespace Leasing.lib
             return datTemp;
 
         }
-        public bool IsDate(string strDate)
-        {
-            if (strDate == null)
-            {
-                strDate = "";
-            }
-            if (strDate.Length > 0)
-            {
-                DateTime dummyDate;
-                try
-                {
-                    dummyDate = DateTime.Parse(strDate);
-                }
-                catch
-                {
-                    return false;
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+  
         public bool IsAlphaNumeric(String str)
         {
             Regex regexAlphaNum = new Regex("[^a-zA-Z0-9]");
             return !regexAlphaNum.IsMatch(str);
         }
 
-        public string KreisSuche(String strAppID, String strSessionID, Page page, String plz)
+        public string KreisSuche(String appId, String sessionId, Page page, String plz)
         {
             string kreiskennzeichen = "";
 
