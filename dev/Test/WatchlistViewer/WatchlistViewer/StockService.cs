@@ -22,7 +22,7 @@ namespace WatchlistViewer
             {
                 var itemArray = new string[5];
                 for (var j = 0; j < 5; j++)
-                    itemArray[j] = sArray[index + j].Trim();
+                    itemArray[j] = sArray[index + j].Replace("IDC Forex", "Forex").Trim();
 
                 var subItems = itemArray[1].Split(' ');
                 var subItemsIndex = (subItems[0].Contains(":") ? 0 : 1);

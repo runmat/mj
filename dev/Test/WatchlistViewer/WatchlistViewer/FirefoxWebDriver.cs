@@ -40,16 +40,12 @@ namespace WatchlistViewer
         {
             List<Stock> parsedStocks;
 
-            try
-            {
 #if TEST
                 var stockData = "Name Letzter Kurs* Aktuell Volumen Intraday-Spanne\r\nDAX\r\n846900 12:57:30 Xetra 11.337,73 Pkt. +10,54\r\n+0,09% 10\r\n28.997.363 11.353,25\r\n11.301,34\r\nSiemens\r\n723610 12:56:11 Xetra 99,56 EUR +0,63\r\n+0,64% 55\r\n609.071 99,69\r\n99,00\r\nEuro / US Dollar (EUR/...\r\n13:12:30 Außerbörslich 1,1226 USD +0,0023\r\n+0,20% -\r\n- 1,1245\r\n1,1194\r\nEuro / Schweizer Frank...\r\n13:12:28 HSBC 1,0645 CHF -0,0050\r\n-0,47% -\r\n- 1,0675\r\n1,0635\r\nGoldpreis (Spot)\r\n13:12:29 Außerbörslich 1.208,58 USD -1,69\r\n-0,14% -\r\n- 1.212,50\r\n1.204,10\r\ndb Ölpreis Brent\r\n13:12:27 Deutsche_Bank 61,01 USD +0,37\r\n+0,61% -\r\n- 61,74\r\n60,82\r\nNational Bank of Greece\r\nA1WZMS 12:57:24 Frankfurt 1,38 EUR -0,11\r\n-7,18% 20.000\r\n611.731 1,49\r\n1,36\r\nOSRAM Licht\r\nLED400 12:56:53 Xetra 40,72 EUR -0,96\r\n-2,29% 21\r\n125.108 41,08\r\n40,58\r\nDow_Jones\r\n969420 22:33:58 Dow_Jones 18.214,42 Pkt. -10,15\r\n-0,06% -\r\n81.500.575 18.239,43\r\n18.157,07";
 #else
                 var stockData = _driver.FindElementById("TABLE").Text;
 #endif
                 parsedStocks = StockService.ParseStocks(stockData);
-            }
-            catch { parsedStocks = new List<Stock>(); }
 
             return parsedStocks;
         }
