@@ -113,19 +113,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Controls\BankdatenAdresse.ascx.cs">
+      <DependentUpon>BankdatenAdresse.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\BankdatenAdresse.ascx.designer.cs">
+      <DependentUpon>BankdatenAdresse.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.cs">
       <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\DialogErfassungDLBezeichnung.ascx.designer.cs">
       <DependentUpon>DialogErfassungDLBezeichnung.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="forms\AHVersandChange.aspx.designer.cs">
-      <DependentUpon>AHVersandChange.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\AHVersandChange_2.aspx.cs">
       <DependentUpon>AHVersandChange_2.aspx</DependentUpon>
@@ -518,6 +518,7 @@
     <Compile Include="lib\Models\DataModels\Barabhebung.cs" />
     <Compile Include="lib\Models\DataModels\AmtDispos.cs" />
     <Compile Include="lib\Models\DataModels\Kennzeichenetikett.cs" />
+    <Compile Include="lib\Models\DataModels\AmtDisposSql.cs" />
     <Compile Include="lib\Models\DataModels\RechnungsanhangDaten.cs" />
     <Compile Include="lib\Models\DataModels\NochNichtAbgesendeterVorgang.cs" />
     <Compile Include="lib\Models\DataModels\Userdaten.cs" />
@@ -608,8 +609,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\BankdatenAdresse.ascx" />
     <Content Include="Controls\DialogErfassungDLBezeichnung.ascx" />
-    <Content Include="forms\AHVersandChange.aspx" />
     <Content Include="forms\AHVersandChange_2.aspx" />
     <Content Include="forms\AHVersandListe.aspx" />
     <Content Include="forms\Change01ZLD.aspx" />
@@ -754,7 +755,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_StartDate="2012/9/4" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="AssemblyInfo.cs" BuildVersion_StartDate="2012/9/4" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

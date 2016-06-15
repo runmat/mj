@@ -10,6 +10,7 @@
         <li class="active"><a href="#" id="tabIds" data-toggle="tab">Nach Sendungs-ID</a></li>
         <li><a href="#" id="tabDocs" data-toggle="tab">Nach Dokumentendaten</a></li>
         <li><a href="#" id="tabFin" data-toggle="tab">Nach Fahrzeugdaten</a></li>
+        @if (Model.ShowPlaceSearch) {<li><a href="#" id="tabPlace" data-toggle="tab">Nach Fahrzeugstandort</a></li> }
     </ul>
 </div>
 
@@ -24,6 +25,12 @@
     <div id="searchBoxFin" class="divFin hide">
         @Html.Partial("VerfolgungMulti/Fin/Suche", Model.SendungsAuftragFinSelektor)
     </div>
+    
+    if (Model.ShowPlaceSearch) {
+    <div id="searchBoxPlace" class="divPlace hide">
+        @Html.Partial("VerfolgungMulti/Place/Suche", Model.SendungsAuftragPlaceSelektor)
+    </div>
+    }
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -37,6 +44,12 @@
     <div id="searchResultFin" class="divFin hide">
         <div id="divGridFin"></div>
     </div>
+    if (Model.ShowPlaceSearch)
+    {
+        <div id="searchResultPlace" class="divPlace hide">
+            <div id="divGridPlace"></div>
+        </div>
+    }
 }
 
 <style type="text/css">
@@ -72,17 +85,26 @@
             if (hrefId == "tabIds") {
                 $(".divDocs").hide();
                 $(".divFin").hide();
+                $(".divPlace").hide();
                 $(".divIds").show();
             }
             if (hrefId == "tabDocs") {
                 $(".divIds").hide();
                 $(".divFin").hide();
+                $(".divPlace").hide();
                 $(".divDocs").show();
             }
             if (hrefId == "tabFin") {
                 $(".divIds").hide();                
                 $(".divDocs").hide();
+                $(".divPlace").hide();
                 $(".divFin").show();
+            }
+            if (hrefId == "tabPlace") {
+                $(".divIds").hide();
+                $(".divDocs").hide();
+                $(".divFin").hide();
+                $(".divPlace").show();
             }
             return true;
         });
@@ -261,6 +283,59 @@
 
     // </Suche nach Fin>
 
+    // <Suche nach Places>
+
+    function ShowCocSendungenPlaces() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowSendungenPlace",
+            loadingShow: false,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowCocSendungenPlaceSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowCocSendungenPlaceSearchResult(result) {
+        SearchFormHide();
+        $("#divGridPlace").html(result);
+
+        // move our Grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridCocSendungenPlace");
+
+        setTimeout(function () { $("#divGridPlace").slideDown(); }, 1000);
+    }
+
+
+    function OnDataBound_GridCocSendungenPlace() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+
+        // prepare multi row selection
+        App.initUniform();
+    }
+
+    function OnColumnShowHide_GridCocSendungenPlace() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+
+    function OnColumnReorder_GridCocSendungenPlace() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    // </Suche nach Places>
 
 
 </script>

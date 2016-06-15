@@ -2,7 +2,7 @@
     Inherits="AppZulassungsdienst.forms.ReportPraegeliste" MasterPageFile="../MasterPage/App.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
+    <script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?22042016"></script>
     <script language="javascript" type="text/javascript">
         function checkZulassungsdatum() {
             var tb = document.getElementById('<%= txtZulDate.ClientID %>');

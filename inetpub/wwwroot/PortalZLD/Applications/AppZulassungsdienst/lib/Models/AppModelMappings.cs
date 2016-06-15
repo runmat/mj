@@ -22,6 +22,7 @@ namespace AppZulassungsdienst.lib.Models
             d.Plz = s.LI_PLZ;
             d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
             d.Strasse = s.LI_STREET;
+            d.Land = s.LAND1;
         }
 
         static private void Map_ZZLD_BAK_To_ZLDKopfdaten(IZZLD_BAK s, ZLDKopfdaten d)
@@ -197,6 +198,7 @@ namespace AppZulassungsdienst.lib.Models
                         d.Inaktiv = s.INAKTIV.XToBool();
                         d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
                         d.KundenNrLbv = s.KUNNR_LF.NotNullOrEmpty().TrimStart('0');
+                        d.Land = s.COUNTRY;
                         d.Landkreis = s.KREISKZ_DIREKT;
                         d.Name1 = s.NAME1;
                         d.Namenserweiterung = s.EXTENSION1;
@@ -538,6 +540,13 @@ namespace AppZulassungsdienst.lib.Models
                         d.Amt = s.AMT;
                         d.MobileUserId = s.MOBUSER;
                         d.MobileUserName = s.NAME;
+                        d.MobilAktiv = s.MOB_AKTIV.XToBool();
+                        d.NoMobilAktiv = s.NO_MOB_AKTIV.XToBool();
+                        d.GebuehrAmt = s.GEB_AMT;
+                        d.Hinweis = s.HINWEIS;
+                        d.Vorschuss = s.VORSCHUSS.XToBool();
+                        d.VorschussBetrag = s.VORSCHUSS_BETRAG;
+                        d.WaehrungsSchluessel = s.WAERS;
                     }));
             }
         }
@@ -749,6 +758,7 @@ namespace AppZulassungsdienst.lib.Models
             d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.PARVW = s.Partnerrolle;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
+            d.LAND1 = s.Land;
         }
 
         static private void Map_ZLDKopfdaten_To_ZZLD_BAK(ZLDKopfdaten s, IZZLD_BAK d)
@@ -1159,6 +1169,13 @@ namespace AppZulassungsdienst.lib.Models
                         d.MOBUSER = s.MobileUserId;
                         d.NAME = s.MobileUserName;
                         d.VG_ANZ = s.AnzahlVorgaenge;
+                        d.MOB_AKTIV = s.MobilAktiv.BoolToX();
+                        d.NO_MOB_AKTIV = s.NoMobilAktiv.BoolToX();
+                        d.GEB_AMT = s.GebuehrAmt;
+                        d.HINWEIS = s.Hinweis;
+                        d.VORSCHUSS = s.Vorschuss.BoolToX();
+                        d.VORSCHUSS_BETRAG = s.VorschussBetrag;
+                        d.WAERS = s.WaehrungsSchluessel;
                     }));
             }
         }

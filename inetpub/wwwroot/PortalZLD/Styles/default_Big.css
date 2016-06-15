@@ -1034,12 +1034,12 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
 }
 
 
-.GridTableHead
+.GridTableHead, .GridTableFoot
 {
     background-image: url(../Images/overflowThead.png);
 	background-color: #9b9b9b;
 	height:23px;
-	color:#FFFFFF;
+	color:#FFFFFF !important;
 	
 }
 
@@ -1048,6 +1048,10 @@ div#content div#innerContent div#innerContentRight div#login table tbody tr td.h
     padding-right:5px;
 	padding-left:15px;
     }
+    
+.GridTableFoot td {
+    color:#ffffff !important;
+}
 
 .GridTableHead th
 {

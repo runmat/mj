@@ -483,6 +483,40 @@ namespace CkgDomainLogic.CoC.Models
             }
         }
 
+
+        static public ModelMapping<Z_DPM_READ_SENDTAB_04.GT_OUT, SendungsAuftrag> Z_DPM_READ_SENDTAB_04_GT_OUT_To_SendungsAuftrag
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_SENDTAB_04.GT_OUT, SendungsAuftrag>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FIN = s.ZZFAHRG;
+                        d.Fahrzeugbrief = s.ZZBRIEF;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.RechnungsNr = s.VBELN;
+                        d.VersandDatum = s.ZZLSDAT;
+                        d.VersandID = s.ZZTRACK;
+                        d.VertragsNr = s.ZZREFNR;
+                        d.Referenz = s.POOLNR;
+                        d.StatusText = s.STATUS_CODE.NotNullOrEmpty();
+                        d.VersandWeg = s.VERSANDWEG;
+                        d.VersandKey = s.VERSANDVALUE;
+                        d.PoolNummer = s.POOLNR;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
+                        d.Materialnummer = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+
+                        d.VersandAdresseAsText = string.Format("{0} {1}<br />{2} {3}, {4} {5}", s.NAME1, s.NAME2, s.STRAS, s.HSNM1, s.PSTLZ, s.CITY1);
+                    }));
+            }
+        }
+
+
+
+
         #endregion
     }
 }

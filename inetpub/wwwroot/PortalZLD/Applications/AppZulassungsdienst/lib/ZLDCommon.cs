@@ -7,6 +7,7 @@ using AppZulassungsdienst.lib.Models;
 using System.Data;
 using CKG.Base.Business;
 using System.Configuration;
+using System.Drawing;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -16,7 +17,7 @@ namespace AppZulassungsdienst.lib
     {
         Default,
         ShowOnlyOandL,
-        ShowOnlyAandL
+        ShowOnlyAandLandV
     }
 
     public enum GridCheckMode
@@ -38,6 +39,8 @@ namespace AppZulassungsdienst.lib
         #region Properties
 
         public static string CONST_IDSONSTIGEDL = "570";
+        public static Color BorderColorDefault = ColorTranslator.FromHtml("#BFBFBF");
+        public static Color BorderColorError = ColorTranslator.FromHtml("#BC2B2B");
 
         public List<Kundenstammdaten> KundenStamm { get; private set; }
         public List<Materialstammdaten> MaterialStamm { get; private set; }
@@ -727,6 +730,32 @@ namespace AppZulassungsdienst.lib
                 return (26 * (excelColumnName[0] - 'A' + 1) + excelColumnName[1] - 'A');
 
             return excelColumnName[0] - 'A';
+        }
+
+        public bool CheckPlzValid(string land, string plz)
+        {
+            if (!plz.IsNumeric())
+                return false;
+
+            if (land == "DE")
+                return (plz.Length == 5);
+
+            var ret = "";
+
+            ExecuteSapZugriff(() =>
+            {
+                Z_DPM_POSTAL_CODE_CHECK.Init(SAP);
+
+                SAP.SetImportParameter("I_COUNTRY", land);
+                SAP.SetImportParameter("I_POSTAL_CODE_CITY", plz);
+
+                CallBapi();
+
+                if (ErrorOccured)
+                    ret = SAP.ResultMessage;
+            });
+
+            return string.IsNullOrEmpty(ret);
         }
 
         #endregion

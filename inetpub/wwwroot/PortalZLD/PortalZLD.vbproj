@@ -318,14 +318,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Customize\DAD\BannerBack.jpg" />
-    <Content Include="Customize\DAD\dadlogo.jpg" />
-    <Content Include="Customize\DAD\TableAlternate.jpg" />
-    <Content Include="Customize\DAD\TableBack.jpg" />
-    <Content Include="Customize\DAD\TaskTitleBack.jpg" />
-    <Content Include="Customize\DAD\volvo.css" />
-    <Content Include="Customize\DAD\volvoE6.css" />
-    <Content Include="Customize\DAD\volvoIE6.css" />
     <Content Include="Images\%40_10.jpg" />
     <Content Include="Images\addfromleft.png" />
     <Content Include="Images\Admin.png" />
@@ -745,6 +737,7 @@
     <Content Include="Images\Versand\suche.png" />
     <Content Include="Images\Versand\suche2.png" />
     <Content Include="Images\Versand\Uploadoverflow.png" />
+    <Content Include="Images\versand.png" />
     <Content Include="Images\Verwaltung.png" />
     <Content Include="Images\vkb_logo.jpg" />
     <Content Include="Images\Wappen01_10.jpg" />

@@ -925,12 +925,12 @@ white-space:nowrap;
 
 
 
-* html .GridTableHead
+* html .GridTableHead, .GridTableFoot
 {
     background-image: url(../Images/overflowThead.png);
 	background-color: #9b9b9b;
 	height:23px;
-	color:#FFFFFF;
+	color:#FFFFFF !important;
 
 }
 * html .GridTableHead td 
@@ -938,6 +938,10 @@ white-space:nowrap;
     padding-right:5px;
 	padding-left:15px;
     }
+
+* html .GridTableFoot td {
+    color:#ffffff !important;
+}
 
 * html .GridTableHead th
 {

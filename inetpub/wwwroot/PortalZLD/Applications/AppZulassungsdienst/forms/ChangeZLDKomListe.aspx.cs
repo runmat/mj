@@ -373,7 +373,7 @@ namespace AppZulassungsdienst.forms
 
             if (!CheckGrid(GridCheckMode.CheckAll))
             {
-                objKompletterf.SendVorgaengeToSap(m_User.UserName);
+                objKompletterf.SendVorgaengeToSap(objCommon.KundenStamm, m_User.UserName);
 
                 if (objKompletterf.ErrorOccured)
                 {
@@ -790,11 +790,11 @@ namespace AppZulassungsdienst.forms
                     if (objKompletterf.DataFilterActive)
                     {
                         srcList = objKompletterf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     else
                     {
-                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     break;
 
@@ -1036,7 +1036,7 @@ namespace AppZulassungsdienst.forms
 
                 if (posID.Text == "10" && pruefungsrelevant && ZulDate.Visible && String.IsNullOrEmpty(ZulDate.Text))
                 {
-                    ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    ZulDate.BackColor = ZLDCommon.BorderColorError;
                     lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
                     return true;
                 }
@@ -1057,7 +1057,7 @@ namespace AppZulassungsdienst.forms
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == lblMatnr.Text);
                     if (txtBoxPreis.Visible && mat != null && !mat.NullpreisErlaubt)
                     {
-                        txtBoxPreis.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        txtBoxPreis.BorderColor = ZLDCommon.BorderColorError;
                         lblError.Text = "Bitte geben Sie einen Preis für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
@@ -1095,7 +1095,7 @@ namespace AppZulassungsdienst.forms
                         bool SDRelGeb = objKompletterf.GetSDRelevantsGeb(lblID.Text, posID.Text, gebMatNr);
                         if (txtBoxGebuehrenAmt.Visible && !SDRelGeb)
                         {
-                            txtBoxGebuehrenAmt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                            txtBoxGebuehrenAmt.BorderColor = ZLDCommon.BorderColorError;
                             lblError.Text = "Bei Pauschalkunden dürfen Gebühr und Gebühr Amt nicht unterschiedlich sein!";
                             return true;
                         }
@@ -1124,7 +1124,7 @@ namespace AppZulassungsdienst.forms
 
                 if (posID.Text == "10" && pruefungsrelevant && txtKennzAbc.Visible && String.IsNullOrEmpty(txtKennzAbc.Text))
                 {
-                    txtKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    txtKennzAbc.BorderColor = ZLDCommon.BorderColorError;
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
                     return true;
                 }
@@ -1232,17 +1232,17 @@ namespace AppZulassungsdienst.forms
             Label ZulDate = (Label)gvRow.FindControl("lblZulassungsdatum");
             ZulDate.BackColor = System.Drawing.Color.Empty;
             TextBox txtBox = (TextBox)gvRow.FindControl("txtPreis");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             txtBox = (TextBox)gvRow.FindControl("txtPreis_Amt");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             txtBox = (TextBox)gvRow.FindControl("txtSteuer");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             txtBox = (TextBox)gvRow.FindControl("txtPreisKZ");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
             lblError.Text = "";
         }
 

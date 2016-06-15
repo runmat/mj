@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KassenabrechnungNeu.aspx.cs" Inherits="AppZulassungsdienst.forms.KassenabrechnungNeu" MasterPageFile="../MasterPage/Big.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
+    <script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?22042016"></script>
     <script src="/PortalZLD/JScript/jquery-1.6.2.min.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery.blockUI.js" type="text/javascript"></script>
@@ -416,7 +416,7 @@
 
                                                         <asp:ImageButton ID="ImageButton1" CommandName="Confirm" CommandArgument='<%# Eval("Posting_Number") %>'
                                                             TabIndex="-1" ImageUrl="/PortalZLD/Images/haken_gruen.gif" Visible='<%# Eval("ASTATUS").ToString()=="ZA" %>' 
-                                                            ToolTip='<%# Eval("TRANSACT_NUMBER").ToString().Trim() == "34" ? "Vorgang bestätigen" : "Betrag erhalten" %>' 
+                                                            ToolTip='<%# Eval("TRANSACT_NUMBER").ToString().Trim() == "34" ? "Vorgang bestätigen" : (Eval("TRANSACT_NUMBER").ToString().Trim() == "31" ? "Betrag ausgegeben" : "Betrag erhalten") %>' 
                                                             Height="18px" Width="18px" runat="server" />
 
                                                         <asp:ImageButton ID="ibtnDel" CommandName="Del"  CommandArgument='<%# Eval("Posting_Number") %>'

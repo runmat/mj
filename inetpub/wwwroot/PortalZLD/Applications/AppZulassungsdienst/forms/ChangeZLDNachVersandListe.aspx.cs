@@ -389,11 +389,11 @@ namespace AppZulassungsdienst.forms
                     if (objNacherf.DataFilterActive)
                     {
                         srcList = objNacherf.Vorgangsliste.Where(vg =>
-                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     else
                     {
-                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus.In("O,L")).ToList();
                     }
                     break;
 
@@ -529,7 +529,7 @@ namespace AppZulassungsdienst.forms
             TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
             ZulDate.BorderColor = System.Drawing.Color.Empty;
             TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+            txtBox.BorderColor = ZLDCommon.BorderColorDefault;
         }
 
         private Boolean CheckGrid(GridCheckMode checkMode)
@@ -595,7 +595,7 @@ namespace AppZulassungsdienst.forms
                 {
                     if (ZulDate.Visible && (String.IsNullOrEmpty(ZulDate.Text) || !checkDate(ZulDate)))
                     {
-                        ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        ZulDate.BorderColor = ZLDCommon.BorderColorError;
                         lblError.Text = "Bitte geben Sie ein gültiges Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
@@ -615,7 +615,7 @@ namespace AppZulassungsdienst.forms
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matnr.Text);
                     if (txtBoxGebuehren.Visible && mat != null && mat.Gebuehrenpflichtig)
                     {
-                        txtBoxGebuehren.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        txtBoxGebuehren.BorderColor = ZLDCommon.BorderColorError;
                         lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
@@ -624,7 +624,7 @@ namespace AppZulassungsdienst.forms
                 TextBox txtBoxKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
                 if (posID.Text == "10" && pruefungsrelevant && txtBoxKennzAbc.Visible && String.IsNullOrEmpty(txtBoxKennzAbc.Text))
                 {
-                    txtBoxKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    txtBoxKennzAbc.BorderColor = ZLDCommon.BorderColorError;
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
                     return true;
                 }
@@ -683,14 +683,14 @@ namespace AppZulassungsdienst.forms
             if (String.IsNullOrEmpty(ZDat))
             {
                 lblError.Text = "Ungültiges Zulassungsdatum!";
-                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                ZulDate.BackColor = ZLDCommon.BorderColorError;
                 return false;
             }
 
             if (!ZDat.IsDate())
             {
                 lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                ZulDate.BackColor = ZLDCommon.BorderColorError;
                 return false;
             }
 
@@ -709,7 +709,7 @@ namespace AppZulassungsdienst.forms
             if (DateNew < tagesdatum)
             {
                 lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
-                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                ZulDate.BorderColor = ZLDCommon.BorderColorError;
                 return false;
             }
 
@@ -718,7 +718,7 @@ namespace AppZulassungsdienst.forms
             if (DateNew > tagesdatum)
             {
                 lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
-                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                ZulDate.BorderColor = ZLDCommon.BorderColorError;
                 return false;
             }
 

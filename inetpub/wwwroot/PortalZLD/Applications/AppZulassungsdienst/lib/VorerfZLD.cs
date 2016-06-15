@@ -369,7 +369,10 @@ namespace AppZulassungsdienst.lib
 
                     var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
                     if (kunde != null)
+                    {
                         kopfdaten.BarzahlungKunde = kunde.Bar;
+                        adressdaten.Land = kunde.Land;
+                    }
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;

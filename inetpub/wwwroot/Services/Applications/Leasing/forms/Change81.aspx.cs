@@ -213,7 +213,7 @@ namespace Leasing.forms
                 }
 
                 objDienstleistung.SucheFahrgestellNr = "";
-                objDienstleistung.SucheNummerZB2 = "";
+                objDienstleistung.SucheNummerZb2 = "";
                 //objDienstleistung.KUNNR = "";
 
                 objDienstleistung.GiveCars(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
@@ -260,7 +260,7 @@ namespace Leasing.forms
 
                 if (rowNew["MANDT"].ToString() != "99")
                 {
-                    objDienstleistung.FillHistory(Session["AppID"].ToString(), Session.SessionID.ToString(), objDienstleistung.SucheKennzeichen, objDienstleistung.SucheFahrgestellNr, objDienstleistung.SucheNummerZB2, objDienstleistung.SucheLeasingvertragsNr, this);
+                    objDienstleistung.FillHistory(Session["AppID"].ToString(), Session.SessionID.ToString(), objDienstleistung.SucheKennzeichen, objDienstleistung.SucheFahrgestellNr, objDienstleistung.SucheNummerZb2, objDienstleistung.SucheLeasingvertragsNr, this);
                     if (objDienstleistung.History != null && objDienstleistung.History.Rows.Count == 1 && objDienstleistung.History.Rows[0]["ZZFAHRG"].ToString() == String.Empty)
                     {
                         rowNew["CHASSIS_NUM"] = objDienstleistung.History.Rows[0]["ZZFAHRG"].ToString();
@@ -311,8 +311,8 @@ namespace Leasing.forms
             txtNummerZB2.Text = txtNummerZB2.Text.Replace("*", "");
             txtNummerZB2.Text = txtNummerZB2.Text.Replace("%", "");
             if (txtNummerZB2.Text.Length == 0)
-            { objDienstleistung.SucheNummerZB2 = ""; }
-            else { objDienstleistung.SucheNummerZB2 = txtNummerZB2.Text; }
+            { objDienstleistung.SucheNummerZb2 = ""; }
+            else { objDienstleistung.SucheNummerZb2 = txtNummerZB2.Text; }
             if (txtOrdernummer.Text.Length == 0)
             { objDienstleistung.SucheLeasingvertragsNr = ""; }
             else { objDienstleistung.SucheLeasingvertragsNr = txtOrdernummer.Text; }

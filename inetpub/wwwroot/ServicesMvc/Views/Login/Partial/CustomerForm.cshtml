@@ -1,0 +1,125 @@
+﻿@model CustomerModel
+
+<style>
+    #forget-password {
+        color: black !important;
+    }
+    
+    .login .content label {
+        color: #a9a9a9;
+    }
+    
+    .login .content .control-group {
+        margin-bottom: 12px !important;
+    }
+    .login .content {
+        margin-top: 40px !important;
+        padding-top: 10px !important;
+
+    }
+    
+
+    .controls > .radio {
+        margin-top: 0 !important;
+    }
+
+</style>
+
+<div id="DivCustomerInfo">
+
+    @using (Ajax.BeginForm("CustomerForm", "Login", null,
+        new MvcAjaxOptions {UpdateTargetId = "DivCustomerInfo", OnComplete = "AjaxFormCustomerComplete();"},
+        new {@class = "no-loading-indicator form-vertical login-form", id = "AjaxFormCustomer"}))
+    {
+
+        <h3 class="form-title margin-bottom-10 margin-top-10">@Localize.PleaseEnterCustomerInfo</h3>
+
+        @Html.HiddenFor(m => m.ModeCaptchaReset)
+
+        @Html.FormPlaceholderTextBoxFor(m => m.Firma, new {@class = "m-wrap"})
+
+    @*@Html.FormPlaceholderTextBoxFor(m => m.Anrede, new {@class = "m-wrap help-inline" })*@
+
+        @Html.FormRadioButtonListFor(m => m.Anrede, CustomerModel.Anreden.ToSelectList(), new {@class = "m-wrap"}, labelHidden: true)
+
+        @Html.FormPlaceholderTextBoxFor(m => m.Vorname, new {@class = "m-wrap"})
+
+        @Html.FormPlaceholderTextBoxFor(m => m.Name, new {@class = "m-wrap"})
+
+        @Html.FormPlaceholderTextBoxFor(m => m.Referenzbenutzer, new {@class = "m-wrap"})
+
+        @Html.FormPlaceholderTextBoxFor(m => m.Telefon, new {@class = "m-wrap"})
+
+        @Html.FormPlaceholderTextBoxFor(m => m.EMailAdresse, new {@class = "m-wrap placeholder-no-fix", autocomplete = "off"}, "icon-user")
+
+        @Html.FormTextAreaFor(m => m.FrageProblem, new {@class = "m-wrap", placeholder = Localize.AddYourQuestionHere, id = "FrageProblem"}, labelHidden: true)
+
+        <div class="captcha-wrapper">
+            <img src="~/Shared/Captcha?id=@Guid.NewGuid()" alt="captcha" class="captcha-image"/>
+            <span onclick="return ResetCaptcha();" class="btn blue mini">
+            <i class="halflings-icon refresh white"></i>
+        </span>
+        </div>
+
+        @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new {@class = "m-wrap placeholder-no-fix", autocomplete = "off"}, "icon-picture")
+
+        <div class="forget-password margin-top-10">
+            <button type="submit" class="btn yellow" id="SendMailButton"> Absenden</button>
+        </div>
+
+        <div class="alert alert-success hide" id="SentMessageSpan">
+            <i class="icon-check"></i><span class="padding-left-5"><strong>@Localize.ThankYou</strong>, @Localize.EmailAnfrageWeiterleitung</span>
+        </div>
+
+        <div class="forget-password margin-top-10">
+            <h4><a href="javascript:RedirectToLoginPage();" id="forget-password"><i class="icon-chevron-right"></i> @Localize.Login</a></h4>
+        </div>
+
+        <script type="text/javascript">
+
+            _modeCaptchaReset = @Model.ModeCaptchaReset.ToString().ToLower();
+            _modelIsValid = @Model.IsValid.ToString().ToLower();
+
+            //alert(_modelIsValid);
+            //alert(_modeCaptchaReset);
+
+            function FormPreparePrivate() {
+                Login.init();
+            };
+
+            function ResetCaptcha() {
+                $("#ModeCaptchaReset").val(true);
+                $("#AjaxFormCustomer").submit();
+                return false;
+            }
+
+            function SubmitForm() {
+                $("#AjaxFormCustomer").submit();
+                return false;
+            }
+
+            function AjaxFormCustomerComplete() {
+                FormPreparePrivateAjax();
+                
+                if (_modelIsValid) {
+                $("#SendMailButton").hide();
+
+                $("#SentMessageSpan").show();
+                
+                setTimeout(RedirectToLoginPage, 3000);
+                }
+            }
+
+            function FormPreparePrivateAjax() {
+                FormPrepareAjax();
+            }
+
+            function RedirectToLoginPage() {
+                var redirectUrl = "/ServicesMvc/Login";
+                location.replace(redirectUrl);
+            }
+
+        </script>
+    }
+</div>
+

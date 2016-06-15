@@ -24,7 +24,7 @@ namespace AppZulassungsdienst.lib.Models
         public string FehlerText { get; set; }
 
         /// <summary>
-        /// O = OK, A = Angenommen, L = Löschen, ...
+        /// O = OK, A = Angenommen, L = Löschen, V = Versand, ...
         /// </summary>
         public string WebBearbeitungsStatus { get; set; }
 

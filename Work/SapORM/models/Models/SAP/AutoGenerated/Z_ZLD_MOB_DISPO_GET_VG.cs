@@ -22,6 +22,11 @@ namespace SapORM.Models
 		}
 
 
+		public static void SetImportParameter_I_ALLE_AEMTER(ISapDataService sap, string value)
+		{
+			sap.SetImportParameter("I_ALLE_AEMTER", value);
+		}
+
 		public static void SetImportParameter_I_FUNCTION(ISapDataService sap, string value)
 		{
 			sap.SetImportParameter("I_FUNCTION", value);
@@ -72,24 +77,72 @@ namespace SapORM.Models
 
 			public string NAME { get; set; }
 
+			public string MOB_AKTIV { get; set; }
+
+			public string NO_MOB_AKTIV { get; set; }
+
+			public decimal? GEB_AMT { get; set; }
+
+			public string HINWEIS { get; set; }
+
+			public string VORSCHUSS { get; set; }
+
+			public decimal? VORSCHUSS_BETRAG { get; set; }
+
+			public string WAERS { get; set; }
+
+			public int? SUBRC { get; set; }
+
+			public string MESSAGE { get; set; }
+
+			private bool MappingErrorProcessed { get; set; }
+
 			public static GT_VGANZ Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_VGANZ
-				{
-					AMT = (string)row["AMT"],
-					KREISBEZ = (string)row["KREISBEZ"],
-					VG_ANZ = string.IsNullOrEmpty(row["VG_ANZ"].ToString()) ? null : (int?)row["VG_ANZ"],
-					MOBUSER = (string)row["MOBUSER"],
-					NAME = (string)row["NAME"],
+				GT_VGANZ o;
 
-					SAPConnection = sapConnection,
-					DynSapProxyFactory = dynSapProxyFactory,
-				};
+				try
+				{
+					o = new GT_VGANZ
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+
+						AMT = (string)row["AMT"],
+						KREISBEZ = (string)row["KREISBEZ"],
+						VG_ANZ = string.IsNullOrEmpty(row["VG_ANZ"].ToString()) ? null : (int?)row["VG_ANZ"],
+						MOBUSER = (string)row["MOBUSER"],
+						NAME = (string)row["NAME"],
+						MOB_AKTIV = (string)row["MOB_AKTIV"],
+						NO_MOB_AKTIV = (string)row["NO_MOB_AKTIV"],
+						GEB_AMT = string.IsNullOrEmpty(row["GEB_AMT"].ToString()) ? null : (decimal?)row["GEB_AMT"],
+						HINWEIS = (string)row["HINWEIS"],
+						VORSCHUSS = (string)row["VORSCHUSS"],
+						VORSCHUSS_BETRAG = string.IsNullOrEmpty(row["VORSCHUSS_BETRAG"].ToString()) ? null : (decimal?)row["VORSCHUSS_BETRAG"],
+						WAERS = (string)row["WAERS"],
+						SUBRC = string.IsNullOrEmpty(row["SUBRC"].ToString()) ? null : (int?)row["SUBRC"],
+						MESSAGE = (string)row["MESSAGE"],
+					};
+				}
+				catch(Exception e)
+				{
+					o = new GT_VGANZ
+					{
+						SAPConnection = sapConnection,
+						DynSapProxyFactory = dynSapProxyFactory,
+					};
+					o.OnMappingError(e, row, true);
+					if (!o.MappingErrorProcessed)
+						throw;
+				}
+
 				o.OnInitFromSap();
 				return o;
 			}
 
 			partial void OnInitFromSap();
+
+			partial void OnMappingError(Exception e, DataRow row, bool isExport);
 
 			partial void OnInitFromExtern();
 
