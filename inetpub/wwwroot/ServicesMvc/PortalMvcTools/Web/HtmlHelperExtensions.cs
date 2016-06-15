@@ -402,7 +402,7 @@ namespace PortalMvcTools.Web
             return html.FormLeftLabelControl(model);
         }
 
-        public static MvcHtmlString FormPlaceholderTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
+        public static MvcHtmlString FormPlaceholderTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
@@ -418,6 +418,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
+                LabelHidden = labelHidden,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
@@ -426,7 +427,7 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/ControlWithPlaceholder", model);
         }
 
-        public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4, string labelText = null)
+        public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4, string labelText = null, bool labelHidden = false)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -441,6 +442,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
+                LabelHidden = labelHidden,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
@@ -532,23 +534,23 @@ namespace PortalMvcTools.Web
             return html.FormLeftLabelControl(model);
         }
 
-        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool useRawTemplate = false)
+        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool useRawTemplate = false, bool labelHidden = false)
         {
-            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml, labelText, useRawTemplate);
+            return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml, labelText, useRawTemplate, labelHidden: labelHidden);
         }
 
-        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false)
+        public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false, bool labelHidden = false)
         {
-            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml, useRawTemplate: useRawTemplate);
+            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml, useRawTemplate: useRawTemplate, labelHidden: labelHidden);
         }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<string> selectList,
-                                                                object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false)
+                                                                object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool useRawTemplate = false, bool labelHidden = false)
         {
-            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml, useRawTemplate: useRawTemplate);
+            return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml, useRawTemplate: useRawTemplate, labelHidden:labelHidden);
         }
 
-        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool useRawTemplate = false)
+        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool useRawTemplate = false, bool labelHidden = false)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -563,6 +565,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
+                LabelHidden = labelHidden,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
@@ -574,7 +577,7 @@ namespace PortalMvcTools.Web
             return html.FormLeftLabelControlConditional(expression, model);
         }
 
-        public static MvcHtmlString FormDropDownList<TModel>(this HtmlHelper<TModel> html, string propertyName, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
+        public static MvcHtmlString FormDropDownList<TModel>(this HtmlHelper<TModel> html, string propertyName, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden= false)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, propertyName, "dropdown");
 
@@ -586,6 +589,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = html.DropDownList(propertyName, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessage(propertyName),
                 IconCssClass = "",
+                LabelHidden = labelHidden,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
@@ -639,17 +643,17 @@ namespace PortalMvcTools.Web
 
         #region RadioButtonList
 
-        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string selectOptions, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string selectOptions, object controlHtmlAttributes = null, bool labelHidden = false)
         {
             return html.FormRadioButtonListFor(expression, selectOptions.ToSelectList(), controlHtmlAttributes);
         }
 
-        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectItem> selectList, object controlHtmlAttributes = null, bool labelHidden = false)
         {
             return html.FormRadioButtonListFor(expression, new SelectList(selectList, "Key", "Text"), controlHtmlAttributes);
         }
 
-        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
+        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
             html.FormLeftLabelControlConditionalInit();
 
@@ -664,6 +668,7 @@ namespace PortalMvcTools.Web
                 ControlHtml = radioButtonsFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
+                LabelHidden = labelHidden,
                 ControlHtmlAttributes = controlHtmlAttributes.ToHtmlDictionary(),
                 ModelTypeName = typeof(TModel).GetFullTypeName(),
                 PropertyName = expression.GetPropertyName(),
