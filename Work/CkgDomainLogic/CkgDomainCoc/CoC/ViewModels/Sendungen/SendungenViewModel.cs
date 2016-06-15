@@ -258,6 +258,9 @@ namespace CkgDomainLogic.CoC.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public bool ShowPlaceSearch => GetApplicationConfigValueForCustomer("SucheOrtAnzeigen", true).ToBool();
+
+
         public void LoadSendungenPlace(SendungsAuftragPlaceSelektor model, Action<string, string> addModelError)
         {
             PropertyCacheClear(this, m => m.SendungenDocsFiltered);

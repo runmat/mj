@@ -10,7 +10,7 @@
         <li class="active"><a href="#" id="tabIds" data-toggle="tab">Nach Sendungs-ID</a></li>
         <li><a href="#" id="tabDocs" data-toggle="tab">Nach Dokumentendaten</a></li>
         <li><a href="#" id="tabFin" data-toggle="tab">Nach Fahrzeugdaten</a></li>
-        <li><a href="#" id="tabPlace" data-toggle="tab">Nach Fahrzeugstandort</a></li>
+        @if (Model.ShowPlaceSearch) {<li><a href="#" id="tabPlace" data-toggle="tab">Nach Fahrzeugstandort</a></li> }
     </ul>
 </div>
 
@@ -25,10 +25,12 @@
     <div id="searchBoxFin" class="divFin hide">
         @Html.Partial("VerfolgungMulti/Fin/Suche", Model.SendungsAuftragFinSelektor)
     </div>
+    
+    if (Model.ShowPlaceSearch) {
     <div id="searchBoxPlace" class="divPlace hide">
         @Html.Partial("VerfolgungMulti/Place/Suche", Model.SendungsAuftragPlaceSelektor)
     </div>
-
+    }
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -42,9 +44,12 @@
     <div id="searchResultFin" class="divFin hide">
         <div id="divGridFin"></div>
     </div>
-    <div id="searchResultPlace" class="divPlace hide">
-        <div id="divGridPlace"></div>
-    </div>
+    if (Model.ShowPlaceSearch)
+    {
+        <div id="searchResultPlace" class="divPlace hide">
+            <div id="divGridPlace"></div>
+        </div>
+    }
 }
 
 <style type="text/css">
