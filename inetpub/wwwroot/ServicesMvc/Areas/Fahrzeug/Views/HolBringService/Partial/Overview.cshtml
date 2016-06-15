@@ -7,12 +7,37 @@
     {
         @Html.FormValidationSummary()
         
-        <div id="pdfContentOverview" class="ui-widget-content pdfContentStyle"> 
-            <iframe id="pdfGenerated" src="ShowGeneratedPdf" class="ui-widget-content" frameborder="no"  width="100%" height="100%" />
-        </div>
+
+        <iframe id="pdfGenerated" src="ShowGeneratedPdf" class="ui-widget-content" onload="resizeIframe()" frameborder="no" style="position: relative; height: 100%; width: 100%;"/>
         
         <script>
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            var iframe = document.getElementById('pdfGenerated');
+
+            function pageY(elem) {
+                return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+            }
+
+            function resizeIframe() {
+                var height = document.documentElement.clientHeight;
+                height -= pageY(document.getElementById('pdfGenerated')) * 1.6 ;
+                height = (height < 0) ? 0 : height;
+                document.getElementById('pdfGenerated').style.height = height + 'px';
+                //alert('Test');
+                return false;
+            }
+
+            // .onload doesn't work with IE8 and older.
+            if (iframe.attachEvent) {
+                iframe.attachEvent("onload", resizeIframe);
+            } else {    
+                iframe.onload=resizeIframe;
+            }
+            window.onresize = resizeIframe;
+
+            $(window).trigger('resize');   
+
 
             $(function() {
                 $("#pdfContentOverview").resizable({
