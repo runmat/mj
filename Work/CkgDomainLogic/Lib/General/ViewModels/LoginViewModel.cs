@@ -12,6 +12,7 @@ using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using WebTools.Services;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.General.ViewModels
 {
@@ -49,7 +50,8 @@ namespace CkgDomainLogic.General.ViewModels
 
         public Customer TmpCustomer { get; set; }
 
-
+        public CustomerModel CustomerModel { get { return PropertyCacheGet(() => new CustomerModel()); } set { PropertyCacheSet(value); } }
+        
         public void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError, out ILogonContextDataService logonContext)
         {
             LogonContext.TryLogonUser(loginModel, addModelError);
@@ -168,6 +170,34 @@ namespace CkgDomainLogic.General.ViewModels
             catch
             {
                 addModelError(m => m.EmailForPasswordReset, Localize.EmailSentError);
+            }
+        }
+
+
+        public void TrySendCustomerEmail(CustomerModel model, Action<Expression<Func<CustomerModel, object>>, string> addModelError)
+        {
+            try
+            {
+                var userEmail = model.ZielEmailAdresse;
+                var subject = "Hilfe / neuer Account";
+                var body = "";
+                
+                body += Localize.Company + ": " + model.Firma + "<br/>";
+                body += Localize.FormOfAddress + ": " + model.Anrede + "<br/>";                                
+                body += Localize.FirstName + ": " + model.Vorname + "<br/>";
+                body += Localize.Name + ": " + model.Name + "<br/>";
+                body += Localize.ReferenceUser + ": " + model.Referenzbenutzer + "<br/>";
+                body += Localize.Phone + ": " + model.Telefon + "<br/>";
+                body += Localize.EmailAddress + ": " + model.EMailAdresse + "<br/><br/>";
+                body += Localize.QuestionOrProblem + ": " + model.FrageProblem + "<br/><br/>";
+
+                body += "Server Url: " + model.HerkunftsUrl;
+
+               AppSettings.MailService.SendMail(userEmail, subject, body);
+            }
+            catch
+            {
+                //addModelError(m => m.EmailForPasswordReset, Localize.EmailSentError);
             }
         }
 

@@ -1,4 +1,13 @@
-﻿@model LoginModel 
+﻿@model LoginModel
+
+<style>
+
+    #noaccess-needhelp,
+    #forget-password {
+        color: black !important;
+    }
+
+</style>
 
 <div id="DivLogin">
     @using (Ajax.BeginForm("LoginForm", "Login", null,
@@ -11,11 +20,11 @@
         if (!Model.ModePasswordReset)
         {
             <div id="login-loader" class="alert alert-info margin-top-30 hide">
-                @Html.Win8Loader() @Localize.LoginInProcess 
+                @Html.Win8Loader() @Localize.LoginInProcess
             </div>
-        
+
             <div id="loginDiv">
-                 <h3 class="form-title">@Localize.LoginToYourAccount</h3>
+                 <h3 class="form-title">@Localize.LoginToYourAccount2</h3>
 
                  @if (Model.IsValid)
                  {
@@ -28,10 +37,10 @@
                                 <div class="form-actions no-bottom-margin">
                                     <button onclick="RedirectFromLoginPage(true);" class="btn green pull-right">
                                         <i class="icon-chevron-right m-icon-white"></i> @Localize.LoginAndDoNotShowAgain
-                                    </button>            
+                                    </button>
                                     <button onclick="RedirectFromLoginPage(false);" class="btn blue pull-right margin-top-10">
                                         <i class="icon-chevron-right m-icon-white"></i> @Localize.Login
-                                    </button>            
+                                    </button>
                                 </div>
                              </div>
                          </div>
@@ -45,13 +54,16 @@
 
                      <div class="form-actions">
                          <button type="submit" class="btn blue pull-right loginbtn">
-                             <i class="icon-chevron-right m-icon-white"></i> Login
-                         </button>            
+                             <i class="icon-chevron-right m-icon-white"></i> @Localize.Login
+                         </button>
                      </div>
 
                      <div class="forget-password">
-                         <h4><a href="javascript:RequestSwitchMode(true);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.PasswordForgottenQuestion</a></h4>
+                         <h4><a href="javascript:RequestSwitchMode(true);" id="forget-password"><i class="icon-chevron-right"></i> @Localize.PasswordForgottenQuestion2</a></h4>
                      </div>
+                     <div class="forget-password">
+                        <h4><a href="javascript:NoAccessNeedHelp();" id="noaccess-needhelp"><i class="icon-chevron-right"></i> @Localize.NoAccessNeedHelp </a></h4>
+                    </div>
                  }
             </div>
         }
@@ -88,13 +100,13 @@
                             <i class="halflings-icon refresh white"></i>
                         </span>
                     </div>
-                    
+
                     @Html.FormPlaceholderTextBoxFor(m => m.CaptchaText, new { @class = "m-wrap placeholder-no-fix", autocomplete = "off" }, "icon-picture")
-                    
+
                     <div class="form-actions">
                         <button type="submit" class="btn blue pull-right pwbtn">
-                            <i class="icon-chevron-right m-icon-white"></i> @Localize.PasswordRequestNew 
-                        </button>            
+                            <i class="icon-chevron-right m-icon-white"></i> @Localize.PasswordRequestNew
+                        </button>
                     </div>
                 }
 
@@ -103,7 +115,7 @@
                 </div>
             </div>
         }
-        
+
         <script type="text/javascript">
 
             _modePasswordReset = @Model.ModePasswordReset.ToString().ToLower();
@@ -114,7 +126,7 @@
             if (!_modeCaptchaReset)
                 AutoFocusDelayed('UserName');
             $("#ModeCaptchaReset").val(false);
-            
+
             if (_modelIsValid) {
                 if (!_modePasswordReset && !_modeCaptchaReset) {
                     if (!_modelMessagesToConfirmAvailable) {
@@ -122,7 +134,7 @@
                     }
                 }
             }
-            
+
             function RedirectFromLoginPage(dontShowMessagesAgain) {
                 var redirectUrl = unescape('@Model.RedirectUrl');
                 redirectUrl = (redirectUrl != '' ? redirectUrl  : '../');
@@ -130,7 +142,7 @@
                 $("#loginDiv").html("");
                 $("#loginDiv").hide();
                 $("#login-loader").show();
-                
+
                 if (!dontShowMessagesAgain) {
                     location.replace(redirectUrl);
                     return;
@@ -152,12 +164,17 @@
                 $("#ModePasswordReset").val(modeResetPassword);
                 $("#AjaxFormLogin").submit();
             }
-            
+
             function ResetCaptcha() {
                 $("#ModeCaptchaReset").val(true);
                 $("#AjaxFormLogin").submit();
                 return false;
             }
-        </script>    
+
+            function NoAccessNeedHelp() {
+                var redirectUrl = "/ServicesMvc/Login/Customer";
+                location.replace(redirectUrl);
+            }
+        </script>
     }
 </div>

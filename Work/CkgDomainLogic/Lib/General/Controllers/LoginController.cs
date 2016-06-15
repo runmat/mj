@@ -236,6 +236,45 @@ namespace CkgDomainLogic.General.Controllers
 
             return PartialView(model);
         }
+
+        [CkgApplication]
+        public ActionResult Customer()
+        {           
+            ViewBag.CurrentLayoutTheme = LogonContext.CurrentLayoutTheme;            
+            return View(ViewModel.CustomerModel);
+        }
+
+        [HttpPost]
+        public ActionResult CustomerForm(CustomerModel model)
+        {
+            if (model.ModeCaptchaReset)
+            {
+                CaptchaGenerate();
+                ModelState.Clear();
+                ViewModel.CustomerModel.ModeCaptchaReset = model.ModeCaptchaReset;                
+            }
+            else if (ModelState.IsValid)
+            {
+
+                if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
+                {
+                    ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
+                    model.IsValid = ModelState.IsValid;
+                    return PartialView("Partial/CustomerForm", model);
+                }
+
+                model.HerkunftsUrl = HttpContext.Request.Url.OriginalString;               
+                model.ZielEmailAdresse = GeneralConfigurationProvider.GetConfigVal("Login", "NoAccessNeedHelpWebAdministrator");
+
+                ViewModel.TrySendCustomerEmail(model, ModelState.AddModelError);
+
+                SetViewModel<CustomerModel>(null);
+            }
+
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView("Partial/CustomerForm", model);
+        }
     }
 }
 
