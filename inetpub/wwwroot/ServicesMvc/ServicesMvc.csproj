@@ -3248,6 +3248,8 @@
     <Content Include="Views\Leasing\AbweichWiedereingang.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Grid.cshtml" />
     <Content Include="Views\Leasing\AbweichWiedereingang\Suche.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Place\Grid.cshtml" />
+    <Content Include="Views\CocSendung\VerfolgungMulti\Place\Suche.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\FreierAuftragDetailsCommand.cshtml" />
     <Content Include="Views\Equi\Historie\HistorieRemarketingDetail.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\UebersichtRemarketing.cshtml" />

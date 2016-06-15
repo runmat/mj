@@ -19,10 +19,15 @@ namespace ServicesMvc.Controllers
         public ActionResult MultiVerfolgung()
         {
             ViewModel.DataMarkForRefreshMulti();
-
+            ViewModel.InitStandorte();
+            InitInternalViewModel();
             return View(ViewModel);
         }
 
+        private void InitInternalViewModel()
+        {
+            SendungsAuftragPlaceSelektor.GetViewModel = GetViewModel<SendungenViewModel>;
+        }
 
         #region Sendungen, Suche nach ID
 
@@ -127,6 +132,40 @@ namespace ServicesMvc.Controllers
         #endregion
 
 
+        #region Sendungen, Suche nach Fahrzeugstandorten
+
+        [GridAction]
+        public ActionResult SendungenPlacesAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.SendungenPlacesFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridCocSendungenPlace(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterSendungenId(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult LoadSendungenPlace(SendungsAuftragPlaceSelektor model)
+        {
+            ViewModel.SendungsAuftragPlaceSelektor = model;
+
+            if (ModelState.IsValid)
+                ViewModel.LoadSendungenPlace(model, ModelState.AddModelError);
+
+            return PartialView("VerfolgungMulti/Place/Suche", ViewModel.SendungsAuftragPlaceSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowSendungenPlace()
+        {
+            return PartialView("VerfolgungMulti/Place/Grid", ViewModel);
+        }
+
+        #endregion
 
     }
 }
