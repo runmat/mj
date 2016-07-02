@@ -1,22 +1,23 @@
 ﻿<Window x:Class="MyBoss.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="ToolWindow"
-        ShowInTaskbar="False"  
+        WindowStartupLocation="Manual"
         Loaded="Window_Loaded" Closing="Window_Closing" 
-        Topmost="True"
-        mc:Ignorable="d"
-        Title="My Boss" Width="400" Height="65">
-    <Grid Margin="5">
-
-        <TextBlock Foreground="Blue" HorizontalAlignment="Center">
-            Window will close again in a few seconds ...
-            <Button Style="{StaticResource HyperLinkSmall}" Margin="10,0,0,0" Click="RehookKeyboard" >Hook</Button>
-            <Button Style="{StaticResource HyperLinkSmall}" Margin="10,0,0,0" Click="Quit" >Quit</Button>
-        </TextBlock>
-        
-    </Grid>
+        Left="0" Top="9999999" Topmost="True"  
+        WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
+        Title="Watchlist Viewer" SizeToContent="WidthAndHeight">
+    <Window.Background>
+        <SolidColorBrush Opacity="0.0" Color="White" />
+    </Window.Background>
+    <Border BorderBrush="White" BorderThickness="0" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+            Width="60" Height="10">
+        <Border.Background>
+            <SolidColorBrush Opacity="0.2" Color="GreenYellow" />
+        </Border.Background>
+        <Border.BitmapEffect>
+            <DropShadowBitmapEffect Color="White" Opacity="0.4" Direction="270" ShadowDepth="0.7" />
+        </Border.BitmapEffect>
+        <StackPanel Orientation="Horizontal">
+        </StackPanel>
+    </Border>
 </Window>

