@@ -95,7 +95,7 @@ namespace WatchlistViewer
                 var ffBinary = new FirefoxBinary(@"c:\Program Files (x86)\Mozilla Firefox\firefox.exe");
                 var firefoxProfile =
                     new FirefoxProfile(
-                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\o58xywpm.default");
+                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\15szcw7c.default");
                 _driver = new FirefoxDriver(ffBinary, firefoxProfile);
             }
             catch (Exception)
