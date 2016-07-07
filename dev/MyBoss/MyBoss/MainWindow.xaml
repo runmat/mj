@@ -9,10 +9,10 @@
     <Window.Background>
         <SolidColorBrush Opacity="0.0" Color="White" />
     </Window.Background>
-    <Border BorderBrush="White" BorderThickness="0" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+    <Border x:Name="Border" BorderBrush="White" BorderThickness="0" CornerRadius="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
             Width="60" Height="10">
         <Border.Background>
-            <SolidColorBrush Opacity="0.2" Color="GreenYellow" />
+            <SolidColorBrush Opacity="0.2" />
         </Border.Background>
         <Border.BitmapEffect>
             <DropShadowBitmapEffect Color="White" Opacity="0.4" Direction="270" ShadowDepth="0.7" />

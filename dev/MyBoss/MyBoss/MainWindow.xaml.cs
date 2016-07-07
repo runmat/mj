@@ -7,6 +7,7 @@ using System.Security;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Microsoft.Win32;
 using WpfTools4.Services;
 
@@ -41,6 +42,8 @@ namespace MyBoss
             _notifyIcon.Visible = true;
 
             Top = SystemParameters.PrimaryScreenHeight - Height;
+
+            SetBorderColor();
 
             Hide();
         }
@@ -176,6 +179,9 @@ namespace MyBoss
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks3, Key.RightCtrl, () =>
             {
+                _logIsActive = !_logIsActive;
+                SetBorderColor();
+
                 notifyIcon_Click(null, null);
             });
 
@@ -193,8 +199,11 @@ namespace MyBoss
             return false;
         }
 
-        static void Log(Key key, ref double lastTicks)
+        void Log(Key key, ref double lastTicks)
         {
+            if (!_logIsActive)
+                return;
+
             var ticksNow = (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
             var useBreak = (ticksNow - lastTicks > 6000);
             lastTicks = ticksNow;
@@ -295,6 +304,18 @@ namespace MyBoss
                 foreach (var c in strPassword.ToCharArray()) secureStr.AppendChar(c);
             }
             return secureStr;
+        }
+
+        private bool _logIsActive = false;
+
+        void SetBorderColor()
+        {
+            if (_logIsActive)
+                Border.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            else
+                Border.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+
+            Border.Background.Opacity = 0.1;
         }
     }
 }
