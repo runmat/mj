@@ -28,7 +28,7 @@ namespace MyBoss
 
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        public Func<KeyPressedArgs, bool> OnKeyPressed;
+        public static Func<KeyPressedArgs, bool> OnKeyPressed;
 
         private readonly LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;

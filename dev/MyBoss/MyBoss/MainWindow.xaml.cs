@@ -19,7 +19,7 @@ namespace MyBoss
         static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         const int WmClose = 0x0010;
 
-        private LowLevelKeyboardListener _listener;
+        private static LowLevelKeyboardListener _listener;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Forms.Timer _t;
         private double _lastTicks1, _lastTicks2, _lastTicks3, _lastTicks4, _lastTicksLog;
@@ -51,7 +51,7 @@ namespace MyBoss
         private void HookKeyboard()
         {
             _listener = new LowLevelKeyboardListener();
-            _listener.OnKeyPressed += _listener_OnKeyPressed;
+            LowLevelKeyboardListener.OnKeyPressed += _listener_OnKeyPressed;
             _listener.HookKeyboard();
         }
 
