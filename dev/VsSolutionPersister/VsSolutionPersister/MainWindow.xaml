@@ -83,9 +83,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="GIT-Branch" Binding="{Binding GitBranchName}" Width="170" />
-                    <DataGridTextColumn Header="Start-Page" Binding="{Binding RemoteSolutionStartPage}" Width="300" />
-                    <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat={}{0:dd.MM.yyyy}}" Width="100" SortDirection="Descending" />
+                    <DataGridTextColumn Header="GIT-Branch" Binding="{Binding GitBranchName}" Width="170" Foreground="Black" />
+                    <DataGridTextColumn Header="Start-Page" Binding="{Binding RemoteSolutionStartPage}" Width="300" Foreground="Black" />
+                    <DataGridTextColumn Header="Datum" Binding="{Binding Datum, StringFormat={}{0:dd.MM.yyyy}}" Width="100" SortDirection="Descending" Foreground="Black" />
                 </DataGrid.Columns>
             
             </DataGrid>
