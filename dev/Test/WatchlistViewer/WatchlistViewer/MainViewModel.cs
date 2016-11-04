@@ -1,12 +1,10 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Diagnostics;
-using GeneralTools.Models;
 using WpfTools4.ViewModels;
 using System.Windows.Input;
 using WpfTools4.Commands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WatchlistViewer
 {
@@ -16,6 +14,7 @@ namespace WatchlistViewer
         private bool _stockItemsVisible;
 
         private static bool _browserVisible;
+        private static bool _browserRefreshPaused;
 
         public List<Stock> StockItems
         {
@@ -32,8 +31,6 @@ namespace WatchlistViewer
 
         public ICommand WatchlistToggleCommand { get; private set; }
 
-        public ICommand GetStockDataCommand { get; private set; }
-
         public ICommand QuitCommand { get; private set; }
 
         private readonly System.Windows.Forms.Timer _initialDelayTimer;
@@ -42,17 +39,9 @@ namespace WatchlistViewer
         public MainViewModel()
         {
             WatchlistToggleCommand = new DelegateCommand(e => WatchlistToggle(), e => true);
-            GetStockDataCommand = new DelegateCommand(e => GetStockData(), e => true);
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
             FirefoxWebDriver.InvokeWatchlist();
-            StockItems = new List<Stock>
-            {
-                new Stock { Name = "DAX", Parent = this },
-                new Stock { Name = "Goldpreis", Parent = this },
-                new Stock { Name = "Euro / US", Parent = this },
-                new Stock { Name = "Brent", Parent = this },
-            };
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 100 };
             _initialDelayTimer.Tick += InitialDelayTimerTick;
         }
@@ -62,37 +51,13 @@ namespace WatchlistViewer
             _initialDelayTimer.Stop();
             _initialDelayTimer.Dispose();
 
-            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
+            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 60000 };
             _workTimer.Tick += WorkTimerTick;
         }
 
         void WorkTimerTick(object sender, EventArgs e)
         {
-            TaskService.StartLongRunningTask(GetStockData);
-        }
-
-        private void GetStockData()
-        {
-            var items = FirefoxWebDriver.GetStockData();
-
-            if (StockItems == null || StockItems.None())
-            {
-                items.ForEach(item => item.Parent = this);
-                StockItems = items;
-                return;
-            }
-
-            items.ForEach(item =>
-            {
-                var stockItem = StockItems.FirstOrDefault(si => si.ShortName == item.ShortName);
-                if (stockItem == null)
-                    return;
-                
-                ModelMapping.Copy(item, stockItem);
-                stockItem.Parent = this;
-            });
-
-            StockItemsVisible = true;
+            TaskService.StartLongRunningTask(() => WatchlistRefresh());
         }
 
         private static void WatchlistToggle()
@@ -107,6 +72,8 @@ namespace WatchlistViewer
 
         private static void WatchlistShow()
         {
+            _browserRefreshPaused = true;
+            WatchlistRefresh(true);
             FirefoxWebDriver.ShowBrowser();
         }
 
@@ -115,13 +82,16 @@ namespace WatchlistViewer
             FirefoxWebDriver.HideBrowser();
         }
 
-        public void ShowWknAtComdirect(Stock stock)
+        private static void WatchlistRefresh(bool forceRefresh = false)
         {
-            var url = "https://www.comdirect.de/inf/indizes/detail/uebersicht.html?SEARCH_REDIRECT=true&REDIRECT_TYPE=WHITELISTED&REFERER=search.general&ID_NOTATION=" + stock.IdNotation;
-            if (stock.Wkn.IsNotNullOrEmpty())
-                url = "https://www.comdirect.de/inf/indizes/detail/uebersicht.html?WKN=" + stock.Wkn;
+            if (_browserRefreshPaused && !forceRefresh)
+            {
+                _browserRefreshPaused = false;
+                return;
+            }
 
-            Process.Start(url);
+            if (FirefoxWebDriver.IsBrowserVisible || forceRefresh)
+                FirefoxWebDriver.RefreshBrowser();
         }
 
         private static void Quit()

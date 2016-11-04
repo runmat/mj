@@ -11,7 +11,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium.Interactions;
 using Selenium.WebDriver.Extensions.JQuery;
+using SimpleBrowser.WebDriver;
 using By = OpenQA.Selenium.By;
 
 namespace WatchlistViewer
@@ -26,26 +28,16 @@ namespace WatchlistViewer
         private static IntPtr _browserWindowIntPtr;
         private static IWebElement _daxDiv;
 
-        public static void ShowBrowser()
-        {
-            WindowHelper.ShowWindow(WindowShowStyle.ShowNormal, _browserWindowIntPtr);
-        }
-
-        public static void HideBrowser()
-        {
-            WindowHelper.ShowWindow(WindowShowStyle.Hide, _browserWindowIntPtr);
-        }
+        public static bool IsBrowserVisible { get; set; }
 
         public static List<Stock> GetStockData()
         {
-            List<Stock> parsedStocks;
-
 #if TEST
                 var stockData = "Name Letzter Kurs* Aktuell Volumen Intraday-Spanne\r\nDAX\r\n846900 12:57:30 Xetra 11.337,73 Pkt. +10,54\r\n+0,09% 10\r\n28.997.363 11.353,25\r\n11.301,34\r\nSiemens\r\n723610 12:56:11 Xetra 99,56 EUR +0,63\r\n+0,64% 55\r\n609.071 99,69\r\n99,00\r\nEuro / US Dollar (EUR/...\r\n13:12:30 Außerbörslich 1,1226 USD +0,0023\r\n+0,20% -\r\n- 1,1245\r\n1,1194\r\nEuro / Schweizer Frank...\r\n13:12:28 HSBC 1,0645 CHF -0,0050\r\n-0,47% -\r\n- 1,0675\r\n1,0635\r\nGoldpreis (Spot)\r\n13:12:29 Außerbörslich 1.208,58 USD -1,69\r\n-0,14% -\r\n- 1.212,50\r\n1.204,10\r\ndb Ölpreis Brent\r\n13:12:27 Deutsche_Bank 61,01 USD +0,37\r\n+0,61% -\r\n- 61,74\r\n60,82\r\nNational Bank of Greece\r\nA1WZMS 12:57:24 Frankfurt 1,38 EUR -0,11\r\n-7,18% 20.000\r\n611.731 1,49\r\n1,36\r\nOSRAM Licht\r\nLED400 12:56:53 Xetra 40,72 EUR -0,96\r\n-2,29% 21\r\n125.108 41,08\r\n40,58\r\nDow_Jones\r\n969420 22:33:58 Dow_Jones 18.214,42 Pkt. -10,15\r\n-0,06% -\r\n81.500.575 18.239,43\r\n18.157,07";
 #else
                 var stockData = _driver.FindElementById("TABLE").Text;
 #endif
-                parsedStocks = StockService.ParseStocks(stockData);
+                var parsedStocks = StockService.ParseStocks(stockData);
 
             return parsedStocks;
         }
@@ -74,10 +66,11 @@ namespace WatchlistViewer
 
                 _driver.Url = "http://www.finanzen.net/aktien/DAX-Realtimekurse";
 
-                _daxDiv = WebDriverExtensions.FindElement(_driver, new JQuerySelector("table.header_height"));
+                _daxDiv = _driver.FindElement(new JQuerySelector("table.header_height"));
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -107,39 +100,59 @@ namespace WatchlistViewer
             {
                 var window = _driver.Manage().Window;
 
-                var width = 1000;
-                var height = 300;
+                const int width = 600;
+                const int height = 1300;
 
                 var screenBounds = Screen.PrimaryScreen.Bounds;
                 _driver.FindElement(By.TagName("body")).SendKeys(Keys.F11);
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000); 
                 window.Position = new Point
                 {
                     X = (screenBounds.Width / 2 - width / 2),
-                    Y = (screenBounds.Height / 2 - height / 2),
+                    Y = -175, //(screenBounds.Height / 2 - height / 2),
                 };
                 window.Size = new Size { Height = height, Width = width };
 
-                _driver.Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Indizes";
+                _driver.Url = "https://www.finanzen100.de/watchlist/Matz/";
 
-                var tbMail = _driver.FindElementById("MAIL_ADDRESS");
-                tbMail.SendKeys("runningmatzi@web.de");
+                var html = _driver.FindElement(By.TagName("html"));
+                new Actions(_driver)
+                    .SendKeys(html, Keys.LeftControl + Keys.Subtract + Keys.Null)
+                    .Perform();
 
-                var tbPwd = _driver.FindElementById("PASSWORD");
-                tbPwd.SendKeys("Walter36");
+                HideScrollbar();
 
-                var submit = _driver.FindElementByName("LOGIN_FORM_SUBMIT");
-                submit.Click();
-
-                Thread.Sleep(10000);
-                _driver.ExecuteScript("document.getElementById('TABLE').scrollIntoView(true);");
-
-                Thread.Sleep(2000);
                 _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
+                IsBrowserVisible = false;
             }
             catch
             {
+                // ignored
             }
+        }
+
+        static void HideScrollbar()
+        {
+            _driver.ExecuteScript("document.body.style.overflow = 'hidden';");
+            _driver.ExecuteScript("document.getElementById('scroll-top').style.overflow = 'hidden';");
+        }
+
+        public static void ShowBrowser()
+        {
+            WindowHelper.ShowWindow(WindowShowStyle.ShowNormal, _browserWindowIntPtr);
+            IsBrowserVisible = true;
+        }
+
+        public static void HideBrowser()
+        {
+            WindowHelper.ShowWindow(WindowShowStyle.Hide, _browserWindowIntPtr);
+            IsBrowserVisible = false;
+        }
+
+        public static void RefreshBrowser()
+        {
+            _driver.Navigate().Refresh();
+            HideScrollbar();
         }
     }
 }

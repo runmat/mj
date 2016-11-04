@@ -209,12 +209,5 @@ namespace WatchlistViewer
         }
 
         public MainViewModel Parent { get; set; }
-
-        public ICommand ShowWknAtComdirectCommand { get; private set; }
-
-        public Stock()
-        {
-            ShowWknAtComdirectCommand = new DelegateCommand(e => Parent.ShowWknAtComdirect(this), e => true);
-        }
     }
 }
