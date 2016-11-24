@@ -1,9 +1,10 @@
 ﻿<Window x:Class="WatchlistViewer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
         SizeChanged="MainWindow_OnSizeChanged"
-        Top="40" Topmost="True"  Loaded="MainWindow_OnLoaded"
+        Top="20" Topmost="True"  Loaded="MainWindow_OnLoaded"
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
         Title="Watchlist Viewer" SizeToContent="WidthAndHeight">
     <Window.Background>
@@ -18,9 +19,20 @@
         </Border.BitmapEffect>
         <StackPanel Orientation="Horizontal">
 
-            <Button Command="{Binding WatchlistToggleCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/toggle}" ToolTip="Watchlist-Anzeige toggeln" Opacity="0.4" />
-            <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
-           
+            <Button Command="{Binding ProxyOnCommand}" Margin="2,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/proxy-on}" ToolTip="Proxy einschalten" Opacity="0.4" />
+            <Button Command="{Binding ProxyOffCommand}" Margin="2,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/proxy-off}" ToolTip="Proxy ausschalten" Opacity="0.4" />
+            
+            <Button Command="{Binding WatchlistToggleCommand}" Margin="15,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/toggle}" ToolTip="Watchlist-Anzeige toggeln" Opacity="0.4" />
+            <Button Command="{Binding QuitCommand}" Margin="15,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
+
+            <ItemsControl Visibility="{Binding StockItemsVisible, Converter={StaticResource BooleanVisibilityConverter}}" ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="10,0,15,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <userControls:StockItem />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </StackPanel>
     </Border>
 </Window>

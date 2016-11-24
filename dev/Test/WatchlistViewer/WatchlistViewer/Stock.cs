@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-using WpfTools4.Commands;
-// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable RedundantUsingDirective
 using System.Windows.Media;
 using System;
 using System.Collections.Generic;
@@ -123,42 +121,30 @@ namespace WatchlistViewer
             }
         }
 
-        public double Change
-        {
-            get { return (Value - OpenValue); }
-        }
+        public double Change => (Value - OpenValue);
 
-        public Brush ForeColor
-        {
-            get { return (PercentChange < 0 ? Brushes.Red : Brushes.Green); }
-        }
+        public Brush ForeColor => (PercentChange < 0 ? Brushes.Red : Brushes.Green);
 
-        public string ToolTip { get { return string.Format("Zeit {0:HH:mm:ss} vom {0:dd.MM.yyyy}", DateTime); } }
+        public string ToolTip => string.Format("Zeit {0:HH:mm:ss} vom {0:dd.MM.yyyy}", DateTime);
 
-        public string ToolTipChangePercent
-        {
-            get
-            {
-                return $"% {PercentChange:0.00}   " +
-                       $"^ {TopValueFormatted}   " +
-                       $"¬ {BottomValueFormatted}   " +
-                       $"       (Open: {OpenValueFormatted}  Change: {ChangeFormatted})";
-            }
-        }
+        public string ToolTipChangePercent => $"% {PercentChange:0.00}   " +
+                                              //$"^ {TopValueFormatted}   " +
+                                              //$"¬ {BottomValueFormatted}   " +
+                                              $"       (Open: {OpenValueFormatted}  Change: {ChangeFormatted})";
 
-        public string ShortName { get { return GetPartOfValue(0, "{self}"); } }
+        public string ShortName => GetPartOfValue(0, "{self}");
 
-        public string IdNotation { get { return GetPartOfValue(1, ""); } }
+        public string IdNotation => GetPartOfValue(1, "");
 
-        public string YahooSymbol { get { return GetPartOfValue(2, ""); } }
+        public string YahooSymbol => GetPartOfValue(2, "");
 
-        public string ValueFormatted { get { return Value.ToString(GetPartOfValue(3, "#,##0.00")); } }
-        public string OpenValueFormatted { get { return OpenValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
-        public string TopValueFormatted { get { return TopValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
-        public string BottomValueFormatted { get { return BottomValue.ToString(GetPartOfValue(3, "#,##0.00")); } }
-        public string ChangeFormatted { get { return Change.ToString(GetPartOfValue(3, "#,##0.00")); } }
+        public string ValueFormatted => Value.ToString(GetPartOfValue(3, "#,##0.00"));
+        public string OpenValueFormatted => OpenValue.ToString(GetPartOfValue(3, "#,##0.00"));
+        public string TopValueFormatted => TopValue.ToString(GetPartOfValue(3, "#,##0.00"));
+        public string BottomValueFormatted => BottomValue.ToString(GetPartOfValue(3, "#,##0.00"));
+        public string ChangeFormatted => Change.ToString(GetPartOfValue(3, "#,##0.00"));
 
-        public double AbsPercentChangeMaxForUI { get { return double.Parse(GetPartOfValue(4, "1.0")); } }
+        public double AbsPercentChangeMaxForUI => double.Parse(GetPartOfValue(4, "1.0"));
 
         public double AbsPercentChangeForUI
         {

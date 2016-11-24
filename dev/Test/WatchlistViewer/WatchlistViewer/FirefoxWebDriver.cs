@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Interactions;
 using Selenium.WebDriver.Extensions.JQuery;
-using SimpleBrowser.WebDriver;
 using By = OpenQA.Selenium.By;
 
 namespace WatchlistViewer
@@ -30,14 +29,26 @@ namespace WatchlistViewer
 
         public static bool IsBrowserVisible { get; set; }
 
+        public static void GetStockDataTest()
+        {
+            var stockData = "Name Kurs Aktuell 52W\r\ndb DAX\r\n11:24:25\r\nDeutsche Bank\r\n10.681,50\r\nPkt.\r\n+0,06%\r\n+6,00\r\n-3,46%\r\n-383,00\r\nGoldpreis (Spot)\r\n11:24:31\r\nIDC Forex\r\n1.187,49\r\nUSD\r\n-0,16%\r\n-1,91\r\n+10,43%\r\n+112,14\r\nEuro / US Dollar (EUR/USD)\r\n11:24:31\r\nIDC Forex\r\n1,0552\r\nUSD\r\n+0,10%\r\n+0,0010\r\n-0,79%\r\n-0,0084\r\nSiemens\r\n723610\r\n11:08:39\r\nXetra\r\n107,45\r\nEUR\r\n+0,00%\r\n+0,00\r\n+12,14%\r\n+11,63\r\ndb Ölpreis Brent\r\n11:24:31\r\nDeutsche Bank\r\n49,07\r\nUSD\r\n+0,03%\r\n+0,02\r\n+8,70%\r\n+3,93\r\ndb S&P 500\r\n11:24:30\r\nDeutsche Bank\r\n2.203,75\r\nPkt.\r\n+0,01%\r\n+0,25\r\n+5,62%\r\n+117,25\r\ndb Dow Jones\r\n11:24:12\r\nDeutsche Bank\r\n19.094,00\r\nPkt.\r\n+0,03%\r\n+6,00\r\n+7,33%\r\n+1.304,00\r\nEuro / Schweizer Franken (EUR/CHF)\r\n11:24:31\r\nHSBC\r\n1,0730\r\nCHF\r\n+0,00%\r\n+0,0000\r\n-0,88%\r\n-0,0095\r\nVolkswagen Vz.\r\n766403\r\n11:09:24\r\nXetra\r\n124,12\r\nEUR\r\n+0,91%\r\n+1,12\r\n+12,94%\r\n+14,22\r\nOSRAM Licht\r\nLED400\r\n11:08:35\r\nXetra\r\n47,52\r\nEUR\r\n+0,04%\r\n+0,02\r\n+22,14%\r\n+8,62\r\nNational Bank of Greece\r\nA2ABB9\r\n11:05:29\r\nFrankfurt\r\n0,22\r\nEUR\r\n-5,68%\r\n-0,01\r\n-93,51%\r\n-3,11\r\nCall auf Goldpreis (Spot)\r\nDZV90N\r\n10:53:27\r\nStuttgart\r\n0,001\r\nEUR\r\n+0,00%\r\n+0,000\r\n-99,88%\r\n-0,839\r\nEuro-Bund-Future (FGBL) - EUX/C1\r\n11:09:31\r\nEurex\r\n161,22\r\nEUR\r\n+0,04%\r\n+0,07\r\n+2,47%\r\n+3,88";
+            var parsedStocks = StockService.ParseStocks(stockData);
+        }
+
         public static List<Stock> GetStockData()
         {
-#if TEST
-                var stockData = "Name Letzter Kurs* Aktuell Volumen Intraday-Spanne\r\nDAX\r\n846900 12:57:30 Xetra 11.337,73 Pkt. +10,54\r\n+0,09% 10\r\n28.997.363 11.353,25\r\n11.301,34\r\nSiemens\r\n723610 12:56:11 Xetra 99,56 EUR +0,63\r\n+0,64% 55\r\n609.071 99,69\r\n99,00\r\nEuro / US Dollar (EUR/...\r\n13:12:30 Außerbörslich 1,1226 USD +0,0023\r\n+0,20% -\r\n- 1,1245\r\n1,1194\r\nEuro / Schweizer Frank...\r\n13:12:28 HSBC 1,0645 CHF -0,0050\r\n-0,47% -\r\n- 1,0675\r\n1,0635\r\nGoldpreis (Spot)\r\n13:12:29 Außerbörslich 1.208,58 USD -1,69\r\n-0,14% -\r\n- 1.212,50\r\n1.204,10\r\ndb Ölpreis Brent\r\n13:12:27 Deutsche_Bank 61,01 USD +0,37\r\n+0,61% -\r\n- 61,74\r\n60,82\r\nNational Bank of Greece\r\nA1WZMS 12:57:24 Frankfurt 1,38 EUR -0,11\r\n-7,18% 20.000\r\n611.731 1,49\r\n1,36\r\nOSRAM Licht\r\nLED400 12:56:53 Xetra 40,72 EUR -0,96\r\n-2,29% 21\r\n125.108 41,08\r\n40,58\r\nDow_Jones\r\n969420 22:33:58 Dow_Jones 18.214,42 Pkt. -10,15\r\n-0,06% -\r\n81.500.575 18.239,43\r\n18.157,07";
-#else
-                var stockData = _driver.FindElementById("TABLE").Text;
-#endif
-                var parsedStocks = StockService.ParseStocks(stockData);
+            string stockData;
+            try
+            {
+                stockData = _driver.FindElementByClassName("PortfolioTable").Text;
+            }
+            catch
+            {
+                // ignored
+                return null;
+            }
+
+            var parsedStocks = StockService.ParseStocks(stockData);
 
             return parsedStocks;
         }
@@ -115,6 +126,20 @@ namespace WatchlistViewer
 
                 _driver.Url = "https://www.finanzen100.de/watchlist/Matz/";
 
+                try
+                { 
+                    var tbMail = _driver.FindElementById("email");
+                    tbMail.SendKeys("runningmatzi@web.de");
+                    var tbPwd = _driver.FindElementById("password");
+                    tbPwd.SendKeys("Walter36");
+                    var submit = _driver.FindElementByClassName("cta-button--primary");
+                    if (submit!= null && submit.Text.ToLower() == "anmelden")
+                        submit.Click();
+                }
+                catch
+                {
+                    // ignored
+                }
                 var html = _driver.FindElement(By.TagName("html"));
                 new Actions(_driver)
                     .SendKeys(html, Keys.LeftControl + Keys.Subtract + Keys.Null)
