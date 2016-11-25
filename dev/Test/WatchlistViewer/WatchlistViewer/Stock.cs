@@ -22,10 +22,14 @@ namespace WatchlistViewer
 
         private readonly Dictionary<string, string> _nameTranslateDict = new Dictionary<string, string>
         {
-            { "Goldpreis", "Gold~1326189~XAUUSD=X~0.0~2" },
+            { "Goldpreis", "Gold~1326189~XAUUSD=X~#,##0.0~2" },
             { "Euro / US", "€/US~1390634~EURUSD=X~0.0000~2" },
-            { "DAX", "DAX~20735~%5EGDAXI~0~2" },
+            { "db DAX", "DAX~20735~%5EGDAXI~#,##0~2" },
             { "Brent", "Öl~31117610~%5EGDAXI~0.00~2" },
+            { "Dow Jones", "Dow~X~X~#,##0~2" },
+            { "S&P 500", "S&P~X~X~#,##0~2" },
+            { "Volkswagen Vz.", "VW~X~X~0.00~2" },
+            { "National Bank of", "Greece~X~X~0.00~2" },
         };
 
         public string Name
