@@ -47,6 +47,7 @@ namespace WatchlistViewer
                     stockItem.Name = stockItem.Name.Replace("db ", "");
                     stockItem.Name = stockItem.Name.Replace(" 500", "");
                     stockItem.Name = stockItem.Name.Replace(" Jones", "");
+                    stockItem.Name = stockItem.Name.Replace("Volkswagen Vz.", "VW");
 
                     var changeValue = double.Parse(sArray[i + si + 6]);
                     stockItem.OpenValue = stockItem.Value - changeValue;
