@@ -160,22 +160,22 @@ namespace MyBoss
 
 
 
-            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks1, Key.LeftAlt, () =>
-            {
-                LowLevelKeyboardListener.Disabled = true;
-                Tools.ShowDesktop();
-                Thread.Sleep(50);
-                new FakeWindow("fake_wallpaper.png").Show();
-            });
+            //TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks1, Key.LeftAlt, () =>
+            //{
+            //    LowLevelKeyboardListener.Disabled = true;
+            //    Tools.ShowDesktop();
+            //    Thread.Sleep(50);
+            //    new FakeWindow("fake_wallpaper.png").Show();
+            //});
 
-            TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks2, Key.LeftShift, () =>
-            {
-                LowLevelKeyboardListener.Disabled = true;
-                KillOutlook();
-                Tools.ShowDesktop();
-                Thread.Sleep(50);
-                new FakeWindow("fake_lockscreen_win10.png").Show();
-            });
+            //TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks2, Key.LeftShift, () =>
+            //{
+            //    LowLevelKeyboardListener.Disabled = true;
+            //    KillOutlook();
+            //    Tools.ShowDesktop();
+            //    Thread.Sleep(50);
+            //    new FakeWindow("fake_lockscreen_win10.png").Show();
+            //});
 
             TryCheckDoubleTimeKeyPressAction(e, ref _lastTicks3, Key.RightCtrl, () =>
             {
@@ -201,8 +201,8 @@ namespace MyBoss
 
         void Log(Key key, ref double lastTicks)
         {
-            if (!_logIsActive)
-                return;
+            //if (!_logIsActive)
+            //    return;
 
             var ticksNow = (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
             var useBreak = (ticksNow - lastTicks > 6000);
