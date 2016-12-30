@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GemBox.Spreadsheet, Version=39.3.30.1163, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\work\GAC\GemBox.Spreadsheet.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneralTools">
+      <HintPath>..\..\..\work\GAC\GeneralTools.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -41,6 +48,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +62,8 @@
     <Compile Include="Services\AwsExcelImportService.cs" />
     <Compile Include="Services\AwsExcelImportServiceFactory.cs" />
     <Compile Include="Services\AwsOutlookImportService.cs" />
+    <Compile Include="Services\ExcelDocumentFactory.cs" />
+    <Compile Include="Services\GemBoxSpreadsheetService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\General\Contracts\CalendarService\CalendarService.csproj">

@@ -5,7 +5,7 @@ namespace AwsAbfuhrkalenderApp
 {
     class Program
     {
-        private const int Year = 2016;
+        private const int Year = 2017;
 
         /// <summary>
         /// Pre-Conditions:

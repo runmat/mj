@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Contracts.CalendarService;
+using DocumentTools.Services;
 using Microsoft.Office.Interop.Outlook;
 
 namespace AwsAbfuhrkalender.Services
@@ -15,47 +17,37 @@ namespace AwsAbfuhrkalender.Services
         ///    3. Nun die ICS Kalender Items kopieren auf den Standard Kalender:
         ///    3.a)    => "Ansicht / Ansicht ändern / Liste"
         ///    3.b)    ICS Kalender anwählen + alle Termine auswählen (STRG + a)
-        ///    3.c)    Termine per Drag & Drop in den Standard Kalender verschieben
+        ///           OBSOLETE WEGEN Com.Error CO_E_SERVER_EXEC_FAILURE  3.c)    Termine per Drag & Drop in den Standard Kalender verschieben
+        ///    3.c)    Nach Excel kopieren und dort speichern, 2 Spalten "Beginn", "Betreff", Kopfzeile beibehalten 
         /// </summary>
         public List<CalendarItem> GetAllCalendarItems(int year)
         {
             var list = new List<CalendarItem>();
 
-            Application oApp = null;
-            NameSpace mapiNamespace = null;
-            MAPIFolder calendarFolder = null;
-            Items outlookCalendarItems = null;
+            var dt = ExcelDocumentFactory.ReadToDataTable(@"C:\Users\JenzenM\Downloads\Aws_Termine_2017.xls", true);
+            var rows = dt.Rows;
 
-            oApp = new Application();
-            mapiNamespace = oApp.GetNamespace("MAPI");
-
-            calendarFolder = mapiNamespace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
-
-            outlookCalendarItems = calendarFolder.Items;
-            outlookCalendarItems.IncludeRecurrences = false;
-
-            var outlookCalendarItemsList = outlookCalendarItems.OfType<AppointmentItem>().OrderBy(i => i.Start).ToList();
-
-            foreach (var item in outlookCalendarItemsList)
+            foreach (DataRow item in rows)
             {
-                //if (item.IsRecurring) continue;
-                if (item.Start.Year == year)
-                {
-                    var sItem = item.Subject + " -> " + item.Start.ToLongDateString();
-                    var date = item.Start;
+                var datum = DateTime.Parse((string)item[0]);
+                var subject = (string)item[1];
 
-                    if (date < DateTime.Parse("09.06.2016"))
+                //if (item.IsRecurring) continue;
+                if (datum.Year == year)
+                {
+                    var sItem = subject + " -> " + datum.ToLongDateString();
+                    var date = datum;
+
+                    if (date < DateTime.Parse("01.01.2017"))
                         continue;
 
-                    list.Add( new CalendarItem
-                                     {
-                                         ItemType = item.Subject[0].ToString().ToLower(),
-                                         Date = item.Start,
-                                     });
+                    list.Add(new CalendarItem
+                    {
+                        ItemType = subject[0].ToString().ToLower(),
+                        Date = datum,
+                    });
                 }
             }
-
-            oApp.Quit();
 
             return list;
         }
