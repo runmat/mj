@@ -53,38 +53,6 @@ namespace WatchlistViewer
             return parsedStocks;
         }
 
-        public static void InvokeDax()
-        {
-            ProcessHelper.KillAllProcessesOf(FirefoxProcessName);
-
-            try
-            {
-                var ffBinary = new FirefoxBinary(@"c:\Program Files (x86)\Mozilla Firefox\firefox.exe");
-                var firefoxProfile =
-                    new FirefoxProfile(
-                        @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\q9bqzwdx.default");
-                _driver = new FirefoxDriver(ffBinary, firefoxProfile);
-                
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            try
-            {
-                _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
-
-                _driver.Url = "http://www.finanzen.net/aktien/DAX-Realtimekurse";
-
-                _daxDiv = _driver.FindElement(new JQuerySelector("table.header_height"));
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
         public static string GetDaxValue()
         {
             return _daxDiv.Text;
@@ -126,9 +94,12 @@ namespace WatchlistViewer
 
                 _driver.Url = "https://www.finanzen100.de/watchlist/Matz/";
 
+                //Thread.Sleep(5000); 
                 try
-                { 
-                    var tbMail = _driver.FindElementById("email");
+                {
+                    //var tbMail = _driver.FindElementById("email"); 
+                    var tbMails = _driver.FindElementsByClassName("mdl-textfield__input");
+                    var tbMail = tbMails.First(t => t.GetAttribute("name") == "email");
                     tbMail.SendKeys("runningmatzi@web.de");
                     var tbPwd = _driver.FindElementById("password");
                     tbPwd.SendKeys("Walter36");
@@ -136,7 +107,7 @@ namespace WatchlistViewer
                     if (submit!= null && submit.Text.ToLower() == "anmelden")
                         submit.Click();
                 }
-                catch
+                catch(Exception e)
                 {
                     // ignored
                 }

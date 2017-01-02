@@ -23,7 +23,8 @@ namespace WatchlistViewer
             var subIndex = 0;
             while (index < sArray.Length)
             {
-                var hasWkn = !(sArray[index + 1].Contains(":"));
+                var wknCandidate = sArray[index + 1];
+                var hasWkn = !(wknCandidate.Contains(":") || wknCandidate.Contains("."));
                 var itemLength = hasWkn ? 10 : 9;
 
                 subIndex++;
@@ -37,12 +38,19 @@ namespace WatchlistViewer
 
                     var stockItem = new Stock
                     {
-
                         Name = sArray[i + 0].Replace("_", " ").SubstringTry(0, 16),
                         Wkn = (hasWkn ? sArray[i + 1] : ""),
-                        DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + sArray[i + si + 1], "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture),
                         Value = double.Parse(sArray[i + si + 3]),
+                        DateTime = DateTime.Now
                     };
+                    try
+                    {
+                        stockItem.DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + sArray[i + si + 1], "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture);
+                    }
+                    catch
+                    {
+                        stockItem.DateTime = DateTime.ParseExact(sArray[i + si + 1], "dd.MM.yyyy", CultureInfo.CurrentCulture);
+                    }
 
                     var changeValue = double.Parse(sArray[i + si + 6]);
                     stockItem.OpenValue = stockItem.Value - changeValue;
