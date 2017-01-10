@@ -1,0 +1,17 @@
+﻿<Window x:Class="CkgNetworkSwitch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CkgNetworkSwitch"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Network switch" SizeToContent="WidthAndHeight">
+    <StackPanel Orientation="Horizontal">
+
+        <ToggleButton IsChecked="{Binding IsWlanEnabled, Converter= {StaticResource BooleanInverseConverter}}" Width="128" Height="128" Style="{StaticResource MyToggleButton}" />
+
+        <ToggleButton IsChecked="{Binding IsWlanEnabled}" Width="128" Height="128" Style="{StaticResource MyToggleButton}" />
+        
+    </StackPanel>
+</Window>
