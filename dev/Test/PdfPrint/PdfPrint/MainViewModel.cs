@@ -9,15 +9,19 @@ using System.Windows.Input;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using WpfTools4.Commands;
+using WpfTools4.Services;
 
 namespace PdfPrint
 {
     public class MainViewModel : ModelBase
     {
+        private readonly object _lockObject = new object();
+
         private bool _isPrinting;
         private int _page;
         private int _startPage;
         private int _endPage;
+        private string _busyHint;
 
         public bool IsPrinting
         {
@@ -47,11 +51,21 @@ namespace PdfPrint
             set { _endPage = value; SendPropertyChanged("EndPage"); }
         }
 
+        public string BusyHint
+        {
+            get { return _busyHint; }
+            set { _busyHint = value; SendPropertyChanged("BusyHint"); }
+        }
+
+        public static bool RequestBusyHint { get; set; }
+
         public ICommand PrintCommand { get; private set; }
 
         public MainViewModel()
         {
             PrintCommand = new DelegateCommand(e => Print(), e => true);
+
+            TaskService.InitUiSynchronizationContext();
         }
 
         private void Print()
@@ -63,12 +77,17 @@ namespace PdfPrint
             Page = 0;
             StartPage = 21;
             EndPage = 24;
-            Task.Factory.StartNew(() =>
+            TaskService.StartLongRunningTask(() =>
             {
                 for (var i = StartPage; i <= EndPage; i++)
                 {
                     Page = i;
                     Thread.Sleep(10);
+
+                    var requestBusyHint = false;
+                    Application.Current.Dispatcher.Invoke((() => requestBusyHint = RequestBusyHint));
+                    if (requestBusyHint)
+                        BusyHint = "Hinweis:\r\nAktive Hintergrund-Druckprozesse müssen noch abgeschlossen werden!\r\nBitte versuchen Sie in ein paar Augenblicken noch einmal die Anwendung zu schließen.";
 
                     Thread.Sleep(700);
                     //                    Helper.PdfSplitDocument(pdfFileName, pdfOutFileName, i);
@@ -78,6 +97,8 @@ namespace PdfPrint
             })
             .ContinueWith(t =>
             {
+                BusyHint = "";
+                RequestBusyHint = false;
                 IsPrinting = false;
                 Page = 0;
             }, 

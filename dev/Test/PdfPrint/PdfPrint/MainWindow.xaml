@@ -5,9 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Width="500"
-        
-        Title="CKG PDF Printer" SizeToContent="Height">
+        Title="CKG PDF Printer" SizeToContent="Height" Width="550">
     <StackPanel Margin="20">
         
         <Button Padding="15" Command="{Binding PrintCommand}" IsEnabled="{Binding IsPrinting, Converter={StaticResource BooleanInverseConverter}}">
@@ -33,6 +31,8 @@
                 <ProgressBar Minimum="{Binding StartPage}" Maximum="{Binding EndPage}" Value="{Binding Page}" Height="20" />
             </StackPanel>
         </Grid>
+
+        <TextBlock Text="{Binding BusyHint}" Background="Ivory" Foreground="Red" Visibility="{Binding BusyHint, Converter={StaticResource StringVisibilityConverter}}" Padding="5" />
         
     </StackPanel>
 </Window>

@@ -1,4 +1,4 @@
-﻿using WpfTools4.Services;
+﻿using System.Windows;
 
 namespace PdfPrint
 {
@@ -17,7 +17,8 @@ namespace PdfPrint
         {
             if (_vm.IsPrinting)
             {
-                Tools.Alert("Hinweis:\r\n\r\nAktive Hintergrund-Druckprozesse müssen noch abgeschlossen werden!\r\n\r\nBitte versuchen Sie in ein paar Augenblicken noch einmal die Anwendung zu schließen.");
+                MainViewModel.RequestBusyHint = true;
+
                 e.Cancel = true;
                 return;
             }
