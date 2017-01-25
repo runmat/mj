@@ -18,7 +18,7 @@ namespace WatchlistViewer
         private double _bottomValue;
         private double _change;
 
-        public static double PixelAbsPercentChangeMaxForUI = 25;
+        public static double PixelAbsPercentChangeMaxForUI = 12;
 
         private readonly Dictionary<string, string> _nameTranslateDict = new Dictionary<string, string>
         {

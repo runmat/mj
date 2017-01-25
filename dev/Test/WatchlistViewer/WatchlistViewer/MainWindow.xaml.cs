@@ -17,14 +17,6 @@ namespace WatchlistViewer
             DataContext = new MainViewModel();
         }
 
-        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //const int margin Right = FirefoxWebDriver.BrowserWidth + FirefoxWebDriver.BrowserMarginRight;
-
-            //var desktopWorkingArea = SystemParameters.WorkArea;
-            Left = 500; //desktopWorkingArea.Width - e.NewSize.Width - 150; //- marginRight + 350;
-        }
-
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             var wndHelper = new WindowInteropHelper(this);

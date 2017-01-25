@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Image x:Shared="False" x:Key="image/12x12/comdirect" Source="/Images/16x16/comdirect.png" SnapsToDevicePixels="True" Width="12" Height="12" />
+    <Image x:Shared="False" x:Key="image/12x12/proxy-on" Source="/Images/16x16/proxy-on.png" SnapsToDevicePixels="True" Width="12" Height="12" />
+    <Image x:Shared="False" x:Key="image/12x12/proxy-off" Source="/Images/16x16/proxy-off.png" SnapsToDevicePixels="True" Width="12" Height="12" />
+
     <Image x:Shared="False" x:Key="image/16x16/comdirect" Source="/Images/16x16/comdirect.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/proxy-on" Source="/Images/16x16/proxy-on.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/proxy-off" Source="/Images/16x16/proxy-off.png" SnapsToDevicePixels="True" Width="16" Height="16" />

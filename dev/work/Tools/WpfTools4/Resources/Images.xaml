@@ -12,6 +12,9 @@
     <Image x:Shared="False" x:Key="image/10x10/right" Source="pack://application:,,,/WpfTools4;component/Images/10x10/right.png" SnapsToDevicePixels="True" Width="10" Height="10" />
     <Image x:Shared="False" x:Key="image/10x10/rotate_180" Source="pack://application:,,,/WpfTools4;component/Images/10x10/rotate_180.png" SnapsToDevicePixels="True" Width="10" Height="10" />
 
+    <Image x:Shared="False" x:Key="image/12x12/delete_black" Source="pack://application:,,,/WpfTools4;component/Images/12x12/delete_black.png" SnapsToDevicePixels="True" Width="12" Height="12" />
+    <Image x:Shared="False" x:Key="image/12x12/toggle" Source="pack://application:,,,/WpfTools4;component/Images/12x12/toggle.png" SnapsToDevicePixels="True" Width="12" Height="12" />
+
     <Image x:Shared="False" x:Key="image/16x16/collapsed" Source="pack://application:,,,/WpfTools4;component/Images/16x16/collapsed.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/expanded" Source="pack://application:,,,/WpfTools4;component/Images/16x16/expanded.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/ball_red" Source="pack://application:,,,/WpfTools4;component/Images/16x16/ball_red.png" SnapsToDevicePixels="True" Width="16" Height="16" />

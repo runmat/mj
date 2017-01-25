@@ -168,6 +168,15 @@
     <Resource Include="Images\16x16\proxy-off.png" />
     <Resource Include="Images\16x16\proxy-on.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\12x12\comdirect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\12x12\proxy-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\12x12\proxy-on.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
