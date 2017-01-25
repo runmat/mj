@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using GeneralTools.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -68,6 +69,17 @@ namespace PdfPrint
             }
 
             document.Close();
+        }
+
+        static public string GetPdfFilenameFromDialog(string selectedPath, string caption)
+        {
+            var dialog = new OpenFileDialog { DefaultExt = "pdf", InitialDirectory = selectedPath };
+
+            var result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+                return null;
+
+            return dialog.FileName;
         }
     }
 }

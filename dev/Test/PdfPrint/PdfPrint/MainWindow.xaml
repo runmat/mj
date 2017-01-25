@@ -7,13 +7,29 @@
         WindowStartupLocation="CenterScreen"
         Title="CKG PDF Printer" SizeToContent="Height" Width="550">
     <StackPanel Margin="20">
+
+        <StackPanel Orientation="Horizontal" Margin="1,0,0,0">
+            <TextBlock Text="PDF Datei für den Druck wählen:" />
+            <Button Command="{Binding SetPdfNameCommand}"  Content="..." ToolTip="PDF Datei für den Druck wählen" Width="25" Height="25" HorizontalAlignment="Right" Margin="5,0,10,0" />
+        </StackPanel>
+
+
+        <StackPanel Visibility="{Binding PdfFileName, Converter={StaticResource StringVisibilityConverter}}" Margin="1,20,0,15">
+            <TextBlock Text="{Binding PdfFileName}" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Stretch"  />
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Seiten drucken:" />
+                <TextBox Text="{Binding PdfPrintRange, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" Foreground="Blue" Width="70" Height="20" Margin="10,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+
         
-        <Button Padding="15" Command="{Binding PrintCommand}" IsEnabled="{Binding IsPrinting, Converter={StaticResource BooleanInverseConverter}}">
+        <Button Padding="15" Command="{Binding PrintCommand}" IsEnabled="{Binding PrintingEnabled}" Margin="0,15,0,0">
             <StackPanel Orientation="Horizontal">
-            <ContentPresenter Content="{StaticResource image/16x16/pdf}" />
-            <TextBlock Margin="5,0,0,0">PDF drucken</TextBlock>
+                <ContentPresenter Content="{StaticResource image/32x32/pdf}" />
+                <TextBlock Margin="7,0,0,0" FontWeight="Normal" FontSize="20">PDF drucken</TextBlock>
             </StackPanel>
         </Button>
+
         
         <Grid Visibility="{Binding Page, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
@@ -28,7 +44,7 @@
                     <TextBlock Text="{Binding PageHint}" Foreground="Blue" />
                     <TextBlock Text="{Binding PageHint2}" Foreground="Gray" Margin="10,0,0,0" />
                 </StackPanel>
-                <ProgressBar Minimum="{Binding StartPage}" Maximum="{Binding EndPage}" Value="{Binding Page}" Height="20" />
+                <ProgressBar Minimum="{Binding ProgressStart}" Maximum="{Binding ProgressEnd}" Value="{Binding Page}" Height="20" />
             </StackPanel>
         </Grid>
 
