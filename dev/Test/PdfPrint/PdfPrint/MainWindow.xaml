@@ -3,18 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PdfPrint"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CKG PDF Printer" SizeToContent="WidthAndHeight">
+        Width="500"
+        
+        Title="CKG PDF Printer" SizeToContent="Height">
     <StackPanel Margin="20">
         
-        <Button Padding="15" Command="{Binding PrintCommand}">
+        <Button Padding="15" Command="{Binding PrintCommand}" IsEnabled="{Binding IsPrinting, Converter={StaticResource BooleanInverseConverter}}">
             <StackPanel Orientation="Horizontal">
             <ContentPresenter Content="{StaticResource image/16x16/pdf}" />
             <TextBlock Margin="5,0,0,0">PDF drucken</TextBlock>
             </StackPanel>
         </Button>
+        
+        <Grid Visibility="{Binding Page, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <ContentPresenter Grid.Column="0" Content="{StaticResource image/96x96/print}" />
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
+                    <TextBlock Text="{Binding PageHint}" Foreground="Blue" />
+                    <TextBlock Text="{Binding PageHint2}" Foreground="Gray" Margin="10,0,0,0" />
+                </StackPanel>
+                <ProgressBar Minimum="{Binding StartPage}" Maximum="{Binding EndPage}" Value="{Binding Page}" Height="20" />
+            </StackPanel>
+        </Grid>
         
     </StackPanel>
 </Window>
