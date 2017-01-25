@@ -1,0 +1,19 @@
+﻿<Application x:Class="PdfPrint.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PdfPrint"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Converters.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Images.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/WpfTools4;component/Resources/ControlStyles/DocumentViewer.xaml" />
+                <ResourceDictionary Source="/Resources/LocalStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>

@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfPrint", "PdfPrint\PdfPrint.csproj", "{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTools4", "..\..\work\Tools\WpfTools4\WpfTools4.csproj", "{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralTools", "..\..\work\Tools\GeneralTools\GeneralTools.csproj", "{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugQuick|Any CPU = DebugQuick|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B09B4CAE-AF5A-44A6-A55F-C9681A8A9D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.DebugQuick|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.DebugQuick|Any CPU.Build.0 = Debug|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.ActiveCfg = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.DebugQuick|Any CPU.Build.0 = DebugQuick|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
