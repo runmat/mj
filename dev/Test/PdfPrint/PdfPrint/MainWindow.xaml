@@ -48,7 +48,7 @@
             </StackPanel>
         </Grid>
 
-        <TextBlock Text="{Binding BusyHint}" Background="Ivory" Foreground="Red" Visibility="{Binding BusyHint, Converter={StaticResource StringVisibilityConverter}}" Padding="5" />
+        <TextBlock Text="{Binding BusyHint}" Background="Ivory" Foreground="Red" Visibility="{Binding BusyHint, Converter={StaticResource StringVisibilityConverter}}" Padding="10" />
         
     </StackPanel>
 </Window>

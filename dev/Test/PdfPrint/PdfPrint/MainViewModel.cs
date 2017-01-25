@@ -125,6 +125,7 @@ namespace PdfPrint
         {
             IsPrinting = true;
             Page = 0;
+            BusyHint = "";
 
             if (PdfPrintRange.IsNullOrEmpty()) return;
             if (PdfPrintRange.Contains("-"))
@@ -145,6 +146,7 @@ namespace PdfPrint
             if (EndPage < StartPage)
                 EndPage = StartPage;
 
+            var errorOccured = false;
             TaskService.StartLongRunningTask(() =>
             {
                 for (var i = StartPage; i <= EndPage; i++)
@@ -158,17 +160,26 @@ namespace PdfPrint
                         BusyHint =
                             "Hinweis:\r\nAktive Hintergrund-Druckprozesse müssen noch abgeschlossen werden!\r\nBitte versuchen Sie in ein paar Augenblicken noch einmal die Anwendung zu schließen.";
 
-                    Thread.Sleep(700);
-                    //                    var pdfOutFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "tmp.pdf");
-                    //                    Helper.PdfSplitDocument(PdfFileName, pdfOutFileName, i);
-                    //                    Helper.PdfPrint(pdfOutFileName);
-                    //                    FileService.TryFileDelete(pdfOutFileName);
+                    //Thread.Sleep(700);
+                    var pdfOutFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"CkgPdfPrint-{Guid.NewGuid()}.pdf");
+                    if (!Helper.PdfSplitDocument(PdfFileName, pdfOutFileName, i))
+                    {
+                        errorOccured = true;
+                        Application.Current.Dispatcher.Invoke((() => requestBusyHint = RequestBusyHint));
+                        BusyHint = "Fehler beim Drucken der gewünschten Seite!\r\nSind alle zu druckenden Seiten im Dokument vorhanden?";
+                        break;
+                    }
+
+                    Helper.PdfPrint(pdfOutFileName);
+                    FileService.TryFileDelete(pdfOutFileName);
                 }
             })
             .ContinueWith(t =>
             {
-                Page++;
-                Thread.Sleep(1500);
+                if (!errorOccured)
+                    Page++;
+
+                Thread.Sleep(3000);
             })
             .ContinueWith(t =>
             {

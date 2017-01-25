@@ -21,6 +21,9 @@ namespace PdfPrint
         {
             KillAllProcessesOf("AcroRd32");
 
+            if (!File.Exists(pdfFileName))
+                return;
+
             // ReSharper disable PossibleNullReferenceException
             var processFilename = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("App Paths").OpenSubKey("AcroRd32.exe").GetValue(string.Empty).ToString();
             // ReSharper restore PossibleNullReferenceException
@@ -52,23 +55,30 @@ namespace PdfPrint
             p.Kill();
         }
 
-        public static void PdfSplitDocument(string sourceFilePath, string outputFilePath, int startPage, int numPages = 1)
+        public static bool PdfSplitDocument(string sourceFilePath, string outputFilePath, int startPage, int numPages = 1)
         {
             FileService.TryFileDelete(outputFilePath);
 
             var reader = new PdfReader(sourceFilePath);
-
             var document = new Document(PageSize.A4, 0, 0, 0, 0);
             var copy = new PdfCopy(document, new FileStream(outputFilePath, FileMode.Create));
             document.Open();
-
-            for (var i = startPage; i < startPage + numPages; i++)
+            try
             {
-                var page = copy.GetImportedPage(reader, i);
-                copy.AddPage(page);
+                for (var i = startPage; i < startPage + numPages; i++)
+                {
+                    var page = copy.GetImportedPage(reader, i);
+                    copy.AddPage(page);
+                }
+            }
+            catch
+            {
+                FileService.TryFileDelete(outputFilePath);
+                return false;
             }
 
             document.Close();
+            return true;
         }
 
         static public string GetPdfFilenameFromDialog(string selectedPath, string caption)
