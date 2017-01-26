@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ckg-pdf-printer.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\..\..\..\..\..\dev\Work\GAC\itextsharp.dll</HintPath>
@@ -146,6 +149,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\96x96\print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\48x48\printer-gray.png" />
+    <Resource Include="images\48x48\printer-green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\ckg-dev-logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ckg-pdf-printer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

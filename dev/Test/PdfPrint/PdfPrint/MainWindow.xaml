@@ -5,30 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CKG PDF Printer" SizeToContent="Height" Width="550">
-    <StackPanel Margin="20">
+        Title="" SizeToContent="Height" Width="500">
+    <StackPanel Margin="20,0,20,10">
 
-        <StackPanel Orientation="Horizontal" Margin="1,0,0,0">
+        <TextBlock Text="{Binding TestHint}" Foreground="Red" FontWeight="Bold" FontSize="30" Visibility="{Binding TestHint, Converter={StaticResource StringVisibilityConverter}}" HorizontalAlignment="Center" Margin="0,20,0,20" />
+        
+        <Border BorderBrush="#e9e9e9" BorderThickness="0,0,0,1">
+            <ContentPresenter Content="{StaticResource image/logo}" HorizontalAlignment="Left" Margin="-5,0,0,10" />
+        </Border>
+
+        <StackPanel Orientation="Horizontal" Margin="1,20,0,0">
             <TextBlock Text="PDF Datei für den Druck wählen:" />
-            <Button Command="{Binding SetPdfNameCommand}"  Content="..." ToolTip="PDF Datei für den Druck wählen" Width="25" Height="25" HorizontalAlignment="Right" Margin="5,0,10,0" />
+            <Button Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/pdf}" Command="{Binding SetPdfNameCommand}"  ToolTip="PDF Datei für den Druck wählen" Width="25" Height="25" HorizontalAlignment="Right" Margin="15,0,0,0" />
+            <Button Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete}" Command="{Binding ResetPdfNameCommand}"  ToolTip="PDF Datei zurücksetzen / hier entfernen" Width="25" Height="25" HorizontalAlignment="Right" Margin="5,0,0,0" Visibility="{Binding PdfFileNameIsValid, Converter={StaticResource BooleanVisibilityConverter}}" />
         </StackPanel>
 
 
         <StackPanel Visibility="{Binding PdfFileName, Converter={StaticResource StringVisibilityConverter}}" Margin="1,20,0,15">
-            <TextBlock Text="{Binding PdfFileName}" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Stretch"  />
+            <TextBlock Text="{Binding PdfFileName}" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Stretch" Margin="0,0,0,15"  />
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <TextBlock Text="Seiten drucken:" />
-                <TextBox Text="{Binding PdfPrintRange, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" Foreground="Blue" Width="70" Height="20" Margin="10,0,0,0" />
+                <TextBlock Text="Seite(n) drucken:" />
+                <TextBox Text="{Binding PdfPrintRange, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Left" VerticalContentAlignment="Center" Foreground="Blue" Width="70" Height="24 " Margin="10,0,0,0" ToolTip="Geben Sie hier die Seite oder den Seitenbereich (z. B. 1-12) an, den Sie drucken wollen" />
+                <Button Padding="20,0,20,0" Command="{Binding PrintCommand}" IsEnabled="{Binding PrintingEnabled}" Margin="20,5,0,0">
+                    <StackPanel Orientation="Horizontal" ToolTip="Druckt das PDF direkt ohne Rückfrage auf Ihren Standarddrucker!">
+                        <ContentPresenter Content="{StaticResource image/48x48/printer-gray}" />
+                        <TextBlock Margin="7,0,0,0" FontWeight="Normal" FontSize="20">Direkt drucken!</TextBlock>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </StackPanel>
 
         
-        <Button Padding="15" Command="{Binding PrintCommand}" IsEnabled="{Binding PrintingEnabled}" Margin="0,15,0,0">
-            <StackPanel Orientation="Horizontal">
-                <ContentPresenter Content="{StaticResource image/32x32/pdf}" />
-                <TextBlock Margin="7,0,0,0" FontWeight="Normal" FontSize="20">PDF drucken</TextBlock>
-            </StackPanel>
-        </Button>
 
         
         <Grid Visibility="{Binding Page, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,15,0,0">
@@ -36,8 +43,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <ContentPresenter Grid.Column="0" Content="{StaticResource image/96x96/print}" />
+
+            <ContentPresenter Grid.Column="0" Content="{StaticResource image/48x48/printer-green}" />
 
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,5">
@@ -48,7 +55,8 @@
             </StackPanel>
         </Grid>
 
-        <TextBlock Text="{Binding BusyHint}" Background="Ivory" Foreground="Red" Visibility="{Binding BusyHint, Converter={StaticResource StringVisibilityConverter}}" Padding="10" />
-        
+        <Border BorderBrush="Red" BorderThickness="1" CornerRadius="2" Visibility="{Binding BusyHint, Converter={StaticResource StringVisibilityConverter}}" Margin="0,15,0,0">
+            <TextBlock Text="{Binding BusyHint}" Background="Ivory" Foreground="Red" Padding="11" />
+        </Border>
     </StackPanel>
 </Window>

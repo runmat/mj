@@ -3,5 +3,21 @@
                     xmlns:local="clr-namespace:PdfPrint.Resources">
 
     <Image x:Shared="False" x:Key="image/96x96/print" Source="/Images/96x96/print.png" SnapsToDevicePixels="True" Width="96" Height="96" />
+    <Image x:Shared="False" x:Key="image/48x48/printer-gray" Source="/Images/48x48/printer-gray.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+    <Image x:Shared="False" x:Key="image/48x48/printer-green" Source="/Images/48x48/printer-green.png" SnapsToDevicePixels="True" Width="48" Height="48" />
+
+    <Image x:Shared="False" x:Key="image/logo" Source="/Images/ckg-dev-logo.png" SnapsToDevicePixels="True" Width="350" Height="50" />
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type TextBox}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
 
 </ResourceDictionary>

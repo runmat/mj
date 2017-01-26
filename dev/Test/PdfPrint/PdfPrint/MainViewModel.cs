@@ -1,4 +1,6 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿//#define __TEST
+
+// ReSharper disable RedundantUsingDirective
 using System;
 using System.Configuration;
 using System.IO;
@@ -59,6 +61,12 @@ namespace PdfPrint
             }
         }
 
+#if __TEST
+        public string TestHint => "TEST";
+#else
+        public string TestHint => "";
+#endif
+
         public bool PdfPrintRangeIsValid => PdfPrintRange.NotNullOrEmpty().Replace("-", "").Replace(" ", "").ToInt(0) > 0;
 
         public bool PdfFileNameIsValid => PdfFileName.IsNotNullOrEmpty();
@@ -97,16 +105,16 @@ namespace PdfPrint
         }
 
         public static bool RequestBusyHint { get; set; }
-
         public ICommand PrintCommand { get; private set; }
-
         public ICommand SetPdfNameCommand { get; private set; }
+        public ICommand ResetPdfNameCommand { get; private set; }
 
 
         public MainViewModel()
         {
             PrintCommand = new DelegateCommand(e => Print(), e => true);
             SetPdfNameCommand = new DelegateCommand(e => SetPdfName(), e => true);
+            ResetPdfNameCommand = new DelegateCommand(e => ResetPdfName(), e => true);
 
             TaskService.InitUiSynchronizationContext();
             PdfFileName = Properties.Settings.Default.PdfFileName;
@@ -118,6 +126,12 @@ namespace PdfPrint
             if (fileName == null) return;
 
             Properties.Settings.Default.PdfFileName = PdfFileName = fileName;
+            Properties.Settings.Default.Save();
+        }
+
+        void ResetPdfName()
+        {
+            Properties.Settings.Default.PdfFileName = PdfFileName = "";
             Properties.Settings.Default.Save();
         }
 
@@ -158,20 +172,23 @@ namespace PdfPrint
                     Application.Current.Dispatcher.Invoke((() => requestBusyHint = RequestBusyHint));
                     if (requestBusyHint)
                         BusyHint =
-                            "Hinweis:\r\nAktive Hintergrund-Druckprozesse müssen noch abgeschlossen werden!\r\nBitte versuchen Sie in ein paar Augenblicken noch einmal die Anwendung zu schließen.";
+                            "Hinweis:\r\nAktive Druckprozesse müssen erst noch\r\nabgeschlossen werden!\r\nBitte versuchen Sie in ein paar Augenblicken\r\nnoch einmal die Anwendung zu schließen.";
 
-                    //Thread.Sleep(700);
+#if __TEST
+                    Thread.Sleep(700);
+#else
                     var pdfOutFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"CkgPdfPrint-{Guid.NewGuid()}.pdf");
                     if (!Helper.PdfSplitDocument(PdfFileName, pdfOutFileName, i))
                     {
                         errorOccured = true;
                         Application.Current.Dispatcher.Invoke((() => requestBusyHint = RequestBusyHint));
-                        BusyHint = "Fehler beim Drucken der gewünschten Seite!\r\nSind alle zu druckenden Seiten im Dokument vorhanden?";
+                        BusyHint = "Fehler beim Drucken der gewünschten Seite!\r\nSind alle zu druckenden Seiten im Dokument\r\ntatsächlich vorhanden?";
                         break;
                     }
 
                     Helper.PdfPrint(pdfOutFileName);
                     FileService.TryFileDelete(pdfOutFileName);
+#endif
                 }
             })
             .ContinueWith(t =>

@@ -8,11 +8,11 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("PdfPrint")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("PDF Druckprogramm, Autor: Matthias Jenzen")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CKG Entwicklung, Christoph Kroschke GmbH")]
 [assembly: AssemblyProduct("PdfPrint")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2017, Christoph Kroschke GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
