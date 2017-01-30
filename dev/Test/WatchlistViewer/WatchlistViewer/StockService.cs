@@ -25,7 +25,7 @@ namespace WatchlistViewer
             {
                 var wknCandidate = sArray[index + 1];
                 var hasWkn = !(wknCandidate.Contains(":") || wknCandidate.Contains("."));
-                var itemLength = hasWkn ? 10 : 9;
+                var itemLength = hasWkn ? 9 : 8;
 
                 subIndex++;
                 if (subIndex >= itemLength)
@@ -36,11 +36,14 @@ namespace WatchlistViewer
                     index += subIndex;
                     subIndex = 0;
 
+                    var name = sArray[i + 0];
+                    var wkn = sArray[i + 1];
+                    var val = sArray[i + si + 3];
                     var stockItem = new Stock
                     {
-                        Name = sArray[i + 0].Replace("_", " ").SubstringTry(0, 16),
-                        Wkn = (hasWkn ? sArray[i + 1] : ""),
-                        Value = double.Parse(sArray[i + si + 3]),
+                        Name = name.Replace("_", " ").SubstringTry(0, 16),
+                        Wkn = (hasWkn ? wkn : ""),
+                        Value = double.Parse(val),
                         DateTime = DateTime.Now
                     };
                     try
