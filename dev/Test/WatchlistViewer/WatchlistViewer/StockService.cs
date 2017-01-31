@@ -39,6 +39,7 @@ namespace WatchlistViewer
                     var name = sArray[i + 0];
                     var wkn = sArray[i + 1];
                     var val = sArray[i + si + 3];
+                    var date = sArray[i + si + 1];
                     var stockItem = new Stock
                     {
                         Name = name.Replace("_", " ").SubstringTry(0, 16),
@@ -48,11 +49,13 @@ namespace WatchlistViewer
                     };
                     try
                     {
-                        stockItem.DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + sArray[i + si + 1], "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture);
+                        stockItem.DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + date, "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture);
                     }
                     catch
                     {
-                        stockItem.DateTime = DateTime.ParseExact(sArray[i + si + 1], "dd.MM.yyyy", CultureInfo.CurrentCulture);
+                        DateTime dt;
+                        if (DateTime.TryParseExact(date, "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out dt))
+                            stockItem.DateTime = dt;
                     }
 
                     var changeValue = double.Parse(sArray[i + si + 6]);
