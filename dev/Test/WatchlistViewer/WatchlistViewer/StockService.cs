@@ -24,7 +24,7 @@ namespace WatchlistViewer
             while (index < sArray.Length)
             {
                 var wknCandidate = sArray[index + 1];
-                var hasWkn = !(wknCandidate.Contains(":") || wknCandidate.Contains("."));
+                var hasWkn = !(wknCandidate.Contains(":") || wknCandidate.Contains(".")) && !(new [] { "gestern", "heute" }.Contains(wknCandidate));
                 var itemLength = hasWkn ? 9 : 8;
 
                 subIndex++;
