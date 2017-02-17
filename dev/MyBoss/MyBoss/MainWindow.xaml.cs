@@ -256,10 +256,17 @@ namespace MyBoss
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _listener.UnHookKeyboard();
+            try
+            {
+                _listener.UnHookKeyboard();
 
-            _notifyIcon.Visible = false;
-            _notifyIcon = null;
+                _notifyIcon.Visible = false;
+                _notifyIcon = null;
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         void notifyIcon_Click(object sender, EventArgs e)
