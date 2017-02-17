@@ -9,6 +9,10 @@ namespace MyBoss
 {
     public partial class App 
     {
+        private const string DbCategoryID = "ResAhw";
+        private const string DbUserName = "JenzenMvc";
+        private const int DisableRebootDelaySecondsSinceLastSystemStartup = 300;  // 5 minutes
+
         protected override void OnStartup(StartupEventArgs e)
         {
             if (e.Args.Length > 0 && e.Args[0].ToLower() == "reboot")
@@ -24,8 +28,11 @@ namespace MyBoss
 
         static void CheckForReboot()
         {
-            var rebootRequestAvailable = GetResAhwValueFromDb() == "1";
+            var secondsSinceLastSystemStartup = GetSecondsSinceLastSystemStartup();
+            if (secondsSinceLastSystemStartup < DisableRebootDelaySecondsSinceLastSystemStartup)
+                return;
 
+            var rebootRequestAvailable = (GetResAhwValueFromDb() == "1");
             if (!rebootRequestAvailable)
                 return;
 
@@ -44,8 +51,11 @@ namespace MyBoss
             Process.Start("shutdown.exe", "-r -f -t 00");
         }
 
-        private const string CategoryID = "ResAhw";
-        private const string UserName = "JenzenMvc";
+        static int GetSecondsSinceLastSystemStartup()
+        {
+            var t = TimeSpan.FromMilliseconds(Environment.TickCount);
+            return (int)t.TotalSeconds;
+        }
 
         static string GetResAhwValueFromDb()
         {
@@ -53,7 +63,7 @@ namespace MyBoss
             {
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
-                cmd.CommandText = $"SELECT SettingsValue FROM CategorySettingsWebUser WHERE CategoryID = '{CategoryID}' and UserName = '{UserName}'";
+                cmd.CommandText = $"SELECT SettingsValue FROM CategorySettingsWebUser WHERE CategoryID = '{DbCategoryID}' and UserName = '{DbUserName}'";
                 cmd.CommandType = CommandType.Text;
 
                 cnn.Open();
@@ -77,7 +87,7 @@ namespace MyBoss
             {
                 var cnn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
                 var cmd = cnn.CreateCommand();
-                cmd.CommandText = $"update CategorySettingsWebUser set SettingsValue='0' WHERE CategoryID = '{CategoryID}' and UserName = '{UserName}'";
+                cmd.CommandText = $"update CategorySettingsWebUser set SettingsValue='0' WHERE CategoryID = '{DbCategoryID}' and UserName = '{DbUserName}'";
                 cmd.CommandType = CommandType.Text;
 
                 cnn.Open();
