@@ -5,9 +5,11 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using GeneralTools.Models;
@@ -55,8 +57,17 @@ namespace PdfPrint
         }
 
 
-        static readonly Int64Converter Int64Converter = new Int64Converter();
-        static readonly DoubleConverter DoubleConverter = new DoubleConverter();
+        #region Java to C# Conversion Helper
+
+        private static readonly Int64Converter Int64Converter = new Int64Converter();
+        private static readonly DoubleConverter DoubleConverter = new DoubleConverter();
+
+        [StructLayout(LayoutKind.Explicit)]
+        private struct Double2ulong
+        {
+            [FieldOffset(0)] public double d;
+            [FieldOffset(0)] public ulong ul;
+        }
 
         public static DateTime JavaDateTimeBytesToDateTime(byte[] bytes, int startIndex)
         {
@@ -65,7 +76,7 @@ namespace PdfPrint
             if (val == null)
                 return DateTime.MinValue;
 
-            var dateTimeLong = (long)val;
+            var dateTimeLong = (long) val;
 
             // Java timestamp is milliseconds past epoch
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -75,12 +86,17 @@ namespace PdfPrint
 
         public static double JavaDoubleBytesToDouble(byte[] bytes, int startIndex)
         {
-            var hexString = "0x" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
-//            var val = DoubleConverter.ConvertFrom(hexString);
-//            if (val == null)
-                return 0;
-//
-//            return (double)val;
+            var hexString = "" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
+
+            var d2Ul = new Double2ulong();
+            var parsed = ulong.Parse(hexString, NumberStyles.AllowHexSpecifier);
+            d2Ul.ul = parsed;
+            var dbl = d2Ul.d;
+
+            return dbl;
         }
+
+        #endregion
+
     }
 }
