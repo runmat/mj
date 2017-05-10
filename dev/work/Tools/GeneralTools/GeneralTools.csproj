@@ -123,6 +123,7 @@
     <Compile Include="Models\Attributes\RequiredAsGroupAttribute.cs" />
     <Compile Include="Models\Attributes\ModelMappingCopyIgnoreAttribute.cs" />
     <Compile Include="Models\DateRange.cs" />
+    <Compile Include="Models\ActivityItem.cs" />
     <Compile Include="Models\MaintenanceMessage.cs" />
     <Compile Include="Models\MaintenanceResult.cs" />
     <Compile Include="Models\SearchExtensions35.cs" />
