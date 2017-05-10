@@ -60,7 +60,6 @@ namespace PdfPrint
         #region Java to C# Conversion Helper
 
         private static readonly Int64Converter Int64Converter = new Int64Converter();
-        private static readonly DoubleConverter DoubleConverter = new DoubleConverter();
 
         [StructLayout(LayoutKind.Explicit)]
         private struct Double2ulong
@@ -71,29 +70,46 @@ namespace PdfPrint
 
         public static DateTime JavaDateTimeBytesToDateTime(byte[] bytes, int startIndex)
         {
-            var hexString = "0x" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
-            var val = Int64Converter.ConvertFromString(hexString);
-            if (val == null)
-                return DateTime.MinValue;
+            var dtDateTime = DateTime.MinValue;
 
-            var dateTimeLong = (long) val;
+            try
+            {
+                var hexString = "0x" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
+                var val = Int64Converter.ConvertFromString(hexString);
+                if (val == null)
+                    return dtDateTime;
 
-            // Java timestamp is milliseconds past epoch
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddMilliseconds(dateTimeLong).ToLocalTime();
+                var dateTimeLong = (long) val;
+
+                // Java timestamp is milliseconds past epoch
+                dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dtDateTime = dtDateTime.AddMilliseconds(dateTimeLong).ToLocalTime();
+            }
+            catch
+            {
+                return dtDateTime;
+            }
+
             return dtDateTime;
         }
 
         public static double JavaDoubleBytesToDouble(byte[] bytes, int startIndex)
         {
-            var hexString = "" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
+            try
+            {
+                var hexString = "" + BitConverter.ToString(bytes, startIndex).SubstringTry(0, 23).Replace("-", "");
 
-            var d2Ul = new Double2ulong();
-            var parsed = ulong.Parse(hexString, NumberStyles.AllowHexSpecifier);
-            d2Ul.ul = parsed;
-            var dbl = d2Ul.d;
+                var d2Ul = new Double2ulong();
+                var parsed = ulong.Parse(hexString, NumberStyles.AllowHexSpecifier);
+                d2Ul.ul = parsed;
+                var dbl = d2Ul.d;
 
-            return dbl;
+                return dbl;
+            }
+            catch // ignored
+            {
+                return 0;
+            }
         }
 
         #endregion
