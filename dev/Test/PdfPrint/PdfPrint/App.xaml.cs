@@ -21,8 +21,8 @@ namespace PdfPrint
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var list = GpsLogImport(@"C:\Backup\GpsLog_t.dat");
-            GpxLogExport(list.Where(g => g.DateTime.Date == new DateTime(2017, 05, 10).Date), @"C:\Backup\Matz_t.gpx");
+            var list = GpsLogImport(@"C:\Backup\GpsLog.dat");
+            GpxLogExport(list.Where(g => g.DateTime.Date == new DateTime(2017, 05, 12).Date), @"C:\Backup\Matz.gpx");
 
             Process.GetCurrentProcess().Kill();
             base.OnStartup(e);
