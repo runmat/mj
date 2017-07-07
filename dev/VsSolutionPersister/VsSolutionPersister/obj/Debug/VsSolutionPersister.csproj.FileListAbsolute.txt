@@ -34,3 +34,6 @@ C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\De
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\git2-e0902fb.dll
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\git2-e0902fb.pdb
 C:\Users\JenzenM\Documents\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\de\EntityFramework.resources.dll
+C:\Users\JenzenM\Documents\dev\mj\dev\VsSolutionPersister\VsSolutionPersister\bin\Debug\VsSolutionPersister.exe.config
+C:\Users\JenzenM\Documents\dev\mj\dev\VsSolutionPersister\VsSolutionPersister\obj\Debug\VsSolutionPersister.exe
+C:\Users\JenzenM\Documents\dev\mj\dev\VsSolutionPersister\VsSolutionPersister\obj\Debug\VsSolutionPersister.pdb
