@@ -11,6 +11,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using GeneralTools.Models;
@@ -21,11 +22,26 @@ namespace PdfPrint
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var list = GpsLogImport(@"C:\Backup\GpsLog.dat");
-            GpxLogExport(list.Where(g => g.DateTime.Date == new DateTime(2017, 05, 12).Date), @"C:\Backup\Matz.gpx");
+//            var list = GpsLogImport(@"C:\Backup\GpsLog.dat");
+//            GpxLogExport(list.Where(g => g.DateTime.Date == new DateTime(2017, 05, 12).Date), @"C:\Backup\Matz.gpx");
+
+            RegexTest();
 
             Process.GetCurrentProcess().Kill();
             base.OnStartup(e);
+        }
+
+        static void RegexTest()
+        {
+            const string input = "OD";
+            string output = Regex.Replace(input, @"(\D+)(\d+)(\-)", m =>
+            {
+                var xxx = m.Groups[1];
+                if (m.Groups.Count < 4)
+                    return input;
+
+                return $"{m.Groups[1].Value}{m.Groups[3].Value}";
+            }, RegexOptions.IgnoreCase);
         }
 
         static void GpxLogExport(IEnumerable<ActivityItem> list, string fileName)
