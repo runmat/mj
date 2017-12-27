@@ -16,14 +16,14 @@ namespace VsSolutionPersister
         {
             using (var repo = new Repository(workingDirectoryPath))
             {
-                if (string.Equals(repo.Head.Name, branchNameToCheckout, StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(repo.Head.RemoteName, branchNameToCheckout, StringComparison.CurrentCultureIgnoreCase))
                     return;
 
-                var branchToCheckout = repo.Branches.FirstOrDefault(b => b.Name == branchNameToCheckout);
+                var branchToCheckout = repo.Branches.FirstOrDefault(b => b.FriendlyName == branchNameToCheckout);
                 if (branchToCheckout == null)
                     return;
 
-                repo.Checkout(branchToCheckout, new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.None }, Signature);
+                Commands.Checkout(repo, branchToCheckout);
             }
         }
 
