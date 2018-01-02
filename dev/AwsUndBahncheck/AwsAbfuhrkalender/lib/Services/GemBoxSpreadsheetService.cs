@@ -185,8 +185,8 @@ namespace DocumentTools.Services
                     subtotalColumns.ToList().ForEach(subtotalColumn =>
                     {
                         var sum = (double)0;
-                        for (var sr = subtotalRowStart; sr <= subtotalRowEnd; sr++)
-                            sum += (ws.Cells[sr, subtotalColumn].Value ?? "").ToString().ToDouble(0.0);
+//                        for (var sr = subtotalRowStart; sr <= subtotalRowEnd; sr++)
+//                            sum += (ws.Cells[sr, subtotalColumn].Value ?? "").ToString().ToDouble(0.0);
                         subtotalVals[stc] += sum;
 
                         ws.Cells[totalRow, subtotalColumn].Value = sum;

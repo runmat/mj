@@ -82,7 +82,7 @@ namespace DocumentTools.Services
                     {
                         var wert = tbl.Rows[i][j].ToString().Trim();
 
-                        if (wert.IsDate())
+                        if (false)
                         {
                             if (wert.EndsWith(" 00:00:00"))
                                 tbl.Rows[i][j] = wert.Replace(" 00:00:00", "");
@@ -190,9 +190,7 @@ namespace DocumentTools.Services
             var column = 0;
             foreach (var property in properties)
             {
-                if (property != null && property.GetSetMethod() != null &&
-                    property.GetCustomAttributes(true).OfType<ImportIgnoreAttribute>().None()
-                    )
+                if (property != null && property.GetSetMethod() != null)
                 {
                     var value = row[column++];
                     value = ModelMapping.TryConvertValue(property, value, "us");
@@ -255,9 +253,6 @@ namespace DocumentTools.Services
         {
             var ext = Path.GetExtension(reportPathAndFilename);
 
-            if (ext.NotNullOrEmpty().ToLower().NotIn(".xls,.xlsx,.csv"))
-                reportPathAndFilename += ".xls";
-
             var ef = GemBoxSpreadsheetService.CreateDocument(data);
             ef.Save(reportPathAndFilename);
         }
@@ -266,9 +261,6 @@ namespace DocumentTools.Services
         {
             var ext = Path.GetExtension(reportPathAndFilename);
 
-            if (ext.NotNullOrEmpty().ToLower().NotIn(".xls,.xlsx,.csv"))
-                reportPathAndFilename += ".xls";
-
             var ef = GemBoxSpreadsheetService.CreateDocument(data);
             ef.Save(reportPathAndFilename);
         }
@@ -276,9 +268,6 @@ namespace DocumentTools.Services
         public static void CreateExcelDocumentFromTemplateAndSaveAsFile(string reportPathAndFilename, DataTable data, string templatePathAndFilename, int rowOffset = 0, int columnOffset = 0, Dictionary<ExcelCellCoordinates, string> additionalCellValues = null)
         {
             var ext = Path.GetExtension(reportPathAndFilename);
-
-            if (ext.NotNullOrEmpty().ToLower().NotIn(".xls,.xlsx,.csv"))
-                reportPathAndFilename += ".xls";
 
             var ef = GemBoxSpreadsheetService.CreateDocumentFromTemplate(data, templatePathAndFilename, rowOffset, columnOffset, additionalCellValues);
             ef.Save(reportPathAndFilename);

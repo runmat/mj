@@ -24,7 +24,7 @@ namespace AwsAbfuhrkalender.Services
         {
             var list = new List<CalendarItem>();
 
-            var dt = ExcelDocumentFactory.ReadToDataTable(@"C:\Users\JenzenM\Downloads\Aws_Termine_2017.xls", true);
+            var dt = ExcelDocumentFactory.ReadToDataTable(@"C:\Users\Matz\Downloads\Aws_Termine_2018.xls", true);
             var rows = dt.Rows;
 
             foreach (DataRow item in rows)
@@ -38,7 +38,7 @@ namespace AwsAbfuhrkalender.Services
                     var sItem = subject + " -> " + datum.ToLongDateString();
                     var date = datum;
 
-                    if (date < DateTime.Parse("01.01.2017"))
+                    if (date < DateTime.Parse("01.01." + year))
                         continue;
 
                     list.Add(new CalendarItem
