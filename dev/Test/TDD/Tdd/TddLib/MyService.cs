@@ -9,5 +9,9 @@ namespace TddLib
 {
     public class MyService
     {
+        public string Convert(int number)
+        {
+            return number.ToString();
+        }
     }
 }
