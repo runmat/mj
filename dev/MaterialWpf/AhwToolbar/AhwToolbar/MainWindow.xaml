@@ -3,21 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
-        Title="AHW Toolbar" Height="250" Width="325">
+        Title="Ahw Toolbar" Height="250" Width="325">
     <Grid VerticalAlignment="Top" Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition  Width="Auto"/>
             <ColumnDefinition  Width="*"/>
             <ColumnDefinition  Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <materialDesign:PackIcon Kind="Account" Grid.Column="0" Margin="8,0,0,0" VerticalAlignment="Center"></materialDesign:PackIcon>
-        <TextBox Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" />
-        <Button Grid.Column="2" Margin="8,0,0,0" VerticalAlignment="Center">Ok</Button>
-        
+        <dragablz:TabablzControl Grid.Row="0" Grid.ColumnSpan="3" FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
+                                 AddLocationHint="After" Margin="0,10,0,10" x:Name="InitialTabablzControl">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" Partition="2AE89D18-F236-4D20-9605-6C03319038E5" />
+            </dragablz:TabablzControl.InterTabController>
+
+            <dragablz:TabablzControl.ContentTemplate>
+                <DataTemplate >
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                    <ContentControl Content="{Binding Content}" Margin="10" />
+                </DataTemplate>
+            </dragablz:TabablzControl.ContentTemplate>
+        </dragablz:TabablzControl>
+
+        <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Account" Margin="8,0,0,0" VerticalAlignment="Center"></materialDesign:PackIcon>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Name}" />
+        <Button Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" VerticalAlignment="Center">Ok</Button>
+
     </Grid>
+
 </Window>

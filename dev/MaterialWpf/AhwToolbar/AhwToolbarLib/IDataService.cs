@@ -1,4 +1,4 @@
-﻿namespace AhwToolbarLib
+﻿namespace AhwToolbar
 {
     public interface IDataService
     {
