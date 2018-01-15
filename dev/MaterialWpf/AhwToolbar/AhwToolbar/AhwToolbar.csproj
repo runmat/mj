@@ -95,6 +95,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AhwToolbarLib\AhwToolbarLib.csproj">
+      <Project>{3f8d5fb8-d1a4-4fb7-8ccc-267e057ffd43}</Project>
+      <Name>AhwToolbarLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
