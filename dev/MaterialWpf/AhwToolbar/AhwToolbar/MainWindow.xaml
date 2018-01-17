@@ -24,8 +24,8 @@
                 <userControls:UcHeaderMenu />
             </materialDesign:ColorZone>
 
-            <dragablz:TabablzControl DockPanel.Dock="Left" FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
-                                        AddLocationHint="After" Margin="0" BorderThickness="0" Height="Auto" x:Name="InitialTabablzControl">
+            <dragablz:TabablzControl FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
+                                     Margin="0" BorderThickness="0" x:Name="InitialTabablzControl">
                 <dragablz:TabablzControl.InterTabController>
                     <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
                 </dragablz:TabablzControl.InterTabController>

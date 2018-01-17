@@ -7,10 +7,7 @@ namespace AhwToolbar.ViewModels
     {
         public INewTabHost<Window> GetNewHost(IInterTabClient interTabClient, object partition, TabablzControl source)
         {
-            var view = new MainWindow();
-            var model = new MainViewModel();
-            view.DataContext = model;
-            return new NewTabHost<Window>(view, view.InitialTabablzControl);
+            return new NewTabHost<Window>(Application.Current.MainWindow, source);
         }
 
         public TabEmptiedResponse TabEmptiedHandler(TabablzControl tabControl, Window window)

@@ -1,4 +1,6 @@
-﻿namespace AhwToolbar
+﻿using System.Windows;
+
+namespace AhwToolbar
 {
     public partial class MainWindow
     {
