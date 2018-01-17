@@ -83,8 +83,9 @@
                         </dragablz:TabablzControl.ContentTemplate>
                     </dragablz:TabablzControl>
 
-                    <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Account" Margin="8,0,0,0" VerticalAlignment="Center"></materialDesign:PackIcon>
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Name}" />
+                    <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Account" Margin="8,0,0,0" ToolTip="{Binding Name}" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Name}" 
+                             materialDesign:HintAssist.Hint="{Binding Name}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                     <Button Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" VerticalAlignment="Center">Ok</Button>
 
                 </Grid>
