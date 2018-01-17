@@ -4,11 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AhwToolbar.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              DataContext="{Binding Source={StaticResource Locator}, Path=Content1ViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <TextBlock>Content 1</TextBlock>
-        <TextBlock Text="{Binding TestName1}" />
-    </StackPanel>
+
+    <Grid VerticalAlignment="Top" Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width="Auto"/>
+            <ColumnDefinition  Width="*"/>
+            <ColumnDefinition  Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0,0,0,5" ToolTip="{Binding TestName1}" VerticalAlignment="Bottom" />
+        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Bottom" ToolTip="{Binding TestName1}" 
+                             materialDesign:HintAssist.Hint="{Binding TestName1}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+        <Button Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" VerticalAlignment="Bottom">Ok</Button>
+
+    </Grid>
+
 </UserControl>

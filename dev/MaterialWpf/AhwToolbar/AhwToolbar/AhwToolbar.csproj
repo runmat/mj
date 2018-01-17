@@ -93,6 +93,9 @@
     <Compile Include="UserControls\ucContent2.xaml.cs">
       <DependentUpon>ucContent2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ucHeaderMenu.xaml.cs">
+      <DependentUpon>ucHeaderMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModelInterTabClient.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -115,6 +118,10 @@
     <Page Include="UserControls\ucContent2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ucHeaderMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

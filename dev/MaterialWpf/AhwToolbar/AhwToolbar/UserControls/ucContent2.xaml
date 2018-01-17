@@ -7,7 +7,7 @@
              DataContext="{Binding Source={StaticResource Locator}, Path=Content2ViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
+    <StackPanel Margin="20">
         <TextBlock>... and this is another content!</TextBlock>
         <TextBlock Text="{Binding TestName2}" />
     </StackPanel>

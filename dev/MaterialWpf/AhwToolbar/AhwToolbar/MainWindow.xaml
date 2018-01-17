@@ -6,92 +6,38 @@
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:userControls="clr-namespace:AhwToolbar.UserControls"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         WindowStyle="None"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto" FontSize="16"
         WindowStartupLocation="CenterScreen"
-        Title="Ahw Toolbar" MinHeight="250" MinWidth="325" Height="300" Width="450">
+        Title="Ahw Toolbar" Height="350" Width="450">
     <WindowChrome.WindowChrome>
-        <WindowChrome 
-        CaptionHeight="0"
-        ResizeBorderThickness="5" />
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="10" />
     </WindowChrome.WindowChrome>
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
 
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <DockPanel>
-                    <ToggleButton  Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                                    DockPanel.Dock="Top"
-                                    HorizontalAlignment="Right" Margin="16"
-                                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                </DockPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-            <DockPanel>
-                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
-                    <DockPanel>
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" Visibility="Hidden" IsChecked="False" x:Name="MenuToggleButton"/>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                            <StackPanel>
-                                <Button Content="Minimieren" />
-                                <Button Content="Maximieren" />
-                                <Separator/>
-                                <Button Content="Beenden" />
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ahw Toolbar</TextBlock>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                
-                <Grid VerticalAlignment="Top" Margin="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="Auto"/>
-                        <ColumnDefinition  Width="*"/>
-                        <ColumnDefinition  Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+        <DockPanel>
+            <materialDesign:ColorZone Padding="0" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryMid" DockPanel.Dock="Top">
+                <userControls:UcHeaderMenu />
+            </materialDesign:ColorZone>
 
-                    <dragablz:TabablzControl Grid.Row="0" Grid.ColumnSpan="3" FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
-                                             AddLocationHint="After" Margin="0,10,0,10" x:Name="InitialTabablzControl">
-                        <dragablz:TabablzControl.InterTabController>
-                            <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" Partition="2AE89D18-F236-4D20-9605-6C03319038E5" />
-                        </dragablz:TabablzControl.InterTabController>
+            <dragablz:TabablzControl DockPanel.Dock="Left" FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
+                                        AddLocationHint="After" Margin="0" BorderThickness="0" Height="Auto" x:Name="InitialTabablzControl">
+                <dragablz:TabablzControl.InterTabController>
+                    <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
+                </dragablz:TabablzControl.InterTabController>
 
-                        <dragablz:TabablzControl.ContentTemplate>
-                            <DataTemplate >
-                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                                <ContentControl Content="{Binding Content}" Margin="10" />
-                            </DataTemplate>
-                        </dragablz:TabablzControl.ContentTemplate>
-                    </dragablz:TabablzControl>
-
-                    <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Account" Margin="0,0,0,5" ToolTip="{Binding Name}" VerticalAlignment="Bottom" />
-                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Bottom" ToolTip="{Binding Name}" 
-                             materialDesign:HintAssist.Hint="{Binding Name}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                    <Button Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" VerticalAlignment="Bottom">Ok</Button>
-
-                </Grid>
-            </DockPanel>
-        </materialDesign:DrawerHost>
+                <dragablz:TabablzControl.ContentTemplate>
+                    <DataTemplate >
+                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                        <ContentControl Content="{Binding Content}" Margin="0" Height="Auto" />
+                    </DataTemplate>
+                </dragablz:TabablzControl.ContentTemplate>
+            </dragablz:TabablzControl>
+        </DockPanel>
     </materialDesign:DialogHost>
 
 </Window>
