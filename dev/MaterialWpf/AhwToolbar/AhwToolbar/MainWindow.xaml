@@ -25,6 +25,7 @@
             </materialDesign:ColorZone>
 
             <dragablz:TabablzControl FixedHeaderCount="0" HeaderMemberPath="Header" ItemsSource="{Binding Tabs}" 
+                                     PreviewMouseLeftButtonUp="InitialTabablzControl_OnMouseLeftButtonUp"
                                      Margin="0" BorderThickness="0" x:Name="InitialTabablzControl">
                 <dragablz:TabablzControl.InterTabController>
                     <dragablz:InterTabController InterTabClient="{Binding InterTabClient}" />
