@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="IDataService.cs" />
     <Compile Include="DataServiceSql.cs" />
+    <Compile Include="Models\TabData.cs" />
+    <Compile Include="Models\ViewModelData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Content2ViewModel.cs" />
     <Compile Include="ViewModels\Content1ViewModel.cs" />

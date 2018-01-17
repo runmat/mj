@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using AhwToolbar.ViewModels;
 using Dragablz;
@@ -10,6 +12,10 @@ namespace AhwToolbar
         public MainWindow()
         {
             InitializeComponent();
+
+            var selectedItem = InitialTabablzControl.Items.Cast<HeaderedItemViewModel>().FirstOrDefault(i => i.IsSelected);
+            if (selectedItem != null)
+                InitialTabablzControl.SelectedItem = selectedItem;
         }
 
         private void InitialTabablzControl_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

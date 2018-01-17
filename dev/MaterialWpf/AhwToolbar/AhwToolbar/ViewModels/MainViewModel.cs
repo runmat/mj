@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using AhwToolbar.Models;
 using AhwToolbar.UserControls;
 using Dragablz;
 using GalaSoft.MvvmLight;
@@ -13,6 +14,8 @@ namespace AhwToolbar.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private readonly ViewModelData _viewModeldata = new ViewModelData();
+
         public ObservableCollection<HeaderedItemViewModel> Tabs { get; }
 
         public IInterTabClient InterTabClient { get; } = new MainViewModelInterTabClient();
@@ -22,19 +25,12 @@ namespace AhwToolbar.ViewModels
         public ICommand TestCommand { get; private set; }
 
 
-
-
         public MainViewModel()
         {
-            Tabs = new ObservableCollection<HeaderedItemViewModel>
-            {
-                new HeaderedItemViewModel("Walter", new UcContent1()),
-                new HeaderedItemViewModel("Zabel", new UcContent2()),
-            };
+            Tabs = new ObservableCollection<HeaderedItemViewModel>();
+            _viewModeldata.Tabs.ForEach(tab => Tabs.Add(new HeaderedItemViewModel(tab.Header, Activator.CreateInstance(Type.GetType(tab.UserControlType) ?? typeof(object)), tab.IsSelected)));
 
-            TestCommand = new DelegateCommand(e =>
-            {
-            });
+            TestCommand = new DelegateCommand(e => { });
         }
 
         public void OnTabsChanged(IEnumerable<string> tabHeaders)
