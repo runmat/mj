@@ -21,7 +21,7 @@ namespace AhwToolbar
         private void InitialTabablzControl_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var model = DataContext as MainViewModel;
-            model?.OnTabsChanged(InitialTabablzControl.GetOrderedHeaders().Select(t => t.Content.ToString()));
+            model?.OnTabsChanged(InitialTabablzControl.GetOrderedHeaders().Select(t => t.Content.ToString()), ((HeaderedItemViewModel)InitialTabablzControl.SelectedItem).Header.ToString());
         }
     }
 }
