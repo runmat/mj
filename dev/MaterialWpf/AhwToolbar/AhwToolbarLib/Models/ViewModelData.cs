@@ -17,24 +17,12 @@ namespace AhwToolbar.Models
         public List<TabData> Tabs { get; set; } = DefaultTabs;
 
 
-        public string PersistViewModelDataGetFilename()
-        {
-            var persistFileName = ConfigurationManager.AppSettings["ViewModelDataFileLocation"];
-            if (persistFileName.IsNullOrEmpty())
-                throw new Exception("appSettings Key 'ViewModelDataFileLocation'does not exist in App.Config");
-
-            if (!persistFileName.Contains("[LocalApplicationData]"))
-                throw new Exception("appSettings Value 'ViewModelDataFileLocation' must contain a [LocalApplicationData] string part");
-
-            return persistFileName.Replace("[LocalApplicationData]", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-        }
+        public string PersistViewModelDataGetFilename => @"AhwToolbarData.xml";
+        
 
         public void PersistViewModelData()
         {
-            var fileName = PersistViewModelDataGetFilename();
-
-            if (!File.Exists(fileName))
-                File.CreateText(fileName);
+            var fileName = PersistViewModelDataGetFilename;
         }
     }
 }
