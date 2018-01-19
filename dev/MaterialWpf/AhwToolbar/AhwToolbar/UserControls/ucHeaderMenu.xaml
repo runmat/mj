@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
     <DockPanel>
-        <Button Command="{Binding TestCommand}">...</Button>
+<!--        <Button Command="{Binding TestCommand}">...</Button>-->
         <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" Visibility="Hidden" IsChecked="False" x:Name="MenuToggleButton"/>
         <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
             <StackPanel>

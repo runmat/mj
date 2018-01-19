@@ -23,11 +23,17 @@ namespace AhwToolbarTests
         }
 
         [TestMethod]
-        public void TestPersistViewModelData()
+        public void TestPersistViewModelDataExists()
         {
-            var fileName = _viewModel.PersistViewModelDataGetFilename;
+            Assert.IsTrue(File.Exists(_viewModel.PersistViewModelDataFilename));
+        }
 
-            Assert.IsTrue(File.Exists(fileName));
+        [TestMethod]
+        public void TestPersistViewModelDataIsDeserialize()
+        {
+            var vm = XmlService.XmlDeserializeFromFile<ViewModelData>(_viewModel.PersistViewModelDataFilename);
+            Assert.IsNotNull(vm);
+            Assert.IsTrue(vm.Tabs.AnyAndNotNull());
         }
     }
 }

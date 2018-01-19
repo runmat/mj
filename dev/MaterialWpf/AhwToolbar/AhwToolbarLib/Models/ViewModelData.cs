@@ -2,27 +2,23 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace AhwToolbar.Models
 {
     public class ViewModelData
     {
-        private static readonly List<TabData> DefaultTabs = new List<TabData>
-        {
-            new TabData {Header = "Walter", UserControlType = "AhwToolbar.UserControls.UcContent1", IsSelected = false},
-            new TabData {Header = "Zabel", UserControlType = "AhwToolbar.UserControls.UcContent2", IsSelected = true},
-        };
+        public List<TabData> Tabs { get; set; }
 
-        public List<TabData> Tabs { get; set; } = DefaultTabs;
-
-
-        public string PersistViewModelDataGetFilename => @"AhwToolbarData.xml";
-        
+        public string PersistViewModelDataFilename => @"AhwToolbarData.xml";
+       
 
         public void PersistViewModelData()
         {
-            var fileName = PersistViewModelDataGetFilename;
+            if (Tabs.AnyAndNotNull())
+                XmlService.XmlSerializeToFile(this, PersistViewModelDataFilename);
         }
     }
 }

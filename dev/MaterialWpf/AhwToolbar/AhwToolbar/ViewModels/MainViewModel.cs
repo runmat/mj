@@ -8,6 +8,7 @@ using AhwToolbar.Models;
 using AhwToolbar.UserControls;
 using Dragablz;
 using GalaSoft.MvvmLight;
+using GeneralTools.Services;
 using WpfTools4.Commands;
 
 namespace AhwToolbar.ViewModels
@@ -31,7 +32,15 @@ namespace AhwToolbar.ViewModels
             _viewModeldata.Tabs.ForEach(tab => Tabs.Add(new HeaderedItemViewModel(tab.Header, Activator.CreateInstance(Type.GetType(tab.UserControlType) ?? typeof(object)), tab.IsSelected)));
 
             TestCommand = new DelegateCommand(e => { });
+
+            _viewModeldata.Tabs = DefaultTabs;
+            _viewModeldata.PersistViewModelData();
         }
+        private static readonly List<TabData> DefaultTabs = new List<TabData>
+        {
+            new TabData {Header = "Walter", UserControlType = "AhwToolbar.UserControls.UcContent1", IsSelected = false},
+            new TabData {Header = "Zabel", UserControlType = "AhwToolbar.UserControls.UcContent2", IsSelected = true},
+        };
 
         public void OnTabsChanged(IEnumerable<string> tabHeaders)
         {
