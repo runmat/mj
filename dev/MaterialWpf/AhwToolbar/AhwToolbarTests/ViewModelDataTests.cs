@@ -40,7 +40,9 @@ namespace AhwToolbarTests
         [TestMethod]
         public void TestPersistViewModelData()
         {
-            var vm = new ViewModelData
+            var vmOrg = _viewModel.LoadViewModelData();
+
+            var vm1 = new ViewModelData
             {
                 Tabs = new List<TabData>
                 {
@@ -50,11 +52,16 @@ namespace AhwToolbarTests
                 }
             };
 
-            vm.PersistViewModelData();
+            vm1.PersistViewModelData();
             var vm2 = _viewModel.LoadViewModelData();
-//            vm2.Tabs.Add(new TabData());
+            //vm2.Tabs.Add(new TabData());
 
-            Assert.AreEqual(XmlService.XmlSerializeToString(vm), XmlService.XmlSerializeToString(vm2));
+            vmOrg.PersistViewModelData();
+
+            Assert.IsTrue(vm1.Tabs.Count == 3);
+            Assert.IsTrue(vm2.Tabs.Count == 3);
+            Assert.AreEqual(vm1.Tabs.Count, vm2.Tabs.Count);
+            Assert.AreEqual(XmlService.XmlSerializeToString(vm1), XmlService.XmlSerializeToString(vm2));
         }
 
         [TestMethod]
