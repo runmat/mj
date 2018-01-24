@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Input;
 using AhwToolbar.Models;
 using AhwToolbar.UserControls;
@@ -31,7 +33,8 @@ namespace AhwToolbar.ViewModels
             _viewModeldata = _viewModeldata.LoadViewModelData();
 
             Tabs = new ObservableCollection<HeaderedItemViewModel>();
-            _viewModeldata.Tabs.ForEach(tab => Tabs.Add(new HeaderedItemViewModel(tab.Header, Activator.CreateInstance(Type.GetType(tab.UserControlType) ?? typeof(object)), tab.IsSelected)));
+            if (SynchronizationContext.Current != null)
+                _viewModeldata.Tabs.ForEach(tab => Tabs.Add(new HeaderedItemViewModel(tab.Header, Activator.CreateInstance(Type.GetType(tab.UserControlType) ?? typeof(object)), tab.IsSelected)));
 
             TestCommand = new DelegateCommand(e => { });
         }

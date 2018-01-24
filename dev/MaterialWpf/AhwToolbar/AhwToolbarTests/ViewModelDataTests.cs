@@ -15,24 +15,26 @@ namespace AhwToolbarTests
     [TestClass]
     public class ViewModelDataTests
     {
-        private ViewModelData _viewModel;
+        private ViewModelLocator _vmLocator;
+        private ViewModelData _vmData;
 
         [TestInitialize]
         public void Setup()
         {
-            _viewModel = new ViewModelData();
+            _vmData = new ViewModelData();
+            _vmLocator = new ViewModelLocator();
         }
 
         [TestMethod]
         public void TestPersistViewModelDataExists()
         {
-            Assert.IsTrue(File.Exists(_viewModel.PersistViewModelDataFilename));
+            Assert.IsTrue(File.Exists(_vmData.PersistViewModelDataFilename));
         }
 
         [TestMethod]
         public void TestPersistViewModelDataIsDeserialize()
         {
-            var vm = _viewModel.LoadViewModelData();
+            var vm = _vmData.LoadViewModelData();
             Assert.IsNotNull(vm);
             Assert.IsTrue(vm.Tabs.AnyAndNotNull());
         }
@@ -40,7 +42,7 @@ namespace AhwToolbarTests
         [TestMethod]
         public void TestPersistViewModelData()
         {
-            var vmOrg = _viewModel.LoadViewModelData();
+            var vmOrg = _vmData.LoadViewModelData();
 
             var vm1 = new ViewModelData
             {
@@ -53,7 +55,7 @@ namespace AhwToolbarTests
             };
 
             vm1.PersistViewModelData();
-            var vm2 = _viewModel.LoadViewModelData();
+            var vm2 = _vmData.LoadViewModelData();
             //vm2.Tabs.Add(new TabData());
 
             vmOrg.PersistViewModelData();
@@ -67,7 +69,7 @@ namespace AhwToolbarTests
         [TestMethod]
         public void TestSetViewModelDataTabs()
         {
-            var vm = _viewModel.LoadViewModelData();
+            var vm = _vmData.LoadViewModelData();
 
             var vmOld = XmlService.XmlDeserializeFromString<ViewModelData>(XmlService.XmlSerializeToString(vm));
             var oldTabs = vmOld.Tabs;
@@ -88,6 +90,14 @@ namespace AhwToolbarTests
             // selection tests
             Assert.IsTrue(newTabs.Count(t => t.IsSelected) == 1);
             Assert.AreNotEqual(newTabs.First(t => t.IsSelected).Header, oldTabs.First(t => t.IsSelected).Header);
+        }
+
+        [TestMethod]
+        public void TestUiViewModel()
+        {
+            var vmMain = _vmLocator.Main;
+            var vmSub1 = _vmLocator.Content1ViewModel;
+            var vmSub2 = _vmLocator.Content2ViewModel;
         }
     }
 }

@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace AhwToolbar.ViewModels
 {
-    public class Content1ViewModel
+    public class Content1ViewModel : ViewModelBase
     {
         public string TestName1 => "Walter";
     }
