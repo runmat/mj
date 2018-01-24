@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Input;
 using AhwToolbar.Models;
@@ -39,6 +40,7 @@ namespace AhwToolbar.ViewModels
             TestCommand = new DelegateCommand(e => { });
         }
 
+        [ExcludeFromCodeCoverage]
         public void OnTabsChanged(IEnumerable<string> tabHeaders, string selectedTabHeader)
         {
             _viewModeldata.SetTabs(tabHeaders, selectedTabHeader);

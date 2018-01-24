@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows.Input;
 using AhwToolbar.ViewModels;
 using Dragablz;
 
 namespace AhwToolbar
 {
+    [ExcludeFromCodeCoverage]
     public partial class MainWindow
     {
         public MainWindow()

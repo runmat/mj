@@ -93,7 +93,7 @@ namespace AhwToolbarTests
         }
 
         [TestMethod]
-        public void TestUiViewModel()
+        public void TestCreationUiViewModels()
         {
             var vmMain = _vmLocator.Main;
             var vmSub1 = _vmLocator.Content1ViewModel;
