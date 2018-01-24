@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using AhwToolbar.Models;
 using AhwToolbar.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable UnusedVariable
 
 namespace AhwToolbarTests
 {
@@ -21,8 +21,8 @@ namespace AhwToolbarTests
         [TestInitialize]
         public void Setup()
         {
-            _vmData = new ViewModelData();
             _vmLocator = new ViewModelLocator();
+            _vmData = new ViewModelData();
         }
 
         [TestMethod]

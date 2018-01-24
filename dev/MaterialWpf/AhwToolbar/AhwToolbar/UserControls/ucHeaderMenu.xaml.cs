@@ -1,11 +1,10 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace AhwToolbar.UserControls
 {
-    /// <summary>
-    /// Interaktionslogik für ucHeaderMenu.xaml
-    /// </summary>
+    [ExcludeFromCodeCoverage]
     public partial class UcHeaderMenu : UserControl
     {
         public UcHeaderMenu()

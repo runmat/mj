@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using Dragablz;
 
 namespace AhwToolbar.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class MainViewModelInterTabClient : IInterTabClient
     {
         public INewTabHost<Window> GetNewHost(IInterTabClient interTabClient, object partition, TabablzControl source)
