@@ -1,9 +1,0 @@
-C:\dev\work\GAC\GeneralTools.dll
-C:\dev\work\GAC\GeneralTools.pdb
-C:\dev\work\GAC\de-DE\GeneralTools.resources.dll
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\GeneralTools.Resources.CommonResources.resources
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\GeneralTools.Resources.CommonResources.de-DE.resources
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\GeneralTools.csproj.GenerateResource.Cache
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\de-DE\GeneralTools.resources.dll
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\GeneralTools.dll
-C:\dev\work\Tools\GeneralTools\obj\DebugQuick\GeneralTools.pdb
