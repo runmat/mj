@@ -110,10 +110,6 @@
     <Resource Include="boss.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\work\Tools\GeneralTools\GeneralTools.csproj">
-      <Project>{a4f36243-8d89-460f-acb3-ef7df37d6fca}</Project>
-      <Name>GeneralTools</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\work\Tools\WpfTools4\WpfTools4.csproj">
       <Project>{4c4733f1-aed0-46fa-b7a5-8fc54e7c8709}</Project>
       <Name>WpfTools4</Name>

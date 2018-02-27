@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using GeneralTools.Models;
 
 namespace MyBoss
 {
@@ -13,7 +12,7 @@ namespace MyBoss
     /// </summary>
     public partial class FakeWindow
     {
-        private string _imageName;
+        private readonly string _imageName;
 
         public FakeWindow(string imageName)
         {
@@ -31,7 +30,7 @@ namespace MyBoss
 
         private void FakeWindowOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_imageName.NotNullOrEmpty().ToLower().Contains("lockscreen"))
+            if (_imageName == null || !_imageName.ToLower().Contains("lockscreen"))
             {
                 LowLevelKeyboardListener.Disabled = false;
                 Close();
